@@ -13,15 +13,11 @@ const updated: SapRecord = { CreationDateTime: "2025-01-01T00:00:00Z" };
 test("New and Updated Records is opt-in batchable with a default batch size", () => {
   expect(pollChangesTrigger.triggerResolverSupport).toBe("valid");
   expect(pollChangesTrigger.batchConfig).toEqual({ batchSize: 50 });
-  expect(pollChangesTrigger.triggerResolver?.resolveItems).toBeInstanceOf(
-    Function,
-  );
+  expect(pollChangesTrigger.triggerResolver?.resolveItems).toBeInstanceOf(Function);
 });
 
 test("resolvePollingRecordChanges tags every record with how it changed", () => {
-  expect(
-    resolvePollingRecordChanges({ created: [created], updated: [updated] }),
-  ).toEqual([
+  expect(resolvePollingRecordChanges({ created: [created], updated: [updated] })).toEqual([
     { changeType: "created", record: created },
     { changeType: "updated", record: updated },
   ]);
@@ -33,15 +29,10 @@ test("resolvePollingRecordChanges returns [] for empty or undefined changes", ()
 });
 
 test("resolveItems flattens the payload shape perform actually returns", () => {
-  const payload = {
-    ...defaultTriggerPayload(),
-    body: { data: { created: [created] } },
-  };
-  expect(
-    pollChangesTrigger.triggerResolver?.resolveItems?.({} as never, {
-      payload,
-    }),
-  ).toEqual([{ changeType: "created", record: created }]);
+  const payload = { ...defaultTriggerPayload(), body: { data: { created: [created] } } };
+  expect(pollChangesTrigger.triggerResolver?.resolveItems?.({} as never, { payload })).toEqual([
+    { changeType: "created", record: created },
+  ]);
 });
 
 describe("Look-back Date initial sync", () => {
@@ -63,19 +54,13 @@ describe("Look-back Date initial sync", () => {
         },
       },
     };
-    const result = (await pollChangesTrigger.perform(
-      context as never,
-      defaultTriggerPayload(),
-      {
-        connection: {},
-        resourceType: "changeRecords",
-        lookBackDate,
-        ...toggles,
-      } as never,
-    )) as {
-      payload: {
-        body: { data: { created: SapRecord[]; updated: SapRecord[] } };
-      };
+    const result = (await pollChangesTrigger.perform(context as never, defaultTriggerPayload(), {
+      connection: {},
+      resourceType: "changeRecords",
+      lookBackDate,
+      ...toggles,
+    } as never)) as {
+      payload: { body: { data: { created: SapRecord[]; updated: SapRecord[] } } };
       polledNoChanges: boolean;
     };
     return { result, getState: () => next };
@@ -87,14 +72,8 @@ describe("Look-back Date initial sync", () => {
       data: {
         d: {
           results: [
-            {
-              CreationDateTime: "2026-01-05T00:00:00Z",
-              LastChangeDateTime: "2026-01-05",
-            },
-            {
-              CreationDateTime: "2025-06-01T00:00:00Z",
-              LastChangeDateTime: "2026-01-06",
-            },
+            { CreationDateTime: "2026-01-05T00:00:00Z", LastChangeDateTime: "2026-01-05" },
+            { CreationDateTime: "2025-06-01T00:00:00Z", LastChangeDateTime: "2026-01-06" },
           ],
         },
       },
@@ -129,10 +108,7 @@ describe("Look-back Date initial sync", () => {
   });
 
   test("persisted state wins over the Look-back Date", async () => {
-    await run(
-      { lastPolledAt: "2026-02-01T00:00:00.000Z" },
-      lookBackDateClean("2026-01-01"),
-    );
+    await run({ lastPolledAt: "2026-02-01T00:00:00.000Z" }, lookBackDateClean("2026-01-01"));
     expect(get.mock.calls[0][0]).toContain("datetime'2026-02-01T00:00:00'");
   });
 
@@ -171,17 +147,13 @@ describe("poll state, classification and pagination", () => {
         },
       },
     };
-    const result = (await pollChangesTrigger.perform(
-      context as never,
-      defaultTriggerPayload(),
-      {
-        connection: {},
-        resourceType,
-        lookBackDate,
-        showNewRecords,
-        showUpdatedRecords,
-      } as never,
-    )) as { payload: { body: { data: Data } }; polledNoChanges: boolean };
+    const result = (await pollChangesTrigger.perform(context as never, defaultTriggerPayload(), {
+      connection: {},
+      resourceType,
+      lookBackDate,
+      showNewRecords,
+      showUpdatedRecords,
+    } as never)) as { payload: { body: { data: Data } }; polledNoChanges: boolean };
     return { result, getState: () => next };
   };
 
@@ -210,15 +182,11 @@ describe("poll state, classification and pagination", () => {
     const prior = "2026-02-01T00:00:00.000Z";
     const { getState } = await run({ lastPolledAt: prior });
     expect(getState()?.lastPolledAt).toBe(NOW.toISOString());
-    expect(new Date(getState()?.lastPolledAt as string) > new Date(prior)).toBe(
-      true,
-    );
+    expect(new Date(getState()?.lastPolledAt as string) > new Date(prior)).toBe(true);
   });
 
   test("a backfill run also advances lastPolledAt to now", async () => {
-    const { getState } = await run(undefined, {
-      lookBackDate: "2026-01-01T00:00:00.000Z",
-    });
+    const { getState } = await run(undefined, { lookBackDate: "2026-01-01T00:00:00.000Z" });
     expect(getState()?.lastPolledAt).toBe(NOW.toISOString());
   });
 
@@ -239,10 +207,7 @@ describe("poll state, classification and pagination", () => {
 
   test("an unsupported resource type throws", async () => {
     await expect(
-      run(
-        { lastPolledAt: "2026-02-01T00:00:00.000Z" },
-        { resourceType: "nope" },
-      ),
+      run({ lastPolledAt: "2026-02-01T00:00:00.000Z" }, { resourceType: "nope" }),
     ).rejects.toThrow("Unsupported resource type");
     expect(get).not.toHaveBeenCalled();
   });
@@ -264,11 +229,7 @@ describe("poll state, classification and pagination", () => {
 
   test("SAP /Date(ms)/ CreationDateTime is classified as updated (observed behavior)", async () => {
     get.mockResolvedValueOnce({
-      data: {
-        d: {
-          results: [{ CreationDateTime: "/Date(1771113600000)/", id: "sap" }],
-        },
-      },
+      data: { d: { results: [{ CreationDateTime: "/Date(1771113600000)/", id: "sap" }] } },
     });
     const { result } = await run({ lastPolledAt: "2026-02-01T00:00:00.000Z" });
     expect(result.payload.body.data.created).toEqual([]);

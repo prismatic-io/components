@@ -72,30 +72,20 @@ describe("bucket notification actions", () => {
 
   describe("getBucketNotificationConfiguration", () => {
     test("sends the command and returns the response with $metadata kept", async () => {
-      sendMock.mockResolvedValue(
-        getBucketNotificationConfigurationExamplePayload.data,
-      );
+      sendMock.mockResolvedValue(getBucketNotificationConfigurationExamplePayload.data);
 
-      const { result } = await invoke(
-        getBucketNotificationConfiguration,
-        baseInputs,
-      );
+      const { result } = await invoke(getBucketNotificationConfiguration, baseInputs);
 
       const command = sendMock.mock.calls[0][0];
       expect(command).toBeInstanceOf(GetBucketNotificationConfigurationCommand);
-      expect(command.input).toEqual({
-        Bucket: "example-bucket",
-        ExpectedBucketOwner: undefined,
-      });
+      expect(command.input).toEqual({ Bucket: "example-bucket", ExpectedBucketOwner: undefined });
       expect(result).toEqual(getBucketNotificationConfigurationExamplePayload);
     });
 
     test("propagates an SDK service error", async () => {
       sendMock.mockRejectedValue(serviceError("NoSuchBucket", 404));
 
-      await expect(
-        invoke(getBucketNotificationConfiguration, baseInputs),
-      ).rejects.toMatchObject({
+      await expect(invoke(getBucketNotificationConfiguration, baseInputs)).rejects.toMatchObject({
         name: "NoSuchBucket",
         $metadata: { httpStatusCode: 404 },
       });
@@ -104,14 +94,9 @@ describe("bucket notification actions", () => {
 
   describe("putBucketNotificationConfiguration", () => {
     test("sends the full configuration with SkipDestinationValidation and returns the response", async () => {
-      sendMock.mockResolvedValue(
-        putBucketNotificationConfigurationExamplePayload.data,
-      );
+      sendMock.mockResolvedValue(putBucketNotificationConfigurationExamplePayload.data);
 
-      const { result } = await invoke(
-        putBucketNotificationConfiguration,
-        putInputs,
-      );
+      const { result } = await invoke(putBucketNotificationConfiguration, putInputs);
 
       const command = sendMock.mock.calls[0][0];
       expect(command).toBeInstanceOf(PutBucketNotificationConfigurationCommand);
@@ -131,9 +116,7 @@ describe("bucket notification actions", () => {
     test("propagates an SDK service error", async () => {
       sendMock.mockRejectedValue(serviceError("InvalidArgument", 400));
 
-      await expect(
-        invoke(putBucketNotificationConfiguration, putInputs),
-      ).rejects.toMatchObject({
+      await expect(invoke(putBucketNotificationConfiguration, putInputs)).rejects.toMatchObject({
         name: "InvalidArgument",
         $metadata: { httpStatusCode: 400 },
       });

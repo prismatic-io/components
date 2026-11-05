@@ -13,15 +13,8 @@ export const updateItem = action({
     ...updateItemInputs,
     connection,
   },
-  perform: async (
-    context,
-    { connection, ItemCode, ItemName, ItemType, bodyFields },
-  ) => {
-    const client = await createClient(
-      connection,
-      context,
-      context.debug.enabled,
-    );
+  perform: async (context, { connection, ItemCode, ItemName, ItemType, bodyFields }) => {
+    const client = await createClient(connection, context, context.debug.enabled);
 
     await client.patch(`/Items('${ItemCode}')`, {
       ItemName,

@@ -11,10 +11,7 @@ export const createProductImageGql = action({
     description: "Creates a new image for an existing product.",
   },
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { productId, imageURL, imageAlt, shopifyConnection },
-  ) => {
+  perform: async (context, { productId, imageURL, imageAlt, shopifyConnection }) => {
     const client = getShopifyGraphQlClient(
       shopifyConnection,
       undefined,
@@ -22,22 +19,21 @@ export const createProductImageGql = action({
       context.logger,
     );
 
-    const data: { productCreateMedia: Record<string, unknown> } =
-      await client.request(createProductImageQuery, {
+    const data: { productCreateMedia: Record<string, unknown> } = await client.request(
+      createProductImageQuery,
+      {
         id: productId,
         originalSource: imageURL,
         alt: imageAlt,
-      });
+      },
+    );
 
     return {
       data: data.productCreateMedia,
     };
   },
   inputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: createProductImageGqlOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: createProductImageGqlOutputSchema }),
   examplePerform: async () => examplePayload,
   examplePayload,
 });

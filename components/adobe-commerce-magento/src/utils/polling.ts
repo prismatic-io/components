@@ -6,11 +6,7 @@ import {
   POLL_RESOURCE_CONFIG,
   type PollResourceType,
 } from "../constants";
-import type {
-  MagentoChangesObject,
-  MagentoRecord,
-  MagentoRecordChange,
-} from "../types";
+import type { MagentoChangesObject, MagentoRecord, MagentoRecordChange } from "../types";
 import { toMagentoDateTime } from "./dates";
 
 export const fetchMagentoRecordsSince = async (

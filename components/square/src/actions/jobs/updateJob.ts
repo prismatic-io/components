@@ -9,14 +9,8 @@ export const updateJob = action({
     description:
       "Updates the title or tip eligibility of a job. Changes propagate to all job assignments, shifts, and wage settings.",
   },
-  perform: async (
-    context,
-    { squareConnection, jobId, jobTitle, isTipEligible, version },
-  ) => {
-    const client = await createAuthorizedClient(
-      squareConnection,
-      context.debug.enabled,
-    );
+  perform: async (context, { squareConnection, jobId, jobTitle, isTipEligible, version }) => {
+    const client = await createAuthorizedClient(squareConnection, context.debug.enabled);
 
     const requestBody = {
       job: {} as Record<string, unknown>,
@@ -34,10 +28,7 @@ export const updateJob = action({
       requestBody.job.version = util.types.toInt(version);
     }
 
-    const { data } = await client.put(
-      `/v2/team-members/jobs/${jobId}`,
-      requestBody,
-    );
+    const { data } = await client.put(`/v2/team-members/jobs/${jobId}`, requestBody);
     return {
       data,
     };

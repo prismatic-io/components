@@ -12,12 +12,9 @@ export const getApplication = action({
   inputs: getApplicationInputs,
   perform: async (context, { connection, applicationId, expand }) => {
     const client = await createClient(connection, context.debug.enabled);
-    const { data } = await client.get<Application>(
-      `/apps/${encodeURIComponent(applicationId)}`,
-      {
-        params: { expand },
-      },
-    );
+    const { data } = await client.get<Application>(`/apps/${encodeURIComponent(applicationId)}`, {
+      params: { expand },
+    });
 
     return { data };
   },

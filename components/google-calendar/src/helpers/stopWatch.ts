@@ -16,7 +16,7 @@ export const stopWatch = async ({
 
 export const stopWatchWithErrorHandling = async (
   params: StopWatchParams,
-  logger: ActionLogger,
+  logger: ActionLogger
 ): Promise<void> => {
   try {
     await stopWatch(params);
@@ -25,7 +25,7 @@ export const stopWatchWithErrorHandling = async (
     const error = err as { errors?: { reason?: string }[]; message?: string };
     logger.warn(
       "Failed to stop previous Calendar watch (continuing):",
-      error?.errors?.[0]?.reason || error?.message,
+      error?.errors?.[0]?.reason || error?.message
     );
   }
 };

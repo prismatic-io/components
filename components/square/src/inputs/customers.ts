@@ -114,8 +114,7 @@ const phoneNumber = input({
   required: false,
   placeholder: "Enter phone number",
   example: "+14155552671",
-  comments:
-    "The phone number of the customer in E.164 format (e.g., +14155552671).",
+  comments: "The phone number of the customer in E.164 format (e.g., +14155552671).",
   clean: toOptionalString,
 });
 

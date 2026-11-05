@@ -6,11 +6,7 @@ import type { CrmGetRecordsPerformInput } from "../types";
 import crmGetRecords from "./crmGetRecords";
 
 const conn = {
-  ...createConnection(
-    zohoTemplatedConnection,
-    {},
-    { access_token: "test-token" },
-  ),
+  ...createConnection(zohoTemplatedConnection, {}, { access_token: "test-token" }),
   context: { "accounts-server": "https://accounts.zoho.com" },
 };
 
@@ -39,10 +35,7 @@ describe("crmGetRecords", () => {
   });
 
   test("error path (4xx/5xx) propagates to handleErrors", async () => {
-    nock(CRM_BASE)
-      .get("/crm/v8/Leads")
-      .query(true)
-      .reply(500, { error: "server error" });
+    nock(CRM_BASE).get("/crm/v8/Leads").query(true).reply(500, { error: "server error" });
 
     await expect(invoke(crmGetRecords, params(baseInputs))).rejects.toThrow();
   });
@@ -56,10 +49,7 @@ describe("crmGetRecords", () => {
       .query(true)
       .reply(200, CRM_REPLY);
 
-    const { result } = await invoke(
-      crmGetRecords,
-      params({ ...baseInputs, ifModifiedSince }),
-    );
+    const { result } = await invoke(crmGetRecords, params({ ...baseInputs, ifModifiedSince }));
 
     expect(scope.isDone()).toBe(true);
     expect(result.data.data).toEqual(CRM_REPLY.data);
@@ -69,20 +59,14 @@ describe("crmGetRecords", () => {
     const ifModifiedSince = "2024-01-15T00:00:00+00:00";
     nock(CRM_BASE).get("/crm/v8/Leads").query(true).reply(304);
 
-    const { result } = await invoke(
-      crmGetRecords,
-      params({ ...baseInputs, ifModifiedSince }),
-    );
+    const { result } = await invoke(crmGetRecords, params({ ...baseInputs, ifModifiedSince }));
 
     expect(result).toEqual({ data: { data: [] } });
   });
 
   test("SC-38418: a conditional 401/429/5xx still throws (swallow is scoped to genuine 304)", async () => {
     const ifModifiedSince = "2024-01-15T00:00:00+00:00";
-    nock(CRM_BASE)
-      .get("/crm/v8/Leads")
-      .query(true)
-      .reply(429, { error: "rate limited" });
+    nock(CRM_BASE).get("/crm/v8/Leads").query(true).reply(429, { error: "rate limited" });
 
     await expect(
       invoke(crmGetRecords, params({ ...baseInputs, ifModifiedSince })),

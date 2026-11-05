@@ -13,8 +13,7 @@ import { customerEmail } from "./customers";
 export const successUrl = input({
   label: "Success URL",
   type: "string",
-  comments:
-    "The URL the customer will be directed to after the payment is successful.",
+  comments: "The URL the customer will be directed to after the payment is successful.",
   example: "https://example.com/success",
   placeholder: "Enter success URL",
   required: false,
@@ -24,8 +23,7 @@ export const successUrl = input({
 export const cancelUrl = input({
   label: "Cancel URL",
   type: "string",
-  comments:
-    "The URL the customer will be directed to if they decide to cancel payment.",
+  comments: "The URL the customer will be directed to if they decide to cancel payment.",
   example: "https://example.com/cancel",
   placeholder: "Enter cancel URL",
   required: false,

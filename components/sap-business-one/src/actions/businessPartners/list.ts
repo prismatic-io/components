@@ -7,8 +7,7 @@ import { listBusinessPartnersExample } from "../../examplePayloads/businessPartn
 export const listBusinessPartners = action({
   display: {
     label: "List Business Partners",
-    description:
-      "Retrieve a collection of Business Partners with all or some selected properties ",
+    description: "Retrieve a collection of Business Partners with all or some selected properties ",
   },
   inputs: {
     connection,
@@ -16,22 +15,9 @@ export const listBusinessPartners = action({
   },
   perform: async (
     context,
-    {
-      connection,
-      customQueryParams,
-      $filter,
-      $orderby,
-      $select,
-      $skip,
-      $top,
-      fetchAll,
-    },
+    { connection, customQueryParams, $filter, $orderby, $select, $skip, $top, fetchAll },
   ) => {
-    const client = await createClient(
-      connection,
-      context,
-      context.debug.enabled,
-    );
+    const client = await createClient(connection, context, context.debug.enabled);
 
     const data = await fetchAllData(
       client,

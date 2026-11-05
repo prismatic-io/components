@@ -31,24 +31,21 @@ export const updateSubscription = action({
       timeout,
     });
     return {
-      data: await client.subscriptions.update(
-        util.types.toString(subscriptionId),
-        {
-          ...fieldValues,
-          items: [
-            {
-              quantity,
-              price: subscriptionPriceId,
-            },
-          ],
-          default_payment_method: paymentId,
-          cancel_at: cancelAt,
-          metadata,
-          collection_method: collectionMethod as
-            | Stripe.SubscriptionUpdateParams.CollectionMethod
-            | undefined,
-        },
-      ),
+      data: await client.subscriptions.update(util.types.toString(subscriptionId), {
+        ...fieldValues,
+        items: [
+          {
+            quantity,
+            price: subscriptionPriceId,
+          },
+        ],
+        default_payment_method: paymentId,
+        cancel_at: cancelAt,
+        metadata,
+        collection_method: collectionMethod as
+          | Stripe.SubscriptionUpdateParams.CollectionMethod
+          | undefined,
+      }),
     };
   },
   examplePerform: async (
@@ -63,10 +60,7 @@ export const updateSubscription = action({
       metadata,
     },
   ): Promise<{ data: unknown }> => {
-    const subscription = updateSubscriptionExamplePayload.data as Record<
-      string,
-      unknown
-    >;
+    const subscription = updateSubscriptionExamplePayload.data as Record<string, unknown>;
     const items = subscription.items as Record<string, unknown>;
     const [item] = items.data as Record<string, unknown>[];
     const price = item.price as Record<string, unknown>;
@@ -89,8 +83,7 @@ export const updateSubscription = action({
             },
           ],
         },
-        default_payment_method:
-          paymentId ?? subscription.default_payment_method,
+        default_payment_method: paymentId ?? subscription.default_payment_method,
         cancel_at: cancelAt ?? subscription.cancel_at,
         collection_method: collectionMethod ?? subscription.collection_method,
         metadata,

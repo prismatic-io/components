@@ -11,15 +11,8 @@ import { accessKeySecretPair } from "./connections";
 import type { CreateDynamoClientParams } from "./interfaces/CreateDynamoClientParams";
 
 const validateConnection = (connection: Connection): void => {
-  if (
-    ![accessKeySecretPair.key, assumeRoleConnection.key].includes(
-      connection.key,
-    )
-  ) {
-    throw new ConnectionError(
-      connection,
-      `Unsupported connection method ${connection.key}.`,
-    );
+  if (![accessKeySecretPair.key, assumeRoleConnection.key].includes(connection.key)) {
+    throw new ConnectionError(connection, `Unsupported connection method ${connection.key}.`);
   }
 };
 

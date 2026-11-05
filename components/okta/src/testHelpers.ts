@@ -1,9 +1,6 @@
 import { vi } from "vitest";
 
-export const makeContext = (
-  initialState: Record<string, unknown> = {},
-  batching = false,
-) => {
+export const makeContext = (initialState: Record<string, unknown> = {}, batching = false) => {
   const store = { state: initialState as Record<string, unknown> };
   const context = {
     polling: {

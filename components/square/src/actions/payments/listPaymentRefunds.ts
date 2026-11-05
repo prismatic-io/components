@@ -7,8 +7,7 @@ import { fetchAllPages } from "../../util";
 export const listPaymentRefunds = action({
   display: {
     label: "List Payment Refunds",
-    description:
-      "Retrieves a list of refunds for the account making the request.",
+    description: "Retrieves a list of refunds for the account making the request.",
   },
   perform: async (
     context,
@@ -24,10 +23,7 @@ export const listPaymentRefunds = action({
       sourceType,
     },
   ) => {
-    const client = await createAuthorizedClient(
-      squareConnection,
-      context.debug.enabled,
-    );
+    const client = await createAuthorizedClient(squareConnection, context.debug.enabled);
 
     const data = await fetchAllPages(
       client,

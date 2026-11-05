@@ -12,18 +12,11 @@ export const deleteOrganization = action({
   },
   performSafety: "notAllowed",
   perform: async (context, { connection, id }) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      WebhookVersion.V2,
-    );
+    const client = createClient(connection, context.debug.enabled, WebhookVersion.V2);
     const { data } = await client.delete(`/organizations/${id}`);
     return { data };
   },
   inputs: deleteOrganizationInputs,
   examplePayload: deleteOrganizationExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: deleteOrganizationOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: deleteOrganizationOutputSchema }),
 });

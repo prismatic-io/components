@@ -93,8 +93,7 @@ export const fetchAllInput = input({
   required: false,
   default: "false",
   example: "false",
-  comments:
-    "When true, automatically fetches all pages of results using pagination.",
+  comments: "When true, automatically fetches all pages of results using pagination.",
   clean: util.types.toBool,
 });
 
@@ -114,8 +113,7 @@ export const folderIdInput = input({
   type: "string",
   required: false,
   dataSource: "selectMailFolder",
-  comments:
-    "The unique identifier of the mail folder. Omit to list all messages.",
+  comments: "The unique identifier of the mail folder. Omit to list all messages.",
   example: "AAMkAGI2TGuLAAA=",
   placeholder: "Enter Folder ID",
   clean: cleanStringInput,
@@ -145,8 +143,7 @@ export const allowDuplicatesInput = input({
   required: false,
   default: "false",
   example: "false",
-  comments:
-    "When true, allows more than one webhook subscription per endpoint.",
+  comments: "When true, allows more than one webhook subscription per endpoint.",
   clean: util.types.toBool,
 });
 
@@ -170,9 +167,7 @@ export const expirationDateTimeInput = input({
   placeholder: "Enter expiration date/time (ISO 8601 format)",
   clean: (rawValue: unknown) => {
     const defaultDate = new Date();
-    defaultDate.setTime(
-      defaultDate.getTime() + RENEWAL_EXPIRATION_MINUTES * 60 * 1000,
-    );
+    defaultDate.setTime(defaultDate.getTime() + RENEWAL_EXPIRATION_MINUTES * 60 * 1000);
 
     const value = rawValue || defaultDate;
     if (value instanceof Date) {

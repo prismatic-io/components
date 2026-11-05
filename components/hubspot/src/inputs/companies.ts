@@ -60,8 +60,7 @@ const domain = input({
   required: true,
   placeholder: "Enter domain",
   example: "www.example.com",
-  comments:
-    "The company's web domain, used for deduplication and enrichment (e.g. example.com).",
+  comments: "The company's web domain, used for deduplication and enrichment (e.g. example.com).",
   clean: util.types.toString,
 });
 
@@ -91,8 +90,7 @@ const industry = input({
   required: false,
   placeholder: "Enter industry",
   example: "Software",
-  comments:
-    "The company's industry classification, such as Software or Manufacturing.",
+  comments: "The company's industry classification, such as Software or Manufacturing.",
   clean: toOptionalString,
 });
 

@@ -5,8 +5,7 @@ export const connectionInput = input({
   label: "Connection",
   type: "connection",
   required: true,
-  comments:
-    "The connection to use for authenticating requests to Google Cloud Pub/Sub.",
+  comments: "The connection to use for authenticating requests to Google Cloud Pub/Sub.",
 });
 
 export const version = input({
@@ -14,8 +13,7 @@ export const version = input({
   type: "string",
   clean: util.types.toString,
   default: "v1",
-  comments:
-    "The API version to use for constructing the base URL for requests.",
+  comments: "The API version to use for constructing the base URL for requests.",
   required: false,
   example: "v1",
   placeholder: "Enter API version",
@@ -59,8 +57,7 @@ export const pageToken = input({
   label: "Page Token",
   type: "string",
   clean: util.types.toString,
-  comments:
-    "The page token returned by a previous list call to request the next page of results.",
+  comments: "The page token returned by a previous list call to request the next page of results.",
   required: false,
   example: "DBsPVgscdHRpdWhSGwQLQVd-",
   placeholder: "Enter page token",
@@ -153,8 +150,7 @@ export const kmsKeyName = input({
   comments:
     "The resource name of the Cloud KMS CryptoKey used to protect access to messages published on this topic. See [Customer-Managed Encryption Keys](https://cloud.google.com/pubsub/docs/cmek) for more information.",
   required: false,
-  example:
-    "projects/my-project/locations/us-east1/keyRings/my-keyring/cryptoKeys/my-key",
+  example: "projects/my-project/locations/us-east1/keyRings/my-keyring/cryptoKeys/my-key",
   placeholder: "Enter KMS key resource name",
 });
 
@@ -233,9 +229,7 @@ export const policy = input({
       bindings: [
         {
           role: "roles/pubsub.publisher",
-          members: [
-            "serviceAccount:my-service@my-project.iam.gserviceaccount.com",
-          ],
+          members: ["serviceAccount:my-service@my-project.iam.gserviceaccount.com"],
         },
       ],
       version: 1,
@@ -438,8 +432,7 @@ export const state = input({
   label: "State",
   type: "string",
   clean: util.types.toString,
-  comments:
-    "Output-only field indicating whether the subscription can receive messages.",
+  comments: "Output-only field indicating whether the subscription can receive messages.",
   model: [
     {
       label: "STATE_UNSPECIFIED",
@@ -493,8 +486,7 @@ export const oidcToken = input({
     "Configuration for generating an OIDC JWT token as an Authorization header for push requests. See [Authentication](https://cloud.google.com/pubsub/docs/push#setting_up_for_push_authentication) for more information.",
   example: JSON.stringify(
     {
-      serviceAccountEmail:
-        "my-service-account@my-project.iam.gserviceaccount.com",
+      serviceAccountEmail: "my-service-account@my-project.iam.gserviceaccount.com",
       audience: "https://example.com",
     },
     null,

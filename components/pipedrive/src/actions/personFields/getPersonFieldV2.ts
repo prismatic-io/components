@@ -12,19 +12,12 @@ export const getPersonFieldV2 = action({
   },
   performSafety: "safe",
   perform: async (context, { connection, fieldCode }) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      WebhookVersion.V2,
-    );
+    const client = createClient(connection, context.debug.enabled, WebhookVersion.V2);
     const { data } = await client.get(`personFields/${fieldCode}`);
     return { data };
   },
   inputs: getPersonFieldV2Inputs,
   examplePayload: getPersonFieldV2ExamplePayload,
   examplePerform: async () => getPersonFieldV2ExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getPersonFieldV2OutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getPersonFieldV2OutputSchema }),
 });

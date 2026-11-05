@@ -9,8 +9,7 @@ import { hubspotPaths } from "../../constants";
 export const getBatchContacts = action({
   display: {
     label: "Get Batch Contacts",
-    description:
-      "Read a batch of contacts by internal ID, or unique property values.",
+    description: "Read a batch of contacts by internal ID, or unique property values.",
   },
   performSafety: "safe",
   perform: async (
@@ -42,13 +41,9 @@ export const getBatchContacts = action({
       inputs: contactIds ? getArrayOfObjectsWithKey(contactIds, "id") : [],
       properties: properties || [],
     };
-    const { data } = await client.post(
-      hubspotPaths.objects("contacts", "/batch/read"),
-      payload,
-      {
-        params: { archived },
-      },
-    );
+    const { data } = await client.post(hubspotPaths.objects("contacts", "/batch/read"), payload, {
+      params: { archived },
+    });
 
     return {
       data,
@@ -56,8 +51,5 @@ export const getBatchContacts = action({
   },
   inputs: getBatchContactsInputs,
   examplePayload: getBatchContactsExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: batchResponseSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: batchResponseSchema }),
 });

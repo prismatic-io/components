@@ -12,13 +12,7 @@ export const getDealFiles = action({
   performSafety: "notAllowed",
   perform: async (
     context,
-    {
-      connection,
-      id,
-      pagination: { start, limit, cursor } = {},
-      includeDeletedFiles,
-      sort,
-    },
+    { connection, id, pagination: { start, limit, cursor } = {}, includeDeletedFiles, sort },
   ) => {
     const client = createClient(connection, context.debug.enabled);
     const { data } = await client.get(`/deals/${id}/files`, {
@@ -34,8 +28,5 @@ export const getDealFiles = action({
   },
   inputs: getDealFilesInputs,
   examplePayload: getDealFilesExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getDealFilesOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getDealFilesOutputSchema }),
 });

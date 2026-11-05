@@ -71,7 +71,7 @@ export const attendees = input({
       { email: "jane.smith@example.com", optional: true },
     ],
     null,
-    2,
+    2
   ),
   language: "json",
   required: false,

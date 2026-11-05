@@ -1,8 +1,4 @@
-import {
-  commandResultMessageSchema,
-  folderListingItemSchema,
-  jobStateSchema,
-} from "./shared";
+import { commandResultMessageSchema, folderListingItemSchema, jobStateSchema } from "./shared";
 
 export const listFolderContentsOutputSchema = {
   type: "object" as const,
@@ -17,10 +13,7 @@ export const listAssetsInFolderTreeOutputSchema = {
   type: "array" as const,
   items: {
     ...folderListingItemSchema,
-    properties: {
-      ...folderListingItemSchema.properties,
-      folderPath: { type: "string" },
-    },
+    properties: { ...folderListingItemSchema.properties, folderPath: { type: "string" } },
     required: ["type", "folderPath"],
   },
 };

@@ -8,8 +8,7 @@ beforeAll(() => nock.disableNetConnect());
 afterAll(() => nock.enableNetConnect());
 afterEach(() => nock.cleanAll());
 
-const run = () =>
-  invoke(getComments, { jiraConnection: basicConnection(), issueId: "10201" });
+const run = () => invoke(getComments, { jiraConnection: basicConnection(), issueId: "10201" });
 
 describe("getComments", () => {
   test("fetches the issue's comments", async () => {

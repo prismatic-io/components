@@ -23,8 +23,7 @@ const cursor = input({
   placeholder: "Enter cursor",
   type: "string",
   required: false,
-  comments:
-    "The cursor returned by a previous page, used to fetch the next page.",
+  comments: "The cursor returned by a previous page, used to fetch the next page.",
   example: "eyJsYXN0SWQiOiIxMjM0NSJ9",
   clean: cleanString,
 });

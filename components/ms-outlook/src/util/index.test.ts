@@ -10,10 +10,7 @@ describe("readPollingWindow", () => {
   const NOW = new Date("2026-06-10T00:00:00.000Z");
   const HORIZON = "2026-06-09T23:59:00.000Z";
   const connection = { key: "oauth2", fields: {} } as never;
-  const position = {
-    watermark: "2026-06-01T10:00:00.000Z",
-    boundaryIds: ["a"],
-  };
+  const position = { watermark: "2026-06-01T10:00:00.000Z", boundaryIds: ["a"] };
   const request = {
     position,
     folderId: undefined,
@@ -32,10 +29,7 @@ describe("readPollingWindow", () => {
   });
 
   test("makes no request when fetching is skipped and moves the position to the horizon", async () => {
-    const window = await readPollingWindow(connection, {
-      ...request,
-      skipFetch: true,
-    });
+    const window = await readPollingWindow(connection, { ...request, skipFetch: true });
 
     expect(window).toEqual({
       messages: [],
@@ -85,15 +79,10 @@ describe("readPollingWindow", () => {
     const row = (id: string, hour: number) =>
       ({ id, lastModifiedDateTime: `2026-06-0${hour}T00:00:00Z` }) as Message;
     get
-      .mockResolvedValueOnce({
-        data: { value: [row("b", 2)], "@odata.nextLink": "next-1" },
-      })
+      .mockResolvedValueOnce({ data: { value: [row("b", 2)], "@odata.nextLink": "next-1" } })
       .mockResolvedValueOnce({ data: { value: [row("c", 3)] } });
 
-    const window = await readPollingWindow(connection, {
-      ...request,
-      batching: true,
-    });
+    const window = await readPollingWindow(connection, { ...request, batching: true });
 
     expect(get).toHaveBeenCalledTimes(1);
     expect(window.drained).toBe(false);

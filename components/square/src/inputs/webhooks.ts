@@ -1,19 +1,13 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { toOptionalNumber, toOptionalString } from "../util";
-import {
-  fetchAll,
-  idempotencyKey,
-  squareConnection,
-  validateJSON,
-} from "./common";
+import { fetchAll, idempotencyKey, squareConnection, validateJSON } from "./common";
 
 const cursorSubscriptions = input({
   type: "string",
   label: "Cursor",
   required: false,
   placeholder: "Enter cursor from previous response",
-  comments:
-    "The pagination cursor returned by a previous call to this endpoint.",
+  comments: "The pagination cursor returned by a previous call to this endpoint.",
   clean: toOptionalString,
 });
 

@@ -25,9 +25,7 @@ afterEach(() => nock.cleanAll());
 
 describe("createProduct", () => {
   it("creates the product and returns it", async () => {
-    const scope = nock(BASE)
-      .post("/v1/products")
-      .reply(200, createProductExamplePayload.data);
+    const scope = nock(BASE).post("/v1/products").reply(200, createProductExamplePayload.data);
 
     const { result } = await invoke(
       createProduct,
@@ -50,10 +48,7 @@ describe("createProduct", () => {
     nock(BASE)
       .post("/v1/products")
       .reply(400, {
-        error: {
-          type: "invalid_request_error",
-          message: "Missing required param: name.",
-        },
+        error: { type: "invalid_request_error", message: "Missing required param: name." },
       });
 
     await expect(
@@ -89,15 +84,10 @@ describe("getProduct", () => {
   it("surfaces a Stripe error response", async () => {
     nock(BASE)
       .get("/v1/products/prod_missing")
-      .reply(404, {
-        error: { type: "invalid_request_error", message: "No such product" },
-      });
+      .reply(404, { error: { type: "invalid_request_error", message: "No such product" } });
 
     await expect(
-      invoke(
-        getProduct,
-        params({ productId: "prod_missing", stripeConnection: conn }),
-      ),
+      invoke(getProduct, params({ productId: "prod_missing", stripeConnection: conn })),
     ).rejects.toThrow("No such product");
   });
 });
@@ -122,9 +112,7 @@ describe("listProducts", () => {
     nock(BASE)
       .get("/v1/products")
       .query(true)
-      .reply(400, {
-        error: { type: "invalid_request_error", message: "Invalid limit" },
-      });
+      .reply(400, { error: { type: "invalid_request_error", message: "Invalid limit" } });
 
     await expect(
       invoke(listProducts, params({ pagination: {}, stripeConnection: conn })),
@@ -157,9 +145,7 @@ describe("updateProduct", () => {
   it("surfaces a Stripe error response", async () => {
     nock(BASE)
       .post("/v1/products/prod_missing")
-      .reply(404, {
-        error: { type: "invalid_request_error", message: "No such product" },
-      });
+      .reply(404, { error: { type: "invalid_request_error", message: "No such product" } });
 
     await expect(
       invoke(
@@ -196,16 +182,12 @@ describe("deleteProduct", () => {
       .reply(400, {
         error: {
           type: "invalid_request_error",
-          message:
-            "You cannot delete a product that has prices associated with it.",
+          message: "You cannot delete a product that has prices associated with it.",
         },
       });
 
     await expect(
-      invoke(
-        deleteProduct,
-        params({ productId: "prod_missing", stripeConnection: conn }),
-      ),
+      invoke(deleteProduct, params({ productId: "prod_missing", stripeConnection: conn })),
     ).rejects.toThrow("cannot delete a product");
   });
 });

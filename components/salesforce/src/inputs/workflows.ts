@@ -6,12 +6,7 @@ import {
   fieldsInputClean,
   processFilterCriteria,
 } from "../util";
-import {
-  connectionInput,
-  description,
-  version,
-  workflowRecordType,
-} from "./common";
+import { connectionInput, description, version, workflowRecordType } from "./common";
 import { fullNameInput } from "./metadata";
 
 const ruleNameInput = input({
@@ -46,8 +41,7 @@ const activeInput = input({
   type: "boolean",
   required: false,
   default: "true",
-  comments:
-    "When true, the workflow rule is active and will fire when its criteria are met.",
+  comments: "When true, the workflow rule is active and will fire when its criteria are met.",
   clean: util.types.toBool,
 });
 
@@ -104,8 +98,7 @@ export const nameInput = input({
   label: "Name",
   type: "string",
   required: true,
-  comments:
-    "The name of the Salesforce component such as an outbound message or workflow rule.",
+  comments: "The name of the Salesforce component such as an outbound message or workflow rule.",
   example: "MyComponent",
   placeholder: "Enter name",
   clean: util.types.toString,
@@ -116,8 +109,7 @@ const outboundMessageNameInput = input({
   type: "string",
   required: true,
   placeholder: "Enter outbound message name",
-  comments:
-    "The name of the Salesforce Outbound Message to create or reference.",
+  comments: "The name of the Salesforce Outbound Message to create or reference.",
   example: "MyOutboundMessage",
   clean: util.types.toString,
 });

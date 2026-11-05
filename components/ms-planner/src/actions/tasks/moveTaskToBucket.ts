@@ -30,10 +30,7 @@ export const moveTaskToBucket = action({
     );
     return { data };
   },
-  examplePerform: async (
-    _context,
-    { bucketId },
-  ): Promise<{ data: unknown }> => ({
+  examplePerform: async (_context, { bucketId }): Promise<{ data: unknown }> => ({
     data: { ...moveTaskToBucketExamplePayload.data, bucketId },
   }),
   examplePayload: moveTaskToBucketExamplePayload,

@@ -8,25 +8,17 @@ import { fetchWithPagination, getTenantIdentifier } from "../../util";
 export const getCompletedNewHires = action({
   display: {
     label: "Get Completed New Hires",
-    description:
-      "Retrieve a list of new hires with completed onboarding status.",
+    description: "Retrieve a list of new hires with completed onboarding status.",
   },
   inputs: getCompletedNewHiresInputs,
-  perform: async (
-    context,
-    { connection, pagination, fetchAll, filterParameters },
-  ) => {
+  perform: async (context, { connection, pagination, fetchAll, filterParameters }) => {
     const client = await createClient(connection, context.debug.enabled);
     const tenantIdentifier = getTenantIdentifier(connection);
 
     const { data } = await fetchWithPagination<CompletedNewHire>(
       client,
       `/talent/onboarding/v2/tenants/${tenantIdentifier}/new-hires/completed`,
-      {
-        ...filterParameters,
-        page: pagination.page,
-        per_page: pagination.perPage,
-      },
+      { ...filterParameters, page: pagination.page, per_page: pagination.perPage },
       fetchAll,
     );
 

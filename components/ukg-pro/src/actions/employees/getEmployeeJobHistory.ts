@@ -11,10 +11,7 @@ export const getEmployeeJobHistory = action({
     description: "Retrieve the complete job history for a specific employee.",
   },
   inputs: getEmployeeJobHistoryInputs,
-  perform: async (
-    context,
-    { connection, employeeId, pagination, fetchAll },
-  ) => {
+  perform: async (context, { connection, employeeId, pagination, fetchAll }) => {
     const client = createBasicAuthClient(connection, context.debug.enabled);
 
     const { data } = await fetchWithPagination<EmployeeJobHistoryDetails>(

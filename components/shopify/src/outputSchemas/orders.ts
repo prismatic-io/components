@@ -1,9 +1,4 @@
-import {
-  countSchema,
-  moneyV2Schema,
-  pageInfoSchema,
-  userErrorsArraySchema,
-} from "./shared";
+import { countSchema, moneyV2Schema, pageInfoSchema, userErrorsArraySchema } from "./shared";
 
 const moneyBagSchema = {
   type: "object" as const,
@@ -25,10 +20,7 @@ const gqlOrderSchema = {
   properties: {
     id: { type: "string" as const },
     name: { type: "string" as const },
-    app: {
-      type: ["object", "null"],
-      properties: { id: { type: "string" as const } },
-    },
+    app: { type: ["object", "null"], properties: { id: { type: "string" as const } } },
     clientIp: { type: ["string", "null"] },
     customerAcceptsMarketing: { type: "boolean" as const },
     cancelReason: { type: ["string", "null"] },
@@ -57,10 +49,7 @@ const gqlOrderSchema = {
     note: { type: ["string", "null"] },
     originalTotalAdditionalFeesSet: { type: ["object", "null"] },
     originalTotalDutiesSet: { type: ["object", "null"] },
-    paymentGatewayNames: {
-      type: "array" as const,
-      items: { type: "string" as const },
-    },
+    paymentGatewayNames: { type: "array" as const, items: { type: "string" as const } },
     phone: { type: ["string", "null"] },
     poNumber: { type: ["string", "null"] },
     presentmentCurrencyCode: { type: "string" as const },

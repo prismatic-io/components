@@ -11,16 +11,10 @@ export const updateIssue = action({
   },
   performSafety: "notAllowed",
   perform: async (context, params) => {
-    const client = await createV3Client(
-      params.jiraConnection,
-      context.debug.enabled,
-    );
+    const client = await createV3Client(params.jiraConnection, context.debug.enabled);
 
     const issuetype = getIssueType(params.issueType, params.issueTypeId, false);
-    const description = validateDescription(
-      params.description,
-      params.ADFdescription,
-    );
+    const description = validateDescription(params.description, params.ADFdescription);
 
     const config = {
       fields: {

@@ -3,10 +3,7 @@ import { createClient, type HttpClient } from "@prismatic-io/spectral/http";
 import constants from "./constants";
 import { getBearerToken, validateConnection } from "./util";
 
-export const createClickUpClient = (
-  clickUpConnection: Connection,
-  debug = false,
-): HttpClient => {
+export const createClickUpClient = (clickUpConnection: Connection, debug = false): HttpClient => {
   validateConnection(clickUpConnection);
 
   return createClient({

@@ -19,10 +19,7 @@ export const listFulfillments = action({
     return { data };
   },
   inputs: listFulfillmentsInputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: listFulfillmentsOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: listFulfillmentsOutputSchema }),
   examplePerform: async () => listFulfillmentsExamplePayload.restMap,
   examplePayload: listFulfillmentsExamplePayload.restMap,
 });

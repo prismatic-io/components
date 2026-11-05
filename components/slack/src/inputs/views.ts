@@ -95,7 +95,7 @@ export const view = input({
       callback_id: "view_identifier_12",
     },
     null,
-    2,
+    2
   ),
   comments:
     "A [view payload](https://docs.slack.dev/reference/views). This must be a JSON-encoded string.",

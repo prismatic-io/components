@@ -17,8 +17,5 @@ export const deleteProductField = action({
   },
   inputs: deleteProductFieldInputs,
   examplePayload: deleteProductFieldExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: deleteProductFieldOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: deleteProductFieldOutputSchema }),
 });

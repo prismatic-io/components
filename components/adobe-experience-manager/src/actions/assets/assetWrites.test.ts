@@ -38,9 +38,7 @@ afterAll(() => nock.enableNetConnect());
 
 describe("buildMetadataPatch", () => {
   test("adds values and removes fields at the metadata root, as the live API expects", () => {
-    expect(
-      buildMetadataPatch({ "dc:title": "City" }, ["dc:description"]),
-    ).toEqual([
+    expect(buildMetadataPatch({ "dc:title": "City" }, ["dc:description"])).toEqual([
       { op: "add", path: "/dc:title", value: "City" },
       { op: "remove", path: "/dc:description" },
     ]);
@@ -113,28 +111,22 @@ describe("getImportJobStatus", () => {
     nock(BASE)
       .get(`/adobe/assets/import/jobs/${id}/status`)
       .reply(200, getImportJobStatusExamplePayload.data);
-    const { result } = await invoke(getImportJobStatus, {
-      connection,
-      jobId: id,
-    });
+    const { result } = await invoke(getImportJobStatus, { connection, jobId: id });
     expect(result).toEqual(getImportJobStatusExamplePayload);
   });
 
   test("surfaces a 404 for an unknown job", async () => {
     nock(BASE).get("/adobe/assets/import/jobs/missing/status").reply(404, {});
-    await expect(
-      invoke(getImportJobStatus, { connection, jobId: "missing" }),
-    ).rejects.toThrow("404");
+    await expect(invoke(getImportJobStatus, { connection, jobId: "missing" })).rejects.toThrow(
+      "404",
+    );
   });
 });
 
 describe("updateAssetMetadata", () => {
   test("patches unconditionally with If-Match: *, since AEM serves inconsistent ETags", async () => {
     nock(BASE, {
-      reqheaders: {
-        "if-match": "*",
-        "content-type": "application/json-patch+json",
-      },
+      reqheaders: { "if-match": "*", "content-type": "application/json-patch+json" },
     })
       .patch(metadataPath, [{ op: "add", path: "/dc:title", value: "City" }])
       .reply(200, getAssetMetadataExamplePayload.data);
@@ -161,12 +153,7 @@ describe("updateAssetMetadata", () => {
 
   test("fails without a request when there is nothing to change", async () => {
     await expect(
-      invoke(updateAssetMetadata, {
-        connection,
-        assetId,
-        metadataValues: {},
-        removeFields: [],
-      }),
+      invoke(updateAssetMetadata, { connection, assetId, metadataValues: {}, removeFields: [] }),
     ).rejects.toThrow(
       "Update Asset Metadata needs at least one metadata value or field to remove.",
     );
@@ -180,11 +167,7 @@ describe("deleteAsset and getAssetJobStatus", () => {
       .delete(`/adobe/assets/${encodeURIComponent(deletedId)}`)
       .query({ force: "false" })
       .reply(204);
-    const { result } = await invoke(deleteAsset, {
-      connection,
-      assetId: deletedId,
-      force: false,
-    });
+    const { result } = await invoke(deleteAsset, { connection, assetId: deletedId, force: false });
     expect(result).toEqual(deleteAssetExamplePayload);
   });
 
@@ -193,31 +176,22 @@ describe("deleteAsset and getAssetJobStatus", () => {
       .delete(`/adobe/assets/${encodeURIComponent(assetId)}`)
       .query({ force: "true" })
       .reply(202, assetJobExamplePayload.data);
-    const { result } = await invoke(deleteAsset, {
-      connection,
-      assetId,
-      force: true,
-    });
+    const { result } = await invoke(deleteAsset, { connection, assetId, force: true });
     expect(result).toEqual(assetJobExamplePayload);
   });
 
   test("returns the asset job state", async () => {
     const id = assetJobExamplePayload.data.jobId;
-    nock(BASE)
-      .get(`/adobe/assets/jobs/${id}/status`)
-      .reply(200, assetJobExamplePayload.data);
-    const { result } = await invoke(getAssetJobStatus, {
-      connection,
-      jobId: id,
-    });
+    nock(BASE).get(`/adobe/assets/jobs/${id}/status`).reply(200, assetJobExamplePayload.data);
+    const { result } = await invoke(getAssetJobStatus, { connection, jobId: id });
     expect(result).toEqual(assetJobExamplePayload);
   });
 
   test("surfaces a 404 for an unknown asset job", async () => {
     nock(BASE).get("/adobe/assets/jobs/missing/status").reply(404, {});
-    await expect(
-      invoke(getAssetJobStatus, { connection, jobId: "missing" }),
-    ).rejects.toThrow("404");
+    await expect(invoke(getAssetJobStatus, { connection, jobId: "missing" })).rejects.toThrow(
+      "404",
+    );
   });
 
   test("surfaces a 404 on delete", async () => {

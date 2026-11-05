@@ -9,10 +9,7 @@ afterAll(() => nock.enableNetConnect());
 afterEach(() => nock.cleanAll());
 
 const search = () =>
-  invoke(searchProjects, {
-    jiraConnection: basicConnection(),
-    searchString: "Example",
-  });
+  invoke(searchProjects, { jiraConnection: basicConnection(), searchString: "Example" });
 
 describe("searchProjects", () => {
   test("searches projects by the text and returns only the values array", async () => {

@@ -11,20 +11,11 @@ export const listWebhooksGql = action({
     description: "Lists all webhooks or webhooks for the current instance.",
   },
   inputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: listWebhooksGqlOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: listWebhooksGqlOutputSchema }),
   performSafety: "notAllowed",
   perform: async (
     context,
-    {
-      shopifyConnection,
-      showOnlyInstanceWebhooks,
-      getAlldata,
-      callbackUrl,
-      pagination = {},
-    },
+    { shopifyConnection, showOnlyInstanceWebhooks, getAlldata, callbackUrl, pagination = {} },
   ) => {
     const client = getShopifyGraphQlClient(
       shopifyConnection,

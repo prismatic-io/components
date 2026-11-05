@@ -27,9 +27,7 @@ export const selectFolder = dataSource({
         fetchAll: true,
       });
       files.sort((a, b) => (a.name < b.name ? -1 : 1));
-      folders.push(
-        ...files.map((file) => ({ key: file.id, label: file.name })),
-      );
+      folders.push(...files.map((file) => ({ key: file.id, label: file.name })));
     } else {
       const { drives } = await fetchDrives({
         drive: driveClient,

@@ -8,14 +8,8 @@ export const updateInvoice = action({
     label: "Update Invoice",
     description: "Updates an invoice.",
   },
-  perform: async (
-    context,
-    { squareConnection, invoiceId, updateInvoiceInput },
-  ) => {
-    const client = await createAuthorizedClient(
-      squareConnection,
-      context.debug.enabled,
-    );
+  perform: async (context, { squareConnection, invoiceId, updateInvoiceInput }) => {
+    const client = await createAuthorizedClient(squareConnection, context.debug.enabled);
 
     const updateBody = updateInvoiceInput;
 

@@ -58,11 +58,7 @@ export const getWorkspaceSeatsOutputSchema = {
         total_member_seats: { type: "integer" },
         empty_member_seats: { type: "integer" },
       },
-      required: [
-        "filled_members_seats",
-        "total_member_seats",
-        "empty_member_seats",
-      ],
+      required: ["filled_members_seats", "total_member_seats", "empty_member_seats"],
     },
     guests: {
       type: "object" as const,
@@ -71,11 +67,7 @@ export const getWorkspaceSeatsOutputSchema = {
         total_guest_seats: { type: ["integer", "string"] },
         empty_guest_seats: { type: ["integer", "string"] },
       },
-      required: [
-        "filled_guest_seats",
-        "total_guest_seats",
-        "empty_guest_seats",
-      ],
+      required: ["filled_guest_seats", "total_guest_seats", "empty_guest_seats"],
     },
   },
   required: ["members", "guests"],

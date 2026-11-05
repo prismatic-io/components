@@ -72,7 +72,7 @@ export const rows = input({
       },
     ],
     null,
-    2,
+    2
   ),
   clean: util.types.toObject,
 });
@@ -113,7 +113,7 @@ export const columns = input({
       },
     ],
     null,
-    2,
+    2
   ),
   clean: util.types.toObject,
 });
@@ -122,8 +122,7 @@ export const top = input({
   label: "Top",
   type: "string",
   required: false,
-  comments:
-    "The maximum number of results to return. Must be a value between 1 and 1000.",
+  comments: "The maximum number of results to return. Must be a value between 1 and 1000.",
   example: "100",
   placeholder: "Enter maximum number of results",
   clean: (value) => util.types.toNumber(value) || undefined,
@@ -133,8 +132,7 @@ export const skipToken = input({
   label: "Page Offset",
   type: "string",
   required: false,
-  comments:
-    "The number of entries to skip for pagination. Used to retrieve results beyond the first page.",
+  comments: "The number of entries to skip for pagination. Used to retrieve results beyond the first page.",
   example: "100",
   placeholder: "Enter page offset",
   clean: (value) => util.types.toNumber(value) || undefined,

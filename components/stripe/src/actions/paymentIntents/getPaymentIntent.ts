@@ -8,14 +8,10 @@ import type Stripe from "stripe";
 export const getPaymentIntent = action({
   display: {
     label: "Get Payment Intent",
-    description:
-      "Retrieve the details of a payment intent that has previously been created.",
+    description: "Retrieve the details of a payment intent that has previously been created.",
   },
   performSafety: "safe",
-  perform: async (
-    context,
-    { timeout, stripeConnection, paymentIntent, clientSecret },
-  ) => {
+  perform: async (context, { timeout, stripeConnection, paymentIntent, clientSecret }) => {
     const client = createStripeClient({
       stripeConnection: stripeConnection,
       timeout,

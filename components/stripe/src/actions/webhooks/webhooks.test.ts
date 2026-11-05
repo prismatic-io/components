@@ -46,20 +46,13 @@ describe("createWebhook", () => {
     nock(BASE)
       .post("/v1/webhook_endpoints")
       .reply(400, {
-        error: {
-          type: "invalid_request_error",
-          message: "Invalid URL: must be an absolute URL",
-        },
+        error: { type: "invalid_request_error", message: "Invalid URL: must be an absolute URL" },
       });
 
     await expect(
       invoke(
         createWebhook,
-        params({
-          webhookUrl: "not-a-url",
-          webhookEvents: ["*"],
-          stripeConnection: conn,
-        }),
+        params({ webhookUrl: "not-a-url", webhookEvents: ["*"], stripeConnection: conn }),
       ),
     ).rejects.toThrow("Invalid URL");
   });
@@ -84,17 +77,11 @@ describe("getWebhook", () => {
     nock(BASE)
       .get("/v1/webhook_endpoints/we_missing")
       .reply(404, {
-        error: {
-          type: "invalid_request_error",
-          message: "No such webhook endpoint",
-        },
+        error: { type: "invalid_request_error", message: "No such webhook endpoint" },
       });
 
     await expect(
-      invoke(
-        getWebhook,
-        params({ webhookId: "we_missing", stripeConnection: conn }),
-      ),
+      invoke(getWebhook, params({ webhookId: "we_missing", stripeConnection: conn })),
     ).rejects.toThrow("No such webhook endpoint");
   });
 });
@@ -108,11 +95,7 @@ describe("listWebhooks", () => {
 
     const { result } = await invoke(
       listWebhooks,
-      params({
-        fetchAll: false,
-        pagination: { limit: 10 },
-        stripeConnection: conn,
-      }),
+      params({ fetchAll: false, pagination: { limit: 10 }, stripeConnection: conn }),
     );
 
     expect(result.data).toEqual(listWebhooksExamplePayload.data);
@@ -123,15 +106,10 @@ describe("listWebhooks", () => {
     nock(BASE)
       .get("/v1/webhook_endpoints")
       .query(true)
-      .reply(400, {
-        error: { type: "invalid_request_error", message: "Invalid limit" },
-      });
+      .reply(400, { error: { type: "invalid_request_error", message: "Invalid limit" } });
 
     await expect(
-      invoke(
-        listWebhooks,
-        params({ fetchAll: false, pagination: {}, stripeConnection: conn }),
-      ),
+      invoke(listWebhooks, params({ fetchAll: false, pagination: {}, stripeConnection: conn })),
     ).rejects.toThrow("Invalid limit");
   });
 });
@@ -160,20 +138,13 @@ describe("updateWebhook", () => {
     nock(BASE)
       .post("/v1/webhook_endpoints/we_missing")
       .reply(404, {
-        error: {
-          type: "invalid_request_error",
-          message: "No such webhook endpoint",
-        },
+        error: { type: "invalid_request_error", message: "No such webhook endpoint" },
       });
 
     await expect(
       invoke(
         updateWebhook,
-        params({
-          webhookId: "we_missing",
-          webhookUrl: WEBHOOK_URL,
-          stripeConnection: conn,
-        }),
+        params({ webhookId: "we_missing", webhookUrl: WEBHOOK_URL, stripeConnection: conn }),
       ),
     ).rejects.toThrow("No such webhook endpoint");
   });
@@ -198,17 +169,11 @@ describe("deleteWebhook", () => {
     nock(BASE)
       .delete("/v1/webhook_endpoints/we_missing")
       .reply(404, {
-        error: {
-          type: "invalid_request_error",
-          message: "No such webhook endpoint",
-        },
+        error: { type: "invalid_request_error", message: "No such webhook endpoint" },
       });
 
     await expect(
-      invoke(
-        deleteWebhook,
-        params({ webhookId: "we_missing", stripeConnection: conn }),
-      ),
+      invoke(deleteWebhook, params({ webhookId: "we_missing", stripeConnection: conn })),
     ).rejects.toThrow("No such webhook endpoint");
   });
 });
@@ -233,13 +198,9 @@ describe("deleteWebhooks", () => {
       .delete(`/v1/webhook_endpoints/${WEBHOOK_ID}`)
       .reply(200, deleteWebhookExamplePayload.data);
 
-    const { result } = await invoke(
-      deleteWebhooks,
-      params({ stripeConnection: conn }),
-      {
-        webhookUrls: { "Flow 1": WEBHOOK_URL },
-      },
-    );
+    const { result } = await invoke(deleteWebhooks, params({ stripeConnection: conn }), {
+      webhookUrls: { "Flow 1": WEBHOOK_URL },
+    });
 
     expect(result.data).toEqual([deleteWebhookExamplePayload.data]);
     expect(list.isDone()).toBe(true);
@@ -251,10 +212,7 @@ describe("deleteWebhooks", () => {
       .get("/v1/webhook_endpoints")
       .query(true)
       .reply(401, {
-        error: {
-          type: "invalid_request_error",
-          message: "Invalid API Key provided",
-        },
+        error: { type: "invalid_request_error", message: "Invalid API Key provided" },
       });
 
     await expect(

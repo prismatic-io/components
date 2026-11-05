@@ -23,8 +23,7 @@ export const warehouseName = input({
 export const warehouseLocationId = input({
   label: "Warehouse Location ID",
   type: "string",
-  comments:
-    "The unique identifier for the warehouse location. This is an integer value.",
+  comments: "The unique identifier for the warehouse location. This is an integer value.",
   example: "1",
   placeholder: "Enter warehouse location ID",
   required: true,

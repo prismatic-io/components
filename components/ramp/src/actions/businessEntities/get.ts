@@ -22,9 +22,7 @@ export const getBusinessEntity = action({
   perform: async (context, { connection, businessEntityId }) => {
     const client = createClient(connection, context.debug.enabled);
 
-    const { data } = await client.get<BusinessEntity>(
-      `/entities/${businessEntityId}`,
-    );
+    const { data } = await client.get<BusinessEntity>(`/entities/${businessEntityId}`);
     return {
       data,
     };

@@ -67,9 +67,7 @@ const getConversationMembers = action({
       params.apiVersion,
       context.debug.enabled,
     );
-    const { data } = await client.get(
-      `/conversations/${params.conversationId}/members`,
-    );
+    const { data } = await client.get(`/conversations/${params.conversationId}/members`);
     return { data };
   },
   inputs: {

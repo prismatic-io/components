@@ -1,8 +1,4 @@
-import {
-  registeredWebhookSchema,
-  webhookSchema,
-  webhooksExpirationDateSchema,
-} from "./common";
+import { registeredWebhookSchema, webhookSchema, webhooksExpirationDateSchema } from "./common";
 
 export const refreshWebhookOutputSchema = webhooksExpirationDateSchema;
 

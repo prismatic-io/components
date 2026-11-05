@@ -1,7 +1,6 @@
 export const listItemsExamplePayload = {
   data: {
-    "@odata.context":
-      "https://graph.microsoft.com/v1.0/$metadata#Collection(driveItem)",
+    "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#Collection(driveItem)",
     value: [
       {
         "@microsoft.graph.downloadUrl":
@@ -40,8 +39,7 @@ export const listItemsExamplePayload = {
           hashes: {
             quickXorHash: "ExampleHashBase64==",
           },
-          mimeType:
-            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+          mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
         },
         fileSystemInfo: {
           createdDateTime: "2025-06-12T23:24:20Z",

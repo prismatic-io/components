@@ -14,12 +14,7 @@ export const selectTransaction = dataSource({
   },
   perform: async (_context, { connection }) => {
     const client = createClient(connection);
-    const { data } = await fetchAllData<Transaction>(
-      client,
-      "transactions",
-      {},
-      true,
-    );
+    const { data } = await fetchAllData<Transaction>(client, "transactions", {}, true);
 
     const objects = data
       .sort((a, b) => (a.id < b.id ? -1 : 1))
@@ -32,8 +27,6 @@ export const selectTransaction = dataSource({
   },
   dataSourceType: "picklist",
   examplePayload: {
-    result: [
-      { label: "Amazon - $49.99", key: "96bb7007-eec5-430f-8d09-e033cbc000c2" },
-    ],
+    result: [{ label: "Amazon - $49.99", key: "96bb7007-eec5-430f-8d09-e033cbc000c2" }],
   },
 });

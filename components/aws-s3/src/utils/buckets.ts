@@ -1,8 +1,4 @@
-import {
-  type Bucket,
-  ListBucketsCommand,
-  type S3Client,
-} from "@aws-sdk/client-s3";
+import { type Bucket, ListBucketsCommand, type S3Client } from "@aws-sdk/client-s3";
 import { LIST_BUCKETS_MAX_BUCKETS } from "../constants";
 
 export const listAllBuckets = async (s3: S3Client): Promise<Bucket[]> => {

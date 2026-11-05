@@ -29,8 +29,7 @@ export const page = input({
   label: "Page",
   type: "string",
   required: false,
-  comments:
-    "Represents the page of results you'd like to retrieve. Default is 1.",
+  comments: "Represents the page of results you'd like to retrieve. Default is 1.",
 });
 export const active = input({
   label: "Active",

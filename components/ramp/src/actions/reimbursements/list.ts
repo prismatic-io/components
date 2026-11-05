@@ -19,10 +19,7 @@ export const listReimbursements = action({
     schema: listReimbursementsOutputSchema,
   }),
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { connection, customQueryParams, fetchAll, pagination },
-  ) => {
+  perform: async (context, { connection, customQueryParams, fetchAll, pagination }) => {
     const client = createClient(connection, context.debug.enabled);
 
     const data = await fetchAllData<Reimbursement>(
@@ -39,10 +36,7 @@ export const listReimbursements = action({
       data,
     };
   },
-  examplePerform: async (
-    _context,
-    { fetchAll },
-  ): Promise<{ data: unknown }> => ({
+  examplePerform: async (_context, { fetchAll }): Promise<{ data: unknown }> => ({
     data: {
       ...listReimbursementsResponse,
       page: fetchAll ? null : listReimbursementsResponse.page,

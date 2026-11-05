@@ -10,15 +10,8 @@ export const createEventSubscription = action({
     description: "Create an Event subscription for Microsoft Business Central.",
   },
   inputs: createSubscriptionInputs,
-  perform: async (
-    context,
-    { allowDuplicates, connection, notificationUrl, resource },
-  ) => {
-    const client = getMsBusinessCentralClient(
-      connection,
-      context,
-      context.debug.enabled,
-    );
+  perform: async (context, { allowDuplicates, connection, notificationUrl, resource }) => {
+    const client = getMsBusinessCentralClient(connection, context, context.debug.enabled);
 
     if (!allowDuplicates) {
       const instanceWebhooks = new Set([notificationUrl]);

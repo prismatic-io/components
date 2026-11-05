@@ -6,18 +6,11 @@ import { deletePurchaseOrderLineInputs as inputs } from "../../inputs/purchaseOr
 export const deletePurchaseOrderLine = action({
   display: {
     label: "Delete Purchase Order Line",
-    description:
-      "Deletes a purchase order line object in your Business Central Organization.",
+    description: "Deletes a purchase order line object in your Business Central Organization.",
   },
   perform: async (context, { companyId, connection, purchaseOrderLineId }) => {
-    const client = getMsBusinessCentralClient(
-      connection,
-      context,
-      context.debug.enabled,
-    );
-    await client.delete(
-      `/companies(${companyId})/purchaseOrderLines(${purchaseOrderLineId})`,
-    );
+    const client = getMsBusinessCentralClient(connection, context, context.debug.enabled);
+    await client.delete(`/companies(${companyId})/purchaseOrderLines(${purchaseOrderLineId})`);
 
     return SUCCESS_PAYLOAD;
   },

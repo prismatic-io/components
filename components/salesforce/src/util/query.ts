@@ -1,17 +1,8 @@
-import {
-  type DataSourceContext,
-  type Element,
-  util,
-} from "@prismatic-io/spectral";
+import { type DataSourceContext, type Element, util } from "@prismatic-io/spectral";
 import type { ActionContext } from "@prismatic-io/spectral/dist/serverTypes";
 import type { FindOptions, Schema, SObjectNames } from "jsforce";
 import { REQUIRED_POLL_FIELDS } from "../constants";
-import type {
-  Pagination,
-  SFError,
-  SFQueryParams,
-  SOQLQueryParams,
-} from "../types";
+import type { Pagination, SFError, SFQueryParams, SOQLQueryParams } from "../types";
 import { coerceObjectValues } from "./cleanFunctions";
 
 export const toFindOptions = <S extends Schema, N extends SObjectNames<S>>(
@@ -81,18 +72,12 @@ export const addPaginationToQuery = ({
   return query;
 };
 
-export const executeSFAction = async (
-  context: ActionContext | DataSourceContext,
-  command,
-) => {
+export const executeSFAction = async (context: ActionContext | DataSourceContext, command) => {
   try {
     return await command;
   } catch (error: unknown) {
     if ((error as SFError)?.errorCode === "MULTIPLE_API_ERRORS") {
-      context.logger.error(
-        "Error executing Salesforce action",
-        (error as SFError).data,
-      );
+      context.logger.error("Error executing Salesforce action", (error as SFError).data);
       throw error;
     }
     context.logger.error("Error executing Salesforce action", error);
@@ -129,9 +114,7 @@ const SALESFORCE_ID_PATTERN = /^[a-zA-Z0-9]+$/;
 
 export const formatSOQLId = (value: string): string => {
   if (!SALESFORCE_ID_PATTERN.test(value)) {
-    throw new Error(
-      `Invalid Salesforce Id for SOQL literal: ${JSON.stringify(value)}`,
-    );
+    throw new Error(`Invalid Salesforce Id for SOQL literal: ${JSON.stringify(value)}`);
   }
   return `'${value}'`;
 };
@@ -141,9 +124,7 @@ const buildSOQLWhereClause = (
   conditions: string[] = [],
 ): string => {
   const clauses = [
-    ...Object.entries(filters).map(
-      ([key, value]) => `${key} = ${escapeSOQLValue(value)}`,
-    ),
+    ...Object.entries(filters).map(([key, value]) => `${key} = ${escapeSOQLValue(value)}`),
     ...conditions,
   ];
   return clauses.length > 0 ? ` WHERE ${clauses.join(" AND ")}` : "";

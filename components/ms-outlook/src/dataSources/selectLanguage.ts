@@ -16,12 +16,7 @@ export const selectLanguage = dataSource({
     const { data } = await client.get<{
       "@odata.context": string;
       value: { locale: string; displayName: string }[];
-    }>(
-      computeEndpointBasedOnConnection(
-        connection,
-        "/me/outlook/supportedLanguages",
-      ),
-    );
+    }>(computeEndpointBasedOnConnection(connection, "/me/outlook/supportedLanguages"));
 
     const result = data.value.map<Element>((language) => ({
       label: `${language.displayName} (${language.locale})`,

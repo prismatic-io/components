@@ -19,11 +19,7 @@ export const getToken = (connection: Connection) => {
 
 export const baseUrl = "https://api.accounting.sage.com/v3.1";
 
-export const getSageClient = (
-  connection: Connection,
-  debug: boolean,
-  timeout?: unknown,
-) => {
+export const getSageClient = (connection: Connection, debug: boolean, timeout?: unknown) => {
   const token = getToken(connection);
   const sageClient = createClient({
     baseUrl,

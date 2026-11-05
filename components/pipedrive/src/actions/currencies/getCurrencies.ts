@@ -18,8 +18,5 @@ export const getCurrencies = action({
   inputs: getCurrenciesInputs,
   examplePayload: getCurrenciesExamplePayload,
   examplePerform: async () => getCurrenciesExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getCurrenciesOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getCurrenciesOutputSchema }),
 });

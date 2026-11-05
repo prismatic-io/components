@@ -6,8 +6,7 @@ export const oauth2 = oauth2Connection({
   key: "ramp-oauth2",
   display: {
     label: "OAuth 2.0",
-    description:
-      "Authenticate with Ramp using OAuth 2.0 authorization code flow.",
+    description: "Authenticate with Ramp using OAuth 2.0 authorization code flow.",
   },
   inputs: {
     authorizeUrl: {

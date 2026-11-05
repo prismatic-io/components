@@ -9,10 +9,7 @@ export const completePayment = action({
     description: "Completes (captures) a payment.",
   },
   perform: async (context, { squareConnection, paymentId, versionToken }) => {
-    const client = await createAuthorizedClient(
-      squareConnection,
-      context.debug.enabled,
-    );
+    const client = await createAuthorizedClient(squareConnection, context.debug.enabled);
 
     const response = await client.post(`/v2/payments/${paymentId}/complete`, {
       version_token: versionToken,

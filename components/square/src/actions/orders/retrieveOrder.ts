@@ -9,10 +9,7 @@ export const retrieveOrder = action({
     description: "Retrieves an order by its ID.",
   },
   perform: async (context, { squareConnection, orderId }) => {
-    const client = await createAuthorizedClient(
-      squareConnection,
-      context.debug.enabled,
-    );
+    const client = await createAuthorizedClient(squareConnection, context.debug.enabled);
 
     const response = await client.get(`/v2/orders/${orderId}`);
 

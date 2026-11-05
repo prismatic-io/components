@@ -1,11 +1,6 @@
 import { createConnection } from "@prismatic-io/spectral/testing";
 import nock from "nock";
-import {
-  createAemClient,
-  createIoEventsClient,
-  getAemHost,
-  isIoEventsConnection,
-} from "./client";
+import { createAemClient, createIoEventsClient, getAemHost, isIoEventsConnection } from "./client";
 import { aemOAuthServerToServer, aemOAuthWebApp } from "./connections";
 import { MAX_RETRIES } from "./constants";
 import { getAssetMetadataExamplePayload } from "./examplePayloads";
@@ -34,11 +29,9 @@ afterAll(() => nock.enableNetConnect());
 
 describe("getAemHost", () => {
   test("strips the scheme, path, trailing slash and case", () => {
-    expect(
-      getAemHost(
-        connectionWithHost(` HTTPS://${AEM_HOST.toUpperCase()}/ui#/aem `),
-      ),
-    ).toBe(AEM_HOST);
+    expect(getAemHost(connectionWithHost(` HTTPS://${AEM_HOST.toUpperCase()}/ui#/aem `))).toBe(
+      AEM_HOST,
+    );
     expect(getAemHost(connectionWithHost(`${AEM_HOST}/`))).toBe(AEM_HOST);
     expect(getAemHost(connectionWithHost(`${AEM_HOST}.`))).toBe(AEM_HOST);
   });
@@ -47,9 +40,9 @@ describe("getAemHost", () => {
     expect(() => getAemHost(connectionWithHost("www.example.com"))).toThrow(
       'AEM Author Host must be an AEM as a Cloud Service host ending in .adobeaemcloud.com, such as author-p12345-e123456.adobeaemcloud.com. Received: "www.example.com"',
     );
-    expect(() =>
-      getAemHost(connectionWithHost("adobeaemcloud.com.evil.example")),
-    ).toThrow("AEM Author Host must be an AEM as a Cloud Service host");
+    expect(() => getAemHost(connectionWithHost("adobeaemcloud.com.evil.example"))).toThrow(
+      "AEM Author Host must be an AEM as a Cloud Service host",
+    );
   });
 
   test.each([
@@ -78,17 +71,15 @@ describe("createAemClient", () => {
     })
       .get("/adobe/assets/a1/metadata")
       .reply(200, getAssetMetadataExamplePayload.data);
-    const { data } = await createAemClient(connection).get(
-      "/adobe/assets/a1/metadata",
-    );
+    const { data } = await createAemClient(connection).get("/adobe/assets/a1/metadata");
     expect(data).toEqual(getAssetMetadataExamplePayload.data);
     expect(nock.isDone()).toBe(true);
   });
 
   test("rejects a connection of another type", () => {
-    expect(() =>
-      createAemClient({ ...connection, key: "otherConnection" }),
-    ).toThrow("Unexpected connection type: otherConnection");
+    expect(() => createAemClient({ ...connection, key: "otherConnection" })).toThrow(
+      "Unexpected connection type: otherConnection",
+    );
   });
 
   test("tells a Web App connection that a missing-scopes 403 needs the Client Credentials connection", async () => {
@@ -106,10 +97,7 @@ describe("createAemClient", () => {
     );
     nock(BASE)
       .get("/adobe/sites/cf/fragments")
-      .reply(403, {
-        title: "Forbidden",
-        detail: "The access token is missing required scopes.",
-      });
+      .reply(403, { title: "Forbidden", detail: "The access token is missing required scopes." });
     const error = await createAemClient(webApp)
       .get("/adobe/sites/cf/fragments")
       .catch((e: Error) => e);
@@ -130,10 +118,7 @@ describe("createAemClient", () => {
       );
     const error = (await createAemClient(connection)
       .get("/adobe/assets/jobs/missing/status")
-      .catch((e: unknown) => e)) as {
-      message: string;
-      response?: { data?: unknown };
-    };
+      .catch((e: unknown) => e)) as { message: string; response?: { data?: unknown } };
     expect(error.message).toMatch(
       /^Request failed with status code 500\. Adobe returned an HTML error page instead of a JSON problem, which it does for a job or asset ID it does not know\.$/,
     );
@@ -144,20 +129,13 @@ describe("createAemClient", () => {
     nock(BASE)
       .get("/adobe/sites/cf/fragments")
       .times(MAX_RETRIES + 1)
-      .reply(
-        503,
-        '<!DOCTYPE html>\n<html lang="en"><head></head><body></body></html>',
-        {
-          "Content-Type": "text/html",
-          "Retry-After": "0",
-        },
-      );
+      .reply(503, '<!DOCTYPE html>\n<html lang="en"><head></head><body></body></html>', {
+        "Content-Type": "text/html",
+        "Retry-After": "0",
+      });
     const error = (await createAemClient(connection)
       .get("/adobe/sites/cf/fragments")
-      .catch((e: unknown) => e)) as {
-      message: string;
-      response?: { data?: unknown };
-    };
+      .catch((e: unknown) => e)) as { message: string; response?: { data?: unknown } };
     expect(error.message).toMatch(
       /^Request failed with status code 503\. The Adobe Experience Manager environment is unavailable\. A sandbox environment answers this way for several minutes while it de-hibernates or restarts: check its status in Cloud Manager and retry\.$/,
     );
@@ -173,9 +151,7 @@ describe("createAemClient", () => {
         '<!DOCTYPE html>\n<html lang="en"><head><title>AEM Cloud Service</title></head></html>',
         { "Content-Type": "text/html" },
       );
-    await expect(
-      createAemClient(connection).post("/adobe/assets/search", {}),
-    ).rejects.toThrow(
+    await expect(createAemClient(connection).post("/adobe/assets/search", {})).rejects.toThrow(
       /^Adobe Experience Manager returned an HTML page instead of a JSON response/,
     );
   });
@@ -184,9 +160,7 @@ describe("createAemClient", () => {
     nock(BASE)
       .get("/adobe/sites/cf/fragments")
       .reply(403, { error_code: "403003", message: "Api Key is invalid" });
-    await expect(
-      createAemClient(connection).get("/adobe/sites/cf/fragments"),
-    ).rejects.toThrow(
+    await expect(createAemClient(connection).get("/adobe/sites/cf/fragments")).rejects.toThrow(
       /^Adobe's API gateway rejected the connection's Client ID for this endpoint/,
     );
   });
@@ -194,24 +168,15 @@ describe("createAemClient", () => {
   test("keeps Adobe's detail after the api.yaml setup hint", async () => {
     nock(BASE)
       .get("/adobe/sites/cf/fragments")
-      .reply(403, {
-        title: "Forbidden",
-        detail: "IMS Client ID not allowlisted.",
-      });
-    await expect(
-      createAemClient(connection).get("/adobe/sites/cf/fragments"),
-    ).rejects.toThrow(
+      .reply(403, { title: "Forbidden", detail: "IMS Client ID not allowlisted." });
+    await expect(createAemClient(connection).get("/adobe/sites/cf/fragments")).rejects.toThrow(
       /config\/api\.yaml.* Adobe: IMS Client ID not allowlisted\. Request failed with status code 403$/,
     );
   });
 
   test("prefixes a 403 error with the api.yaml setup hint", async () => {
-    nock(BASE)
-      .get("/adobe/sites/cf/fragments")
-      .reply(403, { title: "Forbidden" });
-    await expect(
-      createAemClient(connection).get("/adobe/sites/cf/fragments"),
-    ).rejects.toThrow(
+    nock(BASE).get("/adobe/sites/cf/fragments").reply(403, { title: "Forbidden" });
+    await expect(createAemClient(connection).get("/adobe/sites/cf/fragments")).rejects.toThrow(
       /^AEM returned 403 Forbidden\. Confirm the connection's Client ID is listed under allowedClientIDs\.author in the environment's config\/api\.yaml.* Request failed with status code 403$/,
     );
   });
@@ -229,9 +194,7 @@ describe("createAemClient", () => {
       },
       { access_token: "user-access-token" },
     );
-    nock(BASE)
-      .get("/adobe/sites/cf/fragments")
-      .reply(403, { title: "Forbidden" });
+    nock(BASE).get("/adobe/sites/cf/fragments").reply(403, { title: "Forbidden" });
     const error = await createAemClient(webApp)
       .get("/adobe/sites/cf/fragments")
       .catch((e: Error) => e);
@@ -241,12 +204,10 @@ describe("createAemClient", () => {
   });
 
   test("does not add the setup hint to other errors", async () => {
-    nock(BASE)
-      .get("/adobe/sites/cf/fragments")
-      .reply(404, { title: "Not Found" });
-    await expect(
-      createAemClient(connection).get("/adobe/sites/cf/fragments"),
-    ).rejects.toThrow(/^Request failed with status code 404$/);
+    nock(BASE).get("/adobe/sites/cf/fragments").reply(404, { title: "Not Found" });
+    await expect(createAemClient(connection).get("/adobe/sites/cf/fragments")).rejects.toThrow(
+      /^Request failed with status code 404$/,
+    );
   });
 
   test("retries a 429 and returns the later success", async () => {
@@ -255,9 +216,7 @@ describe("createAemClient", () => {
       .reply(429, { title: "Too Many Requests" }, { "Retry-After": "0" })
       .get("/adobe/assets/a1/metadata")
       .reply(200, getAssetMetadataExamplePayload.data);
-    const { data, status } = await createAemClient(connection).get(
-      "/adobe/assets/a1/metadata",
-    );
+    const { data, status } = await createAemClient(connection).get("/adobe/assets/a1/metadata");
     expect(status).toBe(200);
     expect(data).toEqual(getAssetMetadataExamplePayload.data);
     expect(nock.isDone()).toBe(true);

@@ -5,8 +5,7 @@ export const parentId = input({
   label: "Parent ID",
   example: "0a077d18-45e3-ea11-bb43-000d3a2feca1",
   placeholder: "Enter parent ID",
-  comments:
-    "The ID of the parent object that the attachment is associated with",
+  comments: "The ID of the parent object that the attachment is associated with",
   type: "string",
   required: true,
   clean: util.types.toString,

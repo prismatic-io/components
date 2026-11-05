@@ -1,7 +1,4 @@
-import {
-  createConnection,
-  defaultTriggerPayload,
-} from "@prismatic-io/spectral/dist/testing";
+import { createConnection, defaultTriggerPayload } from "@prismatic-io/spectral/dist/testing";
 import nock from "nock";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import { zohoTemplatedConnection } from "../../connections";
@@ -10,11 +7,7 @@ import { toZohoTimestamp } from "../../util/general";
 import { contactsPollingTrigger } from "./crmContacts";
 
 const conn = {
-  ...createConnection(
-    zohoTemplatedConnection,
-    {},
-    { access_token: "test-token" },
-  ),
+  ...createConnection(zohoTemplatedConnection, {}, { access_token: "test-token" }),
   context: { "accounts-server": "https://accounts.zoho.com" },
 };
 
@@ -54,10 +47,7 @@ const context = (batching: boolean) =>
 const run = (batching: boolean, paginationState?: unknown, lookBackDate = "") =>
   contactsPollingTrigger.perform(
     context(batching),
-    {
-      ...defaultTriggerPayload(),
-      paginationState,
-    } as unknown as Parameters<Perform>[1],
+    { ...defaultTriggerPayload(), paginationState } as unknown as Parameters<Perform>[1],
     { connection: conn, fields: [], lookBackDate } as never,
   );
 
@@ -65,8 +55,7 @@ const at = (iso: string) => vi.setSystemTime(new Date(iso));
 const crm = (since: string) =>
   nock(BASE, { reqheaders: { "if-modified-since": toZohoTimestamp(since) } });
 const firstPage = (q: Record<string, unknown>) => !q.page_token;
-const tokenPage = (token: string) => (q: Record<string, unknown>) =>
-  q.page_token === token;
+const tokenPage = (token: string) => (q: Record<string, unknown>) => q.page_token === token;
 
 beforeEach(() => {
   vi.useFakeTimers({ toFake: ["Date"] });
@@ -84,14 +73,10 @@ describe("contactsPollingTrigger declaration", () => {
   test("is opt-in batchable with a default batch size and a pagination cursor", () => {
     expect(contactsPollingTrigger.triggerResolverSupport).toBe("valid");
     expect(contactsPollingTrigger.batchConfig).toEqual({ batchSize: 50 });
-    expect(contactsPollingTrigger.triggerResolver?.resolveItems).toBeInstanceOf(
-      Function,
-    );
+    expect(contactsPollingTrigger.triggerResolver?.resolveItems).toBeInstanceOf(Function);
     const cursor = { pageToken: "t", streamStartedAt: T0 };
     const next = contactsPollingTrigger.triggerResolver?.getNextPaginationState;
-    expect(
-      next?.({} as never, { payload: { paginationState: cursor } } as never),
-    ).toEqual(cursor);
+    expect(next?.({} as never, { payload: { paginationState: cursor } } as never)).toEqual(cursor);
     expect(next?.({} as never, { payload: {} } as never)).toBeNull();
   });
 
@@ -105,24 +90,16 @@ describe("contactsPollingTrigger declaration", () => {
 
   test("resolveItems flattens the payload shape perform returns", () => {
     const created = record("1", T0, T0);
-    const payload = {
-      ...defaultTriggerPayload(),
-      body: { data: { created: [created] } },
-    };
+    const payload = { ...defaultTriggerPayload(), body: { data: { created: [created] } } };
     expect(
-      contactsPollingTrigger.triggerResolver?.resolveItems?.({} as never, {
-        payload,
-      }),
+      contactsPollingTrigger.triggerResolver?.resolveItems?.({} as never, { payload }),
     ).toEqual([{ changeType: "created", record: created }]);
   });
 });
 
 describe("first poll", () => {
   test("without a Look-back Date starts at now", async () => {
-    const scope = crm(T0)
-      .get("/crm/v8/Contacts")
-      .query(true)
-      .reply(200, page([]));
+    const scope = crm(T0).get("/crm/v8/Contacts").query(true).reply(200, page([]));
     const r = await run(false);
     expect(scope.isDone()).toBe(true);
     expect(store).toEqual({ lastPolledAt: T0 });
@@ -168,8 +145,7 @@ describe("first poll", () => {
 
 describe("page_token stream", () => {
   const since = "2026-02-01T00:00:00.000Z";
-  const rec = (id: string) =>
-    record(id, "2026-02-10T00:00:00Z", "2026-02-10T00:00:00Z");
+  const rec = (id: string) => record(id, "2026-02-10T00:00:00Z", "2026-02-10T00:00:00Z");
 
   test("3-round drain commits the FIRST round's time with If-Modified-Since unchanged", async () => {
     store = { lastPolledAt: since };
@@ -185,19 +161,13 @@ describe("page_token stream", () => {
     ims.get("/crm/v8/Contacts").query(tokenPage("tok2")).reply(200, page([]));
 
     const r1 = await run(true);
-    expect(r1.payload.paginationState).toEqual({
-      pageToken: "tok1",
-      streamStartedAt: T0,
-    });
+    expect(r1.payload.paginationState).toEqual({ pageToken: "tok1", streamStartedAt: T0 });
     expect(r1.polledNoChanges).toBe(false);
     expect(store.lastPolledAt).toBe(since);
 
     at(T1);
     const r2 = await run(true, r1.payload.paginationState);
-    expect(r2.payload.paginationState).toEqual({
-      pageToken: "tok2",
-      streamStartedAt: T0,
-    });
+    expect(r2.payload.paginationState).toEqual({ pageToken: "tok2", streamStartedAt: T0 });
     expect(store).toMatchObject({ lastPolledAt: since, pageToken: "tok2" });
 
     at(T2);
@@ -220,11 +190,7 @@ describe("page_token stream", () => {
     const r1 = await run(false);
     expect(ims.isDone()).toBe(true);
     expect(r1.payload.body.data.created).toHaveLength(5);
-    expect(store).toMatchObject({
-      pageToken: "tok5",
-      streamStartedAt: T0,
-      lastPolledAt: since,
-    });
+    expect(store).toMatchObject({ pageToken: "tok5", streamStartedAt: T0, lastPolledAt: since });
 
     at(T1);
     crm(since)
@@ -242,10 +208,7 @@ describe("page_token stream", () => {
       .reply(200, page([rec("1")], "tok1"));
     await run(true, undefined, since);
     expect(store).toMatchObject({ backfillActive: true, lastPolledAt: since });
-    crm(since)
-      .get("/crm/v8/Contacts")
-      .query(tokenPage("tok1"))
-      .reply(200, page([]));
+    crm(since).get("/crm/v8/Contacts").query(tokenPage("tok1")).reply(200, page([]));
     await run(true, { pageToken: "tok1", streamStartedAt: T0 }, since);
     expect(store).toEqual({ lastPolledAt: T0 });
   });
@@ -293,11 +256,7 @@ describe("page_token stream", () => {
   test("a token issued after a restart and rejected in the same round throws with the code", async () => {
     store = { lastPolledAt: since, pageToken: "old", streamStartedAt: T1 };
     const ims = crm(since);
-    const rejected = {
-      code: "TOKEN_BOUND_DATA_MISMATCH",
-      message: "x",
-      status: "error",
-    };
+    const rejected = { code: "TOKEN_BOUND_DATA_MISMATCH", message: "x", status: "error" };
     ims.get("/crm/v8/Contacts").query(tokenPage("old")).reply(400, rejected);
     ims
       .get("/crm/v8/Contacts")
@@ -318,11 +277,7 @@ describe("page_token stream", () => {
     ims
       .get("/crm/v8/Contacts")
       .query(tokenPage("tok1"))
-      .reply(400, {
-        code: "TOKEN_BOUND_DATA_MISMATCH",
-        message: "x",
-        status: "error",
-      });
+      .reply(400, { code: "TOKEN_BOUND_DATA_MISMATCH", message: "x", status: "error" });
     await expect(run(false)).rejects.toThrow("TOKEN_BOUND_DATA_MISMATCH");
     expect(warn).not.toHaveBeenCalled();
   });
@@ -365,11 +320,7 @@ describe("page_token stream", () => {
     crm(since)
       .get("/crm/v8/Contacts")
       .query(tokenPage("tok1"))
-      .reply(400, {
-        code: "TOKEN_BOUND_DATA_MISMATCH",
-        message: "x",
-        status: "error",
-      });
+      .reply(400, { code: "TOKEN_BOUND_DATA_MISMATCH", message: "x", status: "error" });
     await expect(run(false)).rejects.toThrow("TOKEN_BOUND_DATA_MISMATCH");
     expect(warn).not.toHaveBeenCalled();
   });
@@ -433,10 +384,7 @@ describe("page_token stream", () => {
       })
       .reply(200, page([]));
     await run(false);
-    const { page_token: _t, ...continuation } = seen[1] as Record<
-      string,
-      unknown
-    >;
+    const { page_token: _t, ...continuation } = seen[1] as Record<string, unknown>;
     expect(continuation).toEqual(seen[0]);
     expect(seen[0].per_page).toBe("200");
     expect(seen[1].page).toBeUndefined();

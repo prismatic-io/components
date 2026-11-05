@@ -50,11 +50,7 @@ describe("labelsClean", () => {
     expect(labelsClean(["bug", 7])).toEqual(["bug", "7"]);
   });
 
-  test.each([
-    [[]],
-    ["bug"],
-    [undefined],
-  ])("returns undefined for %j", (value) => {
+  test.each([[[]], ["bug"], [undefined]])("returns undefined for %j", (value) => {
     expect(labelsClean(value)).toBeUndefined();
   });
 });
@@ -97,9 +93,7 @@ describe("dynamicFieldsClean", () => {
 describe("fieldValuesClean", () => {
   test("turns key/value pairs into an object", () => {
     expect(
-      fieldValuesClean(
-        '[{"key":"name","value":"Example"},{"key":"projectId","value":"10000"}]',
-      ),
+      fieldValuesClean('[{"key":"name","value":"Example"},{"key":"projectId","value":"10000"}]'),
     ).toEqual({ name: "Example", projectId: "10000" });
   });
 
@@ -130,18 +124,14 @@ describe("cleanCodeInput", () => {
   });
 
   test("throws for a non-array", () => {
-    expect(() => cleanCodeInput('{"a":1}')).toThrow(
-      "The input must be an array of strings",
-    );
+    expect(() => cleanCodeInput('{"a":1}')).toThrow("The input must be an array of strings");
   });
 });
 
 describe("cleanAttachmentArray", () => {
   test("passes attachments that carry an id and a mimeType", () => {
     const attachments = [{ id: "10000", mimeType: "image/png" }];
-    expect(cleanAttachmentArray(JSON.stringify(attachments))).toEqual(
-      attachments,
-    );
+    expect(cleanAttachmentArray(JSON.stringify(attachments))).toEqual(attachments);
   });
 
   test("returns undefined for an empty value", () => {

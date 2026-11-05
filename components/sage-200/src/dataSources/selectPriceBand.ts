@@ -9,19 +9,14 @@ export const selectPriceBand = dataSource({
   },
   perform: async (_context, { connection, site, company }) => {
     const client = getClient(connection, false, site, company);
-    const { data } =
-      await client.get<{ id: number; name: string }[]>("/price_bands");
+    const { data } = await client.get<{ id: number; name: string }[]>("/price_bands");
 
     const objects = data.map<Element>((band) => ({
       key: util.types.toString(band.id),
       label: band.name,
     }));
 
-    return {
-      result: objects.sort((a, b) =>
-        (a.label ?? "").localeCompare(b.label ?? ""),
-      ),
-    };
+    return { result: objects.sort((a, b) => (a.label ?? "").localeCompare(b.label ?? "")) };
   },
   dataSourceType: "picklist",
   inputs: {

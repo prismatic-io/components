@@ -77,26 +77,16 @@ export const selectImportExamplePayload = {
 
 export const selectLineItemExamplePayload = {
   result: [
-    {
-      label: "Professional Services Package (SKU: PS-PKG-001)",
-      key: "54321098765",
-    },
-    {
-      label: "1 Year Implementation Consultation (SKU: IMPL-CONSULT-12M)",
-      key: "54321098767",
-    },
+    { label: "Professional Services Package (SKU: PS-PKG-001)", key: "54321098765" },
+    { label: "1 Year Implementation Consultation (SKU: IMPL-CONSULT-12M)", key: "54321098767" },
   ],
 };
 
 export const selectProductExamplePayload = {
   result: [
+    { label: "Enterprise Software License $25000.00 (SKU: ENT-SW-001)", key: "76543210987" },
     {
-      label: "Enterprise Software License $25000.00 (SKU: ENT-SW-001)",
-      key: "76543210987",
-    },
-    {
-      label:
-        "Professional Services - Implementation $8500.00 (SKU: PS-IMP-002)",
+      label: "Professional Services - Implementation $8500.00 (SKU: PS-IMP-002)",
       key: "76543210989",
     },
   ],

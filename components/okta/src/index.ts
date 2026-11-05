@@ -11,8 +11,7 @@ export default component({
   documentationUrl: "https://prismatic.io/docs/components/okta-management-api/",
   display: {
     label: "Okta",
-    description:
-      "Manage users, groups, applications, and authentication policies in Okta.",
+    description: "Manage users, groups, applications, and authentication policies in Okta.",
     category: "Application Connectors",
     iconPath: "icon.png",
   },

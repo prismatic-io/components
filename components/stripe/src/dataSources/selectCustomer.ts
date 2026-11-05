@@ -15,8 +15,7 @@ export const selectCustomer = dataSource({
     const client = createStripeClient({
       stripeConnection,
     });
-    const { data } =
-      (await client.customers.list()) as StripeResponse<Customer>;
+    const { data } = (await client.customers.list()) as StripeResponse<Customer>;
     return {
       result: data.map(({ id, email: label }) => ({
         key: util.types.toString(id),

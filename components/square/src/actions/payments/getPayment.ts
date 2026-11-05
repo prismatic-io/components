@@ -9,10 +9,7 @@ export const getPayment = action({
     description: "Retrieves details for a specific payment.",
   },
   perform: async (context, { squareConnection, paymentId }) => {
-    const client = await createAuthorizedClient(
-      squareConnection,
-      context.debug.enabled,
-    );
+    const client = await createAuthorizedClient(squareConnection, context.debug.enabled);
 
     const response = await client.get(`/v2/payments/${paymentId}`);
 

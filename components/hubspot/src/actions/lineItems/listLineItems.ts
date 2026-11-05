@@ -20,10 +20,7 @@ export const listLineItems = action({
       debugRequest,
     });
 
-    const parameterizedProperties = getProps(
-      ["name"],
-      params.additionalProperties || [],
-    );
+    const parameterizedProperties = getProps(["name"], params.additionalProperties || []);
 
     const data = await getAllPaginatedData(
       client,
@@ -50,8 +47,5 @@ export const listLineItems = action({
     data: listLineItemsExamplePayload.data,
   }),
   examplePayload: listLineItemsExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: paginatedListSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: paginatedListSchema }),
 });

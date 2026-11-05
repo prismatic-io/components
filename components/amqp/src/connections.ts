@@ -40,16 +40,14 @@ export const amqpConnection = connection({
       type: "string",
       required: true,
       default: "amqp",
-      comments:
-        "Provide the desired protocol in which you want to interact with the queue. ",
+      comments: "Provide the desired protocol in which you want to interact with the queue. ",
     },
     vhost: {
       label: "Vhost",
       placeholder: "Vhost",
       type: "string",
       required: false,
-      comments:
-        'The "example/vhost" portion of amqps://amqp.example.com:5672/example/vhost',
+      comments: 'The "example/vhost" portion of amqps://amqp.example.com:5672/example/vhost',
       default: "",
     },
     username: {
@@ -58,8 +56,7 @@ export const amqpConnection = connection({
       type: "string",
       required: false,
       shown: true,
-      comments:
-        "This can be omitted if the AMQP server allows anonymous authentication",
+      comments: "This can be omitted if the AMQP server allows anonymous authentication",
     },
     password: {
       label: "Password",
@@ -67,8 +64,7 @@ export const amqpConnection = connection({
       type: "string",
       required: false,
       shown: true,
-      comments:
-        "This can be omitted if the AMQP server allows anonymous authentication",
+      comments: "This can be omitted if the AMQP server allows anonymous authentication",
     },
   },
 });

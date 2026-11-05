@@ -3,11 +3,7 @@ import { createClickUpClient } from "../../client";
 import { createTaskExamplePayload } from "../../examplePayloads";
 import { createTaskInputs } from "../../inputs";
 import { createTaskOutputSchema } from "../../outputSchemas";
-import type {
-  CreateTaskBody,
-  CreateTaskQueryParams,
-  CustomFieldValue as CustomField,
-} from "../../types";
+import type { CreateTaskBody, CreateTaskQueryParams, CustomFieldValue as CustomField } from "../../types";
 
 export const createTask = action({
   display: {
@@ -38,7 +34,7 @@ export const createTask = action({
       linksTo,
       additionalFields,
       customFields,
-    },
+    }
   ) => {
     const newCustomFields: CustomField[] = [];
     if (customFields?.length) {
@@ -60,12 +56,8 @@ export const createTask = action({
       ...(priority !== undefined && { priority }),
       ...(schedule?.dueDate !== undefined && { due_date: schedule.dueDate }),
       due_date_time: schedule?.dueDateTime,
-      ...(schedule?.timeEstimate !== undefined && {
-        time_estimate: schedule.timeEstimate,
-      }),
-      ...(schedule?.startDate !== undefined && {
-        start_date: schedule.startDate,
-      }),
+      ...(schedule?.timeEstimate !== undefined && { time_estimate: schedule.timeEstimate }),
+      ...(schedule?.startDate !== undefined && { start_date: schedule.startDate }),
       start_date_time: schedule?.startDateTime,
       notify_all: additionalFields?.notifyAll,
       ...(parent?.length && { parent }),

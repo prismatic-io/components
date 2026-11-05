@@ -1,8 +1,4 @@
-import {
-  oauth2Connection,
-  OAuth2PkceMethod,
-  OAuth2Type,
-} from "@prismatic-io/spectral";
+import { oauth2Connection, OAuth2PkceMethod, OAuth2Type } from "@prismatic-io/spectral";
 
 export const salesforceOAuth = oauth2Connection({
   oauth2Type: OAuth2Type.AuthorizationCode,
@@ -63,8 +59,7 @@ export const salesforceOAuth = oauth2Connection({
       type: "string",
       required: false,
       shown: false,
-      comments:
-        "A space-delimited set of one or more OAuth scopes to request access to.",
+      comments: "A space-delimited set of one or more OAuth scopes to request access to.",
       default: "",
     },
   },

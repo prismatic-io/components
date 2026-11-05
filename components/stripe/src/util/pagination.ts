@@ -1,10 +1,5 @@
 import { DEFAULT_PAGINATION_LIMIT } from "../constants";
-import type {
-  ClassResource,
-  ExtendedResponse,
-  PaginatedRecord,
-  StripeResource,
-} from "../types";
+import type { ClassResource, ExtendedResponse, PaginatedRecord, StripeResource } from "../types";
 
 export const paginateStripeRecords = async (
   client: ClassResource,

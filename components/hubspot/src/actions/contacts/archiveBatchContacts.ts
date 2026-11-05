@@ -20,10 +20,7 @@ export const archiveBatchContacts = action({
       debugRequest,
     });
     const payload = { inputs: getArrayOfObjectsWithKey(contactIds, "id") };
-    const { data } = await client.post(
-      hubspotPaths.objects("contacts", "/batch/archive"),
-      payload,
-    );
+    const { data } = await client.post(hubspotPaths.objects("contacts", "/batch/archive"), payload);
     return {
       data,
     };

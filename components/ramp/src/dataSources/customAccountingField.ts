@@ -32,8 +32,6 @@ export const selectCustomAccountingField = dataSource({
   },
   dataSourceType: "picklist",
   examplePayload: {
-    result: [
-      { label: "Cost Center", key: "96bb7007-eec5-430f-8d09-e033cbc000c2" },
-    ],
+    result: [{ label: "Cost Center", key: "96bb7007-eec5-430f-8d09-e033cbc000c2" }],
   },
 });

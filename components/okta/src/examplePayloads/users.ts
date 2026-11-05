@@ -48,8 +48,7 @@ export const activateUserExamplePayload = {
 export const resetUserPasswordExamplePayload = {
   data: {
     summary: "Reset password without sending email",
-    resetPasswordUrl:
-      "https://{yourOktaDomain}/reset_password/XE6wE17zmphl3KqAPFxO",
+    resetPasswordUrl: "https://{yourOktaDomain}/reset_password/XE6wE17zmphl3KqAPFxO",
   },
 };
 
@@ -156,8 +155,7 @@ export const listUserApplicationsExamplePayload = {
     {
       id: "00ub0oNGTSWTBKOLGLNR",
       label: "Salesforce.com",
-      linkUrl:
-        "https://{yourOktaDomain}/home/salesforce/0oa12ecnxtBQMKOXJSMF/46",
+      linkUrl: "https://{yourOktaDomain}/home/salesforce/0oa12ecnxtBQMKOXJSMF/46",
       logoUrl: "https://{yourOktaDomain}/img/logos/salesforce_logo.png",
       appName: "salesforce",
       appInstanceId: "0oa12ecnxtBQMKOXJSMF",
@@ -286,8 +284,7 @@ export const listUserTypesExamplePayload = {
       id: "otyz9fj2jMiRBC1ZT1d6",
       displayName: "User",
       name: "user",
-      description:
-        "Okta user profile template with default permission settings",
+      description: "Okta user profile template with default permission settings",
       createdBy: "sprz9fj1ycBcsgopy1d6",
       lastUpdatedBy: "sprz9fj1ycBcsgopy1d6",
       created: "2021-07-05T20:40:38.000Z",

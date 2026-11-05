@@ -19,10 +19,7 @@ describe("selectReimbursement", () => {
   afterEach(resetNock);
 
   test("maps the reimbursement list into dropdown elements", async () => {
-    rampNock()
-      .get(PATH)
-      .query(true)
-      .reply(200, terminatePaging(listReimbursementsResponse));
+    rampNock().get(PATH).query(true).reply(200, terminatePaging(listReimbursementsResponse));
 
     const { result } = await invokeDataSource(selectReimbursement, {
       connection: testConnection,

@@ -53,8 +53,7 @@ const notifications = input({
   label: "Notifications",
   type: "boolean",
   required: true,
-  comments:
-    "When true, the user will receive email notifications for relevant events.",
+  comments: "When true, the user will receive email notifications for relevant events.",
   clean: util.types.toBool,
 });
 
@@ -89,11 +88,7 @@ export const getCurrentUserInputs = {
   jiraConnection: connectionInput,
 };
 
-export const getUserInputs = {
-  jiraConnection: connectionInput,
-  accountId,
-  expand,
-};
+export const getUserInputs = { jiraConnection: connectionInput, accountId, expand };
 
 export const listAssignableUsersInputs = {
   jiraConnection: connectionInput,

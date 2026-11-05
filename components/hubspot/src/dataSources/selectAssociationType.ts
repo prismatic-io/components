@@ -25,8 +25,7 @@ export const selectAssociationType = dataSource({
 
     const result = types
       .map<Element>(({ typeId, label }) => ({
-        label:
-          typeof label === "string" && label.trim() ? label : `Type ${typeId}`,
+        label: typeof label === "string" && label.trim() ? label : `Type ${typeId}`,
         key: String(typeId),
       }))
       .sort((a, b) => (a.label ?? "").localeCompare(b.label ?? ""));

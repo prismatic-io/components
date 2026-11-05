@@ -16,10 +16,7 @@ export const closeUploadStream = action({
   }),
   performSafety: "notAllowed",
   perform: async ({ executionState }, params) => {
-    const { uploadFinisher, fileStream } = getUploadStream(
-      executionState,
-      params.uploadId,
-    );
+    const { uploadFinisher, fileStream } = getUploadStream(executionState, params.uploadId);
     fileStream.end();
     await uploadFinisher;
     return { data: null };

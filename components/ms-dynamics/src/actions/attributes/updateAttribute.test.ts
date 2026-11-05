@@ -1,14 +1,10 @@
 import { afterEach, describe, expect, test, vi } from "vitest";
 import { createMockConnection, createMockContext } from "../../testHelpers";
 
-const { mockUpdateAttribute } = vi.hoisted(() => ({
-  mockUpdateAttribute: vi.fn(),
-}));
+const { mockUpdateAttribute } = vi.hoisted(() => ({ mockUpdateAttribute: vi.fn() }));
 
 vi.mock("../../client", () => ({
-  createCrmClient: vi
-    .fn()
-    .mockResolvedValue({ updateAttribute: mockUpdateAttribute }),
+  createCrmClient: vi.fn().mockResolvedValue({ updateAttribute: mockUpdateAttribute }),
 }));
 
 import { updateAttribute } from "./updateAttribute";
@@ -36,7 +32,7 @@ describe("updateAttribute", () => {
         connection: conn,
         entityId: "id-1",
         attributeBody: {},
-      } as any),
+      } as any)
     ).rejects.toThrow("Update failed");
   });
 });

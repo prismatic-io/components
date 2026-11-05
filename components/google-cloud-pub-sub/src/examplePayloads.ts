@@ -71,8 +71,7 @@ export const getSubscriptionExamplePayload = {
         "x-goog-version": "v1",
       },
       oidcToken: {
-        serviceAccountEmail:
-          "my-service-account@my-project.iam.gserviceaccount.com",
+        serviceAccountEmail: "my-service-account@my-project.iam.gserviceaccount.com",
         audience: "https://example.com",
       },
     },
@@ -91,8 +90,7 @@ export const getSubscriptionExamplePayload = {
     },
     filter: 'attributes.environment = "production"',
     deadLetterPolicy: {
-      deadLetterTopic:
-        "projects/my-gcp-project-123456/topics/dead-letter-topic",
+      deadLetterTopic: "projects/my-gcp-project-123456/topics/dead-letter-topic",
       maxDeliveryAttempts: 5,
     },
     retryPolicy: {
@@ -152,8 +150,7 @@ export const pullMessagesExamplePayload = {
   data: {
     receivedMessages: [
       {
-        ackId:
-          "RUFeQBJMNxkESVMrQwsqWBFOBCEhPjA-RVNEUAYWLF1GSFE3BjYXfHhRDk9eIz81IChFEhQKFF",
+        ackId: "RUFeQBJMNxkESVMrQwsqWBFOBCEhPjA-RVNEUAYWLF1GSFE3BjYXfHhRDk9eIz81IChFEhQKFF",
         message: {
           data: "eyJvcmRlcklkIjogIjEyMzQ1IiwgImN1c3RvbWVySWQiOiAiNjc4OTAiLCAidG90YWwiOiAxMjMuNDV9",
           attributes: {
@@ -167,8 +164,7 @@ export const pullMessagesExamplePayload = {
         },
       },
       {
-        ackId:
-          "RUFeQBJMNxkESVMrQwsqWBFOBCEhPjA-RVNEUAYWLF1GSFE3BjYXfHhRDk9eIz81IChFEhQKFF",
+        ackId: "RUFeQBJMNxkESVMrQwsqWBFOBCEhPjA-RVNEUAYWLF1GSFE3BjYXfHhRDk9eIz81IChFEhQKFF",
         message: {
           data: "eyJvcmRlcklkIjogIjEyMzQ2IiwgImN1c3RvbWVySWQiOiAiNjc4OTEiLCAidG90YWwiOiA0NTYuNzh9",
           attributes: {
@@ -198,9 +194,7 @@ export const getPolicyExamplePayload = {
       },
       {
         role: "roles/pubsub.subscriber",
-        members: [
-          "serviceAccount:subscriber@my-project.iam.gserviceaccount.com",
-        ],
+        members: ["serviceAccount:subscriber@my-project.iam.gserviceaccount.com"],
       },
       {
         role: "roles/pubsub.viewer",
@@ -208,8 +202,7 @@ export const getPolicyExamplePayload = {
         condition: {
           title: "Production environment only",
           description: "Allow access only in production",
-          expression:
-            'resource.name.startsWith("projects/my-gcp-project-123456/")',
+          expression: 'resource.name.startsWith("projects/my-gcp-project-123456/")',
         },
       },
     ],

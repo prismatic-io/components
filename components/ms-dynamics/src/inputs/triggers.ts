@@ -19,8 +19,7 @@ const showNewRecords = input({
   type: "boolean",
   required: false,
   default: "true",
-  comments:
-    "When enabled, newly created records will be included in the trigger output.",
+  comments: "When enabled, newly created records will be included in the trigger output.",
   clean: util.types.toBool,
 });
 

@@ -6,11 +6,7 @@ import { getTaskExamplePayload } from "../../examplePayloads";
 import { getTask } from "./getTask";
 
 const BASE = "https://graph.microsoft.com";
-const connection = createConnection(
-  templatedOauth,
-  {},
-  { access_token: "test-token" },
-);
+const connection = createConnection(templatedOauth, {}, { access_token: "test-token" });
 
 const params = {
   connection,

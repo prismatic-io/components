@@ -38,8 +38,5 @@ export const createWebhook = action({
   },
   inputs: createWebhookInputs,
   examplePayload: createWebhookExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: createWebhookOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: createWebhookOutputSchema }),
 });

@@ -30,9 +30,6 @@ export const countDraftOrdersGql = action({
     };
   },
   inputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: countDraftOrdersGqlOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: countDraftOrdersGqlOutputSchema }),
   examplePayload,
 });

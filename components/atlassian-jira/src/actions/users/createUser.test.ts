@@ -23,10 +23,7 @@ const create = () =>
 describe("createUser", () => {
   test("creates the user through the platform REST API", async () => {
     const scope = jiraApi()
-      .post(
-        "/rest/api/3/user",
-        (body) => body.emailAddress === "mia.krystof@example.com",
-      )
+      .post("/rest/api/3/user", (body) => body.emailAddress === "mia.krystof@example.com")
       .reply(201, createUserExamplePayload.data);
 
     const { result } = await create();

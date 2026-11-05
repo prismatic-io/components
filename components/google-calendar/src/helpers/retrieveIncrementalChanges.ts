@@ -5,7 +5,7 @@ import { listAllEvents } from "./listAllEvents";
 export const retrieveIncrementalChanges = async (
   connection: Connection,
   calendarId: string,
-  syncToken: string,
+  syncToken: string
 ): Promise<{ events: calendar_v3.Schema$Event[]; nextSyncToken?: string }> => {
   const response = await listAllEvents({
     googleConnection: connection,

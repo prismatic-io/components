@@ -7,8 +7,7 @@ import type { PurchaseOrder } from "../../interfaces";
 export const createPurchaseOrder = action({
   display: {
     label: "Create Purchase Order",
-    description:
-      "Creates a purchase order object in your Business Central organization.",
+    description: "Creates a purchase order object in your Business Central organization.",
   },
   perform: async (
     context,
@@ -27,11 +26,7 @@ export const createPurchaseOrder = action({
       additionalProperties,
     },
   ) => {
-    const client = getMsBusinessCentralClient(
-      connection,
-      context,
-      context.debug.enabled,
-    );
+    const client = getMsBusinessCentralClient(connection, context, context.debug.enabled);
     const payload = {
       ...additionalProperties,
       shipToName,

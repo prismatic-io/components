@@ -12,9 +12,7 @@ export const listUserGroups = action({
   perform: async (context, { connection, id }) => {
     const client = await createClient(connection, context.debug.enabled);
 
-    const { data } = await client.get(
-      `/users/${encodeURIComponent(id)}/groups`,
-    );
+    const { data } = await client.get(`/users/${encodeURIComponent(id)}/groups`);
 
     return {
       data,

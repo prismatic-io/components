@@ -13,35 +13,20 @@ export const listPolicies = action({
   inputs: listPoliciesInputs,
   perform: async (
     context,
-    {
-      connection,
+    { connection, expand, q, resourceId, sortBy, status, type, fetchAll, pagination = {} },
+  ) => {
+    const client = await createClient(connection, context.debug.enabled);
+
+    const data = await paginateRecordsWithLink<Policy>(client, "/policies", fetchAll, {
+      after: pagination.after,
       expand,
+      limit: pagination.limit,
       q,
       resourceId,
       sortBy,
       status,
       type,
-      fetchAll,
-      pagination = {},
-    },
-  ) => {
-    const client = await createClient(connection, context.debug.enabled);
-
-    const data = await paginateRecordsWithLink<Policy>(
-      client,
-      "/policies",
-      fetchAll,
-      {
-        after: pagination.after,
-        expand,
-        limit: pagination.limit,
-        q,
-        resourceId,
-        sortBy,
-        status,
-        type,
-      },
-    );
+    });
 
     return {
       data,

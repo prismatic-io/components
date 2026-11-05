@@ -30,11 +30,7 @@ export const searchAssetsExamplePayload = {
   data: {
     hits: { results: [exampleAssetSearchHit] },
     cursor: "eyJzZWFyY2hBZnRlciI6WzE3MTMxNTc3MDQyMjldfQ",
-    search_metadata: {
-      count: 1,
-      totalCount: { total: 1, relation: "eq" },
-      searchDuration: 42,
-    },
+    search_metadata: { count: 1, totalCount: { total: 1, relation: "eq" }, searchDuration: 42 },
   },
 };
 
@@ -132,10 +128,7 @@ export const getAssetJobStatusExamplePayload: { data: AemJob } = {
 };
 
 export const deleteAssetExamplePayload: { data: DeletedAsset } = {
-  data: {
-    assetId: "urn:aaid:aem:4f2e8b1a-6c3d-4e5f-9a7b-8c9d0e1f2a3b",
-    deleted: true,
-  },
+  data: { assetId: "urn:aaid:aem:4f2e8b1a-6c3d-4e5f-9a7b-8c9d0e1f2a3b", deleted: true },
 };
 
 export const selectAssetExamplePayload: { result: Element[] } = {
@@ -149,10 +142,7 @@ export const selectAssetExamplePayload: { result: Element[] } = {
 
 export const selectAssetRenditionExamplePayload: { result: Element[] } = {
   result: [
-    {
-      key: "cq5dam.thumbnail.319.319.png",
-      label: "cq5dam.thumbnail.319.319.png",
-    },
+    { key: "cq5dam.thumbnail.319.319.png", label: "cq5dam.thumbnail.319.319.png" },
     { key: "cq5dam.web.1280.1280.jpeg", label: "cq5dam.web.1280.1280.jpeg" },
   ],
 };

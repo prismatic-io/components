@@ -3,7 +3,7 @@ const MAX_PAGES = 100;
 export const paginateQueryEntities = async (
   retrieveFn: (nextPageId?: string) => Promise<Record<string, unknown>>,
   fetchAll: boolean,
-  nextPageId?: string,
+  nextPageId?: string
 ): Promise<{ data: unknown }> => {
   const result = await retrieveFn(nextPageId);
 
@@ -23,8 +23,9 @@ export const paginateQueryEntities = async (
       allValues.push(...values);
     }
 
-    const nextLink = (currentResult?.oDataNextLink ||
-      currentResult?.["@odata.nextLink"]) as string | undefined;
+    const nextLink = (currentResult?.oDataNextLink || currentResult?.["@odata.nextLink"]) as
+      | string
+      | undefined;
     if (!nextLink) break;
 
     currentResult = await retrieveFn(nextLink);
@@ -34,13 +35,10 @@ export const paginateQueryEntities = async (
 };
 
 export const paginateFetchXml = async (
-  executeFn: (
-    pageNumber?: number,
-    pagingCookie?: string,
-  ) => Promise<Record<string, unknown>>,
+  executeFn: (pageNumber?: number, pagingCookie?: string) => Promise<Record<string, unknown>>,
   fetchAll: boolean,
   pageNumber?: number,
-  pagingCookie?: string,
+  pagingCookie?: string
 ): Promise<{ data: unknown }> => {
   const result = await executeFn(pageNumber, pagingCookie);
 
@@ -77,7 +75,7 @@ export const paginateFetchXml = async (
 
 export const paginateListEntities = async (
   fetchPage: (url?: string) => Promise<{ data: Record<string, unknown> }>,
-  fetchAll: boolean,
+  fetchAll: boolean
 ): Promise<{ data: unknown }> => {
   const { data: firstPage } = await fetchPage();
 

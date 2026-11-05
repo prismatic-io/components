@@ -1,12 +1,6 @@
 import { input } from "@prismatic-io/spectral";
 import { toAllowedValue } from "../util";
-import {
-  connectionInput,
-  pagination,
-  projectId,
-  searchString,
-  searchValue,
-} from "./common";
+import { connectionInput, pagination, projectId, searchString, searchValue } from "./common";
 
 const searchType = input({
   label: "Search Type",
@@ -31,12 +25,6 @@ export const getProjectInputs = {
   projectId,
 };
 
-export const listProjectsInputs = {
-  jiraConnection: connectionInput,
-  pagination,
-};
+export const listProjectsInputs = { jiraConnection: connectionInput, pagination };
 
-export const searchProjectsInputs = {
-  jiraConnection: connectionInput,
-  searchString,
-};
+export const searchProjectsInputs = { jiraConnection: connectionInput, searchString };

@@ -13,10 +13,7 @@ export const rawRequest = action({
     label: "Raw Request",
     description: "Send raw HTTP request to Okta.",
   },
-  perform: async (
-    { debug: { enabled: debug } },
-    { connection, ...httpClientInputs },
-  ) => {
+  perform: async ({ debug: { enabled: debug } }, { connection, ...httpClientInputs }) => {
     const baseUrl = getBaseUrl(connection);
     const token = await getToken(connection);
     const headers = {

@@ -13,8 +13,7 @@ const description = input({
 
 const useDescriptionOnDocuments = input({
   label: "Use Description On Documents",
-  comments:
-    "Whether to use the product description on order and invoice documents.",
+  comments: "Whether to use the product description on order and invoice documents.",
   type: "boolean",
   required: false,
   default: "false",
@@ -33,8 +32,7 @@ const barcode = input({
 
 const allowSalesOrder = input({
   label: "Allow Sales Order",
-  comments:
-    "Indicates whether the product is allowed on sales orders and invoicing.",
+  comments: "Indicates whether the product is allowed on sales orders and invoicing.",
   type: "boolean",
   required: false,
   default: "true",
@@ -88,8 +86,7 @@ const fulfilmentSequenceType = input({
 
 const inactivationDate = input({
   label: "Inactivation Date",
-  comments:
-    "If the product was made inactive, the date on which the product was made inactive.",
+  comments: "If the product was made inactive, the date on which the product was made inactive.",
   type: "string",
   required: false,
   placeholder: "2024-02-28T14:06:51.697Z",
@@ -151,8 +148,7 @@ const saleFromSingleBatch = input({
 
 const allowDuplicateNumbers = input({
   label: "Allow Duplicate Numbers",
-  comments:
-    "Indicates whether the product allows duplicate numbers. (Sage 200 Professional only).",
+  comments: "Indicates whether the product allows duplicate numbers. (Sage 200 Professional only).",
   type: "boolean",
   required: false,
   default: "false",
@@ -171,8 +167,7 @@ const usesAlternativeRef = input({
 
 const usesSellByDate = input({
   label: "Uses Sell By Date",
-  comments:
-    "Indicates whether the product uses sell by dates. (Sage 200 Professional only).",
+  comments: "Indicates whether the product uses sell by dates. (Sage 200 Professional only).",
   type: "boolean",
   required: false,
   default: "false",
@@ -181,8 +176,7 @@ const usesSellByDate = input({
 
 const usesUseByDate = input({
   label: "Uses Use By Date",
-  comments:
-    "Indicates whether the product uses use by dates. (Sage 200 Professional only).",
+  comments: "Indicates whether the product uses use by dates. (Sage 200 Professional only).",
   type: "boolean",
   required: false,
   default: "false",
@@ -228,9 +222,7 @@ const additionalFields = input({
           quantity_in_stock: 0,
           is_default_manufacturing_warehouse: true,
           id: 0,
-          bin_holdings: [
-            { name: "Unspecified", allocation_priority: 9, id: 0 },
-          ],
+          bin_holdings: [{ name: "Unspecified", allocation_priority: 9, id: 0 }],
         },
       ],
     },

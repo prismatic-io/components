@@ -13,11 +13,6 @@ export const createMockConnection = () =>
 export const createMockContext = (overrides?: Record<string, unknown>) =>
   ({
     debug: { enabled: false },
-    logger: {
-      debug: () => {},
-      info: () => {},
-      warn: () => {},
-      error: () => {},
-    },
+    logger: { debug: () => {}, info: () => {}, warn: () => {}, error: () => {} },
     ...overrides,
   }) as any;

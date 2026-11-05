@@ -12,15 +12,8 @@ export const createWarehouse = action({
     ...createWarehouseInputs,
     connection,
   },
-  perform: async (
-    context,
-    { connection, bodyFields, WarehouseCode, WarehouseName, Location },
-  ) => {
-    const client = await createClient(
-      connection,
-      context,
-      context.debug.enabled,
-    );
+  perform: async (context, { connection, bodyFields, WarehouseCode, WarehouseName, Location }) => {
+    const client = await createClient(connection, context, context.debug.enabled);
 
     const { data } = await client.post(`/Warehouses`, {
       WarehouseCode,

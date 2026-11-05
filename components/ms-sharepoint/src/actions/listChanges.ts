@@ -1,13 +1,6 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../client";
-import {
-  connection,
-  $select,
-  $expand,
-  $top,
-  deltaURL,
-  fetchAll,
-} from "../inputs";
+import { connection, $select, $expand, $top, deltaURL, fetchAll } from "../inputs";
 import { paginateResults } from "../utils";
 import { listChangesExamplePayload } from "../examplePayloads/actions";
 

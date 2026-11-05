@@ -4,10 +4,4 @@ import { getAbsence } from "./getAbsence";
 import { listAbsences } from "./listAbsences";
 import { updateAbsence } from "./updateAbsence";
 
-export default {
-  listAbsences,
-  getAbsence,
-  createAbsence,
-  updateAbsence,
-  deleteAbsence,
-};
+export default { listAbsences, getAbsence, createAbsence, updateAbsence, deleteAbsence };

@@ -11,10 +11,7 @@ export const listPaymentIntents = action({
     description: "Return a list of payment intents.",
   },
   performSafety: "safe",
-  perform: async (
-    context,
-    { stripeConnection, timeout, customerId, created, pagination },
-  ) => {
+  perform: async (context, { stripeConnection, timeout, customerId, created, pagination }) => {
     const client = createStripeClient({
       stripeConnection,
       timeout,
@@ -22,13 +19,9 @@ export const listPaymentIntents = action({
     const options: Stripe.PaymentIntentListParams = {
       ...(customerId && { customer: customerId }),
       created: created,
-      ...(pagination.endingBefore && {
-        ending_before: pagination.endingBefore,
-      }),
+      ...(pagination.endingBefore && { ending_before: pagination.endingBefore }),
       limit: pagination.limit,
-      ...(pagination.startingAfter && {
-        starting_after: pagination.startingAfter,
-      }),
+      ...(pagination.startingAfter && { starting_after: pagination.startingAfter }),
     };
     return {
       data: await client.paymentIntents.list(options),

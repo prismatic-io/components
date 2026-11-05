@@ -12,10 +12,7 @@ export const searchPaymentIntent = action({
       "Search for payment intents previously created using Stripe's Search Query Language.",
   },
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { timeout, stripeConnection, query, pagination },
-  ) => {
+  perform: async (context, { timeout, stripeConnection, query, pagination }) => {
     const client = createStripeClient({
       stripeConnection,
       timeout,

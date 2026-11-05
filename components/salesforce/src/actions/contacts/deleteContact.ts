@@ -20,8 +20,7 @@ export const deleteContact = action({
       data: response,
     };
   },
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    genericCreateUpdateExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => genericCreateUpdateExamplePayload,
   inputs: deleteContactInputs,
   outputSchema: outputSchema({
     type: "actionOutput",

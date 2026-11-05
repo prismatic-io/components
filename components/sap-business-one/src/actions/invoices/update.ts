@@ -13,15 +13,8 @@ export const updateInvoice = action({
     ...updateInvoiceInputs,
     connection,
   },
-  perform: async (
-    context,
-    { connection, bodyFields, Comments, invoiceDocumentEntry },
-  ) => {
-    const client = await createClient(
-      connection,
-      context,
-      context.debug.enabled,
-    );
+  perform: async (context, { connection, bodyFields, Comments, invoiceDocumentEntry }) => {
+    const client = await createClient(connection, context, context.debug.enabled);
 
     await client.patch(`/Invoices(${invoiceDocumentEntry})`, {
       Comments,

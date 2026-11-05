@@ -4,10 +4,7 @@ import { crmObjectArraySchema } from "../../outputSchemas";
 import { getHubspotClient } from "../../client";
 import { listEngagementsExamplePayload } from "../../examplePayloads";
 import { listEngagementsInputs } from "../../inputs";
-import {
-  addUrlSearchParamsFromStringArray,
-  getAllPaginatedData,
-} from "../../util";
+import { addUrlSearchParamsFromStringArray, getAllPaginatedData } from "../../util";
 import { hubspotPaths } from "../../constants";
 
 export const listEngagements = action({
@@ -54,8 +51,5 @@ export const listEngagements = action({
     data: listEngagementsExamplePayload.data,
   }),
   examplePayload: listEngagementsExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: crmObjectArraySchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: crmObjectArraySchema }),
 });

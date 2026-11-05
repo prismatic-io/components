@@ -6,16 +6,12 @@ import { selectEntityTypeInputs } from "../inputs";
 export const selectEntityType = dataSource({
   display: {
     label: "Select Entity Type",
-    description:
-      "Lists all available entity types in the Dynamics 365 CRM instance.",
+    description: "Lists all available entity types in the Dynamics 365 CRM instance.",
   },
   dataSourceType: "picklist",
   examplePayload: selectEntityTypeExamplePayload,
   inputs: selectEntityTypeInputs,
-  perform: async (
-    _context,
-    { connection, includeCustom, includeOnlyTopLevel },
-  ) => {
+  perform: async (_context, { connection, includeCustom, includeOnlyTopLevel }) => {
     const client = await createCrmClient(connection, false);
 
     const { value } = await client.retrieveEntities();
@@ -36,7 +32,7 @@ export const selectEntityType = dataSource({
         (entity): Element => ({
           label: `${entity.DisplayName?.UserLocalizedLabel?.Label || entity.SchemaName} (${entity.SchemaName})`,
           key: entity.LogicalName || entity.SchemaName,
-        }),
+        })
       );
 
     return { result };

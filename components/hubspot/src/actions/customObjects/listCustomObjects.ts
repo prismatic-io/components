@@ -12,10 +12,7 @@ export const listCustomObjects = action({
     description: "Retrieve all custom objects.",
   },
   performSafety: "safe",
-  perform: async (
-    context,
-    { hubspotConnection, timeout, archived, additionalProperties },
-  ) => {
+  perform: async (context, { hubspotConnection, timeout, archived, additionalProperties }) => {
     const debugRequest = context.debug.enabled;
     const client = getHubspotClient({
       hubspotConnection,
@@ -23,10 +20,7 @@ export const listCustomObjects = action({
       debugRequest,
     });
 
-    const parameterizedProperties = getProps(
-      ["name"],
-      additionalProperties || [],
-    );
+    const parameterizedProperties = getProps(["name"], additionalProperties || []);
     const { data } = await client.get(hubspotPaths.schemas(), {
       params: {
         ...parameterizedProperties,
@@ -38,8 +32,5 @@ export const listCustomObjects = action({
   },
   inputs: listCustomObjectsInputs,
   examplePayload: listCustomObjectsExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: listCustomObjectsOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: listCustomObjectsOutputSchema }),
 });

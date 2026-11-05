@@ -18,12 +18,9 @@ const params = {
   secret_key: SECRET,
   webhookTopics: ["CUSTOMERS_CREATE"],
 };
-const RAW_BODY = JSON.stringify(
-  eventTopicWebhookGqlExamplePayload.payload.body.data,
-);
+const RAW_BODY = JSON.stringify(eventTopicWebhookGqlExamplePayload.payload.body.data);
 
-const responseOf = (result: unknown) =>
-  (result as TriggerResult<false, TriggerPayload>).response;
+const responseOf = (result: unknown) => (result as TriggerResult<false, TriggerPayload>).response;
 
 const sign = (body: string, secret: string) =>
   crypto.createHmac("sha256", secret).update(body, "utf8").digest("base64");
@@ -43,18 +40,11 @@ describe("eventTopicWebhookGql trigger perform (webhookPerformFn)", () => {
     const hmac = sign(RAW_BODY, SECRET);
     const payload = delivery(hmac);
 
-    const { result } = await invokeTrigger(
-      eventTopicWebhookGql,
-      {},
-      payload,
-      params,
-    );
+    const { result } = await invokeTrigger(eventTopicWebhookGql, {}, payload, params);
 
     expect(result?.payload).toEqual(payload);
     expect(responseOf(result)?.statusCode).toBe(200);
-    expect(responseOf(result)?.body).toEqual(
-      eventTopicWebhookGqlExamplePayload.payload.body.data,
-    );
+    expect(responseOf(result)?.body).toEqual(eventTopicWebhookGqlExamplePayload.payload.body.data);
     expect(responseOf(result)?.headers).toEqual({
       "x-shopify-hmac-sha256": hmac,
       "x-shopify-topic": "customers/create",
@@ -65,9 +55,9 @@ describe("eventTopicWebhookGql trigger perform (webhookPerformFn)", () => {
   test("a tampered HMAC throws Signature verification failed", async () => {
     const payload = delivery(sign(`${RAW_BODY} `, SECRET));
 
-    await expect(
-      invokeTrigger(eventTopicWebhookGql, {}, payload, params),
-    ).rejects.toThrow("Signature verification failed");
+    await expect(invokeTrigger(eventTopicWebhookGql, {}, payload, params)).rejects.toThrow(
+      "Signature verification failed",
+    );
   });
 
   test("a simulated test execution returns early without verifying the signature", async () => {
@@ -81,8 +71,6 @@ describe("eventTopicWebhookGql trigger perform (webhookPerformFn)", () => {
     );
 
     expect(responseOf(result)?.statusCode).toBe(200);
-    expect(responseOf(result)?.body).toEqual(
-      eventTopicWebhookGqlExamplePayload.payload.body.data,
-    );
+    expect(responseOf(result)?.body).toEqual(eventTopicWebhookGqlExamplePayload.payload.body.data);
   });
 });

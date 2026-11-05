@@ -6,11 +6,7 @@ import type { BooksGetRecordsPerformInput } from "../types";
 import booksGetRecords from "./booksGetRecords";
 
 const conn = {
-  ...createConnection(
-    zohoTemplatedConnection,
-    {},
-    { access_token: "test-token" },
-  ),
+  ...createConnection(zohoTemplatedConnection, {}, { access_token: "test-token" }),
   context: { "accounts-server": "https://accounts.zoho.com" },
 };
 
@@ -32,10 +28,7 @@ describe("booksGetRecords", () => {
   afterEach(() => nock.cleanAll());
 
   test("happy path returns the Books record collection", async () => {
-    nock(BOOKS_BASE)
-      .get("/books/v3/contacts")
-      .query(true)
-      .reply(200, BOOKS_REPLY);
+    nock(BOOKS_BASE).get("/books/v3/contacts").query(true).reply(200, BOOKS_REPLY);
 
     const { result } = await invoke(booksGetRecords, params(baseInputs));
 
@@ -43,10 +36,7 @@ describe("booksGetRecords", () => {
   });
 
   test("error path (4xx/5xx) propagates to handleErrors", async () => {
-    nock(BOOKS_BASE)
-      .get("/books/v3/contacts")
-      .query(true)
-      .reply(500, { error: "server error" });
+    nock(BOOKS_BASE).get("/books/v3/contacts").query(true).reply(500, { error: "server error" });
 
     await expect(invoke(booksGetRecords, params(baseInputs))).rejects.toThrow();
   });
@@ -58,10 +48,7 @@ describe("booksGetRecords", () => {
       .query((q) => q.last_modified_time === ifModifiedSince)
       .reply(200, BOOKS_REPLY);
 
-    const { result } = await invoke(
-      booksGetRecords,
-      params({ ...baseInputs, ifModifiedSince }),
-    );
+    const { result } = await invoke(booksGetRecords, params({ ...baseInputs, ifModifiedSince }));
 
     expect(scope.isDone()).toBe(true);
     expect(result.data.contacts).toEqual(BOOKS_REPLY.contacts);

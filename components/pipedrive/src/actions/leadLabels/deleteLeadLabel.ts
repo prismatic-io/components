@@ -17,8 +17,5 @@ export const deleteLeadLabel = action({
   },
   inputs: deleteLeadLabelInputs,
   examplePayload: deleteLeadLabelExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: deleteLeadLabelOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: deleteLeadLabelOutputSchema }),
 });

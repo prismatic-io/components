@@ -5,8 +5,7 @@ import { connection, guId } from "../../inputs";
 export const deleteProject = action({
   display: {
     label: "Delete Project",
-    description:
-      "Delete the contents and metadata of an existing project by Id",
+    description: "Delete the contents and metadata of an existing project by Id",
   },
   perform: async (context, params) => {
     const client = createProjectsClient(

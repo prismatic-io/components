@@ -17,10 +17,7 @@ export const createRecord = action({
 
     const client = getSapClient(connectionInput, headers);
     try {
-      const { data } = await client.post(
-        `/sap/opu/data/odata/sap/${recordType}`,
-        requestBodyCode,
-      );
+      const { data } = await client.post(`/sap/opu/data/odata/sap/${recordType}`, requestBodyCode);
 
       return { data };
     } catch (error) {

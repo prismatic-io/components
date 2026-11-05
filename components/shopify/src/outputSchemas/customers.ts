@@ -42,10 +42,7 @@ const restCustomerSchema = {
     last_order_name: { type: ["string", "null"] },
     phone: { type: ["string", "null"] },
     addresses: { type: ["array", "null"], items: restCustomerAddressSchema },
-    tax_exemptions: {
-      type: "array" as const,
-      items: { type: "string" as const },
-    },
+    tax_exemptions: { type: "array" as const, items: { type: "string" as const } },
     email_marketing_consent: {
       type: ["object", "null"],
       properties: {
@@ -110,10 +107,7 @@ const restMappedCustomerSchema = {
         },
       },
     },
-    tax_exemptions: {
-      type: "array" as const,
-      items: { type: "string" as const },
-    },
+    tax_exemptions: { type: "array" as const, items: { type: "string" as const } },
     email_marketing_consent: {
       type: "object" as const,
       properties: {
@@ -195,10 +189,7 @@ const gqlCustomerSchema = {
         },
       },
     },
-    taxExemptions: {
-      type: "array" as const,
-      items: { type: "string" as const },
-    },
+    taxExemptions: { type: "array" as const, items: { type: "string" as const } },
     emailMarketingConsent: {
       type: "object" as const,
       properties: {

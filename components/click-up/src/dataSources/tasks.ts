@@ -11,16 +11,13 @@ export const tasks = dataSource({
   },
   perform: async (_context, { listId, connection }) => {
     const client = createClient(connection);
-    const { data } = await client.get<GetTasksResponse>(
-      `/list/${listId}/task`,
-      {
-        params: {
-          archived: false,
-          include_closed: false,
-          subtasks: false,
-        },
+    const { data } = await client.get<GetTasksResponse>(`/list/${listId}/task`, {
+      params: {
+        archived: false,
+        include_closed: false,
+        subtasks: false,
       },
-    );
+    });
     const options = data.tasks.map<Element>((task) => {
       return { label: task.name, key: task.id };
     });

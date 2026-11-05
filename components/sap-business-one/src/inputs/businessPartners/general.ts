@@ -5,8 +5,7 @@ import { BUSINESS_PARTNER_TYPES } from "../../constants";
 export const cardCode = input({
   label: "Card Code",
   type: "string",
-  comments:
-    "The unique code identifying the business partner (customer or supplier).",
+  comments: "The unique code identifying the business partner (customer or supplier).",
   example: "C20000",
   placeholder: "Enter business partner code",
   required: true,

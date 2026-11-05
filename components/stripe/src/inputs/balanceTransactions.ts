@@ -1,12 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanStringInput } from "../util";
-import {
-  connectionInput,
-  created,
-  currency,
-  cursorPagination,
-  timeout,
-} from "./common";
+import { connectionInput, created, currency, cursorPagination, timeout } from "./common";
 
 export const source = input({
   label: "Source",

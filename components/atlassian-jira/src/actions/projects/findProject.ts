@@ -12,10 +12,7 @@ export const findProject = action({
   inputs: findProjectInputs,
   performSafety: "notAllowed",
   perform: async (context, params) => {
-    const client = await createV3Client(
-      params.jiraConnection,
-      context.debug.enabled,
-    );
+    const client = await createV3Client(params.jiraConnection, context.debug.enabled);
     const {
       data: { values },
     } = await client.get("/project/search", {
@@ -24,12 +21,8 @@ export const findProject = action({
       },
     });
     const field = params.searchType === "key" ? "key" : "name";
-    const matches = (values as Array<{ key?: string; name?: string }>).filter(
-      (project) =>
-        util.types
-          .toString(project[field])
-          .toLowerCase()
-          .includes(params.searchValue),
+    const matches = (values as Array<{ key?: string; name?: string }>).filter((project) =>
+      util.types.toString(project[field]).toLowerCase().includes(params.searchValue),
     );
 
     return {

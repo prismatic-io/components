@@ -40,18 +40,11 @@ afterEach(() => nock.cleanAll());
 
 describe("createCustomer", () => {
   it("creates the customer and returns it", async () => {
-    const scope = nock(BASE)
-      .post("/v1/customers")
-      .reply(200, createCustomerExamplePayload.data);
+    const scope = nock(BASE).post("/v1/customers").reply(200, createCustomerExamplePayload.data);
 
     const { result } = await invoke(
       createCustomer,
-      params({
-        contactInfo,
-        address,
-        customerMetadata: {},
-        stripeConnection: conn,
-      }),
+      params({ contactInfo, address, customerMetadata: {}, stripeConnection: conn }),
     );
 
     expect(result.data).toEqual(createCustomerExamplePayload.data);
@@ -62,10 +55,7 @@ describe("createCustomer", () => {
     nock(BASE)
       .post("/v1/customers")
       .reply(400, {
-        error: {
-          type: "invalid_request_error",
-          message: "Invalid email address",
-        },
+        error: { type: "invalid_request_error", message: "Invalid email address" },
       });
 
     await expect(
@@ -100,15 +90,10 @@ describe("getCustomer", () => {
   it("surfaces a Stripe error response", async () => {
     nock(BASE)
       .get("/v1/customers/cus_missing")
-      .reply(404, {
-        error: { type: "invalid_request_error", message: "No such customer" },
-      });
+      .reply(404, { error: { type: "invalid_request_error", message: "No such customer" } });
 
     await expect(
-      invoke(
-        getCustomer,
-        params({ customerId: "cus_missing", stripeConnection: conn }),
-      ),
+      invoke(getCustomer, params({ customerId: "cus_missing", stripeConnection: conn })),
     ).rejects.toThrow("No such customer");
   });
 });
@@ -133,9 +118,7 @@ describe("listCustomers", () => {
     nock(BASE)
       .get("/v1/customers")
       .query(true)
-      .reply(400, {
-        error: { type: "invalid_request_error", message: "Invalid limit" },
-      });
+      .reply(400, { error: { type: "invalid_request_error", message: "Invalid limit" } });
 
     await expect(
       invoke(listCustomers, params({ pagination: {}, stripeConnection: conn })),
@@ -168,9 +151,7 @@ describe("updateCustomer", () => {
   it("surfaces a Stripe error response", async () => {
     nock(BASE)
       .post("/v1/customers/cus_missing")
-      .reply(404, {
-        error: { type: "invalid_request_error", message: "No such customer" },
-      });
+      .reply(404, { error: { type: "invalid_request_error", message: "No such customer" } });
 
     await expect(
       invoke(
@@ -206,15 +187,10 @@ describe("deleteCustomer", () => {
   it("surfaces a Stripe error response", async () => {
     nock(BASE)
       .delete("/v1/customers/cus_missing")
-      .reply(404, {
-        error: { type: "invalid_request_error", message: "No such customer" },
-      });
+      .reply(404, { error: { type: "invalid_request_error", message: "No such customer" } });
 
     await expect(
-      invoke(
-        deleteCustomer,
-        params({ customerId: "cus_missing", stripeConnection: conn }),
-      ),
+      invoke(deleteCustomer, params({ customerId: "cus_missing", stripeConnection: conn })),
     ).rejects.toThrow("No such customer");
   });
 });

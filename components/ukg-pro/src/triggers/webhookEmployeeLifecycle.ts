@@ -1,9 +1,4 @@
-import {
-  type HttpResponse,
-  type TriggerPayload,
-  trigger,
-  util,
-} from "@prismatic-io/spectral";
+import { type HttpResponse, type TriggerPayload, trigger, util } from "@prismatic-io/spectral";
 import { webhookEmployeeLifecycleInputs } from "../inputs";
 import { isValidHmacSignature } from "../util/triggers";
 
@@ -16,11 +11,7 @@ export const webhookEmployeeLifecycle = trigger({
   inputs: webhookEmployeeLifecycleInputs,
   synchronousResponseSupport: "invalid",
   scheduleSupport: "invalid",
-  perform: async (
-    context,
-    payload: TriggerPayload,
-    { webhookSecret, verifySignature },
-  ) => {
+  perform: async (context, payload: TriggerPayload, { webhookSecret, verifySignature }) => {
     const headers = payload.headers || {};
     const normalizedHeaders = util.types.lowerCaseHeaders(headers);
 
@@ -55,19 +46,10 @@ export const webhookEmployeeLifecycle = trigger({
         };
       }
 
-      const rawBody =
-        payload.rawBody?.data?.toString() || JSON.stringify(payload.body);
+      const rawBody = payload.rawBody?.data?.toString() || JSON.stringify(payload.body);
 
-      if (
-        !isValidHmacSignature(
-          rawBody,
-          signature,
-          util.types.toString(webhookSecret),
-        )
-      ) {
-        context.logger.error(
-          "Webhook signature verification failed: Invalid signature",
-        );
+      if (!isValidHmacSignature(rawBody, signature, util.types.toString(webhookSecret))) {
+        context.logger.error("Webhook signature verification failed: Invalid signature");
         return {
           payload,
           response: {

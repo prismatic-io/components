@@ -12,10 +12,7 @@ export const updateCustomer = action({
   },
   performSafety: "notAllowed",
   examplePerform: async () => updateCustomerExamplePayload,
-  perform: async (
-    context,
-    { connection, customerId, passwordHash, customer },
-  ) => {
+  perform: async (context, { connection, customerId, passwordHash, customer }) => {
     const client = await getClient(connection, context.debug.enabled);
 
     const body = asJsonObject(customer, "Customer");

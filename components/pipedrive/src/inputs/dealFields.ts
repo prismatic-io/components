@@ -30,16 +30,10 @@ export const deleteDealFieldInputs = {
 
 export const getDealFieldV2Inputs = {
   connection: connectionInput,
-  fieldCode: {
-    ...fieldCodeInput,
-    comments: "The field code of the deal field.",
-  },
+  fieldCode: { ...fieldCodeInput, comments: "The field code of the deal field." },
 };
 
 export const deleteDealFieldV2Inputs = {
   connection: connectionInput,
-  fieldCode: {
-    ...fieldCodeInput,
-    comments: "The field code of the deal field.",
-  },
+  fieldCode: { ...fieldCodeInput, comments: "The field code of the deal field." },
 };

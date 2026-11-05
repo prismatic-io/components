@@ -16,10 +16,7 @@ export const getTask = action({
   }),
   examplePayload: getTaskExamplePayload,
   performSafety: "safe",
-  perform: async (
-    context,
-    { connection, taskId, customTaskIds, teamId, subTasks },
-  ) => {
+  perform: async (context, { connection, taskId, customTaskIds, teamId, subTasks }) => {
     const client = createClickUpClient(connection, context.debug.enabled);
     const params: GetTaskQueryParams = {
       custom_task_ids: customTaskIds,

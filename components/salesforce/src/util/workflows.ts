@@ -2,17 +2,9 @@ import { util } from "@prismatic-io/spectral";
 import type { Connection, Schema } from "jsforce";
 import type { FileProperties } from "jsforce/lib/api/metadata/schema";
 import { createSalesforceClient } from "../client";
-import type {
-  CreateWorkflowOutboundMessage,
-  CreateWorkflowRule,
-  WorkflowAction,
-} from "../types";
+import type { CreateWorkflowOutboundMessage, CreateWorkflowRule, WorkflowAction } from "../types";
 import { processFilterCriteria } from "./cleanFunctions";
-import {
-  parseFullNameIdentifier,
-  processMetadataResult,
-  toFullNameIdentifier,
-} from "./flows";
+import { parseFullNameIdentifier, processMetadataResult, toFullNameIdentifier } from "./flows";
 
 const addPropertiesToObject = (params) => {
   const object = {};
@@ -24,9 +16,7 @@ const addPropertiesToObject = (params) => {
   return object;
 };
 
-export const processOutboundMessageActions = (
-  outboundMessages: unknown[],
-): WorkflowAction[] => {
+export const processOutboundMessageActions = (outboundMessages: unknown[]): WorkflowAction[] => {
   if (!outboundMessages) {
     return undefined;
   }
@@ -49,18 +39,14 @@ export const processOutboundMessageFields = (
   dynamicFieldsValue: unknown,
 ): string[] => {
   const fields = Array.isArray(fieldsValue) ? fieldsValue : [];
-  const dynamicFields = Array.isArray(dynamicFieldsValue)
-    ? dynamicFieldsValue
-    : [];
+  const dynamicFields = Array.isArray(dynamicFieldsValue) ? dynamicFieldsValue : [];
 
   const combined = [...fields, ...dynamicFields];
   const strFields = combined.map((v) => util.types.toString(v));
   return [...new Set(strFields)];
 };
 
-export const listWorkflowOutboundMessagesFunction = async (
-  client: Connection<Schema>,
-) => {
+export const listWorkflowOutboundMessagesFunction = async (client: Connection<Schema>) => {
   return await client.metadata.list({
     type: "WorkflowOutboundMessage",
   });
@@ -79,13 +65,8 @@ export const findWorkflowOutboundMessage = (
   );
 };
 
-export const findWorkflowRule = (
-  workflowRules: FileProperties[],
-  fullName: string,
-) => {
-  return workflowRules.find(
-    (workflowRule) => workflowRule.fullName === fullName,
-  );
+export const findWorkflowRule = (workflowRules: FileProperties[], fullName: string) => {
+  return workflowRules.find((workflowRule) => workflowRule.fullName === fullName);
 };
 
 export const createWorkflowOutboundMessageFunction = async (
@@ -104,10 +85,7 @@ export const createWorkflowOutboundMessageFunction = async (
     includeSessionId: false,
   });
   return processMetadataResult(
-    await client.metadata.create(
-      "WorkflowOutboundMessage",
-      workflowOutboundMessage,
-    ),
+    await client.metadata.create("WorkflowOutboundMessage", workflowOutboundMessage),
   );
 };
 
@@ -124,27 +102,18 @@ export const createWorkflowRuleFunction = async (
     actions: params.actions,
     formula: params.formula,
   });
-  return processMetadataResult(
-    await client.metadata.create("WorkflowRule", workflowRule),
-  );
+  return processMetadataResult(await client.metadata.create("WorkflowRule", workflowRule));
 };
 
 export const deleteWorkflowOutboundMessageFunction = async (
   client: Connection<Schema>,
   fullName: string,
 ) => {
-  return processMetadataResult(
-    await client.metadata.delete("WorkflowOutboundMessage", fullName),
-  );
+  return processMetadataResult(await client.metadata.delete("WorkflowOutboundMessage", fullName));
 };
 
-export const deleteWorkflowRuleFunction = async (
-  client: Connection<Schema>,
-  fullName: string,
-) => {
-  return processMetadataResult(
-    await client.metadata.delete("WorkflowRule", fullName),
-  );
+export const deleteWorkflowRuleFunction = async (client: Connection<Schema>, fullName: string) => {
+  return processMetadataResult(await client.metadata.delete("WorkflowRule", fullName));
 };
 
 export const getIntegrationUser = async (
@@ -179,10 +148,7 @@ export const onInstanceDeployFunction = async (
     listWorkflowOutboundMessagesFunction(client),
   ]);
 
-  const outboundMessageFullName = toFullNameIdentifier(
-    recordType,
-    outboundMessageName,
-  );
+  const outboundMessageFullName = toFullNameIdentifier(recordType, outboundMessageName);
 
   const existingWorkflowOutboundMessage = findWorkflowOutboundMessage(
     workflowOutboundMessages,
@@ -192,8 +158,7 @@ export const onInstanceDeployFunction = async (
   const outboundResult =
     existingWorkflowOutboundMessage ||
     (await createWorkflowOutboundMessageFunction(client, {
-      apiVersion:
-        util.types.toNumber(version) || util.types.toNumber(client.version),
+      apiVersion: util.types.toNumber(version) || util.types.toNumber(client.version),
       fullName: outboundMessageFullName,
       name: outboundMessageName,
       description: description,
@@ -204,15 +169,9 @@ export const onInstanceDeployFunction = async (
 
   const workflowRules = await listWorkflowRulesFunction(client);
 
-  const workflowRuleFullName = toFullNameIdentifier(
-    recordType,
-    workflowRuleName,
-  );
+  const workflowRuleFullName = toFullNameIdentifier(recordType, workflowRuleName);
 
-  const existingWorkflowRule = findWorkflowRule(
-    workflowRules,
-    workflowRuleFullName,
-  );
+  const existingWorkflowRule = findWorkflowRule(workflowRules, workflowRuleFullName);
 
   const ruleResult =
     existingWorkflowRule ||
@@ -247,15 +206,9 @@ export const onInstanceDeleteFunction = async (
     listWorkflowRulesFunction(client),
   ]);
 
-  const outboundMessageFullName = toFullNameIdentifier(
-    recordType,
-    outboundMessageName,
-  );
+  const outboundMessageFullName = toFullNameIdentifier(recordType, outboundMessageName);
 
-  const workflowRuleFullName = toFullNameIdentifier(
-    recordType,
-    workflowRuleName,
-  );
+  const workflowRuleFullName = toFullNameIdentifier(recordType, workflowRuleName);
 
   const existingWorkflowOutboundMessage = findWorkflowOutboundMessage(
     worflowOutboundMessages,
@@ -263,32 +216,21 @@ export const onInstanceDeleteFunction = async (
   );
 
   if (existingWorkflowOutboundMessage) {
-    const namespacePrefix =
-      existingWorkflowOutboundMessage.namespacePrefix || "";
+    const namespacePrefix = existingWorkflowOutboundMessage.namespacePrefix || "";
     const toDeleteOutboundMessageFullName = toFullNameIdentifier(
       recordType,
-      namespacePrefix
-        ? `${namespacePrefix}__${outboundMessageName}`
-        : outboundMessageName,
+      namespacePrefix ? `${namespacePrefix}__${outboundMessageName}` : outboundMessageName,
     );
-    await deleteWorkflowOutboundMessageFunction(
-      client,
-      toDeleteOutboundMessageFullName,
-    );
+    await deleteWorkflowOutboundMessageFunction(client, toDeleteOutboundMessageFullName);
   }
 
-  const existingWorkflowRule = findWorkflowRule(
-    workflowRules,
-    workflowRuleFullName,
-  );
+  const existingWorkflowRule = findWorkflowRule(workflowRules, workflowRuleFullName);
 
   if (existingWorkflowRule) {
     const namespacePrefix = existingWorkflowRule.namespacePrefix || "";
     const toDeleteWorkflowRuleFullName = toFullNameIdentifier(
       recordType,
-      namespacePrefix
-        ? `${namespacePrefix}__${workflowRuleName}`
-        : workflowRuleName,
+      namespacePrefix ? `${namespacePrefix}__${workflowRuleName}` : workflowRuleName,
     );
     await deleteWorkflowRuleFunction(client, toDeleteWorkflowRuleFullName);
   }

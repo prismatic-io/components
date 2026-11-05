@@ -30,15 +30,11 @@ describe("recordsInputClean", () => {
   });
 
   test("parses a JSON array string", () => {
-    expect(recordsInputClean(' [{"Name":"Acme"}] ')).toStrictEqual([
-      { Name: "Acme" },
-    ]);
+    expect(recordsInputClean(' [{"Name":"Acme"}] ')).toStrictEqual([{ Name: "Acme" }]);
   });
 
   test("throws on a blank string", () => {
-    expect(() => recordsInputClean("   ")).toThrow(
-      "JSON Records input must not be empty",
-    );
+    expect(() => recordsInputClean("   ")).toThrow("JSON Records input must not be empty");
   });
 
   test("throws on a JSON object that is not an array", () => {
@@ -48,15 +44,11 @@ describe("recordsInputClean", () => {
   });
 
   test("throws on an empty JSON array", () => {
-    expect(() => recordsInputClean("[]")).toThrow(
-      "Records array must not be empty",
-    );
+    expect(() => recordsInputClean("[]")).toThrow("Records array must not be empty");
   });
 
   test("throws on a non-string, non-array value", () => {
-    expect(() => recordsInputClean(42)).toThrow(
-      "Records must be an array of objects",
-    );
+    expect(() => recordsInputClean(42)).toThrow("Records must be an array of objects");
   });
 });
 
@@ -70,15 +62,11 @@ describe("sanitizePrefix", () => {
   });
 
   test("truncates to 15 characters", () => {
-    expect(sanitizePrefix("abcdefghijklmnopqrstuvwxyz")).toBe(
-      "abcdefghijklmno",
-    );
+    expect(sanitizePrefix("abcdefghijklmnopqrstuvwxyz")).toBe("abcdefghijklmno");
   });
 
   test("throws on an empty value", () => {
-    expect(() => sanitizePrefix("")).toThrow(
-      "Prefix must be a non-empty string.",
-    );
+    expect(() => sanitizePrefix("")).toThrow("Prefix must be a non-empty string.");
   });
 });
 
@@ -112,11 +100,7 @@ describe("toRequiredTrimmedString", () => {
     expect(clean("  0697000000K2g5AAAR ")).toBe("0697000000K2g5AAAR");
   });
 
-  test.each([
-    undefined,
-    "",
-    "   ",
-  ])("throws a labelled error for %p", (value) => {
+  test.each([undefined, "", "   "])("throws a labelled error for %p", (value) => {
     expect(() => clean(value)).toThrow("Must specify a valid File ID");
   });
 });
@@ -126,11 +110,7 @@ describe("cleanSortCriteria", () => {
     expect(cleanSortCriteria(" Name ")).toBe("Name");
   });
 
-  test.each([
-    undefined,
-    "",
-    "  ",
-  ])("falls back to the default for %p", (value) => {
+  test.each([undefined, "", "  "])("falls back to the default for %p", (value) => {
     expect(cleanSortCriteria(value)).toBe(DEFAULT_SORT_CRITERIA);
   });
 });
@@ -164,23 +144,17 @@ describe("cleanBoundedCount", () => {
 
 describe("cleanPicklistValues / cleanPicklistValuesLowercase", () => {
   test("passes a picklist through", () => {
-    expect(cleanPicklistValues(["Account", "Contact"])).toStrictEqual([
-      "Account",
-      "Contact",
-    ]);
+    expect(cleanPicklistValues(["Account", "Contact"])).toStrictEqual(["Account", "Contact"]);
   });
 
   test("lowercases and trims", () => {
-    expect(
-      cleanPicklistValuesLowercase([" Account ", "CONTACT"]),
-    ).toStrictEqual(["account", "contact"]);
+    expect(cleanPicklistValuesLowercase([" Account ", "CONTACT"])).toStrictEqual([
+      "account",
+      "contact",
+    ]);
   });
 
-  test.each([
-    undefined,
-    "Account",
-    3,
-  ])("falls back to an empty list for %p", (value) => {
+  test.each([undefined, "Account", 3])("falls back to an empty list for %p", (value) => {
     expect(cleanPicklistValues(value)).toStrictEqual([]);
     expect(cleanPicklistValuesLowercase(value)).toStrictEqual([]);
   });
@@ -234,17 +208,10 @@ describe("cleanPicklistNone", () => {
 
 describe("cleanOptionalValueList", () => {
   test("returns the list of strings", () => {
-    expect(cleanOptionalValueList(["Account.MyMessage"])).toStrictEqual([
-      "Account.MyMessage",
-    ]);
+    expect(cleanOptionalValueList(["Account.MyMessage"])).toStrictEqual(["Account.MyMessage"]);
   });
 
-  test.each<unknown>([
-    undefined,
-    null,
-    [],
-    [""],
-  ])("returns undefined for empty %p", (value) => {
+  test.each<unknown>([undefined, null, [], [""]])("returns undefined for empty %p", (value) => {
     expect(cleanOptionalValueList(value)).toBeUndefined();
   });
 });
@@ -254,11 +221,7 @@ describe("cleanOptionalStringList", () => {
     expect(cleanOptionalStringList(["Name", 5])).toStrictEqual(["Name", "5"]);
   });
 
-  test.each([
-    undefined,
-    null,
-    "Name",
-  ])("returns undefined for non-array %p", (value) => {
+  test.each([undefined, null, "Name"])("returns undefined for non-array %p", (value) => {
     expect(cleanOptionalStringList(value)).toBeUndefined();
   });
 });
@@ -273,23 +236,15 @@ describe("cleanKeyValueListToObject", () => {
     ).toStrictEqual({ Name: "string", Count: "number" });
   });
 
-  test.each<unknown>([
-    undefined,
-    null,
-    [],
-  ])("returns an empty object for %p", (value) => {
+  test.each<unknown>([undefined, null, []])("returns an empty object for %p", (value) => {
     expect(cleanKeyValueListToObject(value)).toStrictEqual({});
   });
 });
 
 describe("processFilterCriteria", () => {
   test("parses a JSON array", () => {
-    const criteria = [
-      { field: "Account.Name", operation: "equals", value: "Acme" },
-    ];
-    expect(processFilterCriteria(JSON.stringify(criteria))).toStrictEqual(
-      criteria,
-    );
+    const criteria = [{ field: "Account.Name", operation: "equals", value: "Acme" }];
+    expect(processFilterCriteria(JSON.stringify(criteria))).toStrictEqual(criteria);
   });
 
   test.each([undefined, ""])("returns an empty list for %p", (value) => {
@@ -321,45 +276,31 @@ describe("validatePermissions", () => {
   });
 
   test("throws for a non-object", () => {
-    expect(() => validatePermissions("yes")).toThrow(
-      "Invalid permissions value provided.",
-    );
+    expect(() => validatePermissions("yes")).toThrow("Invalid permissions value provided.");
   });
 
   test("throws for a non-boolean value", () => {
-    expect(() =>
-      validatePermissions({ PermissionsApiEnabled: "true" }),
-    ).toThrow("All permission values must be booleans.");
+    expect(() => validatePermissions({ PermissionsApiEnabled: "true" })).toThrow(
+      "All permission values must be booleans.",
+    );
   });
 });
 
 describe("fieldsInputClean", () => {
   test("returns an array unchanged", () => {
-    expect(fieldsInputClean(["Name", "Phone"])).toStrictEqual([
-      "Name",
-      "Phone",
-    ]);
+    expect(fieldsInputClean(["Name", "Phone"])).toStrictEqual(["Name", "Phone"]);
   });
 
   test("parses a JSON array string", () => {
-    expect(fieldsInputClean('["Name","Phone"]')).toStrictEqual([
-      "Name",
-      "Phone",
-    ]);
+    expect(fieldsInputClean('["Name","Phone"]')).toStrictEqual(["Name", "Phone"]);
   });
 
   test.each([undefined, ""])("returns undefined for %p", (value) => {
     expect(fieldsInputClean(value)).toBeUndefined();
   });
 
-  test.each([
-    '{"Name":true}',
-    "Name, Phone",
-    42,
-  ])("throws for malformed %p", (value) => {
-    expect(() => fieldsInputClean(value)).toThrow(
-      "Fields must be an array of strings.",
-    );
+  test.each(['{"Name":true}', "Name, Phone", 42])("throws for malformed %p", (value) => {
+    expect(() => fieldsInputClean(value)).toThrow("Fields must be an array of strings.");
   });
 });
 

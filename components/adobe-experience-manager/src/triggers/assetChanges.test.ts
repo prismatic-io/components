@@ -1,10 +1,7 @@
 import { createConnection } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { aemOAuthServerToServer } from "../connections";
-import {
-  assetChangesExamplePayload,
-  searchAssetsExamplePayload,
-} from "../examplePayloads";
+import { assetChangesExamplePayload, searchAssetsExamplePayload } from "../examplePayloads";
 import type { AemChangeItem, PollingState, PollWindowCursor } from "../types";
 import { resolveAemChangeItems } from "../utils";
 import { assetChanges as trigger } from "./assetChanges";
@@ -94,22 +91,16 @@ describe("assetChanges batching declaration", () => {
     expect(trigger.triggerResolverSupport).toBe("valid");
     expect(trigger.batchConfig).toEqual({ batchSize: 50 });
     expect(trigger.triggerResolver?.resolveItems).toBeInstanceOf(Function);
-    expect(trigger.triggerResolver?.getNextPaginationState).toBeInstanceOf(
-      Function,
-    );
+    expect(trigger.triggerResolver?.getNextPaginationState).toBeInstanceOf(Function);
   });
 
   test("offers the Look-back Date directly below the connection", () => {
-    expect(Object.keys(trigger.inputs ?? {}).slice(0, 2)).toEqual([
-      "connection",
-      "lookBackDate",
-    ]);
+    expect(Object.keys(trigger.inputs ?? {}).slice(0, 2)).toEqual(["connection", "lookBackDate"]);
   });
 });
 
 describe("resolveAemChangeItems", () => {
-  const item = assetChangesExamplePayload.payload.body.data
-    .items[0] as AemChangeItem;
+  const item = assetChangesExamplePayload.payload.body.data.items[0] as AemChangeItem;
 
   test("returns the tagged items of a realistic payload", () => {
     expect(resolveAemChangeItems({ items: [item] })).toEqual([item]);
@@ -147,11 +138,7 @@ describe("assetChanges perform", () => {
       })
       .reply(200, searchAssetsExamplePayload.data);
 
-    const round1 = await trigger.perform(
-      context(true),
-      payload(),
-      params(LOOK_BACK),
-    );
+    const round1 = await trigger.perform(context(true), payload(), params(LOOK_BACK));
     const cursor: PollWindowCursor = {
       windowStart: LOOK_BACK,
       windowEnd: NOW,
@@ -164,11 +151,7 @@ describe("assetChanges perform", () => {
     expect(bodies[0]).toEqual({
       query: [
         { term: { "repositoryMetadata.repo:ancestors": [FOLDER_ID] } },
-        {
-          range: {
-            "repositoryMetadata.repo:modifyDate": { gte: LOOK_BACK, lt: NOW },
-          },
-        },
+        { range: { "repositoryMetadata.repo:modifyDate": { gte: LOOK_BACK, lt: NOW } } },
       ],
       sort: [{ field: "repositoryMetadata.repo:modifyDate", order: "ASC" }],
       limit: 50,
@@ -177,9 +160,9 @@ describe("assetChanges perform", () => {
       {} as never,
       { payload: round1.payload } as never,
     ) as AemChangeItem[];
-    expect(
-      round1Items.map((item) => [item.changeType, item.record.id]),
-    ).toEqual([["initialSync", exampleAssetSearchHit.assetId]]);
+    expect(round1Items.map((item) => [item.changeType, item.record.id])).toEqual([
+      ["initialSync", exampleAssetSearchHit.assetId],
+    ]);
     expect(round1Items[0].record.scope).toBe(FOLDER_ID);
     expect(
       trigger.triggerResolver?.getNextPaginationState?.(
@@ -204,15 +187,11 @@ describe("assetChanges perform", () => {
     expect(round2.payload.paginationState).toBeUndefined();
     expect(store).toEqual({ lastPolledAt: NOW });
     expect(round2.polledNoChanges).toBe(false);
-    expect(itemsOf(round2).map((item) => item.record.id)).toEqual([
-      "urn:aaid:aem:second",
-    ]);
+    expect(itemsOf(round2).map((item) => item.record.id)).toEqual(["urn:aaid:aem:second"]);
   });
 
   test("reports changes on a platform-driven round that drains an empty last page", async () => {
-    store = {
-      cursor: { windowStart: LOOK_BACK, windowEnd: NOW, cursor: PAGE_CURSOR },
-    };
+    store = { cursor: { windowStart: LOOK_BACK, windowEnd: NOW, cursor: PAGE_CURSOR } };
     nock(BASE)
       .post(SEARCH_PATH)
       .reply(200, { hits: { results: [] } });
@@ -229,14 +208,8 @@ describe("assetChanges perform", () => {
     nock(BASE)
       .post(SEARCH_PATH)
       .reply(200, { hits: { results: [exampleAssetSearchHit] } });
-    const result = await trigger.perform(
-      context(false),
-      payload(),
-      params(LOOK_BACK),
-    );
-    expect(itemsOf(result).map((item) => item.changeType)).toEqual([
-      "initialSync",
-    ]);
+    const result = await trigger.perform(context(false), payload(), params(LOOK_BACK));
+    expect(itemsOf(result).map((item) => item.changeType)).toEqual(["initialSync"]);
     expect(store).toEqual({ lastPolledAt: NOW });
   });
 
@@ -269,19 +242,16 @@ describe("assetChanges perform", () => {
       .post(SEARCH_PATH)
       .reply(200, { hits: { results: [created, modified] } });
     const result = await trigger.perform(context(false), payload(), params(""));
-    expect(itemsOf(result).map((item) => item.changeType)).toEqual([
-      "created",
-      "modified",
-    ]);
+    expect(itemsOf(result).map((item) => item.changeType)).toEqual(["created", "modified"]);
     expect(result.polledNoChanges).toBe(false);
   });
 
   test("surfaces an API error without advancing the watermark", async () => {
     store = { lastPolledAt: "2026-10-01T00:00:00.000Z" };
     nock(BASE).post(SEARCH_PATH).reply(400, { title: "Invalid query" });
-    await expect(
-      trigger.perform(context(false), payload(), params("")),
-    ).rejects.toThrow("Request failed with status code 400");
+    await expect(trigger.perform(context(false), payload(), params(""))).rejects.toThrow(
+      "Request failed with status code 400",
+    );
     expect(store).toEqual({ lastPolledAt: "2026-10-01T00:00:00.000Z" });
   });
 });

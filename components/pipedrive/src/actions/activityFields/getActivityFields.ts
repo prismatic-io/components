@@ -18,8 +18,5 @@ export const getActivityFields = action({
   inputs: getActivityFieldsInputs,
   examplePayload: getActivityFieldsExamplePayload,
   examplePerform: async () => getActivityFieldsExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getActivityFieldsOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getActivityFieldsOutputSchema }),
 });

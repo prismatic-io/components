@@ -43,9 +43,7 @@ export const cleanObjectInput = (object: unknown) =>
   object ? util.types.toObject(object) : undefined;
 
 export const cleanTriStateBoolInput = (value: unknown) =>
-  value === undefined || value === null || value === ""
-    ? undefined
-    : util.types.toBool(value);
+  value === undefined || value === null || value === "" ? undefined : util.types.toBool(value);
 
 export const cleanKeyValueListInput = (value: unknown) =>
   util.types.keyValPairListToObject((value ?? []) as KeyValuePair<unknown>[]);

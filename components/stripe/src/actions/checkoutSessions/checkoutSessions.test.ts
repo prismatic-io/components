@@ -88,17 +88,11 @@ describe("getCheckoutSession", () => {
     nock(BASE)
       .get("/v1/checkout/sessions/cs_missing")
       .reply(404, {
-        error: {
-          type: "invalid_request_error",
-          message: "No such checkout session",
-        },
+        error: { type: "invalid_request_error", message: "No such checkout session" },
       });
 
     await expect(
-      invoke(
-        getCheckoutSession,
-        params({ sessionId: "cs_missing", stripeConnection: conn }),
-      ),
+      invoke(getCheckoutSession, params({ sessionId: "cs_missing", stripeConnection: conn })),
     ).rejects.toThrow("No such checkout session");
   });
 });
@@ -112,11 +106,7 @@ describe("listCheckoutSessions", () => {
 
     const { result } = await invoke(
       listCheckoutSessions,
-      params({
-        fetchAll: false,
-        pagination: { limit: 10 },
-        stripeConnection: conn,
-      }),
+      params({ fetchAll: false, pagination: { limit: 10 }, stripeConnection: conn }),
     );
 
     expect(result.data).toEqual(listCheckoutSessionsExamplePayload.data);
@@ -127,9 +117,7 @@ describe("listCheckoutSessions", () => {
     nock(BASE)
       .get("/v1/checkout/sessions")
       .query(true)
-      .reply(400, {
-        error: { type: "invalid_request_error", message: "Invalid limit" },
-      });
+      .reply(400, { error: { type: "invalid_request_error", message: "Invalid limit" } });
 
     await expect(
       invoke(
@@ -149,16 +137,10 @@ describe("listCheckoutSessionLineItems", () => {
 
     const { result } = await invoke(
       listCheckoutSessionLineItems,
-      params({
-        sessionId: SESSION_ID,
-        pagination: { limit: 10 },
-        stripeConnection: conn,
-      }),
+      params({ sessionId: SESSION_ID, pagination: { limit: 10 }, stripeConnection: conn }),
     );
 
-    expect(result.data).toEqual(
-      listCheckoutSessionLineItemsExamplePayload.data,
-    );
+    expect(result.data).toEqual(listCheckoutSessionLineItemsExamplePayload.data);
     expect(scope.isDone()).toBe(true);
   });
 
@@ -167,20 +149,13 @@ describe("listCheckoutSessionLineItems", () => {
       .get("/v1/checkout/sessions/cs_missing/line_items")
       .query(true)
       .reply(404, {
-        error: {
-          type: "invalid_request_error",
-          message: "No such checkout session",
-        },
+        error: { type: "invalid_request_error", message: "No such checkout session" },
       });
 
     await expect(
       invoke(
         listCheckoutSessionLineItems,
-        params({
-          sessionId: "cs_missing",
-          pagination: {},
-          stripeConnection: conn,
-        }),
+        params({ sessionId: "cs_missing", pagination: {}, stripeConnection: conn }),
       ),
     ).rejects.toThrow("No such checkout session");
   });
@@ -194,11 +169,7 @@ describe("updateCheckoutSession", () => {
 
     const { result } = await invoke(
       updateCheckoutSession,
-      params({
-        sessionId: SESSION_ID,
-        metadata: { orderId: "6735" },
-        stripeConnection: conn,
-      }),
+      params({ sessionId: SESSION_ID, metadata: { orderId: "6735" }, stripeConnection: conn }),
     );
 
     expect(result.data).toEqual(createCheckoutSessionExamplePayload.data);
@@ -209,20 +180,13 @@ describe("updateCheckoutSession", () => {
     nock(BASE)
       .post("/v1/checkout/sessions/cs_missing")
       .reply(404, {
-        error: {
-          type: "invalid_request_error",
-          message: "No such checkout session",
-        },
+        error: { type: "invalid_request_error", message: "No such checkout session" },
       });
 
     await expect(
       invoke(
         updateCheckoutSession,
-        params({
-          sessionId: "cs_missing",
-          metadata: {},
-          stripeConnection: conn,
-        }),
+        params({ sessionId: "cs_missing", metadata: {}, stripeConnection: conn }),
       ),
     ).rejects.toThrow("No such checkout session");
   });
@@ -232,10 +196,7 @@ describe("expireCheckoutSession", () => {
   it("expires the session and returns it", async () => {
     const scope = nock(BASE)
       .post(`/v1/checkout/sessions/${SESSION_ID}/expire`)
-      .reply(200, {
-        ...createCheckoutSessionExamplePayload.data,
-        status: "expired",
-      });
+      .reply(200, { ...createCheckoutSessionExamplePayload.data, status: "expired" });
 
     const { result } = await invoke(
       expireCheckoutSession,
@@ -253,17 +214,11 @@ describe("expireCheckoutSession", () => {
     nock(BASE)
       .post("/v1/checkout/sessions/cs_missing/expire")
       .reply(400, {
-        error: {
-          type: "invalid_request_error",
-          message: "You may only expire an open session",
-        },
+        error: { type: "invalid_request_error", message: "You may only expire an open session" },
       });
 
     await expect(
-      invoke(
-        expireCheckoutSession,
-        params({ sessionId: "cs_missing", stripeConnection: conn }),
-      ),
+      invoke(expireCheckoutSession, params({ sessionId: "cs_missing", stripeConnection: conn })),
     ).rejects.toThrow("only expire an open session");
   });
 });

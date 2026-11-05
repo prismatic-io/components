@@ -11,9 +11,7 @@ export const deleteOnboardingCandidateInfo = action({
   inputs: deleteOnboardingCandidateInfoInputs,
   perform: async (context, { connection, applicantId }) => {
     const client = await createClient(connection, context.debug.enabled);
-    const { data } = await client.delete(
-      `/OnboardingCandidateInfo('${applicantId}')`,
-    );
+    const { data } = await client.delete(`/OnboardingCandidateInfo('${applicantId}')`);
     return {
       data,
     };

@@ -19,10 +19,7 @@ describe("selectLedgerAccount", () => {
   afterEach(resetNock);
 
   test("maps the ledger account list into dropdown elements", async () => {
-    rampNock()
-      .get(PATH)
-      .query(true)
-      .reply(200, terminatePaging(listGeneralLedgerAccountsResponse));
+    rampNock().get(PATH).query(true).reply(200, terminatePaging(listGeneralLedgerAccountsResponse));
 
     const { result } = await invokeDataSource(selectLedgerAccount, {
       connection: testConnection,

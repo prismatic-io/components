@@ -1,11 +1,5 @@
 import { action } from "@prismatic-io/spectral";
-import {
-  awsRegion,
-  value,
-  tableName,
-  connectionInput,
-  rangeKeyValue,
-} from "../inputs";
+import { awsRegion, value, tableName, connectionInput, rangeKeyValue } from "../inputs";
 import { createDynamoClient } from "../auth";
 import { getItemKeySearch } from "../util";
 import { GetItemCommand } from "@aws-sdk/client-dynamodb";
@@ -16,10 +10,7 @@ export const getItem = action({
     label: "Get Item",
     description: "Retrieve an item from a DynamoDB database",
   },
-  perform: async (
-    context,
-    { awsConnection, awsRegion, tableName, value, rangeKeyValue },
-  ) => {
+  perform: async (context, { awsConnection, awsRegion, tableName, value, rangeKeyValue }) => {
     const client = await createDynamoClient({
       awsConnection,
       region: awsRegion,

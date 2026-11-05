@@ -6,21 +6,13 @@ import type { CreateClientProps } from "./types";
 
 Array.isArray([]);
 
-export const validateConnection = (
-  connection: Connection,
-): connection is Connection => {
+export const validateConnection = (connection: Connection): connection is Connection => {
   if (connection.key !== oauth.key) {
-    throw new ConnectionError(
-      connection,
-      `Unknown Connection type provided: ${connection.key}`,
-    );
+    throw new ConnectionError(connection, `Unknown Connection type provided: ${connection.key}`);
   }
 
   if (!connection.token?.access_token) {
-    throw new ConnectionError(
-      connection,
-      "Received a Connection without a valid access token.",
-    );
+    throw new ConnectionError(connection, "Received a Connection without a valid access token.");
   }
   return true;
 };

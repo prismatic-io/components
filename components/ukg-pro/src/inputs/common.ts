@@ -1,9 +1,4 @@
-import {
-  input,
-  type KeyValuePair,
-  structuredObjectInput,
-  util,
-} from "@prismatic-io/spectral";
+import { input, type KeyValuePair, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { inputs as httpClientInputs } from "@prismatic-io/spectral/http";
 import { cleanNumber, cleanString } from "../util";
 
@@ -30,8 +25,7 @@ export const perPage = input({
   label: "Per Page",
   type: "string",
   required: false,
-  comments:
-    "Number of records to return per page. Defaults to API default (usually 100).",
+  comments: "Number of records to return per page. Defaults to API default (usually 100).",
   placeholder: "Enter number of records per page",
   example: "100",
   clean: cleanNumber,
@@ -42,8 +36,7 @@ export const fetchAll = input({
   type: "boolean",
   required: false,
   default: "false",
-  comments:
-    "When true, automatically fetches all pages of results using pagination.",
+  comments: "When true, automatically fetches all pages of results using pagination.",
   clean: util.types.toBool,
 });
 

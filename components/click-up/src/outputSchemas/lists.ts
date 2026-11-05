@@ -1,9 +1,4 @@
-import {
-  folderListItemSchema,
-  requiredFolderRefSchema,
-  requiredSpaceRefSchema,
-  statusRefSchema,
-} from "./shared";
+import { folderListItemSchema, requiredFolderRefSchema, requiredSpaceRefSchema, statusRefSchema } from "./shared";
 
 const listProperties = {
   id: { type: "string" },

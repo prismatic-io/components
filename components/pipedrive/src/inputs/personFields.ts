@@ -30,16 +30,10 @@ export const deletePersonFieldInputs = {
 
 export const getPersonFieldV2Inputs = {
   connection: connectionInput,
-  fieldCode: {
-    ...fieldCodeInput,
-    comments: "The field code of the person field.",
-  },
+  fieldCode: { ...fieldCodeInput, comments: "The field code of the person field." },
 };
 
 export const deletePersonFieldV2Inputs = {
   connection: connectionInput,
-  fieldCode: {
-    ...fieldCodeInput,
-    comments: "The field code of the person field.",
-  },
+  fieldCode: { ...fieldCodeInput, comments: "The field code of the person field." },
 };

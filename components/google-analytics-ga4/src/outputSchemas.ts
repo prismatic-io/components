@@ -71,11 +71,7 @@ export const propertySchema = {
     },
     serviceLevel: {
       type: "string",
-      enum: [
-        "SERVICE_LEVEL_UNSPECIFIED",
-        "GOOGLE_ANALYTICS_STANDARD",
-        "GOOGLE_ANALYTICS_360",
-      ],
+      enum: ["SERVICE_LEVEL_UNSPECIFIED", "GOOGLE_ANALYTICS_STANDARD", "GOOGLE_ANALYTICS_360"],
     },
     timeZone: { type: "string" },
     currencyCode: { type: "string" },
@@ -204,11 +200,7 @@ export const runReportOutputSchema = {
                     type: "array",
                     items: {
                       type: "string",
-                      enum: [
-                        "RESTRICTED_METRIC_TYPE_UNSPECIFIED",
-                        "COST_DATA",
-                        "REVENUE_DATA",
-                      ],
+                      enum: ["RESTRICTED_METRIC_TYPE_UNSPECIFIED", "COST_DATA", "REVENUE_DATA"],
                     },
                   },
                 },

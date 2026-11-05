@@ -2,12 +2,7 @@ import { pollingTrigger } from "@prismatic-io/spectral";
 import { TRIGGER_BATCH_SIZE } from "../constants";
 import { pollChangesTriggerExamplePayload } from "../examplePayloads";
 import { pollChangesInputs } from "../inputs";
-import type {
-  MessageChange,
-  MessageChangesObject,
-  PollingCursor,
-  PollingState,
-} from "../types";
+import type { MessageChange, MessageChangesObject, PollingCursor, PollingState } from "../types";
 import {
   partitionMessagesByTimestamp,
   readPollingWindow,
@@ -36,24 +31,12 @@ export const pollChangesTrigger = pollingTrigger({
   perform: async (
     context,
     payload,
-    {
-      connection,
-      lookBackDate,
-      pollFolderId,
-      showNewMessages,
-      showUpdatedMessages,
-    },
+    { connection, lookBackDate, pollFolderId, showNewMessages, showUpdatedMessages },
   ) => {
     const now = new Date();
     const state = (context.polling.getState() ?? {}) as PollingState;
-    const incoming = payload.paginationState as
-      | Partial<PollingCursor>
-      | undefined;
-    const { sinceDate, isBackfill } = resolvePollingStart(
-      state,
-      lookBackDate,
-      now,
-    );
+    const incoming = payload.paginationState as Partial<PollingCursor> | undefined;
+    const { sinceDate, isBackfill } = resolvePollingStart(state, lookBackDate, now);
     const { position, classifySince } = resolvePollingStream(
       state,
       incoming,
@@ -99,16 +82,9 @@ export const pollChangesTrigger = pollingTrigger({
     }
 
     return {
-      payload: {
-        ...payload,
-        paginationState: next ?? undefined,
-        body: { data: result },
-      },
+      payload: { ...payload, paginationState: next ?? undefined, body: { data: result } },
       polledNoChanges:
-        result.created.length === 0 &&
-        result.updated.length === 0 &&
-        next === null &&
-        !incoming,
+        result.created.length === 0 && result.updated.length === 0 && next === null && !incoming,
     };
   },
 });

@@ -20,15 +20,8 @@ export const deleteBucket = action({
   perform: async (context, { connection, bucketId, etag }) => {
     const client = createClient(connection, context.debug.enabled);
     await deleteWithEtag(client, PLANNER_ENDPOINTS.BUCKET(bucketId), etag);
-    return {
-      data: {
-        success: true,
-        id: bucketId,
-        message: "Bucket deleted successfully",
-      },
-    };
+    return { data: { success: true, id: bucketId, message: "Bucket deleted successfully" } };
   },
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    deleteBucketExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => deleteBucketExamplePayload,
   examplePayload: deleteBucketExamplePayload,
 });

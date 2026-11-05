@@ -25,10 +25,7 @@ export const listCustomers = action({
     return { data };
   },
   inputs: listCustomersInputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: listCustomersOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: listCustomersOutputSchema }),
   examplePerform: async () => listCustomersExamplePayload.restMap,
   examplePayload: listCustomersExamplePayload.restMap,
 });

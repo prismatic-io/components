@@ -12,13 +12,7 @@ export const getOrganizationFiles = action({
   performSafety: "notAllowed",
   perform: async (
     context,
-    {
-      connection,
-      id,
-      pagination: { start, limit } = {},
-      includeDeletedFiles,
-      sort,
-    },
+    { connection, id, pagination: { start, limit } = {}, includeDeletedFiles, sort },
   ) => {
     const client = createClient(connection, context.debug.enabled);
     const { data } = await client.get(`/organizations/${id}/files`, {
@@ -33,8 +27,5 @@ export const getOrganizationFiles = action({
   },
   inputs: getOrganizationFilesInputs,
   examplePayload: getOrganizationFilesExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getOrganizationFilesOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getOrganizationFilesOutputSchema }),
 });

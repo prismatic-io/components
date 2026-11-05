@@ -72,8 +72,7 @@ export const pagination = structuredObjectInput({
   inputs: {
     limit: {
       ...limit,
-      comments:
-        "The maximum number of results to return per page. Maximum: 250.",
+      comments: "The maximum number of results to return per page. Maximum: 250.",
     },
     endCursor,
   },
@@ -182,8 +181,7 @@ export const callbackUrl = input({
   required: true,
   example: "https://example.com",
   placeholder: "Enter callback URL",
-  comments:
-    "The callback URL that the fulfillment service has registered for request.",
+  comments: "The callback URL that the fulfillment service has registered for request.",
   clean: util.types.toString,
 });
 
@@ -215,8 +213,7 @@ export const webhookTopic = input({
   example: "APP_PURCHASES_ONE_TIME_UPDATE",
   placeholder: "Select webhook topic",
   model: generateModelFromSnakeCaseArray(WEBHOOK_TOPICS),
-  comments:
-    "The topic for the webhook. This is the event that will trigger the webhook.",
+  comments: "The topic for the webhook. This is the event that will trigger the webhook.",
   clean: util.types.toString,
 });
 

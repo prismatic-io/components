@@ -1,23 +1,13 @@
-import {
-  customer,
-  customerId,
-  password,
-  passwordHash,
-  redirectUrl,
-} from "./customers";
+import { customer, customerId, password, passwordHash, redirectUrl } from "./customers";
 
 describe("customers inputs: happy-path normalization", () => {
   test("customer.clean parses a JSON string to an object", () => {
-    expect(
-      customer.clean?.('{"customer":{"email":"jdoe@example.com"}}'),
-    ).toEqual({
+    expect(customer.clean?.('{"customer":{"email":"jdoe@example.com"}}')).toEqual({
       customer: { email: "jdoe@example.com" },
     });
   });
 
-  test.each<
-    [string, ((value: unknown) => unknown) | undefined, unknown, unknown]
-  >([
+  test.each<[string, ((value: unknown) => unknown) | undefined, unknown, unknown]>([
     ["password", password.clean, "s3cret", "s3cret"],
     [
       "redirectUrl",

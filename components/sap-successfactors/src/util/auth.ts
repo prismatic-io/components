@@ -7,11 +7,7 @@ import { Saml20, type SamlUnassignedOpts } from "saml";
 import { apiKeyAuthentication, basicAuthentication } from "../connections";
 
 export const validateConnection = (connection: Connection) => {
-  if (
-    ![basicAuthentication.key, apiKeyAuthentication.key].includes(
-      connection.key,
-    )
-  ) {
+  if (![basicAuthentication.key, apiKeyAuthentication.key].includes(connection.key)) {
     throw new Error(`Invalid connection key: ${connection.key}`);
   }
 };
@@ -88,10 +84,7 @@ export const fetchToken = async (connection: Connection, apiServer: string) => {
   }
 };
 
-export const getToken = async (
-  connection: Connection,
-  apiServer: string,
-): Promise<string> => {
+export const getToken = async (connection: Connection, apiServer: string): Promise<string> => {
   validateConnection(connection);
   const { username, password, companyId } = connection.fields;
 
@@ -109,8 +102,7 @@ export const getToken = async (
 export const getBaseURL = (connection: Connection) => {
   const apiServer = connection.fields.apiServer;
   const environment =
-    util.types.toString(apiServer) ||
-    "https://sandbox.api.sap.com/successfactors";
+    util.types.toString(apiServer) || "https://sandbox.api.sap.com/successfactors";
   try {
     const baseURL = new URL(environment);
     if (!baseURL.protocol.includes("https")) {

@@ -21,8 +21,7 @@ export const paginateResults = async ({
 }: PaginateOptions): Promise<{ data: unknown }> => {
   if (fetchAll) {
     const allItems: unknown[] = [];
-    const limit =
-      (queryParams["searchCriteria[pageSize]"] as string) || DEFAULT_PAGE_SIZE;
+    const limit = (queryParams["searchCriteria[pageSize]"] as string) || DEFAULT_PAGE_SIZE;
 
     const {
       "searchCriteria[pageSize]": _ps,
@@ -38,9 +37,7 @@ export const paginateResults = async ({
         "searchCriteria[pageSize]": limit,
         "searchCriteria[currentPage]": String(page),
       };
-      const { data } = await client.get<MagentoListResponse>(endpoint, {
-        params,
-      });
+      const { data } = await client.get<MagentoListResponse>(endpoint, { params });
       const items = Array.isArray(data?.items) ? data.items : [];
       allItems.push(...items);
       if (items.length < Number(limit)) break;

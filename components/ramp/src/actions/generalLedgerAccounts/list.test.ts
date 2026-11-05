@@ -1,12 +1,6 @@
 import { invoke } from "@prismatic-io/spectral/testing";
 import { listGeneralLedgerAccountsResponse } from "../../examplePayloads/ledgerAccounts";
-import {
-  apiPath,
-  listActionParams,
-  rampNock,
-  resetNock,
-  terminatePaging,
-} from "../../testHarness";
+import { apiPath, listActionParams, rampNock, resetNock, terminatePaging } from "../../testHarness";
 import { listGeneralLedgerAccounts } from "./list";
 
 const PATH = apiPath("/accounting/accounts");
@@ -15,15 +9,9 @@ describe("listGeneralLedgerAccounts", () => {
   afterEach(resetNock);
 
   test("returns the list envelope untouched when Fetch All is off", async () => {
-    rampNock()
-      .get(PATH)
-      .query({})
-      .reply(200, listGeneralLedgerAccountsResponse);
+    rampNock().get(PATH).query({}).reply(200, listGeneralLedgerAccountsResponse);
 
-    const { result } = await invoke(
-      listGeneralLedgerAccounts,
-      listActionParams(),
-    );
+    const { result } = await invoke(listGeneralLedgerAccounts, listActionParams());
 
     expect(result.data).toEqual(listGeneralLedgerAccountsResponse);
   });
@@ -39,10 +27,7 @@ describe("listGeneralLedgerAccounts", () => {
       listActionParams({ fetchAll: true }),
     );
 
-    expect(result.data).toEqual({
-      data: listGeneralLedgerAccountsResponse.data,
-      page: null,
-    });
+    expect(result.data).toEqual({ data: listGeneralLedgerAccountsResponse.data, page: null });
   });
 
   test("surfaces an API failure", async () => {
@@ -51,8 +36,6 @@ describe("listGeneralLedgerAccounts", () => {
       .query(true)
       .reply(500, { error: { message: "Internal error" } });
 
-    await expect(
-      invoke(listGeneralLedgerAccounts, listActionParams()),
-    ).rejects.toThrow();
+    await expect(invoke(listGeneralLedgerAccounts, listActionParams())).rejects.toThrow();
   });
 });

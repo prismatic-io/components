@@ -11,8 +11,7 @@ export default component({
   documentationUrl: "https://prismatic.io/docs/components/ms-planner/",
   display: {
     label: "Microsoft Planner",
-    description:
-      "Manage plans, buckets, tasks, and task details in Microsoft Planner.",
+    description: "Manage plans, buckets, tasks, and task details in Microsoft Planner.",
     iconPath: "icon.png",
     category: "Application Connectors",
   },

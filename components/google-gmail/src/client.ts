@@ -23,15 +23,10 @@ export const createClient = async (connection: Connection): Promise<Gmail> => {
       break;
     }
     case gmailServiceAccountAuth.key: {
-      const keyFile = util.types.toObject(
-        connection.fields.keyFile,
-      ) as GoogleKeyFile;
+      const keyFile = util.types.toObject(connection.fields.keyFile) as GoogleKeyFile;
       const user = util.types.toString(connection.fields.user);
       if (!keyFile) {
-        throw new ConnectionError(
-          connection,
-          "Did not receive a valid key file.",
-        );
+        throw new ConnectionError(connection, "Did not receive a valid key file.");
       }
 
       const jwtClient = new auth.JWT({
@@ -77,15 +72,10 @@ export const createPubSubClient = async (connection: Connection) => {
       });
     }
     case gmailServiceAccountAuth.key: {
-      const keyFile = util.types.toObject(
-        connection.fields.keyFile,
-      ) as GoogleKeyFile;
+      const keyFile = util.types.toObject(connection.fields.keyFile) as GoogleKeyFile;
       const user = util.types.toString(connection.fields.user);
       if (!keyFile) {
-        throw new ConnectionError(
-          connection,
-          "Did not receive a valid key file.",
-        );
+        throw new ConnectionError(connection, "Did not receive a valid key file.");
       }
 
       const jwtClient = new pubsubAuth.JWT({
@@ -120,15 +110,10 @@ export const getToken = async (connection: Connection) => {
       return token;
     }
     case gmailServiceAccountAuth.key: {
-      const keyFile = util.types.toObject(
-        connection.fields.keyFile,
-      ) as GoogleKeyFile;
+      const keyFile = util.types.toObject(connection.fields.keyFile) as GoogleKeyFile;
       const user = util.types.toString(connection.fields.user);
       if (!keyFile) {
-        throw new ConnectionError(
-          connection,
-          "Did not receive a valid key file.",
-        );
+        throw new ConnectionError(connection, "Did not receive a valid key file.");
       }
 
       const jwtClient = new auth.JWT({

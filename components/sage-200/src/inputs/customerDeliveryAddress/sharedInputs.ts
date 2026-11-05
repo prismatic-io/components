@@ -115,8 +115,7 @@ const contact = input({
 
 const telephone = input({
   label: "Telephone",
-  comments:
-    "The telephone number associated with the customer delivery address.",
+  comments: "The telephone number associated with the customer delivery address.",
   type: "string",
   required: false,
   example: "08976 656 878",

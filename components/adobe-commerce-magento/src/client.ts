@@ -7,17 +7,12 @@ import type { Oauth1Credentials, StoreConfig } from "./types";
 import { buildAuthorizationHeader } from "./utils/oauth1";
 
 const validateConnection = (connection: Connection) => {
-  if (
-    ![adobeCommerceOauth1.key, adobeCommerceApiKey.key].includes(connection.key)
-  ) {
+  if (![adobeCommerceOauth1.key, adobeCommerceApiKey.key].includes(connection.key)) {
     throw new ConnectionError(connection, "Unknown Connection type provided.");
   }
 };
 
-export const normalizeStoreUrl = (
-  connection: Connection,
-  storeUrl: string,
-): string => {
+export const normalizeStoreUrl = (connection: Connection, storeUrl: string): string => {
   const trimmed = storeUrl
     .trim()
     .replace(/\/+$/, "")
@@ -37,10 +32,7 @@ export const getStoreCode = (connection: Connection): string => {
   if (connection.key !== adobeCommerceOauth1.key) {
     return DEFAULT_STORE_CODE;
   }
-  return (
-    util.types.toString(connection.fields?.storeCode).trim() ||
-    DEFAULT_STORE_CODE
-  );
+  return util.types.toString(connection.fields?.storeCode).trim() || DEFAULT_STORE_CODE;
 };
 
 const getOauth1Credentials = (connection: Connection): Oauth1Credentials => {
@@ -72,10 +64,7 @@ const getOauth1Credentials = (connection: Connection): Oauth1Credentials => {
   return credentials;
 };
 
-export const getConfig = async (
-  connection: Connection,
-  debug: boolean,
-): Promise<StoreConfig> => {
+export const getConfig = async (connection: Connection, debug: boolean): Promise<StoreConfig> => {
   validateConnection(connection);
 
   if (connection.key === adobeCommerceOauth1.key) {
@@ -113,10 +102,7 @@ export const getConfig = async (
     );
     const token = util.types.toString(data?.ust).trim();
     if (!token) {
-      throw new ConnectionError(
-        connection,
-        "The session token response did not include a token.",
-      );
+      throw new ConnectionError(connection, "The session token response did not include a token.");
     }
     return { environmentUrl, authorize: () => `Bearer ${token}` };
   } catch (error) {
@@ -127,10 +113,7 @@ export const getConfig = async (
   }
 };
 
-export const resolveRequestUrl = (
-  baseUrl: string,
-  url: string | undefined,
-): string => {
+export const resolveRequestUrl = (baseUrl: string, url: string | undefined): string => {
   const path = url ?? "";
   if (/^[a-z][a-z0-9+.-]*:\/\//i.test(path)) {
     return path;
@@ -142,25 +125,18 @@ export const toSignatureParams = (params: unknown): Array<[string, string]> => {
   if (!params || typeof params !== "object") {
     return [];
   }
-  return Object.entries(params as Record<string, unknown>).flatMap(
-    ([name, value]) => {
-      if (value === undefined || value === null) {
-        return [];
-      }
-      if (Array.isArray(value)) {
-        return value.map((entry): [string, string] => [
-          `${name}[]`,
-          String(entry),
-        ]);
-      }
-      return [[name, String(value)] as [string, string]];
-    },
-  );
+  return Object.entries(params as Record<string, unknown>).flatMap(([name, value]) => {
+    if (value === undefined || value === null) {
+      return [];
+    }
+    if (Array.isArray(value)) {
+      return value.map((entry): [string, string] => [`${name}[]`, String(entry)]);
+    }
+    return [[name, String(value)] as [string, string]];
+  });
 };
 
-export const toRawRequestParams = (
-  queryParams: unknown,
-): Array<[string, string]> => {
+export const toRawRequestParams = (queryParams: unknown): Array<[string, string]> => {
   if (!Array.isArray(queryParams)) {
     return [];
   }
@@ -169,16 +145,11 @@ export const toRawRequestParams = (
       return [];
     }
     const { key, value } = entry as { key: unknown; value?: unknown };
-    return [
-      [String(key), value === undefined || value === null ? "" : String(value)],
-    ];
+    return [[String(key), value === undefined || value === null ? "" : String(value)]];
   });
 };
 
-export const getClient = async (
-  connection: Connection,
-  debug: boolean,
-): Promise<HttpClient> => {
+export const getClient = async (connection: Connection, debug: boolean): Promise<HttpClient> => {
   const { environmentUrl, authorize } = await getConfig(connection, debug);
   const baseUrl = `${environmentUrl}/rest/${getStoreCode(connection)}/V1`;
 

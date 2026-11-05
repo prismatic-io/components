@@ -8,8 +8,7 @@ import triggers from "./triggers";
 export default component({
   key: "adobe-experience-manager",
   public: true,
-  documentationUrl:
-    "https://prismatic.io/docs/components/adobe-experience-manager/",
+  documentationUrl: "https://prismatic.io/docs/components/adobe-experience-manager/",
   display: {
     label: "Adobe Experience Manager",
     description:

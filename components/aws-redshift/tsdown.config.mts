@@ -32,9 +32,7 @@ export default defineConfig([
       compilerOptions: {
         paths: {
           "@prismatic-io/spectral": ["./node_modules/@prismatic-io/spectral"],
-          "@prismatic-io/spectral/*": [
-            "./node_modules/@prismatic-io/spectral/*",
-          ],
+          "@prismatic-io/spectral/*": ["./node_modules/@prismatic-io/spectral/*"],
         },
       },
     },

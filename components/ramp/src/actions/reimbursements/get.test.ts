@@ -1,11 +1,6 @@
 import { invoke } from "@prismatic-io/spectral/testing";
 import { getReimbursementResponse } from "../../examplePayloads/reimbursements";
-import {
-  apiPath,
-  rampNock,
-  resetNock,
-  testConnection,
-} from "../../testHarness";
+import { apiPath, rampNock, resetNock, testConnection } from "../../testHarness";
 import { getReimbursement } from "./get";
 
 const REIMBURSEMENT_ID = "d47ba06e-14ac-4a7b-89b4-4775412ba545";

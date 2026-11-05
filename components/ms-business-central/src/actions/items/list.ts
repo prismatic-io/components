@@ -6,18 +6,10 @@ import { listItemsInputs as inputs } from "../../inputs/items/listItemsInputs";
 export const listItems = action({
   display: {
     label: "List Items",
-    description:
-      "List all item objects from your Business Central Organization.",
+    description: "List all item objects from your Business Central Organization.",
   },
-  perform: async (
-    context,
-    { companyId, connection, fetchAll, odataQueryParams },
-  ) => {
-    const client = getMsBusinessCentralClient(
-      connection,
-      context,
-      context.debug.enabled,
-    );
+  perform: async (context, { companyId, connection, fetchAll, odataQueryParams }) => {
+    const client = getMsBusinessCentralClient(connection, context, context.debug.enabled);
     const params = {
       $orderBy: odataQueryParams.$orderBy,
       $format: odataQueryParams.$format,

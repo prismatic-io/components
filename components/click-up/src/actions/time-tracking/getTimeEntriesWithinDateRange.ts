@@ -34,12 +34,9 @@ export const getTimeEntriesWithinDateRange = action({
       taskId,
       customTaskIds,
       customTeamId,
-    },
+    }
   ) => {
-    const client = createClickUpClient(
-      clickUpConnection,
-      context.debug.enabled,
-    );
+    const client = createClickUpClient(clickUpConnection, context.debug.enabled);
     const queryParams: TimeEntriesDateRangeQueryParams = addToObjectIfContent({
       start_date: startDate,
       end_date: endDate,

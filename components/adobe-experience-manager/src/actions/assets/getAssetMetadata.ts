@@ -13,15 +13,10 @@ export const getAssetMetadata = action({
   performSafety: "safe",
   perform: async (context, { connection, assetId }) => {
     const client = createAemClient(connection, context.debug.enabled);
-    const { data } = await client.get(
-      `${ASSETS_API_PATH}/${encodeURIComponent(assetId)}/metadata`,
-    );
+    const { data } = await client.get(`${ASSETS_API_PATH}/${encodeURIComponent(assetId)}/metadata`);
     return { data };
   },
   inputs: getAssetMetadataInputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getAssetMetadataOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getAssetMetadataOutputSchema }),
   examplePayload: getAssetMetadataExamplePayload,
 });

@@ -21,9 +21,7 @@ export const selectLedgerAccount = dataSource({
         label: item.displayed_as || item.id || "",
         key: item.id || "",
       }))
-      .sort((a: Element, b: Element) =>
-        (a.label || "").localeCompare(b.label || ""),
-      );
+      .sort((a: Element, b: Element) => (a.label || "").localeCompare(b.label || ""));
 
     return { result };
   },

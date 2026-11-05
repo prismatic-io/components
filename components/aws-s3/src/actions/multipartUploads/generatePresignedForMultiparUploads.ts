@@ -9,8 +9,7 @@ import { generatePresignedForMultiparUploadsOutputSchema } from "../../outputSch
 export const generatePresignedForMultiparUploads = action({
   display: {
     label: "Generate Presigned URL for Multipart Uploads",
-    description:
-      "Generate presigned URLs for uploading the parts of a multipart upload to S3.",
+    description: "Generate presigned URLs for uploading the parts of a multipart upload to S3.",
   },
   inputs: generatePresignedForMultiparUploadsInputs,
   outputSchema: outputSchema({

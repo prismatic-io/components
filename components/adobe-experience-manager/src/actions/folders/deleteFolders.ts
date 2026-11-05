@@ -16,28 +16,21 @@ export const deleteFolders = action({
   performSafety: "notAllowed",
   perform: async (context, { connection, folderPaths, recursive, force }) => {
     const client = createAemClient(connection, context.debug.enabled);
-    const { data } = await client.post<AemJob | FolderCommandResult>(
-      `${FOLDERS_API_PATH}/delete`,
-      {
-        paths: folderPaths,
-        recursive,
-        force,
-      },
-    );
+    const { data } = await client.post<AemJob | FolderCommandResult>(`${FOLDERS_API_PATH}/delete`, {
+      paths: folderPaths,
+      recursive,
+      force,
+    });
     if (isAemJob(data)) return { data };
     return {
-      data: assertFolderCommandProgress(
-        data,
-        data.data?.deletedFolders?.length ?? 0,
-        [...(data.data?.failedFolders ?? []), ...(data.errors ?? [])],
-      ),
+      data: assertFolderCommandProgress(data, data.data?.deletedFolders?.length ?? 0, [
+        ...(data.data?.failedFolders ?? []),
+        ...(data.errors ?? []),
+      ]),
     };
   },
   inputs: deleteFoldersInputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: deleteFoldersOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: deleteFoldersOutputSchema }),
   examplePerform: async () => deleteFoldersExamplePayload,
   examplePayload: deleteFoldersExamplePayload,
 });

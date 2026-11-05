@@ -1,10 +1,7 @@
 import { action, input } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { connectionInput, userIdInput } from "../inputs";
-import {
-  listLabelsExamplePayload,
-  getLabelByNameExamplePayload,
-} from "../examplePayloads";
+import { listLabelsExamplePayload, getLabelByNameExamplePayload } from "../examplePayloads";
 
 const listLabels = action({
   display: {
@@ -41,9 +38,7 @@ const getLabelByName = action({
     const { data } = await client.users.labels.list({
       userId: params.userId,
     });
-    const labels = (data.labels ?? []).filter(
-      (label) => label.name === params.labelName,
-    );
+    const labels = (data.labels ?? []).filter((label) => label.name === params.labelName);
     if (labels.length > 0) {
       return { data: labels[0] };
     }

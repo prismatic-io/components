@@ -29,17 +29,11 @@ export const folderPollingTrigger = pollingTrigger({
   batchConfig: { batchSize: 50 },
   triggerResolver: {
     resolveItems: (_context, { payload }): PollingRecordChange[] =>
-      resolvePollingRecordChanges(
-        payload.body.data as PollSiteChangesSeparatedChanges,
-      ),
+      resolvePollingRecordChanges(payload.body.data as PollSiteChangesSeparatedChanges),
     getNextPaginationState: (_context, { payload }): DeltaCursor | null =>
       (payload.paginationState as DeltaCursor | undefined) ?? null,
   },
-  perform: async (
-    context,
-    payload,
-    { connection, driveId, folderId, includeSubfolders },
-  ) => {
+  perform: async (context, payload, { connection, driveId, folderId, includeSubfolders }) => {
     const { logger, polling, debug } = context;
     const client = await createClient(connection, debug.enabled);
 
@@ -59,10 +53,7 @@ export const folderPollingTrigger = pollingTrigger({
         payload.paginationState as DeltaCursor | undefined,
       );
       folderPath = folderPathFrom(page.value, folderId, folderPath);
-      polling.setState({
-        ...cursorState,
-        ...(folderPath ? { [pathKey]: folderPath } : {}),
-      });
+      polling.setState({ ...cursorState, ...(folderPath ? { [pathKey]: folderPath } : {}) });
 
       return {
         payload: {

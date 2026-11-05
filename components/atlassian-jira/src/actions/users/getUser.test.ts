@@ -19,11 +19,7 @@ describe("getUser", () => {
   test("reads the user by account id and omits an empty expand", async () => {
     const scope = jiraApi()
       .get("/rest/api/3/user")
-      .query(
-        (query) =>
-          query.accountId === "5b10a2844c20165700ede21g" &&
-          !("expand" in query),
-      )
+      .query((query) => query.accountId === "5b10a2844c20165700ede21g" && !("expand" in query))
       .reply(200, getUserExamplePayload.data);
 
     const { result } = await run();

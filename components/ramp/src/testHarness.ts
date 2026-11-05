@@ -1,8 +1,4 @@
-import type {
-  ActionContext,
-  Connection,
-  Element,
-} from "@prismatic-io/spectral";
+import type { ActionContext, Connection, Element } from "@prismatic-io/spectral";
 import { createConnection } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { oauth2 } from "./connections";
@@ -29,8 +25,7 @@ export const testConnection = createConnection(
   { access_token: RAMP_ACCESS_TOKEN },
 ) as unknown as Connection;
 
-export const apiPath = (path: string): string =>
-  `${RAMP_API_PREFIX}/${path.replace(/^\/+/, "")}`;
+export const apiPath = (path: string): string => `${RAMP_API_PREFIX}/${path.replace(/^\/+/, "")}`;
 
 export const rampNock = (): nock.Scope =>
   nock(RAMP_ORIGIN, {
@@ -57,9 +52,7 @@ export interface PaginationInput {
   pageSize: number | undefined;
 }
 
-export const paginationInput = (
-  overrides: Partial<PaginationInput> = {},
-): PaginationInput => ({
+export const paginationInput = (overrides: Partial<PaginationInput> = {}): PaginationInput => ({
   start: undefined,
   pageSize: undefined,
   ...overrides,
@@ -88,9 +81,7 @@ export const listActionParams = (
 export const asElements = (result: (string | Element)[]): Element[] =>
   result.map((entry) => {
     if (typeof entry === "string") {
-      throw new Error(
-        `Expected an Element, received the bare string "${entry}"`,
-      );
+      throw new Error(`Expected an Element, received the bare string "${entry}"`);
     }
     return entry;
   });
@@ -98,9 +89,8 @@ export const asElements = (result: (string | Element)[]): Element[] =>
 export const elementKeys = (result: (string | Element)[]): string[] =>
   asElements(result).map((element) => element.key);
 
-export const elementLabels = (
-  result: (string | Element)[],
-): (string | undefined)[] => asElements(result).map((element) => element.label);
+export const elementLabels = (result: (string | Element)[]): (string | undefined)[] =>
+  asElements(result).map((element) => element.label);
 
 export interface PollingStore {
   currentState: () => Record<string, unknown>;
@@ -108,9 +98,7 @@ export interface PollingStore {
   context: Partial<ActionContext>;
 }
 
-export const createPollingStore = (
-  seedState: Record<string, unknown> = {},
-): PollingStore => {
+export const createPollingStore = (seedState: Record<string, unknown> = {}): PollingStore => {
   let state: Record<string, unknown> = seedState;
   const writes: Record<string, unknown>[] = [];
 

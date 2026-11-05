@@ -16,9 +16,7 @@ export const getCard = action({
       timeout,
     });
     return {
-      data: await client.paymentMethods.retrieve(
-        util.types.toString(paymentId),
-      ),
+      data: await client.paymentMethods.retrieve(util.types.toString(paymentId)),
     };
   },
   inputs: getCardInputs,

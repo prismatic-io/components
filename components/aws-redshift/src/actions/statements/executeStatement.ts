@@ -34,16 +34,10 @@ export const executeStatement = action({
       additionalFields = {},
     },
   ) => {
-    const client = await createRedshiftClient(
-      awsConnection,
-      awsRegion,
-      context.debug.enabled,
-    );
+    const client = await createRedshiftClient(awsConnection, awsRegion, context.debug.enabled);
 
     if (!clusterIdentifier && !workgroupName) {
-      throw new Error(
-        "Either Cluster Identifier or Workgroup Name must be provided",
-      );
+      throw new Error("Either Cluster Identifier or Workgroup Name must be provided");
     }
 
     const commandInput: ExecuteStatementCommandInput = {
@@ -82,9 +76,7 @@ export const executeStatement = action({
     let hasResultSet = false;
 
     do {
-      const describeCommand = new DescribeStatementCommand(
-        describeCommandInput,
-      );
+      const describeCommand = new DescribeStatementCommand(describeCommandInput);
       const describeResponse = await client.send(describeCommand);
       status = describeResponse.Status;
       if (!status) {
@@ -110,15 +102,10 @@ export const executeStatement = action({
       const getStatementResultCommand = new GetStatementResultCommand(
         getStatementResultCommandInput,
       );
-      const getStatementResultResponse = await client.send(
-        getStatementResultCommand,
-      );
+      const getStatementResultResponse = await client.send(getStatementResultCommand);
 
       return {
-        data: {
-          executeStatement: response,
-          statementResults: getStatementResultResponse,
-        },
+        data: { executeStatement: response, statementResults: getStatementResultResponse },
       };
     }
     return {

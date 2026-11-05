@@ -50,22 +50,13 @@ export const pollChangesTrigger = pollingTrigger({
       ? `(${params.additionalFilter}) and (${modifiedFilter})`
       : modifiedFilter;
 
-    const client = getMsBusinessCentralClient(
-      params.connection,
-      context,
-      context.debug.enabled,
-    );
+    const client = getMsBusinessCentralClient(params.connection, context, context.debug.enabled);
     const path = `/companies(${params.companyId})/${config.endpoint}`;
     const query = `${path}?$filter=${$filter}`;
     let stream = resolvePollingStream(pollState, query, now);
     let fetched: Awaited<ReturnType<typeof fetchAllPagedSince>>;
     try {
-      fetched = await fetchAllPagedSince(
-        client,
-        path,
-        { $filter },
-        stream.nextLink,
-      );
+      fetched = await fetchAllPagedSince(client, path, { $filter }, stream.nextLink);
     } catch (error) {
       if (!stream.nextLink) throw error;
       context.logger.warn(

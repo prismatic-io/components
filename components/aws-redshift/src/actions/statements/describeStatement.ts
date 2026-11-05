@@ -10,16 +10,11 @@ import { describeStatementExamplePayload } from "../../examplePayloads";
 export const describeStatement = action({
   display: {
     label: "Describe Statement",
-    description:
-      "Get detailed information about a specific SQL statement in Redshift.",
+    description: "Get detailed information about a specific SQL statement in Redshift.",
   },
   inputs: describeStatementInputs,
   perform: async (context, { awsConnection, awsRegion, statementId }) => {
-    const client = await createRedshiftClient(
-      awsConnection,
-      awsRegion,
-      context.debug.enabled,
-    );
+    const client = await createRedshiftClient(awsConnection, awsRegion, context.debug.enabled);
 
     const commandInput: DescribeStatementCommandInput = {
       Id: statementId,

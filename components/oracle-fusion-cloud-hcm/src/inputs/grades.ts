@@ -1,12 +1,6 @@
 import { input } from "@prismatic-io/spectral";
 import { cleanId } from "../util/transforms";
-import {
-  connection,
-  effectiveDate,
-  fetchAll,
-  includeMetadataLinks,
-  pagination,
-} from "./common";
+import { connection, effectiveDate, fetchAll, includeMetadataLinks, pagination } from "./common";
 
 const gradeId = input({
   label: "Grade ID",

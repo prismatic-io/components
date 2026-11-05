@@ -1,12 +1,6 @@
-import {
-  CUSTOM_OBJECT_PLACEHOLDER,
-  hubspotPaths,
-  SEARCH_ENDPOINT_PATTERN,
-} from "../constants";
+import { CUSTOM_OBJECT_PLACEHOLDER, hubspotPaths, SEARCH_ENDPOINT_PATTERN } from "../constants";
 
-export const searchEndpointObjectType = (
-  endpoint: string,
-): string | undefined =>
+export const searchEndpointObjectType = (endpoint: string): string | undefined =>
   endpoint.match(SEARCH_ENDPOINT_PATTERN)?.[1].toLowerCase();
 
 export const toCurrentSearchEndpoint = (endpoint: string): string => {

@@ -24,14 +24,10 @@ export const listBalanceTransactions = action({
     const options: Stripe.BalanceTransactionListParams = {
       created: created,
       ...(currency && { currency }),
-      ...(pagination.endingBefore && {
-        ending_before: pagination.endingBefore,
-      }),
+      ...(pagination.endingBefore && { ending_before: pagination.endingBefore }),
       limit: pagination.limit,
       ...(source && { source }),
-      ...(pagination.startingAfter && {
-        starting_after: pagination.startingAfter,
-      }),
+      ...(pagination.startingAfter && { starting_after: pagination.startingAfter }),
     };
     return {
       data: await client.balanceTransactions.list(options),

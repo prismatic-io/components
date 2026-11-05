@@ -28,8 +28,7 @@ export const listTransactions = action({
   ) => {
     const client = await getClient(connection, context.debug.enabled);
     const queryParams = removeUndefinedValuesFromObject({
-      "searchCriteria[filterGroups][0][filters][0][conditionType]":
-        searchCriteriaConditionType,
+      "searchCriteria[filterGroups][0][filters][0][conditionType]": searchCriteriaConditionType,
       "searchCriteria[filterGroups][0][filters][0][field]": searchCriteriaField,
       "searchCriteria[filterGroups][0][filters][0][value]": searchCriteriaValue,
       "searchCriteria[sortOrders][0][direction]": searchCriteriaSortDirection,

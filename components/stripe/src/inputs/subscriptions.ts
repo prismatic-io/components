@@ -85,11 +85,7 @@ export const deleteSubscriptionInputs = {
   stripeConnection: connectionInput,
 };
 
-export const getSubscriptionInputs = {
-  subscriptionId,
-  timeout,
-  stripeConnection: connectionInput,
-};
+export const getSubscriptionInputs = { subscriptionId, timeout, stripeConnection: connectionInput };
 
 export const listSubscriptionsInputs = {
   timeout,

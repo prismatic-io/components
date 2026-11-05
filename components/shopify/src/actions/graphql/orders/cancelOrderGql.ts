@@ -13,15 +13,7 @@ export const cancelOrderGql = action({
   performSafety: "notAllowed",
   perform: async (
     context,
-    {
-      shopifyConnection,
-      orderId,
-      reason,
-      refund,
-      restock,
-      notifyCustomer,
-      staffNote,
-    },
+    { shopifyConnection, orderId, reason, refund, restock, notifyCustomer, staffNote },
   ) => {
     const client = getShopifyGraphQlClient(
       shopifyConnection,
@@ -30,25 +22,19 @@ export const cancelOrderGql = action({
       context.logger,
     );
 
-    const data: { orderCancel: Record<string, unknown> } = await client.request(
-      cancelOrderQuery,
-      {
-        notifyCustomer,
-        orderId,
-        reason,
-        refund,
-        restock,
-        staffNote,
-      },
-    );
+    const data: { orderCancel: Record<string, unknown> } = await client.request(cancelOrderQuery, {
+      notifyCustomer,
+      orderId,
+      reason,
+      refund,
+      restock,
+      staffNote,
+    });
 
     return { data: data.orderCancel };
   },
   inputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: cancelOrderGqlOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: cancelOrderGqlOutputSchema }),
   examplePerform: async () => examplePayload,
   examplePayload,
 });

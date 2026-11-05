@@ -10,24 +10,15 @@ import type {
   UserChange,
 } from "../interfaces/polling";
 import type { User } from "../interfaces/user";
-import {
-  POLL_PAGE_SIZE,
-  POLL_UNBATCHED_MAX_PAGES,
-  POLL_UNBATCHED_PAGE_SIZE,
-} from "./constants";
+import { POLL_PAGE_SIZE, POLL_UNBATCHED_MAX_PAGES, POLL_UNBATCHED_PAGE_SIZE } from "./constants";
 
 export const resolveUserChanges = (
   changeType: UserChange["changeType"],
   data: User[] | undefined,
-): UserChange[] =>
-  (data ?? []).map((record): UserChange => ({ changeType, record }));
+): UserChange[] => (data ?? []).map((record): UserChange => ({ changeType, record }));
 
-export const resolveSystemLogChanges = (
-  data: SystemLogEvent[] | undefined,
-): SystemLogChange[] =>
-  (data ?? []).map(
-    (record): SystemLogChange => ({ changeType: "created", record }),
-  );
+export const resolveSystemLogChanges = (data: SystemLogEvent[] | undefined): SystemLogChange[] =>
+  (data ?? []).map((record): SystemLogChange => ({ changeType: "created", record }));
 
 export const usersPollParams = (
   connection: Connection,
@@ -55,9 +46,7 @@ export const resolveSystemLogsLink = (
 ): string | undefined => {
   if (!held.next || (held.filter ?? undefined) !== filter) return undefined;
   try {
-    return new URL(held.next).origin === new URL(baseUrl).origin
-      ? held.next
-      : undefined;
+    return new URL(held.next).origin === new URL(baseUrl).origin ? held.next : undefined;
   } catch {
     return undefined;
   }
@@ -68,9 +57,7 @@ export const resolveSystemLogsSince = (
   lookBackDate: string | undefined,
   now: Date,
 ): string =>
-  state.lastUpdated ||
-  (state.seeded || state.next ? undefined : lookBackDate) ||
-  now.toISOString();
+  state.lastUpdated || (state.seeded || state.next ? undefined : lookBackDate) || now.toISOString();
 
 export const systemLogsWindowBounds = (
   batching: boolean,
@@ -100,12 +87,8 @@ export const fetchSystemLogsWindow = async (
   return { events, hasMore: true, next };
 };
 
-export const getNextLinkUrl = (
-  linkHeader: string | string[] | undefined,
-): string | undefined => {
-  const header = Array.isArray(linkHeader)
-    ? linkHeader.join(",")
-    : (linkHeader ?? "");
+export const getNextLinkUrl = (linkHeader: string | string[] | undefined): string | undefined => {
+  const header = Array.isArray(linkHeader) ? linkHeader.join(",") : (linkHeader ?? "");
   for (const [, url, params] of header.matchAll(/<([^>]*)>([^<]*)/g)) {
     if (/;\s*rel="?next"?/i.test(params)) return url;
   }

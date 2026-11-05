@@ -9,10 +9,7 @@ export const listGroups = action({
     description: "Returns a list of workspaces the user has access to",
   },
   perform: async (context, params) => {
-    const client = createClient(
-      { connection: params.connection },
-      context.debug.enabled,
-    );
+    const client = createClient({ connection: params.connection }, context.debug.enabled);
     const { data } = await client.get("/groups", {
       params: { $top: params.top, $skipToken: params.skipToken },
     });

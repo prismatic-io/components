@@ -3,11 +3,7 @@ import { createConnection, invoke } from "@prismatic-io/spectral/dist/testing";
 import { connection as connectionDefinition } from "../../connections";
 import { listDrives } from "./listDrives";
 
-const connection = createConnection(
-  connectionDefinition,
-  {},
-  { access_token: "test-token" },
-);
+const connection = createConnection(connectionDefinition, {}, { access_token: "test-token" });
 const DRIVE = "https://www.googleapis.com";
 
 describe("listDrives", () => {
@@ -24,9 +20,7 @@ describe("listDrives", () => {
     nock(DRIVE)
       .get("/drive/v3/drives")
       .query(true)
-      .reply(200, {
-        drives: [{ id: "0AL9xQm2FhTzkUk9PVA", name: "Finance Shared Drive" }],
-      });
+      .reply(200, { drives: [{ id: "0AL9xQm2FhTzkUk9PVA", name: "Finance Shared Drive" }] });
 
     const { result } = await invoke(listDrives, { connection });
 

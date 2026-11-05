@@ -55,8 +55,7 @@ export const listCustomers = action({
       data: response,
     };
   },
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    listCustomersExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => listCustomersExamplePayload,
   inputs: listCustomersInputs,
   examplePayload: listCustomersExamplePayload as unknown,
 });

@@ -24,7 +24,7 @@ export const searchConversation = action({
       sort_dir,
       team_ids,
       total_count_only,
-    },
+    }
   ) => {
     const { cursor, limit } = pagination;
     debugLogger({

@@ -28,13 +28,7 @@ describe("removeUndefinedValuesFromObject", () => {
         untrue: false,
         absent: undefined,
       }),
-    ).toEqual({
-      kept: "value",
-      nullish: null,
-      zero: 0,
-      empty: "",
-      untrue: false,
-    });
+    ).toEqual({ kept: "value", nullish: null, zero: 0, empty: "", untrue: false });
   });
 
   test("returns a new object rather than mutating the caller's", () => {
@@ -53,11 +47,7 @@ describe("removeUndefinedValuesFromObject", () => {
 
 describe("paginateResults: single page (fetchAll off)", () => {
   test("returns the response body untouched, envelope included", async () => {
-    const body = {
-      items: [{ entity_id: 1 }],
-      total_count: 1,
-      search_criteria: {},
-    };
+    const body = { items: [{ entity_id: 1 }], total_count: 1, search_criteria: {} };
     nock(STORE_HOST).get(PATH).query(true).reply(200, body);
 
     const { data } = await paginateResults({
@@ -73,19 +63,13 @@ describe("paginateResults: single page (fetchAll off)", () => {
   test("forwards the caller's searchCriteria parameters untouched", async () => {
     const scope = nock(STORE_HOST)
       .get(PATH)
-      .query({
-        "searchCriteria[pageSize]": "20",
-        "searchCriteria[currentPage]": "3",
-      })
+      .query({ "searchCriteria[pageSize]": "20", "searchCriteria[currentPage]": "3" })
       .reply(200, { items: [] });
 
     await paginateResults({
       client: await storeClient(),
       endpoint: ENDPOINT,
-      queryParams: {
-        "searchCriteria[pageSize]": "20",
-        "searchCriteria[currentPage]": "3",
-      },
+      queryParams: { "searchCriteria[pageSize]": "20", "searchCriteria[currentPage]": "3" },
       fetchAll: false,
     });
 
@@ -95,11 +79,7 @@ describe("paginateResults: single page (fetchAll off)", () => {
   test("sends no query string at all when the caller passed no parameters", async () => {
     const scope = nock(STORE_HOST).get(PATH).reply(200, { items: [] });
 
-    await paginateResults({
-      client: await storeClient(),
-      endpoint: ENDPOINT,
-      fetchAll: false,
-    });
+    await paginateResults({ client: await storeClient(), endpoint: ENDPOINT, fetchAll: false });
 
     expect(scope.isDone()).toBe(true);
   });
@@ -110,10 +90,7 @@ describe("paginateResults: every page (fetchAll on)", () => {
     nock(STORE_HOST)
       .get(PATH)
       .query(onPage("1"))
-      .reply(200, {
-        items: [{ entity_id: 1 }, { entity_id: 2 }],
-        total_count: 3,
-      });
+      .reply(200, { items: [{ entity_id: 1 }, { entity_id: 2 }], total_count: 3 });
     nock(STORE_HOST)
       .get(PATH)
       .query(onPage("2"))
@@ -126,11 +103,7 @@ describe("paginateResults: every page (fetchAll on)", () => {
       fetchAll: true,
     });
 
-    expect(data).toEqual([
-      { entity_id: 1 },
-      { entity_id: 2 },
-      { entity_id: 3 },
-    ]);
+    expect(data).toEqual([{ entity_id: 1 }, { entity_id: 2 }, { entity_id: 3 }]);
   });
 
   test("stops on the first short page", async () => {
@@ -138,10 +111,7 @@ describe("paginateResults: every page (fetchAll on)", () => {
       .get(PATH)
       .query(onPage("1"))
       .reply(200, { items: [{ entity_id: 1 }] });
-    const second = nock(STORE_HOST)
-      .get(PATH)
-      .query(onPage("2"))
-      .reply(200, { items: [] });
+    const second = nock(STORE_HOST).get(PATH).query(onPage("2")).reply(200, { items: [] });
 
     await paginateResults({
       client: await storeClient(),

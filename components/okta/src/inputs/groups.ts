@@ -61,8 +61,7 @@ export const removeUserFromGroupInputs = {
   groupId,
   userId: {
     ...userId,
-    comments:
-      "The unique identifier for the user to be removed from the group.",
+    comments: "The unique identifier for the user to be removed from the group.",
   },
   connection,
 };

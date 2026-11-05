@@ -74,11 +74,10 @@ const payload = (paginationState?: PollWindowCursor) =>
     paginationState,
   }) as unknown as PerformPayload;
 
-const captureSearch =
-  (sink: Record<string, string>[]) => (query: Record<string, unknown>) => {
-    sink.push(query as Record<string, string>);
-    return true;
-  };
+const captureSearch = (sink: Record<string, string>[]) => (query: Record<string, unknown>) => {
+  sink.push(query as Record<string, string>);
+  return true;
+};
 
 beforeAll(() => nock.disableNetConnect());
 beforeEach(() => {
@@ -97,22 +96,16 @@ describe("contentFragmentChanges batching declaration", () => {
     expect(trigger.triggerResolverSupport).toBe("valid");
     expect(trigger.batchConfig).toEqual({ batchSize: 50 });
     expect(trigger.triggerResolver?.resolveItems).toBeInstanceOf(Function);
-    expect(trigger.triggerResolver?.getNextPaginationState).toBeInstanceOf(
-      Function,
-    );
+    expect(trigger.triggerResolver?.getNextPaginationState).toBeInstanceOf(Function);
   });
 
   test("offers the Look-back Date directly below the connection", () => {
-    expect(Object.keys(trigger.inputs ?? {}).slice(0, 2)).toEqual([
-      "connection",
-      "lookBackDate",
-    ]);
+    expect(Object.keys(trigger.inputs ?? {}).slice(0, 2)).toEqual(["connection", "lookBackDate"]);
   });
 });
 
 describe("resolveAemChangeItems", () => {
-  const item = contentFragmentChangesExamplePayload.payload.body.data
-    .items[0] as AemChangeItem;
+  const item = contentFragmentChangesExamplePayload.payload.body.data.items[0] as AemChangeItem;
 
   test("returns the tagged items of a realistic payload", () => {
     expect(resolveAemChangeItems({ items: [item] })).toEqual([item]);
@@ -130,9 +123,7 @@ describe("triggerResolver.resolveItems", () => {
       {} as never,
       { payload: contentFragmentChangesExamplePayload.payload } as never,
     );
-    expect(items).toEqual(
-      contentFragmentChangesExamplePayload.payload.body.data.items,
-    );
+    expect(items).toEqual(contentFragmentChangesExamplePayload.payload.body.data.items);
     const batchSize = trigger.batchConfig?.batchSize ?? 1;
     const chunks: unknown[][] = [];
     for (let i = 0; i < (items ?? []).length; i += batchSize) {
@@ -150,11 +141,7 @@ describe("contentFragmentChanges perform", () => {
       .query(captureSearch(queries))
       .reply(200, searchContentFragmentsExamplePayload.data);
 
-    const round1 = await trigger.perform(
-      context(true),
-      payload(),
-      params(LOOK_BACK),
-    );
+    const round1 = await trigger.perform(context(true), payload(), params(LOOK_BACK));
     const cursor: PollWindowCursor = {
       windowStart: LOOK_BACK,
       windowEnd: NOW,
@@ -180,12 +167,10 @@ describe("contentFragmentChanges perform", () => {
       {} as never,
       { payload: round1.payload } as never,
     ) as AemChangeItem[];
-    expect(
-      round1Items.map((item) => [item.changeType, item.record.id]),
-    ).toEqual([["initialSync", exampleContentFragment.id]]);
-    expect(round1Items[0].record.url).toBe(
-      `https://www.example.com${exampleContentFragment.path}`,
-    );
+    expect(round1Items.map((item) => [item.changeType, item.record.id])).toEqual([
+      ["initialSync", exampleContentFragment.id],
+    ]);
+    expect(round1Items[0].record.url).toBe(`https://www.example.com${exampleContentFragment.path}`);
     expect(
       trigger.triggerResolver?.getNextPaginationState?.(
         {} as never,
@@ -214,16 +199,12 @@ describe("contentFragmentChanges perform", () => {
       ),
     ).toBeNull();
     expect(
-      (round2.payload.body.data as { items: AemChangeItem[] }).items.map(
-        (item) => item.record.id,
-      ),
+      (round2.payload.body.data as { items: AemChangeItem[] }).items.map((item) => item.record.id),
     ).toEqual(["second-fragment"]);
   });
 
   test("reports changes on a platform-driven round that drains an empty last page", async () => {
-    store = {
-      cursor: { windowStart: LOOK_BACK, windowEnd: NOW, cursor: PAGE_CURSOR },
-    };
+    store = { cursor: { windowStart: LOOK_BACK, windowEnd: NOW, cursor: PAGE_CURSOR } };
     nock(BASE).get(SEARCH_PATH).query(true).reply(200, { items: [] });
     const result = await trigger.perform(
       context(true),
@@ -239,13 +220,8 @@ describe("contentFragmentChanges perform", () => {
       .get(SEARCH_PATH)
       .query(true)
       .reply(200, { items: [exampleContentFragment] });
-    const result = await trigger.perform(
-      context(false),
-      payload(),
-      params(LOOK_BACK),
-    );
-    const items = (result.payload.body.data as { items: AemChangeItem[] })
-      .items;
+    const result = await trigger.perform(context(false), payload(), params(LOOK_BACK));
+    const items = (result.payload.body.data as { items: AemChangeItem[] }).items;
     expect(items.map((item) => item.changeType)).toEqual(["initialSync"]);
     expect(store).toEqual({ lastPolledAt: NOW });
   });
@@ -260,36 +236,24 @@ describe("contentFragmentChanges perform", () => {
   test("delivers a record on the window boundary exactly once", async () => {
     const start = "2026-10-01T00:00:00.000Z";
     store = { lastPolledAt: start };
-    const atStart = {
-      ...exampleContentFragment,
-      id: "at-start",
-      modified: { at: start },
-    };
-    const atEnd = {
-      ...exampleContentFragment,
-      id: "at-end",
-      modified: { at: NOW },
-    };
+    const atStart = { ...exampleContentFragment, id: "at-start", modified: { at: start } };
+    const atEnd = { ...exampleContentFragment, id: "at-end", modified: { at: NOW } };
     nock(BASE)
       .get(SEARCH_PATH)
       .query(true)
       .reply(200, { items: [atStart, atEnd] });
     const result = await trigger.perform(context(false), payload(), params(""));
-    const items = (result.payload.body.data as { items: AemChangeItem[] })
-      .items;
+    const items = (result.payload.body.data as { items: AemChangeItem[] }).items;
     expect(items.map((item) => item.record.id)).toEqual(["at-start"]);
     expect(store).toEqual({ lastPolledAt: NOW });
   });
 
   test("surfaces an API error without advancing the watermark", async () => {
     store = { lastPolledAt: "2026-10-01T00:00:00.000Z" };
-    nock(BASE)
-      .get(SEARCH_PATH)
-      .query(true)
-      .reply(500, { title: "Server Error" });
-    await expect(
-      trigger.perform(context(false), payload(), params("")),
-    ).rejects.toThrow("Request failed with status code 500");
+    nock(BASE).get(SEARCH_PATH).query(true).reply(500, { title: "Server Error" });
+    await expect(trigger.perform(context(false), payload(), params(""))).rejects.toThrow(
+      "Request failed with status code 500",
+    );
     expect(store).toEqual({ lastPolledAt: "2026-10-01T00:00:00.000Z" });
   });
 });

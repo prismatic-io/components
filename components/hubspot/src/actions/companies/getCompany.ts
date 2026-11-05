@@ -9,8 +9,7 @@ import { getAllPaginatedData, getProps } from "../../util";
 export const getCompany = action({
   display: {
     label: "Get Company",
-    description:
-      "Retrieve the information or metadata of a company by Id, domain, or name.",
+    description: "Retrieve the information or metadata of a company by Id, domain, or name.",
   },
   performSafety: "notAllowed",
   perform: async (
@@ -40,10 +39,7 @@ export const getCompany = action({
       debugRequest,
     });
 
-    const parameterizedProperties = getProps(
-      COMPANY_PROPS,
-      additionalProperties || [],
-    );
+    const parameterizedProperties = getProps(COMPANY_PROPS, additionalProperties || []);
 
     const params = {
       ...parameterizedProperties,
@@ -54,19 +50,13 @@ export const getCompany = action({
     const companiesUrl = hubspotPaths.objects("companies");
 
     if (domain) {
-      const companies = await getAllPaginatedData(
-        client,
-        companiesUrl,
-        true,
-        true,
-        {
-          params: {
-            ...params,
-            limit: undefined,
-            after: undefined,
-          },
+      const companies = await getAllPaginatedData(client, companiesUrl, true, true, {
+        params: {
+          ...params,
+          limit: undefined,
+          after: undefined,
         },
-      );
+      });
 
       const filteredCompanies = (
         (companies as unknown as { properties?: { domain?: string } }[]) || []
@@ -81,19 +71,13 @@ export const getCompany = action({
     }
 
     if (companyName) {
-      const companies = await getAllPaginatedData(
-        client,
-        companiesUrl,
-        true,
-        true,
-        {
-          params: {
-            ...params,
-            limit: undefined,
-            after: undefined,
-          },
+      const companies = await getAllPaginatedData(client, companiesUrl, true, true, {
+        params: {
+          ...params,
+          limit: undefined,
+          after: undefined,
         },
-      );
+      });
 
       const filteredCompanies = (
         (companies as unknown as { properties?: { name?: string } }[]) || []
@@ -116,8 +100,5 @@ export const getCompany = action({
     data: getCompanyExamplePayload.data,
   }),
   examplePayload: getCompanyExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getCompanyOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getCompanyOutputSchema }),
 });

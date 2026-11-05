@@ -27,8 +27,5 @@ export const getCustomObject = action({
   },
   inputs: getCustomObjectInputs,
   examplePayload: getCustomObjectExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: customObjectSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: customObjectSchema }),
 });

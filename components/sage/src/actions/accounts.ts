@@ -28,8 +28,7 @@ export const listLedgerAccounts = action({
       params: {
         items_per_page: util.types.toInt(params.itemsPerPage) || undefined,
         page: util.types.toInt(params.page) || undefined,
-        updated_or_created_since:
-          util.types.toString(params.updated_or_created_since) || undefined,
+        updated_or_created_since: util.types.toString(params.updated_or_created_since) || undefined,
       },
     });
 
@@ -70,9 +69,7 @@ export const getLedgerAccount = action({
   perform: async (context, params) => {
     const client = getSageClient(params.connection, context.debug.enabled);
 
-    const { data } = await client.get(
-      `/ledger_accounts/${params.ledgerAccountId}`,
-    );
+    const { data } = await client.get(`/ledger_accounts/${params.ledgerAccountId}`);
 
     return {
       data,
@@ -118,18 +115,15 @@ export const createLedgerAccount = action({
 export const updateLedgerAccount = action({
   display: {
     label: "Update Ledger Account",
-    description:
-      "Update the information and metadata of a Ledger account by Id",
+    description: "Update the information and metadata of a Ledger account by Id",
   },
   perform: async (context, params) => {
     const client = getSageClient(params.connection, context.debug.enabled);
 
     const { data } = await client.put(`/ledger_accounts/${params.accountId}`, {
       ledger_account: {
-        ledger_account_type_id:
-          util.types.toString(params.ledgerAccountTypeId) || undefined,
-        included_in_chart:
-          util.types.toBool(params.includedInChart) || undefined,
+        ledger_account_type_id: util.types.toString(params.ledgerAccountTypeId) || undefined,
+        included_in_chart: util.types.toBool(params.includedInChart) || undefined,
         name: util.types.toString(params.name) || undefined,
         display_name: util.types.toString(params.displayName) || undefined,
         nominal_code: util.types.toNumber(params.nominalCode) || undefined,

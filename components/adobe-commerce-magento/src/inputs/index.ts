@@ -29,12 +29,7 @@ export {
   selectOrderInputs,
   selectTransactionInputs,
 } from "./dataSources";
-export {
-  graphQLRawRequestInputs,
-  query,
-  restRawRequestInputs,
-  store,
-} from "./misc";
+export { graphQLRawRequestInputs, query, restRawRequestInputs, store } from "./misc";
 export {
   cancelOrderInputs,
   createOrderInputs,
@@ -56,9 +51,5 @@ export {
   option,
   product,
 } from "./products";
-export {
-  getTransactionInputs,
-  listTransactionsInputs,
-  transactionId,
-} from "./transactions";
+export { getTransactionInputs, listTransactionsInputs, transactionId } from "./transactions";
 export { myTriggerInputs, pollChangesInputs } from "./triggers";

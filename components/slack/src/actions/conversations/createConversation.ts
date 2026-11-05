@@ -13,7 +13,7 @@ export const createConversation = action({
   performSafety: "notAllowed",
   perform: async (
     { debug: { enabled: debug } },
-    { connection, isPrivate, conversationName, teamId },
+    { connection, isPrivate, conversationName, teamId }
   ) => {
     debugLogger({ debug, isPrivate, conversationName, teamId });
     assertTeamIdForOrgToken(connection, teamId, "conversations.create");
@@ -28,7 +28,7 @@ export const createConversation = action({
   },
   examplePerform: async (
     _context,
-    { conversationName, isPrivate },
+    { conversationName, isPrivate }
   ): Promise<{ data: unknown }> => {
     const name = conversationName
       .toLowerCase()

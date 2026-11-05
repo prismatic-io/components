@@ -31,9 +31,7 @@ export const contentFragmentChanges = pollingTrigger({
   batchConfig: { batchSize: DEFAULT_BATCH_SIZE },
   triggerResolver: {
     resolveItems: (_context, { payload }): AemChangeItem[] =>
-      resolveAemChangeItems(
-        payload.body.data as AemPollingChangesObject | undefined,
-      ),
+      resolveAemChangeItems(payload.body.data as AemPollingChangesObject | undefined),
     getNextPaginationState: (_context, { payload }): PollWindowCursor | null =>
       (payload.paginationState as PollWindowCursor | undefined) ?? null,
   },
@@ -41,12 +39,7 @@ export const contentFragmentChanges = pollingTrigger({
     const isBatching = context.batch?.enabled === true;
     const incoming = payload.paginationState as PollWindowCursor | undefined;
     const state = (context.polling.getState() ?? {}) as PollingState;
-    const window = resolvePollWindow(
-      state,
-      incoming,
-      params.lookBackDate,
-      windowNow(),
-    );
+    const window = resolvePollWindow(state, incoming, params.lookBackDate, windowNow());
     const windowIsEmpty = window.windowStart >= window.windowEnd;
 
     const client = createAemClient(params.connection, context.debug.enabled);
@@ -66,17 +59,9 @@ export const contentFragmentChanges = pollingTrigger({
 
     const scope = params.path ?? DEFAULT_DAM_ROOT;
     const items = records.map((fragment): AemChangeItem => {
-      const record = toContentFragmentRecord(
-        fragment,
-        scope,
-        params.publishBaseUrl,
-      );
+      const record = toContentFragmentRecord(fragment, scope, params.publishBaseUrl);
       return {
-        changeType: classifyChange(
-          record,
-          window.windowStart,
-          window.isInitialSync,
-        ),
+        changeType: classifyChange(record, window.windowStart, window.isInitialSync),
         record,
       };
     });
@@ -88,11 +73,7 @@ export const contentFragmentChanges = pollingTrigger({
     }
 
     return {
-      payload: {
-        ...payload,
-        paginationState: nextCursor,
-        body: { data: { items } },
-      },
+      payload: { ...payload, paginationState: nextCursor, body: { data: { items } } },
       polledNoChanges: items.length === 0 && !nextCursor && !incoming,
     };
   },

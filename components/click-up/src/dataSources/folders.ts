@@ -11,9 +11,7 @@ export const folders = dataSource({
   },
   perform: async (_context, { connection, spaceId }) => {
     const client = createClient(connection);
-    const { data } = await client.get<GetFoldersResponse>(
-      `/space/${spaceId}/folder`,
-    );
+    const { data } = await client.get<GetFoldersResponse>(`/space/${spaceId}/folder`);
     const options = data.folders.map<Element>((folder) => {
       return { label: folder.name, key: folder.id };
     });

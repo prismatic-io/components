@@ -12,15 +12,8 @@ export const getProductFieldsV2 = action({
     description: "Gets all product fields.",
   },
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { connection, pagination: { limit, cursor } = {}, fetchAll },
-  ) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      WebhookVersion.V2,
-    );
+  perform: async (context, { connection, pagination: { limit, cursor } = {}, fetchAll }) => {
+    const client = createClient(connection, context.debug.enabled, WebhookVersion.V2);
 
     const data = await paginateRecordsWithCursor(
       client,
@@ -35,8 +28,5 @@ export const getProductFieldsV2 = action({
   },
   inputs: getProductFieldsV2Inputs,
   examplePayload: getProductFieldsV2ExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getProductFieldsV2OutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getProductFieldsV2OutputSchema }),
 });

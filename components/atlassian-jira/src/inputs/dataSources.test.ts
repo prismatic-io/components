@@ -13,12 +13,6 @@ describe("data source input cleans", () => {
   run([
     ["projectIds", i.projectIds, "10201", [{ projectId: "10201" }]],
     ["returnIssueTypeName", i.returnIssueTypeName, "true", true, false],
-    [
-      "onlyCustomFields",
-      issueFieldsInputs.onlyCustomFields,
-      "true",
-      true,
-      false,
-    ],
+    ["onlyCustomFields", issueFieldsInputs.onlyCustomFields, "true", true, false],
   ]);
 });

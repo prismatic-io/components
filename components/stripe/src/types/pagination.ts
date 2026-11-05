@@ -5,10 +5,7 @@ export type ClassResource =
   | Stripe.PricesResource
   | Stripe.Checkout.SessionsResource;
 
-export type StripeResource =
-  | Stripe.WebhookEndpoint
-  | Stripe.Price
-  | Stripe.Checkout.Session;
+export type StripeResource = Stripe.WebhookEndpoint | Stripe.Price | Stripe.Checkout.Session;
 
 export type PaginatedRecord = Stripe.ApiListPromise<StripeResource>;
 

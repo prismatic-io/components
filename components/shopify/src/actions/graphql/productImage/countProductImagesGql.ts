@@ -9,8 +9,7 @@ import countProductImagesQuery from "../queries/productImage/CountProductImages.
 export const countProductImagesGql = action({
   display: {
     label: "Count Product Images",
-    description:
-      "Returns a count of all product images for the specified product.",
+    description: "Returns a count of all product images for the specified product.",
   },
   performSafety: "safe",
   perform: async (context, { productId, shopifyConnection }) => {
@@ -20,21 +19,15 @@ export const countProductImagesGql = action({
       context.debug.enabled,
       context.logger,
     );
-    const data: { product: { mediaCount: Count } } = await client.request(
-      countProductImagesQuery,
-      {
-        productId,
-      },
-    );
+    const data: { product: { mediaCount: Count } } = await client.request(countProductImagesQuery, {
+      productId,
+    });
 
     return {
       data: data.product.mediaCount,
     };
   },
   inputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: countProductImagesGqlOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: countProductImagesGqlOutputSchema }),
   examplePayload,
 });

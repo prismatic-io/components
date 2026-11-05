@@ -2,10 +2,7 @@ import type { GaxiosResponse } from "gaxios";
 import type { drive_v3 } from "googleapis";
 import type { PaginationParams } from "../types";
 
-export async function fetchAllPages<
-  TResponse extends { nextPageToken?: string | null },
-  TItem,
->(
+export async function fetchAllPages<TResponse extends { nextPageToken?: string | null }, TItem>(
   listPage: (pageToken?: string) => Promise<GaxiosResponse<TResponse>>,
   selectItems: (response: TResponse) => TItem[] | undefined,
 ): Promise<TItem[]> {
@@ -37,8 +34,7 @@ export async function fetchFiles(
   }
 
   const files = await fetchAllPages(
-    (pageToken) =>
-      drive.files.list({ ...initialParams, pageSize: undefined, pageToken }),
+    (pageToken) => drive.files.list({ ...initialParams, pageSize: undefined, pageToken }),
     (data) => data.files,
   );
 
@@ -58,8 +54,7 @@ export async function fetchDrives(
   }
 
   const drives = await fetchAllPages(
-    (pageToken) =>
-      drive.drives.list({ ...initialParams, pageSize: undefined, pageToken }),
+    (pageToken) => drive.drives.list({ ...initialParams, pageSize: undefined, pageToken }),
     (data) => data.drives,
   );
 

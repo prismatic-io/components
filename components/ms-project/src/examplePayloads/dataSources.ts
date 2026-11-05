@@ -7,13 +7,9 @@ const picklistResult: DataSourceResult<"picklist"> = {
   ],
 };
 
-export const selectProjectExamplePayload: DataSourceResult<"picklist"> =
-  picklistResult;
-export const selectTaskExamplePayload: DataSourceResult<"picklist"> =
-  picklistResult;
-export const selectDraftTaskExamplePayload: DataSourceResult<"picklist"> =
-  picklistResult;
-export const selectProjectResourceExamplePayload: DataSourceResult<"picklist"> =
-  picklistResult;
+export const selectProjectExamplePayload: DataSourceResult<"picklist"> = picklistResult;
+export const selectTaskExamplePayload: DataSourceResult<"picklist"> = picklistResult;
+export const selectDraftTaskExamplePayload: DataSourceResult<"picklist"> = picklistResult;
+export const selectProjectResourceExamplePayload: DataSourceResult<"picklist"> = picklistResult;
 export const selectDraftProjectResourceExamplePayload: DataSourceResult<"picklist"> =
   picklistResult;

@@ -11,8 +11,7 @@ import { updatePlanDetailsInputs } from "../../inputs";
 export const updatePlanDetails = action({
   display: {
     label: "Update Plan Details",
-    description:
-      "Set a plan's category labels and adjust who it is shared with.",
+    description: "Set a plan's category labels and adjust who it is shared with.",
   },
   inputs: updatePlanDetailsInputs,
   outputSchema: outputSchema({
@@ -20,10 +19,7 @@ export const updatePlanDetails = action({
     schema: updatePlanDetailsOutputSchema,
   }),
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { connection, planId, categoryDescriptions, sharing, etag },
-  ) => {
+  perform: async (context, { connection, planId, categoryDescriptions, sharing, etag }) => {
     const client = createClient(connection, context.debug.enabled);
 
     const sharedWith: Record<string, boolean> = {};

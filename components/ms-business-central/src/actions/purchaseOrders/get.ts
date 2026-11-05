@@ -7,15 +7,10 @@ import type { PurchaseOrder } from "../../interfaces";
 export const getPurchaseOrder = action({
   display: {
     label: "Get Purchase Order",
-    description:
-      "Retrieves a purchase order object in your Business Central Organization.",
+    description: "Retrieves a purchase order object in your Business Central Organization.",
   },
   perform: async (context, { companyId, connection, purchaseOrderId }) => {
-    const client = getMsBusinessCentralClient(
-      connection,
-      context,
-      context.debug.enabled,
-    );
+    const client = getMsBusinessCentralClient(connection, context, context.debug.enabled);
     const { data } = await client.get<PurchaseOrder>(
       `/companies(${companyId})/purchaseOrders(${purchaseOrderId})`,
     );

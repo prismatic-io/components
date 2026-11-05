@@ -13,6 +13,4 @@ export interface CleanSObject {
 
 export type NestedRecord = Record<string, Record<string, unknown>>;
 
-export type SupplementalData =
-  | { data: NestedRecord; contentType: string }
-  | undefined;
+export type SupplementalData = { data: NestedRecord; contentType: string } | undefined;

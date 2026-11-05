@@ -4,17 +4,8 @@ import { createClient } from "../client";
 import { MAX_PAGES, PLANNER_ENDPOINTS } from "../constants";
 import { pollChangesTriggerExamplePayload } from "../examplePayloads";
 import { pollChangesTriggerInputs } from "../inputs";
-import type {
-  Etagged,
-  PlannerChangesObject,
-  PlannerTaskChange,
-  PollingState,
-} from "../types";
-import {
-  fetchTasksCreatedSince,
-  latestCreatedDateTime,
-  resolvePlannerTaskChanges,
-} from "../utils";
+import type { Etagged, PlannerChangesObject, PlannerTaskChange, PollingState } from "../types";
+import { fetchTasksCreatedSince, latestCreatedDateTime, resolvePlannerTaskChanges } from "../utils";
 
 export const pollChangesTrigger = pollingTrigger({
   display: {
@@ -33,17 +24,12 @@ export const pollChangesTrigger = pollingTrigger({
     const pollState = context.polling.getState() as PollingState | undefined;
     const lastPolledAt =
       pollState?.lastPolledAt ??
-      (lookBackDate
-        ? new Date(Date.parse(lookBackDate) - 1).toISOString()
-        : undefined);
+      (lookBackDate ? new Date(Date.parse(lookBackDate) - 1).toISOString() : undefined);
 
     const client = createClient(connection, context.debug.enabled);
-    const { fetched, created, newestCreatedDateTime, truncated } =
-      await fetchTasksCreatedSince<PlannerTask & Etagged>(
-        client,
-        PLANNER_ENDPOINTS.PLAN_TASKS(planId),
-        lastPolledAt,
-      );
+    const { fetched, created, newestCreatedDateTime, truncated } = await fetchTasksCreatedSince<
+      PlannerTask & Etagged
+    >(client, PLANNER_ENDPOINTS.PLAN_TASKS(planId), lastPolledAt);
 
     if (truncated) {
       throw new Error(

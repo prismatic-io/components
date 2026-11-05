@@ -1,12 +1,7 @@
 import { type Connection, ConnectionError, util } from "@prismatic-io/spectral";
 import connections from "./connections";
 import { LOOK_BACK_DATE_PATTERN, POLL_RESOURCE_CONFIG } from "./constants";
-import type {
-  PollingState,
-  Sage200Changes,
-  Sage200Record,
-  Sage200RecordChange,
-} from "./types";
+import type { PollingState, Sage200Changes, Sage200Record, Sage200RecordChange } from "./types";
 
 export const cleanNumberInput = (value: unknown) =>
   value ? util.types.toNumber(value) : undefined;
@@ -24,10 +19,7 @@ export const cleanCodeInput = (value: unknown) => {
 export const validateConnection = (connection: Connection): void => {
   const connectionKeys = connections.map((c) => c.key);
   if (!connectionKeys.includes(connection.key)) {
-    throw new ConnectionError(
-      connection,
-      `Unsupported connection ${connection.key}.`,
-    );
+    throw new ConnectionError(connection, `Unsupported connection ${connection.key}.`);
   }
 };
 
@@ -58,21 +50,14 @@ export const cleanOptionalBoolean = (value: unknown) => {
 };
 
 export const lookBackDateClean = (value: unknown): string => {
-  if (
-    value === undefined ||
-    value === null ||
-    (typeof value === "string" && value.trim() === "")
-  ) {
+  if (value === undefined || value === null || (typeof value === "string" && value.trim() === "")) {
     return "";
   }
 
   const raw = typeof value === "string" ? value.trim() : String(value);
-  const match =
-    typeof value === "string" ? raw.match(LOOK_BACK_DATE_PATTERN) : null;
+  const match = typeof value === "string" ? raw.match(LOOK_BACK_DATE_PATTERN) : null;
   if (!match) {
-    throw new Error(
-      `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
-    );
+    throw new Error(`Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`);
   }
 
   const [, yearStr, monthStr, dayStr] = match;
@@ -85,9 +70,7 @@ export const lookBackDateClean = (value: unknown): string => {
     parsed.getUTCMonth() !== month - 1 ||
     parsed.getUTCDate() !== day
   ) {
-    throw new Error(
-      `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
-    );
+    throw new Error(`Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`);
   }
 
   if (parsed.getTime() > Date.now()) {
@@ -110,14 +93,11 @@ export const filterByTimestamp = (
   for (const record of records) {
     const rawCreated = record.date_time_created;
     const rawUpdated = record.date_time_updated;
-    const createdDate =
-      typeof rawCreated === "string" ? new Date(rawCreated) : null;
-    const updatedDate =
-      typeof rawUpdated === "string" ? new Date(rawUpdated) : null;
+    const createdDate = typeof rawCreated === "string" ? new Date(rawCreated) : null;
+    const updatedDate = typeof rawUpdated === "string" ? new Date(rawUpdated) : null;
 
     const isNew = createdDate !== null && createdDate > lastPolledAtDate;
-    const isUpdated =
-      !isNew && updatedDate !== null && updatedDate > lastPolledAtDate;
+    const isUpdated = !isNew && updatedDate !== null && updatedDate > lastPolledAtDate;
 
     if (isNew && includeNew) {
       created.push(record);
@@ -131,11 +111,7 @@ export const filterByTimestamp = (
 
 export const resolvePollWindow = (
   state: PollingState | undefined,
-  params: {
-    lookBackDate: string;
-    showNewRecords: boolean;
-    showUpdatedRecords: boolean;
-  },
+  params: { lookBackDate: string; showNewRecords: boolean; showUpdatedRecords: boolean },
   now: string,
 ): { lastPolledAt: string; includeNew: boolean; includeUpdated: boolean } => {
   const stored = state?.lastPolledAt;
@@ -167,9 +143,7 @@ export const resolveSage200RecordChanges = (
   ];
 };
 
-export const pollResourceModel = Object.entries(POLL_RESOURCE_CONFIG).map(
-  ([value, { label }]) => ({
-    label,
-    value,
-  }),
-);
+export const pollResourceModel = Object.entries(POLL_RESOURCE_CONFIG).map(([value, { label }]) => ({
+  label,
+  value,
+}));

@@ -72,8 +72,7 @@ export const aemOAuthWebApp = oauth2Connection({
       type: "string",
       required: true,
       shown: true,
-      comments:
-        "The Adobe IMS token endpoint. Change only when Adobe directs a different region.",
+      comments: "The Adobe IMS token endpoint. Change only when Adobe directs a different region.",
       example: DEFAULT_TOKEN_URL,
       default: DEFAULT_TOKEN_URL,
     },

@@ -43,8 +43,7 @@ export const createBulkJob = action({
       data,
     };
   },
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    createBulkJobExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => createBulkJobExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: createBulkJobOutputSchema,

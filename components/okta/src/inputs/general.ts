@@ -1,9 +1,4 @@
-import {
-  input,
-  type KeyValuePair,
-  structuredObjectInput,
-  util,
-} from "@prismatic-io/spectral";
+import { input, type KeyValuePair, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { cleanString } from "../util/clean";
 
 export const connection = input({

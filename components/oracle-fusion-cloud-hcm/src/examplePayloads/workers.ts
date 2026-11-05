@@ -24,9 +24,7 @@ const workerRecordExample: WorkerRecord = {
   workersUniqID: "00020000000EACED00057708000110F09B9C1A70",
 };
 
-export const listPublicWorkersExamplePayload: {
-  data: OracleHcmListResponse<Worker>;
-} = {
+export const listPublicWorkersExamplePayload: { data: OracleHcmListResponse<Worker> } = {
   data: {
     items: [workerExample],
     count: 1,
@@ -40,9 +38,7 @@ export const getPublicWorkerExamplePayload: { data: Worker } = {
   data: workerExample,
 };
 
-export const listWorkersExamplePayload: {
-  data: OracleHcmListResponse<WorkerRecord>;
-} = {
+export const listWorkersExamplePayload: { data: OracleHcmListResponse<WorkerRecord> } = {
   data: {
     items: [workerRecordExample],
     count: 1,

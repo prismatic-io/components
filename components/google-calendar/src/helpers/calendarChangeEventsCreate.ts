@@ -8,7 +8,7 @@ import { manageWatch } from "./manageWatch";
 
 export const calendarChangeEventsCreate = async (
   context: ActionContext,
-  { connection, calendarId }: CalendarChangeEventsInputs,
+  { connection, calendarId }: CalendarChangeEventsInputs
 ) => {
   const calendar = createClient({ connection });
   const integrationFlowName = context.flow.name;
@@ -22,7 +22,7 @@ export const calendarChangeEventsCreate = async (
     | undefined;
 
   context.logger.info(
-    `Started Calendar Change Events Trigger deploy for ${integrationFlowName}`,
+    `Started Calendar Change Events Trigger deploy for ${integrationFlowName}`
   );
 
   context.logger.info(`Creating watch for calendar ${calendarId}`);
@@ -57,7 +57,7 @@ export const calendarChangeEventsCreate = async (
       context.crossFlowState[lastListExecutedAtStateKey] =
         new Date().toISOString();
       context.logger.info(
-        "Initial sync token established. Future notifications will track changes from this point.",
+        "Initial sync token established. Future notifications will track changes from this point."
       );
     } else {
       throw new Error("No sync token found");
@@ -65,12 +65,12 @@ export const calendarChangeEventsCreate = async (
   } catch (error) {
     context.logger.error(
       "Failed to establish initial sync token:",
-      error instanceof Error ? error.message : "Unknown error",
+      error instanceof Error ? error.message : "Unknown error"
     );
     throw error;
   }
 
   context.logger.info(
-    `Finished Calendar Change Events Trigger deploy for ${integrationFlowName}`,
+    `Finished Calendar Change Events Trigger deploy for ${integrationFlowName}`
   );
 };

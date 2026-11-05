@@ -35,21 +35,18 @@ export const updateProduct = action({
       debugRequest,
     });
 
-    const { data } = await client.patch(
-      hubspotPaths.objects("products", `/${productId}`),
-      {
-        properties: {
-          description: description,
-          hs_cost_of_goods_sold: unitCost,
-          hs_recurring_billing_period: recurringBillingPeriod,
-          hs_sku: updateSku,
-          name: updateProductName,
-          price: updatePrice,
-          ...fieldValues,
-          ...dynamicValues,
-        },
+    const { data } = await client.patch(hubspotPaths.objects("products", `/${productId}`), {
+      properties: {
+        description: description,
+        hs_cost_of_goods_sold: unitCost,
+        hs_recurring_billing_period: recurringBillingPeriod,
+        hs_sku: updateSku,
+        name: updateProductName,
+        price: updatePrice,
+        ...fieldValues,
+        ...dynamicValues,
       },
-    );
+    });
 
     return { data };
   },

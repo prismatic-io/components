@@ -15,8 +15,7 @@ const showInstanceWebhooksInput = input({
   required: true,
   default: "true",
   example: "true",
-  comments:
-    "When true, returns only subscriptions for this instance's webhooks.",
+  comments: "When true, returns only subscriptions for this instance's webhooks.",
   clean: util.types.toBool,
 });
 
@@ -26,8 +25,7 @@ export const listSubscriptionsInputs = {
   fetchAll: {
     ...fetchAllInput,
     default: "true",
-    comments:
-      "When true, automatically fetches all pages of results using pagination.",
+    comments: "When true, automatically fetches all pages of results using pagination.",
   },
 };
 

@@ -12,8 +12,7 @@ export default component({
   display: {
     category: "Application Connectors",
     label: "Microsoft SharePoint",
-    description:
-      "Manage sites, drives, files, and lists in Microsoft SharePoint.",
+    description: "Manage sites, drives, files, and lists in Microsoft SharePoint.",
     iconPath: "icon.png",
   },
   hooks: { error: handleErrors },

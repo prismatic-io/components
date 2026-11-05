@@ -35,10 +35,7 @@ export const downloadArrayOfAttachments = async (
 ): Promise<AttachmentResponse[]> => {
   const data = await Promise.all(
     attachmentIds.map(async ({ id, mimeType }) => ({
-      data: await downloadFile(
-        jiraConnection,
-        `${baseUrl}/attachment/content/${id}`,
-      ),
+      data: await downloadFile(jiraConnection, `${baseUrl}/attachment/content/${id}`),
       contentType: mimeType,
     })),
   );

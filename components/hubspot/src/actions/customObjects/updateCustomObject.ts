@@ -32,19 +32,16 @@ export const updateCustomObject = action({
       debugRequest,
     });
 
-    const { data } = await client.patch(
-      hubspotPaths.schemas(`/${objectType}`),
-      {
-        labels: {
-          singular: singularLabel,
-          plural: pluralLabel,
-        },
-        requiredProperties: requiredProperties,
-        searchableProperties: searchableProperties,
-        ...fieldValues,
-        ...dynamicValues,
+    const { data } = await client.patch(hubspotPaths.schemas(`/${objectType}`), {
+      labels: {
+        singular: singularLabel,
+        plural: pluralLabel,
       },
-    );
+      requiredProperties: requiredProperties,
+      searchableProperties: searchableProperties,
+      ...fieldValues,
+      ...dynamicValues,
+    });
 
     return {
       data,
@@ -55,8 +52,5 @@ export const updateCustomObject = action({
     data: updateCustomObjectExamplePayload.data,
   }),
   examplePayload: updateCustomObjectExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: updateCustomObjectOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: updateCustomObjectOutputSchema }),
 });

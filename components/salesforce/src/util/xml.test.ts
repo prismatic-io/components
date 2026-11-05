@@ -37,15 +37,11 @@ describe("parseXml", () => {
   });
 
   test("does not expand DOCTYPE entities", () => {
-    expect(
-      parseXml('<!DOCTYPE r [<!ENTITY e "boom">]><r>&e;</r>'),
-    ).toStrictEqual({ r: "&e;" });
+    expect(parseXml('<!DOCTYPE r [<!ENTITY e "boom">]><r>&e;</r>')).toStrictEqual({ r: "&e;" });
   });
 
   test("omits the XML declaration and processing instructions", () => {
-    expect(
-      parseXml('<?xml version="1.0"?><r><?pi data?><a>1</a></r>'),
-    ).toStrictEqual({
+    expect(parseXml('<?xml version="1.0"?><r><?pi data?><a>1</a></r>')).toStrictEqual({
       r: { a: 1 },
     });
   });

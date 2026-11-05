@@ -11,14 +11,11 @@ export const getOnboardingCandidateInfo = action({
   inputs: getOnboardingCandidateInfoInputs,
   perform: async (context, { connection, applicantId, $select }) => {
     const client = await createClient(connection, context.debug.enabled);
-    const { data } = await client.get(
-      `/OnboardingCandidateInfo('${applicantId}')`,
-      {
-        params: {
-          $select,
-        },
+    const { data } = await client.get(`/OnboardingCandidateInfo('${applicantId}')`, {
+      params: {
+        $select,
       },
-    );
+    });
     return {
       data,
     };

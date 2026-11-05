@@ -12,19 +12,12 @@ export const getDealFieldV2 = action({
   },
   performSafety: "safe",
   perform: async (context, { connection, fieldCode }) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      WebhookVersion.V2,
-    );
+    const client = createClient(connection, context.debug.enabled, WebhookVersion.V2);
     const { data } = await client.get(`dealFields/${fieldCode}`);
     return { data };
   },
   inputs: getDealFieldV2Inputs,
   examplePayload: getDealFieldV2ExamplePayload,
   examplePerform: async () => getDealFieldV2ExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getDealFieldV2OutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getDealFieldV2OutputSchema }),
 });

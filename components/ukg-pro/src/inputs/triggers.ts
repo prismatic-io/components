@@ -40,8 +40,7 @@ export const pollEmployeeChangesInputs = {
   companyId: {
     ...companyId,
     required: false,
-    comments:
-      "Optional company ID to filter changes. Leave empty for all companies.",
+    comments: "Optional company ID to filter changes. Leave empty for all companies.",
   },
 };
 

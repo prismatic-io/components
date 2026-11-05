@@ -35,10 +35,7 @@ describe("fetchCursorPages", () => {
       .query({ limit: 50, cursor: "page-2" })
       .reply(200, { items: [{ id: "b" }] });
     const page = await fetchCursorPages(client, URL, {}, { fetchAll: true });
-    expect(page).toEqual({
-      items: [{ id: "a" }, { id: "b" }],
-      cursor: undefined,
-    });
+    expect(page).toEqual({ items: [{ id: "a" }, { id: "b" }], cursor: undefined });
     expect(nock.isDone()).toBe(true);
   });
 

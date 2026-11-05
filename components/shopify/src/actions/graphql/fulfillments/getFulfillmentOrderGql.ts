@@ -13,10 +13,7 @@ export const getFulfillmentOrderGql = action({
     description: "Retrieves a specific fulfillment order by ID.",
   },
   inputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getFulfillmentOrderGqlOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getFulfillmentOrderGqlOutputSchema }),
   performSafety: "safe",
   perform: async (context, { shopifyConnection, fulfillmentOrderId }) => {
     const client = getShopifyGraphQlClient(

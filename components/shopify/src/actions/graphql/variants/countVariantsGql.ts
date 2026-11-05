@@ -30,8 +30,5 @@ export const countVariantsGql = action({
   },
   examplePayload,
   inputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: countVariantsGqlOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: countVariantsGqlOutputSchema }),
 });

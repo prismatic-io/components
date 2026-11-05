@@ -20,16 +20,12 @@ const find = (searchType: string, searchValue: string) =>
 const expectJql = (jql: string) =>
   jiraApi()
     .get("/rest/api/3/search/jql")
-    .query(
-      (query) => query.jql === jql && query.fields === DEFAULT_ISSUE_FIELDS,
-    );
+    .query((query) => query.jql === jql && query.fields === DEFAULT_ISSUE_FIELDS);
 
 const anySearch = () => jiraApi().get("/rest/api/3/search/jql").query(true);
 
 describe("searchValue clean", () => {
-  const clean = findIssue.inputs.searchValue.clean as (
-    value: unknown,
-  ) => string;
+  const clean = findIssue.inputs.searchValue.clean as (value: unknown) => string;
 
   test("lower-cases and trims the value", () => {
     expect(clean("  PROJ-123 ")).toBe("proj-123");
@@ -38,10 +34,7 @@ describe("searchValue clean", () => {
 
 describe("findIssue by summary", () => {
   test("escapes quote marks in the summary text", async () => {
-    const scope = expectJql('summary ~ "say \\"hi\\""').reply(
-      200,
-      findIssueExamplePayload.data,
-    );
+    const scope = expectJql('summary ~ "say \\"hi\\""').reply(200, findIssueExamplePayload.data);
 
     const { result } = await find("summary", 'say "hi"');
 
@@ -63,10 +56,7 @@ describe("findIssue by number", () => {
     ["an issue key", "proj-123"],
     ["a numeric id", "10001"],
   ])("searches by id for %s", async (_label, searchValue) => {
-    const scope = expectJql(`id=${searchValue}`).reply(
-      200,
-      findIssueExamplePayload.data,
-    );
+    const scope = expectJql(`id=${searchValue}`).reply(200, findIssueExamplePayload.data);
 
     const { result } = await find("number", searchValue);
 
@@ -97,8 +87,6 @@ describe("findIssue by number", () => {
   ])("rethrows %s instead of hiding it as an empty result", async (_label, status) => {
     anySearch().reply(status, { errorMessages: ["nope"] });
 
-    await expect(find("number", "proj-123")).rejects.toMatchObject({
-      response: { status },
-    });
+    await expect(find("number", "proj-123")).rejects.toMatchObject({ response: { status } });
   });
 });

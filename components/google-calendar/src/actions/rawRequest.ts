@@ -30,7 +30,7 @@ export const rawRequest = action({
       const { data } = await sendRawRequest(
         "https://www.googleapis.com/calendar/v3",
         { ...rawRequestInputs, debugRequest: context.debug.enabled },
-        { Authorization: `Bearer ${accessToken}` },
+        { Authorization: `Bearer ${accessToken}` }
       );
       return { data };
     } catch (error) {

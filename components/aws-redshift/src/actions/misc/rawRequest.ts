@@ -31,9 +31,7 @@ export const rawRequest = action({
 
     sign(requestOpts, credentials);
 
-    const { data } = await client.post("/", requestOpts.body, {
-      headers: requestOpts.headers,
-    });
+    const { data } = await client.post("/", requestOpts.body, { headers: requestOpts.headers });
 
     return { data };
   },

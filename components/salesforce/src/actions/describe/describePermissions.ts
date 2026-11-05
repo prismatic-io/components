@@ -19,9 +19,7 @@ export const describePermissions = action({
 
     const { fields } = await executeSFAction(context, command);
 
-    const permissions = fields.filter(({ name }) =>
-      name.startsWith("Permissions"),
-    );
+    const permissions = fields.filter(({ name }) => name.startsWith("Permissions"));
 
     return { data: permissions };
   },

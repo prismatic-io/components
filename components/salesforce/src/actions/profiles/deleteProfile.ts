@@ -20,8 +20,7 @@ export const deleteProfile = action({
 
     return { data: response };
   },
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    genericCreateUpdateExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => genericCreateUpdateExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: deleteRecordOutputSchema,

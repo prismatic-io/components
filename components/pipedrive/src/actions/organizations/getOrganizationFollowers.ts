@@ -11,15 +11,8 @@ export const getOrganizationFollowers = action({
     description: "Lists followers of an organization.",
   },
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { connection, id, pagination: { limit, cursor } = {} },
-  ) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      WebhookVersion.V2,
-    );
+  perform: async (context, { connection, id, pagination: { limit, cursor } = {} }) => {
+    const client = createClient(connection, context.debug.enabled, WebhookVersion.V2);
     const { data } = await client.get(`/organizations/${id}/followers`, {
       params: { limit, cursor },
     });

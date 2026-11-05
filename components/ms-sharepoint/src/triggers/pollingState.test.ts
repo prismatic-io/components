@@ -19,11 +19,7 @@ const item = (id: string, overrides: Partial<DriveItem> = {}): DriveItem => ({
   name: `${id}.txt`,
   lastModifiedDateTime: CREATED,
   createdDateTime: CREATED,
-  parentReference: {
-    driveId: "drive-1",
-    id: "parent-1",
-    path: "/drives/drive-1/root:",
-  },
+  parentReference: { driveId: "drive-1", id: "parent-1", path: "/drives/drive-1/root:" },
   ...overrides,
 });
 
@@ -45,17 +41,10 @@ const makeCtx = (state: Record<string, unknown> = {}) => {
   };
 };
 
-const connection = {
-  key: "oauth2",
-  fields: {},
-  token: { access_token: "t" },
-} as never;
+const connection = { key: "oauth2", fields: {}, token: { access_token: "t" } } as never;
 const payload = defaultTriggerPayload();
 
-type Result = {
-  payload: { body: { data: Record<string, unknown> } };
-  polledNoChanges?: boolean;
-};
+type Result = { payload: { body: { data: Record<string, unknown> } }; polledNoChanges?: boolean };
 
 const runDrive = async (state: Record<string, unknown> = {}) => {
   const { ctx, setState } = makeCtx(state);
@@ -81,8 +70,7 @@ const runFolder = async (
   return { result, setState };
 };
 
-const ids = (list: unknown) =>
-  (list as DriveItem[] | undefined)?.map((i) => i.id);
+const ids = (list: unknown) => (list as DriveItem[] | undefined)?.map((i) => i.id);
 
 beforeEach(() => {
   getMock.mockReset();
@@ -90,28 +78,20 @@ beforeEach(() => {
 
 describe("drivePollingTrigger", () => {
   test("first poll requests the root delta and stores the delta link under the driveId", async () => {
-    getMock.mockResolvedValueOnce(
-      delta([item("a")], "https://graph/delta?token=1"),
-    );
+    getMock.mockResolvedValueOnce(delta([item("a")], "https://graph/delta?token=1"));
     const { setState } = await runDrive();
 
     expect(getMock.mock.calls[0][0]).toBe("/drives/drive-1/root/delta");
     expect(getMock.mock.calls[0][1].headers.Prefer).toBe("deltaExcludeParent");
-    expect(setState).toHaveBeenCalledWith({
-      "drive-1": "https://graph/delta?token=1",
-    });
+    expect(setState).toHaveBeenCalledWith({ "drive-1": "https://graph/delta?token=1" });
   });
 
   test("second poll follows the stored delta link instead of the root delta", async () => {
     getMock.mockResolvedValueOnce(delta([], "https://graph/delta?token=2"));
-    const { setState } = await runDrive({
-      "drive-1": "https://graph/delta?token=1",
-    });
+    const { setState } = await runDrive({ "drive-1": "https://graph/delta?token=1" });
 
     expect(getMock.mock.calls[0][0]).toBe("https://graph/delta?token=1");
-    expect(setState).toHaveBeenCalledWith({
-      "drive-1": "https://graph/delta?token=2",
-    });
+    expect(setState).toHaveBeenCalledWith({ "drive-1": "https://graph/delta?token=2" });
   });
 
   test("follows nextLink pages and still stores the final delta link", async () => {
@@ -124,19 +104,14 @@ describe("drivePollingTrigger", () => {
 
     expect(getMock.mock.calls[1][0]).toBe("https://graph/page2");
     expect(ids(result.payload.body.data.added)).toEqual(["a", "b"]);
-    expect(setState).toHaveBeenCalledWith({
-      "drive-1": "https://graph/delta?token=9",
-    });
+    expect(setState).toHaveBeenCalledWith({ "drive-1": "https://graph/delta?token=9" });
   });
 
   test("classifies deleted, updated, added and skips the root item", async () => {
     getMock.mockResolvedValueOnce(
       delta([
         rootItem(),
-        item("del", {
-          deleted: { state: "deleted" },
-          lastModifiedDateTime: MODIFIED,
-        }),
+        item("del", { deleted: { state: "deleted" }, lastModifiedDateTime: MODIFIED }),
         item("upd", { lastModifiedDateTime: MODIFIED }),
         item("add"),
       ]),
@@ -160,14 +135,10 @@ describe("drivePollingTrigger", () => {
 
   test("empty poll returns no changes and still advances the delta link", async () => {
     getMock.mockResolvedValueOnce(delta([], "https://graph/delta?token=3"));
-    const { result, setState } = await runDrive({
-      "drive-1": "https://graph/delta?token=2",
-    });
+    const { result, setState } = await runDrive({ "drive-1": "https://graph/delta?token=2" });
 
     expect(result.payload.body.data).toEqual({});
-    expect(setState).toHaveBeenCalledWith({
-      "drive-1": "https://graph/delta?token=3",
-    });
+    expect(setState).toHaveBeenCalledWith({ "drive-1": "https://graph/delta?token=3" });
   });
 });
 
@@ -175,18 +146,10 @@ describe("folderPollingTrigger", () => {
   const folder = item("folder-1", {
     name: "Docs",
     folder: { childCount: 2 },
-    parentReference: {
-      driveId: "drive-1",
-      id: "root-id",
-      path: "/drives/drive-1/root:",
-    },
+    parentReference: { driveId: "drive-1", id: "root-id", path: "/drives/drive-1/root:" },
   });
   const child = item("child", {
-    parentReference: {
-      driveId: "drive-1",
-      id: "folder-1",
-      path: "/drives/drive-1/root:/Docs",
-    },
+    parentReference: { driveId: "drive-1", id: "folder-1", path: "/drives/drive-1/root:/Docs" },
   });
   const grandchild = item("grandchild", {
     parentReference: {
@@ -196,17 +159,11 @@ describe("folderPollingTrigger", () => {
     },
   });
   const outside = item("outside", {
-    parentReference: {
-      driveId: "drive-1",
-      id: "other",
-      path: "/drives/drive-1/root:/Other",
-    },
+    parentReference: { driveId: "drive-1", id: "other", path: "/drives/drive-1/root:/Other" },
   });
 
   test("first poll stores the delta link and derived folder path under the composite keys", async () => {
-    getMock.mockResolvedValueOnce(
-      delta([folder, child], "https://graph/delta?token=1"),
-    );
+    getMock.mockResolvedValueOnce(delta([folder, child], "https://graph/delta?token=1"));
     const { setState } = await runFolder();
 
     expect(getMock.mock.calls[0][0]).toBe("/drives/drive-1/root/delta");
@@ -237,11 +194,7 @@ describe("folderPollingTrigger", () => {
     getMock.mockResolvedValueOnce(delta([folder, child, grandchild, outside]));
     const { result } = await runFolder({}, true);
 
-    expect(ids(result.payload.body.data.added)).toEqual([
-      "folder-1",
-      "child",
-      "grandchild",
-    ]);
+    expect(ids(result.payload.body.data.added)).toEqual(["folder-1", "child", "grandchild"]);
   });
 
   test("includeSubfolders without a known folder path falls back to direct children", async () => {
@@ -249,17 +202,11 @@ describe("folderPollingTrigger", () => {
     const { result, setState } = await runFolder({}, true);
 
     expect(ids(result.payload.body.data.added)).toEqual(["child"]);
-    expect(setState).toHaveBeenCalledWith({
-      "drive-1:folder-1": "https://graph/delta?token=new",
-    });
+    expect(setState).toHaveBeenCalledWith({ "drive-1:folder-1": "https://graph/delta?token=new" });
   });
 
   test("the cached path is refreshed when the folder is renamed", async () => {
-    const renamed = {
-      ...folder,
-      name: "Renamed",
-      lastModifiedDateTime: MODIFIED,
-    };
+    const renamed = { ...folder, name: "Renamed", lastModifiedDateTime: MODIFIED };
     getMock.mockResolvedValueOnce(delta([renamed]));
     const { setState } = await runFolder({
       "drive-1:folder-1": "https://graph/delta?token=1",
@@ -275,10 +222,7 @@ describe("folderPollingTrigger", () => {
   test("the folder path falls back to /root:/<name> when the folder has no parent path", async () => {
     const noPath = {
       ...folder,
-      parentReference: {
-        driveId: "drive-1",
-        id: "root-id",
-      } as DriveItem["parentReference"],
+      parentReference: { driveId: "drive-1", id: "root-id" } as DriveItem["parentReference"],
     };
     getMock.mockResolvedValueOnce(delta([noPath]));
     const { setState } = await runFolder();
@@ -295,10 +239,7 @@ describe("folderPollingTrigger", () => {
     getMock.mockResolvedValueOnce(
       delta([
         { ...rootItem(), parentReference: child.parentReference },
-        inFolder("del", {
-          deleted: { state: "deleted" },
-          lastModifiedDateTime: MODIFIED,
-        }),
+        inFolder("del", { deleted: { state: "deleted" }, lastModifiedDateTime: MODIFIED }),
         inFolder("upd", { lastModifiedDateTime: MODIFIED }),
         inFolder("add"),
       ]),
@@ -314,10 +255,7 @@ describe("folderPollingTrigger", () => {
   test("includeSubfolders throws on a deleted item that lacks parentReference.path", async () => {
     const deleted = item("gone", {
       deleted: { state: "deleted" },
-      parentReference: {
-        driveId: "drive-1",
-        id: "x",
-      } as DriveItem["parentReference"],
+      parentReference: { driveId: "drive-1", id: "x" } as DriveItem["parentReference"],
     });
     getMock.mockResolvedValueOnce(delta([folder, deleted]));
     await expect(runFolder({}, true)).rejects.toThrow(TypeError);
@@ -368,14 +306,8 @@ describe("pollSiteChanges", () => {
   test("first poll requests each drive's root delta and stores a link per drive id", async () => {
     routes({
       [DRIVES_URL]: drives,
-      "/sites/site-1/drives/drive-1/root/delta": delta(
-        [item("a")],
-        "https://graph/d1?t=1",
-      ),
-      "/sites/site-1/drives/drive-2/root/delta": delta(
-        [item("b")],
-        "https://graph/d2?t=1",
-      ),
+      "/sites/site-1/drives/drive-1/root/delta": delta([item("a")], "https://graph/d1?t=1"),
+      "/sites/site-1/drives/drive-2/root/delta": delta([item("b")], "https://graph/d2?t=1"),
     });
     const { result, setState } = await runSite();
 
@@ -383,10 +315,7 @@ describe("pollSiteChanges", () => {
       "drive-1": "https://graph/d1?t=1",
       "drive-2": "https://graph/d2?t=1",
     });
-    expect(Object.keys(result.payload.body.data)).toEqual([
-      "Documents",
-      "Archive",
-    ]);
+    expect(Object.keys(result.payload.body.data)).toEqual(["Documents", "Archive"]);
     expect(result.polledNoChanges).toBe(false);
   });
 
@@ -394,10 +323,7 @@ describe("pollSiteChanges", () => {
     routes({
       [DRIVES_URL]: drives,
       "https://graph/d1?t=1": delta([], "https://graph/d1?t=2"),
-      "/sites/site-1/drives/drive-2/root/delta": delta(
-        [],
-        "https://graph/d2?t=1",
-      ),
+      "/sites/site-1/drives/drive-2/root/delta": delta([], "https://graph/d2?t=1"),
     });
     const { setState } = await runSite({ "drive-1": "https://graph/d1?t=1" });
 
@@ -414,14 +340,8 @@ describe("pollSiteChanges", () => {
   test("a drive with an empty result is removed from the output while others stay", async () => {
     routes({
       [DRIVES_URL]: drives,
-      "/sites/site-1/drives/drive-1/root/delta": delta(
-        [item("a")],
-        "https://graph/d1?t=1",
-      ),
-      "/sites/site-1/drives/drive-2/root/delta": delta(
-        [],
-        "https://graph/d2?t=1",
-      ),
+      "/sites/site-1/drives/drive-1/root/delta": delta([item("a")], "https://graph/d1?t=1"),
+      "/sites/site-1/drives/drive-2/root/delta": delta([], "https://graph/d2?t=1"),
     });
     const { result } = await runSite();
 
@@ -434,19 +354,13 @@ describe("pollSiteChanges", () => {
       [DRIVES_URL]: { data: { value: [{ id: "drive-1", name: "Documents" }] } },
       "/sites/site-1/drives/drive-1/root/delta": delta([
         rootItem(),
-        item("del", {
-          deleted: { state: "deleted" },
-          lastModifiedDateTime: MODIFIED,
-        }),
+        item("del", { deleted: { state: "deleted" }, lastModifiedDateTime: MODIFIED }),
         item("upd", { lastModifiedDateTime: MODIFIED }),
         item("add"),
       ]),
     });
     const { result } = await runSite();
-    const docs = result.payload.body.data.Documents as Record<
-      string,
-      DriveItem[]
-    >;
+    const docs = result.payload.body.data.Documents as Record<string, DriveItem[]>;
 
     expect(ids(docs.deleted)).toEqual(["del"]);
     expect(ids(docs.updated)).toEqual(["upd"]);
@@ -456,14 +370,8 @@ describe("pollSiteChanges", () => {
   test("empty poll reports polledNoChanges true and still advances every drive's link", async () => {
     routes({
       [DRIVES_URL]: drives,
-      "/sites/site-1/drives/drive-1/root/delta": delta(
-        [],
-        "https://graph/d1?t=2",
-      ),
-      "/sites/site-1/drives/drive-2/root/delta": delta(
-        [],
-        "https://graph/d2?t=2",
-      ),
+      "/sites/site-1/drives/drive-1/root/delta": delta([], "https://graph/d1?t=2"),
+      "/sites/site-1/drives/drive-2/root/delta": delta([], "https://graph/d2?t=2"),
     });
     const { result, setState } = await runSite();
 

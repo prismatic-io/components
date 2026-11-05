@@ -10,11 +10,7 @@ const PLAN_ID = "xqQg5FS2LkCp935s-FIFm2QAFkHM";
 const PLAN_URL = `/v1.0/planner/plans/${PLAN_ID}`;
 const ETAG = 'W/"JzEtUGxhbiAgQEBAQEBAQEBAQEBAQEBAWCc="';
 
-const connection = createConnection(
-  templatedOauth,
-  {},
-  { access_token: "test-token" },
-);
+const connection = createConnection(templatedOauth, {}, { access_token: "test-token" });
 const params = {
   connection,
   groupId: undefined,
@@ -50,9 +46,7 @@ test("reads the current etag, then renames the plan with If-Match", async () => 
 });
 
 test("surfaces a rejected update", async () => {
-  const etagScope = nock(BASE)
-    .get(PLAN_URL)
-    .reply(200, { "@odata.etag": ETAG });
+  const etagScope = nock(BASE).get(PLAN_URL).reply(200, { "@odata.etag": ETAG });
   const errorScope = nock(BASE)
     .patch(PLAN_URL)
     .reply(400, { error: { code: "invalidRequest" } });

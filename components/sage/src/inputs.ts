@@ -13,8 +13,7 @@ export const itemsPerPage = input({
   type: "string",
   example: "100",
   required: false,
-  comments:
-    "Provide a value for the amount of items to be returned in the response.",
+  comments: "Provide a value for the amount of items to be returned in the response.",
 });
 
 export const page = input({
@@ -22,8 +21,7 @@ export const page = input({
   type: "string",
   example: "1",
   required: false,
-  comments:
-    "Provide a value for the page of results you would like to be returned.",
+  comments: "Provide a value for the page of results you would like to be returned.",
 });
 
 export const contactId = input({
@@ -176,8 +174,7 @@ export const includedInChart = input({
   label: "Include In Chart",
   type: "boolean",
   example: "true",
-  comments:
-    "This flag determines if the account will be included in the chart of accounts.",
+  comments: "This flag determines if the account will be included in the chart of accounts.",
   required: true,
 });
 
@@ -201,8 +198,7 @@ export const nominalCode = input({
   label: "Nominal Code",
   type: "string",
   example: "1",
-  comments:
-    "Provide an unique integer value for the nominal code of the ledger account.",
+  comments: "Provide an unique integer value for the nominal code of the ledger account.",
   required: true,
 });
 
@@ -245,8 +241,7 @@ export const defaultSalesTaxRateId = input({
   label: "Default Sales Tax Rate Id",
   type: "string",
   example: "example-80430964",
-  comments:
-    "Provide the unique identifier of the sales tax rate for the contact.",
+  comments: "Provide the unique identifier of the sales tax rate for the contact.",
   required: false,
 });
 
@@ -254,8 +249,7 @@ export const defaultPurchaseLedgerId = input({
   label: "Default Purchase Ledger Id",
   type: "string",
   example: "example-80430964",
-  comments:
-    "Provide the unique identifier of the default purchase ledger for the contact.",
+  comments: "Provide the unique identifier of the default purchase ledger for the contact.",
   required: false,
   dataSource: "selectLedgerAccount",
 });
@@ -264,8 +258,7 @@ export const taxNumber = input({
   label: "Tax Number",
   type: "string",
   example: "80430964",
-  comments:
-    "Provide a string value for the VAT registration number for the contact.",
+  comments: "Provide a string value for the VAT registration number for the contact.",
   required: false,
 });
 
@@ -289,8 +282,7 @@ export const sourceGuid = input({
   label: "Source GUID",
   type: "string",
   example: "example-80430964",
-  comments:
-    "Provide a valid GUID, used for importing/exporting contacts from 3rd party services.",
+  comments: "Provide a valid GUID, used for importing/exporting contacts from 3rd party services.",
   required: false,
 });
 

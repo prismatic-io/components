@@ -1,13 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { awsRegion, dynamicAccessAllInputs } from "aws-utils";
-import {
-  accessKeyInput,
-  acl,
-  bucket,
-  fileContents,
-  objectKey,
-  tagging,
-} from "./common";
+import { accessKeyInput, acl, bucket, fileContents, objectKey, tagging } from "./common";
 
 const uploadIdInput = input({
   label: "Upload Stream ID",

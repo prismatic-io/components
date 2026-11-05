@@ -11,15 +11,8 @@ export const getDealFollowers = action({
     description: "Lists followers of a deal.",
   },
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { connection, id, pagination: { limit, cursor } = {} },
-  ) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      WebhookVersion.V2,
-    );
+  perform: async (context, { connection, id, pagination: { limit, cursor } = {} }) => {
+    const client = createClient(connection, context.debug.enabled, WebhookVersion.V2);
     const { data } = await client.get(`/deals/${id}/followers`, {
       params: {
         limit,
@@ -30,8 +23,5 @@ export const getDealFollowers = action({
   },
   inputs: getDealFollowersInputs,
   examplePayload: getDealFollowersExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getDealFollowersOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getDealFollowersOutputSchema }),
 });

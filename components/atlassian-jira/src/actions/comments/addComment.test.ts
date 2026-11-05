@@ -32,12 +32,7 @@ describe("addComment", () => {
     expect(scope.isDone()).toBe(true);
     expect(sent).toEqual({
       body: {
-        content: [
-          {
-            content: [{ text: "Looks good.", type: "text" }],
-            type: "paragraph",
-          },
-        ],
+        content: [{ content: [{ text: "Looks good.", type: "text" }], type: "paragraph" }],
         type: "doc",
         version: 1,
         visibility: "internal",

@@ -16,8 +16,7 @@ export const createTaskAttachmentExamplePayload = {
     url: "https://t.attachments.clickup.com/9012345/ac905d76-3456-4d84-8c75-a7c0faa092ea/project-mockup.png",
     url_w_query:
       "https://t.attachments.clickup.com/9012345/ac905d76-3456-4d84-8c75-a7c0faa092ea/project-mockup.png?view=open",
-    url_w_host:
-      "https://t.attachments.clickup.com/9012345/ac905d76-3456-4d84-8c75-a7c0faa092ea/project-mockup.png",
+    url_w_host: "https://t.attachments.clickup.com/9012345/ac905d76-3456-4d84-8c75-a7c0faa092ea/project-mockup.png",
     is_folder: null,
     mimetype: "image/png",
     thumbnail_small:

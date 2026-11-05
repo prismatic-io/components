@@ -1,8 +1,4 @@
-import {
-  apiVersionSchema,
-  columnDelimiterSchema,
-  lineEndingSchema,
-} from "./bulkShared";
+import { apiVersionSchema, columnDelimiterSchema, lineEndingSchema } from "./bulkShared";
 
 const queryJobInfoSchema = {
   type: "object" as const,
@@ -15,13 +11,7 @@ const queryJobInfoSchema = {
     systemModstamp: { type: "string" },
     state: {
       type: "string",
-      enum: [
-        "UploadComplete",
-        "InProgress",
-        "Aborted",
-        "JobComplete",
-        "Failed",
-      ],
+      enum: ["UploadComplete", "InProgress", "Aborted", "JobComplete", "Failed"],
     },
     concurrencyMode: { type: "string" },
     contentType: { type: "string" },

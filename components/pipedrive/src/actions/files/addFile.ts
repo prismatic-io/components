@@ -24,8 +24,5 @@ export const addFile = action({
   },
   inputs: addFileInputs,
   examplePayload: addFileExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: addFileOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: addFileOutputSchema }),
 });

@@ -11,9 +11,7 @@ export const customFields = dataSource({
   },
   perform: async (_context, { listId, connection }) => {
     const client = createClient(connection);
-    const { data } = await client.get<GetAccessibleCustomFieldsResponse>(
-      `/list/${listId}/field`,
-    );
+    const { data } = await client.get<GetAccessibleCustomFieldsResponse>(`/list/${listId}/field`);
     const options = data.fields.map<Element>((field) => {
       return { label: field.name, key: field.id };
     });

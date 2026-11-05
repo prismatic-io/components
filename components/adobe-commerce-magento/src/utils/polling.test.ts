@@ -33,13 +33,8 @@ describe("fetchMagentoRecordsSince: resource resolution", () => {
     ).rejects.toThrow("Unsupported resource type: invoices");
   });
 
-  test.each([
-    ...POLL_RESOURCE_TYPES,
-  ])("polls %s at its configured endpoint", async (type) => {
-    const scope = nock(STORE_HOST)
-      .get(pathFor(type))
-      .query(true)
-      .reply(200, { items: [] });
+  test.each([...POLL_RESOURCE_TYPES])("polls %s at its configured endpoint", async (type) => {
+    const scope = nock(STORE_HOST).get(pathFor(type)).query(true).reply(200, { items: [] });
 
     await fetchMagentoRecordsSince(storeConnection(), type, CURSOR, false);
 
@@ -54,8 +49,7 @@ describe("fetchMagentoRecordsSince: query contract", () => {
       .query({
         "searchCriteria[filterGroups][0][filters][0][field]": "updated_at",
         "searchCriteria[filterGroups][0][filters][0][conditionType]": "gteq",
-        "searchCriteria[filterGroups][0][filters][0][value]":
-          "2020-01-01 00:00:00",
+        "searchCriteria[filterGroups][0][filters][0][value]": "2020-01-01 00:00:00",
         "searchCriteria[sortOrders][0][field]": "updated_at",
         "searchCriteria[sortOrders][0][direction]": "ASC",
         "searchCriteria[pageSize]": String(POLL_PAGE_SIZE),
@@ -72,55 +66,29 @@ describe("fetchMagentoRecordsSince: query contract", () => {
 describe("fetchMagentoRecordsSince: backlog handling", () => {
   test("returns a short page as a complete, untruncated result", async () => {
     const records = [{ entity_id: 1, updated_at: "2020-01-02 00:00:00" }];
-    nock(STORE_HOST)
-      .get(pathFor("orders"))
-      .query(true)
-      .reply(200, { items: records });
+    nock(STORE_HOST).get(pathFor("orders")).query(true).reply(200, { items: records });
 
-    const result = await fetchMagentoRecordsSince(
-      storeConnection(),
-      "orders",
-      CURSOR,
-      false,
-    );
+    const result = await fetchMagentoRecordsSince(storeConnection(), "orders", CURSOR, false);
 
     expect(result).toEqual({ records, truncated: false });
   });
 
   test("resolves a body with no items to an empty, untruncated result", async () => {
-    nock(STORE_HOST)
-      .get(pathFor("orders"))
-      .query(true)
-      .reply(200, { total_count: 0 });
+    nock(STORE_HOST).get(pathFor("orders")).query(true).reply(200, { total_count: 0 });
 
-    const result = await fetchMagentoRecordsSince(
-      storeConnection(),
-      "orders",
-      CURSOR,
-      false,
-    );
+    const result = await fetchMagentoRecordsSince(storeConnection(), "orders", CURSOR, false);
 
     expect(result).toEqual({ records: [], truncated: false });
   });
 
   test("accumulates across pages until one comes back short", async () => {
-    nock(STORE_HOST)
-      .get(pathFor("orders"))
-      .query(onPage("1"))
-      .reply(200, { items: fullPage });
+    nock(STORE_HOST).get(pathFor("orders")).query(onPage("1")).reply(200, { items: fullPage });
     nock(STORE_HOST)
       .get(pathFor("orders"))
       .query(onPage("2"))
-      .reply(200, {
-        items: [{ entity_id: 999, updated_at: "2020-01-03 00:00:00" }],
-      });
+      .reply(200, { items: [{ entity_id: 999, updated_at: "2020-01-03 00:00:00" }] });
 
-    const result = await fetchMagentoRecordsSince(
-      storeConnection(),
-      "orders",
-      CURSOR,
-      false,
-    );
+    const result = await fetchMagentoRecordsSince(storeConnection(), "orders", CURSOR, false);
 
     expect(result.records).toHaveLength(POLL_PAGE_SIZE + 1);
     expect(result.truncated).toBe(false);
@@ -133,12 +101,7 @@ describe("fetchMagentoRecordsSince: backlog handling", () => {
       .times(MAX_POLL_PAGES)
       .reply(200, { items: fullPage });
 
-    const result = await fetchMagentoRecordsSince(
-      storeConnection(),
-      "orders",
-      CURSOR,
-      false,
-    );
+    const result = await fetchMagentoRecordsSince(storeConnection(), "orders", CURSOR, false);
 
     expect(result.truncated).toBe(true);
     expect(result.records).toHaveLength(MAX_POLL_PAGES * POLL_PAGE_SIZE);

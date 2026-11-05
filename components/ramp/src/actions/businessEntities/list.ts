@@ -19,10 +19,7 @@ export const listBusinessEntities = action({
     schema: listBusinessEntitiesOutputSchema,
   }),
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { connection, customQueryParams, fetchAll, pagination },
-  ) => {
+  perform: async (context, { connection, customQueryParams, fetchAll, pagination }) => {
     const client = createClient(connection, context.debug.enabled);
 
     const data = await fetchAllData<BusinessEntity>(
@@ -39,10 +36,7 @@ export const listBusinessEntities = action({
       data,
     };
   },
-  examplePerform: async (
-    _context,
-    { fetchAll },
-  ): Promise<{ data: unknown }> => ({
+  examplePerform: async (_context, { fetchAll }): Promise<{ data: unknown }> => ({
     data: {
       ...listBusinessEntitiesResponse,
       page: fetchAll ? null : listBusinessEntitiesResponse.page,

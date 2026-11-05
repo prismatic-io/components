@@ -1,9 +1,6 @@
 import { type ActionContext, util } from "@prismatic-io/spectral";
 
-import type {
-  FlowMetadata,
-  CreateFlowRecordSubscriptionParams,
-} from "../../types";
+import type { FlowMetadata, CreateFlowRecordSubscriptionParams } from "../../types";
 import {
   createFlowFunction,
   createWorkflowOutboundMessageFunction,
@@ -42,24 +39,20 @@ export const createFlowRecordSubscription = async (
     description: flowDescription,
     runInMode: "DefaultMode",
     status: "Active",
-    processMetadataValues: [
-      { name: "CanvasMode", value: { stringValue: "AUTO_LAYOUT_CANVAS" } },
-    ],
+    processMetadataValues: [{ name: "CanvasMode", value: { stringValue: "AUTO_LAYOUT_CANVAS" } }],
     ...(flowMetadata ? flowMetadata : {}),
   };
   const { username: integrationUser } = await client.identity();
 
-  const createOutboundMessageResult =
-    await createWorkflowOutboundMessageFunction(client, {
-      apiVersion:
-        util.types.toNumber(version) || util.types.toNumber(client.version),
-      fullName: toFullNameIdentifier(triggerObject, name),
-      name,
-      description: outboundMessageDescription,
-      endpointUrl,
-      integrationUser,
-      fields: processOutboundMessageFields(fields, dynamicFields),
-    });
+  const createOutboundMessageResult = await createWorkflowOutboundMessageFunction(client, {
+    apiVersion: util.types.toNumber(version) || util.types.toNumber(client.version),
+    fullName: toFullNameIdentifier(triggerObject, name),
+    name,
+    description: outboundMessageDescription,
+    endpointUrl,
+    integrationUser,
+    fields: processOutboundMessageFields(fields, dynamicFields),
+  });
 
   const outboundMessageFullName = createOutboundMessageResult.fullName;
 

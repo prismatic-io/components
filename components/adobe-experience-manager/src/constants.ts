@@ -4,10 +4,8 @@ export const SERVER_TO_SERVER_CONNECTION_KEY = "aemOAuthServerToServer";
 export const WEB_APP_CONNECTION_KEY = "aemOAuthWebApp";
 
 export const DEFAULT_TOKEN_URL = "https://ims-na1.adobelogin.com/ims/token/v3";
-export const DEFAULT_AUTHORIZE_URL =
-  "https://ims-na1.adobelogin.com/ims/authorize/v2";
-export const WEB_APP_DEFAULT_SCOPES =
-  "openid,AdobeID,aem.assets.author,aem.folders";
+export const DEFAULT_AUTHORIZE_URL = "https://ims-na1.adobelogin.com/ims/authorize/v2";
+export const WEB_APP_DEFAULT_SCOPES = "openid,AdobeID,aem.assets.author,aem.folders";
 
 export const AEM_HOST_SUFFIX = ".adobeaemcloud.com";
 
@@ -103,30 +101,12 @@ export const ASSET_SORT_FIELDS = [
 
 export const AEM_EVENT_BRANCHES = ["Notification", "URL Verification"];
 
-export const AEM_SITES_EVENT_TYPES: {
-  label: string;
-  value: AemSitesEventCode;
-}[] = [
-  {
-    label: "Content Fragment Created",
-    value: "aem.sites.contentFragment.created",
-  },
-  {
-    label: "Content Fragment Modified",
-    value: "aem.sites.contentFragment.modified",
-  },
-  {
-    label: "Content Fragment Published",
-    value: "aem.sites.contentFragment.published",
-  },
-  {
-    label: "Content Fragment Unpublished",
-    value: "aem.sites.contentFragment.unpublished",
-  },
-  {
-    label: "Content Fragment Deleted",
-    value: "aem.sites.contentFragment.deleted",
-  },
+export const AEM_SITES_EVENT_TYPES: { label: string; value: AemSitesEventCode }[] = [
+  { label: "Content Fragment Created", value: "aem.sites.contentFragment.created" },
+  { label: "Content Fragment Modified", value: "aem.sites.contentFragment.modified" },
+  { label: "Content Fragment Published", value: "aem.sites.contentFragment.published" },
+  { label: "Content Fragment Unpublished", value: "aem.sites.contentFragment.unpublished" },
+  { label: "Content Fragment Deleted", value: "aem.sites.contentFragment.deleted" },
   { label: "Page Created", value: "aem.sites.page.created" },
   { label: "Page Modified", value: "aem.sites.page.modified" },
   { label: "Page Published", value: "aem.sites.page.published" },
@@ -134,18 +114,9 @@ export const AEM_SITES_EVENT_TYPES: {
   { label: "Page Deleted", value: "aem.sites.page.deleted" },
 ];
 
-export const AEM_ASSETS_EVENT_TYPES: {
-  label: string;
-  value: AemAssetsEventCode;
-}[] = [
-  {
-    label: "Asset Processing Completed",
-    value: "aem.assets.asset.processing_completed",
-  },
-  {
-    label: "Asset Metadata Updated",
-    value: "aem.assets.asset.metadata_updated",
-  },
+export const AEM_ASSETS_EVENT_TYPES: { label: string; value: AemAssetsEventCode }[] = [
+  { label: "Asset Processing Completed", value: "aem.assets.asset.processing_completed" },
+  { label: "Asset Metadata Updated", value: "aem.assets.asset.metadata_updated" },
   { label: "Asset Published", value: "aem.assets.asset.published" },
   { label: "Asset Unpublished", value: "aem.assets.asset.unpublished" },
   { label: "Asset Deleted", value: "aem.assets.asset.deleted" },

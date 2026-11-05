@@ -82,8 +82,7 @@ export const abortMultipartUploadExamplePayload: {
     $metadata: {
       httpStatusCode: 204,
       requestId: "DZ1ZJB3H2JB1234",
-      extendedRequestId:
-        "0D9BDVoAGoHqu3dIW4WHmaO4kkiWecrbf0yLRMe/JmUfX7N/12345=",
+      extendedRequestId: "0D9BDVoAGoHqu3dIW4WHmaO4kkiWecrbf0yLRMe/JmUfX7N/12345=",
       cfId: null,
       attempts: 1,
       totalRetryDelay: 0,
@@ -154,8 +153,7 @@ export const completeMultipartUploadExamplePayload: {
     $metadata: {
       httpStatusCode: 200,
       requestId: "GD4Y1XMZ6MFV1234",
-      extendedRequestId:
-        "Ego8CAUdYnt2THhZmBLnbfmTPY0HR8zA9rEMkSg+OB0t/uldGkuBlI6UF9X+123456=",
+      extendedRequestId: "Ego8CAUdYnt2THhZmBLnbfmTPY0HR8zA9rEMkSg+OB0t/uldGkuBlI6UF9X+123456=",
       cfId: null,
       attempts: 1,
       totalRetryDelay: 0,

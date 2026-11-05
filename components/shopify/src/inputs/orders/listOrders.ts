@@ -1,10 +1,4 @@
-import {
-  connectionInput,
-  getAlldata,
-  limit,
-  pageInfo,
-  updatedAtMin,
-} from "../common";
+import { connectionInput, getAlldata, limit, pageInfo, updatedAtMin } from "../common";
 import {
   attributionAppId,
   commaSeparatedIds,

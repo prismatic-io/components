@@ -12,7 +12,7 @@ export const conversationExists = action({
   performSafety: "notAllowed",
   perform: async (
     { debug: { enabled: debug } },
-    { connection, channelName },
+    { connection, channelName }
   ) => {
     debugLogger({ debug, channelName });
     const client = await createOauthClient({ slackConnection: connection });

@@ -5,10 +5,7 @@ import type { CreateWebhookParams, Webhook, WebhookParams } from "../types";
 import connections from "../connections";
 import { createClient } from "../client";
 
-export const createWebhook = async (
-  client: HttpClient,
-  params: CreateWebhookParams,
-) => {
+export const createWebhook = async (client: HttpClient, params: CreateWebhookParams) => {
   return await client.post("/webhooks", {
     subscription_url: params.subscriptionUrl,
     event_action: params.eventAction,
@@ -32,10 +29,7 @@ export const listWebhooks = async (client: HttpClient) => {
 export const validateConnection = (connection: Connection) => {
   const connectionsMap = connections.map(({ key }) => key);
   if (!connectionsMap.includes(connection.key)) {
-    throw new ConnectionError(
-      connection,
-      `Connection key is not valid: ${connection.key}`,
-    );
+    throw new ConnectionError(connection, `Connection key is not valid: ${connection.key}`);
   }
 };
 
@@ -47,20 +41,10 @@ const getWebhookEndpoint = (context: ActionContext) => {
   return context.webhookUrls[context.flow.name];
 };
 
-export const onInstanceDeploy = async (
-  context: ActionContext,
-  params: WebhookParams,
-) => {
+export const onInstanceDeploy = async (context: ActionContext, params: WebhookParams) => {
   const endpoint = getWebhookEndpoint(context);
-  const {
-    connection,
-    version,
-    eventAction,
-    eventObject,
-    userId,
-    httpAuthUser,
-    httpAuthPassword,
-  } = params;
+  const { connection, version, eventAction, eventObject, userId, httpAuthUser, httpAuthPassword } =
+    params;
   const client = getWebhookClient(connection as Connection);
   const { data } = await createWebhook(client, {
     subscriptionUrl: endpoint,
@@ -74,10 +58,7 @@ export const onInstanceDeploy = async (
   return data;
 };
 
-export const onInstanceDelete = async (
-  context: ActionContext,
-  params: WebhookParams,
-) => {
+export const onInstanceDelete = async (context: ActionContext, params: WebhookParams) => {
   const { connection } = params;
   const endpoint = getWebhookEndpoint(context);
   const client = getWebhookClient(connection as Connection);

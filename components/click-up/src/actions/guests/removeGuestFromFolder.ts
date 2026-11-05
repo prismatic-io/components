@@ -16,23 +16,14 @@ export const removeGuestFromFolder = action({
   }),
   examplePayload: removeGuestFromFolderExamplePayload,
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { clickUpConnection, folderId, guestId, includeShared },
-  ) => {
-    const client = createClickUpClient(
-      clickUpConnection,
-      context.debug.enabled,
-    );
+  perform: async (context, { clickUpConnection, folderId, guestId, includeShared }) => {
+    const client = createClickUpClient(clickUpConnection, context.debug.enabled);
 
     const params: RemoveGuestFromFolderQueryParams = {
       include_shared: includeShared,
     };
 
-    const { data } = await client.delete(
-      `/folder/${folderId}/guest/${guestId}`,
-      { params },
-    );
+    const { data } = await client.delete(`/folder/${folderId}/guest/${guestId}`, { params });
 
     return {
       data,

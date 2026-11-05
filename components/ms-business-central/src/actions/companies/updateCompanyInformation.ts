@@ -36,11 +36,7 @@ export const updateCompanyInformation = action({
       connection,
     },
   ) => {
-    const client = getMsBusinessCentralClient(
-      connection,
-      context,
-      context.debug.enabled,
-    );
+    const client = getMsBusinessCentralClient(connection, context, context.debug.enabled);
     const payload = {
       phoneNumber: contactInfo.companyPhoneNumber,
       faxNumber: contactInfo.companyFaxNumber,

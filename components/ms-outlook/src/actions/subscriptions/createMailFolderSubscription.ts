@@ -11,18 +11,10 @@ export const createMailFolderSubscription = action({
     description: "Creates a mail folder subscription for Microsoft Outlook.",
   },
   inputs: createMailFolderSubscriptionInputs,
-  perform: async (
-    context,
-    { notificationUrl, expirationDateTime, connection, changeType },
-  ) => {
+  perform: async (context, { notificationUrl, expirationDateTime, connection, changeType }) => {
     const client = createClient(connection, context.debug.enabled);
 
-    const subscriptionsData = await fetchAllData<Subscription>(
-      client,
-      "/subscriptions",
-      true,
-      {},
-    );
+    const subscriptionsData = await fetchAllData<Subscription>(client, "/subscriptions", true, {});
     const [existingSubscription] = subscriptionsData.value.filter(
       ({ notificationUrl: notificationUrlFromMicrosoft }) =>
         notificationUrl === notificationUrlFromMicrosoft,
@@ -35,9 +27,7 @@ export const createMailFolderSubscription = action({
       return { data: existingSubscription };
     }
 
-    context.logger.info(
-      "A subscription for Mail Folders does not exist, creating one.",
-    );
+    context.logger.info("A subscription for Mail Folders does not exist, creating one.");
     const { data } = await client.post("/subscriptions", {
       resource: "me/mailFolders('Inbox')/messages",
       changeType,

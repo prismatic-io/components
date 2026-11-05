@@ -293,14 +293,7 @@ export const invitedGuestMemberSchema = {
     can_create_views: { type: "boolean" },
     can_see_points_estimated: { type: "boolean" },
   },
-  required: [
-    "user",
-    "invited_by",
-    "can_see_time_spent",
-    "can_see_time_estimated",
-    "can_edit_tags",
-    "can_create_views",
-  ],
+  required: ["user", "invited_by", "can_see_time_spent", "can_see_time_estimated", "can_edit_tags", "can_create_views"],
 };
 
 export const workspaceTeamUserSchema = {
@@ -349,15 +342,7 @@ export const memberWithProfileSchema = {
       ],
     },
   },
-  required: [
-    "id",
-    "username",
-    "email",
-    "color",
-    "initials",
-    "profilePicture",
-    "profileInfo",
-  ],
+  required: ["id", "username", "email", "color", "initials", "profilePicture", "profileInfo"],
 };
 
 export const sharedTaskSchema = {
@@ -579,14 +564,7 @@ export const userGroupSchema = {
           initials: { type: "string" },
           profilePicture: { type: ["string", "null"] },
         },
-        required: [
-          "id",
-          "username",
-          "email",
-          "color",
-          "initials",
-          "profilePicture",
-        ],
+        required: ["id", "username", "email", "color", "initials", "profilePicture"],
       },
     },
     avatar: {
@@ -600,17 +578,7 @@ export const userGroupSchema = {
       required: ["attachment_id", "color", "source", "icon"],
     },
   },
-  required: [
-    "id",
-    "team_id",
-    "userid",
-    "name",
-    "handle",
-    "date_created",
-    "initials",
-    "members",
-    "avatar",
-  ],
+  required: ["id", "team_id", "userid", "name", "handle", "date_created", "initials", "members", "avatar"],
 };
 
 export const webhookSchema = {

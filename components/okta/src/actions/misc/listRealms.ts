@@ -11,24 +11,16 @@ export const listRealms = action({
     description: "Lists all realms in your org.",
   },
   inputs: listRealmsInputs,
-  perform: async (
-    context,
-    { connection, search, sorting = {}, fetchAll, pagination = {} },
-  ) => {
+  perform: async (context, { connection, search, sorting = {}, fetchAll, pagination = {} }) => {
     const client = await createClient(connection, context.debug.enabled);
 
-    const data = await paginateRecordsWithLink<Realm>(
-      client,
-      "/realms",
-      fetchAll,
-      {
-        limit: pagination.limit,
-        after: pagination.after,
-        search,
-        sortBy: sorting.sortBy,
-        sortOrder: sorting.sortOrder,
-      },
-    );
+    const data = await paginateRecordsWithLink<Realm>(client, "/realms", fetchAll, {
+      limit: pagination.limit,
+      after: pagination.after,
+      search,
+      sortBy: sorting.sortBy,
+      sortOrder: sorting.sortOrder,
+    });
 
     return {
       data,

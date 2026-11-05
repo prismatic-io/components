@@ -9,15 +9,11 @@ import { paginateResults } from "../../util/pagination";
 export const listJobs = action({
   display: {
     label: "List Jobs",
-    description:
-      "Retrieve a paginated list of job definitions from Oracle Fusion Cloud HCM.",
+    description: "Retrieve a paginated list of job definitions from Oracle Fusion Cloud HCM.",
   },
   examplePayload: listJobsExamplePayload,
   inputs: listJobsInputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: listJobsOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: listJobsOutputSchema }),
   perform: async (
     context,
     { connection, fetchAll, pagination, effectiveDate, includeMetadataLinks },

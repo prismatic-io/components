@@ -12,15 +12,10 @@ export const deleteDealParticipant = action({
   performSafety: "notAllowed",
   perform: async (context, { connection, id, dealParticipantId }) => {
     const client = createClient(connection, context.debug.enabled);
-    const { data } = await client.delete(
-      `/deals/${id}/participants/${dealParticipantId}`,
-    );
+    const { data } = await client.delete(`/deals/${id}/participants/${dealParticipantId}`);
     return { data };
   },
   inputs: deleteDealParticipantInputs,
   examplePayload: deleteDealParticipantExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: deleteDealParticipantOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: deleteDealParticipantOutputSchema }),
 });

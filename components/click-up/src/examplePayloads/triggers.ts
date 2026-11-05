@@ -4,8 +4,7 @@ export const webhookExamplePayload = {
   payload: {
     headers: {
       "Content-Type": "application/json",
-      "X-Signature":
-        "1d6207f8818f063890758a32d3833914754ba788cb2993b04ac8eb064fef0fcd",
+      "X-Signature": "1d6207f8818f063890758a32d3833914754ba788cb2993b04ac8eb064fef0fcd",
     },
     queryParameters: {},
     rawBody: {
@@ -98,8 +97,7 @@ const newTaskRecord = {
     username: "John Doe",
     color: "#7b68ee",
     email: "john.doe@example.com",
-    profilePicture:
-      "https://attachments.clickup.com/profilePictures/81942673_abc.jpg",
+    profilePicture: "https://attachments.clickup.com/profilePictures/81942673_abc.jpg",
   },
   assignees: [],
   watchers: [],
@@ -163,8 +161,7 @@ const updatedTaskRecord = {
     username: "John Doe",
     color: "#7b68ee",
     email: "john.doe@example.com",
-    profilePicture:
-      "https://attachments.clickup.com/profilePictures/81942673_abc.jpg",
+    profilePicture: "https://attachments.clickup.com/profilePictures/81942673_abc.jpg",
   },
   assignees: [
     {

@@ -61,11 +61,7 @@ export const createPriceInputs = {
   stripeConnection: connectionInput,
 };
 
-export const getPriceInputs = {
-  priceId,
-  timeout,
-  stripeConnection: connectionInput,
-};
+export const getPriceInputs = { priceId, timeout, stripeConnection: connectionInput };
 
 export const listPricesInputs = {
   timeout,

@@ -2,11 +2,7 @@ import { type Connection, ConnectionError, util } from "@prismatic-io/spectral";
 import { createClient as createHttpClient } from "@prismatic-io/spectral/http";
 import { oauth } from "./connections";
 
-export const createClient = (
-  connection: Connection,
-  debug: boolean,
-  baseUrl?: unknown,
-) => {
+export const createClient = (connection: Connection, debug: boolean, baseUrl?: unknown) => {
   if (connection.key !== oauth.key) {
     throw new ConnectionError(connection, "Unknown Connection type provided.");
   }

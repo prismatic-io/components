@@ -10,10 +10,7 @@ export const batchUpsertCatalogObjects = action({
       "Creates or updates up to 10,000 catalog objects based on the provided list of objects.",
   },
   perform: async (context, { squareConnection, idempotencyKey, batches }) => {
-    const client = await createAuthorizedClient(
-      squareConnection,
-      context.debug.enabled,
-    );
+    const client = await createAuthorizedClient(squareConnection, context.debug.enabled);
 
     const requestBody = {
       idempotency_key: idempotencyKey,

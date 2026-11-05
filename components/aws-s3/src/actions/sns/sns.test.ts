@@ -67,15 +67,8 @@ const snsError = (name: string, httpStatusCode: number) =>
     message: `${name} error`,
   });
 
-const expectServiceError = async (
-  promise: Promise<unknown>,
-  name: string,
-  status: number,
-) => {
-  await expect(promise).rejects.toMatchObject({
-    name,
-    $metadata: { httpStatusCode: status },
-  });
+const expectServiceError = async (promise: Promise<unknown>, name: string, status: number) => {
+  await expect(promise).rejects.toMatchObject({ name, $metadata: { httpStatusCode: status } });
 };
 
 describe("SNS actions", () => {
@@ -102,23 +95,17 @@ describe("SNS actions", () => {
     test("appends the topic configuration when the bucket has none", async () => {
       s3SendMock
         .mockResolvedValueOnce({ $metadata: { httpStatusCode: 200 } })
-        .mockResolvedValueOnce(
-          bucketEventTriggerConfigurationExamplePayload.data,
-        );
+        .mockResolvedValueOnce(bucketEventTriggerConfigurationExamplePayload.data);
 
       const { result } = await invoke(bucketEventTriggerConfiguration, inputs);
 
       const [[getCommand], [putCommand]] = s3SendMock.mock.calls;
-      expect(getCommand).toBeInstanceOf(
-        GetBucketNotificationConfigurationCommand,
-      );
+      expect(getCommand).toBeInstanceOf(GetBucketNotificationConfigurationCommand);
       expect(getCommand.input).toEqual({
         Bucket: "example-bucket",
         ExpectedBucketOwner: "123456789012",
       });
-      expect(putCommand).toBeInstanceOf(
-        PutBucketNotificationConfigurationCommand,
-      );
+      expect(putCommand).toBeInstanceOf(PutBucketNotificationConfigurationCommand);
       expect(putCommand.input).toEqual({
         Bucket: "example-bucket",
         NotificationConfiguration: {
@@ -131,31 +118,18 @@ describe("SNS actions", () => {
     });
 
     test("replaces an existing topic configuration with the same Id and keeps the others", async () => {
-      const otherQueue = {
-        Id: "queue-1",
-        QueueArn: "arn:aws:sqs:us-east-2:123456789012:q",
-      };
-      const otherTopic = {
-        Id: "other-topic",
-        TopicArn: TOPIC_ARN,
-        Events: ["s3:ObjectRemoved:*"],
-      };
+      const otherQueue = { Id: "queue-1", QueueArn: "arn:aws:sqs:us-east-2:123456789012:q" };
+      const otherTopic = { Id: "other-topic", TopicArn: TOPIC_ARN, Events: ["s3:ObjectRemoved:*"] };
       s3SendMock
         .mockResolvedValueOnce({
           $metadata: { httpStatusCode: 200 },
           QueueConfigurations: [otherQueue],
           TopicConfigurations: [
             otherTopic,
-            {
-              Id: "example-notification",
-              TopicArn: "arn:old",
-              Events: ["s3:ObjectRestore:*"],
-            },
+            { Id: "example-notification", TopicArn: "arn:old", Events: ["s3:ObjectRestore:*"] },
           ],
         })
-        .mockResolvedValueOnce(
-          bucketEventTriggerConfigurationExamplePayload.data,
-        );
+        .mockResolvedValueOnce(bucketEventTriggerConfigurationExamplePayload.data);
 
       await invoke(bucketEventTriggerConfiguration, inputs);
 
@@ -196,20 +170,13 @@ describe("SNS actions", () => {
 
       const command = snsSendMock.mock.calls[0][0];
       expect(command).toBeInstanceOf(CreateTopicCommand);
-      expect(command.input).toEqual({
-        Name: "example-topic",
-        Attributes: { FifoTopic: "false" },
-      });
+      expect(command.input).toEqual({ Name: "example-topic", Attributes: { FifoTopic: "false" } });
       expect(result).toEqual(createTopicExamplePayload);
     });
 
     test("propagates an SDK service error", async () => {
       snsSendMock.mockRejectedValue(snsError("InvalidParameter", 400));
-      await expectServiceError(
-        invoke(createTopic, inputs),
-        "InvalidParameter",
-        400,
-      );
+      await expectServiceError(invoke(createTopic, inputs), "InvalidParameter", 400);
     });
   });
 
@@ -237,19 +204,12 @@ describe("SNS actions", () => {
 
     test("propagates an SDK service error", async () => {
       snsSendMock.mockRejectedValue(snsError("NotFound", 404));
-      await expectServiceError(
-        invoke(subscribeToTopic, inputs),
-        "NotFound",
-        404,
-      );
+      await expectServiceError(invoke(subscribeToTopic, inputs), "NotFound", 404);
     });
   });
 
   describe("unsubscribeFromTopic", () => {
-    const inputs = {
-      ...credentialInputs,
-      subscriptionArn: `${TOPIC_ARN}:subscription-id`,
-    };
+    const inputs = { ...credentialInputs, subscriptionArn: `${TOPIC_ARN}:subscription-id` };
 
     test("sends UnsubscribeCommand and returns the response", async () => {
       snsSendMock.mockResolvedValue(unsubscribeFromTopicExamplePayload.data);
@@ -258,19 +218,13 @@ describe("SNS actions", () => {
 
       const command = snsSendMock.mock.calls[0][0];
       expect(command).toBeInstanceOf(UnsubscribeCommand);
-      expect(command.input).toEqual({
-        SubscriptionArn: `${TOPIC_ARN}:subscription-id`,
-      });
+      expect(command.input).toEqual({ SubscriptionArn: `${TOPIC_ARN}:subscription-id` });
       expect(result).toEqual(unsubscribeFromTopicExamplePayload);
     });
 
     test("propagates an SDK service error", async () => {
       snsSendMock.mockRejectedValue(snsError("AuthorizationError", 403));
-      await expectServiceError(
-        invoke(unsubscribeFromTopic, inputs),
-        "AuthorizationError",
-        403,
-      );
+      await expectServiceError(invoke(unsubscribeFromTopic, inputs), "AuthorizationError", 403);
     });
   });
 
@@ -289,10 +243,7 @@ describe("SNS actions", () => {
 
       const command = snsSendMock.mock.calls[0][0];
       expect(command).toBeInstanceOf(SetTopicAttributesCommand);
-      expect(command.input).toMatchObject({
-        TopicArn: TOPIC_ARN,
-        AttributeName: "Policy",
-      });
+      expect(command.input).toMatchObject({ TopicArn: TOPIC_ARN, AttributeName: "Policy" });
       expect(JSON.parse(command.input.AttributeValue)).toEqual({
         Version: "2012-10-17",
         Id: "allow-s3-to-publish",
@@ -315,11 +266,7 @@ describe("SNS actions", () => {
 
     test("propagates an SDK service error", async () => {
       snsSendMock.mockRejectedValue(snsError("NotFound", 404));
-      await expectServiceError(
-        invoke(updateTopicPolicy, inputs),
-        "NotFound",
-        404,
-      );
+      await expectServiceError(invoke(updateTopicPolicy, inputs), "NotFound", 404);
     });
   });
 });

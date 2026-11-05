@@ -14,10 +14,7 @@ export const listVariantsGql = action({
     description: "Lists all variants for the specified product.",
   },
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { shopifyConnection, productId, getAlldata, pagination = {} },
-  ) => {
+  perform: async (context, { shopifyConnection, productId, getAlldata, pagination = {} }) => {
     const client = getShopifyGraphQlClient(
       shopifyConnection,
       undefined,
@@ -44,8 +41,5 @@ export const listVariantsGql = action({
   examplePerform: async () => examplePayload,
   examplePayload,
   inputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: listVariantsGqlOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: listVariantsGqlOutputSchema }),
 });

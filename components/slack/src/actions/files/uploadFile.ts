@@ -31,7 +31,7 @@ export const uploadFile = action({
   },
   examplePerform: async (
     _context,
-    { fileName, title, channels },
+    { fileName, title, channels }
   ): Promise<{ data: unknown }> => ({
     data: {
       ...uploadFileExamplePayload,

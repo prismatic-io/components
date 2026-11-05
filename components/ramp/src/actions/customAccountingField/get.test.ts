@@ -1,11 +1,6 @@
 import { invoke } from "@prismatic-io/spectral/testing";
 import { getCustomAccountingFieldResponse } from "../../examplePayloads/customAccountingFields";
-import {
-  apiPath,
-  rampNock,
-  resetNock,
-  testConnection,
-} from "../../testHarness";
+import { apiPath, rampNock, resetNock, testConnection } from "../../testHarness";
 import { getCustomAccountingField } from "./get";
 
 const FIELD_ID = "Department";

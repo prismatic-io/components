@@ -1,8 +1,5 @@
 import { trigger } from "@prismatic-io/spectral";
-import {
-  onInstanceDeleteFlowFunction,
-  onInstanceDeployFlowFunction,
-} from "../helpers";
+import { onInstanceDeleteFlowFunction, onInstanceDeployFlowFunction } from "../helpers";
 import { flowOutboundMessageTriggerExamplePayload } from "../examplePayloads";
 import { flowOutboundMessageTriggerInputs } from "../inputs";
 import { performFlowOutboundMessageTriggerFunction } from "../util";

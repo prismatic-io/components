@@ -16,10 +16,7 @@ export const getList = action({
   examplePayload: getListExamplePayload,
   performSafety: "safe",
   perform: async (context, { clickUpConnection, listId }) => {
-    const client = createClickUpClient(
-      clickUpConnection,
-      context.debug.enabled,
-    );
+    const client = createClickUpClient(clickUpConnection, context.debug.enabled);
 
     const { data } = await client.get(`/list/${listId}`);
 

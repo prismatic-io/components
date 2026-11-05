@@ -11,16 +11,9 @@ const gradeExample: Grade = {
   EffectiveEndDate: null,
 };
 
-export const listGradesExamplePayload: { data: OracleHcmListResponse<Grade> } =
-  {
-    data: {
-      items: [gradeExample],
-      count: 1,
-      hasMore: false,
-      limit: 25,
-      offset: 0,
-    },
-  };
+export const listGradesExamplePayload: { data: OracleHcmListResponse<Grade> } = {
+  data: { items: [gradeExample], count: 1, hasMore: false, limit: 25, offset: 0 },
+};
 
 export const getGradeExamplePayload: { data: Grade } = { data: gradeExample };
 

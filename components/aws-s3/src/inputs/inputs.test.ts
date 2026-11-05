@@ -42,19 +42,11 @@ const toStringCleaned: [string, Clean][] = [
   ["snsTopicArn", subscribeToTopicInputs.snsTopicArn.clean],
   ["endpoint", subscribeToTopicInputs.endpoint.clean],
   ["subscriptionArn", unsubscribeFromTopicInputs.subscriptionArn.clean],
-  [
-    "bucketOwnerAccountid",
-    bucketEventTriggerConfigurationInputs.bucketOwnerAccountid.clean,
-  ],
-  [
-    "eventNotificationName",
-    bucketEventTriggerConfigurationInputs.eventNotificationName.clean,
-  ],
+  ["bucketOwnerAccountid", bucketEventTriggerConfigurationInputs.bucketOwnerAccountid.clean],
+  ["eventNotificationName", bucketEventTriggerConfigurationInputs.eventNotificationName.clean],
 ];
 
-describe.each(
-  toStringCleaned,
-)("%s clean (util.types.toString)", (_name, clean) => {
+describe.each(toStringCleaned)("%s clean (util.types.toString)", (_name, clean) => {
   test.each([
     ["path/to/file.txt", "path/to/file.txt"],
     [42, "42"],
@@ -76,14 +68,8 @@ describe.each(
 const toIntCleaned: [string, Clean][] = [
   ["expirationSeconds", generatePresignedUrlInputs.expirationSeconds.clean],
   ["partNumber", uploadPartInputs.partNumber.clean],
-  [
-    "defaultRetentionDays",
-    putObjectLockConfigurationInputs.defaultRetentionDays.clean,
-  ],
-  [
-    "defaultRetentionYears",
-    putObjectLockConfigurationInputs.defaultRetentionYears.clean,
-  ],
+  ["defaultRetentionDays", putObjectLockConfigurationInputs.defaultRetentionDays.clean],
+  ["defaultRetentionYears", putObjectLockConfigurationInputs.defaultRetentionYears.clean],
 ];
 
 describe.each(toIntCleaned)("%s clean (util.types.toInt)", (_name, clean) => {
@@ -133,8 +119,7 @@ describe("maxKeys clean (toOptionalInt)", () => {
 });
 
 describe("urlsToGenerate clean (inline toInt wrapper, default 5)", () => {
-  const clean: Clean =
-    generatePresignedForMultiparUploadsInputs.urlsToGenerate.clean;
+  const clean: Clean = generatePresignedForMultiparUploadsInputs.urlsToGenerate.clean;
 
   test("normalizes a numeric string", () => {
     expect(clean("10")).toBe(10);

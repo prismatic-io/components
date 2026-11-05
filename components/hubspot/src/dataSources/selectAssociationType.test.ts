@@ -8,17 +8,11 @@ import { selectAssociationType } from "./selectAssociationType";
 
 vi.mock("../client");
 
-const mockedGetHubspotClient = getHubspotClient as MockedFunction<
-  typeof getHubspotClient
->;
+const mockedGetHubspotClient = getHubspotClient as MockedFunction<typeof getHubspotClient>;
 
 const context = {} as never;
 const connection = { key: privateAppAccessToken.key, fields: {} };
-const params = {
-  connection,
-  fromObjectType: "contacts",
-  toObjectType: "companies",
-};
+const params = { connection, fromObjectType: "contacts", toObjectType: "companies" };
 const LABELS_PATH = "/crm/associations/2026-09/contacts/companies/labels";
 
 const mockGet = (data: unknown) => {
@@ -35,25 +29,19 @@ beforeEach(() => vi.clearAllMocks());
 describe("selectAssociationType", () => {
   test("reads the dated labels path for the object pair and maps typeId and label", async () => {
     const get = mockGet({
-      results: [
-        { category: "USER_DEFINED", typeId: 8, label: "Decision Maker" },
-      ],
+      results: [{ category: "USER_DEFINED", typeId: 8, label: "Decision Maker" }],
     });
     const result = await run();
     expect(get).toHaveBeenCalledTimes(1);
     expect(get).toHaveBeenCalledWith(LABELS_PATH);
-    expect(LABELS_PATH).toBe(
-      hubspotPaths.associations("contacts", "companies", "/labels"),
-    );
+    expect(LABELS_PATH).toBe(hubspotPaths.associations("contacts", "companies", "/labels"));
     expect(result).toEqual({ result: [{ label: "Decision Maker", key: "8" }] });
   });
 
   test("uses the given fromObjectType and toObjectType in the path", async () => {
     const get = mockGet({ results: [] });
     await run({ fromObjectType: "deals", toObjectType: "line_items" });
-    expect(get).toHaveBeenCalledWith(
-      "/crm/associations/2026-09/deals/line_items/labels",
-    );
+    expect(get).toHaveBeenCalledWith("/crm/associations/2026-09/deals/line_items/labels");
   });
 
   test("an unlabeled type gets the label Type <typeId>", async () => {
@@ -112,12 +100,8 @@ describe("selectAssociationType", () => {
 
 describe("selectAssociationType inputs", () => {
   test("object type inputs drop the selectObjectType data source to avoid a circular reference", () => {
-    expect(
-      selectAssociationType.inputs.fromObjectType.dataSource,
-    ).toBeUndefined();
-    expect(
-      selectAssociationType.inputs.toObjectType.dataSource,
-    ).toBeUndefined();
+    expect(selectAssociationType.inputs.fromObjectType.dataSource).toBeUndefined();
+    expect(selectAssociationType.inputs.toObjectType.dataSource).toBeUndefined();
     expect(fromObjectType.dataSource).toBe("selectObjectType");
     expect(toObjectType.dataSource).toBe("selectObjectType");
   });

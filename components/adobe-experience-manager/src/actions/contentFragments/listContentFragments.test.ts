@@ -62,21 +62,13 @@ describe("listContentFragments", () => {
         cursor: listContentFragmentsExamplePayload.data.cursor,
       })
       .reply(200, { items: [second] });
-    const { result } = await invoke(listContentFragments, {
-      ...params,
-      fetchAll: true,
-    });
-    expect(result).toEqual({
-      data: { items: [exampleContentFragment, second] },
-    });
+    const { result } = await invoke(listContentFragments, { ...params, fetchAll: true });
+    expect(result).toEqual({ data: { items: [exampleContentFragment, second] } });
     expect(nock.isDone()).toBe(true);
   });
 
   test("surfaces an API error", async () => {
-    nock(BASE)
-      .get("/adobe/sites/cf/fragments")
-      .query(true)
-      .reply(400, { title: "Bad Request" });
+    nock(BASE).get("/adobe/sites/cf/fragments").query(true).reply(400, { title: "Bad Request" });
     await expect(invoke(listContentFragments, params)).rejects.toThrow(
       "Request failed with status code 400",
     );

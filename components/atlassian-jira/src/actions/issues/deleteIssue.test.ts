@@ -8,8 +8,7 @@ beforeAll(() => nock.disableNetConnect());
 afterAll(() => nock.enableNetConnect());
 afterEach(() => nock.cleanAll());
 
-const run = () =>
-  invoke(deleteIssue, { jiraConnection: basicConnection(), issueId: "10201" });
+const run = () => invoke(deleteIssue, { jiraConnection: basicConnection(), issueId: "10201" });
 
 describe("deleteIssue", () => {
   test("deletes the issue by ID", async () => {
@@ -27,9 +26,7 @@ describe("deleteIssue", () => {
     jiraApi()
       .delete("/rest/api/3/issue/10201")
       .reply(404, {
-        errorMessages: [
-          "Issue does not exist or you do not have permission to see it.",
-        ],
+        errorMessages: ["Issue does not exist or you do not have permission to see it."],
       });
 
     await expect(run()).rejects.toMatchObject({ response: { status: 404 } });

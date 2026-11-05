@@ -9,10 +9,7 @@ export const deleteInvoice = action({
     description: "Deletes an invoice.",
   },
   perform: async (context, { squareConnection, invoiceId }) => {
-    const client = await createAuthorizedClient(
-      squareConnection,
-      context.debug.enabled,
-    );
+    const client = await createAuthorizedClient(squareConnection, context.debug.enabled);
     const version = getVersionFromConnection(squareConnection);
 
     const response = await client.delete(`/v2/invoices/${invoiceId}`, {

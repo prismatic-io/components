@@ -11,15 +11,8 @@ export const getProductFollowers = action({
     description: "Lists followers of a product.",
   },
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { connection, id, pagination: { limit, cursor } = {} },
-  ) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      WebhookVersion.V2,
-    );
+  perform: async (context, { connection, id, pagination: { limit, cursor } = {} }) => {
+    const client = createClient(connection, context.debug.enabled, WebhookVersion.V2);
     const { data } = await client.get(`/products/${id}/followers`, {
       params: { limit, cursor },
     });
@@ -27,8 +20,5 @@ export const getProductFollowers = action({
   },
   inputs: getProductFollowersInputs,
   examplePayload: getProductFollowersExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getProductFollowersOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getProductFollowersOutputSchema }),
 });

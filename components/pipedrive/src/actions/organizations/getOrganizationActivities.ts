@@ -11,15 +11,8 @@ export const getOrganizationActivities = action({
     description: "Lists activities associated with an organization.",
   },
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { connection, id, pagination: { limit, cursor } = {}, done },
-  ) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      WebhookVersion.V2,
-    );
+  perform: async (context, { connection, id, pagination: { limit, cursor } = {}, done }) => {
+    const client = createClient(connection, context.debug.enabled, WebhookVersion.V2);
     const { data } = await client.get("/activities", {
       params: { limit, done, org_id: id, cursor },
     });

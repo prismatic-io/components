@@ -9,10 +9,7 @@ export const unenrollUserFactor = action({
     description: "Unenrolls a specific factor for the specified user.",
   },
   inputs: unenrollUserFactorInputs,
-  perform: async (
-    context,
-    { connection, userId, factorId, removeRecoveryEnrollment },
-  ) => {
+  perform: async (context, { connection, userId, factorId, removeRecoveryEnrollment }) => {
     const client = await createClient(connection, context.debug.enabled);
     await client.delete(
       `/users/${encodeURIComponent(userId)}/factors/${encodeURIComponent(factorId)}`,

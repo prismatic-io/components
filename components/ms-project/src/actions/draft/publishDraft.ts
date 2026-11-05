@@ -14,9 +14,7 @@ export const publishDraftProject = action({
       },
       context.debug.enabled,
     );
-    const { data } = await client.post(
-      `/Projects('${params.guId}')/Draft/publish()`,
-    );
+    const { data } = await client.post(`/Projects('${params.guId}')/Draft/publish()`);
 
     return {
       data,

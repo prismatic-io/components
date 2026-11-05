@@ -1,11 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
-import {
-  bucketIdInput,
-  connectionInput,
-  etagInput,
-  groupIdInput,
-  planIdInput,
-} from "./common";
+import { bucketIdInput, connectionInput, etagInput, groupIdInput, planIdInput } from "./common";
 
 const bucketNameInput = input({
   label: "Name",
@@ -13,8 +7,7 @@ const bucketNameInput = input({
   required: true,
   example: "In Review",
   placeholder: "Enter a bucket name",
-  comments:
-    "The name of the bucket, shown as a column heading on the plan's board.",
+  comments: "The name of the bucket, shown as a column heading on the plan's board.",
   clean: util.types.toString,
 });
 

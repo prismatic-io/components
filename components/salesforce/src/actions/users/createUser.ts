@@ -42,9 +42,7 @@ export const createUser = action({
     }
     const salesforceClient = await createSalesforceClient(connection, version);
 
-    const profileResponse = await salesforceClient
-      .sobject("Profile")
-      .findOne({ Name: profile });
+    const profileResponse = await salesforceClient.sobject("Profile").findOne({ Name: profile });
     if (!profileResponse?.Id) {
       throw new Error(`Unable to find Profile matching "${profile}"`);
     }
@@ -70,8 +68,7 @@ export const createUser = action({
       data: response,
     };
   },
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    genericCreateUpdateExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => genericCreateUpdateExamplePayload,
   inputs: createUserInputs,
   outputSchema: outputSchema({
     type: "actionOutput",

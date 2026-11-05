@@ -39,8 +39,7 @@ export const listFolders = action({
     type: "actionOutput",
     schema: listFoldersOutputSchema,
   }),
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    listFoldersExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => listFoldersExamplePayload,
   examplePayload: listFoldersExamplePayload,
 });
 

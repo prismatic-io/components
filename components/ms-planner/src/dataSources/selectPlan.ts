@@ -9,8 +9,7 @@ import { selectPlanInputs } from "../inputs";
 export const selectPlan = dataSource({
   display: {
     label: "Select Plan",
-    description:
-      "Select a plan from a group, or from the plans shared with the user.",
+    description: "Select a plan from a group, or from the plans shared with the user.",
   },
   inputs: selectPlanInputs,
   perform: async (_context, { connection, groupId }) => {
@@ -18,10 +17,7 @@ export const selectPlan = dataSource({
 
     const endpoint = groupId
       ? PLANNER_ENDPOINTS.GROUP_PLANS(groupId)
-      : computeEndpointBasedOnConnection(
-          connection,
-          PLANNER_ENDPOINTS.USER_PLANS,
-        );
+      : computeEndpointBasedOnConnection(connection, PLANNER_ENDPOINTS.USER_PLANS);
 
     const { value } = await fetchAllPlanner<PlannerPlan>(client, endpoint);
 

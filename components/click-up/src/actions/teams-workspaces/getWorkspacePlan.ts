@@ -16,10 +16,7 @@ export const getWorkspacePlan = action({
   examplePayload: getWorkspacePlanExamplePayload,
   performSafety: "safe",
   perform: async (context, { clickUpConnection, teamId }) => {
-    const client = createClickUpClient(
-      clickUpConnection,
-      context.debug.enabled,
-    );
+    const client = createClickUpClient(clickUpConnection, context.debug.enabled);
 
     const { data } = await client.get(`/team/${teamId}/plan`);
 

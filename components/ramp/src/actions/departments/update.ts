@@ -36,10 +36,7 @@ export const updateDepartment = action({
       data,
     };
   },
-  examplePerform: async (
-    _context,
-    { departmentId, name },
-  ): Promise<{ data: unknown }> => ({
+  examplePerform: async (_context, { departmentId, name }): Promise<{ data: unknown }> => ({
     data: {
       ...updateDepartmentResponse,
       id: departmentId,

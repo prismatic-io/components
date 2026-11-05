@@ -13,21 +13,9 @@ export const updateStage = action({
   performSafety: "notAllowed",
   perform: async (
     context,
-    {
-      connection,
-      id,
-      name,
-      pipelineId,
-      dealProbability,
-      rottenFlag,
-      rottenDays,
-    },
+    { connection, id, name, pipelineId, dealProbability, rottenFlag, rottenDays },
   ) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      WebhookVersion.V2,
-    );
+    const client = createClient(connection, context.debug.enabled, WebhookVersion.V2);
     const { data } = await client.patch(`/stages/${id}`, {
       name,
       pipeline_id: pipelineId,
@@ -39,8 +27,5 @@ export const updateStage = action({
   },
   inputs: updateStageInputs,
   examplePayload: updateStageExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: updateStageOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: updateStageOutputSchema }),
 });

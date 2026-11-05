@@ -27,8 +27,7 @@ export const getObjectLockConfigurationExamplePayload: {
     $metadata: {
       httpStatusCode: 200,
       requestId: "J58R459KF4NH",
-      extendedRequestId:
-        "YLfHsBUyeXU06tYjF7ZLX7f7JhBL1FFZhA/UZKUr4WNTy0OHDOjYN=",
+      extendedRequestId: "YLfHsBUyeXU06tYjF7ZLX7f7JhBL1FFZhA/UZKUr4WNTy0OHDOjYN=",
       cfId: null,
       attempts: 1,
       totalRetryDelay: 0,

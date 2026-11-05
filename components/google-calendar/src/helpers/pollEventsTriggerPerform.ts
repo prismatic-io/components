@@ -16,7 +16,7 @@ import { listAllEvents } from "./listAllEvents";
 import { retrieveIncrementalChanges } from "./retrieveIncrementalChanges";
 
 const classifyEvent = (
-  event: calendar_v3.Schema$Event,
+  event: calendar_v3.Schema$Event
 ): ProcessedEvent["changeType"] => {
   if (event.status === "cancelled") return "deleted";
   if (!event.created || !event.updated) return "unknown";
@@ -26,7 +26,7 @@ const classifyEvent = (
 };
 
 const processEvents = (
-  events: calendar_v3.Schema$Event[],
+  events: calendar_v3.Schema$Event[]
 ): {
   processedEvents: ProcessedEvent[];
   createdEvents: ProcessedEvent[];
@@ -73,7 +73,7 @@ const processEvents = (
 export const pollEventsTriggerPerform = async (
   context: ActionContext & PollingContext,
   payload: TriggerPayload,
-  { connection, calendarId, lookBackDate }: PollEventsTriggerParams,
+  { connection, calendarId, lookBackDate }: PollEventsTriggerParams
 ) => {
   const pollState = context.polling.getState() as PollEventsTriggerState;
   const isBatching = context.batch?.enabled === true;
@@ -123,7 +123,7 @@ export const pollEventsTriggerPerform = async (
         const result = await retrieveIncrementalChanges(
           connection,
           calendarId,
-          syncToken,
+          syncToken
         );
         events = result.events;
         syncToken = result.nextSyncToken;
@@ -161,7 +161,7 @@ export const pollEventsTriggerPerform = async (
     if (syncError.response?.status === 410) {
       if (context.debug.enabled) {
         context.logger.warn(
-          "Sync token is no longer valid, performing incremental sync from last polled date",
+          "Sync token is no longer valid, performing incremental sync from last polled date"
         );
       }
 

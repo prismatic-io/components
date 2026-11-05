@@ -23,8 +23,7 @@ export const oauth2ClientCredentialsConnection = oauth2Connection({
       type: "string",
       required: true,
       shown: true,
-      comments:
-        "The Client ID from the confidential application in Oracle Identity Domains.",
+      comments: "The Client ID from the confidential application in Oracle Identity Domains.",
       placeholder: "Enter client ID",
       example: "abc1234567890def1234567890abcdef",
     }),
@@ -33,8 +32,7 @@ export const oauth2ClientCredentialsConnection = oauth2Connection({
       type: "password",
       required: true,
       shown: true,
-      comments:
-        "The Client Secret from the confidential application in Oracle Identity Domains.",
+      comments: "The Client Secret from the confidential application in Oracle Identity Domains.",
       placeholder: "Enter client secret",
     }),
     scopes: input({

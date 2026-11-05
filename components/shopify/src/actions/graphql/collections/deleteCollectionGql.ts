@@ -31,10 +31,7 @@ export const deleteCollectionGql = action({
     };
   },
   inputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: deleteCollectionGqlOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: deleteCollectionGqlOutputSchema }),
   examplePerform: async () => examplePayload,
   examplePayload,
 });

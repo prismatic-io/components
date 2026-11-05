@@ -1,12 +1,5 @@
 import { catalogVersion, types } from "./catalog";
-import {
-  cursor,
-  limit,
-  location_id,
-  sortField,
-  sortOrder,
-  squareConnection,
-} from "./common";
+import { cursor, limit, location_id, sortField, sortOrder, squareConnection } from "./common";
 
 export const selectLocationsInputs = {
   squareConnection,

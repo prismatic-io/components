@@ -20,12 +20,9 @@ export const getCustomerGql = action({
       context.logger,
     );
 
-    const data: { customer: Customer } = await client.request(
-      getCustomerQuery,
-      {
-        id: customerIdGql,
-      },
-    );
+    const data: { customer: Customer } = await client.request(getCustomerQuery, {
+      id: customerIdGql,
+    });
 
     return {
       data: {

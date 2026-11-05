@@ -10,10 +10,7 @@ export const getPermissionSetAssignments = action({
     description: "Lists permission set assignments.",
   },
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { connection, id, pagination: { start, limit } = {} },
-  ) => {
+  perform: async (context, { connection, id, pagination: { start, limit } = {} }) => {
     const client = createClient(connection, context.debug.enabled);
     const { data } = await client.get(`/permissionSets/${id}/assignments`, {
       params: { start, limit },

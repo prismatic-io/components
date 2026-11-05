@@ -3,17 +3,9 @@ import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
 import type { DocumentNode } from "graphql";
 import type { GraphQLClient, Variables } from "graphql-request";
 import parseLinkHeader from "parse-link-header";
-import type {
-  ObjectNodes,
-  PageInfo,
-  PaginationResponse,
-  RestPageInformation,
-} from "../types";
+import type { ObjectNodes, PageInfo, PaginationResponse, RestPageInformation } from "../types";
 
-const getPaginatedObject = <T>(
-  attributePath: string[],
-  data: unknown,
-): ObjectNodes<T> => {
+const getPaginatedObject = <T>(attributePath: string[], data: unknown): ObjectNodes<T> => {
   const object = attributePath.reduce<unknown>((acc, attribute) => {
     const node = acc as Record<string, unknown>;
     if (!node[attribute]) {
@@ -85,9 +77,7 @@ export const computePageInformation = async (
       toReturnData[attributeName] = [];
     }
     toReturnData[attributeName].push(...data[attributeName]);
-    const { link } = util.types.lowerCaseHeaders(
-      headers as Record<string, string>,
-    );
+    const { link } = util.types.lowerCaseHeaders(headers as Record<string, string>);
     if (link) {
       pagination = parseLinkHeader(link);
       if (pagination.next?.page_info) {

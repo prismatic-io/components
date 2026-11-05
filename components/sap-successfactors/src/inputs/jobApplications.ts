@@ -20,13 +20,11 @@ export const createJobApplicationInputs = {
   connection,
   candidateId: {
     ...candidateId,
-    comments:
-      "The unique identifier for the candidate the job application is created for.",
+    comments: "The unique identifier for the candidate the job application is created for.",
   },
   jobReqId: {
     ...jobReqId,
-    comments:
-      "The unique identifier for the job requisition the job application is created for.",
+    comments: "The unique identifier for the job requisition the job application is created for.",
   },
   additionalInputs: {
     ...additionalInputs,
@@ -40,8 +38,7 @@ export const updateJobApplicationInputs = {
   candidateId: {
     ...candidateId,
     required: false,
-    comments:
-      "The unique identifier for the candidate to associate with the job application.",
+    comments: "The unique identifier for the candidate to associate with the job application.",
     clean: toOptionalString,
   },
   jobReqId: {

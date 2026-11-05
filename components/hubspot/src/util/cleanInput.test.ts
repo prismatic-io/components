@@ -22,20 +22,14 @@ describe("toObjectTypeKey", () => {
 
   test("maps the plural name, the singular name and the ID of every standard object to its ID", () => {
     for (const { key, name } of STANDARD_OBJECT_TYPES) {
-      const singular = name.endsWith("ies")
-        ? `${name.slice(0, -3)}y`
-        : name.slice(0, -1);
+      const singular = name.endsWith("ies") ? `${name.slice(0, -3)}y` : name.slice(0, -1);
       expect(toObjectTypeKey(name)).toBe(key);
       expect(toObjectTypeKey(singular)).toBe(key);
       expect(toObjectTypeKey(key)).toBe(key);
     }
   });
 
-  test.each([
-    "2-116144016",
-    "p_equipment",
-    "Equipment",
-  ])("passes %p through unchanged", (value) => {
+  test.each(["2-116144016", "p_equipment", "Equipment"])("passes %p through unchanged", (value) => {
     expect(toObjectTypeKey(value)).toBe(value);
   });
 });

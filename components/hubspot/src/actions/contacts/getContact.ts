@@ -9,8 +9,7 @@ import { CONTACT_PROPS, hubspotPaths } from "../../constants";
 export const getContact = action({
   display: {
     label: "Get Contact",
-    description:
-      "Get the information and metadata of a contact by Id or Email.",
+    description: "Get the information and metadata of a contact by Id or Email.",
   },
   performSafety: "notAllowed",
   perform: async (
@@ -37,10 +36,7 @@ export const getContact = action({
       debugRequest,
     });
 
-    const parameterizedProperties = getProps(
-      CONTACT_PROPS,
-      additionalProperties || [],
-    );
+    const parameterizedProperties = getProps(CONTACT_PROPS, additionalProperties || []);
 
     const params = {
       ...parameterizedProperties,
@@ -49,12 +45,9 @@ export const getContact = action({
     };
 
     if (id) {
-      const { data } = await client.get(
-        hubspotPaths.objects("contacts", `/${id}`),
-        {
-          params,
-        },
-      );
+      const { data } = await client.get(hubspotPaths.objects("contacts", `/${id}`), {
+        params,
+      });
 
       return { data };
     }
@@ -71,15 +64,11 @@ export const getContact = action({
         },
       ],
     };
-    const { data } = await client.post(
-      hubspotPaths.objects("contacts", "/search"),
-      searchBody,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
+    const { data } = await client.post(hubspotPaths.objects("contacts", "/search"), searchBody, {
+      headers: {
+        "Content-Type": "application/json",
       },
-    );
+    });
 
     return { data };
   },
@@ -88,8 +77,5 @@ export const getContact = action({
     data: getContactExamplePayload.data,
   }),
   examplePayload: getContactExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getContactOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getContactOutputSchema }),
 });

@@ -8,8 +8,7 @@ beforeAll(() => nock.disableNetConnect());
 afterAll(() => nock.enableNetConnect());
 afterEach(() => nock.cleanAll());
 
-const run = () =>
-  invoke(listIssueLinkTypes, { jiraConnection: basicConnection() });
+const run = () => invoke(listIssueLinkTypes, { jiraConnection: basicConnection() });
 
 describe("listIssueLinkTypes", () => {
   test("lists the issue link types", async () => {

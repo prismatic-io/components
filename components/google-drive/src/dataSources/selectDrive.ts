@@ -16,8 +16,7 @@ export const selectDrive = dataSource({
     const client = createClient(params.connection);
 
     const drives = await fetchAllPages(
-      (pageToken) =>
-        client.drives.list({ pageSize: DRIVES_PAGE_SIZE, pageToken }),
+      (pageToken) => client.drives.list({ pageSize: DRIVES_PAGE_SIZE, pageToken }),
       (data) => data.drives,
     );
 

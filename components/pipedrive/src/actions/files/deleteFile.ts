@@ -17,8 +17,5 @@ export const deleteFile = action({
   },
   inputs: deleteFileInputs,
   examplePayload: deleteFileExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: deleteFileOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: deleteFileOutputSchema }),
 });

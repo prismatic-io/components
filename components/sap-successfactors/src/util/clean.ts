@@ -9,10 +9,7 @@ export const toOptionalNumber = (value: unknown) =>
 export const toOptionalObject = (value: unknown) =>
   value ? util.types.toObject(value) : undefined;
 
-export const cleanCodeInput = (value: unknown) =>
-  value ? util.types.toObject(value) : {};
+export const cleanCodeInput = (value: unknown) => (value ? util.types.toObject(value) : {});
 
 export const cleanKeyValueListInput = (value: unknown) =>
-  value
-    ? util.types.keyValPairListToObject(value as KeyValuePair[])
-    : undefined;
+  value ? util.types.keyValPairListToObject(value as KeyValuePair[]) : undefined;

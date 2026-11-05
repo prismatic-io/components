@@ -12,10 +12,7 @@ export const removeCustomFieldValue = action({
   },
   examplePayload: removeCustomFieldValueExamplePayload,
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { connection, taskId, fieldId, customTaskIds, teamId },
-  ) => {
+  perform: async (context, { connection, taskId, fieldId, customTaskIds, teamId }) => {
     const client = createClickUpClient(connection, context.debug.enabled);
     const params: RemoveCustomFieldValueQueryParams = {
       custom_task_ids: customTaskIds,

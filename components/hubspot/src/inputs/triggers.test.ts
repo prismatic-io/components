@@ -1,7 +1,6 @@
 import { lookBackDate } from "./triggers";
 
-const clean = (value: unknown) =>
-  (lookBackDate.clean as (v: unknown) => string)(value);
+const clean = (value: unknown) => (lookBackDate.clean as (v: unknown) => string)(value);
 
 describe("lookBackDate", () => {
   test("is optional, so an existing flow needs no reconfiguration", () => {

@@ -1,9 +1,5 @@
 import { util } from "@prismatic-io/spectral";
-import {
-  DATE_ONLY_PATTERN,
-  DEFAULT_DAM_ROOT,
-  MAX_PAGE_LIMIT,
-} from "../constants";
+import { DATE_ONLY_PATTERN, DEFAULT_DAM_ROOT, MAX_PAGE_LIMIT } from "../constants";
 import { toIsoDate } from "./dates";
 
 export const cleanString = (value: unknown): string | undefined => {
@@ -11,16 +7,14 @@ export const cleanString = (value: unknown): string | undefined => {
   return str ? str : undefined;
 };
 
-export const cleanRequiredString = (value: unknown): string =>
-  util.types.toString(value).trim();
+export const cleanRequiredString = (value: unknown): string => util.types.toString(value).trim();
 
 const DAM_ROOT_RELATIVE = DEFAULT_DAM_ROOT.replace(/^\/+/, "");
 
 const toDamPath = (value: string): string => {
   const relative = value.replace(/^\/+/, "").replace(/\/+$/, "");
   const rooted =
-    relative === DAM_ROOT_RELATIVE ||
-    relative.startsWith(`${DAM_ROOT_RELATIVE}/`)
+    relative === DAM_ROOT_RELATIVE || relative.startsWith(`${DAM_ROOT_RELATIVE}/`)
       ? relative
       : `${DAM_ROOT_RELATIVE}/${relative}`;
   return `/${rooted}`.replace(/\/+$/, "");
@@ -46,9 +40,7 @@ export const cleanLimit = (value: unknown): number | undefined => {
   if (str === undefined) return undefined;
   const limit = /^\d+$/.test(str) ? util.types.toInt(str) : undefined;
   if (limit === undefined || limit < 1 || limit > MAX_PAGE_LIMIT) {
-    throw new Error(
-      `Limit must be a whole number from 1 to ${MAX_PAGE_LIMIT}. Received: ${str}`,
-    );
+    throw new Error(`Limit must be a whole number from 1 to ${MAX_PAGE_LIMIT}. Received: ${str}`);
   }
   return limit;
 };
@@ -80,9 +72,7 @@ export const cleanHttpsUrl = (value: unknown): string => {
 };
 
 export const cleanOptionalHttpsUrl = (value: unknown): string | undefined =>
-  util.types.toString(value).trim()
-    ? cleanHttpsUrl(value).replace(/\/$/, "")
-    : undefined;
+  util.types.toString(value).trim() ? cleanHttpsUrl(value).replace(/\/$/, "") : undefined;
 
 export const lookBackDateClean = (value: unknown): string => {
   const raw = cleanString(value);
@@ -92,9 +82,7 @@ export const lookBackDateClean = (value: unknown): string => {
 
   const match = typeof value === "string" ? raw.match(DATE_ONLY_PATTERN) : null;
   if (!match) {
-    throw new Error(
-      `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
-    );
+    throw new Error(`Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`);
   }
 
   const [, yearStr, monthStr, dayStr] = match;
@@ -107,9 +95,7 @@ export const lookBackDateClean = (value: unknown): string => {
     parsed.getUTCMonth() !== month - 1 ||
     parsed.getUTCDate() !== day
   ) {
-    throw new Error(
-      `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
-    );
+    throw new Error(`Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`);
   }
 
   if (parsed.getTime() > Date.now()) {
@@ -123,19 +109,13 @@ export const cleanFolderPaths = (value: unknown): string[] => {
     .map((item) => util.types.toString(item).trim())
     .filter((item) => item.length > 0)
     .map(toDamPath);
-  if (!paths.length)
-    throw new Error("Folder Paths must contain at least one folder path.");
+  if (!paths.length) throw new Error("Folder Paths must contain at least one folder path.");
   return paths;
 };
 
 export const cleanKeyValueRecord = (value: unknown): Record<string, string> => {
-  const pairs = (
-    Array.isArray(value) ? (value as { key?: unknown; value?: unknown }[]) : []
-  )
-    .map((pair) => ({
-      key: util.types.toString(pair.key).trim(),
-      value: pair.value,
-    }))
+  const pairs = (Array.isArray(value) ? (value as { key?: unknown; value?: unknown }[]) : [])
+    .map((pair) => ({ key: util.types.toString(pair.key).trim(), value: pair.value }))
     .filter((pair) => pair.key.length > 0);
   return util.types.keyValPairListToObject(pairs, util.types.toString);
 };

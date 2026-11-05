@@ -10,10 +10,7 @@ export const deleteCustomObject = action({
     description: "Removes custom object schema.",
   },
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { hubspotConnection, timeout, objectType, archived },
-  ) => {
+  perform: async (context, { hubspotConnection, timeout, objectType, archived }) => {
     const debugRequest = context.debug.enabled;
     const client = getHubspotClient({
       hubspotConnection,
@@ -21,14 +18,11 @@ export const deleteCustomObject = action({
       debugRequest,
     });
 
-    const { data } = await client.delete(
-      hubspotPaths.schemas(`/${objectType}`),
-      {
-        params: {
-          archived,
-        },
+    const { data } = await client.delete(hubspotPaths.schemas(`/${objectType}`), {
+      params: {
+        archived,
       },
-    );
+    });
 
     return {
       data,

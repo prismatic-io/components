@@ -13,19 +13,9 @@ export const searchOrganization = action({
   performSafety: "notAllowed",
   perform: async (
     context,
-    {
-      connection,
-      term,
-      fields,
-      exactMatch,
-      pagination: { limit, cursor } = {},
-    },
+    { connection, term, fields, exactMatch, pagination: { limit, cursor } = {} },
   ) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      WebhookVersion.V2,
-    );
+    const client = createClient(connection, context.debug.enabled, WebhookVersion.V2);
     const { data } = await client.get("/organizations/search", {
       params: { term, fields, exact_match: exactMatch, limit, cursor },
     });
@@ -33,8 +23,5 @@ export const searchOrganization = action({
   },
   inputs: searchOrganizationInputs,
   examplePayload: searchOrganizationExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: searchOrganizationOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: searchOrganizationOutputSchema }),
 });

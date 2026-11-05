@@ -29,7 +29,7 @@ export const selectAttribute = dataSource({
         (attribute): Element => ({
           label: attribute.DisplayName.UserLocalizedLabel.Label,
           key: attribute.MetadataId,
-        }),
+        })
       );
 
     return { result };

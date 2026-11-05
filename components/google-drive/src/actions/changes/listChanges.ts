@@ -46,9 +46,7 @@ export const listChanges = action({
 
     const {
       data: { startPageToken },
-    } = await client.changes.getStartPageToken(
-      getDriveQueryParams(params.driveId),
-    );
+    } = await client.changes.getStartPageToken(getDriveQueryParams(params.driveId));
     context.logger.info(
       "First time running. Subsequent runs will show changes that occurred since the previous run.",
     );

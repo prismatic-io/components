@@ -84,8 +84,7 @@ export const BASE_EXAMPLE_PAYLOAD = {
       Accept: "*/*",
       "Accept-Encoding": "gzip, deflate, br",
       Host: "hooks.example.io",
-      "User-Agent":
-        "APIs-Google; (+https://developers.google.com/webmasters/APIs-Google.html)",
+      "User-Agent": "APIs-Google; (+https://developers.google.com/webmasters/APIs-Google.html)",
       "X-Amz-Cf-Id": "_K9KZtNN78sy1aygl3nJuQ4OoMh65STAsLFsPGENcnm_l68C112345==",
       "X-Amzn-Trace-Id": "Root=1-64931762-5665c8324c471b204f212345",
       "X-Goog-Channel-Expiration": "Wed, 21 Jun 2023 16:28:01 GMT",
@@ -113,8 +112,7 @@ export const BASE_EXAMPLE_PAYLOAD = {
       "Flow 1": ["sample-api-key"],
     },
     invokeUrl: "https://hooks.example.io/trigger/WEBHOOK_ID",
-    executionId:
-      "SW5zdGFuY2VFeGVjdXRpb25SZXN1bHQ6MGRlZjk2ZjYtYzhhOS00MDgzLWJlOTUtZmIwZDMzNDQ12345",
+    executionId: "SW5zdGFuY2VFeGVjdXRpb25SZXN1bHQ6MGRlZjk2ZjYtYzhhOS00MDgzLWJlOTUtZmIwZDMzNDQ12345",
     customer: {
       id: "testCustomerId",
       name: "Test Customer",
@@ -146,9 +144,7 @@ export const BASE_EXAMPLE_PAYLOAD = {
   },
 };
 
-export const pushNotificationWebhookExamplePayload = {
-  ...BASE_EXAMPLE_PAYLOAD,
-};
+export const pushNotificationWebhookExamplePayload = { ...BASE_EXAMPLE_PAYLOAD };
 
 export const driveActivityPollingTriggerExamplePayload = {
   ...BASE_EXAMPLE_PAYLOAD,
@@ -167,8 +163,7 @@ export const driveActivityPollingTriggerExamplePayload = {
 export const pollChangesTriggerExamplePayload = {
   ...BASE_EXAMPLE_PAYLOAD,
   crossFlowState: {
-    "google-drive-list-changes-page-token:exampleStableFlowId:exampleStepId":
-      "testCursor",
+    "google-drive-list-changes-page-token:exampleStableFlowId:exampleStepId": "testCursor",
   },
   payload: {
     ...BASE_EXAMPLE_PAYLOAD.payload,
@@ -222,8 +217,7 @@ export const createFileExamplePayload = {
     kind: "drive#file",
     id: "1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms",
     name: "Q3 Revenue Report.xlsx",
-    mimeType:
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    mimeType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     parents: ["1xYz2AbC3DeF4GhI5JkL6MnO7PqR8StU"],
     size: "48213",
     createdTime: "2025-07-14T09:12:44.318Z",
@@ -241,8 +235,7 @@ export const listFilesExamplePayload = {
         kind: "drive#file",
         id: "1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms",
         name: "Q3 Revenue Report.xlsx",
-        mimeType:
-          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        mimeType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         parents: ["1xYz2AbC3DeF4GhI5JkL6MnO7PqR8StU"],
         size: "48213",
         createdTime: "2025-07-14T09:12:44.318Z",
@@ -278,8 +271,7 @@ export const searchFilesExamplePayload = {
         kind: "drive#file",
         id: "1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms",
         name: "Q3 Revenue Report.xlsx",
-        mimeType:
-          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        mimeType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         parents: ["1xYz2AbC3DeF4GhI5JkL6MnO7PqR8StU"],
         size: "48213",
         createdTime: "2025-07-14T09:12:44.318Z",
@@ -294,8 +286,7 @@ export const updateFileExamplePayload = {
     kind: "drive#file",
     id: "1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms",
     name: "Q3 Revenue Report.xlsx",
-    mimeType:
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    mimeType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     parents: ["1xYz2AbC3DeF4GhI5JkL6MnO7PqR8StU"],
     size: "51940",
     createdTime: "2025-07-14T09:12:44.318Z",
@@ -435,8 +426,7 @@ export const rawRequestExamplePayload = {
         kind: "drive#file",
         id: "1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms",
         name: "Q3 Revenue Report.xlsx",
-        mimeType:
-          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        mimeType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       },
     ],
   },
@@ -467,10 +457,7 @@ export const selectFilesExamplePayload = {
 
 export const selectFolderExamplePayload = {
   result: [
-    {
-      key: "1QwErTy2UiOp3AsDf4GhJk5LzXcVbNm6",
-      label: "[Marketing Team Drive] Campaign Assets",
-    },
+    { key: "1QwErTy2UiOp3AsDf4GhJk5LzXcVbNm6", label: "[Marketing Team Drive] Campaign Assets" },
     { key: "1xYz2AbC3DeF4GhI5JkL6MnO7PqR8StU", label: "[My Drive] Finance" },
   ],
 };

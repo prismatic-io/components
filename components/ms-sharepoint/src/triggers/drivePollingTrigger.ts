@@ -31,9 +31,7 @@ export const drivePollingTrigger = pollingTrigger({
   batchConfig: { batchSize: 50 },
   triggerResolver: {
     resolveItems: (_context, { payload }): PollingRecordChange[] =>
-      resolvePollingRecordChanges(
-        payload.body.data as PollSiteChangesSeparatedChanges,
-      ),
+      resolvePollingRecordChanges(payload.body.data as PollSiteChangesSeparatedChanges),
     getNextPaginationState: (_context, { payload }): DeltaCursor | null =>
       (payload.paginationState as DeltaCursor | undefined) ?? null,
   },

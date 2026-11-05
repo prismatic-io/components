@@ -70,9 +70,7 @@ export const bucketEventTriggerConfigurationExamplePayload: {
   },
 };
 
-export const unsubscribeFromTopicExamplePayload: {
-  data: UnsubscribeCommandOutput;
-} = {
+export const unsubscribeFromTopicExamplePayload: { data: UnsubscribeCommandOutput } = {
   data: {
     $metadata: {
       httpStatusCode: 200,

@@ -22,13 +22,11 @@ const connection = createConnection(ukgProBasicAuth, {
   password: "test-password",
 });
 
-const records =
-  getEmployeeChangesByDateExamplePayload.data as unknown as EmployeeChange[];
+const records = getEmployeeChangesByDateExamplePayload.data as unknown as EmployeeChange[];
 
 const chunk = <T>(items: T[], size: number): T[][] => {
   const batches: T[][] = [];
-  for (let i = 0; i < items.length; i += size)
-    batches.push(items.slice(i, i + size));
+  for (let i = 0; i < items.length; i += size) batches.push(items.slice(i, i + size));
   return batches;
 };
 
@@ -36,9 +34,7 @@ describe("pollEmployeeChanges batching declaration", () => {
   test("declares opt-in Tier 1 batching with a default batch size", () => {
     expect(pollEmployeeChanges.triggerResolverSupport).toBe("valid");
     expect(pollEmployeeChanges.batchConfig).toEqual({ batchSize: 50 });
-    expect(pollEmployeeChanges.triggerResolver?.resolveItems).toBeInstanceOf(
-      Function,
-    );
+    expect(pollEmployeeChanges.triggerResolver?.resolveItems).toBeInstanceOf(Function);
   });
 
   test("offers the Look-back Date directly below the connection", () => {
@@ -71,14 +67,9 @@ describe("triggerResolver.resolveItems", () => {
         { payload: { body: { data: records } } } as never,
       ) ?? [];
 
-    expect(items).toEqual(
-      records.map((record) => ({ changeType: "changed", record })),
-    );
+    expect(items).toEqual(records.map((record) => ({ changeType: "changed", record })));
 
-    const batches = chunk(
-      items as unknown[],
-      pollEmployeeChanges.batchConfig?.batchSize ?? 1,
-    );
+    const batches = chunk(items as unknown[], pollEmployeeChanges.batchConfig?.batchSize ?? 1);
     expect(batches.flat()).toHaveLength(records.length);
   });
 });
@@ -116,9 +107,7 @@ describe("pollEmployeeChanges polling state", () => {
     companyId: "",
   });
 
-  const mockChanges = (
-    body: unknown = getEmployeeChangesByDateExamplePayload,
-  ) => {
+  const mockChanges = (body: unknown = getEmployeeChangesByDateExamplePayload) => {
     const seen: Record<string, string>[] = [];
     nock(BASE)
       .get(PATH)
@@ -153,9 +142,7 @@ describe("pollEmployeeChanges polling state", () => {
       per_page: "100",
     });
     expect(store).toEqual({ lastPollTime: NOW });
-    expect(result?.payload.body.data).toEqual(
-      getEmployeeChangesByDateExamplePayload.data,
-    );
+    expect(result?.payload.body.data).toEqual(getEmployeeChangesByDateExamplePayload.data);
     expect(result?.polledNoChanges).toBe(false);
   });
 
@@ -164,10 +151,7 @@ describe("pollEmployeeChanges polling state", () => {
 
     await poll(params("2026-01-01"));
 
-    expect(seen[0]).toMatchObject({
-      start_date: "2026-01-01",
-      end_date: "2026-10-01",
-    });
+    expect(seen[0]).toMatchObject({ start_date: "2026-01-01", end_date: "2026-10-01" });
     expect(store).toEqual({ lastPollTime: NOW });
   });
 
@@ -177,10 +161,7 @@ describe("pollEmployeeChanges polling state", () => {
 
     await poll(params("2026-01-01"));
 
-    expect(seen[0]).toMatchObject({
-      start_date: "2026-09-15",
-      end_date: "2026-10-01",
-    });
+    expect(seen[0]).toMatchObject({ start_date: "2026-09-15", end_date: "2026-10-01" });
     expect(store).toEqual({ lastPollTime: NOW });
   });
 
@@ -202,13 +183,8 @@ describe("pollEmployeeChanges polling state", () => {
     const seen = mockChanges();
     const second = await poll(params());
 
-    expect(seen[0]).toMatchObject({
-      start_date: "2026-10-01",
-      end_date: "2026-10-01",
-    });
-    expect(second.result?.payload.body.data).toEqual(
-      first.result?.payload.body.data,
-    );
+    expect(seen[0]).toMatchObject({ start_date: "2026-10-01", end_date: "2026-10-01" });
+    expect(second.result?.payload.body.data).toEqual(first.result?.payload.body.data);
     expect(second.result?.polledNoChanges).toBe(false);
     expect(store).toEqual({ lastPollTime: "2026-10-01T12:05:00.000Z" });
   });

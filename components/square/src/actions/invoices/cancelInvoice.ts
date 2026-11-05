@@ -9,19 +9,13 @@ export const cancelInvoice = action({
     description: "Cancels an invoice.",
   },
   perform: async (context, { squareConnection, invoiceId }) => {
-    const client = await createAuthorizedClient(
-      squareConnection,
-      context.debug.enabled,
-    );
+    const client = await createAuthorizedClient(squareConnection, context.debug.enabled);
 
     const cancelBody = {
       version: getVersionFromConnection(squareConnection),
     };
 
-    const response = await client.post(
-      `/v2/invoices/${invoiceId}/cancel`,
-      cancelBody,
-    );
+    const response = await client.post(`/v2/invoices/${invoiceId}/cancel`, cancelBody);
 
     return {
       data: response.data,

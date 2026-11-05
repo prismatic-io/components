@@ -21,14 +21,10 @@ export const listPlansForUser = action({
   performSafety: "notAllowed",
   perform: async (context, { connection }) => {
     const client = createClient(connection, context.debug.enabled);
-    const endpoint = computeEndpointBasedOnConnection(
-      connection,
-      PLANNER_ENDPOINTS.USER_PLANS,
-    );
+    const endpoint = computeEndpointBasedOnConnection(connection, PLANNER_ENDPOINTS.USER_PLANS);
     const data = await fetchAllPlanner<PlannerPlan & Etagged>(client, endpoint);
     return { data };
   },
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    listPlansForUserExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => listPlansForUserExamplePayload,
   examplePayload: listPlansForUserExamplePayload,
 });

@@ -14,11 +14,7 @@ export const deletePriceList = action({
     connection,
   },
   perform: async (context, { connection, priceListNo }) => {
-    const client = await createClient(
-      connection,
-      context,
-      context.debug.enabled,
-    );
+    const client = await createClient(connection, context, context.debug.enabled);
 
     await client.delete(`/PriceLists(${priceListNo})`);
     return {

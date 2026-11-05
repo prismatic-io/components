@@ -20,7 +20,6 @@ export const listDrives = action({
     });
     return { data: drives };
   },
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    listDrivesExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => listDrivesExamplePayload,
   examplePayload: listDrivesExamplePayload,
 });

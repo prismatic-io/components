@@ -11,13 +11,10 @@ export const updateTable = action({
   },
   perform: async (context, { connection, datasetId, tableName, columns }) => {
     const client = createClient({ connection }, context.debug.enabled);
-    const { data } = await client.put(
-      `/datasets/${datasetId}/tables/${tableName}`,
-      {
-        name: tableName,
-        columns,
-      },
-    );
+    const { data } = await client.put(`/datasets/${datasetId}/tables/${tableName}`, {
+      name: tableName,
+      columns,
+    });
 
     return {
       data,

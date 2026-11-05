@@ -13,9 +13,7 @@ export const getOrder = action({
   performSafety: "safe",
   perform: async (context, { connection, orderId }) => {
     const client = await getClient(connection, context.debug.enabled);
-    const { data } = await client.get(
-      `${ENDPOINTS.orders}/${encodeURIComponent(orderId)}`,
-    );
+    const { data } = await client.get(`${ENDPOINTS.orders}/${encodeURIComponent(orderId)}`);
     return { data };
   },
   inputs: getOrderInputs,

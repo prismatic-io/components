@@ -169,12 +169,7 @@ export const contactInfo = structuredObjectInput({
   label: "Contact Information",
   required: false,
   comments: "Email, phone, and other contact channel details.",
-  inputs: {
-    companyEmail,
-    companyPhoneNumber,
-    companyFaxNumber,
-    companyWebsite,
-  },
+  inputs: { companyEmail, companyPhoneNumber, companyFaxNumber, companyWebsite },
 });
 
 export const companyInformationId = input({

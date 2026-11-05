@@ -9,10 +9,7 @@ describe("toPaginationParams", () => {
     { pageSize: 20, pageNumber: 0 },
     { pageSize: "0", pageNumber: "1" },
     { pageSize: 0, pageNumber: 1 },
-  ])("should return undefined for invalid values", ({
-    pageSize,
-    pageNumber,
-  }) => {
+  ])("should return undefined for invalid values", ({ pageSize, pageNumber }) => {
     const result = toPaginationParams(pageSize, pageNumber);
     expect(result).toBeUndefined();
   });

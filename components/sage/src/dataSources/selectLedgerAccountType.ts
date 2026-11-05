@@ -7,8 +7,7 @@ import { connection } from "../inputs";
 export const selectLedgerAccountType = dataSource({
   display: {
     label: "Select Ledger Account Type",
-    description:
-      "Select a ledger account type from a list of ledger account types.",
+    description: "Select a ledger account type from a list of ledger account types.",
   },
   inputs: { connection },
   perform: async (_context, { connection }) => {
@@ -22,9 +21,7 @@ export const selectLedgerAccountType = dataSource({
         label: item.displayed_as || item.id || "",
         key: item.id || "",
       }))
-      .sort((a: Element, b: Element) =>
-        (a.label || "").localeCompare(b.label || ""),
-      );
+      .sort((a: Element, b: Element) => (a.label || "").localeCompare(b.label || ""));
 
     return { result };
   },

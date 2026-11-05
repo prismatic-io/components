@@ -101,8 +101,7 @@ const sku = input({
   type: "string",
   required: false,
   placeholder: "Enter product SKU",
-  comments:
-    "The stock-keeping unit code used to track the product in inventory systems.",
+  comments: "The stock-keeping unit code used to track the product in inventory systems.",
   example: "804874",
   clean: toOptionalString,
 });

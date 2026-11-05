@@ -7,15 +7,10 @@ import type { PurchaseReceipt } from "../../interfaces";
 export const getPurchaseReceipt = action({
   display: {
     label: "Get Purchase Receipt",
-    description:
-      "Retrieves a purchase receipt object in your Business Central Organization.",
+    description: "Retrieves a purchase receipt object in your Business Central Organization.",
   },
   perform: async (context, { companyId, connection, purchaseReceiptId }) => {
-    const client = getMsBusinessCentralClient(
-      connection,
-      context,
-      context.debug.enabled,
-    );
+    const client = getMsBusinessCentralClient(connection, context, context.debug.enabled);
     const { data } = await client.get<PurchaseReceipt>(
       `/companies(${companyId})/purchaseReceipts(${purchaseReceiptId})`,
     );

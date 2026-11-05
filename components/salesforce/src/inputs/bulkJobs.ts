@@ -1,11 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanStringInput, recordsInputClean } from "../util";
-import {
-  connectionInput,
-  externalIdFieldName,
-  recordType,
-  version,
-} from "./common";
+import { connectionInput, externalIdFieldName, recordType, version } from "./common";
 import {
   columnDelimiter,
   isPkChunkingEnabled,
@@ -59,8 +54,7 @@ const object = input({
   type: "string",
   required: false,
   placeholder: "Enter object type",
-  comments:
-    "The object type for the data being processed. Use only a single object type per job.",
+  comments: "The object type for the data being processed. Use only a single object type per job.",
   example: "Account",
   clean: cleanStringInput,
 });
@@ -87,8 +81,7 @@ const bulkJobId = input({
   placeholder: "Enter bulk job ID",
   type: "string",
   required: true,
-  comments:
-    "The unique identifier of the bulk job returned from the Create Bulk Job action.",
+  comments: "The unique identifier of the bulk job returned from the Create Bulk Job action.",
   example: "750R0000000zlh9IAA",
   dataSource: "selectBulkJob",
   clean: util.types.toString,

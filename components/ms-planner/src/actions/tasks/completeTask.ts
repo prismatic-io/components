@@ -30,7 +30,6 @@ export const completeTask = action({
     );
     return { data };
   },
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    completeTaskExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => completeTaskExamplePayload,
   examplePayload: completeTaskExamplePayload,
 });

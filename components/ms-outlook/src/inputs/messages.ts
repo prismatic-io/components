@@ -1,17 +1,8 @@
 import { input, util } from "@prismatic-io/spectral";
 import type { BodyType } from "@microsoft/microsoft-graph-types";
-import {
-  cleanAttachments,
-  cleanFunctionForBccAndCcInputs,
-  cleanStringInput,
-} from "../util";
+import { cleanAttachments, cleanFunctionForBccAndCcInputs, cleanStringInput } from "../util";
 import { ATTACHMENTS_DATA_INPUT_EXAMPLE } from "../constants";
-import {
-  connectionInput,
-  fetchAllInput,
-  folderIdInput,
-  pagination,
-} from "./common";
+import { connectionInput, fetchAllInput, folderIdInput, pagination } from "./common";
 
 export const messageIdInput = input({
   label: "Message ID",

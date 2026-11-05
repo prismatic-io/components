@@ -9,9 +9,9 @@ export const selectCustomerDeliveryAddress = dataSource({
   },
   perform: async (_context, { connection, site, company }) => {
     const client = getClient(connection, false, site, company);
-    const { data } = await client.get<
-      { id: number; description: string; postal_name: string }[]
-    >("/customer_delivery_addresses");
+    const { data } = await client.get<{ id: number; description: string; postal_name: string }[]>(
+      "/customer_delivery_addresses",
+    );
 
     const objects = data.map<Element>((address) => ({
       key: util.types.toString(address.id),
@@ -21,9 +21,7 @@ export const selectCustomerDeliveryAddress = dataSource({
     }));
 
     return {
-      result: objects.sort((a, b) =>
-        (a.label ?? "").localeCompare(b.label ?? ""),
-      ),
+      result: objects.sort((a, b) => (a.label ?? "").localeCompare(b.label ?? "")),
     };
   },
   dataSourceType: "picklist",

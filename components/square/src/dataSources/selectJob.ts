@@ -12,11 +12,7 @@ export const selectJob = dataSource({
   perform: async (_context, { squareConnection }) => {
     const client = await createAuthorizedClient(squareConnection);
 
-    const allJobs = await fetchAllPages(
-      client,
-      "/v2/team-members/jobs",
-      "jobs",
-    );
+    const allJobs = await fetchAllPages(client, "/v2/team-members/jobs", "jobs");
 
     const result = (allJobs.jobs as Record<string, unknown>[])
       .map((job: Record<string, unknown>) => ({

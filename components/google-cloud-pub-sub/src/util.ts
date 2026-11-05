@@ -1,9 +1,4 @@
-import type {
-  GenericListMethod,
-  GoogleListMethod,
-  PaginateResult,
-  SortableByName,
-} from "./types";
+import type { GenericListMethod, GoogleListMethod, PaginateResult, SortableByName } from "./types";
 
 export const jsonInputClean = (value: unknown) => {
   if (typeof value === "string") {

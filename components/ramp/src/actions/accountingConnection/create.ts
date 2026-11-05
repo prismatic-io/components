@@ -34,10 +34,7 @@ export const createAccountingConnection = action({
       data,
     };
   },
-  examplePerform: async (
-    _context,
-    { remoteProviderName },
-  ): Promise<{ data: unknown }> => ({
+  examplePerform: async (_context, { remoteProviderName }): Promise<{ data: unknown }> => ({
     data: {
       ...createAccountingConnectionResponse,
       remote_provider_name: remoteProviderName,

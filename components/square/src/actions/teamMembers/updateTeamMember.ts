@@ -10,15 +10,10 @@ export const updateTeamMember = action({
   },
   perform: async (context, { teamMemberId, teamMember, squareConnection }) => {
     if (!teamMember.given_name || !teamMember.family_name) {
-      throw new Error(
-        "`given_name` and `family_name` are required for a team member.",
-      );
+      throw new Error("`given_name` and `family_name` are required for a team member.");
     }
 
-    const client = await createAuthorizedClient(
-      squareConnection,
-      context.debug.enabled,
-    );
+    const client = await createAuthorizedClient(squareConnection, context.debug.enabled);
 
     const requestBody = {
       team_member: {

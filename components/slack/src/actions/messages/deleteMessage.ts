@@ -13,7 +13,7 @@ export const deleteMessage = action({
   performSafety: "notAllowed",
   perform: async (
     { debug: { enabled: debug } },
-    { connection, messageId, channelId },
+    { connection, messageId, channelId }
   ) => {
     debugLogger({ messageId, channelId, debug });
     const client = await createOauthClient({
@@ -28,7 +28,7 @@ export const deleteMessage = action({
   },
   examplePerform: async (
     _context,
-    { messageId, channelId },
+    { messageId, channelId }
   ): Promise<{ data: unknown }> => ({
     data: {
       ...deleteMessageExamplePayload,

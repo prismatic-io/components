@@ -26,8 +26,7 @@ export const createWebhook = action({
       },
       false,
     );
-    const { developerApiKey, appId } =
-      checkDeveloperApiKeyAndAppId(hubspotConnection);
+    const { developerApiKey, appId } = checkDeveloperApiKeyAndAppId(hubspotConnection);
 
     const { data } = await client.post(
       hubspotPaths.appWebhooks(appId, "/subscriptions"),
@@ -48,8 +47,5 @@ export const createWebhook = action({
   }),
   inputs: createWebhookInputs,
   examplePayload: createWebhookExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: webhookSubscriptionSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: webhookSubscriptionSchema }),
 });

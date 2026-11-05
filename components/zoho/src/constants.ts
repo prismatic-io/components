@@ -1,8 +1,4 @@
-export const DEFAULT_POLLING_CRM_FIELDS = [
-  "Created_Time",
-  "Modified_Time",
-  "Full_Name",
-];
+export const DEFAULT_POLLING_CRM_FIELDS = ["Created_Time", "Modified_Time", "Full_Name"];
 export const DEFAULT_POLLING_SORT_FIELD = "Modified_Time";
 export const DEFAULT_POLLING_SORT_ORDER = "desc";
 export const DEFAULT_PER_PAGE = 200;

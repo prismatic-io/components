@@ -1,7 +1,4 @@
-import type {
-  ClientProps,
-  HttpClient,
-} from "@prismatic-io/spectral/dist/clients/http";
+import type { ClientProps, HttpClient } from "@prismatic-io/spectral/dist/clients/http";
 import type { Paging } from "../types";
 
 const withAfter = (params: unknown, after: string) => {

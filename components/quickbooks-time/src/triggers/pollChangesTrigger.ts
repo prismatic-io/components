@@ -1,22 +1,9 @@
 import { pollingTrigger, util } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { PollResource } from "../constants";
-import {
-  connection,
-  lookBackDate,
-  pollResourceType,
-  showNewRecords,
-} from "../inputs";
-import type {
-  PollingState,
-  QBTimeRecordChange,
-  QBTimeRecordChanges,
-} from "../types";
-import {
-  fetchRecords,
-  filterCreatedOnOrAfter,
-  resolveQBTimeRecordChanges,
-} from "../util";
+import { connection, lookBackDate, pollResourceType, showNewRecords } from "../inputs";
+import type { PollingState, QBTimeRecordChange, QBTimeRecordChanges } from "../types";
+import { fetchRecords, filterCreatedOnOrAfter, resolveQBTimeRecordChanges } from "../util";
 
 export const pollChangesTrigger = pollingTrigger({
   display: {
@@ -36,11 +23,7 @@ export const pollChangesTrigger = pollingTrigger({
     resolveItems: (_context, { payload }): QBTimeRecordChange[] =>
       resolveQBTimeRecordChanges(payload.body.data as QBTimeRecordChanges),
   },
-  perform: async (
-    context,
-    payload,
-    { connection, resourceType, showNewRecords, lookBackDate },
-  ) => {
+  perform: async (context, payload, { connection, resourceType, showNewRecords, lookBackDate }) => {
     const now = new Date().toISOString();
     const lastState = context.polling.getState() as PollingState;
     const client = createClient(connection, context.debug.enabled);
@@ -49,17 +32,12 @@ export const pollChangesTrigger = pollingTrigger({
     const knownIds = lastState?.knownIds;
     const hasNoBaseline =
       knownIds === undefined ||
-      (knownIds.length > 0 &&
-        knownIds.every((id) => util.types.toString(id) === ""));
+      (knownIds.length > 0 && knownIds.every((id) => util.types.toString(id) === ""));
     const isFirstPoll = isIdBased ? hasNoBaseline : !lastState?.lastPolledAt;
     const isInitialSync = isFirstPoll && Boolean(lookBackDate);
 
     if (!isIdBased) {
-      queryParams.start_date = (
-        lastState?.lastPolledAt ||
-        lookBackDate ||
-        now
-      ).split("T")[0];
+      queryParams.start_date = (lastState?.lastPolledAt || lookBackDate || now).split("T")[0];
     }
 
     const records = await fetchRecords(client, resourceType, queryParams);
@@ -74,9 +52,7 @@ export const pollChangesTrigger = pollingTrigger({
       };
     }
 
-    const knownSet = new Set(
-      (lastState?.knownIds ?? []).map((id) => util.types.toString(id)),
-    );
+    const knownSet = new Set((lastState?.knownIds ?? []).map((id) => util.types.toString(id)));
     const created =
       isIdBased && isInitialSync
         ? filterCreatedOnOrAfter(records, lookBackDate)
@@ -92,10 +68,7 @@ export const pollChangesTrigger = pollingTrigger({
     }
 
     return {
-      payload: {
-        ...payload,
-        body: { data: { created: filteredCreated, updated: [] } },
-      },
+      payload: { ...payload, body: { data: { created: filteredCreated, updated: [] } } },
       polledNoChanges: filteredCreated.length === 0,
     };
   },

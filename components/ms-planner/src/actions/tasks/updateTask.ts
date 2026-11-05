@@ -5,12 +5,7 @@ import { PLANNER_ENDPOINTS } from "../../constants";
 import { updateTaskExamplePayload } from "../../examplePayloads";
 import { updateTaskOutputSchema } from "../../outputSchemas";
 import type { Etagged } from "../../types";
-import {
-  buildAppliedCategories,
-  buildAssignments,
-  compact,
-  patchWithEtag,
-} from "../../utils";
+import { buildAppliedCategories, buildAssignments, compact, patchWithEtag } from "../../utils";
 import { updateTaskInputs } from "../../inputs";
 
 export const updateTask = action({
@@ -43,10 +38,7 @@ export const updateTask = action({
   ) => {
     const client = createClient(connection, context.debug.enabled);
 
-    const assignments = buildAssignments(
-      assignment?.assignTo,
-      assignment?.unassign,
-    );
+    const assignments = buildAssignments(assignment?.assignTo, assignment?.unassign);
     const appliedCategories = buildAppliedCategories(
       categories?.applyCategories,
       categories?.removeCategories,
@@ -61,9 +53,7 @@ export const updateTask = action({
       startDateTime: schedule?.startDateTime,
       dueDateTime: schedule?.dueDateTime,
       assignments: Object.keys(assignments).length ? assignments : undefined,
-      appliedCategories: Object.keys(appliedCategories).length
-        ? appliedCategories
-        : undefined,
+      appliedCategories: Object.keys(appliedCategories).length ? appliedCategories : undefined,
     });
 
     const data = await patchWithEtag<PlannerTask & Etagged>(
@@ -76,21 +66,11 @@ export const updateTask = action({
   },
   examplePerform: async (
     _context,
-    {
-      title,
-      bucketId,
-      schedule,
-      priority,
-      percentComplete,
-      categories,
-      conversationThreadId,
-    },
+    { title, bucketId, schedule, priority, percentComplete, categories, conversationThreadId },
   ): Promise<{ data: unknown }> => {
     const exampleTask = updateTaskExamplePayload.data;
 
-    const appliedCategories: Record<string, unknown> = {
-      ...exampleTask.appliedCategories,
-    };
+    const appliedCategories: Record<string, unknown> = { ...exampleTask.appliedCategories };
     for (const category of categories?.applyCategories ?? []) {
       appliedCategories[category] = true;
     }
@@ -107,8 +87,7 @@ export const updateTask = action({
         percentComplete: percentComplete ?? exampleTask.percentComplete,
         startDateTime: schedule?.startDateTime ?? exampleTask.startDateTime,
         dueDateTime: schedule?.dueDateTime ?? exampleTask.dueDateTime,
-        conversationThreadId:
-          conversationThreadId ?? exampleTask.conversationThreadId,
+        conversationThreadId: conversationThreadId ?? exampleTask.conversationThreadId,
         appliedCategories,
       },
     };

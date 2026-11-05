@@ -6,9 +6,7 @@ import { pollChangesTrigger } from "./pollChangesTrigger";
 const mockGet = vi.fn();
 
 vi.mock("../client", () => ({
-  createAnalyticsClient: vi
-    .fn()
-    .mockReturnValue({ get: (...args: unknown[]) => mockGet(...args) }),
+  createAnalyticsClient: vi.fn().mockReturnValue({ get: (...args: unknown[]) => mockGet(...args) }),
 }));
 
 vi.mock("../util", async (importOriginal) => {
@@ -37,9 +35,7 @@ interface PollingStore {
   context: Partial<ActionContext>;
 }
 
-const createPollingStore = (
-  seedState: Record<string, unknown> = {},
-): PollingStore => {
+const createPollingStore = (seedState: Record<string, unknown> = {}): PollingStore => {
   let state: Record<string, unknown> = seedState;
   const writes: Record<string, unknown>[] = [];
   return {
@@ -90,28 +86,19 @@ const poll = async (
     lookBackDate: string;
   }> = {},
 ): Promise<PollResult> => {
-  const { result } = await invokeTrigger(
-    triggerUnderTest,
-    store.context,
-    undefined,
-    {
-      connection: {},
-      pollResourceType: "accounts",
-      accountId: undefined,
-      showNewRecords: true,
-      showUpdatedRecords: true,
-      lookBackDate: undefined,
-      ...overrides,
-    } as Record<string, unknown>,
-  );
+  const { result } = await invokeTrigger(triggerUnderTest, store.context, undefined, {
+    connection: {},
+    pollResourceType: "accounts",
+    accountId: undefined,
+    showNewRecords: true,
+    showUpdatedRecords: true,
+    lookBackDate: undefined,
+    ...overrides,
+  } as Record<string, unknown>);
   return result as unknown as PollResult;
 };
 
-const makeAccount = (
-  name: string,
-  createTime: string,
-  updateTime: string,
-): Account => ({
+const makeAccount = (name: string, createTime: string, updateTime: string): Account => ({
   name,
   createTime,
   updateTime,
@@ -119,11 +106,7 @@ const makeAccount = (
   regionCode: "US",
 });
 
-const makeProperty = (
-  name: string,
-  createTime: string,
-  updateTime: string,
-): Property =>
+const makeProperty = (name: string, createTime: string, updateTime: string): Property =>
   ({
     name,
     parent: "accounts/123",
@@ -146,33 +129,17 @@ describe("pollChangesTrigger", () => {
       mockGet.mockResolvedValueOnce({
         data: {
           accounts: [
-            makeAccount(
-              "acct/1",
-              "2026-05-15T00:00:00Z",
-              "2026-05-15T00:00:00Z",
-            ),
-            makeAccount(
-              "acct/2",
-              "2026-04-01T00:00:00Z",
-              "2026-05-20T00:00:00Z",
-            ),
-            makeAccount(
-              "acct/3",
-              "2026-04-01T00:00:00Z",
-              "2026-04-02T00:00:00Z",
-            ),
+            makeAccount("acct/1", "2026-05-15T00:00:00Z", "2026-05-15T00:00:00Z"),
+            makeAccount("acct/2", "2026-04-01T00:00:00Z", "2026-05-20T00:00:00Z"),
+            makeAccount("acct/3", "2026-04-01T00:00:00Z", "2026-04-02T00:00:00Z"),
           ],
         },
       });
 
       const result = await poll(store);
 
-      expect(result.payload.body.data.created.map((r) => r.name)).toEqual([
-        "acct/1",
-      ]);
-      expect(result.payload.body.data.updated.map((r) => r.name)).toEqual([
-        "acct/2",
-      ]);
+      expect(result.payload.body.data.created.map((r) => r.name)).toEqual(["acct/1"]);
+      expect(result.payload.body.data.updated.map((r) => r.name)).toEqual(["acct/2"]);
       expect(result.polledNoChanges).toBe(false);
       expect(store.currentState()).toEqual({ lastPolledAt: POLL_ONE_AT });
     });
@@ -183,13 +150,7 @@ describe("pollChangesTrigger", () => {
       freezeClockAt(POLL_ONE_AT);
       mockGet.mockResolvedValueOnce({
         data: {
-          accounts: [
-            makeAccount(
-              "acct/1",
-              "2026-05-15T00:00:00Z",
-              "2026-05-15T00:00:00Z",
-            ),
-          ],
+          accounts: [makeAccount("acct/1", "2026-05-15T00:00:00Z", "2026-05-15T00:00:00Z")],
         },
       });
 
@@ -207,9 +168,9 @@ describe("pollChangesTrigger", () => {
       const store = createPollingStore();
       freezeClockAt(POLL_ONE_AT);
 
-      await expect(
-        poll(store, { pollResourceType: "properties" }),
-      ).rejects.toThrow("Account ID is required when polling Properties");
+      await expect(poll(store, { pollResourceType: "properties" })).rejects.toThrow(
+        "Account ID is required when polling Properties",
+      );
     });
 
     test("fetches properties with account filter", async () => {
@@ -218,13 +179,7 @@ describe("pollChangesTrigger", () => {
       freezeClockAt(POLL_ONE_AT);
       mockGet.mockResolvedValueOnce({
         data: {
-          properties: [
-            makeProperty(
-              "prop/1",
-              "2026-05-15T00:00:00Z",
-              "2026-05-15T00:00:00Z",
-            ),
-          ],
+          properties: [makeProperty("prop/1", "2026-05-15T00:00:00Z", "2026-05-15T00:00:00Z")],
         },
       });
 
@@ -233,9 +188,7 @@ describe("pollChangesTrigger", () => {
         accountId: "accounts/123",
       });
 
-      expect(result.payload.body.data.created.map((r) => r.name)).toEqual([
-        "prop/1",
-      ]);
+      expect(result.payload.body.data.created.map((r) => r.name)).toEqual(["prop/1"]);
       expect(result.polledNoChanges).toBe(false);
     });
   });
@@ -248,16 +201,8 @@ describe("pollChangesTrigger", () => {
       mockGet.mockResolvedValueOnce({
         data: {
           accounts: [
-            makeAccount(
-              "acct/new",
-              "2026-05-15T00:00:00Z",
-              "2026-05-15T00:00:00Z",
-            ),
-            makeAccount(
-              "acct/upd",
-              "2026-04-01T00:00:00Z",
-              "2026-05-20T00:00:00Z",
-            ),
+            makeAccount("acct/new", "2026-05-15T00:00:00Z", "2026-05-15T00:00:00Z"),
+            makeAccount("acct/upd", "2026-04-01T00:00:00Z", "2026-05-20T00:00:00Z"),
           ],
         },
       });
@@ -268,12 +213,8 @@ describe("pollChangesTrigger", () => {
         lookBackDate: "2026-04-01T00:00:00.000Z",
       });
 
-      expect(result.payload.body.data.created.map((r) => r.name)).toEqual([
-        "acct/new",
-      ]);
-      expect(result.payload.body.data.updated.map((r) => r.name)).toEqual([
-        "acct/upd",
-      ]);
+      expect(result.payload.body.data.created.map((r) => r.name)).toEqual(["acct/new"]);
+      expect(result.payload.body.data.updated.map((r) => r.name)).toEqual(["acct/upd"]);
       expect(result.polledNoChanges).toBe(false);
     });
 
@@ -284,16 +225,8 @@ describe("pollChangesTrigger", () => {
       mockGet.mockResolvedValueOnce({
         data: {
           accounts: [
-            makeAccount(
-              "acct/new",
-              "2026-05-15T00:00:00Z",
-              "2026-05-15T00:00:00Z",
-            ),
-            makeAccount(
-              "acct/upd",
-              "2026-04-01T00:00:00Z",
-              "2026-05-20T00:00:00Z",
-            ),
+            makeAccount("acct/new", "2026-05-15T00:00:00Z", "2026-05-15T00:00:00Z"),
+            makeAccount("acct/upd", "2026-04-01T00:00:00Z", "2026-05-20T00:00:00Z"),
           ],
         },
       });

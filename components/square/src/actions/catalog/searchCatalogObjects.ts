@@ -21,10 +21,7 @@ export const searchCatalogObjects = action({
       catalogQuery,
     },
   ) => {
-    const client = await createAuthorizedClient(
-      squareConnection,
-      context.debug.enabled,
-    );
+    const client = await createAuthorizedClient(squareConnection, context.debug.enabled);
 
     const requestBody = {
       cursor: pagination.cursor,

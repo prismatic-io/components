@@ -8,10 +8,7 @@ import type { Etagged } from "../../types";
 import { getPlanInputs } from "../../inputs";
 
 export const getPlan = action({
-  display: {
-    label: "Get Plan",
-    description: "Retrieve a single plan by its ID.",
-  },
+  display: { label: "Get Plan", description: "Retrieve a single plan by its ID." },
   inputs: getPlanInputs,
   outputSchema: outputSchema({
     type: "actionOutput",
@@ -20,9 +17,7 @@ export const getPlan = action({
   performSafety: "safe",
   perform: async (context, { connection, planId }) => {
     const client = createClient(connection, context.debug.enabled);
-    const { data } = await client.get<PlannerPlan & Etagged>(
-      PLANNER_ENDPOINTS.PLAN(planId),
-    );
+    const { data } = await client.get<PlannerPlan & Etagged>(PLANNER_ENDPOINTS.PLAN(planId));
     return { data };
   },
   examplePayload: getPlanExamplePayload,

@@ -16,16 +16,12 @@ export const createEvent = action({
 
     const attendees: Attendee[] = [
       ...params.attendees,
-      ...(params.attendeesData && Array.isArray(params.attendeesData)
-        ? params.attendeesData
-        : []),
+      ...(params.attendeesData && Array.isArray(params.attendeesData) ? params.attendeesData : []),
     ];
 
     const url = computeEndpointBasedOnConnection(
       params.connection,
-      params.calendarId
-        ? `/me/calendars/${params.calendarId}/events`
-        : "/me/events",
+      params.calendarId ? `/me/calendars/${params.calendarId}/events` : "/me/events",
     );
 
     const payload: Event = {

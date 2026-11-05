@@ -17,8 +17,5 @@ export const deleteMailThread = action({
   },
   inputs: deleteMailThreadInputs,
   examplePayload: deleteMailThreadExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: deleteMailThreadOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: deleteMailThreadOutputSchema }),
 });

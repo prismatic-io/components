@@ -11,15 +11,8 @@ export const updatePipeline = action({
     description: "Updates a pipeline.",
   },
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { connection, id, name, isDealProbabilityEnabled },
-  ) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      WebhookVersion.V2,
-    );
+  perform: async (context, { connection, id, name, isDealProbabilityEnabled }) => {
+    const client = createClient(connection, context.debug.enabled, WebhookVersion.V2);
     const { data } = await client.patch(`/pipelines/${id}`, {
       name,
       is_deal_probability_enabled: isDealProbabilityEnabled,
@@ -28,8 +21,5 @@ export const updatePipeline = action({
   },
   inputs: updatePipelineInputs,
   examplePayload: updatePipelineExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: updatePipelineOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: updatePipelineOutputSchema }),
 });

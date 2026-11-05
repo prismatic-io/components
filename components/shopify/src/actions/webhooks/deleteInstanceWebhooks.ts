@@ -10,10 +10,7 @@ export const deleteInstanceWebhooks = action({
     description: "Deletes all webhooks related to the current instance.",
   },
   inputs: deleteInstanceWebhooksInputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: deleteInstanceWebhooksOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: deleteInstanceWebhooksOutputSchema }),
   performSafety: "notAllowed",
   perform: async (context, params) => {
     const { data } = await deleteInstanceWebhooksgql.perform(context, {

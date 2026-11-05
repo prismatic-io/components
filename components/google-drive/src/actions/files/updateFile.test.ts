@@ -3,11 +3,7 @@ import { createConnection, invoke } from "@prismatic-io/spectral/dist/testing";
 import { connection as connectionDefinition } from "../../connections";
 import { updateFile } from "./updateFile";
 
-const connection = createConnection(
-  connectionDefinition,
-  {},
-  { access_token: "test-token" },
-);
+const connection = createConnection(connectionDefinition, {}, { access_token: "test-token" });
 const DRIVE = "https://www.googleapis.com";
 
 describe("updateFile", () => {
@@ -15,9 +11,7 @@ describe("updateFile", () => {
 
   test("updates a file's content, deriving its MIME type from the file name", async () => {
     nock(DRIVE)
-      .patch(
-        "/upload/drive/v3/files/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms",
-      )
+      .patch("/upload/drive/v3/files/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms")
       .query(true)
       .reply(200, {
         kind: "drive#file",

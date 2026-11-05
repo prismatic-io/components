@@ -8,8 +8,7 @@ import { toDownloadedFile } from "../../utils";
 export const downloadAssetRendition = action({
   display: {
     label: "Download Asset Rendition",
-    description:
-      "Download a rendition of an asset, such as a web-optimized image or text version.",
+    description: "Download a rendition of an asset, such as a web-optimized image or text version.",
   },
   performSafety: "notAllowed",
   perform: async (context, { connection, assetId, renditionName, seoName }) => {

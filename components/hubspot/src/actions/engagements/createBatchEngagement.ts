@@ -11,10 +11,7 @@ export const createBatchEngagement = action({
     description: "Creates a batch of selected engagements.",
   },
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { timeout, hubspotConnection, engagementObject, batchInputs },
-  ) => {
+  perform: async (context, { timeout, hubspotConnection, engagementObject, batchInputs }) => {
     const debugRequest = context.debug.enabled;
     const client = getHubspotClient({
       hubspotConnection,
@@ -43,8 +40,5 @@ export const createBatchEngagement = action({
   }),
   inputs: createBatchEngagementInputs,
   examplePayload: createBatchEngagementExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: batchResponseSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: batchResponseSchema }),
 });

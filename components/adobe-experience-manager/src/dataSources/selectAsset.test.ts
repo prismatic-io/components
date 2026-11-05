@@ -1,14 +1,8 @@
-import {
-  createConnection,
-  invokeDataSource,
-} from "@prismatic-io/spectral/testing";
+import { createConnection, invokeDataSource } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { aemOAuthServerToServer } from "../connections";
 import { MAX_DATA_SOURCE_ITEMS, MAX_PAGE_LIMIT } from "../constants";
-import {
-  searchAssetsExamplePayload,
-  selectAssetExamplePayload,
-} from "../examplePayloads";
+import { searchAssetsExamplePayload, selectAssetExamplePayload } from "../examplePayloads";
 import { selectAsset } from "./selectAsset";
 
 const AEM_HOST = "author-p12345-e123456.adobeaemcloud.com";
@@ -25,10 +19,7 @@ const connection = createConnection(
   { access_token: "test-access-token" },
 );
 const [hit] = searchAssetsExamplePayload.data.hits.results;
-const emptyMatchBody = {
-  query: [{ match: { text: "" } }],
-  limit: MAX_PAGE_LIMIT,
-};
+const emptyMatchBody = { query: [{ match: { text: "" } }], limit: MAX_PAGE_LIMIT };
 
 describe("selectAsset", () => {
   beforeAll(() => nock.disableNetConnect());
@@ -50,10 +41,7 @@ describe("selectAsset", () => {
         hits: {
           results: [
             { assetId: "urn:aaid:aem:no-metadata" },
-            {
-              assetId: "urn:aaid:aem:name-only",
-              repositoryMetadata: { "repo:name": "a.png" },
-            },
+            { assetId: "urn:aaid:aem:name-only", repositoryMetadata: { "repo:name": "a.png" } },
           ],
         },
       });

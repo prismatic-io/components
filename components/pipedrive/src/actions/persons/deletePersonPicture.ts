@@ -17,8 +17,5 @@ export const deletePersonPicture = action({
   },
   inputs: deletePersonPictureInputs,
   examplePayload: deletePersonPictureExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: deletePersonPictureOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: deletePersonPictureOutputSchema }),
 });

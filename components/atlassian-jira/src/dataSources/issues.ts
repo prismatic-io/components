@@ -42,9 +42,9 @@ const selectIssueTypes = dataSource({
   },
   inputs: selectIssueTypesInputs,
   perform: async (_context, params) => {
-    const result = (
-      await getIssueTypes(params.connection, params.projectIds)
-    ).map((issueElement) => ({ object: issueElement }));
+    const result = (await getIssueTypes(params.connection, params.projectIds)).map(
+      (issueElement) => ({ object: issueElement }),
+    );
 
     return { result };
   },
@@ -62,9 +62,7 @@ const issueFields = dataSource({
     const client = await createV3Client(params.connection);
     const { data } = await client.get("/field");
 
-    const fields = !params.onlyCustomFields
-      ? data
-      : data.filter(({ custom }) => custom);
+    const fields = !params.onlyCustomFields ? data : data.filter(({ custom }) => custom);
     const sortedFields = sortBy(fields, ({ name }) => name);
 
     const result = sortedFields.map<Element>(({ name, id }) => ({
@@ -92,10 +90,12 @@ const selectIssue = dataSource({
       fields: "id,key",
     };
 
-    const { data }: { data: { issues: { id: number; key: string }[] } } =
-      await client.get("/search/jql", {
+    const { data }: { data: { issues: { id: number; key: string }[] } } = await client.get(
+      "/search/jql",
+      {
         params: requestParams,
-      });
+      },
+    );
     const result = data.issues.map<Element>((issue) => ({
       label: issue.key,
       key: util.types.toString(issue.id),

@@ -43,12 +43,8 @@ export const updateInvoice = action({
         ...((additionalFields.coupon || additionalFields.discount) && {
           discounts: [
             {
-              ...(additionalFields.coupon && {
-                coupon: additionalFields.coupon,
-              }),
-              ...(additionalFields.discount && {
-                discount: additionalFields.discount,
-              }),
+              ...(additionalFields.coupon && { coupon: additionalFields.coupon }),
+              ...(additionalFields.discount && { discount: additionalFields.discount }),
             },
           ],
         }),
@@ -59,15 +55,7 @@ export const updateInvoice = action({
   },
   examplePerform: async (
     _context,
-    {
-      invoiceId,
-      paymentId,
-      collectionMethod,
-      dueDate,
-      metadata,
-      additionalFields,
-      description,
-    },
+    { invoiceId, paymentId, collectionMethod, dueDate, metadata, additionalFields, description },
   ): Promise<{ data: unknown }> => {
     const invoice = updateInvoiceExamplePayload.data as Record<string, unknown>;
 
@@ -79,8 +67,7 @@ export const updateInvoice = action({
         description: description ?? invoice.description,
         auto_advance: additionalFields.autoAdvance,
         application_fee_amount:
-          additionalFields.applicationFeeAmount ??
-          invoice.application_fee_amount,
+          additionalFields.applicationFeeAmount ?? invoice.application_fee_amount,
         default_payment_method: paymentId ?? invoice.default_payment_method,
         due_date: dueDate ?? invoice.due_date,
         metadata,

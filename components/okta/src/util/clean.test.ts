@@ -19,21 +19,15 @@ describe("lookBackDateClean", () => {
   });
 
   test("rejects a wrong format", () => {
-    expect(() => lookBackDateClean("01/01/2026")).toThrow(
-      /Look-back Date must be/,
-    );
+    expect(() => lookBackDateClean("01/01/2026")).toThrow(/Look-back Date must be/);
     expect(() => lookBackDateClean(20260101)).toThrow(/Look-back Date must be/);
   });
 
   test("rejects a non-calendar date", () => {
-    expect(() => lookBackDateClean("2026-02-31")).toThrow(
-      /Look-back Date must be/,
-    );
+    expect(() => lookBackDateClean("2026-02-31")).toThrow(/Look-back Date must be/);
   });
 
   test("rejects a future date", () => {
-    expect(() => lookBackDateClean("2026-12-31")).toThrow(
-      /Look-back Date cannot be a future date/,
-    );
+    expect(() => lookBackDateClean("2026-12-31")).toThrow(/Look-back Date cannot be a future date/);
   });
 });

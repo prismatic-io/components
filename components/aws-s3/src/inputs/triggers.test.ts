@@ -1,7 +1,6 @@
 vi.mock("aws-utils", async () => {
   const { input } = await import("@prismatic-io/spectral");
-  const stringInput = (label: string) =>
-    input({ label, type: "string", required: false });
+  const stringInput = (label: string) => input({ label, type: "string", required: false });
   return {
     assumeRoleConnection: { key: "awsAssumeRole" },
     awsRegion: stringInput("AWS Region"),
@@ -13,10 +12,7 @@ vi.mock("aws-utils", async () => {
   };
 });
 
-import {
-  pollChangesFilesTriggerInputs,
-  pollNewBucketsTriggerInputs,
-} from "./triggers";
+import { pollChangesFilesTriggerInputs, pollNewBucketsTriggerInputs } from "./triggers";
 
 describe("input order (connection first, awsRegion last)", () => {
   test("pollChangesFilesTriggerInputs", () => {

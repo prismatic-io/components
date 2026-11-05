@@ -18,10 +18,7 @@ describe("selectBusinessEntity", () => {
   afterEach(resetNock);
 
   test("maps the entity list into sorted dropdown elements", async () => {
-    rampNock()
-      .get(PATH)
-      .query(true)
-      .reply(200, terminatePaging(listBusinessEntitiesResponse));
+    rampNock().get(PATH).query(true).reply(200, terminatePaging(listBusinessEntitiesResponse));
 
     const { result } = await invokeDataSource(selectBusinessEntity, {
       connection: testConnection,

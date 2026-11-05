@@ -19,21 +19,20 @@ export const deleteProductImageGql = action({
       context.logger,
     );
 
-    const data: { productDeleteMedia: Record<string, unknown> } =
-      await client.request(deleteProductImageQuery, {
+    const data: { productDeleteMedia: Record<string, unknown> } = await client.request(
+      deleteProductImageQuery,
+      {
         productId,
         mediaIds: [imageId],
-      });
+      },
+    );
 
     return {
       data: data.productDeleteMedia,
     };
   },
   inputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: deleteProductImageGqlOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: deleteProductImageGqlOutputSchema }),
   examplePerform: async () => examplePayload,
   examplePayload,
 });

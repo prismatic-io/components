@@ -12,11 +12,7 @@ import {
   POLL_RESOURCE_CONFIG,
   UNKOWN_CONNECTION_ERROR,
 } from "./constants";
-import type {
-  AuthCredentials,
-  MapPicklist,
-  Records,
-} from "./interfaces/general";
+import type { AuthCredentials, MapPicklist, Records } from "./interfaces/general";
 import type {
   PollingChangesObject,
   PollingRecordChange,
@@ -32,30 +28,21 @@ export const validateConnection = (connection: Connection) => {
   }
 };
 
-export const cleanBoolean = (value: unknown) =>
-  value ? util.types.toBool(value) : undefined;
+export const cleanBoolean = (value: unknown) => (value ? util.types.toBool(value) : undefined);
 
-export const cleanString = (value: unknown) =>
-  value ? util.types.toString(value) : undefined;
+export const cleanString = (value: unknown) => (value ? util.types.toString(value) : undefined);
 
-export const cleanCode = (value: unknown) =>
-  value ? util.types.toObject(value) : undefined;
+export const cleanCode = (value: unknown) => (value ? util.types.toObject(value) : undefined);
 
-export const cleanBodyFields = (value: unknown) =>
-  value ? util.types.toObject(value) : {};
+export const cleanBodyFields = (value: unknown) => (value ? util.types.toObject(value) : {});
 
-export const cleanNumber = (value: unknown) =>
-  value ? util.types.toNumber(value) : undefined;
+export const cleanNumber = (value: unknown) => (value ? util.types.toNumber(value) : undefined);
 
 export const cleanKeyValueList = (value: unknown) =>
-  value
-    ? util.types.keyValPairListToObject(value as KeyValuePair[])
-    : undefined;
+  value ? util.types.keyValPairListToObject(value as KeyValuePair[]) : undefined;
 
 export const getAuthCredentials = (connection: Connection): AuthCredentials => {
-  const username = util.types
-    .toString(connection.fields.username)
-    .replace("\\\\", "\\");
+  const username = util.types.toString(connection.fields.username).replace("\\\\", "\\");
   const password = util.types.toString(connection.fields.password);
   const companyName = cleanString(connection.fields.companyName);
   const dbInstance = cleanString(connection.fields.dbInstance);
@@ -81,8 +68,7 @@ export const getBaseUrlAndProxy = (connection: Connection) => {
   }
   try {
     const newUrl = new URL(url);
-    const version =
-      apiVersion === API_VERSION.V2 ? API_VERSION.V2 : API_VERSION.V1;
+    const version = apiVersion === API_VERSION.V2 ? API_VERSION.V2 : API_VERSION.V1;
     newUrl.pathname = `/b1s/${version}`;
     if (newUrl.protocol !== "https:") {
       newUrl.protocol = "https:";
@@ -137,11 +123,7 @@ export const fetchAllData = async (
   return records;
 };
 
-const fetchData = async (
-  client: AxiosInstance,
-  url: string,
-  params: Record<string, unknown>,
-) => {
+const fetchData = async (client: AxiosInstance, url: string, params: Record<string, unknown>) => {
   const { data } = await client.get(url, {
     params,
   });
@@ -166,12 +148,7 @@ export const validateArray = (data: unknown): Records[] => {
   return data as Records[];
 };
 
-export const mapPicklistArray = ({
-  data,
-  keyName,
-  keyLabel,
-  orderKey,
-}: MapPicklist): Element[] => {
+export const mapPicklistArray = ({ data, keyName, keyLabel, orderKey }: MapPicklist): Element[] => {
   return data
     .sort((a, b) => (a[orderKey] < b[orderKey] ? -1 : 1))
     .map((record) => ({
@@ -187,9 +164,7 @@ export const mapLabel = (data: Element[], additionalLabel: string) => {
   }));
 };
 
-export const computeProxyConfiguration = (
-  connection: Connection,
-): AxiosProxyConfig | undefined => {
+export const computeProxyConfiguration = (connection: Connection): AxiosProxyConfig | undefined => {
   if (!connection) return;
   const { host: rawHost, port: rawPort } = connection.fields;
 
@@ -220,14 +195,11 @@ export const filterByTimestamp = (
   for (const record of records) {
     const createdValue = record[config.createdField];
     const updatedValue = record[config.updatedField];
-    const createdAtDate =
-      typeof createdValue === "string" ? new Date(createdValue) : null;
-    const updatedAtDate =
-      typeof updatedValue === "string" ? new Date(updatedValue) : null;
+    const createdAtDate = typeof createdValue === "string" ? new Date(createdValue) : null;
+    const updatedAtDate = typeof updatedValue === "string" ? new Date(updatedValue) : null;
 
     const isNew = createdAtDate !== null && createdAtDate > lastPolledAtDate;
-    const isUpdated =
-      !isNew && updatedAtDate !== null && updatedAtDate > lastPolledAtDate;
+    const isUpdated = !isNew && updatedAtDate !== null && updatedAtDate > lastPolledAtDate;
 
     if (isNew) created.push(record);
     else if (isUpdated) updated.push(record);
@@ -236,12 +208,10 @@ export const filterByTimestamp = (
   return { created, updated };
 };
 
-export const pollResourceModel = Object.entries(POLL_RESOURCE_CONFIG).map(
-  ([value, { label }]) => ({
-    label,
-    value,
-  }),
-);
+export const pollResourceModel = Object.entries(POLL_RESOURCE_CONFIG).map(([value, { label }]) => ({
+  label,
+  value,
+}));
 
 export const toFormData = (
   formData: KeyValuePair<unknown>[],
@@ -271,9 +241,7 @@ export const lookBackDateClean = (value: unknown): string => {
 
   const match = raw.match(LOOK_BACK_DATE_PATTERN);
   if (!match) {
-    throw new Error(
-      `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
-    );
+    throw new Error(`Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`);
   }
 
   const [, yearStr, monthStr, dayStr] = match;
@@ -286,9 +254,7 @@ export const lookBackDateClean = (value: unknown): string => {
     parsed.getUTCMonth() !== month - 1 ||
     parsed.getUTCDate() !== day
   ) {
-    throw new Error(
-      `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
-    );
+    throw new Error(`Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`);
   }
 
   if (parsed.getTime() > Date.now()) {
@@ -323,8 +289,7 @@ export const partitionBackfill = (
 
   for (const record of records) {
     const createdValue = record[config.createdField];
-    const createdAtDate =
-      typeof createdValue === "string" ? new Date(createdValue) : null;
+    const createdAtDate = typeof createdValue === "string" ? new Date(createdValue) : null;
     if (createdAtDate !== null && createdAtDate >= since) created.push(record);
     else updated.push(record);
   }
@@ -351,11 +316,7 @@ export const fetchChanges = async (
   config: { endpoint: string; createdField: string; updatedField: string },
   since: string,
   isBackfill: boolean,
-): Promise<{
-  created: SAPBusinessOneRecord[];
-  updated: SAPBusinessOneRecord[];
-  total: number;
-}> => {
+): Promise<{ created: SAPBusinessOneRecord[]; updated: SAPBusinessOneRecord[]; total: number }> => {
   const records = (await fetchAllData(
     client,
     config.endpoint,

@@ -75,15 +75,8 @@ const serviceError = (name: string, httpStatusCode: number) =>
     message: `${name} error`,
   });
 
-const expectServiceError = async (
-  promise: Promise<unknown>,
-  name: string,
-  status: number,
-) => {
-  await expect(promise).rejects.toMatchObject({
-    name,
-    $metadata: { httpStatusCode: status },
-  });
+const expectServiceError = async (promise: Promise<unknown>, name: string, status: number) => {
+  await expect(promise).rejects.toMatchObject({ name, $metadata: { httpStatusCode: status } });
 };
 
 describe("multipart upload actions", () => {
@@ -110,11 +103,7 @@ describe("multipart upload actions", () => {
 
     test("propagates an SDK service error", async () => {
       sendMock.mockRejectedValue(serviceError("NoSuchUpload", 404));
-      await expectServiceError(
-        invoke(abortMultipartUpload, uploadInputs),
-        "NoSuchUpload",
-        404,
-      );
+      await expectServiceError(invoke(abortMultipartUpload, uploadInputs), "NoSuchUpload", 404);
     });
   });
 
@@ -127,10 +116,7 @@ describe("multipart upload actions", () => {
     test("sends the parts list and returns the response", async () => {
       sendMock.mockResolvedValue(completeMultipartUploadExamplePayload.data);
 
-      const { result } = await invoke(completeMultipartUpload, {
-        ...uploadInputs,
-        parts,
-      });
+      const { result } = await invoke(completeMultipartUpload, { ...uploadInputs, parts });
 
       const command = sendMock.mock.calls[0][0];
       expect(command).toBeInstanceOf(CompleteMultipartUploadCommand);
@@ -182,20 +168,12 @@ describe("multipart upload actions", () => {
 
     test("propagates an SDK service error", async () => {
       sendMock.mockRejectedValue(serviceError("AccessDenied", 403));
-      await expectServiceError(
-        invoke(createMultipartUpload, inputs),
-        "AccessDenied",
-        403,
-      );
+      await expectServiceError(invoke(createMultipartUpload, inputs), "AccessDenied", 403);
     });
   });
 
   describe("generatePresignedForMultiparUploads", () => {
-    const inputs = {
-      ...uploadInputs,
-      urlsToGenerate: 2,
-      expirationSeconds: 900,
-    };
+    const inputs = { ...uploadInputs, urlsToGenerate: 2, expirationSeconds: 900 };
 
     test("signs one UploadPartCommand per part and returns numbered URLs", async () => {
       getSignedUrlMock.mockImplementation(
@@ -203,10 +181,7 @@ describe("multipart upload actions", () => {
           `https://example-bucket.s3.amazonaws.com/part-${command.input.PartNumber}`,
       );
 
-      const { result } = await invoke(
-        generatePresignedForMultiparUploads,
-        inputs,
-      );
+      const { result } = await invoke(generatePresignedForMultiparUploads, inputs);
 
       expect(getSignedUrlMock).toHaveBeenCalledTimes(2);
       getSignedUrlMock.mock.calls.forEach(([, command, options], index) => {
@@ -221,23 +196,15 @@ describe("multipart upload actions", () => {
       });
       expect(result).toEqual({
         data: [
-          {
-            url: "https://example-bucket.s3.amazonaws.com/part-1",
-            partNumber: 1,
-          },
-          {
-            url: "https://example-bucket.s3.amazonaws.com/part-2",
-            partNumber: 2,
-          },
+          { url: "https://example-bucket.s3.amazonaws.com/part-1", partNumber: 1 },
+          { url: "https://example-bucket.s3.amazonaws.com/part-2", partNumber: 2 },
         ],
       });
       expect(sendMock).not.toHaveBeenCalled();
     });
 
     test("propagates a signing failure", async () => {
-      getSignedUrlMock.mockRejectedValue(
-        serviceError("CredentialsProviderError", 400),
-      );
+      getSignedUrlMock.mockRejectedValue(serviceError("CredentialsProviderError", 400));
       await expectServiceError(
         invoke(generatePresignedForMultiparUploads, inputs),
         "CredentialsProviderError",
@@ -260,11 +227,7 @@ describe("multipart upload actions", () => {
 
     test("propagates an SDK service error", async () => {
       sendMock.mockRejectedValue(serviceError("NoSuchBucket", 404));
-      await expectServiceError(
-        invoke(listMultipartUploads, baseInputs),
-        "NoSuchBucket",
-        404,
-      );
+      await expectServiceError(invoke(listMultipartUploads, baseInputs), "NoSuchBucket", 404);
     });
   });
 
@@ -286,11 +249,7 @@ describe("multipart upload actions", () => {
 
     test("propagates an SDK service error", async () => {
       sendMock.mockRejectedValue(serviceError("NoSuchUpload", 404));
-      await expectServiceError(
-        invoke(listParts, uploadInputs),
-        "NoSuchUpload",
-        404,
-      );
+      await expectServiceError(invoke(listParts, uploadInputs), "NoSuchUpload", 404);
     });
   });
 
@@ -314,20 +273,13 @@ describe("multipart upload actions", () => {
         Body: fileChunk,
       });
       expect(result).toEqual({
-        data: {
-          ...sdkResponse,
-          part: { ETag: sdkResponse.ETag, PartNumber: 3 },
-        },
+        data: { ...sdkResponse, part: { ETag: sdkResponse.ETag, PartNumber: 3 } },
       });
     });
 
     test("propagates an SDK service error", async () => {
       sendMock.mockRejectedValue(serviceError("EntityTooSmall", 400));
-      await expectServiceError(
-        invoke(uploadPart, inputs),
-        "EntityTooSmall",
-        400,
-      );
+      await expectServiceError(invoke(uploadPart, inputs), "EntityTooSmall", 400);
     });
   });
 });

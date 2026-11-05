@@ -33,8 +33,7 @@ const overrideOnHold = input({
 
 const recalculatePrices = input({
   label: "Recalculate Prices",
-  comments:
-    "Allows recalculation of the prices for the order when the exchange rate has changed.",
+  comments: "Allows recalculation of the prices for the order when the exchange rate has changed.",
   type: "boolean",
   required: false,
   default: "false",

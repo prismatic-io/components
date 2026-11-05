@@ -7,16 +7,12 @@ import { listAttributesActionOutputSchema } from "../../outputSchemas";
 export const listAttributesAction = action({
   display: {
     label: "List Attributes",
-    description:
-      "Lists all attributes for a specific entity in the Dynamics 365 CRM instance.",
+    description: "Lists all attributes for a specific entity in the Dynamics 365 CRM instance.",
   },
   inputs: listAttributesActionInputs,
   examplePayload: listAttributesActionExamplePayload,
   outputSchema: listAttributesActionOutputSchema,
-  perform: async (
-    context,
-    { connection, entityId, attributeType, includeDetails },
-  ) => {
+  perform: async (context, { connection, entityId, attributeType, includeDetails }) => {
     const client = await createCrmClient(connection, context.debug.enabled);
 
     const selectFields = [
@@ -34,12 +30,7 @@ export const listAttributesAction = action({
     ];
 
     if (includeDetails) {
-      selectFields.push(
-        "SchemaName",
-        "IsSecured",
-        "IsAuditEnabled",
-        "IsValidForAdvancedFind",
-      );
+      selectFields.push("SchemaName", "IsSecured", "IsAuditEnabled", "IsValidForAdvancedFind");
     }
 
     const response = await client.retrieveAttributes({
@@ -85,7 +76,7 @@ export const listAttributesAction = action({
         acc[type] = (acc[type] || 0) + 1;
         return acc;
       },
-      {} as Record<string, number>,
+      {} as Record<string, number>
     );
 
     return {
@@ -93,14 +84,11 @@ export const listAttributesAction = action({
         entityId: util.types.toString(entityId),
         attributes,
         totalCount: attributes.length,
-        customAttributesCount: attributes.filter((a) => a.isCustomAttribute)
-          .length,
-        systemAttributesCount: attributes.filter((a) => !a.isCustomAttribute)
-          .length,
+        customAttributesCount: attributes.filter((a) => a.isCustomAttribute).length,
+        systemAttributesCount: attributes.filter((a) => !a.isCustomAttribute).length,
         attributesByType,
         primaryIdAttribute: attributes.find((a) => a.isPrimaryId)?.logicalName,
-        primaryNameAttribute: attributes.find((a) => a.isPrimaryName)
-          ?.logicalName,
+        primaryNameAttribute: attributes.find((a) => a.isPrimaryName)?.logicalName,
       },
     };
   },

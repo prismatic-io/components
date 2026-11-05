@@ -1,11 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
-import {
-  cleanNumber,
-  cleanString,
-  cleanStringArray,
-  cleanStringByRequired,
-  cleanTagAction,
-} from "../util";
+import { cleanNumber, cleanString, cleanStringArray, cleanStringByRequired, cleanTagAction } from "../util";
 import {
   connectionInput,
   getAssignee,
@@ -37,7 +31,7 @@ const tagsCode = input({
       ],
     },
     null,
-    2,
+    2
   ),
   required: true,
   clean: util.types.toString,
@@ -56,8 +50,7 @@ const endDate = input({
 const includeTaskTags = input({
   label: "Include Task Tags",
   type: "boolean",
-  comments:
-    "When true, includes task tags in the response for time entries associated with tasks.",
+  comments: "When true, includes task tags in the response for time entries associated with tasks.",
   required: false,
   default: "true",
   clean: util.types.toBool,
@@ -124,11 +117,7 @@ const getEnd = (required: boolean, comments: string) =>
     clean: cleanNumber,
   });
 
-const getBillable = (
-  required: boolean,
-  comments: string,
-  defaultValue: boolean,
-) =>
+const getBillable = (required: boolean, comments: string, defaultValue: boolean) =>
   input({
     label: "Billable",
     type: "boolean",
@@ -175,19 +164,9 @@ export const createTimeEntryInputs = {
   customTaskIds: getCustomTaskIds(true),
   customTeamId: getCustomTeamId(true),
   description: getDescription(true, "The description of the time entry."),
-  start: getStart(
-    true,
-    "The start time of the time entry as a Unix timestamp in milliseconds.",
-  ),
-  billable: getBillable(
-    true,
-    "When true, marks the time entry as billable.",
-    false,
-  ),
-  duration: getDuration(
-    true,
-    "The duration of the time entry, in milliseconds.",
-  ),
+  start: getStart(true, "The start time of the time entry as a Unix timestamp in milliseconds."),
+  billable: getBillable(true, "When true, marks the time entry as billable.", false),
+  duration: getDuration(true, "The duration of the time entry, in milliseconds."),
   assigneeTimeEntry,
   taskId: getTaskId(true, "Associate a time entry with a task by ID"),
   tagsCode,
@@ -210,10 +189,7 @@ export const getSingularTimeEntryInputs = {
 export const getTimeEntriesWithinDateRangeInputs = {
   clickUpConnection: connectionInput,
   teamId: getTeamId(true),
-  spaceId: getSpaceId(
-    false,
-    "Only include time entries associated with tasks in a specific Space.",
-  ),
+  spaceId: getSpaceId(false, "Only include time entries associated with tasks in a specific Space."),
   folderId: getFolderId(false),
   listId: getlistId(false),
   startDate,
@@ -230,11 +206,7 @@ export const startTimeEntryInputs = {
   clickUpConnection: connectionInput,
   teamId: getTeamId(true),
   description: getDescription(true, "The description of the time entry."),
-  billable: getBillable(
-    true,
-    "When true, marks the time entry as billable.",
-    false,
-  ),
+  billable: getBillable(true, "When true, marks the time entry as billable.", false),
   taskId: getTaskId(true, "Associate a time entry with a task by ID"),
   tagNamesArray: getTagNamesArray(true, "Add a tag name"),
   customTaskIds: getCustomTaskIds(false),
@@ -252,26 +224,13 @@ export const updateTimeEntryInputs = {
   customTaskIds: getCustomTaskIds(true),
   customTeamId: getCustomTeamId(true),
   description: getDescription(true, "The description of the time entry."),
-  start: getStart(
-    true,
-    "The start time of the time entry as a Unix timestamp in milliseconds.",
-  ),
-  billable: getBillable(
-    true,
-    "When true, marks the time entry as billable.",
-    false,
-  ),
-  duration: getDuration(
-    true,
-    "The duration of the time entry, in milliseconds.",
-  ),
+  start: getStart(true, "The start time of the time entry as a Unix timestamp in milliseconds."),
+  billable: getBillable(true, "When true, marks the time entry as billable.", false),
+  duration: getDuration(true, "The duration of the time entry, in milliseconds."),
   assigneeTimeEntry,
   taskId: getTaskId(true, "Associate a time entry with a task by ID"),
   timerId,
   tagAction,
-  end: getEnd(
-    true,
-    "The end time of the time entry as a Unix timestamp in milliseconds.",
-  ),
+  end: getEnd(true, "The end time of the time entry as a Unix timestamp in milliseconds."),
   tagsCode,
 };

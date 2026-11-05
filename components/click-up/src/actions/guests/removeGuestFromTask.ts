@@ -16,21 +16,8 @@ export const removeGuestFromTask = action({
   }),
   examplePayload: removeGuestFromTaskExamplePayload,
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    {
-      clickUpConnection,
-      taskId,
-      guestId,
-      includeShared,
-      customTaskIds,
-      teamId,
-    },
-  ) => {
-    const client = createClickUpClient(
-      clickUpConnection,
-      context.debug.enabled,
-    );
+  perform: async (context, { clickUpConnection, taskId, guestId, includeShared, customTaskIds, teamId }) => {
+    const client = createClickUpClient(clickUpConnection, context.debug.enabled);
 
     const params: AddGuestToTaskQueryParams = {
       include_shared: includeShared,

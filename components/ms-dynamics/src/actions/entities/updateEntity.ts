@@ -9,10 +9,7 @@ export const updateEntity = action({
     description: "Updates a Microsoft Dynamics 365 CRM entity record.",
   },
   examplePayload: updateEntityExamplePayload,
-  perform: async (
-    context,
-    { entityType, entityId, dynamicValues, fieldValues, connection },
-  ) => {
+  perform: async (context, { entityType, entityId, dynamicValues, fieldValues, connection }) => {
     const client = await createCrmClient(connection, context.debug.enabled);
 
     const payloadValues = { ...dynamicValues, ...fieldValues };

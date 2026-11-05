@@ -18,8 +18,5 @@ export const getCallLog = action({
   inputs: getCallLogInputs,
   examplePayload: getCallLogExamplePayload,
   examplePerform: async () => getCallLogExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getCallLogOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getCallLogOutputSchema }),
 });

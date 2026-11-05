@@ -25,16 +25,11 @@ export const updatedUsersPollingTrigger = pollingTrigger({
     const since = state.lastUpdated || lookBackDate || undefined;
     const users: User[] = since
       ? ((
-          await listUsers.perform(
-            context,
-            usersPollParams(connection, `lastUpdated gt "${since}"`),
-          )
+          await listUsers.perform(context, usersPollParams(connection, `lastUpdated gt "${since}"`))
         ).data as User[])
       : [];
 
-    context.polling.setState({
-      lastUpdated: pollStartedAt,
-    } satisfies UsersPollingState);
+    context.polling.setState({ lastUpdated: pollStartedAt } satisfies UsersPollingState);
 
     return {
       payload: { ...payload, body: { data: users } },

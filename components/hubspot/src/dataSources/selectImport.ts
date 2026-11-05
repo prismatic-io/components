@@ -17,20 +17,12 @@ export const selectImport = dataSource({
       debugRequest: false,
     });
 
-    const imports = await getAllPaginatedData(
-      client,
-      hubspotPaths.imports(),
-      true,
-      true,
-      {},
-    );
+    const imports = await getAllPaginatedData(client, hubspotPaths.imports(), true, true, {});
 
-    const result = (imports as Record<string, unknown>[]).map<Element>(
-      (item) => ({
-        label: `Import ${util.types.toString(item.id)}`,
-        key: util.types.toString(item.id),
-      }),
-    );
+    const result = (imports as Record<string, unknown>[]).map<Element>((item) => ({
+      label: `Import ${util.types.toString(item.id)}`,
+      key: util.types.toString(item.id),
+    }));
     return { result };
   },
   examplePayload: selectImportExamplePayload,

@@ -12,11 +12,7 @@ export const addPipeline = action({
   },
   performSafety: "notAllowed",
   perform: async (context, { connection, name, isDealProbabilityEnabled }) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      WebhookVersion.V2,
-    );
+    const client = createClient(connection, context.debug.enabled, WebhookVersion.V2);
     const { data } = await client.post("/pipelines", {
       name,
       is_deal_probability_enabled: isDealProbabilityEnabled,
@@ -25,8 +21,5 @@ export const addPipeline = action({
   },
   inputs: addPipelineInputs,
   examplePayload: addPipelineExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: addPipelineOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: addPipelineOutputSchema }),
 });

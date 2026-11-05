@@ -8,8 +8,7 @@ import { connectionInput, fetchAll, odataParams } from "../../inputs/general";
 export const listSalesShipmentLines = action({
   display: {
     label: "List Sales Shipment Line Items",
-    description:
-      "Lists all  sales shipment line objects in your Business Central organization.",
+    description: "Lists all  sales shipment line objects in your Business Central organization.",
   },
   perform: async (
     context,
@@ -29,11 +28,7 @@ export const listSalesShipmentLines = action({
       $select,
     },
   ) => {
-    const client = getMsBusinessCentralClient(
-      connection,
-      context,
-      context.debug.enabled,
-    );
+    const client = getMsBusinessCentralClient(connection, context, context.debug.enabled);
     const params = {
       $search,
       $skip,

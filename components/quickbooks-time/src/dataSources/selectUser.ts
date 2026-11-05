@@ -23,14 +23,10 @@ export const selectUser = dataSource({
 
     const result: Element[] = users
       .map((item) => ({
-        label:
-          `${item.first_name || ""} ${item.last_name || ""}`.trim() ||
-          String(item.id || ""),
+        label: `${item.first_name || ""} ${item.last_name || ""}`.trim() || String(item.id || ""),
         key: String(item.id || ""),
       }))
-      .sort((a: Element, b: Element) =>
-        (a.label ?? "").localeCompare(b.label ?? ""),
-      );
+      .sort((a: Element, b: Element) => (a.label ?? "").localeCompare(b.label ?? ""));
 
     return { result };
   },

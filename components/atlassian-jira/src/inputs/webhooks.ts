@@ -74,7 +74,6 @@ export const refreshWebhookInputs = {
   jiraConnection: connectionInput,
   webhookId: {
     ...webhookIdInput,
-    comments:
-      "The unique identifier of the webhook whose expiration date to extend.",
+    comments: "The unique identifier of the webhook whose expiration date to extend.",
   },
 };

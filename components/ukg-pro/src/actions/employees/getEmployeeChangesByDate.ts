@@ -12,10 +12,7 @@ export const getEmployeeChangesByDate = action({
       "Retrieve employees with changes since a specified date. Note: Date must be at least 3 hours ago.",
   },
   inputs: getEmployeeChangesByDateInputs,
-  perform: async (
-    context,
-    { connection, startDate, endDate, fetchAll, pagination },
-  ) => {
+  perform: async (context, { connection, startDate, endDate, fetchAll, pagination }) => {
     const client = createBasicAuthClient(connection, context.debug.enabled);
 
     const { data } = await fetchWithPagination<EmployeeChange>(

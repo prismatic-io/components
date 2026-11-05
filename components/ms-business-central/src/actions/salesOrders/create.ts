@@ -18,8 +18,7 @@ import type { SalesOrder } from "../../interfaces";
 export const createSalesOrder = action({
   display: {
     label: "Create Sales Order",
-    description:
-      "Creates a sales order object in your Business Central organization.",
+    description: "Creates a sales order object in your Business Central organization.",
   },
   perform: async (
     context,
@@ -38,11 +37,7 @@ export const createSalesOrder = action({
       connection,
     },
   ) => {
-    const client = getMsBusinessCentralClient(
-      connection,
-      context,
-      context.debug.enabled,
-    );
+    const client = getMsBusinessCentralClient(connection, context, context.debug.enabled);
     const payload = {
       ...additionalProperties,
       email,
@@ -55,10 +50,7 @@ export const createSalesOrder = action({
       customerId,
     };
 
-    const { data } = await client.post<SalesOrder>(
-      `/companies(${companyId})/salesOrders`,
-      payload,
-    );
+    const { data } = await client.post<SalesOrder>(`/companies(${companyId})/salesOrders`, payload);
 
     return { data };
   },

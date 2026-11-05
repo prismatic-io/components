@@ -35,7 +35,7 @@ describe("createEntity", () => {
         fieldValues: { name: "Contoso Ltd." },
         dynamicValues: {},
         connection: conn,
-      } as any),
+      } as any)
     ).rejects.toThrow("Duplicate record");
   });
 });

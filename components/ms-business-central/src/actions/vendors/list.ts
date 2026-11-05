@@ -10,15 +10,8 @@ export const listVendors = action({
     description: "Retrieve all vendors in your Business Central organization.",
   },
   inputs: listVendorsInputs,
-  perform: async (
-    context,
-    { companyId, connection, fetchAll, odataQueryParams },
-  ) => {
-    const client = getMsBusinessCentralClient(
-      connection,
-      context,
-      context.debug.enabled,
-    );
+  perform: async (context, { companyId, connection, fetchAll, odataQueryParams }) => {
+    const client = getMsBusinessCentralClient(connection, context, context.debug.enabled);
     const params = {
       $search: odataQueryParams.$search,
       $skip: odataQueryParams.$skip,
@@ -31,9 +24,7 @@ export const listVendors = action({
       $select: odataQueryParams.$select,
     };
 
-    return await paginateResults<
-      (typeof listVendorsExamplePayload)["data"]["value"][number]
-    >({
+    return await paginateResults<(typeof listVendorsExamplePayload)["data"]["value"][number]>({
       client,
       endpoint: `/companies(${companyId})/vendors`,
       params,

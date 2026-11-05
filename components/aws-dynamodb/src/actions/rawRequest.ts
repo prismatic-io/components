@@ -5,13 +5,7 @@ import {
   type ExecuteStatementCommandInput,
   DynamoDBDocumentClient,
 } from "@aws-sdk/lib-dynamodb";
-import {
-  awsRegion,
-  connectionInput,
-  parameters,
-  queryParameters,
-  statement,
-} from "../inputs";
+import { awsRegion, connectionInput, parameters, queryParameters, statement } from "../inputs";
 import { createDynamoClient } from "../auth";
 import { rawRequestExamplePayload } from "../examplePayloads";
 

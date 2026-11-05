@@ -41,10 +41,7 @@ const webApp = createConnection(
 
 const asUser = () =>
   nock(BASE, {
-    reqheaders: {
-      authorization: "Bearer user-access-token",
-      "x-api-key": "web-app-client-id",
-    },
+    reqheaders: { authorization: "Bearer user-access-token", "x-api-key": "web-app-client-id" },
   });
 
 beforeAll(() => nock.disableNetConnect());
@@ -52,32 +49,21 @@ afterEach(() => nock.cleanAll());
 afterAll(() => nock.enableNetConnect());
 
 describe.each([
-  [
-    "OAuth 2.0 Client Credentials",
-    serverToServer,
-    "s2s-access-token",
-    "s2s-client-id",
-  ],
+  ["OAuth 2.0 Client Credentials", serverToServer, "s2s-access-token", "s2s-client-id"],
   ["OAuth 2.0 (Web App)", webApp, "user-access-token", "web-app-client-id"],
 ] as const)("request builders with the %s connection", (_label, connection, token, clientId) => {
   const headers = { authorization: `Bearer ${token}`, "x-api-key": clientId };
 
   test("the API client sends the connection's token and client ID to the AEM host", async () => {
-    nock(BASE, { reqheaders: headers })
-      .get("/adobe/sites/cf/models")
-      .reply(200, { items: [] });
-    const { data } = await createAemClient(connection).get(
-      "/adobe/sites/cf/models",
-    );
+    nock(BASE, { reqheaders: headers }).get("/adobe/sites/cf/models").reply(200, { items: [] });
+    const { data } = await createAemClient(connection).get("/adobe/sites/cf/models");
     expect(data).toEqual({ items: [] });
   });
 
   test("the download client sends the same credentials and returns binary data", async () => {
     nock(BASE, { reqheaders: headers })
       .get("/adobe/assets/asset-1/original/as/file.bin")
-      .reply(200, Buffer.from([1, 2, 3]), {
-        "Content-Type": "application/octet-stream",
-      });
+      .reply(200, Buffer.from([1, 2, 3]), { "Content-Type": "application/octet-stream" });
     const { data } = await createAemDownloadClient(connection).get(
       "/adobe/assets/asset-1/original/as/file.bin",
     );
@@ -87,10 +73,7 @@ describe.each([
 
 describe("actions run with the OAuth 2.0 (Web App) connection", () => {
   test("List Content Fragment Models", async () => {
-    asUser()
-      .get("/adobe/sites/cf/models")
-      .query(true)
-      .reply(200, { items: [] });
+    asUser().get("/adobe/sites/cf/models").query(true).reply(200, { items: [] });
     const { result } = await invoke(listContentFragmentModels, {
       connection: webApp,
       fetchAll: false,
@@ -113,11 +96,7 @@ describe("actions run with the OAuth 2.0 (Web App) connection", () => {
       mimeTypes: [] as string[],
       modifiedAfter: undefined,
       modifiedBefore: undefined,
-      filters: {
-        searchText: undefined,
-        sortField: undefined,
-        sortOrder: "ASC",
-      },
+      filters: { searchText: undefined, sortField: undefined, sortOrder: "ASC" },
     });
     expect(nock.isDone()).toBe(true);
   });
@@ -137,9 +116,7 @@ describe("actions run with the OAuth 2.0 (Web App) connection", () => {
 
   test("Download Asset", async () => {
     asUser()
-      .get(
-        `/adobe/assets/${encodeURIComponent("urn:aaid:aem:1")}/original/as/city.jpeg`,
-      )
+      .get(`/adobe/assets/${encodeURIComponent("urn:aaid:aem:1")}/original/as/city.jpeg`)
       .reply(200, Buffer.from([7]), { "Content-Type": "image/jpeg" });
     const { result } = await invoke(downloadAsset, {
       connection: webApp,
@@ -174,9 +151,7 @@ describe("actions run with the OAuth 2.0 (Web App) connection", () => {
 
 describe("polling triggers run with the OAuth 2.0 (Web App) connection", () => {
   test("New and Updated Fragments searches as the signed-in user", async () => {
-    let store: PollingState = {
-      lastPolledAt: new Date(Date.now() - 3_600_000).toISOString(),
-    };
+    let store: PollingState = { lastPolledAt: new Date(Date.now() - 3_600_000).toISOString() };
     const context = {
       polling: {
         getState: () => store,
@@ -188,10 +163,7 @@ describe("polling triggers run with the OAuth 2.0 (Web App) connection", () => {
       debug: { enabled: false },
       logger: { debug: vi.fn(), info: vi.fn() },
     } as unknown as Parameters<typeof contentFragmentChanges.perform>[0];
-    asUser()
-      .get("/adobe/sites/cf/fragments/search")
-      .query(true)
-      .reply(200, { items: [] });
+    asUser().get("/adobe/sites/cf/fragments/search").query(true).reply(200, { items: [] });
     const result = await contentFragmentChanges.perform(
       context,
       { headers: {}, body: { data: {} } } as unknown as Parameters<

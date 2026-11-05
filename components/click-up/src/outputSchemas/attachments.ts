@@ -10,14 +10,5 @@ export const createTaskAttachmentOutputSchema = {
     thumbnail_large: { type: "string" },
     url: { type: "string" },
   },
-  required: [
-    "id",
-    "version",
-    "date",
-    "title",
-    "extension",
-    "thumbnail_small",
-    "thumbnail_large",
-    "url",
-  ],
+  required: ["id", "version", "date", "title", "extension", "thumbnail_small", "thumbnail_large", "url"],
 };

@@ -1,10 +1,4 @@
-import {
-  connectionInput,
-  getAlldata,
-  limit,
-  locationId,
-  pageInfo,
-} from "../common";
+import { connectionInput, getAlldata, limit, locationId, pageInfo } from "../common";
 
 export const listInventoryLevelsInputs = {
   locationId,

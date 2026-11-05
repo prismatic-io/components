@@ -24,8 +24,7 @@ const ACTION_CHANGE_TYPES: Record<string, AemChangeType> = {
   metadata_updated: "modified",
 };
 
-const asString = (value: unknown): string | null =>
-  typeof value === "string" ? value : null;
+const asString = (value: unknown): string | null => (typeof value === "string" ? value : null);
 
 const asRecord = (value: unknown): Record<string, unknown> =>
   value && typeof value === "object" && !Array.isArray(value)
@@ -42,16 +41,8 @@ const asResourceUrl = (value: unknown): string | null => {
   }
 };
 
-export const parseAemCloudEvent = (
-  body: unknown,
-  rawBody: string,
-): AemCloudEvent => {
-  if (
-    body &&
-    typeof body === "object" &&
-    !Array.isArray(body) &&
-    !(body instanceof Uint8Array)
-  ) {
+export const parseAemCloudEvent = (body: unknown, rawBody: string): AemCloudEvent => {
+  if (body && typeof body === "object" && !Array.isArray(body) && !(body instanceof Uint8Array)) {
     return body as AemCloudEvent;
   }
   try {
@@ -59,9 +50,7 @@ export const parseAemCloudEvent = (
     if (parsed && typeof parsed === "object" && !Array.isArray(parsed))
       return parsed as AemCloudEvent;
   } catch {}
-  throw new Error(
-    "Adobe I/O Events delivered a body that is not a JSON CloudEvent.",
-  );
+  throw new Error("Adobe I/O Events delivered a body that is not a JSON CloudEvent.");
 };
 
 export const toAemEventItem = (
@@ -72,18 +61,11 @@ export const toAemEventItem = (
   const code = event.type ?? "";
   const prefix = RESOURCE_PREFIXES.find(([value]) => code.startsWith(value));
   const resourceType: AemResourceType = prefix?.[1] ?? "unknown";
-  const action = prefix
-    ? code.slice(prefix[0].length)
-    : (code.split(".").pop() ?? "");
+  const action = prefix ? code.slice(prefix[0].length) : (code.split(".").pop() ?? "");
   const data = event.data ?? {};
   const repository = asRecord(data.repositoryMetadata);
   const path = asString(data.path) ?? asString(repository["repo:path"]);
-  const id =
-    asString(data.id) ??
-    asString(repository["repo:assetId"]) ??
-    path ??
-    event.id ??
-    "";
+  const id = asString(data.id) ?? asString(repository["repo:assetId"]) ?? path ?? event.id ?? "";
   return {
     changeType: ACTION_CHANGE_TYPES[action] ?? "modified",
     record: {
@@ -92,13 +74,8 @@ export const toAemEventItem = (
       path,
       url:
         asResourceUrl(data.sourceUrl) ??
-        toPublishUrl(
-          publishBaseUrl,
-          resourceType === "page" && path ? `${path}.html` : path,
-        ),
-      title:
-        asString(data.title) ??
-        asString(asRecord(data.assetMetadata)["dc:title"]),
+        toPublishUrl(publishBaseUrl, resourceType === "page" && path ? `${path}.html` : path),
+      title: asString(data.title) ?? asString(asRecord(data.assetMetadata)["dc:title"]),
       tags: (Array.isArray(data.tags) ? data.tags : []).map((tag) => ({
         id: util.types.toString(tag),
         title: null,

@@ -25,8 +25,7 @@ const invitedByObject = {
   color: "#e91e63",
   email: "jane.smith@example.com",
   initials: "JS",
-  profilePicture:
-    "https://attachments.clickup.com/profilePictures/81942670_def.jpg",
+  profilePicture: "https://attachments.clickup.com/profilePictures/81942670_def.jpg",
 };
 
 const guestPermissions = {
@@ -86,8 +85,7 @@ const sharedTask = {
     username: "John Doe",
     color: "#7b68ee",
     email: "john.doe@example.com",
-    profilePicture:
-      "https://attachments.clickup.com/profilePictures/81942673_abc.jpg",
+    profilePicture: "https://attachments.clickup.com/profilePictures/81942673_abc.jpg",
   },
   assignees: [],
   checklists: [],
@@ -114,20 +112,8 @@ const sharedTask = {
 };
 
 const sharedListStatuses = [
-  {
-    id: "p90110061901_BEV3ofnq",
-    status: "to do",
-    orderindex: 0,
-    color: "#d3d3d3",
-    type: "open",
-  },
-  {
-    id: "p90110061901_kzdLxYc9",
-    status: "complete",
-    orderindex: 1,
-    color: "#6bc950",
-    type: "closed",
-  },
+  { id: "p90110061901_BEV3ofnq", status: "to do", orderindex: 0, color: "#d3d3d3", type: "open" },
+  { id: "p90110061901_kzdLxYc9", status: "complete", orderindex: 1, color: "#6bc950", type: "closed" },
 ];
 
 const sharedList = {

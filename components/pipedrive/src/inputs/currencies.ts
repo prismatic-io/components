@@ -6,8 +6,7 @@ const term = input({
   label: "Term",
   type: "string",
   clean: cleanString,
-  comments:
-    "An optional search term matched against the currency's name and/or code.",
+  comments: "An optional search term matched against the currency's name and/or code.",
   example: "USD",
   placeholder: "Enter currency name or code",
 });

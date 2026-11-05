@@ -14,14 +14,11 @@ export const selectFolder = dataSource({
   examplePayload: selectFolderExamplePayload,
   perform: async (_context, { connection }) => {
     const client = createAemClient(connection, false);
-    const { folders } = await walkFolderTree(client, DEFAULT_DAM_ROOT, {
-      collectAssets: false,
-    });
+    const { folders } = await walkFolderTree(client, DEFAULT_DAM_ROOT, { collectAssets: false });
     const result = folders
       .filter((folder) => folder.folderId)
       .map<Element>((folder) => ({
-        label:
-          folder.path ?? folder.name ?? util.types.toString(folder.folderId),
+        label: folder.path ?? folder.name ?? util.types.toString(folder.folderId),
         key: util.types.toString(folder.folderId),
       }))
       .sort(compareElementLabels);

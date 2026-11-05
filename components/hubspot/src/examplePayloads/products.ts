@@ -11,8 +11,7 @@ export const listProductsExamplePayload = {
           hs_object_id: "76543210987",
           name: "Enterprise Software License",
           price: "25000.00",
-          description:
-            "Annual enterprise software license with premium support",
+          description: "Annual enterprise software license with premium support",
           hs_sku: "ENT-SW-001",
         },
         createdAt: "2024-01-05T08:15:20.123Z",
@@ -71,8 +70,7 @@ export const createProductExamplePayload = {
       name: "Professional Services - Implementation",
       price: "8500.00",
       hs_sku: "PS-IMP-002",
-      description:
-        "Full implementation service including data migration and training",
+      description: "Full implementation service including data migration and training",
       hs_cost_of_goods_sold: "2500.00",
       hs_recurring_billing_period: "P0M",
     },

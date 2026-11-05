@@ -65,8 +65,7 @@ export const getObjectRetentionInputs = {
   objectKey,
   versionId: {
     ...versionId,
-    comments:
-      "The version ID for the object whose retention settings to retrieve.",
+    comments: "The version ID for the object whose retention settings to retrieve.",
   },
   awsRegion,
 };
@@ -89,8 +88,7 @@ export const putObjectRetentionInputs = {
   retentionMode: {
     ...defaultRetentionMode,
     label: "Retention Mode",
-    comments:
-      "Retention mode for the specified object. Required when Retain Until Date is set.",
+    comments: "Retention mode for the specified object. Required when Retain Until Date is set.",
   },
   retainUntilDate,
   versionId,

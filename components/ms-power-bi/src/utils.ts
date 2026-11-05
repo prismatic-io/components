@@ -5,7 +5,7 @@ export const paginateResults = async <T>(
   client: HttpClient,
   url: string,
   fetchAll: boolean = false,
-  params: Record<string, unknown> | undefined = undefined,
+  params: Record<string, unknown> | undefined = undefined
 ): Promise<{
   value: T[];
   "@odata.context"?: string;

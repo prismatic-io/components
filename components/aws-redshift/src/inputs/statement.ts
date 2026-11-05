@@ -35,8 +35,7 @@ const secretArn = input({
   required: false,
   comments:
     "The ARN of the AWS Secrets Manager secret containing database credentials. Required when authenticating using Secrets Manager.",
-  example:
-    "arn:aws:secretsmanager:us-east-1:123456789012:secret:redshift-credentials",
+  example: "arn:aws:secretsmanager:us-east-1:123456789012:secret:redshift-credentials",
   placeholder: "Enter the secret ARN",
   clean: toOptionalString,
 });
@@ -91,8 +90,7 @@ const sessionKeepAliveSeconds = input({
   label: "Session Keep Alive (seconds)",
   type: "string",
   required: false,
-  comments:
-    "Number of seconds to keep the session alive after query completion (max 24 hours).",
+  comments: "Number of seconds to keep the session alive after query completion (max 24 hours).",
   example: "3600",
   placeholder: "Enter the keep alive duration in seconds",
   clean: toOptionalNumber,
@@ -147,13 +145,7 @@ const additionalFields = structuredObjectInput({
   required: false,
   comments:
     "Additional optional fields: includes Statement Name, Result Format, Session Keep Alive (seconds), Client Token, and Session ID.",
-  inputs: {
-    statementName,
-    resultFormat,
-    sessionKeepAliveSeconds,
-    clientToken,
-    sessionId,
-  },
+  inputs: { statementName, resultFormat, sessionKeepAliveSeconds, clientToken, sessionId },
 });
 
 export const executeStatementInputs = {
@@ -184,8 +176,7 @@ const maxResults = input({
   label: "Max Results",
   type: "string",
   required: false,
-  comments:
-    "The maximum number of SQL statements to return per page. Valid range: 0-100.",
+  comments: "The maximum number of SQL statements to return per page. Valid range: 0-100.",
   example: "100",
   placeholder: "100",
   clean: toOptionalNumber,

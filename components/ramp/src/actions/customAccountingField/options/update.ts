@@ -1,12 +1,7 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../../client";
 import { getCustomAccountingFieldOptionResponse as updateCustomAccountingFieldOptionResponsev } from "../../../examplePayloads/customAccountingFieldOption";
-import {
-  connection,
-  customAccountingFieldOptionId,
-  reactivate,
-  value,
-} from "../../../inputs";
+import { connection, customAccountingFieldOptionId, reactivate, value } from "../../../inputs";
 import { updateCustomAccountingFieldOptionOutputSchema } from "../../../outputSchemas";
 
 export const updateCustomAccountingFieldOption = action({
@@ -31,10 +26,7 @@ export const updateCustomAccountingFieldOption = action({
     schema: updateCustomAccountingFieldOptionOutputSchema,
   }),
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { connection, customAccountingFieldOptionId, reactivate, value },
-  ) => {
+  perform: async (context, { connection, customAccountingFieldOptionId, reactivate, value }) => {
     const client = createClient(connection, context.debug.enabled);
 
     const { data } = await client.patch(

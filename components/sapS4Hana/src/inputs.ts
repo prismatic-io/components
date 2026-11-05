@@ -102,8 +102,7 @@ export const orderBy = input({
   example:
     "Available values (use one): FileSize, FileSize desc, FileName, FileName desc, MimeType, MimeType desc, CreatedByUser, CreatedByUser desc, CreationDateTime, CreationDateTime desc, LastChangedByUser, LastChangedByUser desc, ChangedDateTime, ChangedDateTime desc",
   required: false,
-  clean: (value: unknown) =>
-    (value as unknown[]).map((item) => util.types.toString(item)),
+  clean: (value: unknown) => (value as unknown[]).map((item) => util.types.toString(item)),
 });
 
 export const select = input({
@@ -114,8 +113,7 @@ export const select = input({
   example:
     "Available values (use one): DocumentInfoRecordDocType, DocumentInfoRecordDocNumber, DocumentInfoRecordDocVersion, DocumentInfoRecordDocPart, LogicalDocument, ArchiveDocumentID, LinkedSAPObjectKey, BusinessObjectTypeName, SemanticObject, WorkstationApplication, FileSize, FileName, DocumentURL, MimeType, Content, CreatedByUser, CreatedByUserFullName, CreationDateTime, BusinessObjectType, LastChangedByUser, LastChangedByUserFullName, ChangedDateTime, StorageCategory, ArchiveLinkRepository, SAPObjectType, SAPObjectNodeType, HarmonizedDocumentType, AttachmentDeletionIsAllowed, AttachmentRenameIsAllowed, Source, AttachmentContentHash",
   required: false,
-  clean: (value: unknown) =>
-    (value as unknown[]).map((item) => util.types.toString(item)),
+  clean: (value: unknown) => (value as unknown[]).map((item) => util.types.toString(item)),
 });
 
 export const logicalDocument = input({
@@ -205,8 +203,7 @@ export const expand = input({
   comments: "Expand related entities",
   example: "Available values (use one): ProjectRoleSet, WorkPackageSet",
   required: false,
-  clean: (value: unknown) =>
-    (value as unknown[]).map((item) => util.types.toString(item)),
+  clean: (value: unknown) => (value as unknown[]).map((item) => util.types.toString(item)),
 });
 
 export const projectId = input({

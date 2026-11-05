@@ -14,34 +14,19 @@ export const listPublicWorkers = action({
   },
   examplePayload: listPublicWorkersExamplePayload,
   inputs: listPublicWorkersInputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: listPublicWorkersOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: listPublicWorkersOutputSchema }),
   perform: async (
     context,
-    {
-      connection,
-      fetchAll,
-      pagination,
-      effectiveDate,
-      expand,
-      includeMetadataLinks,
-    },
+    { connection, fetchAll, pagination, effectiveDate, expand, includeMetadataLinks },
   ) => {
     const client = createClient(connection, context.debug.enabled);
-    const data = await paginateResults<Worker>(
-      client,
-      "/publicWorkers",
-      fetchAll,
-      {
-        offset: pagination.offset,
-        limit: pagination.limit,
-        effectiveDate,
-        expand,
-        onlyData: includeMetadataLinks,
-      },
-    );
+    const data = await paginateResults<Worker>(client, "/publicWorkers", fetchAll, {
+      offset: pagination.offset,
+      limit: pagination.limit,
+      effectiveDate,
+      expand,
+      onlyData: includeMetadataLinks,
+    });
     return { data };
   },
 });

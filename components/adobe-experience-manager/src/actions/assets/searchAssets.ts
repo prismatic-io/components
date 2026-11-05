@@ -9,11 +9,7 @@ import {
 import { searchAssetsExamplePayload } from "../../examplePayloads";
 import { searchAssetsInputs } from "../../inputs";
 import { searchAssetsOutputSchema } from "../../outputSchemas";
-import type {
-  AssetSearchClause,
-  AssetSearchHit,
-  AssetSearchResponse,
-} from "../../types";
+import type { AssetSearchClause, AssetSearchHit, AssetSearchResponse } from "../../types";
 import { buildAssetFilterClauses } from "../../utils";
 
 export const searchAssets = action({
@@ -43,30 +39,24 @@ export const searchAssets = action({
       : undefined;
 
     if (!params.fetchAll) {
-      const { data } = await client.post<AssetSearchResponse>(
-        `${ASSETS_API_PATH}/search`,
-        {
-          query,
-          sort,
-          limit: params.pagination?.limit,
-          cursor: params.pagination?.cursor,
-        },
-      );
+      const { data } = await client.post<AssetSearchResponse>(`${ASSETS_API_PATH}/search`, {
+        query,
+        sort,
+        limit: params.pagination?.limit,
+        cursor: params.pagination?.cursor,
+      });
       return { data };
     }
     const results: AssetSearchHit[] = [];
     let cursor: string | undefined = params.pagination?.cursor;
     let pages = 0;
     do {
-      const { data } = await client.post<AssetSearchResponse>(
-        `${ASSETS_API_PATH}/search`,
-        {
-          query,
-          sort,
-          limit: MAX_PAGE_LIMIT,
-          cursor,
-        },
-      );
+      const { data } = await client.post<AssetSearchResponse>(`${ASSETS_API_PATH}/search`, {
+        query,
+        sort,
+        limit: MAX_PAGE_LIMIT,
+        cursor,
+      });
       results.push(...(data.hits?.results ?? []));
       cursor = data.cursor;
       pages++;
@@ -74,10 +64,7 @@ export const searchAssets = action({
     return { data: { hits: { results }, cursor } };
   },
   inputs: searchAssetsInputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: searchAssetsOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: searchAssetsOutputSchema }),
   examplePerform: async () => searchAssetsExamplePayload,
   examplePayload: searchAssetsExamplePayload,
 });

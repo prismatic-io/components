@@ -21,9 +21,7 @@ const assignmentExample: Assignment = {
   FullPartTime: "F",
 };
 
-export const listAssignmentsExamplePayload: {
-  data: OracleHcmListResponse<Assignment>;
-} = {
+export const listAssignmentsExamplePayload: { data: OracleHcmListResponse<Assignment> } = {
   data: {
     items: [assignmentExample],
     count: 1,

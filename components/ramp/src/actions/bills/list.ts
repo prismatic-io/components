@@ -19,10 +19,7 @@ export const listBills = action({
     schema: listBillsOutputSchema,
   }),
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { connection, customQueryParams, fetchAll, pagination },
-  ) => {
+  perform: async (context, { connection, customQueryParams, fetchAll, pagination }) => {
     const client = createClient(connection, context.debug.enabled);
 
     const data = await fetchAllData<Bill>(
@@ -39,10 +36,7 @@ export const listBills = action({
       data,
     };
   },
-  examplePerform: async (
-    _context,
-    { fetchAll },
-  ): Promise<{ data: unknown }> => ({
+  examplePerform: async (_context, { fetchAll }): Promise<{ data: unknown }> => ({
     data: {
       ...listBillsResponse,
       page: fetchAll ? null : listBillsResponse.page,

@@ -24,11 +24,7 @@ export const searchLeads = action({
       pagination: { limit, cursor } = {},
     },
   ) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      WebhookVersion.V2,
-    );
+    const client = createClient(connection, context.debug.enabled, WebhookVersion.V2);
     const { data } = await client.get("/leads/search", {
       params: {
         term,
@@ -45,8 +41,5 @@ export const searchLeads = action({
   },
   inputs: searchLeadsInputs,
   examplePayload: searchLeadsExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: searchLeadsOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: searchLeadsOutputSchema }),
 });

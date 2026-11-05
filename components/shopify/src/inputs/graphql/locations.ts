@@ -1,9 +1,4 @@
-import {
-  getAlldata,
-  locationId,
-  pagination,
-  shopifyConnection,
-} from "./common";
+import { getAlldata, locationId, pagination, shopifyConnection } from "./common";
 
 export const listLocationsInputs = {
   shopifyConnection,

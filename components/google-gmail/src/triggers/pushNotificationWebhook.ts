@@ -13,17 +13,13 @@ export const pushNotificationWebhook = trigger({
     const finalPayload: TriggerPayload = { ...payload };
     try {
       const message = (finalPayload.body.data as GmailNotificationBody).message;
-      message.decodedData = JSON.parse(
-        Buffer.from(message.data, "base64").toString("utf-8"),
-      );
+      message.decodedData = JSON.parse(Buffer.from(message.data, "base64").toString("utf-8"));
       finalPayload.body.data = {
         ...(finalPayload.body.data as object),
         message,
       };
     } catch (error) {
-      throw new Error("Error parsing data. Was this message sent from Gmail?", {
-        cause: error,
-      });
+      throw new Error("Error parsing data. Was this message sent from Gmail?", { cause: error });
     }
     return Promise.resolve({
       payload,

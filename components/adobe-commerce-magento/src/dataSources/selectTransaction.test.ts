@@ -14,18 +14,8 @@ describe("selectTransaction", () => {
       .query(true)
       .reply(200, {
         items: [
-          {
-            transaction_id: 1,
-            txn_id: "txn-abc123",
-            txn_type: "capture",
-            order_id: 1,
-          },
-          {
-            transaction_id: 2,
-            txn_id: "txn-aaa000",
-            txn_type: "refund",
-            order_id: 2,
-          },
+          { transaction_id: 1, txn_id: "txn-abc123", txn_type: "capture", order_id: 1 },
+          { transaction_id: 2, txn_id: "txn-aaa000", txn_type: "refund", order_id: 2 },
         ],
       });
 
@@ -40,10 +30,7 @@ describe("selectTransaction", () => {
   });
 
   test("returns an empty array rather than throwing when the store has no transactions", async () => {
-    nock(STORE_HOST)
-      .get("/rest/default/V1/transactions")
-      .query(true)
-      .reply(200, { items: [] });
+    nock(STORE_HOST).get("/rest/default/V1/transactions").query(true).reply(200, { items: [] });
 
     const result = await invokeDataSource(selectTransaction, {
       connectionInput: storeConnection(),

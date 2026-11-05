@@ -54,10 +54,7 @@ export const resolveFileListingWindow = (
   if (inFlight) return inFlight;
 
   const windowEnd = floorToSecond(now);
-  return {
-    windowStart: state.lastPolledAt || lookBackDate || windowEnd,
-    windowEnd,
-  };
+  return { windowStart: state.lastPolledAt || lookBackDate || windowEnd, windowEnd };
 };
 
 export const listObjectsInWindow = async (
@@ -81,18 +78,12 @@ export const listObjectsInWindow = async (
 
     for (const object of contents) {
       const { Key, LastModified } = objectMapper(object, "LastModified");
-      if (
-        Key !== undefined &&
-        LastModified >= windowStart &&
-        LastModified < windowEnd
-      ) {
+      if (Key !== undefined && LastModified >= windowStart && LastModified < windowEnd) {
         keys.push(Key);
       }
     }
 
-    resumeAfter = response.IsTruncated
-      ? contents[contents.length - 1]?.Key
-      : undefined;
+    resumeAfter = response.IsTruncated ? contents[contents.length - 1]?.Key : undefined;
   } while (resumeAfter && !singlePage);
 
   return { keys, startAfter: resumeAfter };
@@ -106,21 +97,13 @@ export const listBucketsCreatedSince = async (
   const buckets = await listAllBuckets(s3);
   return buckets
     .map((bucket) => objectMapper(bucket, "CreationDate"))
-    .filter(({ CreationDate }) =>
-      inclusive ? CreationDate >= since : CreationDate > since,
-    );
+    .filter(({ CreationDate }) => (inclusive ? CreationDate >= since : CreationDate > since));
 };
 
-export const resolvePolledFileChanges = (
-  data: string[] | undefined,
-): PolledFileChange[] =>
-  (data ?? []).map(
-    (record): PolledFileChange => ({ changeType: "changed", record }),
-  );
+export const resolvePolledFileChanges = (data: string[] | undefined): PolledFileChange[] =>
+  (data ?? []).map((record): PolledFileChange => ({ changeType: "changed", record }));
 
 export const resolvePolledBucketChanges = (
   data: PolledBucket[] | undefined,
 ): PolledBucketChange[] =>
-  (data ?? []).map(
-    (record): PolledBucketChange => ({ changeType: "created", record }),
-  );
+  (data ?? []).map((record): PolledBucketChange => ({ changeType: "created", record }));

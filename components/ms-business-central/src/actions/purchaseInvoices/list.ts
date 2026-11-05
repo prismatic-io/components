@@ -7,19 +7,11 @@ import { listPurchaseInvoicesInputs } from "../../inputs/purchaseInvoices";
 export const listPurchaseInvoices = action({
   display: {
     label: "List Purchase Invoices",
-    description:
-      "Retrieve all purchase invoices in your Business Central organization.",
+    description: "Retrieve all purchase invoices in your Business Central organization.",
   },
   inputs: listPurchaseInvoicesInputs,
-  perform: async (
-    context,
-    { companyId, connection, fetchAll, odataQueryParams },
-  ) => {
-    const client = getMsBusinessCentralClient(
-      connection,
-      context,
-      context.debug.enabled,
-    );
+  perform: async (context, { companyId, connection, fetchAll, odataQueryParams }) => {
+    const client = getMsBusinessCentralClient(connection, context, context.debug.enabled);
     const params = {
       $search: odataQueryParams.$search,
       $skip: odataQueryParams.$skip,

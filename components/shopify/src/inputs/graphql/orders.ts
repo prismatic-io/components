@@ -1,12 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanCodeInputEmptyObject, cleanStringInput } from "../../util";
-import {
-  getAlldata,
-  orderId,
-  pagination,
-  query,
-  shopifyConnection,
-} from "./common";
+import { getAlldata, orderId, pagination, query, shopifyConnection } from "./common";
 
 const notifyCustomer = input({
   label: "Notify Customer",

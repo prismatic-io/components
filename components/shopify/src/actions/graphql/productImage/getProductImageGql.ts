@@ -37,9 +37,6 @@ export const getProductImageGql = action({
     };
   },
   inputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getProductImageGqlOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getProductImageGqlOutputSchema }),
   examplePayload,
 });

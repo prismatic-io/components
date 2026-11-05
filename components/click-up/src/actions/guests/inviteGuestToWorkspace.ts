@@ -27,12 +27,9 @@ export const inviteGuestToWorkspace = action({
       canSeeTimeEstimated,
       canCreateViews,
       customRoleId,
-    },
+    }
   ) => {
-    const client = createClickUpClient(
-      clickUpConnection,
-      context.debug.enabled,
-    );
+    const client = createClickUpClient(clickUpConnection, context.debug.enabled);
     const body: InviteGuestToWorkspaceBody = {
       email,
       can_edit_tags: canEditTags,

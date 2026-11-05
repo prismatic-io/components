@@ -10,7 +10,7 @@ export const lookBackDateClean = (value: unknown): string => {
   const match = raw.match(LOOK_BACK_DATE_PATTERN);
   if (!match) {
     throw new Error(
-      `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
+      `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`
     );
   }
 
@@ -25,7 +25,7 @@ export const lookBackDateClean = (value: unknown): string => {
     parsed.getUTCDate() !== day
   ) {
     throw new Error(
-      `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
+      `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`
     );
   }
 

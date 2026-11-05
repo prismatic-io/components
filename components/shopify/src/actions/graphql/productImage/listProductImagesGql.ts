@@ -14,10 +14,7 @@ export const listProductImagesGql = action({
     description: "Lists all product images for the specified product.",
   },
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { shopifyConnection, productId, getAlldata, pagination = {} },
-  ) => {
+  perform: async (context, { shopifyConnection, productId, getAlldata, pagination = {} }) => {
     const client = getShopifyGraphQlClient(
       shopifyConnection,
       undefined,
@@ -49,10 +46,7 @@ export const listProductImagesGql = action({
     };
   },
   inputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: listProductImagesGqlOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: listProductImagesGqlOutputSchema }),
   examplePerform: async () => listProductImagesExamplePayload.restMap,
   examplePayload: listProductImagesExamplePayload.restMap,
 });

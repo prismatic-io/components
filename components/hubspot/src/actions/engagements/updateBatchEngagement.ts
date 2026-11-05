@@ -11,10 +11,7 @@ export const updateBatchEngagement = action({
     description: "Updates a batch of selected engagements.",
   },
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { timeout, hubspotConnection, engagementObject, batchInputs },
-  ) => {
+  perform: async (context, { timeout, hubspotConnection, engagementObject, batchInputs }) => {
     const debugRequest = context.debug.enabled;
     const client = getHubspotClient({
       hubspotConnection,
@@ -43,8 +40,5 @@ export const updateBatchEngagement = action({
     data: updateBatchEngagementExamplePayload.data,
   }),
   examplePayload: updateBatchEngagementExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: batchResponseSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: batchResponseSchema }),
 });

@@ -19,10 +19,7 @@ export const listAssetRenditions = action({
     return { data };
   },
   inputs: listAssetRenditionsInputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: listAssetRenditionsOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: listAssetRenditionsOutputSchema }),
   examplePerform: async () => listAssetRenditionsExamplePayload,
   examplePayload: listAssetRenditionsExamplePayload,
 });

@@ -42,19 +42,13 @@ describe("cleanStringList", () => {
 describe("cleanDamPath", () => {
   test("prefixes a folder name or relative path with the DAM root", () => {
     expect(cleanDamPath("wknd-shared/en")).toBe("/content/dam/wknd-shared/en");
-    expect(cleanDamPath("/wknd-shared/en/")).toBe(
-      "/content/dam/wknd-shared/en",
-    );
+    expect(cleanDamPath("/wknd-shared/en/")).toBe("/content/dam/wknd-shared/en");
     expect(cleanDamPath(" new-folder ")).toBe("/content/dam/new-folder");
   });
 
   test("keeps a path that already starts with the DAM root", () => {
-    expect(cleanDamPath("/content/dam/wknd-shared/en")).toBe(
-      "/content/dam/wknd-shared/en",
-    );
-    expect(cleanDamPath("content/dam/wknd-shared/en/")).toBe(
-      "/content/dam/wknd-shared/en",
-    );
+    expect(cleanDamPath("/content/dam/wknd-shared/en")).toBe("/content/dam/wknd-shared/en");
+    expect(cleanDamPath("content/dam/wknd-shared/en/")).toBe("/content/dam/wknd-shared/en");
     expect(cleanDamPath("/content/dam")).toBe("/content/dam");
     expect(cleanDamPath("/content/dam/")).toBe("/content/dam");
   });
@@ -68,21 +62,15 @@ describe("cleanDamPath", () => {
 
 describe("cleanRequiredDamPath", () => {
   test("prefixes the DAM root and returns an empty string for blank input", () => {
-    expect(cleanRequiredDamPath("wknd-shared")).toBe(
-      "/content/dam/wknd-shared",
-    );
-    expect(cleanRequiredDamPath("/content/dam/wknd-shared")).toBe(
-      "/content/dam/wknd-shared",
-    );
+    expect(cleanRequiredDamPath("wknd-shared")).toBe("/content/dam/wknd-shared");
+    expect(cleanRequiredDamPath("/content/dam/wknd-shared")).toBe("/content/dam/wknd-shared");
     expect(cleanRequiredDamPath("")).toBe("");
   });
 });
 
 describe("cleanFolderPaths", () => {
   test("prefixes each entry with the DAM root, trims, and drops blanks", () => {
-    expect(
-      cleanFolderPaths(["new-folder", " /content/dam/other ", "", "/a/b/"]),
-    ).toEqual([
+    expect(cleanFolderPaths(["new-folder", " /content/dam/other ", "", "/a/b/"])).toEqual([
       "/content/dam/new-folder",
       "/content/dam/other",
       "/content/dam/a/b",
@@ -111,12 +99,8 @@ describe("cleanLimit", () => {
   });
 
   test("rejects values outside 1 to 50 and non-integers", () => {
-    expect(() => cleanLimit("0")).toThrow(
-      "Limit must be a whole number from 1 to 50",
-    );
-    expect(() => cleanLimit("51")).toThrow(
-      "Limit must be a whole number from 1 to 50",
-    );
+    expect(() => cleanLimit("0")).toThrow("Limit must be a whole number from 1 to 50");
+    expect(() => cleanLimit("51")).toThrow("Limit must be a whole number from 1 to 50");
     expect(() => cleanLimit("2.5")).toThrow("Limit must be a whole number");
     expect(() => cleanLimit("-1")).toThrow("Limit must be a whole number");
     expect(() => cleanLimit("ten")).toThrow("Limit must be a whole number");
@@ -125,9 +109,7 @@ describe("cleanLimit", () => {
 
 describe("cleanOptionalDateTime", () => {
   test("normalizes a valid date-time to ISO 8601", () => {
-    expect(cleanOptionalDateTime("2026-01-01T00:00:00Z")).toBe(
-      "2026-01-01T00:00:00.000Z",
-    );
+    expect(cleanOptionalDateTime("2026-01-01T00:00:00Z")).toBe("2026-01-01T00:00:00.000Z");
   });
 
   test("returns undefined for a blank value", () => {
@@ -152,12 +134,8 @@ describe("cleanHttpsUrl", () => {
     expect(() => cleanHttpsUrl("http://www.example.com/sitemap.xml")).toThrow(
       "must be an absolute https:// URL",
     );
-    expect(() => cleanHttpsUrl("/sitemap.xml")).toThrow(
-      "must be an absolute https:// URL",
-    );
-    expect(() => cleanHttpsUrl("")).toThrow(
-      '"" must be an absolute https:// URL.',
-    );
+    expect(() => cleanHttpsUrl("/sitemap.xml")).toThrow("must be an absolute https:// URL");
+    expect(() => cleanHttpsUrl("")).toThrow('"" must be an absolute https:// URL.');
   });
 });
 
@@ -167,12 +145,8 @@ describe("cleanOptionalHttpsUrl", () => {
   });
 
   test("strips the trailing slash from a valid https URL", () => {
-    expect(cleanOptionalHttpsUrl("https://www.example.com")).toBe(
-      "https://www.example.com",
-    );
-    expect(cleanOptionalHttpsUrl("https://www.example.com/en/")).toBe(
-      "https://www.example.com/en",
-    );
+    expect(cleanOptionalHttpsUrl("https://www.example.com")).toBe("https://www.example.com");
+    expect(cleanOptionalHttpsUrl("https://www.example.com/en/")).toBe("https://www.example.com/en");
   });
 
   test("rejects an http URL", () => {
@@ -202,8 +176,6 @@ describe("lookBackDateClean", () => {
     expect(() => lookBackDateClean(20260101)).toThrow(
       "Look-back Date must be a date in YYYY-MM-DD format",
     );
-    expect(() => lookBackDateClean("2999-01-01")).toThrow(
-      "Look-back Date cannot be a future date",
-    );
+    expect(() => lookBackDateClean("2999-01-01")).toThrow("Look-back Date cannot be a future date");
   });
 });

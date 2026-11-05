@@ -5,21 +5,14 @@ import { createClient } from "../client";
 import { connection as connectionDefinition } from "../connections";
 import { fetchAllPages, fetchDrives, fetchFiles } from "./pagination";
 
-const connection = createConnection(
-  connectionDefinition,
-  {},
-  { access_token: "test-token" },
-);
+const connection = createConnection(connectionDefinition, {}, { access_token: "test-token" });
 const DRIVE = "https://www.googleapis.com";
 
 const page = <T>(data: T) => Promise.resolve({ data } as GaxiosResponse<T>);
 
 describe("fetchAllPages", () => {
   test("returns a single page when no nextPageToken comes back", async () => {
-    const items = await fetchAllPages<
-      { nextPageToken?: string | null; files?: string[] },
-      string
-    >(
+    const items = await fetchAllPages<{ nextPageToken?: string | null; files?: string[] }, string>(
       () => page({ files: ["a", "b"] }),
       (data) => data.files,
     );
@@ -30,10 +23,7 @@ describe("fetchAllPages", () => {
   test("follows nextPageToken and concatenates every page in order", async () => {
     const requested: (string | undefined)[] = [];
 
-    const items = await fetchAllPages<
-      { nextPageToken?: string | null; files?: string[] },
-      string
-    >(
+    const items = await fetchAllPages<{ nextPageToken?: string | null; files?: string[] }, string>(
       (pageToken) => {
         requested.push(pageToken);
         return pageToken === "p2"
@@ -48,14 +38,8 @@ describe("fetchAllPages", () => {
   });
 
   test("contributes nothing for a page that omits the item array", async () => {
-    const items = await fetchAllPages<
-      { nextPageToken?: string | null; files?: string[] },
-      string
-    >(
-      (pageToken) =>
-        pageToken === "p2"
-          ? page({ files: ["c"] })
-          : page({ nextPageToken: "p2" }),
+    const items = await fetchAllPages<{ nextPageToken?: string | null; files?: string[] }, string>(
+      (pageToken) => (pageToken === "p2" ? page({ files: ["c"] }) : page({ nextPageToken: "p2" })),
       (data) => data.files,
     );
 
@@ -63,10 +47,7 @@ describe("fetchAllPages", () => {
   });
 
   test("stops on an empty-string nextPageToken rather than looping", async () => {
-    const items = await fetchAllPages<
-      { nextPageToken?: string | null; files?: string[] },
-      string
-    >(
+    const items = await fetchAllPages<{ nextPageToken?: string | null; files?: string[] }, string>(
       () => page({ files: ["a"], nextPageToken: "" }),
       (data) => data.files,
     );
@@ -103,11 +84,7 @@ describe("fetchFiles", () => {
     nock(DRIVE)
       .get("/drive/v3/files")
       .query(true)
-      .reply(200, {
-        kind: "drive#fileList",
-        files: [{ id: "1" }],
-        nextPageToken: "p2",
-      });
+      .reply(200, { kind: "drive#fileList", files: [{ id: "1" }], nextPageToken: "p2" });
     nock(DRIVE)
       .get("/drive/v3/files")
       .query(true)

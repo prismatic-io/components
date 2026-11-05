@@ -41,10 +41,7 @@ export const updateLocation = action({
       data,
     };
   },
-  examplePerform: async (
-    _context,
-    { locationId, name, entityId },
-  ): Promise<{ data: unknown }> => ({
+  examplePerform: async (_context, { locationId, name, entityId }): Promise<{ data: unknown }> => ({
     data: {
       ...updateLocationResponse,
       entity_id: entityId || updateLocationResponse.entity_id,

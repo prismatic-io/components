@@ -1,8 +1,5 @@
 import type { HttpClient } from "@prismatic-io/spectral/http";
-import type {
-  RedshiftDataClient,
-  StatusString,
-} from "@aws-sdk/client-redshift-data";
+import type { RedshiftDataClient, StatusString } from "@aws-sdk/client-redshift-data";
 import type { Credentials } from "aws-utils";
 
 export interface RedshiftDataApiClientResult {

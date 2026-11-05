@@ -7,8 +7,7 @@ import { enableNotificationChannel } from "../../util/notifications";
 export const crmEnableNotification = action({
   display: {
     label: "CRM - Enable Notification",
-    description:
-      "Enable instant notifications for actions on a Zoho CRM module.",
+    description: "Enable instant notifications for actions on a Zoho CRM module.",
   },
   inputs: notificationEnableInputs,
   perform: async (
@@ -25,11 +24,7 @@ export const crmEnableNotification = action({
       notificationCondition,
     },
   ) => {
-    const crmClient = createClient(
-      connection,
-      ClientType.CRM,
-      context.debug.enabled,
-    );
+    const crmClient = createClient(connection, ClientType.CRM, context.debug.enabled);
 
     const data = await enableNotificationChannel(crmClient, {
       channelId,

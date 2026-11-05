@@ -57,9 +57,7 @@ describe("pollChangesTrigger: first poll, no stored state", () => {
     const scope = nock(STORE_HOST)
       .get(ORDERS_PATH)
       .query(
-        (q) =>
-          q["searchCriteria[filterGroups][0][filters][0][value]"] ===
-          "2026-01-01 00:00:00",
+        (q) => q["searchCriteria[filterGroups][0][filters][0][value]"] === "2026-01-01 00:00:00",
       )
       .reply(200, { items: [] });
 
@@ -85,9 +83,7 @@ describe("pollChangesTrigger: first poll, no stored state", () => {
     const scope = nock(STORE_HOST)
       .get(ORDERS_PATH)
       .query(
-        (q) =>
-          q["searchCriteria[filterGroups][0][filters][0][value]"] ===
-          "2026-02-01 10:00:00",
+        (q) => q["searchCriteria[filterGroups][0][filters][0][value]"] === "2026-02-01 10:00:00",
       )
       .reply(200, { items: [] });
 
@@ -105,14 +101,10 @@ describe("pollChangesTrigger: not truncated", () => {
 
     nock(STORE_HOST).get(ORDERS_PATH).query(true).reply(200, { items: [] });
 
-    const context = createPollingContext({
-      lastPolledAt: "2026-02-01T00:00:00.000Z",
-    });
+    const context = createPollingContext({ lastPolledAt: "2026-02-01T00:00:00.000Z" });
     await invokeTrigger(pollChangesTrigger, context, {}, baseParams);
 
-    expect(context.polling.getState().lastPolledAt).toBe(
-      "2026-03-01T00:00:00.000Z",
-    );
+    expect(context.polling.getState().lastPolledAt).toBe("2026-03-01T00:00:00.000Z");
   });
 });
 
@@ -128,11 +120,7 @@ describe("pollChangesTrigger: truncated", () => {
         updated_at: "2026-01-05 12:00:00",
       })),
     };
-    const firstPollScope = nock(STORE_HOST)
-      .get(ORDERS_PATH)
-      .query(true)
-      .times(50)
-      .reply(200, page);
+    const firstPollScope = nock(STORE_HOST).get(ORDERS_PATH).query(true).times(50).reply(200, page);
 
     const context = createPollingContext();
     const { result: firstResult } = await invokeTrigger(
@@ -144,19 +132,13 @@ describe("pollChangesTrigger: truncated", () => {
 
     expect(firstPollScope.isDone()).toBe(true);
     expect(firstResult.polledNoChanges).toBe(false);
-    expect(context.polling.getState().lastPolledAt).toBe(
-      "2026-01-05T12:00:00.000Z",
-    );
-    expect(context.polling.getState().lastPolledAt).not.toBe(
-      "2026-04-01T00:00:00.000Z",
-    );
+    expect(context.polling.getState().lastPolledAt).toBe("2026-01-05T12:00:00.000Z");
+    expect(context.polling.getState().lastPolledAt).not.toBe("2026-04-01T00:00:00.000Z");
 
     const secondPollScope = nock(STORE_HOST)
       .get(ORDERS_PATH)
       .query(
-        (q) =>
-          q["searchCriteria[filterGroups][0][filters][0][value]"] ===
-          "2026-01-05 12:00:00",
+        (q) => q["searchCriteria[filterGroups][0][filters][0][value]"] === "2026-01-05 12:00:00",
       )
       .reply(200, { items: [] });
 
@@ -186,12 +168,7 @@ describe("pollChangesTrigger: created vs updated partition", () => {
       .reply(200, { items: [newRecord, changedRecord] });
 
     const context = createPollingContext({ lastPolledAt });
-    const { result } = await invokeTrigger(
-      pollChangesTrigger,
-      context,
-      {},
-      baseParams,
-    );
+    const { result } = await invokeTrigger(pollChangesTrigger, context, {}, baseParams);
 
     const data = result.payload.body?.data;
     expect(data?.created).toEqual([newRecord]);

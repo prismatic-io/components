@@ -19,22 +19,21 @@ export const deleteProductGql = action({
       context.logger,
     );
 
-    const data: { productDelete: Record<string, unknown> } =
-      await client.request(deleteProductQuery, {
+    const data: { productDelete: Record<string, unknown> } = await client.request(
+      deleteProductQuery,
+      {
         input: {
           id: productId,
         },
-      });
+      },
+    );
 
     return {
       data: data.productDelete,
     };
   },
   inputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: deleteProductGqlOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: deleteProductGqlOutputSchema }),
   examplePerform: async () => examplePayload,
   examplePayload,
 });

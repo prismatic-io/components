@@ -1,14 +1,7 @@
 import { listAllHistory, listAllMessages } from "../utils";
 import { createClient } from "../client";
-import type {
-  ActionContext,
-  PollingContext,
-  TriggerPayload,
-} from "@prismatic-io/spectral";
-import type {
-  PollChangesTriggerParams,
-  PollChangesTriggerState,
-} from "../types";
+import type { ActionContext, PollingContext, TriggerPayload } from "@prismatic-io/spectral";
+import type { PollChangesTriggerParams, PollChangesTriggerState } from "../types";
 import { getStartHistoryId } from "./getStartHistoryId";
 import type { gmail_v1 } from "@googleapis/gmail";
 import { getMessagesDetails } from "./getMessagesDetails";
@@ -16,19 +9,12 @@ import { getMessagesDetails } from "./getMessagesDetails";
 export const pollChangesTriggerPerform = async (
   { polling, logger, debug }: ActionContext & PollingContext,
   payload: TriggerPayload,
-  {
-    connection,
-    userId,
-    labelId,
-    getMessageDetails,
-    lookBackDate,
-  }: PollChangesTriggerParams,
+  { connection, userId, labelId, getMessageDetails, lookBackDate }: PollChangesTriggerParams,
 ) => {
   const client = await createClient(connection);
   let polledNoChanges = true;
   let reSyncRequired = false;
-  const mailboxEmptyMessage =
-    "No start history ID found to start polling, is your mailbox empty?";
+  const mailboxEmptyMessage = "No start history ID found to start polling, is your mailbox empty?";
   const pollState = polling.getState() as PollChangesTriggerState;
   const newLastPolledAt = new Date().toISOString();
 
@@ -36,16 +22,9 @@ export const pollChangesTriggerPerform = async (
 
   if (isFirstPoll && lookBackDate) {
     const epoch = Math.floor(new Date(lookBackDate).getTime() / 1000);
-    const query = labelId
-      ? `after:${epoch} label:${labelId}`
-      : `after:${epoch}`;
+    const query = labelId ? `after:${epoch} label:${labelId}` : `after:${epoch}`;
 
-    const listResult = await listAllMessages(
-      client,
-      { userId, q: query },
-      true,
-      getMessageDetails,
-    );
+    const listResult = await listAllMessages(client, { userId, q: query }, true, getMessageDetails);
 
     const messages = listResult.messages ?? [];
 
@@ -57,10 +36,7 @@ export const pollChangesTriggerPerform = async (
 
     if (messages.length === 0) {
       return {
-        payload: {
-          ...payload,
-          body: { data: { history: [], historyId: currentHistoryId } },
-        },
+        payload: { ...payload, body: { data: { history: [], historyId: currentHistoryId } } },
         polledNoChanges: true,
       };
     }
@@ -73,9 +49,7 @@ export const pollChangesTriggerPerform = async (
     return {
       payload: {
         ...payload,
-        body: {
-          data: { history: syntheticHistory, historyId: currentHistoryId },
-        },
+        body: { data: { history: syntheticHistory, historyId: currentHistoryId } },
       },
       polledNoChanges: false,
     };
@@ -114,9 +88,7 @@ export const pollChangesTriggerPerform = async (
     if (error.code === 404) {
       if (debug.enabled) {
         logger.error(error.message);
-        logger.warn(
-          "Start history ID is no longer valid, retrieving new start history ID",
-        );
+        logger.warn("Start history ID is no longer valid, retrieving new start history ID");
       }
       reSyncRequired = true;
       startHistoryId = await getStartHistoryId(client, userId);
@@ -177,9 +149,7 @@ export const pollChangesTriggerPerform = async (
   if (!lastPolledAt || reSyncRequired) {
     lastPolledAt = newLastPolledAt;
   }
-  logger.debug(
-    `Polling for changes from ${lastPolledAt} to ${newLastPolledAt}`,
-  );
+  logger.debug(`Polling for changes from ${lastPolledAt} to ${newLastPolledAt}`);
 
   polling.setState({
     historyId: data.historyId,

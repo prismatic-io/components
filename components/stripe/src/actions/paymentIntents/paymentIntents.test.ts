@@ -55,10 +55,7 @@ describe("createPaymentIntent", () => {
     nock(BASE)
       .post("/v1/payment_intents")
       .reply(400, {
-        error: {
-          type: "invalid_request_error",
-          message: "Invalid currency: xyz",
-        },
+        error: { type: "invalid_request_error", message: "Invalid currency: xyz" },
       });
 
     await expect(
@@ -95,18 +92,10 @@ describe("getPaymentIntent", () => {
   it("surfaces a Stripe error response", async () => {
     nock(BASE)
       .get("/v1/payment_intents/pi_missing")
-      .reply(404, {
-        error: {
-          type: "invalid_request_error",
-          message: "No such payment_intent",
-        },
-      });
+      .reply(404, { error: { type: "invalid_request_error", message: "No such payment_intent" } });
 
     await expect(
-      invoke(
-        getPaymentIntent,
-        params({ paymentIntent: "pi_missing", stripeConnection: conn }),
-      ),
+      invoke(getPaymentIntent, params({ paymentIntent: "pi_missing", stripeConnection: conn })),
     ).rejects.toThrow("No such payment_intent");
   });
 });
@@ -131,18 +120,12 @@ describe("listPaymentIntents", () => {
     nock(BASE)
       .get("/v1/payment_intents")
       .query(true)
-      .reply(400, {
-        error: { type: "invalid_request_error", message: "No such customer" },
-      });
+      .reply(400, { error: { type: "invalid_request_error", message: "No such customer" } });
 
     await expect(
       invoke(
         listPaymentIntents,
-        params({
-          customerId: "cus_missing",
-          pagination: {},
-          stripeConnection: conn,
-        }),
+        params({ customerId: "cus_missing", pagination: {}, stripeConnection: conn }),
       ),
     ).rejects.toThrow("No such customer");
   });
@@ -157,11 +140,7 @@ describe("searchPaymentIntent", () => {
 
     const { result } = await invoke(
       searchPaymentIntent,
-      params({
-        query: "status:'succeeded'",
-        pagination: { limit: 10 },
-        stripeConnection: conn,
-      }),
+      params({ query: "status:'succeeded'", pagination: { limit: 10 }, stripeConnection: conn }),
     );
 
     expect(result.data).toEqual(searchPaymentIntentsExamplePayload.data);
@@ -173,10 +152,7 @@ describe("searchPaymentIntent", () => {
       .get("/v1/payment_intents/search")
       .query(true)
       .reply(400, {
-        error: {
-          type: "invalid_request_error",
-          message: "Invalid search query",
-        },
+        error: { type: "invalid_request_error", message: "Invalid search query" },
       });
 
     await expect(
@@ -214,12 +190,7 @@ describe("updatePaymentIntent", () => {
   it("surfaces a Stripe error response", async () => {
     nock(BASE)
       .post("/v1/payment_intents/pi_missing")
-      .reply(404, {
-        error: {
-          type: "invalid_request_error",
-          message: "No such payment_intent",
-        },
-      });
+      .reply(404, { error: { type: "invalid_request_error", message: "No such payment_intent" } });
 
     await expect(
       invoke(
@@ -303,8 +274,7 @@ describe("capturePaymentIntent", () => {
       .reply(400, {
         error: {
           type: "invalid_request_error",
-          message:
-            "This PaymentIntent could not be captured because it has already been captured.",
+          message: "This PaymentIntent could not be captured because it has already been captured.",
         },
       });
 
@@ -347,8 +317,7 @@ describe("cancelPaymentIntent", () => {
       .reply(400, {
         error: {
           type: "invalid_request_error",
-          message:
-            "You cannot cancel this PaymentIntent because it has a status of succeeded.",
+          message: "You cannot cancel this PaymentIntent because it has a status of succeeded.",
         },
       });
 

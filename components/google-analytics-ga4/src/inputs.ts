@@ -185,8 +185,7 @@ const pollResourceType = input({
   type: "string",
   required: true,
   model: pollResourceModel,
-  comments:
-    "The Google Analytics GA4 resource type to poll for new or updated records.",
+  comments: "The Google Analytics GA4 resource type to poll for new or updated records.",
   clean: util.types.toString,
 });
 
@@ -195,8 +194,7 @@ const showNewRecords = input({
   type: "boolean",
   required: false,
   default: "true",
-  comments:
-    "When true, newly created records are included in the trigger output.",
+  comments: "When true, newly created records are included in the trigger output.",
   clean: util.types.toBool,
 });
 

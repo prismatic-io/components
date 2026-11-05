@@ -21,11 +21,13 @@ export const listFulfillmentsGql = action({
       context.debug.enabled,
       context.logger,
     );
-    const data: { order: { fulfillments: Fulfillment[] } } =
-      await client.request(listFulfillmentsQuery, {
+    const data: { order: { fulfillments: Fulfillment[] } } = await client.request(
+      listFulfillmentsQuery,
+      {
         orderId,
         first: MAX_FULFILLMENTS_PER_ORDER,
-      });
+      },
+    );
 
     return {
       data: {
@@ -36,10 +38,7 @@ export const listFulfillmentsGql = action({
     };
   },
   inputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: listFulfillmentsGqlOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: listFulfillmentsGqlOutputSchema }),
   examplePerform: async () => listFulfillmentsExamplePayload.restMap,
   examplePayload: listFulfillmentsExamplePayload.restMap,
 });

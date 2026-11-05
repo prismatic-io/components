@@ -5,8 +5,7 @@ import type { Etagged } from "../types";
 const statusOf = (error: unknown): number | undefined =>
   (error as { response?: { status?: number } })?.response?.status;
 
-const isConflict = (error: unknown): boolean =>
-  CONFLICT_STATUSES.includes(statusOf(error) ?? 0);
+const isConflict = (error: unknown): boolean => CONFLICT_STATUSES.includes(statusOf(error) ?? 0);
 
 const writeWithEtag = async <T>(
   client: HttpClient,
@@ -64,10 +63,7 @@ export const deleteWithEtag = async (
   });
 };
 
-export const resolveEtag = async (
-  client: HttpClient,
-  path: string,
-): Promise<string> => {
+export const resolveEtag = async (client: HttpClient, path: string): Promise<string> => {
   const { data } = await client.get<Etagged>(path);
   const etag = data["@odata.etag"];
   if (!etag) {

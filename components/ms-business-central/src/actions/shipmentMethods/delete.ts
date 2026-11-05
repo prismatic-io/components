@@ -9,15 +9,10 @@ import type { ShipmentMethod } from "../../interfaces";
 export const deleteShipmentMethod = action({
   display: {
     label: "Delete Shipment Method",
-    description:
-      "Deletes a shipment method object in your Business Central organization.",
+    description: "Deletes a shipment method object in your Business Central organization.",
   },
   perform: async (context, { connection, companyId, shipmentMethodId }) => {
-    const client = getMsBusinessCentralClient(
-      connection,
-      context,
-      context.debug.enabled,
-    );
+    const client = getMsBusinessCentralClient(connection, context, context.debug.enabled);
     await client.delete<ShipmentMethod>(
       `/companies(${companyId})/shipmentMethods(${shipmentMethodId})`,
     );

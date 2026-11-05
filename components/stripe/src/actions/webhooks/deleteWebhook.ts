@@ -21,10 +21,7 @@ export const deleteWebhook = action({
       data,
     };
   },
-  examplePerform: async (
-    _context,
-    { webhookId },
-  ): Promise<{ data: unknown }> => ({
+  examplePerform: async (_context, { webhookId }): Promise<{ data: unknown }> => ({
     data: {
       ...deleteWebhookExamplePayload.data,
       id: webhookId,

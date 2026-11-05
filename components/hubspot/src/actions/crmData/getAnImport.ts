@@ -8,8 +8,7 @@ import { hubspotPaths } from "../../constants";
 export const getAnImport = action({
   display: {
     label: "Get Import",
-    description:
-      "Get a complete summary of an import record, including any updates.",
+    description: "Get a complete summary of an import record, including any updates.",
   },
   performSafety: "safe",
   perform: async (context, { timeout, hubspotConnection, importId }) => {

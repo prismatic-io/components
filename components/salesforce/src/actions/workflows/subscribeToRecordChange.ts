@@ -57,16 +57,12 @@ export const subscribeToRecordChange = action({
 
     const client = await createSalesforceClient(connection, version);
 
-    const integrationUser = await getIntegrationUser(
-      client,
-      integrationUserEmail,
-    );
+    const integrationUser = await getIntegrationUser(client, integrationUserEmail);
 
     const fullName = toFullNameIdentifier(recordType, uniqueName);
 
     const outboundResult = await createWorkflowOutboundMessageFunction(client, {
-      apiVersion:
-        util.types.toNumber(version) || util.types.toNumber(client.version),
+      apiVersion: util.types.toNumber(version) || util.types.toNumber(client.version),
       fullName,
       name,
       description,
@@ -92,8 +88,7 @@ export const subscribeToRecordChange = action({
       },
     };
   },
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    subscribeRecordChangeExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => subscribeRecordChangeExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: subscribeToRecordChangeOutputSchema,

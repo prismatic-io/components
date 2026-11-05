@@ -6,9 +6,7 @@ import { pollChangesTrigger } from "./pollChangesTrigger";
 const mockGet = vi.fn();
 
 vi.mock("../client", () => ({
-  createProjectsClient: vi
-    .fn()
-    .mockReturnValue({ get: (...args: unknown[]) => mockGet(...args) }),
+  createProjectsClient: vi.fn().mockReturnValue({ get: (...args: unknown[]) => mockGet(...args) }),
 }));
 
 vi.mock("../helper", async (importOriginal) => {
@@ -25,9 +23,7 @@ interface PollingStore {
   context: Partial<ActionContext>;
 }
 
-const createPollingStore = (
-  seedState: Record<string, unknown> = {},
-): PollingStore => {
+const createPollingStore = (seedState: Record<string, unknown> = {}): PollingStore => {
   let state: Record<string, unknown> = seedState;
   const writes: Record<string, unknown>[] = [];
   return {
@@ -76,26 +72,17 @@ const poll = async (
     lookBackDate: string;
   }> = {},
 ): Promise<PollResult> => {
-  const { result } = await invokeTrigger(
-    triggerUnderTest,
-    store.context,
-    undefined,
-    {
-      connection: {},
-      showNewRecords: true,
-      showUpdatedRecords: true,
-      lookBackDate: undefined,
-      ...overrides,
-    } as Record<string, unknown>,
-  );
+  const { result } = await invokeTrigger(triggerUnderTest, store.context, undefined, {
+    connection: {},
+    showNewRecords: true,
+    showUpdatedRecords: true,
+    lookBackDate: undefined,
+    ...overrides,
+  } as Record<string, unknown>);
   return result as unknown as PollResult;
 };
 
-const makeProject = (
-  id: string,
-  createdDate: string,
-  lastPublishedDate: string,
-): MsProjectRecord =>
+const makeProject = (id: string, createdDate: string, lastPublishedDate: string): MsProjectRecord =>
   ({
     ProjectId: id,
     CreatedDate: createdDate,
@@ -139,14 +126,10 @@ describe("pollChangesTrigger", () => {
     const result = await poll(store);
 
     expect(
-      result.payload.body.data.created.map(
-        (p) => (p as Record<string, unknown>).ProjectId,
-      ),
+      result.payload.body.data.created.map((p) => (p as Record<string, unknown>).ProjectId),
     ).toEqual(["p1"]);
     expect(
-      result.payload.body.data.updated.map(
-        (p) => (p as Record<string, unknown>).ProjectId,
-      ),
+      result.payload.body.data.updated.map((p) => (p as Record<string, unknown>).ProjectId),
     ).toEqual(["p2"]);
     expect(result.polledNoChanges).toBe(false);
     expect(store.currentState()).toEqual({ lastPolledAt: POLL_ONE_AT });
@@ -156,10 +139,7 @@ describe("pollChangesTrigger", () => {
     const store = createPollingStore({ lastPolledAt: SEEDED_CURSOR });
     freezeClockAt(POLL_ONE_AT);
 
-    const result = await poll(store, {
-      showNewRecords: false,
-      showUpdatedRecords: false,
-    });
+    const result = await poll(store, { showNewRecords: false, showUpdatedRecords: false });
 
     expect(result.polledNoChanges).toBe(true);
     expect(mockGet).not.toHaveBeenCalled();
@@ -188,14 +168,10 @@ describe("pollChangesTrigger", () => {
 
     expect(mockGet).toHaveBeenCalled();
     expect(
-      result.payload.body.data.created.map(
-        (p) => (p as Record<string, unknown>).ProjectId,
-      ),
+      result.payload.body.data.created.map((p) => (p as Record<string, unknown>).ProjectId),
     ).toEqual(["p1"]);
     expect(
-      result.payload.body.data.updated.map(
-        (p) => (p as Record<string, unknown>).ProjectId,
-      ),
+      result.payload.body.data.updated.map((p) => (p as Record<string, unknown>).ProjectId),
     ).toEqual(["p2"]);
     expect(result.polledNoChanges).toBe(false);
   });
@@ -204,10 +180,7 @@ describe("pollChangesTrigger", () => {
     const store = createPollingStore({ lastPolledAt: SEEDED_CURSOR });
     freezeClockAt(POLL_ONE_AT);
 
-    const result = await poll(store, {
-      showNewRecords: false,
-      showUpdatedRecords: false,
-    });
+    const result = await poll(store, { showNewRecords: false, showUpdatedRecords: false });
 
     expect(mockGet).not.toHaveBeenCalled();
     expect(result.polledNoChanges).toBe(true);

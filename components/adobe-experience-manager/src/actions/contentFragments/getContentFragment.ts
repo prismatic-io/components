@@ -12,10 +12,7 @@ export const getContentFragment = action({
     description: "Retrieve a content fragment by ID.",
   },
   performSafety: "safe",
-  perform: async (
-    context,
-    { connection, fragmentId, includeMetadata, references },
-  ) => {
+  perform: async (context, { connection, fragmentId, includeMetadata, references }) => {
     const client = createAemClient(connection, context.debug.enabled);
     const { data } = await client.get<ContentFragment>(
       `${SITES_API_PATH}/cf/fragments/${encodeURIComponent(fragmentId)}`,
@@ -24,9 +21,6 @@ export const getContentFragment = action({
     return { data };
   },
   inputs: getContentFragmentInputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getContentFragmentOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getContentFragmentOutputSchema }),
   examplePayload: getContentFragmentExamplePayload,
 });

@@ -13,7 +13,7 @@ export const updateMessage = action({
   performSafety: "notAllowed",
   perform: async (
     { debug: { enabled: debug } },
-    { connection, message, channelId, messageId },
+    { connection, message, channelId, messageId }
   ) => {
     debugLogger({ message, channelId, messageId, debug });
     const client = await createOauthClient({
@@ -29,7 +29,7 @@ export const updateMessage = action({
   },
   examplePerform: async (
     _context,
-    { channelId, messageId, message },
+    { channelId, messageId, message }
   ): Promise<{ data: unknown }> => ({
     data: {
       ...updateMessageExamplePayload,

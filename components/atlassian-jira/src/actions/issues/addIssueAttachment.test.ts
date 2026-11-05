@@ -37,8 +37,6 @@ describe("addIssueAttachment", () => {
       .post("/rest/api/3/issue/PROJ-123/attachments")
       .reply(413, { errorMessages: ["too big"] });
 
-    await expect(upload("report.txt")).rejects.toMatchObject({
-      response: { status: 413 },
-    });
+    await expect(upload("report.txt")).rejects.toMatchObject({ response: { status: 413 } });
   });
 });

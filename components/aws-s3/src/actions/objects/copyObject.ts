@@ -1,7 +1,4 @@
-import {
-  CopyObjectCommand,
-  type CopyObjectCommandInput,
-} from "@aws-sdk/client-s3";
+import { CopyObjectCommand, type CopyObjectCommandInput } from "@aws-sdk/client-s3";
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { createS3Client } from "../../client";
 import { copyObjectExamplePayload } from "../../examplePayloads";

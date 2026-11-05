@@ -12,12 +12,9 @@ export const getPipelineConversionStatistics = action({
   performSafety: "safe",
   perform: async (context, { connection, id, startDate, endDate, userId }) => {
     const client = createClient(connection, context.debug.enabled);
-    const { data } = await client.get(
-      `/pipelines/${id}/conversion_statistics`,
-      {
-        params: { start_date: startDate, end_date: endDate, user_id: userId },
-      },
-    );
+    const { data } = await client.get(`/pipelines/${id}/conversion_statistics`, {
+      params: { start_date: startDate, end_date: endDate, user_id: userId },
+    });
     return { data };
   },
   inputs: getPipelineConversionStatisticsInputs,

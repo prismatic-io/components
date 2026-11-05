@@ -70,8 +70,7 @@ const nextStep = input({
   type: "string",
   required: false,
   placeholder: "Enter next step",
-  comments:
-    "A description of the next action or milestone for the opportunity.",
+  comments: "A description of the next action or milestone for the opportunity.",
   example: "Follow up with the client",
   clean: cleanStringInput,
 });

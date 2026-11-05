@@ -24,10 +24,7 @@ export const listProductImages = action({
     return { data };
   },
   inputs: listProductImagesInputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: listProductImagesOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: listProductImagesOutputSchema }),
   examplePerform: async () => listProductImagesExamplePayload.restMap,
   examplePayload: listProductImagesExamplePayload.restMap,
 });

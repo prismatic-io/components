@@ -35,30 +35,19 @@ export const createUser = action({
         department: additionalFields.department,
         employeeNumber: additionalFields.employeeNumber,
         locale: additionalFields.locale,
-        ...(additionalFields.profileExtraInputs
-          ? additionalFields.profileExtraInputs
-          : {}),
+        ...(additionalFields.profileExtraInputs ? additionalFields.profileExtraInputs : {}),
       },
       credentials: {
         password: additionalFields.password
-          ? {
-              value: additionalFields.password,
-              hash: additionalFields.hashPassword,
-            }
+          ? { value: additionalFields.password, hash: additionalFields.hashPassword }
           : undefined,
         recovery_question:
           additionalFields.question && additionalFields.answer
-            ? {
-                question: additionalFields.question,
-                answer: additionalFields.answer,
-              }
+            ? { question: additionalFields.question, answer: additionalFields.answer }
             : undefined,
         provider:
           additionalFields.providerName && additionalFields.providerType
-            ? {
-                name: additionalFields.providerName,
-                type: additionalFields.providerType,
-              }
+            ? { name: additionalFields.providerName, type: additionalFields.providerType }
             : undefined,
       },
       realmId,

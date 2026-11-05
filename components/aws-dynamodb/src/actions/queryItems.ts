@@ -60,10 +60,7 @@ export const queryItems = action({
       KeyConditionExpression: keyConditionExpression,
       ExpressionAttributeValues:
         expressionAttributeValues && expressionAttributeValueTypes
-          ? convertDataType(
-              expressionAttributeValues,
-              expressionAttributeValueTypes,
-            )
+          ? convertDataType(expressionAttributeValues, expressionAttributeValueTypes)
           : undefined,
       FilterExpression: filterExpression,
       ...queryParameters,

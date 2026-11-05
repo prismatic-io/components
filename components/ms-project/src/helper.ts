@@ -7,10 +7,7 @@ import type {
   MsProjectRecordChange,
 } from "./types";
 
-export const getQueryString = ({
-  queryString,
-  url,
-}: GetQueryString): string => {
+export const getQueryString = ({ queryString, url }: GetQueryString): string => {
   if (!queryString) {
     return url;
   }

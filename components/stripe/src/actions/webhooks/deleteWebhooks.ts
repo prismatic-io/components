@@ -8,8 +8,7 @@ import { deleteWebhooksExamplePayload } from "../../examplePayloads/webhooks";
 export const deleteWebhooks = action({
   display: {
     label: "Delete All Instance Webhooks",
-    description:
-      "Delete all webhook endpoints associated with each flow of the current instance.",
+    description: "Delete all webhook endpoints associated with each flow of the current instance.",
   },
   performSafety: "notAllowed",
   perform: async (context, { stripeConnection, timeout }) => {
@@ -17,11 +16,7 @@ export const deleteWebhooks = action({
       stripeConnection,
       timeout,
     });
-    const webhooks = await listWebhookEventsFn(
-      client.webhookEndpoints,
-      true,
-      {},
-    );
+    const webhooks = await listWebhookEventsFn(client.webhookEndpoints, true, {});
     const instanceWebhookUrls = Object.values(context.webhookUrls);
     const webhookToDelete = webhooks.data
       .filter(({ url }) => instanceWebhookUrls.includes(url))

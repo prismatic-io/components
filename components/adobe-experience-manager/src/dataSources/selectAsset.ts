@@ -1,17 +1,9 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
 import { createAemClient } from "../client";
-import {
-  ASSETS_API_PATH,
-  MAX_DATA_SOURCE_ITEMS,
-  MAX_PAGE_LIMIT,
-} from "../constants";
+import { ASSETS_API_PATH, MAX_DATA_SOURCE_ITEMS, MAX_PAGE_LIMIT } from "../constants";
 import { selectAssetExamplePayload } from "../examplePayloads";
 import { selectAssetInputs } from "../inputs";
-import type {
-  AssetSearchClause,
-  AssetSearchHit,
-  AssetSearchResponse,
-} from "../types";
+import type { AssetSearchClause, AssetSearchHit, AssetSearchResponse } from "../types";
 import { compareElementLabels } from "../utils";
 
 export const selectAsset = dataSource({
@@ -27,14 +19,11 @@ export const selectAsset = dataSource({
     const hits: AssetSearchHit[] = [];
     let cursor: string | undefined;
     do {
-      const { data } = await client.post<AssetSearchResponse>(
-        `${ASSETS_API_PATH}/search`,
-        {
-          query,
-          limit: MAX_PAGE_LIMIT,
-          cursor,
-        },
-      );
+      const { data } = await client.post<AssetSearchResponse>(`${ASSETS_API_PATH}/search`, {
+        query,
+        limit: MAX_PAGE_LIMIT,
+        cursor,
+      });
       hits.push(...(data.hits?.results ?? []));
       cursor = data.cursor;
     } while (cursor && hits.length < MAX_DATA_SOURCE_ITEMS);

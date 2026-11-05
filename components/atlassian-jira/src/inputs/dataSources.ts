@@ -1,13 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { projectIdsClean } from "../util";
-import {
-  boardId,
-  connectionInput,
-  filter,
-  maxResults,
-  projectId,
-  startAt,
-} from "./common";
+import { boardId, connectionInput, filter, maxResults, projectId, startAt } from "./common";
 
 const projectIds = input({
   label: "Project ID(s)",
@@ -37,8 +30,7 @@ const onlyCustomFields = input({
   type: "boolean",
   required: false,
   default: "false",
-  comments:
-    "When true, returns only custom fields; when false, returns all issue fields.",
+  comments: "When true, returns only custom fields; when false, returns all issue fields.",
   clean: util.types.toBool,
 });
 

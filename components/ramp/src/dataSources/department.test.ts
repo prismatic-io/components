@@ -18,18 +18,13 @@ describe("selectDepartment", () => {
   afterEach(resetNock);
 
   test("maps the department list into dropdown elements", async () => {
-    rampNock()
-      .get(PATH)
-      .query(true)
-      .reply(200, terminatePaging(listDepartmentsResponse));
+    rampNock().get(PATH).query(true).reply(200, terminatePaging(listDepartmentsResponse));
 
     const { result } = await invokeDataSource(selectDepartment, {
       connection: testConnection,
     });
 
-    expect(result).toEqual([
-      { key: "c16b6ee1-2f5d-45e9-9fb4-c1c541a9ea70", label: "Bookkeeping" },
-    ]);
+    expect(result).toEqual([{ key: "c16b6ee1-2f5d-45e9-9fb4-c1c541a9ea70", label: "Bookkeeping" }]);
   });
 
   test("sorts by id ascending regardless of reply order", async () => {

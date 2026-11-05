@@ -26,11 +26,7 @@ export const getDeals = action({
       fetchAll,
     },
   ) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      WebhookVersion.V2,
-    );
+    const client = createClient(connection, context.debug.enabled, WebhookVersion.V2);
 
     const data = await paginateRecordsWithCursor<Deal>(
       client,
@@ -50,8 +46,5 @@ export const getDeals = action({
   },
   inputs: getDealsInputs,
   examplePayload: getDealsExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getDealsOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getDealsOutputSchema }),
 });

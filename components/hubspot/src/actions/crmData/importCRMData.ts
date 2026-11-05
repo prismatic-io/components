@@ -15,15 +15,7 @@ export const importCRMData = action({
   performSafety: "notAllowed",
   perform: async (
     context,
-    {
-      hubspotConnection,
-      timeout,
-      name,
-      dateFormat,
-      importOptions,
-      files,
-      dataFiles,
-    },
+    { hubspotConnection, timeout, name, dateFormat, importOptions, files, dataFiles },
   ) => {
     const debugRequest = context.debug.enabled;
     const client = getHubspotClient({

@@ -8,10 +8,7 @@ import type { Etagged } from "../../types";
 import { getTaskInputs } from "../../inputs";
 
 export const getTask = action({
-  display: {
-    label: "Get Task",
-    description: "Retrieve a single task by its ID.",
-  },
+  display: { label: "Get Task", description: "Retrieve a single task by its ID." },
   inputs: getTaskInputs,
   outputSchema: outputSchema({
     type: "actionOutput",
@@ -20,9 +17,7 @@ export const getTask = action({
   performSafety: "safe",
   perform: async (context, { connection, taskId }) => {
     const client = createClient(connection, context.debug.enabled);
-    const { data } = await client.get<PlannerTask & Etagged>(
-      PLANNER_ENDPOINTS.TASK(taskId),
-    );
+    const { data } = await client.get<PlannerTask & Etagged>(PLANNER_ENDPOINTS.TASK(taskId));
     return { data };
   },
   examplePayload: getTaskExamplePayload,

@@ -9,8 +9,7 @@ export const headBucketExamplePayload: { data: HeadBucketCommandOutput } = {
     $metadata: {
       httpStatusCode: 200,
       requestId: "A6R8PTRGRVGVB123",
-      extendedRequestId:
-        "O1lqC0pMNa1+juScFrJbqgtJDQgkqvkcWDvLPfmcZBQNbxe+Bl4JE0WeIuswg/123456==",
+      extendedRequestId: "O1lqC0pMNa1+juScFrJbqgtJDQgkqvkcWDvLPfmcZBQNbxe+Bl4JE0WeIuswg/123456==",
       cfId: null,
       attempts: 1,
       totalRetryDelay: 0,
@@ -23,8 +22,7 @@ export const deleteBucketExamplePayload: { data: DeleteBucketCommandOutput } = {
     $metadata: {
       httpStatusCode: 204,
       requestId: "CBD415E7",
-      extendedRequestId:
-        "WXvHrStedS7jFJZVw0Pt1LH3K3Nn99XFGuyELkK7UQANs3IOHs9GsR=",
+      extendedRequestId: "WXvHrStedS7jFJZVw0Pt1LH3K3Nn99XFGuyELkK7UQANs3IOHs9GsR=",
       cfId: null,
       attempts: 1,
       totalRetryDelay: 0,
@@ -41,6 +39,4 @@ export const listBucketsExamplePayload: { data: Bucket[] } = {
   ],
 };
 
-export const getBucketLocationExamplePayload: { data: string } = {
-  data: "us-east-1",
-};
+export const getBucketLocationExamplePayload: { data: string } = { data: "us-east-1" };

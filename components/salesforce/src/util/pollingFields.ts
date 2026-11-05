@@ -26,8 +26,7 @@ export const resolvePollingFields = async (
 
   const longTextCount = described.fields.filter(
     (field) =>
-      (field.type === "textarea" &&
-        (field.length ?? 0) > SHORT_TEXT_AREA_MAX_LENGTH) ||
+      (field.type === "textarea" && (field.length ?? 0) > SHORT_TEXT_AREA_MAX_LENGTH) ||
       field.type === "base64",
   ).length;
   if (longTextCount >= LONG_TEXT_CLAMP_THRESHOLD) {

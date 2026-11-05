@@ -10,10 +10,7 @@ export const updateCheckoutSession = action({
     description: "Update an existing Stripe Checkout session.",
   },
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { sessionId, metadata, timeout, stripeConnection },
-  ) => {
+  perform: async (context, { sessionId, metadata, timeout, stripeConnection }) => {
     const client = createStripeClient({
       stripeConnection,
       timeout,
@@ -27,10 +24,7 @@ export const updateCheckoutSession = action({
       data: session,
     };
   },
-  examplePerform: async (
-    _context,
-    { sessionId, metadata },
-  ): Promise<{ data: unknown }> => ({
+  examplePerform: async (_context, { sessionId, metadata }): Promise<{ data: unknown }> => ({
     data: {
       ...examplePayload.data,
       id: sessionId,

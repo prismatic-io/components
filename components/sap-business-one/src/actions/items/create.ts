@@ -13,15 +13,8 @@ export const createItem = action({
     ...createItemInputs,
     connection,
   },
-  perform: async (
-    context,
-    { connection, ItemCode, ItemName, ItemType, bodyFields },
-  ) => {
-    const client = await createClient(
-      connection,
-      context,
-      context.debug.enabled,
-    );
+  perform: async (context, { connection, ItemCode, ItemName, ItemType, bodyFields }) => {
+    const client = await createClient(connection, context, context.debug.enabled);
 
     const { data } = await client.post(`/Items`, {
       ItemCode,

@@ -12,15 +12,10 @@ export const selectOrder = dataSource({
   perform: async (_context, { squareConnection }) => {
     const client = await createAuthorizedClient(squareConnection);
 
-    const allOrders = await fetchAllPages(
-      client,
-      "/v2/orders/search",
-      "orders",
-      {
-        method: "POST",
-        additionalParams: { limit: 100 },
-      },
-    );
+    const allOrders = await fetchAllPages(client, "/v2/orders/search", "orders", {
+      method: "POST",
+      additionalParams: { limit: 100 },
+    });
 
     const result = (allOrders.orders as Record<string, unknown>[])
       .map((order: Record<string, unknown>) => ({

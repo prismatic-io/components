@@ -19,12 +19,7 @@ export const selectDataset = dataSource({
     const parameters = {
       $top: 100,
     };
-    const { value: datasets } = await paginateResults<Dataset>(
-      client,
-      "/datasets",
-      true,
-      parameters,
-    );
+    const { value: datasets } = await paginateResults<Dataset>(client, "/datasets", true, parameters);
 
     const result = datasets
       .sort((a, b) => (a.name < b.name ? -1 : 1))
@@ -32,7 +27,7 @@ export const selectDataset = dataSource({
         ({ id: key, name: label }): Element => ({
           key,
           label,
-        }),
+        })
       );
 
     return {

@@ -42,8 +42,7 @@ export const createOnboardingCandidateInfoExamplePayload = {
   },
 };
 
-export const getOnboardingCandidateInfoExamplePayload =
-  createOnboardingCandidateInfoExamplePayload;
+export const getOnboardingCandidateInfoExamplePayload = createOnboardingCandidateInfoExamplePayload;
 
 export const listOnboardingCandidateInfoExamplePayload = {
   data: [onboardingCandidateInfo],

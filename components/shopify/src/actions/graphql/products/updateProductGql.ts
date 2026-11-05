@@ -43,8 +43,9 @@ export const updateProductGql = action({
         ]
       : undefined;
 
-    const data: { productUpdate: Record<string, unknown> } =
-      await client.request(updateProductQuery, {
+    const data: { productUpdate: Record<string, unknown> } = await client.request(
+      updateProductQuery,
+      {
         input: {
           id: productId,
           title,
@@ -56,17 +57,15 @@ export const updateProductGql = action({
           ...additionalFields,
         },
         media,
-      });
+      },
+    );
 
     return {
       data: data.productUpdate,
     };
   },
   inputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: updateProductGqlOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: updateProductGqlOutputSchema }),
   examplePerform: async () => examplePayload,
   examplePayload,
 });

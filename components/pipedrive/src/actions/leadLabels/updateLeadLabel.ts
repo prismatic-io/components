@@ -17,8 +17,5 @@ export const updateLeadLabel = action({
   },
   inputs: updateLeadLabelInputs,
   examplePayload: updateLeadLabelExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: updateLeadLabelOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: updateLeadLabelOutputSchema }),
 });

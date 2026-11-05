@@ -18,21 +18,15 @@ export const closeOrderGql = action({
       context.debug.enabled,
       context.logger,
     );
-    const data: { orderClose: Record<string, unknown> } = await client.request(
-      closeOrderQuery,
-      {
-        input: {
-          id: orderId,
-        },
+    const data: { orderClose: Record<string, unknown> } = await client.request(closeOrderQuery, {
+      input: {
+        id: orderId,
       },
-    );
+    });
     return { data: data.orderClose };
   },
   inputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: closeOrderGqlOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: closeOrderGqlOutputSchema }),
   examplePerform: async () => examplePayload,
   examplePayload,
 });

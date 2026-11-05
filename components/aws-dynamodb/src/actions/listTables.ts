@@ -1,10 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { awsRegion, connectionInput, fetchAll } from "../inputs";
 import { createDynamoClient } from "../auth";
-import {
-  ListTablesCommand,
-  paginateListTables,
-} from "@aws-sdk/client-dynamodb";
+import { ListTablesCommand, paginateListTables } from "@aws-sdk/client-dynamodb";
 import { listTablesExamplePayload } from "../examplePayloads";
 
 export const listTables = action({

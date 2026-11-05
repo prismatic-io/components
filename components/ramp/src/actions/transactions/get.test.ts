@@ -1,11 +1,6 @@
 import { invoke } from "@prismatic-io/spectral/testing";
 import { getTransactionResponse } from "../../examplePayloads/transactions";
-import {
-  apiPath,
-  rampNock,
-  resetNock,
-  testConnection,
-} from "../../testHarness";
+import { apiPath, rampNock, resetNock, testConnection } from "../../testHarness";
 import { getTransaction } from "./get";
 
 const TRANSACTION_ID = "fd14cd6a-846e-4994-9315-5a59e6bb465f";

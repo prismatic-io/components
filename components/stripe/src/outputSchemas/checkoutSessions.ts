@@ -183,12 +183,7 @@ export const checkoutSessionOutputSchema = {
           type: "string",
         },
       },
-      required: [
-        "amount_subtotal",
-        "amount_total",
-        "fx_rate",
-        "source_currency",
-      ],
+      required: ["amount_subtotal", "amount_total", "fx_rate", "source_currency"],
     },
     custom_fields: {
       type: "array",
@@ -1036,14 +1031,7 @@ export const checkoutSessionOutputSchema = {
                         },
                         jurisdiction_level: {
                           type: ["string", "null"],
-                          enum: [
-                            "city",
-                            "country",
-                            "county",
-                            "district",
-                            "multiple",
-                            "state",
-                          ],
+                          enum: ["city", "country", "county", "district", "multiple", "state"],
                         },
                         livemode: {
                           type: "boolean",
@@ -1443,12 +1431,7 @@ export const checkoutSessionOutputSchema = {
                   type: "array",
                   items: {
                     type: "string",
-                    enum: [
-                      "american_express",
-                      "discover_global_network",
-                      "mastercard",
-                      "visa",
-                    ],
+                    enum: ["american_express", "discover_global_network", "mastercard", "visa"],
                   },
                 },
               },
@@ -1495,15 +1478,7 @@ export const checkoutSessionOutputSchema = {
                   type: "array",
                   items: {
                     type: "string",
-                    enum: [
-                      "aba",
-                      "iban",
-                      "sepa",
-                      "sort_code",
-                      "spei",
-                      "swift",
-                      "zengin",
-                    ],
+                    enum: ["aba", "iban", "sepa", "sort_code", "spei", "swift", "zengin"],
                   },
                 },
                 type: {
@@ -1800,12 +1775,7 @@ export const checkoutSessionOutputSchema = {
                   type: "array",
                   items: {
                     type: "string",
-                    enum: [
-                      "balances",
-                      "ownership",
-                      "payment_method",
-                      "transactions",
-                    ],
+                    enum: ["balances", "ownership", "payment_method", "transactions"],
                   },
                 },
                 prefetch: {
@@ -2228,14 +2198,7 @@ export const checkoutSessionOutputSchema = {
                   },
                   jurisdiction_level: {
                     type: ["string", "null"],
-                    enum: [
-                      "city",
-                      "country",
-                      "county",
-                      "district",
-                      "multiple",
-                      "state",
-                    ],
+                    enum: ["city", "country", "county", "district", "multiple", "state"],
                   },
                   livemode: {
                     type: "boolean",
@@ -2576,14 +2539,7 @@ export const checkoutSessionOutputSchema = {
                       },
                       jurisdiction_level: {
                         type: ["string", "null"],
-                        enum: [
-                          "city",
-                          "country",
-                          "county",
-                          "district",
-                          "multiple",
-                          "state",
-                        ],
+                        enum: ["city", "country", "county", "district", "multiple", "state"],
                       },
                       livemode: {
                         type: "boolean",
@@ -3157,14 +3113,7 @@ export const lineItemOutputSchema = {
               },
               jurisdiction_level: {
                 type: ["string", "null"],
-                enum: [
-                  "city",
-                  "country",
-                  "county",
-                  "district",
-                  "multiple",
-                  "state",
-                ],
+                enum: ["city", "country", "county", "district", "multiple", "state"],
               },
               livemode: {
                 type: "boolean",

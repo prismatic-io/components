@@ -35,9 +35,7 @@ export const searchItems = action({
             return { driveName: drive.name, items: nameMatchedItems };
           }
         } catch (error) {
-          throw new Error(
-            `Search failed for drive "${drive.name}" (id: ${drive.id}): ${error}`,
-          );
+          throw new Error(`Search failed for drive "${drive.name}" (id: ${drive.id}): ${error}`);
         }
       }),
     );

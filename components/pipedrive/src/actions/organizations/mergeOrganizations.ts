@@ -19,8 +19,5 @@ export const mergeOrganizations = action({
   },
   inputs: mergeOrganizationsInputs,
   examplePayload: mergeOrganizationsExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: mergeOrganizationsOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: mergeOrganizationsOutputSchema }),
 });

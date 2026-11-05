@@ -18,8 +18,5 @@ export const getLead = action({
   inputs: getLeadInputs,
   examplePayload: getLeadExamplePayload,
   examplePerform: async () => getLeadExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getLeadOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getLeadOutputSchema }),
 });

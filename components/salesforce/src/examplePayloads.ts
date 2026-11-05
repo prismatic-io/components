@@ -236,8 +236,7 @@ const describeCustomerSObjectData = {
       name: "Master",
       recordTypeId: "012964000000000AAA",
       urls: {
-        layout:
-          "/services/data/v53.0/sobjects/Customer/describe/layouts/012964000000000AAA",
+        layout: "/services/data/v53.0/sobjects/Customer/describe/layouts/012964000000000AAA",
       },
     },
   ],
@@ -251,11 +250,9 @@ const describeCustomerSObjectData = {
   undeletable: true,
   updateable: true,
   urls: {
-    compactLayouts:
-      "/services/data/v53.0/sobjects/Customer/describe/compactLayouts",
+    compactLayouts: "/services/data/v53.0/sobjects/Customer/describe/compactLayouts",
     rowTemplate: "/services/data/v53.0/sobjects/Customer/{ID}",
-    approvalLayouts:
-      "/services/data/v53.0/sobjects/Customer/describe/approvalLayouts",
+    approvalLayouts: "/services/data/v53.0/sobjects/Customer/describe/approvalLayouts",
     uiDetailTemplate: "https://dummy-uri.my.salesforce.com/{ID}",
     uiEditTemplate: "https://dummy-uri.my.salesforce.com/{ID}/e",
     describe: "/services/data/v53.0/sobjects/Customer/describe",
@@ -348,34 +345,21 @@ export const getCurrentUserExamplePayload = {
       body: null,
     },
     urls: {
-      enterprise:
-        "https://dummy-uri.my.salesforce.com/services/Soap/c/{version}/00Z8d000694w9we",
-      metadata:
-        "https://dummy-uri.my.salesforce.com/services/Soap/m/{version}/00Z8d000694w9we",
-      partner:
-        "https://dummy-uri.my.salesforce.com/services/Soap/u/{version}/00Z8d000694w9we",
+      enterprise: "https://dummy-uri.my.salesforce.com/services/Soap/c/{version}/00Z8d000694w9we",
+      metadata: "https://dummy-uri.my.salesforce.com/services/Soap/m/{version}/00Z8d000694w9we",
+      partner: "https://dummy-uri.my.salesforce.com/services/Soap/u/{version}/00Z8d000694w9we",
       rest: "https://dummy-uri.my.salesforce.com/services/data/v{version}/",
-      sobjects:
-        "https://dummy-uri.my.salesforce.com/services/data/v{version}/sobjects/",
-      search:
-        "https://dummy-uri.my.salesforce.com/services/data/v{version}/search/",
-      query:
-        "https://dummy-uri.my.salesforce.com/services/data/v{version}/query/",
-      recent:
-        "https://dummy-uri.my.salesforce.com/services/data/v{version}/recent/",
-      tooling_soap:
-        "https://dummy-uri.my.salesforce.com/services/Soap/T/{version}/00Z8d000694w9we",
-      tooling_rest:
-        "https://dummy-uri.my.salesforce.com/services/data/v{version}/tooling/",
+      sobjects: "https://dummy-uri.my.salesforce.com/services/data/v{version}/sobjects/",
+      search: "https://dummy-uri.my.salesforce.com/services/data/v{version}/search/",
+      query: "https://dummy-uri.my.salesforce.com/services/data/v{version}/query/",
+      recent: "https://dummy-uri.my.salesforce.com/services/data/v{version}/recent/",
+      tooling_soap: "https://dummy-uri.my.salesforce.com/services/Soap/T/{version}/00Z8d000694w9we",
+      tooling_rest: "https://dummy-uri.my.salesforce.com/services/data/v{version}/tooling/",
       profile: "https://dummy-uri.my.salesforce.com/0064c00859AJGN6KPA",
-      feeds:
-        "https://dummy-uri.my.salesforce.com/services/data/v{version}/chatter/feeds",
-      groups:
-        "https://dummy-uri.my.salesforce.com/services/data/v{version}/chatter/groups",
-      users:
-        "https://dummy-uri.my.salesforce.com/services/data/v{version}/chatter/users",
-      feed_items:
-        "https://dummy-uri.my.salesforce.com/services/data/v{version}/chatter/feed-items",
+      feeds: "https://dummy-uri.my.salesforce.com/services/data/v{version}/chatter/feeds",
+      groups: "https://dummy-uri.my.salesforce.com/services/data/v{version}/chatter/groups",
+      users: "https://dummy-uri.my.salesforce.com/services/data/v{version}/chatter/users",
+      feed_items: "https://dummy-uri.my.salesforce.com/services/data/v{version}/chatter/feed-items",
       feed_elements:
         "https://dummy-uri.my.salesforce.com/services/data/v{version}/chatter/feed-elements",
       custom_domain: "https://dummy-uri.my.salesforce.com",
@@ -522,9 +506,7 @@ export const getWorkflowOutboundMessageExamplePayload = {
   data: getWorkflowOutboundMessageData,
 };
 
-export const listWorkflowOutboundMessagesExamplePayload: {
-  data: FileProperties[];
-} = {
+export const listWorkflowOutboundMessagesExamplePayload: { data: FileProperties[] } = {
   data: [
     getWorkflowOutboundMessageData,
     {
@@ -632,8 +614,7 @@ export const getAllQueryJobInformationExamplePayload = {
         columnDelimiter: "COMMA",
       },
     ],
-    nextRecordsUrl:
-      "/services/data/v60.0/jobs/query?queryLocator=01gR0000000opRTIAY-2000",
+    nextRecordsUrl: "/services/data/v60.0/jobs/query?queryLocator=01gR0000000opRTIAY-2000",
   },
 };
 
@@ -865,14 +846,11 @@ export const listUsersExamplePayload = {
       LastModifiedDate: "2023-06-28T14:36:13.000+0000",
       LastModifiedById: "0054c00000MnPqRSAZ",
       SystemModstamp: "2024-08-14T06:00:01.000+0000",
-      FullPhotoUrl:
-        "https://example-dev-ed.my.salesforce.com/profilephoto/005/F",
-      SmallPhotoUrl:
-        "https://example-dev-ed.my.salesforce.com/profilephoto/005/T",
+      FullPhotoUrl: "https://example-dev-ed.my.salesforce.com/profilephoto/005/F",
+      SmallPhotoUrl: "https://example-dev-ed.my.salesforce.com/profilephoto/005/T",
       IsExtIndicatorVisible: false,
       OutOfOfficeMessage: "",
-      MediumPhotoUrl:
-        "https://example-dev-ed.my.salesforce.com/profilephoto/005/M",
+      MediumPhotoUrl: "https://example-dev-ed.my.salesforce.com/profilephoto/005/M",
       DigestFrequency: "D",
       DefaultGroupNotificationFrequency: "N",
       JigsawImportLimitOverride: 300,
@@ -1033,10 +1011,7 @@ export const listFlowsExamplePayload: { data: FileProperties[] } = {
 };
 
 export const deleteInstancedFlowsAndOutboundMessagesExamplePayload = {
-  data: {
-    deletedFlows: ["My_Flow"],
-    deletedOutboundMessages: ["My_Outbound_Message"],
-  },
+  data: { deletedFlows: ["My_Flow"], deletedOutboundMessages: ["My_Outbound_Message"] },
 };
 
 export const getRecordExamplePayload = {
@@ -1311,10 +1286,7 @@ const outboundMessageExampleData = {
   },
 };
 
-export const webhookExamplePayload: {
-  payload: TriggerPayload;
-  response?: HttpResponse;
-} = {
+export const webhookExamplePayload: { payload: TriggerPayload; response?: HttpResponse } = {
   payload: {
     headers: { "Content-Type": "text/xml; charset=utf-8" },
     queryParameters: {},
@@ -1328,11 +1300,7 @@ export const webhookExamplePayload: {
     webhookApiKeys: {},
     invokeUrl: "",
     executionId: "RXhhbXBsZUV4ZWN1dGlvblJlc3VsdElk",
-    customer: {
-      id: "testCustomerId",
-      name: "Test Customer",
-      externalId: "testExternalId",
-    },
+    customer: { id: "testCustomerId", name: "Test Customer", externalId: "testExternalId" },
     instance: { id: "testInstanceId", name: "Test Instance" },
     user: {
       id: "testUserId",
@@ -1353,10 +1321,7 @@ export const webhookExamplePayload: {
   response: WEBHOOK_SFDC_RESPONSE,
 };
 
-export const workflowTriggerExamplePayload: {
-  payload: TriggerPayload;
-  response?: HttpResponse;
-} = {
+export const workflowTriggerExamplePayload: { payload: TriggerPayload; response?: HttpResponse } = {
   payload: {
     headers: { "Content-Type": "text/xml; charset=utf-8" },
     queryParameters: {},
@@ -1370,11 +1335,7 @@ export const workflowTriggerExamplePayload: {
     webhookApiKeys: {},
     invokeUrl: "",
     executionId: "RXhhbXBsZUV4ZWN1dGlvblJlc3VsdElk",
-    customer: {
-      id: "testCustomerId",
-      name: "Test Customer",
-      externalId: "testExternalId",
-    },
+    customer: { id: "testCustomerId", name: "Test Customer", externalId: "testExternalId" },
     instance: { id: "testInstanceId", name: "Test Instance" },
     user: {
       id: "testUserId",
@@ -1420,11 +1381,7 @@ export const flowOutboundMessageTriggerExamplePayload: {
     webhookApiKeys: {},
     invokeUrl: "",
     executionId: "RXhhbXBsZUV4ZWN1dGlvblJlc3VsdElk",
-    customer: {
-      id: "testCustomerId",
-      name: "Test Customer",
-      externalId: "testExternalId",
-    },
+    customer: { id: "testCustomerId", name: "Test Customer", externalId: "testExternalId" },
     instance: { id: "testInstanceId", name: "Test Instance" },
     user: {
       id: "testUserId",
@@ -1485,11 +1442,7 @@ export const pollChangesTriggerExamplePayload: {
     webhookApiKeys: {},
     invokeUrl: "",
     executionId: "RXhhbXBsZUV4ZWN1dGlvblJlc3VsdElk",
-    customer: {
-      id: "testCustomerId",
-      name: "Test Customer",
-      externalId: "testExternalId",
-    },
+    customer: { id: "testCustomerId", name: "Test Customer", externalId: "testExternalId" },
     instance: { id: "testInstanceId", name: "Test Instance" },
     user: {
       id: "testUserId",

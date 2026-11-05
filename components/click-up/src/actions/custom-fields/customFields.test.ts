@@ -1,17 +1,12 @@
 import { createConnection, invoke } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { clickUpApiKeyConnection } from "../../connections/clickUpApiKeyConnection";
-import {
-  removeCustomFieldValueExamplePayload,
-  setCustomFieldValueExamplePayload,
-} from "../../examplePayloads";
+import { removeCustomFieldValueExamplePayload, setCustomFieldValueExamplePayload } from "../../examplePayloads";
 import { removeCustomFieldValue } from "./removeCustomFieldValue";
 import { setCustomFieldValue } from "./setCustomFieldValue";
 
 const API = "https://api.clickup.com";
-const connection = createConnection(clickUpApiKeyConnection, {
-  apiKey: "test-key",
-});
+const connection = createConnection(clickUpApiKeyConnection, { apiKey: "test-key" });
 
 interface Captured {
   body?: unknown;
@@ -19,12 +14,7 @@ interface Captured {
   headers?: Record<string, unknown>;
 }
 
-const mockClickUp = (
-  method: string,
-  path: string,
-  status: number,
-  reply: unknown,
-): Captured => {
+const mockClickUp = (method: string, path: string, status: number, reply: unknown): Captured => {
   const captured: Captured = {};
   nock(API)
     .intercept(`/api/v2${path}`, method, (body) => {
@@ -42,19 +32,11 @@ const mockClickUp = (
   return captured;
 };
 
-type ActionUnderTest = {
-  inputs: Record<string, { type?: string }>;
-  perform: unknown;
-};
+type ActionUnderTest = { inputs: Record<string, { type?: string }>; perform: unknown };
 
 const run = (action: ActionUnderTest, params: Record<string, unknown>) => {
-  const connectionKey = Object.keys(action.inputs).find(
-    (key) => action.inputs[key].type === "connection",
-  ) as string;
-  return invoke(
-    action as any,
-    { [connectionKey]: connection, ...params } as any,
-  );
+  const connectionKey = Object.keys(action.inputs).find((key) => action.inputs[key].type === "connection") as string;
+  return invoke(action as any, { [connectionKey]: connection, ...params } as any);
 };
 
 beforeAll(() => nock.disableNetConnect());
@@ -66,20 +48,10 @@ afterEach(() => {
 });
 
 describe("removeCustomFieldValue", () => {
-  const params = {
-    taskId: "9hx",
-    fieldId: "f-1",
-    customTaskIds: false,
-    teamId: "",
-  };
+  const params = { taskId: "9hx", fieldId: "f-1", customTaskIds: false, teamId: "" };
 
   test("happy path deletes the value and omits an empty team_id", async () => {
-    const req = mockClickUp(
-      "DELETE",
-      "/task/9hx/field/f-1",
-      200,
-      removeCustomFieldValueExamplePayload.data,
-    );
+    const req = mockClickUp("DELETE", "/task/9hx/field/f-1", 200, removeCustomFieldValueExamplePayload.data);
     const { result } = await run(removeCustomFieldValue, params);
     expect(result).toEqual(removeCustomFieldValueExamplePayload);
     expect(req.query).toEqual({ custom_task_ids: "false" });
@@ -87,20 +59,10 @@ describe("removeCustomFieldValue", () => {
 });
 
 describe("setCustomFieldValue", () => {
-  const params = {
-    taskId: "9hx",
-    fieldId: "f-1",
-    fieldValue: "2026-01-01T00:00:00.000Z",
-    valueType: "date",
-  };
+  const params = { taskId: "9hx", fieldId: "f-1", fieldValue: "2026-01-01T00:00:00.000Z", valueType: "date" };
 
   test("happy path converts a date value to Unix milliseconds and returns the response", async () => {
-    const req = mockClickUp(
-      "POST",
-      "/task/9hx/field/f-1",
-      200,
-      setCustomFieldValueExamplePayload.data,
-    );
+    const req = mockClickUp("POST", "/task/9hx/field/f-1", 200, setCustomFieldValueExamplePayload.data);
     const { result } = await run(setCustomFieldValue, params);
     expect(result).toEqual(setCustomFieldValueExamplePayload);
     expect(req.body).toEqual({ value: 1767225600000 });

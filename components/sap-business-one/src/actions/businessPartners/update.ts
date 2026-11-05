@@ -13,15 +13,8 @@ export const updateBusinessPartner = action({
     ...updateBusinessPartnersInputs,
     connection,
   },
-  perform: async (
-    context,
-    { connection, bodyFields, CardCode, CardName, CardType },
-  ) => {
-    const client = await createClient(
-      connection,
-      context,
-      context.debug.enabled,
-    );
+  perform: async (context, { connection, bodyFields, CardCode, CardName, CardType }) => {
+    const client = await createClient(connection, context, context.debug.enabled);
 
     await client.patch(`/BusinessPartners('${CardCode}')`, {
       CardName,

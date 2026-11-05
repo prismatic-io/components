@@ -6,23 +6,17 @@ import { updateOrderInputs } from "../../inputs";
 export const updateOrder = action({
   display: {
     label: "Update Order",
-    description:
-      "Updates an open order by adding, replacing, or deleting fields.",
+    description: "Updates an open order by adding, replacing, or deleting fields.",
   },
   perform: async (
     context,
     { orderId, orderObject, fieldsToClear, idempotencyKey, squareConnection },
   ) => {
     if (!orderId || !orderObject) {
-      throw new Error(
-        "`order_id` and `orderObject` are required for updating an order.",
-      );
+      throw new Error("`order_id` and `orderObject` are required for updating an order.");
     }
 
-    const client = await createAuthorizedClient(
-      squareConnection,
-      context.debug.enabled,
-    );
+    const client = await createAuthorizedClient(squareConnection, context.debug.enabled);
 
     const requestBody = {
       idempotency_key: idempotencyKey,

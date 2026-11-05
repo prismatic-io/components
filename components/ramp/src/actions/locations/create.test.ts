@@ -1,11 +1,6 @@
 import { invoke } from "@prismatic-io/spectral/testing";
 import { getLocationResponse } from "../../examplePayloads/locations";
-import {
-  apiPath,
-  rampNock,
-  resetNock,
-  testConnection,
-} from "../../testHarness";
+import { apiPath, rampNock, resetNock, testConnection } from "../../testHarness";
 import { createLocation } from "./create";
 
 const PATH = apiPath("/locations");

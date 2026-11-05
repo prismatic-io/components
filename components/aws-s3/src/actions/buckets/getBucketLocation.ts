@@ -13,13 +13,7 @@ export const getBucketLocation = action({
   performSafety: "safe",
   perform: async (
     context,
-    {
-      accessKey,
-      bucket,
-      dynamicAccessKeyId,
-      dynamicSecretAccessKey,
-      dynamicSessionToken,
-    },
+    { accessKey, bucket, dynamicAccessKeyId, dynamicSecretAccessKey, dynamicSessionToken },
   ) => {
     const s3 = await createS3Client({
       awsConnection: accessKey,

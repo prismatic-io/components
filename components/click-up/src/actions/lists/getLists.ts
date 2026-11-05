@@ -16,10 +16,7 @@ export const getLists = action({
   examplePayload: getListsExamplePayload,
   performSafety: "safe",
   perform: async (context, { clickUpConnection, folderId, archived }) => {
-    const client = createClickUpClient(
-      clickUpConnection,
-      context.debug.enabled,
-    );
+    const client = createClickUpClient(clickUpConnection, context.debug.enabled);
     const queryParams = { archived };
 
     const { data } = await client.get(`/folder/${folderId}/list`, {

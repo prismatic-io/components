@@ -11,10 +11,7 @@ export const searchUsers = action({
   },
   performSafety: "notAllowed",
   perform: async (context, params) => {
-    const client = await createV3Client(
-      params.jiraConnection,
-      context.debug.enabled,
-    );
+    const client = await createV3Client(params.jiraConnection, context.debug.enabled);
     const { data } = await client.get("/user/search", {
       params: {
         query: params.searchString,

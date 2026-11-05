@@ -10,11 +10,7 @@ const PLAN_ID = "xqQg5FS2LkCp935s-FIFm2QAFkHM";
 const DETAILS_URL = `/v1.0/planner/plans/${PLAN_ID}/details`;
 const ETAG = 'W/"JzEtUGxhbkRldGFpbHNAQEBAQEBAQEBAQEBAQEBARCc="';
 
-const connection = createConnection(
-  templatedOauth,
-  {},
-  { access_token: "test-token" },
-);
+const connection = createConnection(templatedOauth, {}, { access_token: "test-token" });
 const params = {
   connection,
   groupId: undefined,
@@ -72,16 +68,12 @@ test("sends an empty body when neither category labels nor sharing were supplied
 });
 
 test("surfaces a rejected update", async () => {
-  const etagScope = nock(BASE)
-    .get(DETAILS_URL)
-    .reply(200, { "@odata.etag": ETAG });
+  const etagScope = nock(BASE).get(DETAILS_URL).reply(200, { "@odata.etag": ETAG });
   const errorScope = nock(BASE)
     .patch(DETAILS_URL)
     .reply(400, { error: { code: "invalidRequest" } });
 
-  await expect(invoke(updatePlanDetails, params)).rejects.toThrow(
-    /status code 400/,
-  );
+  await expect(invoke(updatePlanDetails, params)).rejects.toThrow(/status code 400/);
   expect(etagScope.isDone()).toBe(true);
   expect(errorScope.isDone()).toBe(true);
 });

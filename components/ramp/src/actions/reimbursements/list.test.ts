@@ -1,12 +1,6 @@
 import { invoke } from "@prismatic-io/spectral/testing";
 import { listReimbursementsResponse } from "../../examplePayloads/reimbursements";
-import {
-  apiPath,
-  listActionParams,
-  rampNock,
-  resetNock,
-  terminatePaging,
-} from "../../testHarness";
+import { apiPath, listActionParams, rampNock, resetNock, terminatePaging } from "../../testHarness";
 import { listReimbursements } from "./list";
 
 const PATH = apiPath("reimbursements");
@@ -28,15 +22,9 @@ describe("listReimbursements", () => {
       .query({ page_size: "50" })
       .reply(200, terminatePaging(listReimbursementsResponse));
 
-    const { result } = await invoke(
-      listReimbursements,
-      listActionParams({ fetchAll: true }),
-    );
+    const { result } = await invoke(listReimbursements, listActionParams({ fetchAll: true }));
 
-    expect(result.data).toEqual({
-      data: listReimbursementsResponse.data,
-      page: null,
-    });
+    expect(result.data).toEqual({ data: listReimbursementsResponse.data, page: null });
   });
 
   test("surfaces an API failure", async () => {
@@ -45,8 +33,6 @@ describe("listReimbursements", () => {
       .query(true)
       .reply(500, { error: { message: "Internal error" } });
 
-    await expect(
-      invoke(listReimbursements, listActionParams()),
-    ).rejects.toThrow();
+    await expect(invoke(listReimbursements, listActionParams())).rejects.toThrow();
   });
 });

@@ -6,17 +6,10 @@ import { searchInvoicesInputs } from "../../inputs";
 export const searchInvoices = action({
   display: {
     label: "Search Invoices",
-    description:
-      "Searches for invoices from a location specified in the filter.",
+    description: "Searches for invoices from a location specified in the filter.",
   },
-  perform: async (
-    context,
-    { squareConnection, pagination = {}, invoiceQuery },
-  ) => {
-    const client = await createAuthorizedClient(
-      squareConnection,
-      context.debug.enabled,
-    );
+  perform: async (context, { squareConnection, pagination = {}, invoiceQuery }) => {
+    const client = await createAuthorizedClient(squareConnection, context.debug.enabled);
 
     const requestBody = {
       cursor: pagination.cursor,

@@ -9,12 +9,7 @@ afterAll(() => nock.enableNetConnect());
 afterEach(() => nock.cleanAll());
 
 const exampleProject = findProjectExamplePayload.data[0];
-const otherProject = {
-  ...exampleProject,
-  id: "10001",
-  key: "OPS",
-  name: "Operations Example",
-};
+const otherProject = { ...exampleProject, id: "10001", key: "OPS", name: "Operations Example" };
 
 const find = (searchType: string, searchValue: string) =>
   invoke(findProject, {
@@ -27,12 +22,7 @@ const search = (query: string) =>
   jiraApi()
     .get("/rest/api/3/project/search")
     .query({ query })
-    .reply(200, {
-      isLast: true,
-      startAt: 0,
-      total: 2,
-      values: [exampleProject, otherProject],
-    });
+    .reply(200, { isLast: true, startAt: 0, total: 2, values: [exampleProject, otherProject] });
 
 describe("findProject", () => {
   test("keeps only the projects whose key contains the value when searching by key", async () => {
@@ -67,8 +57,6 @@ describe("findProject", () => {
       .query(true)
       .reply(401, { errorMessages: ["unauthorized"] });
 
-    await expect(find("key", "proj")).rejects.toMatchObject({
-      response: { status: 401 },
-    });
+    await expect(find("key", "proj")).rejects.toMatchObject({ response: { status: 401 } });
   });
 });

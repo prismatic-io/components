@@ -27,8 +27,7 @@ export const limit = input({
   label: "Limit",
   type: "string",
   required: false,
-  comments:
-    "The maximum number of records to return per request. Oracle HCM default is 25.",
+  comments: "The maximum number of records to return per request. Oracle HCM default is 25.",
   placeholder: "Enter limit",
   example: "100",
   clean: util.types.toNumber,
@@ -58,8 +57,7 @@ export const effectiveDate = input({
   label: "Effective Date",
   type: "string",
   required: false,
-  comments:
-    "Filter results by effective date in YYYY-MM-DD format. Defaults to today if omitted.",
+  comments: "Filter results by effective date in YYYY-MM-DD format. Defaults to today if omitted.",
   placeholder: "Enter effective date (YYYY-MM-DD)",
   example: "2024-01-01",
   clean: cleanString,
@@ -90,8 +88,7 @@ export const personId = input({
   label: "Person ID",
   type: "string",
   required: true,
-  comments:
-    "The unique numeric identifier for the Oracle HCM worker (PersonId).",
+  comments: "The unique numeric identifier for the Oracle HCM worker (PersonId).",
   placeholder: "Enter person ID",
   example: "100000012345678",
   clean: cleanId,
@@ -105,10 +102,6 @@ export const additionalFields = input({
   comments:
     "Any additional request-body fields not covered above, including nested collections (e.g. addresses, attachments). Provided as JSON and merged into the request body.",
   placeholder: "Enter additional fields as JSON",
-  example: JSON.stringify(
-    { addresses: [{ AddressLine1: "123 Main St" }] },
-    null,
-    2,
-  ),
+  example: JSON.stringify({ addresses: [{ AddressLine1: "123 Main St" }] }, null, 2),
   clean: cleanOptionalObject,
 });

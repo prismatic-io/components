@@ -13,7 +13,7 @@ export const publishView = action({
   performSafety: "notAllowed",
   perform: async (
     { debug: { enabled: debug } },
-    { connection, userId, view },
+    { connection, userId, view }
   ) => {
     debugLogger({ connection, debug, userId, view });
     const client = await createOauthClient({

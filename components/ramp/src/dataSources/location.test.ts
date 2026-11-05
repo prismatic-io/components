@@ -18,20 +18,14 @@ describe("selectLocation", () => {
   afterEach(resetNock);
 
   test("maps the location list into dropdown elements", async () => {
-    rampNock()
-      .get(PATH)
-      .query(true)
-      .reply(200, terminatePaging(listLocationsResponse));
+    rampNock().get(PATH).query(true).reply(200, terminatePaging(listLocationsResponse));
 
     const { result } = await invokeDataSource(selectLocation, {
       connection: testConnection,
     });
 
     expect(result).toEqual([
-      {
-        key: "f4efe11c-221f-4b49-a1e4-33eaf96a49ee",
-        label: "New York City, NY",
-      },
+      { key: "f4efe11c-221f-4b49-a1e4-33eaf96a49ee", label: "New York City, NY" },
     ]);
   });
 

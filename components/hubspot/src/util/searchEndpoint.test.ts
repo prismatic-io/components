@@ -1,7 +1,4 @@
-import {
-  searchEndpointObjectType,
-  toCurrentSearchEndpoint,
-} from "./searchEndpoint";
+import { searchEndpointObjectType, toCurrentSearchEndpoint } from "./searchEndpoint";
 
 describe("searchEndpointObjectType", () => {
   test.each([

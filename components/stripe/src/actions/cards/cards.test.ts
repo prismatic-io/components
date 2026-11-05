@@ -46,10 +46,7 @@ describe("getCard", () => {
 
     const { result } = await invoke(
       getCard,
-      params({
-        paymentId: "pm_1MqM05LkdIwHu7ixlDxxO6Mc",
-        stripeConnection: conn,
-      }),
+      params({ paymentId: "pm_1MqM05LkdIwHu7ixlDxxO6Mc", stripeConnection: conn }),
     );
 
     expect(result.data).toEqual(getCardExamplePayload.data);
@@ -59,18 +56,10 @@ describe("getCard", () => {
   it("surfaces a Stripe error response", async () => {
     nock(BASE)
       .get("/v1/payment_methods/pm_missing")
-      .reply(404, {
-        error: {
-          type: "invalid_request_error",
-          message: "No such PaymentMethod",
-        },
-      });
+      .reply(404, { error: { type: "invalid_request_error", message: "No such PaymentMethod" } });
 
     await expect(
-      invoke(
-        getCard,
-        params({ paymentId: "pm_missing", stripeConnection: conn }),
-      ),
+      invoke(getCard, params({ paymentId: "pm_missing", stripeConnection: conn })),
     ).rejects.toThrow("No such PaymentMethod");
   });
 });
@@ -99,18 +88,12 @@ describe("listCards", () => {
     nock(BASE)
       .get("/v1/payment_methods")
       .query(true)
-      .reply(400, {
-        error: { type: "invalid_request_error", message: "No such customer" },
-      });
+      .reply(400, { error: { type: "invalid_request_error", message: "No such customer" } });
 
     await expect(
       invoke(
         listCards,
-        params({
-          customerId: "cus_missing",
-          pagination: {},
-          stripeConnection: conn,
-        }),
+        params({ customerId: "cus_missing", pagination: {}, stripeConnection: conn }),
       ),
     ).rejects.toThrow("No such customer");
   });
@@ -148,12 +131,7 @@ describe("createCard", () => {
   it("surfaces a Stripe error response", async () => {
     nock(BASE)
       .post("/v1/payment_methods")
-      .reply(402, {
-        error: {
-          type: "card_error",
-          message: "Your card number is incorrect.",
-        },
-      });
+      .reply(402, { error: { type: "card_error", message: "Your card number is incorrect." } });
 
     await expect(
       invoke(
@@ -200,12 +178,7 @@ describe("updateCard", () => {
   it("surfaces a Stripe error response", async () => {
     nock(BASE)
       .post("/v1/payment_methods/pm_missing")
-      .reply(404, {
-        error: {
-          type: "invalid_request_error",
-          message: "No such PaymentMethod",
-        },
-      });
+      .reply(404, { error: { type: "invalid_request_error", message: "No such PaymentMethod" } });
 
     await expect(
       invoke(
@@ -247,20 +220,13 @@ describe("attachCard", () => {
     nock(BASE)
       .post("/v1/payment_methods/pm_1/attach")
       .reply(400, {
-        error: {
-          type: "invalid_request_error",
-          message: "No such customer: 'cus_missing'",
-        },
+        error: { type: "invalid_request_error", message: "No such customer: 'cus_missing'" },
       });
 
     await expect(
       invoke(
         attachCard,
-        params({
-          paymentId: "pm_1",
-          customerId: "cus_missing",
-          stripeConnection: conn,
-        }),
+        params({ paymentId: "pm_1", customerId: "cus_missing", stripeConnection: conn }),
       ),
     ).rejects.toThrow("No such customer");
   });
@@ -274,10 +240,7 @@ describe("detachCard", () => {
 
     const { result } = await invoke(
       detachCard,
-      params({
-        paymentId: "pm_1MqM05LkdIwHu7ixlDxxO6Mc",
-        stripeConnection: conn,
-      }),
+      params({ paymentId: "pm_1MqM05LkdIwHu7ixlDxxO6Mc", stripeConnection: conn }),
     );
 
     expect(result.data).toEqual(detachCardExamplePayload.data);
@@ -290,8 +253,7 @@ describe("detachCard", () => {
       .reply(400, {
         error: {
           type: "invalid_request_error",
-          message:
-            "The payment method you provided is not attached to a customer.",
+          message: "The payment method you provided is not attached to a customer.",
         },
       });
 

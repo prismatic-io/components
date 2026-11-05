@@ -8,12 +8,7 @@ import {
   showNewRecords,
   showUpdatedRecords,
 } from "../inputs";
-import type {
-  PollingState,
-  RampChangesObject,
-  RampRecord,
-  RampRecordChange,
-} from "../types";
+import type { PollingState, RampChangesObject, RampRecord, RampRecordChange } from "../types";
 import { fetchAllData, resolvePollingRecordChanges } from "../util";
 
 const filterByTimestamp = (
@@ -27,12 +22,8 @@ const filterByTimestamp = (
   const updated: RampRecord[] = [];
 
   for (const record of records) {
-    const createdAt = createdAtField
-      ? (record[createdAtField] as string)
-      : null;
-    const updatedAt = updatedAtField
-      ? (record[updatedAtField] as string)
-      : null;
+    const createdAt = createdAtField ? (record[createdAtField] as string) : null;
+    const updatedAt = updatedAtField ? (record[updatedAtField] as string) : null;
 
     if (createdAt && new Date(createdAt) > lastPolledDate) {
       created.push(record);
@@ -44,10 +35,7 @@ const filterByTimestamp = (
   return { created, updated };
 };
 
-const filterByNewIds = (
-  records: RampRecord[],
-  knownIds: string[],
-): RampRecord[] => {
+const filterByNewIds = (records: RampRecord[], knownIds: string[]): RampRecord[] => {
   const knownSet = new Set(knownIds);
   return records.filter((r) => !knownSet.has(r.id));
 };
@@ -74,13 +62,7 @@ export const pollChangesTrigger = pollingTrigger({
   perform: async (
     context,
     payload,
-    {
-      connection,
-      resourceType,
-      showNewRecords,
-      showUpdatedRecords,
-      lookBackDate,
-    },
+    { connection, resourceType, showNewRecords, showUpdatedRecords, lookBackDate },
   ) => {
     const now = new Date().toISOString();
     const lastState = context.polling.getState() as PollingState;
@@ -92,16 +74,10 @@ export const pollChangesTrigger = pollingTrigger({
 
     const client = createClient(connection, context.debug.enabled);
 
-    const { data: records } = await fetchAllData<RampRecord>(
-      client,
-      config.endpoint,
-      {},
-      true,
-    );
+    const { data: records } = await fetchAllData<RampRecord>(client, config.endpoint, {}, true);
 
     const hasTimestamps = config.createdAtField !== null;
-    const isBackfill =
-      !lastState?.lastPolledAt && (Boolean(lookBackDate) || !hasTimestamps);
+    const isBackfill = !lastState?.lastPolledAt && (Boolean(lookBackDate) || !hasTimestamps);
     const lastPolledAt = lastState?.lastPolledAt ?? (lookBackDate || now);
 
     let result: { created: RampRecord[]; updated: RampRecord[] };

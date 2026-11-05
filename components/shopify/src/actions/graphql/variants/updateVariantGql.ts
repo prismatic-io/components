@@ -32,8 +32,5 @@ export const updateVariantGql = action({
   examplePerform: async () => examplePayload,
   examplePayload,
   inputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: updateVariantGqlOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: updateVariantGqlOutputSchema }),
 });

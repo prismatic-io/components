@@ -1,7 +1,7 @@
 import type { EventChangesObject, EventRecordChange } from "../types";
 
 export const resolvePollingRecordChanges = (
-  data: EventChangesObject | undefined,
+  data: EventChangesObject | undefined
 ): EventRecordChange[] => {
   const changesObject = data ?? {
     createdEvents: [],
@@ -11,13 +11,13 @@ export const resolvePollingRecordChanges = (
   };
   return [
     ...(changesObject.createdEvents ?? []).map(
-      (record): EventRecordChange => ({ changeType: "created", record }),
+      (record): EventRecordChange => ({ changeType: "created", record })
     ),
     ...(changesObject.updatedEvents ?? []).map(
-      (record): EventRecordChange => ({ changeType: "updated", record }),
+      (record): EventRecordChange => ({ changeType: "updated", record })
     ),
     ...(changesObject.deletedEvents ?? []).map(
-      (record): EventRecordChange => ({ changeType: "deleted", record }),
+      (record): EventRecordChange => ({ changeType: "deleted", record })
     ),
   ];
 };

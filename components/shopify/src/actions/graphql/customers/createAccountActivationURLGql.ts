@@ -11,10 +11,7 @@ export const createAccountActivationURLGql = action({
     description: "Creates an account activation URL for an existing customer.",
   },
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { customerIdGql: customerId, shopifyConnection },
-  ) => {
+  perform: async (context, { customerIdGql: customerId, shopifyConnection }) => {
     const client = getShopifyGraphQlClient(
       shopifyConnection,
       undefined,

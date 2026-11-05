@@ -20,7 +20,7 @@ import { retrieveIncrementalChanges } from "./retrieveIncrementalChanges";
 export const calendarChangeEventsPerform = async (
   context: ActionContext,
   payload: TriggerPayload,
-  { connection, calendarId }: CalendarChangeEventsInputs,
+  { connection, calendarId }: CalendarChangeEventsInputs
 ) => {
   const headers = util.types.lowerCaseHeaders(payload.headers);
   const invokeType = headers["prismatic-invoke-type"];
@@ -74,7 +74,7 @@ export const calendarChangeEventsPerform = async (
 
   if (!isValidChannel || !isValidResource) {
     throw new Error(
-      "Unauthorized webhook call: Channel or resource ID mismatch",
+      "Unauthorized webhook call: Channel or resource ID mismatch"
     );
   }
 
@@ -136,7 +136,7 @@ export const calendarChangeEventsPerform = async (
       const eventsResponse = await retrieveIncrementalChanges(
         connection,
         calendarId,
-        previousSyncToken,
+        previousSyncToken
       );
 
       if (eventsResponse.events && eventsResponse.events.length > 0) {
@@ -239,13 +239,13 @@ export const calendarChangeEventsPerform = async (
       };
     } else {
       const createdEvents = changedEvents.filter(
-        (e) => e.changeType === "created",
+        (e) => e.changeType === "created"
       );
       const updatedEvents = changedEvents.filter(
-        (e) => e.changeType === "updated",
+        (e) => e.changeType === "updated"
       );
       const deletedEvents = changedEvents.filter(
-        (e) => e.changeType === "deleted",
+        (e) => e.changeType === "deleted"
       );
 
       changes = {

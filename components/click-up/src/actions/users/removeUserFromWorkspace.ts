@@ -16,10 +16,7 @@ export const removeUserFromWorkspace = action({
   examplePayload: removeUserFromWorkspaceExamplePayload,
   performSafety: "notAllowed",
   perform: async (context, { teamId, clickUpConnection, userId }) => {
-    const client = createClickUpClient(
-      clickUpConnection,
-      context.debug.enabled,
-    );
+    const client = createClickUpClient(clickUpConnection, context.debug.enabled);
 
     const { data } = await client.delete(`/team/${teamId}/user/${userId}`);
     return { data };

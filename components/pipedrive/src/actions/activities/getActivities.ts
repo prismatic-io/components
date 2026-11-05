@@ -23,11 +23,7 @@ export const getActivities = action({
       sortDirection,
     },
   ) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      WebhookVersion.V2,
-    );
+    const client = createClient(connection, context.debug.enabled, WebhookVersion.V2);
     const { data } = await client.get("/activities", {
       params: {
         filter_id: filterId,
@@ -43,8 +39,5 @@ export const getActivities = action({
   },
   inputs: getActivitiesInputs,
   examplePayload: getActivitiesExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getActivitiesOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getActivitiesOutputSchema }),
 });

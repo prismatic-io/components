@@ -11,10 +11,7 @@ export const deleteList = action({
   examplePayload: deleteListExamplePayload,
   performSafety: "notAllowed",
   perform: async (context, { clickUpConnection, listId }) => {
-    const client = createClickUpClient(
-      clickUpConnection,
-      context.debug.enabled,
-    );
+    const client = createClickUpClient(clickUpConnection, context.debug.enabled);
 
     const { data } = await client.delete(`/list/${listId}`);
 

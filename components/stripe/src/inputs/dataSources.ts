@@ -1,11 +1,6 @@
 import { util } from "@prismatic-io/spectral";
 import { cleanStringInput } from "../util";
-import {
-  connectionInput,
-  customerId,
-  endingBefore,
-  startingAfter,
-} from "./common";
+import { connectionInput, customerId, endingBefore, startingAfter } from "./common";
 
 export const selectBalanceTransactionInputs = {
   stripeConnection: connectionInput,
@@ -46,8 +41,7 @@ export const selectPaymentIntentInputs = {
   customerId: {
     ...customerId,
     label: "Customer ID",
-    comments:
-      "Only return PaymentIntents for the customer specified by this customer ID.",
+    comments: "Only return PaymentIntents for the customer specified by this customer ID.",
     clean: cleanStringInput,
     dataSource: undefined,
   },

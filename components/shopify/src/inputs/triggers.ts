@@ -1,9 +1,5 @@
 import { secretKey } from "./common";
-import {
-  lookBackDate,
-  shopifyConnection,
-  webhookTopics,
-} from "./graphql/common";
+import { lookBackDate, shopifyConnection, webhookTopics } from "./graphql/common";
 
 export const webhookInputs = {
   secret_key: secretKey,

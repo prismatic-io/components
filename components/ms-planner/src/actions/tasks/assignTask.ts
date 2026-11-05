@@ -22,10 +22,7 @@ export const assignTask = action({
   perform: async (context, { connection, taskId, assignment, etag }) => {
     const client = createClient(connection, context.debug.enabled);
 
-    const assignments = buildAssignments(
-      assignment?.assignTo,
-      assignment?.unassign,
-    );
+    const assignments = buildAssignments(assignment?.assignTo, assignment?.unassign);
     if (!Object.keys(assignments).length) {
       throw new Error(
         "Select at least one user to assign or unassign before running the Assign Task action.",
@@ -40,10 +37,7 @@ export const assignTask = action({
     );
     return { data };
   },
-  examplePerform: async (
-    _context,
-    { assignment },
-  ): Promise<{ data: unknown }> => {
+  examplePerform: async (_context, { assignment }): Promise<{ data: unknown }> => {
     const exampleAssignments = assignTaskExamplePayload.data.assignments ?? {};
     const exampleEntry = Object.values(exampleAssignments)[0];
 

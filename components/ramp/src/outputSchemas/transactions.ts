@@ -1287,9 +1287,8 @@ const transactionSchema = {
     sk_category_id: {
       type: ["integer", "null"],
       enum: [
-        1, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 2, 20, 21, 23, 24, 25, 26,
-        27, 28, 29, 3, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 4, 40, 41, 42,
-        43, 44, 5, 6, 7, 8, 9,
+        1, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 2, 20, 21, 23, 24, 25, 26, 27, 28, 29, 3, 30, 31,
+        32, 33, 34, 35, 36, 37, 38, 39, 4, 40, 41, 42, 43, 44, 5, 6, 7, 8, 9,
       ],
     },
     sk_category_name: {
@@ -1301,15 +1300,7 @@ const transactionSchema = {
     },
     state: {
       type: "string",
-      enum: [
-        "ALL",
-        "CLEARED",
-        "COMPLETION",
-        "DECLINED",
-        "ERROR",
-        "PENDING",
-        "PENDING_INITIATION",
-      ],
+      enum: ["ALL", "CLEARED", "COMPLETION", "DECLINED", "ERROR", "PENDING", "PENDING_INITIATION"],
     },
     statement_id: {
       type: "string",

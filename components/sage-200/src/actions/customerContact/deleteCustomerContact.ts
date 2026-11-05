@@ -9,14 +9,9 @@ export const deleteCustomerContact = action({
     label: "Delete Customer Contact",
     description: "Delete a customer contact",
   },
-  perform: async (
-    context,
-    { connection, site, company, customerContactId },
-  ) => {
+  perform: async (context, { connection, site, company, customerContactId }) => {
     const client = getClient(connection, context.debug.enabled, site, company);
-    const { data } = await client.delete(
-      `/customer_contacts/${customerContactId}`,
-    );
+    const { data } = await client.delete(`/customer_contacts/${customerContactId}`);
     return {
       data,
     };

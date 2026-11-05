@@ -12,24 +12,17 @@ export const listCheckoutSessions = action({
     description: "Return a list of Stripe Checkout sessions.",
   },
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { fetchAll, pagination, stripeConnection, timeout },
-  ) => {
+  perform: async (context, { fetchAll, pagination, stripeConnection, timeout }) => {
     const client = createStripeClient({
       stripeConnection,
       timeout,
     });
 
-    const sessions = (await paginateStripeRecords(
-      client.checkout.sessions,
-      fetchAll,
-      {
-        limit: pagination.limit,
-        starting_after: pagination.startingAfter,
-        ending_before: pagination.endingBefore,
-      },
-    )) as Stripe.ApiList<Stripe.Checkout.Session>;
+    const sessions = (await paginateStripeRecords(client.checkout.sessions, fetchAll, {
+      limit: pagination.limit,
+      starting_after: pagination.startingAfter,
+      ending_before: pagination.endingBefore,
+    })) as Stripe.ApiList<Stripe.Checkout.Session>;
 
     return {
       data: sessions,

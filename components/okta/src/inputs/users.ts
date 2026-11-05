@@ -125,8 +125,7 @@ export const password = input({
   label: "Password",
   type: "password",
   required: false,
-  comments:
-    "The user's password. If not provided, an activation email will be sent to the user.",
+  comments: "The user's password. If not provided, an activation email will be sent to the user.",
   example: "P@ssw0rd!",
   placeholder: "Enter password",
   clean: cleanString,
@@ -177,11 +176,7 @@ export const groupIds = input({
   language: "json",
   required: false,
   comments: "List of group IDs to assign the user to.",
-  example: JSON.stringify(
-    ["00g1abcd2EFGHijkL3m4", "00g5mnop6QRSTuvwx7y8"],
-    null,
-    2,
-  ),
+  example: JSON.stringify(["00g1abcd2EFGHijkL3m4", "00g5mnop6QRSTuvwx7y8"], null, 2),
   placeholder: "Enter group IDs",
   clean: cleanObject,
 });
@@ -247,8 +242,7 @@ export const oauthTokens = input({
   label: "OAuth Tokens",
   type: "boolean",
   required: false,
-  comments:
-    "Revokes issued OpenID Connect and OAuth refresh and access tokens.",
+  comments: "Revokes issued OpenID Connect and OAuth refresh and access tokens.",
   clean: util.types.toBool,
 });
 
@@ -284,8 +278,7 @@ export const provider = input({
   label: "Provider",
   type: "boolean",
   required: false,
-  comments:
-    "Indicates whether to create a user with a specified authentication provider.",
+  comments: "Indicates whether to create a user with a specified authentication provider.",
   clean: util.types.toBool,
 });
 
@@ -304,8 +297,7 @@ export const activate = input({
   label: "Activate",
   type: "boolean",
   required: false,
-  comments:
-    "When true, executes an activation lifecycle operation when creating the user.",
+  comments: "When true, executes an activation lifecycle operation when creating the user.",
   clean: util.types.toBool,
   default: "true",
 });
@@ -418,8 +410,7 @@ export const updateUserInputs = {
 const createUserProvisioningOptions = structuredObjectInput({
   label: "Provisioning Options",
   required: false,
-  comments:
-    "Options that control activation and authentication provider behavior on creation.",
+  comments: "Options that control activation and authentication provider behavior on creation.",
   inputs: { activate, nextLogin, provider },
 });
 

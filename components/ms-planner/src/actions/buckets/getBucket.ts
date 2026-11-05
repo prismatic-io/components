@@ -8,10 +8,7 @@ import type { Etagged } from "../../types";
 import { getBucketInputs } from "../../inputs";
 
 export const getBucket = action({
-  display: {
-    label: "Get Bucket",
-    description: "Retrieve a single bucket by its ID.",
-  },
+  display: { label: "Get Bucket", description: "Retrieve a single bucket by its ID." },
   inputs: getBucketInputs,
   outputSchema: outputSchema({
     type: "actionOutput",
@@ -20,9 +17,7 @@ export const getBucket = action({
   performSafety: "safe",
   perform: async (context, { connection, bucketId }) => {
     const client = createClient(connection, context.debug.enabled);
-    const { data } = await client.get<PlannerBucket & Etagged>(
-      PLANNER_ENDPOINTS.BUCKET(bucketId),
-    );
+    const { data } = await client.get<PlannerBucket & Etagged>(PLANNER_ENDPOINTS.BUCKET(bucketId));
     return { data };
   },
   examplePayload: getBucketExamplePayload,

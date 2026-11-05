@@ -13,19 +13,9 @@ export const getDealProducts = action({
   performSafety: "notAllowed",
   perform: async (
     context,
-    {
-      connection,
-      id,
-      pagination: { limit, cursor } = {},
-      sortBy,
-      sortDirection,
-    },
+    { connection, id, pagination: { limit, cursor } = {}, sortBy, sortDirection },
   ) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      WebhookVersion.V2,
-    );
+    const client = createClient(connection, context.debug.enabled, WebhookVersion.V2);
     const { data } = await client.get(`/deals/${id}/products`, {
       params: { limit, sort_by: sortBy, sort_direction: sortDirection, cursor },
     });
@@ -33,8 +23,5 @@ export const getDealProducts = action({
   },
   inputs: getDealProductsInputs,
   examplePayload: getDealProductsExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getDealProductsOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getDealProductsOutputSchema }),
 });

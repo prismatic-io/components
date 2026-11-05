@@ -124,10 +124,7 @@ const describeSObjectResultSchema = {
     name: { type: "string" },
     namedLayoutInfos: {
       type: "array",
-      items: {
-        type: "object",
-        properties: { name: { type: "string" }, urls: urlMap },
-      },
+      items: { type: "object", properties: { name: { type: "string" }, urls: urlMap } },
     },
     networkScopeFieldName: nstr,
     queryable: { type: "boolean" },

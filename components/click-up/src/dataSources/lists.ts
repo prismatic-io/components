@@ -11,9 +11,7 @@ export const lists = dataSource({
   },
   perform: async (_context, { folderId, connection }) => {
     const client = createClient(connection);
-    const { data } = await client.get<GetListsResponse>(
-      `/folder/${folderId}/list`,
-    );
+    const { data } = await client.get<GetListsResponse>(`/folder/${folderId}/list`);
     const options = data.lists.map<Element>((list) => {
       return { label: list.name, key: list.id };
     });

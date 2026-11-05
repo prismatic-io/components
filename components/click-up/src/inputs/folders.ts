@@ -1,10 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
-import {
-  connectionInput,
-  getArchived,
-  getFolderId,
-  getSpaceId,
-} from "./common";
+import { connectionInput, getArchived, getFolderId, getSpaceId } from "./common";
 
 const folderName = input({
   label: "Name",

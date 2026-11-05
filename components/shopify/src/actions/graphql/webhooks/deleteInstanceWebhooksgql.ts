@@ -34,9 +34,7 @@ export const deleteInstanceWebhooksgql = action({
       undefined,
     );
 
-    const promises = webhookSubscriptions.map((webhook) =>
-      deleteWebhookById(client, webhook.id),
-    );
+    const promises = webhookSubscriptions.map((webhook) => deleteWebhookById(client, webhook.id));
     await Promise.all(promises);
     return {
       data: {},

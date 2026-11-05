@@ -1,14 +1,8 @@
-import {
-  createConnection,
-  invokeDataSource,
-} from "@prismatic-io/spectral/testing";
+import { createConnection, invokeDataSource } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { aemOAuthServerToServer } from "../connections";
 import { MAX_DATA_SOURCE_ITEMS } from "../constants";
-import {
-  listSitemapUrlsExamplePayload,
-  selectSitemapPageExamplePayload,
-} from "../examplePayloads";
+import { listSitemapUrlsExamplePayload, selectSitemapPageExamplePayload } from "../examplePayloads";
 import { selectSitemapPage } from "./selectSitemapPage";
 
 const AEM_HOST = "author-p12345-e123456.adobeaemcloud.com";
@@ -39,14 +33,8 @@ describe("selectSitemapPage", () => {
   test("returns each page URL in the sitemap, sorted", async () => {
     nock(SITE)
       .get("/sitemap.xml")
-      .reply(
-        200,
-        urlset(...listSitemapUrlsExamplePayload.data.map((page) => page.loc)),
-      );
-    const result = await invokeDataSource(selectSitemapPage, {
-      connection,
-      sitemapUrl,
-    });
+      .reply(200, urlset(...listSitemapUrlsExamplePayload.data.map((page) => page.loc)));
+    const result = await invokeDataSource(selectSitemapPage, { connection, sitemapUrl });
     expect(result).toEqual(selectSitemapPageExamplePayload);
   });
 
@@ -58,10 +46,7 @@ describe("selectSitemapPage", () => {
     nock(SITE)
       .get("/sitemap.xml")
       .reply(200, urlset(...locs));
-    const { result } = await invokeDataSource(selectSitemapPage, {
-      connection,
-      sitemapUrl,
-    });
+    const { result } = await invokeDataSource(selectSitemapPage, { connection, sitemapUrl });
     expect(result).toHaveLength(MAX_DATA_SOURCE_ITEMS);
     expect(result).not.toContainEqual(
       expect.objectContaining({ key: locs[MAX_DATA_SOURCE_ITEMS] }),

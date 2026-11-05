@@ -14,21 +14,10 @@ export const listAssignments = action({
   },
   examplePayload: listAssignmentsExamplePayload,
   inputs: listAssignmentsInputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: listAssignmentsOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: listAssignmentsOutputSchema }),
   perform: async (
     context,
-    {
-      connection,
-      personId,
-      fetchAll,
-      pagination,
-      effectiveDate,
-      expand,
-      includeMetadataLinks,
-    },
+    { connection, personId, fetchAll, pagination, effectiveDate, expand, includeMetadataLinks },
   ) => {
     const client = createClient(connection, context.debug.enabled);
     const data = await paginateResults<Assignment>(

@@ -48,10 +48,7 @@ describe("listBills", () => {
 
     const { result } = await invoke(
       listBills,
-      listActionParams({
-        fetchAll: true,
-        pagination: { pageSize: 10, start: "CURSOR-A" },
-      }),
+      listActionParams({ fetchAll: true, pagination: { pageSize: 10, start: "CURSOR-A" } }),
     );
 
     expect(result.data).toEqual({ data: listBillsResponse.data, page: null });
@@ -71,15 +68,9 @@ describe("listBills", () => {
       .query({ page_size: "50", start: "CURSOR-2" })
       .reply(200, listBody([secondRecord]));
 
-    const { result } = await invoke(
-      listBills,
-      listActionParams({ fetchAll: true }),
-    );
+    const { result } = await invoke(listBills, listActionParams({ fetchAll: true }));
 
-    expect(result.data).toEqual({
-      data: [firstRecord, secondRecord],
-      page: null,
-    });
+    expect(result.data).toEqual({ data: [firstRecord, secondRecord], page: null });
   });
 
   test("surfaces an API failure", async () => {

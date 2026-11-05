@@ -12,10 +12,7 @@ export const batchEntityActions = action({
   inputs: batchEntityActionsInputs,
   examplePayload: batchEntityActionsExamplePayload,
   perform: async (context, params) => {
-    const client = await createCrmClient(
-      params.connection,
-      context.debug.enabled,
-    );
+    const client = await createCrmClient(params.connection, context.debug.enabled);
     client.startBatch();
     for (const action of params.actions) {
       if (action.action === "create") {

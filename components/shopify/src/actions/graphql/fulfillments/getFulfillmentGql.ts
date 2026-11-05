@@ -29,9 +29,6 @@ export const getFulfillmentGql = action({
     };
   },
   inputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getFulfillmentGqlOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getFulfillmentGqlOutputSchema }),
   examplePayload,
 });

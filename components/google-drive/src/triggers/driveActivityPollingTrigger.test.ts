@@ -1,23 +1,14 @@
-import {
-  createConnection,
-  defaultTriggerPayload,
-} from "@prismatic-io/spectral/dist/testing";
+import { createConnection, defaultTriggerPayload } from "@prismatic-io/spectral/dist/testing";
 import nock from "nock";
 import { connection as connectionDefinition } from "../connections";
 import { MY_DRIVE } from "../constants";
 import { queryDriveActivityExamplePayload } from "../examplePayloads";
 import { driveActivityPollingTrigger } from "./driveActivityPollingTrigger";
 
-const connection = createConnection(
-  connectionDefinition,
-  {},
-  { access_token: "test-token" },
-);
+const connection = createConnection(connectionDefinition, {}, { access_token: "test-token" });
 const ACTIVITY = "https://driveactivity.googleapis.com";
-const HANDOFF_KEY =
-  "google-drive-activity-sync-handoff:flowStableId:mockStepId";
-const COMPLETED_KEY =
-  "google-drive-initial-sync-completed:flowStableId:mockStepId";
+const HANDOFF_KEY = "google-drive-activity-sync-handoff:flowStableId:mockStepId";
+const COMPLETED_KEY = "google-drive-initial-sync-completed:flowStableId:mockStepId";
 
 type Perform = typeof driveActivityPollingTrigger.perform;
 
@@ -53,10 +44,7 @@ const runPoll = (
 const statefulPolling = (initial: Record<string, unknown> = {}) => {
   let state = initial;
   return {
-    polling: {
-      getState: () => state,
-      setState: (next: Record<string, unknown>) => (state = next),
-    },
+    polling: { getState: () => state, setState: (next: Record<string, unknown>) => (state = next) },
     read: () => state,
   };
 };
@@ -67,17 +55,13 @@ describe("driveActivityPollingTrigger", () => {
   test("returns the activities the query yielded and stamps the poll time into state", async () => {
     nock(ACTIVITY)
       .post("/v2/activity:query")
-      .reply(200, {
-        activities: queryDriveActivityExamplePayload.data.activities,
-      });
+      .reply(200, { activities: queryDriveActivityExamplePayload.data.activities });
 
     const { polling, read } = statefulPolling();
     const result = await runPoll(polling);
 
     expect(result.polledNoChanges).toBe(false);
-    expect(result.payload.body.data).toEqual(
-      queryDriveActivityExamplePayload.data.activities,
-    );
+    expect(result.payload.body.data).toEqual(queryDriveActivityExamplePayload.data.activities);
     expect(typeof read().lastPolledAt).toBe("string");
   });
 
@@ -119,9 +103,7 @@ describe("driveActivityPollingTrigger", () => {
       })
       .reply(200, { activities: [] });
 
-    const { polling } = statefulPolling({
-      lastPolledAt: "2025-03-11T15:58:37.276Z",
-    });
+    const { polling } = statefulPolling({ lastPolledAt: "2025-03-11T15:58:37.276Z" });
     await runPoll(polling);
 
     expect(body.filter).toBe('time > "2025-03-11T15:58:37.276Z"');
@@ -130,14 +112,10 @@ describe("driveActivityPollingTrigger", () => {
   test("advances the stored poll time so a later poll does not re-emit earlier activity", async () => {
     nock(ACTIVITY)
       .post("/v2/activity:query")
-      .reply(200, {
-        activities: queryDriveActivityExamplePayload.data.activities,
-      });
+      .reply(200, { activities: queryDriveActivityExamplePayload.data.activities });
     nock(ACTIVITY).post("/v2/activity:query").reply(200, { activities: [] });
 
-    const { polling, read } = statefulPolling({
-      lastPolledAt: "2025-03-11T15:58:37.276Z",
-    });
+    const { polling, read } = statefulPolling({ lastPolledAt: "2025-03-11T15:58:37.276Z" });
 
     const first = await runPoll(polling);
     const advanced = read().lastPolledAt as string;
@@ -146,9 +124,7 @@ describe("driveActivityPollingTrigger", () => {
     expect(first.polledNoChanges).toBe(false);
     expect(advanced > "2025-03-11T15:58:37.276Z").toBe(true);
     expect(second.polledNoChanges).toBe(true);
-    expect(
-      read().lastPolledAt > advanced || read().lastPolledAt === advanced,
-    ).toBe(true);
+    expect(read().lastPolledAt > advanced || read().lastPolledAt === advanced).toBe(true);
   });
 
   test("appends the selected event types to the filter", async () => {
@@ -160,9 +136,7 @@ describe("driveActivityPollingTrigger", () => {
       })
       .reply(200, { activities: [] });
 
-    const { polling } = statefulPolling({
-      lastPolledAt: "2025-03-11T15:58:37.276Z",
-    });
+    const { polling } = statefulPolling({ lastPolledAt: "2025-03-11T15:58:37.276Z" });
     await runPoll(polling, { triggerEvents: ["CREATE", "EDIT"] });
 
     expect(body.filter).toBe(
@@ -180,9 +154,7 @@ describe("driveActivityPollingTrigger", () => {
       .times(2)
       .reply(200, { activities: [{ timestamp: "2025-03-11T15:58:37.276Z" }] });
 
-    const { polling } = statefulPolling({
-      lastPolledAt: "2025-03-11T15:58:37.276Z",
-    });
+    const { polling } = statefulPolling({ lastPolledAt: "2025-03-11T15:58:37.276Z" });
     const result = await runPoll(polling, {
       ancestorName: ["items/folder-a", "items/folder-b"],
     });
@@ -274,9 +246,7 @@ const runBatchedPoll = (
     } as unknown as Parameters<Perform>[0],
     {
       ...defaultTriggerPayload(),
-      ...(options.paginationState
-        ? { paginationState: options.paginationState }
-        : {}),
+      ...(options.paginationState ? { paginationState: options.paginationState } : {}),
     } as unknown as Parameters<Perform>[1],
     {
       connection,
@@ -316,9 +286,7 @@ describe("driveActivityPollingTrigger look-back backfill", () => {
       })
       .reply(200, { activities: [] });
 
-    const { polling } = statefulPolling({
-      lastPolledAt: "2026-05-01T00:00:00.000Z",
-    });
+    const { polling } = statefulPolling({ lastPolledAt: "2026-05-01T00:00:00.000Z" });
     await runPoll(polling, { lookBackDate: "2026-01-01T00:00:00.000Z" });
 
     expect(body.filter).toBe('time > "2026-05-01T00:00:00.000Z"');
@@ -331,14 +299,9 @@ describe("driveActivityPollingTrigger batched drain", () => {
   test("reads one page per round and hands the next page back", async () => {
     nock(ACTIVITY)
       .post("/v2/activity:query")
-      .reply(200, {
-        activities: [{ timestamp: "2025-03-11T15:58:37.276Z" }],
-        nextPageToken: "p2",
-      });
+      .reply(200, { activities: [{ timestamp: "2025-03-11T15:58:37.276Z" }], nextPageToken: "p2" });
 
-    const { polling, read } = statefulPolling({
-      lastPolledAt: "2026-01-01T00:00:00.000Z",
-    });
+    const { polling, read } = statefulPolling({ lastPolledAt: "2026-01-01T00:00:00.000Z" });
     const result = await runBatchedPoll(polling);
     const next = result.payload.paginationState as Record<string, unknown>;
 
@@ -350,9 +313,7 @@ describe("driveActivityPollingTrigger batched drain", () => {
   test("moves to the next ancestor once one is exhausted", async () => {
     nock(ACTIVITY).post("/v2/activity:query").reply(200, { activities: [] });
 
-    const { polling } = statefulPolling({
-      lastPolledAt: "2026-01-01T00:00:00.000Z",
-    });
+    const { polling } = statefulPolling({ lastPolledAt: "2026-01-01T00:00:00.000Z" });
     const result = await runBatchedPoll(polling, {
       params: { ancestorName: ["items/folder-a", "items/folder-b"] },
     });
@@ -367,9 +328,7 @@ describe("driveActivityPollingTrigger batched drain", () => {
   test("commits the watermark only when the last ancestor is exhausted", async () => {
     nock(ACTIVITY).post("/v2/activity:query").reply(200, { activities: [] });
 
-    const { polling, read } = statefulPolling({
-      lastPolledAt: "2026-01-01T00:00:00.000Z",
-    });
+    const { polling, read } = statefulPolling({ lastPolledAt: "2026-01-01T00:00:00.000Z" });
     const result = await runBatchedPoll(polling, {
       paginationState: {
         ancestorIndex: 0,
@@ -391,9 +350,7 @@ describe("driveActivityPollingTrigger batched drain", () => {
       })
       .reply(200, { activities: [] });
 
-    const { polling } = statefulPolling({
-      lastPolledAt: "2026-05-01T00:00:00.000Z",
-    });
+    const { polling } = statefulPolling({ lastPolledAt: "2026-05-01T00:00:00.000Z" });
     await runBatchedPoll(polling, {
       paginationState: {
         ancestorIndex: 0,
@@ -410,9 +367,7 @@ describe("driveActivityPollingTrigger batched drain", () => {
   test("never reports no changes on a platform-driven round", async () => {
     nock(ACTIVITY).post("/v2/activity:query").reply(200, { activities: [] });
 
-    const { polling } = statefulPolling({
-      lastPolledAt: "2026-01-01T00:00:00.000Z",
-    });
+    const { polling } = statefulPolling({ lastPolledAt: "2026-01-01T00:00:00.000Z" });
     const result = await runBatchedPoll(polling, {
       paginationState: {
         ancestorIndex: 0,
@@ -438,14 +393,10 @@ describe("driveActivityPollingTrigger empty look-back date", () => {
       .reply(200, { activities: [] });
 
     const { polling } = statefulPolling();
-    await runPoll(polling, {
-      lookBackDate: "",
-      triggerEvents: ["CREATE", "EDIT"],
-    });
+    await runPoll(polling, { lookBackDate: "", triggerEvents: ["CREATE", "EDIT"] });
 
     expect(body.filter).not.toContain('time > ""');
-    const [, filterTime] =
-      (body.filter as string).match(/^time > "([^"]*)"/) ?? [];
+    const [, filterTime] = (body.filter as string).match(/^time > "([^"]*)"/) ?? [];
     expect(filterTime).toBeTruthy();
     expect(Number.isNaN(new Date(filterTime).getTime())).toBe(false);
   });
@@ -459,9 +410,7 @@ describe("driveActivityPollingTrigger empty look-back date", () => {
       })
       .reply(200, { activities: [] });
 
-    const { polling } = statefulPolling({
-      lastPolledAt: "2026-05-01T00:00:00.000Z",
-    });
+    const { polling } = statefulPolling({ lastPolledAt: "2026-05-01T00:00:00.000Z" });
     await runPoll(polling, { lookBackDate: "" });
 
     expect(body.filter).toBe('time > "2026-05-01T00:00:00.000Z"');
@@ -470,15 +419,11 @@ describe("driveActivityPollingTrigger empty look-back date", () => {
 
 describe("driveActivityPollingTrigger on-deploy resolver", () => {
   test("batches the initial sync off the same config as the scheduled poll", () => {
-    expect(driveActivityPollingTrigger.onDeployPerform).toBeInstanceOf(
+    expect(driveActivityPollingTrigger.onDeployPerform).toBeInstanceOf(Function);
+    expect(driveActivityPollingTrigger.onDeployResolver?.resolveItems).toBeInstanceOf(Function);
+    expect(driveActivityPollingTrigger.onDeployResolver?.getNextPaginationState).toBeInstanceOf(
       Function,
     );
-    expect(
-      driveActivityPollingTrigger.onDeployResolver?.resolveItems,
-    ).toBeInstanceOf(Function);
-    expect(
-      driveActivityPollingTrigger.onDeployResolver?.getNextPaginationState,
-    ).toBeInstanceOf(Function);
   });
 
   test("resolveItems dispatches the activity the initial sync produced", () => {
@@ -525,9 +470,7 @@ describe("driveActivityPollingTrigger on-deploy resolver", () => {
   });
 });
 
-type OnDeployPerform = NonNullable<
-  typeof driveActivityPollingTrigger.onDeployPerform
->;
+type OnDeployPerform = NonNullable<typeof driveActivityPollingTrigger.onDeployPerform>;
 
 const runDeploy = async (
   options: {
@@ -537,8 +480,7 @@ const runDeploy = async (
   } = {},
 ) => {
   const setStateCalls: Record<string, unknown>[] = [];
-  const onDeployPerform =
-    driveActivityPollingTrigger.onDeployPerform as OnDeployPerform;
+  const onDeployPerform = driveActivityPollingTrigger.onDeployPerform as OnDeployPerform;
   const result = await onDeployPerform(
     {
       polling: {
@@ -551,9 +493,7 @@ const runDeploy = async (
     } as unknown as Parameters<OnDeployPerform>[0],
     {
       ...defaultTriggerPayload(),
-      ...(options.paginationState
-        ? { paginationState: options.paginationState }
-        : {}),
+      ...(options.paginationState ? { paginationState: options.paginationState } : {}),
     } as unknown as Parameters<OnDeployPerform>[1],
     {
       connection,
@@ -605,10 +545,7 @@ describe("driveActivityPollingTrigger initial sync on deploy", () => {
   test("reads one page per round and hands the next page back", async () => {
     nock(ACTIVITY)
       .post("/v2/activity:query")
-      .reply(200, {
-        activities: [{ timestamp: "2025-03-11T15:58:37.276Z" }],
-        nextPageToken: "p2",
-      });
+      .reply(200, { activities: [{ timestamp: "2025-03-11T15:58:37.276Z" }], nextPageToken: "p2" });
 
     const { result } = await runDeploy({
       params: { lookBackDate: "2026-01-01T00:00:00.000Z" },
@@ -681,9 +618,7 @@ describe("driveActivityPollingTrigger initial sync handoff", () => {
       .post("/v2/activity:query")
       .reply(200, { activities: [{ timestamp: "2025-03-11T15:58:37.276Z" }] });
 
-    const { result } = await runDeploy({
-      params: { lookBackDate: "2026-01-01T00:00:00.000Z" },
-    });
+    const { result } = await runDeploy({ params: { lookBackDate: "2026-01-01T00:00:00.000Z" } });
 
     expect(typeof result.instanceState?.[HANDOFF_KEY]).toBe("string");
     expect(result.instanceState?.[COMPLETED_KEY]).toBe(true);
@@ -701,19 +636,13 @@ describe("driveActivityPollingTrigger initial sync handoff", () => {
       params: { lookBackDate: "2026-01-01T00:00:00.000Z" },
     });
 
-    expect(result.instanceState?.[HANDOFF_KEY]).toBe(
-      "2026-02-01T00:00:00.000Z",
-    );
+    expect(result.instanceState?.[HANDOFF_KEY]).toBe("2026-02-01T00:00:00.000Z");
   });
 
   test("withholds the handoff while the drain is still running", async () => {
-    nock(ACTIVITY)
-      .post("/v2/activity:query")
-      .reply(200, { activities: [], nextPageToken: "p2" });
+    nock(ACTIVITY).post("/v2/activity:query").reply(200, { activities: [], nextPageToken: "p2" });
 
-    const { result } = await runDeploy({
-      params: { lookBackDate: "2026-01-01T00:00:00.000Z" },
-    });
+    const { result } = await runDeploy({ params: { lookBackDate: "2026-01-01T00:00:00.000Z" } });
 
     expect(result).not.toHaveProperty("instanceState");
   });
@@ -744,9 +673,7 @@ describe("driveActivityPollingTrigger initial sync handoff", () => {
       instanceState: { [COMPLETED_KEY]: true },
     });
 
-    expect(result.instanceState?.[HANDOFF_KEY]).toBe(
-      "2026-02-01T00:00:00.000Z",
-    );
+    expect(result.instanceState?.[HANDOFF_KEY]).toBe("2026-02-01T00:00:00.000Z");
   });
 
   test("opens the first poll's window where the initial sync stopped", async () => {
@@ -777,9 +704,7 @@ describe("driveActivityPollingTrigger initial sync handoff", () => {
       })
       .reply(200, { activities: [] });
 
-    const { polling } = statefulPolling({
-      lastPolledAt: "2026-05-01T00:00:00.000Z",
-    });
+    const { polling } = statefulPolling({ lastPolledAt: "2026-05-01T00:00:00.000Z" });
     await runPoll(
       polling,
       { lookBackDate: "2026-01-01T00:00:00.000Z" },
@@ -800,19 +725,14 @@ describe("driveActivityPollingTrigger initial sync handoff", () => {
     );
 
     expect(typeof read().lastPolledAt).toBe("string");
-    expect(result.instanceState).toEqual({
-      [HANDOFF_KEY]: null,
-      [COMPLETED_KEY]: true,
-    });
+    expect(result.instanceState).toEqual({ [HANDOFF_KEY]: null, [COMPLETED_KEY]: true });
   });
 
   test("writes no instanceState when there was no handoff to clear", async () => {
     nock(ACTIVITY).post("/v2/activity:query").reply(200, { activities: [] });
 
     const { polling } = statefulPolling();
-    const result = await runPoll(polling, {
-      lookBackDate: "2026-01-01T00:00:00.000Z",
-    });
+    const result = await runPoll(polling, { lookBackDate: "2026-01-01T00:00:00.000Z" });
 
     expect(result).not.toHaveProperty("instanceState");
   });
@@ -859,13 +779,12 @@ describe("driveActivityPollingTrigger initial sync handoff", () => {
   });
 });
 describe("driveActivityPollingTrigger ancestorName clean", () => {
-  const cleanAncestorName = driveActivityPollingTrigger.inputs.ancestorName
-    .clean as (value: unknown) => (string | undefined)[];
+  const cleanAncestorName = driveActivityPollingTrigger.inputs.ancestorName.clean as (
+    value: unknown,
+  ) => (string | undefined)[];
 
   test("wraps a single ID into a list and prefixes it", () => {
-    expect(cleanAncestorName("0ALiN8fRST0gxUk9PVA")).toEqual([
-      "items/0ALiN8fRST0gxUk9PVA",
-    ]);
+    expect(cleanAncestorName("0ALiN8fRST0gxUk9PVA")).toEqual(["items/0ALiN8fRST0gxUk9PVA"]);
   });
 
   test("maps every ID when a list is supplied", () => {
@@ -889,9 +808,6 @@ describe("driveActivityPollingTrigger ancestorName clean", () => {
   });
 
   test("drops the My Drive sentinel to undefined in a mixed list without shortening it", () => {
-    expect(cleanAncestorName([MY_DRIVE, "folder-a"])).toEqual([
-      undefined,
-      "items/folder-a",
-    ]);
+    expect(cleanAncestorName([MY_DRIVE, "folder-a"])).toEqual([undefined, "items/folder-a"]);
   });
 });

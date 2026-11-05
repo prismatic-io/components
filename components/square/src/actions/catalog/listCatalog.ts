@@ -7,17 +7,10 @@ import { fetchAllPages } from "../../util";
 export const listCatalog = action({
   display: {
     label: "List Catalog",
-    description:
-      "Returns a list of all catalog objects of the specified types in the catalog.",
+    description: "Returns a list of all catalog objects of the specified types in the catalog.",
   },
-  perform: async (
-    context,
-    { squareConnection, fetchAll, cursor, types, catalogVersion },
-  ) => {
-    const client = await createAuthorizedClient(
-      squareConnection,
-      context.debug.enabled,
-    );
+  perform: async (context, { squareConnection, fetchAll, cursor, types, catalogVersion }) => {
+    const client = await createAuthorizedClient(squareConnection, context.debug.enabled);
 
     const data = await fetchAllPages(
       client,

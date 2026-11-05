@@ -11,15 +11,8 @@ export const addProduct = action({
     description: "Adds a product.",
   },
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { connection, name, code, unit, tax, visibleTo, ownerId, prices },
-  ) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      WebhookVersion.V2,
-    );
+  perform: async (context, { connection, name, code, unit, tax, visibleTo, ownerId, prices }) => {
+    const client = createClient(connection, context.debug.enabled, WebhookVersion.V2);
     const { data } = await client.post("/products", {
       name,
       code,
@@ -33,8 +26,5 @@ export const addProduct = action({
   },
   inputs: addProductInputs,
   examplePayload: addProductExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: addProductOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: addProductOutputSchema }),
 });

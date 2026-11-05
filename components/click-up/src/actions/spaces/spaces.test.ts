@@ -1,17 +1,12 @@
 import { createConnection, invoke } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { clickUpApiKeyConnection } from "../../connections/clickUpApiKeyConnection";
-import {
-  createSpaceExamplePayload,
-  updateSpaceExamplePayload,
-} from "../../examplePayloads";
+import { createSpaceExamplePayload, updateSpaceExamplePayload } from "../../examplePayloads";
 import { createSpace } from "./createSpace";
 import { updateSpace } from "./updateSpace";
 
 const API = "https://api.clickup.com";
-const connection = createConnection(clickUpApiKeyConnection, {
-  apiKey: "test-key",
-});
+const connection = createConnection(clickUpApiKeyConnection, { apiKey: "test-key" });
 
 interface Captured {
   body?: unknown;
@@ -19,12 +14,7 @@ interface Captured {
   headers?: Record<string, unknown>;
 }
 
-const mockClickUp = (
-  method: string,
-  path: string,
-  status: number,
-  reply: unknown,
-): Captured => {
+const mockClickUp = (method: string, path: string, status: number, reply: unknown): Captured => {
   const captured: Captured = {};
   nock(API)
     .intercept(`/api/v2${path}`, method, (body) => {
@@ -42,19 +32,11 @@ const mockClickUp = (
   return captured;
 };
 
-type ActionUnderTest = {
-  inputs: Record<string, { type?: string }>;
-  perform: unknown;
-};
+type ActionUnderTest = { inputs: Record<string, { type?: string }>; perform: unknown };
 
 const run = (action: ActionUnderTest, params: Record<string, unknown>) => {
-  const connectionKey = Object.keys(action.inputs).find(
-    (key) => action.inputs[key].type === "connection",
-  ) as string;
-  return invoke(
-    action as any,
-    { [connectionKey]: connection, ...params } as any,
-  );
+  const connectionKey = Object.keys(action.inputs).find((key) => action.inputs[key].type === "connection") as string;
+  return invoke(action as any, { [connectionKey]: connection, ...params } as any);
 };
 
 beforeAll(() => nock.disableNetConnect());
@@ -84,12 +66,7 @@ const featureToggles = {
 const featureBody = {
   multiple_assignees: true,
   features: {
-    due_dates: {
-      enabled: true,
-      start_date: false,
-      remap_due_dates: true,
-      remap_closed_due_date: false,
-    },
+    due_dates: { enabled: true, start_date: false, remap_due_dates: true, remap_closed_due_date: false },
     time_tracking: { enabled: true },
     tags: { enabled: false },
     time_estimates: { enabled: true },
@@ -102,19 +79,10 @@ const featureBody = {
 };
 
 describe("createSpace", () => {
-  const params = {
-    teamId: "9012345",
-    spaceName: "Engineering",
-    ...featureToggles,
-  };
+  const params = { teamId: "9012345", spaceName: "Engineering", ...featureToggles };
 
   test("happy path nests the feature toggles in the body and returns the response", async () => {
-    const req = mockClickUp(
-      "POST",
-      "/team/9012345/space",
-      200,
-      createSpaceExamplePayload.data,
-    );
+    const req = mockClickUp("POST", "/team/9012345/space", 200, createSpaceExamplePayload.data);
     const { result } = await run(createSpace, params);
     expect(result).toEqual(createSpaceExamplePayload);
     expect(req.body).toEqual({ name: "Engineering", ...featureBody });
@@ -132,12 +100,7 @@ describe("updateSpace", () => {
   };
 
   test("happy path puts the space settings and returns the response", async () => {
-    const req = mockClickUp(
-      "PUT",
-      "/space/790",
-      200,
-      updateSpaceExamplePayload.data,
-    );
+    const req = mockClickUp("PUT", "/space/790", 200, updateSpaceExamplePayload.data);
     const { result } = await run(updateSpace, params);
     expect(result).toEqual(updateSpaceExamplePayload);
     expect(req.body).toEqual({

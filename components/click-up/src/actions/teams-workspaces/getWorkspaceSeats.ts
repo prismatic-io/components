@@ -7,8 +7,7 @@ import { getWorkspaceSeatsOutputSchema } from "../../outputSchemas";
 export const getWorkspaceSeats = action({
   display: {
     label: "Get Workspace Seats",
-    description:
-      "Retrieve the used, total, and available member and guest seats for a workspace.",
+    description: "Retrieve the used, total, and available member and guest seats for a workspace.",
   },
   outputSchema: outputSchema({
     type: "actionOutput",
@@ -17,10 +16,7 @@ export const getWorkspaceSeats = action({
   examplePayload: getWorkspaceSeatsExamplePayload,
   performSafety: "safe",
   perform: async (context, { clickUpConnection, teamId }) => {
-    const client = createClickUpClient(
-      clickUpConnection,
-      context.debug.enabled,
-    );
+    const client = createClickUpClient(clickUpConnection, context.debug.enabled);
 
     const { data } = await client.get(`/team/${teamId}/seats`);
 

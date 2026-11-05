@@ -16,9 +16,7 @@ export const getMsBusinessCentralClient = (
   validateConnection(receivedConnection);
 
   const baseUrl = util.types.toString(receivedConnection.fields.webApiUrl);
-  const accessToken = util.types.toString(
-    receivedConnection.token?.access_token,
-  );
+  const accessToken = util.types.toString(receivedConnection.token?.access_token);
 
   const client = createClient({
     baseUrl: `${baseUrl}/api/${version}`,

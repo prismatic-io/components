@@ -11,10 +11,7 @@ export const addTaskToList = action({
   examplePayload: addTaskToListExamplePayload,
   performSafety: "notAllowed",
   perform: async (context, { clickUpConnection, listId, taskId }) => {
-    const client = createClickUpClient(
-      clickUpConnection,
-      context.debug.enabled,
-    );
+    const client = createClickUpClient(clickUpConnection, context.debug.enabled);
 
     const { data } = await client.post(`/list/${listId}/task/${taskId}`);
 

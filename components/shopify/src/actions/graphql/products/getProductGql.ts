@@ -21,21 +21,15 @@ export const getProductGql = action({
       context.logger,
     );
 
-    const { product }: { product: Product } = await client.request(
-      getProductQuery,
-      {
-        id: productId,
-      },
-    );
+    const { product }: { product: Product } = await client.request(getProductQuery, {
+      id: productId,
+    });
 
     return {
       data: { product: productMapper(product) },
     };
   },
   inputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getProductGqlOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getProductGqlOutputSchema }),
   examplePayload: getProductExamplePayload.restMap,
 });

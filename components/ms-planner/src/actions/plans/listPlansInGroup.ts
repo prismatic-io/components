@@ -1,11 +1,7 @@
 import type { PlannerPlan } from "@microsoft/microsoft-graph-types";
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import {
-  GRAPH_API_VERSION,
-  GRAPH_BASE_URL,
-  PLANNER_ENDPOINTS,
-} from "../../constants";
+import { GRAPH_API_VERSION, GRAPH_BASE_URL, PLANNER_ENDPOINTS } from "../../constants";
 import { listPlansInGroupExamplePayload } from "../../examplePayloads";
 import { listPlansInGroupOutputSchema } from "../../outputSchemas";
 import type { Etagged } from "../../types";
@@ -31,10 +27,7 @@ export const listPlansInGroup = action({
     );
     return { data };
   },
-  examplePerform: async (
-    _context,
-    { groupId },
-  ): Promise<{ data: unknown }> => ({
+  examplePerform: async (_context, { groupId }): Promise<{ data: unknown }> => ({
     data: {
       ...listPlansInGroupExamplePayload.data,
       value: listPlansInGroupExamplePayload.data.value.map((plan) => ({

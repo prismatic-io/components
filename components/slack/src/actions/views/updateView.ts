@@ -13,7 +13,7 @@ export const updateView = action({
   performSafety: "notAllowed",
   perform: async (
     { debug: { enabled: debug } },
-    { connection, view_id, external_id, view },
+    { connection, view_id, external_id, view }
   ) => {
     debugLogger({ debug, connection, view_id, external_id, view });
     const client = await createOauthClient({
@@ -29,7 +29,7 @@ export const updateView = action({
   },
   examplePerform: async (
     _context,
-    { view_id, external_id, view },
+    { view_id, external_id, view }
   ): Promise<{ data: unknown }> => ({
     data: {
       ...updateViewResponse,

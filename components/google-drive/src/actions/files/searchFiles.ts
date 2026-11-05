@@ -65,8 +65,7 @@ export const searchFiles = action({
     type: "actionOutput",
     schema: searchFilesOutputSchema,
   }),
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    searchFilesExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => searchFilesExamplePayload,
   examplePayload: searchFilesExamplePayload,
 });
 

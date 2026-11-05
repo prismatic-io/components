@@ -171,8 +171,7 @@ const conversationThreadIdInput = input({
   required: false,
   example: "AAQkADMxYWM1NzYzLWEwZTYtNDI0NC1hMTIzLTk4NzY1NDMyMTBhYg==",
   placeholder: "Enter a conversation thread ID",
-  comments:
-    "The identifier of the group conversation thread associated with the task.",
+  comments: "The identifier of the group conversation thread associated with the task.",
   clean: cleanStringInput,
 });
 
@@ -200,8 +199,7 @@ const previewTypeInput = input({
     { label: "Description", value: "description" },
     { label: "Reference", value: "reference" },
   ],
-  comments:
-    "Which part of the task details is shown on the task's card in the Planner board.",
+  comments: "Which part of the task details is shown on the task's card in the Planner board.",
   clean: cleanStringInput,
 });
 
@@ -288,8 +286,7 @@ export const assignTaskInputs = {
   taskId: taskIdInput,
   assignment: {
     ...taskAssignmentInput,
-    comments:
-      "Users to assign or unassign. At least one of Assign To or Unassign is required.",
+    comments: "Users to assign or unassign. At least one of Assign To or Unassign is required.",
   },
   etag: etagInput,
 };

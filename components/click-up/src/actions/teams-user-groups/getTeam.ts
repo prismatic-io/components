@@ -17,10 +17,7 @@ export const getTeam = action({
   examplePayload: getTeamExamplePayload,
   performSafety: "safe",
   perform: async (context, { clickUpConnection, teamId, groupIds }) => {
-    const client = createClickUpClient(
-      clickUpConnection,
-      context.debug.enabled,
-    );
+    const client = createClickUpClient(clickUpConnection, context.debug.enabled);
     const queryParams: QueryParams = {};
 
     if (teamId?.length) queryParams.team_id = teamId;

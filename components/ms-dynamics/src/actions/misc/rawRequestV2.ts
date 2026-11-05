@@ -18,7 +18,7 @@ export const rawRequestV2 = action({
       { ...httpInputParams, debugRequest: context.debug.enabled },
       {
         Authorization: getAuthorizationHeader(connection),
-      },
+      }
     );
     return { data };
   },

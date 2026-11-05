@@ -1,8 +1,4 @@
-import {
-  connection,
-  OAuth2Type,
-  oauth2Connection,
-} from "@prismatic-io/spectral";
+import { connection, OAuth2Type, oauth2Connection } from "@prismatic-io/spectral";
 
 export const googleConnection = oauth2Connection({
   key: "oauth2",
@@ -19,8 +15,7 @@ export const googleConnection = oauth2Connection({
       required: true,
       shown: false,
       comments: "The authorization URL for Google Cloud Pub/Sub OAuth 2.0.",
-      default:
-        "https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&prompt=consent",
+      default: "https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&prompt=consent",
     },
     tokenUrl: {
       label: "Token URL",
@@ -47,16 +42,14 @@ export const googleConnection = oauth2Connection({
       type: "string",
       required: true,
       comments: "The Client ID from the Google Cloud OAuth 2.0 credentials.",
-      example:
-        "123456789012-abcdefghijklmnopqrstuvwxyz123456.apps.googleusercontent.com",
+      example: "123456789012-abcdefghijklmnopqrstuvwxyz123456.apps.googleusercontent.com",
     },
     clientSecret: {
       label: "Client Secret",
       placeholder: "Enter Client Secret",
       type: "password",
       required: true,
-      comments:
-        "The Client Secret from the Google Cloud OAuth 2.0 credentials.",
+      comments: "The Client Secret from the Google Cloud OAuth 2.0 credentials.",
       example: "GOCSPX-abcdefghijklmnopqrstuvwxyz",
     },
   },
@@ -96,8 +89,7 @@ export const googlePrivateKeyConnection = connection({
       required: true,
       shown: true,
       example: "my-gcp-project-123456",
-      comments:
-        "The Google Cloud project ID that contains the Pub/Sub resources.",
+      comments: "The Google Cloud project ID that contains the Pub/Sub resources.",
     },
     scopes: {
       label: "Scopes",

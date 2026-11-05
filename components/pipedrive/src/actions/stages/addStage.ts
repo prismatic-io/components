@@ -15,11 +15,7 @@ export const addStage = action({
     context,
     { connection, name, pipelineId, dealProbability, rottenFlag, rottenDays },
   ) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      WebhookVersion.V2,
-    );
+    const client = createClient(connection, context.debug.enabled, WebhookVersion.V2);
     const { data } = await client.post("/stages", {
       name,
       pipeline_id: pipelineId,
@@ -31,8 +27,5 @@ export const addStage = action({
   },
   inputs: addStageInputs,
   examplePayload: addStageExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: addStageOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: addStageOutputSchema }),
 });

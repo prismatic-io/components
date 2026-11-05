@@ -5,8 +5,7 @@ import { connection, draftTaskId, guId } from "../../inputs";
 export const getDraftTask = action({
   display: {
     label: "Get Draft Task",
-    description:
-      "Get the information or metadata of a task inside a draft project",
+    description: "Get the information or metadata of a task inside a draft project",
   },
   perform: async (context, params) => {
     const client = createProjectsClient(

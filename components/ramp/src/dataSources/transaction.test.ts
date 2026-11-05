@@ -19,10 +19,7 @@ describe("selectTransaction", () => {
   afterEach(resetNock);
 
   test("maps the transaction list into dropdown elements", async () => {
-    rampNock()
-      .get(PATH)
-      .query(true)
-      .reply(200, terminatePaging(listTransactionsResponse));
+    rampNock().get(PATH).query(true).reply(200, terminatePaging(listTransactionsResponse));
 
     const { result } = await invokeDataSource(selectTransaction, {
       connection: testConnection,

@@ -8,8 +8,7 @@ import type { CreateWebhookBody } from "../../types";
 export const createWebhook = action({
   display: {
     label: "Create Webhook",
-    description:
-      "Create a new webhook for a workspace, space, folder, list, or task.",
+    description: "Create a new webhook for a workspace, space, folder, list, or task.",
   },
   outputSchema: outputSchema({
     type: "actionOutput",
@@ -17,23 +16,8 @@ export const createWebhook = action({
   }),
   examplePayload: createWebhookExamplePayload,
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    {
-      clickUpConnection,
-      teamId,
-      endpoint,
-      spaceId,
-      events,
-      folderId,
-      listId,
-      taskId,
-    },
-  ) => {
-    const client = createClickUpClient(
-      clickUpConnection,
-      context.debug.enabled,
-    );
+  perform: async (context, { clickUpConnection, teamId, endpoint, spaceId, events, folderId, listId, taskId }) => {
+    const client = createClickUpClient(clickUpConnection, context.debug.enabled);
     const body: CreateWebhookBody = {
       endpoint,
       events,

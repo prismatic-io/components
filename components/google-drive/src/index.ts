@@ -12,8 +12,7 @@ export default component({
   display: {
     label: "Google Drive",
     category: "Data Platforms",
-    description:
-      "Manage files, folders, and drives, and monitor activity in Google Drive",
+    description: "Manage files, folders, and drives, and monitor activity in Google Drive",
     iconPath: "icon.png",
   },
   actions,

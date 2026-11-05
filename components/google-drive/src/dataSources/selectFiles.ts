@@ -26,9 +26,7 @@ export const selectFiles = dataSource({
     });
 
     return {
-      result: disambiguateElements(
-        files.map((file) => ({ key: file.id, label: file.name })),
-      ),
+      result: disambiguateElements(files.map((file) => ({ key: file.id, label: file.name }))),
     };
   },
   inputs: selectFilesInputs,

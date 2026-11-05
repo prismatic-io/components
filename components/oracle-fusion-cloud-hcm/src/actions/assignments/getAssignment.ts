@@ -13,10 +13,7 @@ export const getAssignment = action({
   },
   examplePayload: getAssignmentExamplePayload,
   inputs: getAssignmentInputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: assignmentOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: assignmentOutputSchema }),
   perform: async (
     context,
     { connection, personId, assignmentId, expand, includeMetadataLinks },

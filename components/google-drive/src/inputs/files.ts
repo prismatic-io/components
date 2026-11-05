@@ -68,8 +68,7 @@ export const filesContainingSearchQuery = input({
   label: "Files Containing Search Query",
   type: "boolean",
   required: false,
-  comments:
-    "When true, searches for files that contain the provided search query in their name.",
+  comments: "When true, searches for files that contain the provided search query in their name.",
   clean: util.types.toBool,
   default: "false",
 });

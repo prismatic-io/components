@@ -13,9 +13,7 @@ export const checkItemExists = action({
     const client = await createClient(connection, context.debug.enabled);
 
     try {
-      const { data } = await client.get(
-        `/sites/${siteId}/drives/${driveId}/root:/${itemPath}`,
-      );
+      const { data } = await client.get(`/sites/${siteId}/drives/${driveId}/root:/${itemPath}`);
 
       return {
         data: {

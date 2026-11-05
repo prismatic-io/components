@@ -8,12 +8,7 @@ import {
   showUpdatedRecords,
 } from "../inputs";
 import { POLL_RESOURCE_CONFIG } from "../constants";
-import type {
-  PollingChangesObject,
-  PollingRecordChange,
-  PollingState,
-  SapRecord,
-} from "../types";
+import type { PollingChangesObject, PollingRecordChange, PollingState, SapRecord } from "../types";
 import {
   toSapDateTime,
   fetchAllRecords,
@@ -43,21 +38,11 @@ export const pollChangesTrigger = pollingTrigger({
   perform: async (
     context,
     payload,
-    {
-      connection,
-      resourceType,
-      showNewRecords,
-      showUpdatedRecords,
-      lookBackDate,
-    },
+    { connection, resourceType, showNewRecords, showUpdatedRecords, lookBackDate },
   ) => {
     const now = new Date().toISOString();
     const pollState = context.polling.getState() as PollingState;
-    const { since: lastPolledAt, isBackfill } = resolvePollWindow(
-      pollState,
-      lookBackDate,
-      now,
-    );
+    const { since: lastPolledAt, isBackfill } = resolvePollWindow(pollState, lookBackDate, now);
     const config = POLL_RESOURCE_CONFIG[resourceType];
 
     if (!config) {

@@ -17,8 +17,5 @@ export const updateFile = action({
   },
   inputs: updateFileInputs,
   examplePayload: updateFileExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: updateFileOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: updateFileOutputSchema }),
 });

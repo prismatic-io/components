@@ -6,19 +6,14 @@ import { getPendingHiresInputs } from "../../inputs";
 export const getPendingHires = action({
   display: {
     label: "Get Pending Hires",
-    description:
-      "Retrieve a list of pending hire records awaiting conversion to employees.",
+    description: "Retrieve a list of pending hire records awaiting conversion to employees.",
   },
   inputs: getPendingHiresInputs,
   perform: async (context, { connection, companyId, pagination }) => {
     const client = await createClient(connection, context.debug.enabled);
 
     const { data } = await client.get("/personnel/v1/pending-hires", {
-      params: {
-        company: companyId,
-        page: pagination.page,
-        per_page: pagination.perPage,
-      },
+      params: { company: companyId, page: pagination.page, per_page: pagination.perPage },
     });
 
     return { data };

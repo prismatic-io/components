@@ -10,11 +10,7 @@ export const acknowledgeMessage = action({
     description: "Acknowledge a previously fetched message",
   },
   perform: async (context, { message, amqpConnection }) => {
-    const client = await createClient(
-      amqpConnection,
-      context.debug.enabled,
-      context.logger,
-    );
+    const client = await createClient(amqpConnection, context.debug.enabled, context.logger);
     const channel = await client.createConfirmChannel();
     const result = channel.ack(message as Message);
     await channel.waitForConfirms();
@@ -28,8 +24,7 @@ export const acknowledgeMessage = action({
       type: "string",
       label: "Message",
       required: true,
-      comments:
-        "An AMQP message. This must reference the results of a previous 'Get Message' step",
+      comments: "An AMQP message. This must reference the results of a previous 'Get Message' step",
     }),
   },
   examplePayload: acknowledgeMessageExamplePayload,

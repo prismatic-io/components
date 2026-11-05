@@ -1,26 +1,13 @@
 import { type ActionContext, util } from "@prismatic-io/spectral";
 import { ClientType, createClient } from "../client";
 import { DEFAULT_POLLING_CRM_FIELDS } from "../constants";
-import type {
-  BookRecord,
-  CRMRecord,
-  NotificationTriggerInputs,
-  ZohoRecord,
-} from "../types";
-import {
-  disableSpecificNotificationEvents,
-  enableNotificationChannel,
-} from "./notifications";
+import type { BookRecord, CRMRecord, NotificationTriggerInputs, ZohoRecord } from "../types";
+import { disableSpecificNotificationEvents, enableNotificationChannel } from "./notifications";
 
-export const mergeCRMPollingFields = (
-  additionalFields: string[] = [],
-): string[] =>
+export const mergeCRMPollingFields = (additionalFields: string[] = []): string[] =>
   Array.from(new Set([...DEFAULT_POLLING_CRM_FIELDS, ...additionalFields]));
 
-export const getCRMModifiedOrCreatedRecords = (
-  records: CRMRecord[],
-  lastUpdated: string,
-) => {
+export const getCRMModifiedOrCreatedRecords = (records: CRMRecord[], lastUpdated: string) => {
   return records.reduce(
     (previous, current) => {
       const createdDate = new Date(current.Created_Time);
@@ -43,9 +30,7 @@ export const polledChanges = (filteredRecords: {
   created: ZohoRecord[];
   updated: ZohoRecord[];
 }) => {
-  return (
-    filteredRecords.created.length === 0 && filteredRecords.updated.length === 0
-  );
+  return filteredRecords.created.length === 0 && filteredRecords.updated.length === 0;
 };
 
 export const getBooksModifiedOrCreatedRecords = <T extends BookRecord>(
@@ -83,11 +68,7 @@ export const createNotificationTrigger = async (
     notificationCondition,
   }: NotificationTriggerInputs,
 ) => {
-  const crmClient = createClient(
-    connection,
-    ClientType.CRM,
-    context.debug.enabled,
-  );
+  const crmClient = createClient(connection, ClientType.CRM, context.debug.enabled);
 
   const flowName = context.flow.name;
   const webhookUrl = context.webhookUrls[flowName];
@@ -106,9 +87,7 @@ export const createNotificationTrigger = async (
     });
     context.crossFlowState.zohoChannelId = finalChannelId;
 
-    context.logger.info(
-      `Created notification channel ${finalChannelId} for flow ${flowName}`,
-    );
+    context.logger.info(`Created notification channel ${finalChannelId} for flow ${flowName}`);
   } catch (error) {
     context.logger.error(
       `Failed to create notification channel ${finalChannelId} for flow ${flowName}: ${error}`,
@@ -119,23 +98,12 @@ export const createNotificationTrigger = async (
 
 export const deleteNotificationTrigger = async (
   context: ActionContext,
-  {
-    connection,
-    channelId,
-    events,
-    notifyOnRelatedAction,
-  }: NotificationTriggerInputs,
+  { connection, channelId, events, notifyOnRelatedAction }: NotificationTriggerInputs,
 ) => {
-  const crmClient = createClient(
-    connection,
-    ClientType.CRM,
-    context.debug.enabled,
-  );
+  const crmClient = createClient(connection, ClientType.CRM, context.debug.enabled);
 
   const flowName = context.flow.name;
-  const storedChannelId = context.crossFlowState.zohoChannelId as
-    | number
-    | undefined;
+  const storedChannelId = context.crossFlowState.zohoChannelId as number | undefined;
   const notificationChannelId = storedChannelId ?? channelId;
 
   if (notificationChannelId == null || notificationChannelId === "") {
@@ -147,9 +115,7 @@ export const deleteNotificationTrigger = async (
     );
   }
 
-  context.logger.debug(
-    `Deleting notification for channel ${notificationChannelId}`,
-  );
+  context.logger.debug(`Deleting notification for channel ${notificationChannelId}`);
 
   try {
     await disableSpecificNotificationEvents(crmClient, {
@@ -169,9 +135,7 @@ export const deleteNotificationTrigger = async (
   }
 };
 
-export const getChannelId = (
-  channelId: number | string | undefined,
-): number => {
+export const getChannelId = (channelId: number | string | undefined): number => {
   if (channelId !== undefined) {
     const parsed = util.types.toNumber(channelId);
     if (!Number.isNaN(parsed) && parsed !== 0) {

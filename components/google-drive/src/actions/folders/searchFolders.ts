@@ -50,8 +50,7 @@ export const searchFolders = action({
     type: "actionOutput",
     schema: searchFoldersOutputSchema,
   }),
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    searchFoldersExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => searchFoldersExamplePayload,
   examplePayload: searchFoldersExamplePayload,
 });
 

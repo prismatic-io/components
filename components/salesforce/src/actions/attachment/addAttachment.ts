@@ -7,15 +7,11 @@ import { addAttachmentExamplePayload } from "../../examplePayloads";
 export const addAttachment = action({
   display: {
     label: "Add Attachment",
-    description:
-      "Attach a file to a parent record object (Account, Opportunity, etc.).",
+    description: "Attach a file to a parent record object (Account, Opportunity, etc.).",
   },
   inputs: addAttachmentInputs,
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { connection, version, recordId, fileName, file },
-  ) => {
+  perform: async (context, { connection, version, recordId, fileName, file }) => {
     const salesforceClient = await createSalesforceClient(connection, version);
 
     const payload = {
@@ -30,8 +26,7 @@ export const addAttachment = action({
     const result = await salesforceClient.sobject("Attachment").create(payload);
     return { data: result };
   },
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    addAttachmentExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => addAttachmentExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: createRecordOutputSchema,

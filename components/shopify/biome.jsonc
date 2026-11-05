@@ -22,10 +22,7 @@
   "overrides": [
     {
       // Shopify Liquid currency format strings use ${{amount}} — not JS template syntax
-      "includes": [
-        "src/examplePayloads/rest.ts",
-        "src/examplePayloads/graphql.ts"
-      ],
+      "includes": ["src/examplePayloads/rest.ts", "src/examplePayloads/graphql.ts"],
       "linter": {
         "rules": {
           "suspicious": {

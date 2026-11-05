@@ -35,9 +35,7 @@ const listDrives = action({
     const endpoint = `/sites/${params.siteId}/drives`;
 
     if (params.fetchAll) {
-      const results = await paginateResults(client, endpoint, {
-        returnFullData: true,
-      });
+      const results = await paginateResults(client, endpoint, { returnFullData: true });
       return { data: results };
     }
 
@@ -141,9 +139,7 @@ const getFilesFromDriveWithPagination = action({
         });
         return { data };
       }
-      const results = await paginateResults(client, endpoint, {
-        returnFullData: true,
-      });
+      const results = await paginateResults(client, endpoint, { returnFullData: true });
       return {
         data: results,
       };
@@ -162,11 +158,7 @@ const getFilesFromDriveWithPagination = action({
     }
 
     if (recursive) {
-      const { value: allFiles } = await getFilesFromDriveFN(
-        client,
-        driveId,
-        data.value,
-      );
+      const { value: allFiles } = await getFilesFromDriveFN(client, driveId, data.value);
       return {
         data: {
           ...data,
@@ -203,9 +195,7 @@ const getFilesFromDriveFolderWithPagination = action({
     const client = await createClient(connection, debug);
 
     if (fetchAll) {
-      const results = await paginateResults(client, endpoint, {
-        returnFullData: true,
-      });
+      const results = await paginateResults(client, endpoint, { returnFullData: true });
       return {
         data: results,
       };
@@ -241,15 +231,10 @@ const getFile = action({
     driveId,
     itemId,
   },
-  perform: async (
-    { debug: { enabled: debug } },
-    { connection, driveId, itemId },
-  ) => {
+  perform: async ({ debug: { enabled: debug } }, { connection, driveId, itemId }) => {
     const client = await createClient(connection, debug);
     try {
-      const { data } = await client.get(
-        `/drives/${driveId}/items/${itemId}/content`,
-      );
+      const { data } = await client.get(`/drives/${driveId}/items/${itemId}/content`);
       return {
         data,
       };
@@ -302,10 +287,7 @@ const updateFile = action({
     itemId,
     fileData,
   },
-  perform: async (
-    { debug: { enabled: debug } },
-    { connection, driveId, itemId, fileData },
-  ) => {
+  perform: async ({ debug: { enabled: debug } }, { connection, driveId, itemId, fileData }) => {
     const client = await createClient(connection, debug);
     const { data } = util.types.toData(fileData);
     const { data: updatedData } = await client.put(
@@ -331,10 +313,7 @@ const downloadFile = action({
     driveId,
     itemId,
   },
-  perform: async (
-    { debug: { enabled: debug } },
-    { connection, itemId, driveId },
-  ) => {
+  perform: async ({ debug: { enabled: debug } }, { connection, itemId, driveId }) => {
     const client = await createClient(connection, debug);
     try {
       const { data } = await client.get(`/drives/${driveId}/items/${itemId}`);
@@ -357,8 +336,7 @@ const downloadFile = action({
 const getFilesFromDriveRecursive = action({
   display: {
     label: "List All Files in Drive (Recursive)",
-    description:
-      "List all files from a Drive, including files in all subfolders",
+    description: "List all files from a Drive, including files in all subfolders",
   },
   inputs: {
     connection,

@@ -10,8 +10,7 @@ export const selectCustomer = dataSource({
   },
   perform: async (_context, { connection, site, company }) => {
     const client = getClient(connection, false, site, company);
-    const { data } =
-      await client.get<{ name: string; id: number }[]>("/customers");
+    const { data } = await client.get<{ name: string; id: number }[]>("/customers");
 
     const objects = data.map<Element>((customer) => ({
       key: util.types.toString(customer.id),

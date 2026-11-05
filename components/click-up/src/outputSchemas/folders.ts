@@ -1,8 +1,4 @@
-import {
-  folderListItemSchema,
-  requiredSpaceRefSchema,
-  statusRefSchema,
-} from "./shared";
+import { folderListItemSchema, requiredSpaceRefSchema, statusRefSchema } from "./shared";
 
 const folderProperties = {
   id: { type: "string" },
@@ -17,15 +13,7 @@ const folderProperties = {
   parent_folder: { type: "string" },
 };
 
-const folderRequired = [
-  "id",
-  "name",
-  "orderindex",
-  "override_statuses",
-  "hidden",
-  "space",
-  "task_count",
-];
+const folderRequired = ["id", "name", "orderindex", "override_statuses", "hidden", "space", "task_count"];
 
 const weakFolderListsSchema = {
   type: "array",
@@ -57,15 +45,7 @@ const subfolderSchema = {
     parent_folder: { type: "string" },
     folders: { type: "array", items: { type: "object" } },
   },
-  required: [
-    "id",
-    "name",
-    "orderindex",
-    "override_statuses",
-    "hidden",
-    "task_count",
-    "parent_folder",
-  ],
+  required: ["id", "name", "orderindex", "override_statuses", "hidden", "task_count", "parent_folder"],
 };
 
 export const getFolderOutputSchema = {

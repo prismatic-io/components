@@ -35,8 +35,7 @@ export const listFiles = action({
     type: "actionOutput",
     schema: listFilesOutputSchema,
   }),
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    listFilesExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => listFilesExamplePayload,
   examplePayload: listFilesExamplePayload,
 });
 

@@ -36,11 +36,7 @@ import {
   streamToBuffer,
 } from ".";
 
-const connection = createConnection(
-  connectionDefinition,
-  {},
-  { access_token: "test-token" },
-);
+const connection = createConnection(connectionDefinition, {}, { access_token: "test-token" });
 const ACTIVITY = "https://driveactivity.googleapis.com";
 const DRIVE = "https://www.googleapis.com";
 
@@ -52,11 +48,7 @@ const buildContext = (overrides: {
 }): ActionContext =>
   ({
     stepId: overrides.stepId ?? "step-1",
-    flow: {
-      id: "flow-id",
-      name: "Flow 1",
-      stableId: overrides.stableId ?? "stable-1",
-    },
+    flow: { id: "flow-id", name: "Flow 1", stableId: overrides.stableId ?? "stable-1" },
     crossFlowState: overrides.crossFlowState ?? {},
     instanceState: overrides.instanceState ?? {},
   }) as unknown as ActionContext;
@@ -64,11 +56,7 @@ const buildContext = (overrides: {
 describe("streamToBuffer", () => {
   test("concatenates every chunk in order", async () => {
     const buffer = await streamToBuffer(
-      Readable.from([
-        Buffer.from("Q3 "),
-        Buffer.from("revenue "),
-        Buffer.from("figures"),
-      ]),
+      Readable.from([Buffer.from("Q3 "), Buffer.from("revenue "), Buffer.from("figures")]),
     );
 
     expect(buffer.toString()).toBe("Q3 revenue figures");
@@ -91,9 +79,7 @@ describe("getToken", () => {
   });
 
   test("throws a ConnectionError when the access token is absent", () => {
-    expect(() =>
-      getToken(createConnection(connectionDefinition, {}, {})),
-    ).toThrow(ConnectionError);
+    expect(() => getToken(createConnection(connectionDefinition, {}, {}))).toThrow(ConnectionError);
   });
 });
 
@@ -120,10 +106,7 @@ describe("cleanStringInput", () => {
 
 describe("cleanArrayInput", () => {
   test("stringifies each entry and drops the falsy ones", () => {
-    expect(cleanArrayInput(["CREATE", "", null, "EDIT"])).toEqual([
-      "CREATE",
-      "EDIT",
-    ]);
+    expect(cleanArrayInput(["CREATE", "", null, "EDIT"])).toEqual(["CREATE", "EDIT"]);
   });
 
   test("returns an empty array for a non-array value", () => {
@@ -189,16 +172,9 @@ describe("getQueryDriveActivity", () => {
   test("returns the first page when fetchAll is false", async () => {
     nock(ACTIVITY)
       .post("/v2/activity:query")
-      .reply(200, {
-        activities: [{ timestamp: "2025-03-11T15:58:37.276Z" }],
-        nextPageToken: "p2",
-      });
+      .reply(200, { activities: [{ timestamp: "2025-03-11T15:58:37.276Z" }], nextPageToken: "p2" });
 
-    const data = await getQueryDriveActivity(
-      createActivityClient(connection),
-      {},
-      false,
-    );
+    const data = await getQueryDriveActivity(createActivityClient(connection), {}, false);
 
     expect(data.activities).toHaveLength(1);
     expect(data.nextPageToken).toBe("p2");
@@ -212,16 +188,9 @@ describe("getQueryDriveActivity", () => {
       .post("/v2/activity:query")
       .reply(200, { activities: [{ timestamp: "two" }] });
 
-    const data = await getQueryDriveActivity(
-      createActivityClient(connection),
-      {},
-      true,
-    );
+    const data = await getQueryDriveActivity(createActivityClient(connection), {}, true);
 
-    expect(data.activities).toEqual([
-      { timestamp: "one" },
-      { timestamp: "two" },
-    ]);
+    expect(data.activities).toEqual([{ timestamp: "one" }, { timestamp: "two" }]);
   });
 
   test("forwards only the five documented query keys to the API", async () => {
@@ -289,31 +258,22 @@ describe("list changes state keys", () => {
   });
 
   test("uses the bare step ID as the legacy key", () => {
-    expect(
-      getListChangesLegacyStateKey(buildContext({ stepId: "step-9" })),
-    ).toBe("step-9");
+    expect(getListChangesLegacyStateKey(buildContext({ stepId: "step-9" }))).toBe("step-9");
   });
 });
 
 describe("resolveListChangesPageToken", () => {
   test("prefers the token stored under the new crossFlowState key", () => {
     const context = buildContext({
-      crossFlowState: {
-        [`${LIST_CHANGES_STATE_KEY_PREFIX}:stable-1:step-1`]: "new-token",
-      },
+      crossFlowState: { [`${LIST_CHANGES_STATE_KEY_PREFIX}:stable-1:step-1`]: "new-token" },
       instanceState: { "step-1": "legacy-token" },
     });
 
-    expect(resolveListChangesPageToken(context)).toEqual({
-      value: "new-token",
-      isLegacy: false,
-    });
+    expect(resolveListChangesPageToken(context)).toEqual({ value: "new-token", isLegacy: false });
   });
 
   test("falls back to the legacy instanceState key and flags it", () => {
-    const context = buildContext({
-      instanceState: { "step-1": "legacy-token" },
-    });
+    const context = buildContext({ instanceState: { "step-1": "legacy-token" } });
 
     expect(resolveListChangesPageToken(context)).toEqual({
       value: "legacy-token",
@@ -322,10 +282,7 @@ describe("resolveListChangesPageToken", () => {
   });
 
   test("returns an empty token when neither location holds one", () => {
-    expect(resolveListChangesPageToken(buildContext({}))).toEqual({
-      value: "",
-      isLegacy: false,
-    });
+    expect(resolveListChangesPageToken(buildContext({}))).toEqual({ value: "", isLegacy: false });
   });
 });
 
@@ -346,14 +303,11 @@ describe("resolveActivitySyncHandoff", () => {
   test("reads the instant an initial sync handed over", () => {
     const context = buildContext({
       instanceState: {
-        [`${ACTIVITY_SYNC_HANDOFF_KEY_PREFIX}:stable-1:step-1`]:
-          "2026-02-01T00:00:00.000Z",
+        [`${ACTIVITY_SYNC_HANDOFF_KEY_PREFIX}:stable-1:step-1`]: "2026-02-01T00:00:00.000Z",
       },
     });
 
-    expect(resolveActivitySyncHandoff(context)).toBe(
-      "2026-02-01T00:00:00.000Z",
-    );
+    expect(resolveActivitySyncHandoff(context)).toBe("2026-02-01T00:00:00.000Z");
   });
 
   test("resolves to an empty string when no sync has handed anything over", () => {
@@ -362,9 +316,7 @@ describe("resolveActivitySyncHandoff", () => {
 
   test("resolves a cleared key to an empty string rather than the literal null", () => {
     const context = buildContext({
-      instanceState: {
-        [`${ACTIVITY_SYNC_HANDOFF_KEY_PREFIX}:stable-1:step-1`]: null,
-      },
+      instanceState: { [`${ACTIVITY_SYNC_HANDOFF_KEY_PREFIX}:stable-1:step-1`]: null },
     });
 
     expect(resolveActivitySyncHandoff(context)).toBe("");
@@ -374,9 +326,7 @@ describe("resolveActivitySyncHandoff", () => {
 describe("isInitialSyncCompleted", () => {
   test("is true once a sync has recorded completion", () => {
     const context = buildContext({
-      instanceState: {
-        [`${INITIAL_SYNC_COMPLETED_KEY_PREFIX}:stable-1:step-1`]: true,
-      },
+      instanceState: { [`${INITIAL_SYNC_COMPLETED_KEY_PREFIX}:stable-1:step-1`]: true },
     });
 
     expect(isInitialSyncCompleted(context)).toBe(true);
@@ -388,12 +338,7 @@ describe("isInitialSyncCompleted", () => {
 });
 
 describe("lookBackDateClean", () => {
-  test.each([
-    undefined,
-    null,
-    "",
-    "   ",
-  ])("treats %p as no backfill", (value) => {
+  test.each([undefined, null, "", "   "])("treats %p as no backfill", (value) => {
     expect(lookBackDateClean(value)).toBe("");
   });
 
@@ -402,9 +347,7 @@ describe("lookBackDateClean", () => {
   });
 
   test("trims surrounding whitespace before matching", () => {
-    expect(lookBackDateClean("  2026-01-15  ")).toBe(
-      "2026-01-15T00:00:00.000Z",
-    );
+    expect(lookBackDateClean("  2026-01-15  ")).toBe("2026-01-15T00:00:00.000Z");
   });
 
   test.each([
@@ -471,9 +414,7 @@ describe("fetchBackfillPage", () => {
       driveId: "",
     });
 
-    expect(query.q).toBe(
-      "modifiedTime > '2026-01-01T00:00:00.000Z' and trashed = false",
-    );
+    expect(query.q).toBe("modifiedTime > '2026-01-01T00:00:00.000Z' and trashed = false");
     expect(query.orderBy).toBe("modifiedTime");
     expect(query.fields).toContain("modifiedTime");
   });
@@ -506,12 +447,7 @@ describe("fetchBackfillPage", () => {
         removed: false,
         fileId: "file-a",
         time: "2026-02-01T10:00:00.000Z",
-        file: {
-          kind: "drive#file",
-          mimeType: "text/plain",
-          id: "file-a",
-          name: "Notes.txt",
-        },
+        file: { kind: "drive#file", mimeType: "text/plain", id: "file-a", name: "Notes.txt" },
       },
     ]);
   });
@@ -594,17 +530,13 @@ describe("buildActivityFilter", () => {
   });
 
   test("restricts to the requested action detail cases", () => {
-    expect(
-      buildActivityFilter("2026-01-01T00:00:00.000Z", ["CREATE", "EDIT"]),
-    ).toBe(
+    expect(buildActivityFilter("2026-01-01T00:00:00.000Z", ["CREATE", "EDIT"])).toBe(
       'time > "2026-01-01T00:00:00.000Z" AND detail.action_detail_case:(CREATE EDIT)',
     );
   });
 
   test("omits the action detail clause entirely when no events were selected", () => {
-    expect(buildActivityFilter("2026-01-01T00:00:00.000Z", [])).not.toContain(
-      "action_detail_case",
-    );
+    expect(buildActivityFilter("2026-01-01T00:00:00.000Z", [])).not.toContain("action_detail_case");
   });
 });
 

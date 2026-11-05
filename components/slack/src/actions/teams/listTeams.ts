@@ -14,7 +14,7 @@ export const listTeams = action({
   performSafety: "notAllowed",
   perform: async (
     { debug: { enabled: debug } },
-    { connection, fetchAll, pagination },
+    { connection, fetchAll, pagination }
   ) => {
     const { cursor, limit } = pagination;
     debugLogger({ cursor, limit, debug });
@@ -33,7 +33,7 @@ export const listTeams = action({
         "admin.teams",
         "teams",
         "list",
-        params,
+        params
       );
     }
 

@@ -10,17 +10,11 @@ import { fetchData, getNumericId } from "../util";
 export const selectProductImages = dataSource({
   display: {
     label: "Select Product Image",
-    description:
-      "Selects a product image from a list of images for the specified product.",
+    description: "Selects a product image from a list of images for the specified product.",
   },
   inputs: selectProductImagesInputs,
   perform: async (context, { shopifyConnection, productId }) => {
-    const client = getShopifyGraphQlClient(
-      shopifyConnection,
-      undefined,
-      false,
-      context.logger,
-    );
+    const client = getShopifyGraphQlClient(shopifyConnection, undefined, false, context.logger);
     const cleanedProductId = productId.startsWith("gid://")
       ? productId
       : `${SHOPIFY_GID_PREFIX}Product/${productId}`;

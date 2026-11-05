@@ -1,14 +1,10 @@
 import { afterEach, describe, expect, test, vi } from "vitest";
 import { createMockConnection } from "../testHelpers";
 
-const { mockRetrieveEntities } = vi.hoisted(() => ({
-  mockRetrieveEntities: vi.fn(),
-}));
+const { mockRetrieveEntities } = vi.hoisted(() => ({ mockRetrieveEntities: vi.fn() }));
 
 vi.mock("../client", () => ({
-  createCrmClient: vi
-    .fn()
-    .mockResolvedValue({ retrieveEntities: mockRetrieveEntities }),
+  createCrmClient: vi.fn().mockResolvedValue({ retrieveEntities: mockRetrieveEntities }),
 }));
 
 import { selectEntityType } from "./selectEntityType";

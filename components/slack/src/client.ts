@@ -39,7 +39,7 @@ export const getEnterpriseContext = ({
 export const assertTeamIdForOrgToken = (
   slackConnection: Connection,
   teamId: unknown,
-  method: string,
+  method: string
 ): void => {
   const { isEnterpriseInstall, enterpriseId } = getEnterpriseContext({
     slackConnection,
@@ -51,7 +51,7 @@ export const assertTeamIdForOrgToken = (
 
   const enterprise = enterpriseId ? ` (enterprise ${enterpriseId})` : "";
   throw new Error(
-    `This Slack connection is installed at the organization level${enterprise}, so Slack requires a Team ID on \`${method}\`. Set the Team ID input to the workspace you want to target. The List Teams action returns the available team IDs.`,
+    `This Slack connection is installed at the organization level${enterprise}, so Slack requires a Team ID on \`${method}\`. Set the Team ID input to the workspace you want to target. The List Teams action returns the available team IDs.`
   );
 };
 
@@ -68,14 +68,14 @@ export const getUserToken = ({ slackConnection }: CreateClientProps) => {
 
 export const accountIsActiveFn = async (
   token: string,
-  slackConnection: Connection,
+  slackConnection: Connection
 ): Promise<boolean | Error> => {
   const client = createClient({ baseUrl: getApiBaseUrl({ slackConnection }) });
   const response: AxiosResponse<AuthTestResponse> = await client.get(
     "/auth.test",
     {
       headers: { Authorization: `Bearer ${token}` },
-    },
+    }
   );
 
   const data: AuthTestResponse = response.data;
@@ -92,7 +92,7 @@ export const createOauthClient = async ({
   if (slackConnection.key !== slackOAuth.key) {
     throw new ConnectionError(
       slackConnection,
-      `Unsupported authorization method ${slackConnection.key}.`,
+      `Unsupported authorization method ${slackConnection.key}.`
     );
   }
   const token = getUserToken({ slackConnection });
@@ -114,14 +114,14 @@ export const createOauthClient = async ({
 };
 
 export const createWebhookClient = (
-  connection: Connection,
+  connection: Connection
 ): IncomingWebhook => {
   const webhookRegex = /^https:\/\/hooks.slack.com\/services\/T\w*\/B\w*\/\w*$/;
   const { key, fields } = connection;
   if (key !== webhookUrlConnection.key) {
     throw new ConnectionError(
       connection,
-      "The connection provided to this step is not a webhook connection. Please ensure that the connection contains a webhook URL (and is not a Slack OAuth connection).",
+      "The connection provided to this step is not a webhook connection. Please ensure that the connection contains a webhook URL (and is not a Slack OAuth connection)."
     );
   }
 
@@ -129,7 +129,7 @@ export const createWebhookClient = (
   if (!webhookRegex.exec(util.types.toString(webhookUrl))) {
     throw new ConnectionError(
       connection,
-      `The Slack Webhook URL you provided, "${webhookUrl}", does not follow the format "https://hooks.slack.com/services/TXXXX/BXXXXX/XXXXXXX".`,
+      `The Slack Webhook URL you provided, "${webhookUrl}", does not follow the format "https://hooks.slack.com/services/TXXXX/BXXXXX/XXXXXXX".`
     );
   }
 

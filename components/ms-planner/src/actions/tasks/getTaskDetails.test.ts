@@ -6,11 +6,7 @@ import { getTaskDetailsExamplePayload } from "../../examplePayloads";
 import { getTaskDetails } from "./getTaskDetails";
 
 const BASE = "https://graph.microsoft.com";
-const connection = createConnection(
-  templatedOauth,
-  {},
-  { access_token: "test-token" },
-);
+const connection = createConnection(templatedOauth, {}, { access_token: "test-token" });
 
 const params = {
   connection,
@@ -42,8 +38,6 @@ test("surfaces a failed lookup", async () => {
     .get("/v1.0/planner/tasks/01gzSlKkIUSUl6DF_EilrmQAKDhh/details")
     .reply(404, { error: { code: "itemNotFound" } });
 
-  await expect(invoke(getTaskDetails, params)).rejects.toThrow(
-    /status code 404/,
-  );
+  await expect(invoke(getTaskDetails, params)).rejects.toThrow(/status code 404/);
   expect(errorScope.isDone()).toBe(true);
 });

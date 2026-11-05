@@ -1,12 +1,6 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../client";
-import {
-  connection,
-  failedSyncs,
-  idempotencyKey,
-  successfulSyncs,
-  syncType,
-} from "../inputs";
+import { connection, failedSyncs, idempotencyKey, successfulSyncs, syncType } from "../inputs";
 import { postSyncStatusOutputSchema } from "../outputSchemas";
 
 export const postSyncStatus = action({

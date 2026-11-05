@@ -4,10 +4,7 @@ import { getHubspotClient } from "../../client";
 import { deleteAllWebhooksExamplePayload } from "../../examplePayloads";
 import { SUCCESS_MESSAGE } from "../../constants";
 import { deleteAllWebhooksInputs } from "../../inputs";
-import {
-  checkDeveloperApiKeyAndAppId,
-  deleteAllAppSubscriptions,
-} from "../../util";
+import { checkDeveloperApiKeyAndAppId, deleteAllAppSubscriptions } from "../../util";
 
 export const deleteAllWebhooks = action({
   display: {
@@ -26,8 +23,7 @@ export const deleteAllWebhooks = action({
       false,
     );
 
-    const { developerApiKey, appId } =
-      checkDeveloperApiKeyAndAppId(hubspotConnection);
+    const { developerApiKey, appId } = checkDeveloperApiKeyAndAppId(hubspotConnection);
 
     await deleteAllAppSubscriptions(client, appId, developerApiKey);
 
@@ -42,8 +38,5 @@ export const deleteAllWebhooks = action({
   }),
   inputs: deleteAllWebhooksInputs,
   examplePayload: deleteAllWebhooksExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: deleteAllWebhooksOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: deleteAllWebhooksOutputSchema }),
 });

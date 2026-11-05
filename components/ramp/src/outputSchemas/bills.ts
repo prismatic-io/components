@@ -68,14 +68,7 @@ const billSchema = {
             type: ["string", "null"],
           },
         },
-        required: [
-          "category_info",
-          "display_name",
-          "external_id",
-          "id",
-          "name",
-          "provider_name",
-        ],
+        required: ["category_info", "display_name", "external_id", "id", "name", "provider_name"],
       },
     },
     amount: {
@@ -719,11 +712,7 @@ const billSchema = {
                 format: "decimal",
               },
             },
-            required: [
-              "gross_amount",
-              "withholding_amount",
-              "withholding_percentage",
-            ],
+            required: ["gross_amount", "withholding_amount", "withholding_percentage"],
           },
         },
         required: [
@@ -1282,11 +1271,7 @@ const billSchema = {
                 format: "decimal",
               },
             },
-            required: [
-              "gross_amount",
-              "withholding_amount",
-              "withholding_percentage",
-            ],
+            required: ["gross_amount", "withholding_amount", "withholding_percentage"],
           },
         },
         required: [
@@ -1330,13 +1315,7 @@ const billSchema = {
           properties: {
             approval_status: {
               type: ["string", "null"],
-              enum: [
-                "APPROVED",
-                "INITIALIZED",
-                "PENDING",
-                "REJECTED",
-                "TERMINATED",
-              ],
+              enum: ["APPROVED", "INITIALIZED", "PENDING", "REJECTED", "TERMINATED"],
             },
             fund_id: {
               type: "string",

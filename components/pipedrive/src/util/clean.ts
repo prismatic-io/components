@@ -6,8 +6,7 @@ export const cleanNumber = (value: unknown): number | undefined =>
 export const cleanString = (value: unknown): string | undefined =>
   value ? util.types.toString(value) : undefined;
 
-export const cleanCode = (value: unknown) =>
-  value ? util.types.toObject(value) : undefined;
+export const cleanCode = (value: unknown) => (value ? util.types.toObject(value) : undefined);
 
 export const lookBackDateClean = (value: unknown): string => {
   const str = util.types.toString(value).trim();

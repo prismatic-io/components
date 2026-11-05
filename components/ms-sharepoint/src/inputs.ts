@@ -36,8 +36,7 @@ export const folderId = input({
   type: "string",
   required: false,
   example: "01Q7VXAXZW7LCB32ODBRCKZNSJIC544FXU",
-  comments:
-    "The unique identifier of a SharePoint folder. Leave empty to use root folder.",
+  comments: "The unique identifier of a SharePoint folder. Leave empty to use root folder.",
   dataSource: "listFolders",
   clean: (value) => {
     const folderId = util.types.toString(value);
@@ -94,8 +93,7 @@ export const optInFields = input({
   required: false,
   placeholder: "Enter comma-separated field names",
   example: "name, description, id",
-  comments:
-    "Comma-separated list of fields to return. Overrides the default result set.",
+  comments: "Comma-separated list of fields to return. Overrides the default result set.",
   clean: util.types.toString,
 });
 
@@ -153,8 +151,7 @@ export const notificationUrl = input({
   type: "string",
   required: true,
   placeholder: "Enter notification URL",
-  comments:
-    "The URL where Microsoft Graph will deliver webhook notifications when changes occur.",
+  comments: "The URL where Microsoft Graph will deliver webhook notifications when changes occur.",
   example: "https://contoso.azurewebsites.net/api/webhook-receiver",
   clean: util.types.toString,
 });
@@ -174,8 +171,7 @@ export const expirationDateTime = input({
   type: "string",
   required: true,
   placeholder: "Enter expiration date/time",
-  comments:
-    "The date and time when the subscription will expire if not updated or renewed.",
+  comments: "The date and time when the subscription will expire if not updated or renewed.",
   example: "2018-01-01T11:23:00.000Z",
   clean: cleanExpirationDateTime,
 });
@@ -207,8 +203,7 @@ export const allowDuplicates = input({
   type: "boolean",
   required: false,
   default: "false",
-  comments:
-    "When true, allows creating multiple subscriptions for the same endpoint.",
+  comments: "When true, allows creating multiple subscriptions for the same endpoint.",
   clean: util.types.toBool,
 });
 
@@ -217,8 +212,7 @@ export const showInstanceSubscriptions = input({
   type: "boolean",
   required: false,
   default: "true",
-  comments:
-    "When true, filters results to show only subscriptions created by this instance.",
+  comments: "When true, filters results to show only subscriptions created by this instance.",
   clean: util.types.toBool,
 });
 
@@ -271,8 +265,7 @@ export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
   required: false,
-  comments:
-    "When true, retrieves all results by automatically following pagination.",
+  comments: "When true, retrieves all results by automatically following pagination.",
   clean: util.types.toBool,
 });
 
@@ -280,8 +273,7 @@ export const recursive = input({
   label: "Recursive",
   type: "boolean",
   required: false,
-  comments:
-    "When true, returns files from all subfolders in addition to the specified folder.",
+  comments: "When true, returns files from all subfolders in addition to the specified folder.",
   clean: util.types.toBool,
 });
 
@@ -290,8 +282,7 @@ const parentItemId = input({
   type: "string",
   required: true,
   placeholder: "Enter parent item ID",
-  comments:
-    "The unique identifier of the parent folder. Use 'root' for the drive root.",
+  comments: "The unique identifier of the parent folder. Use 'root' for the drive root.",
   example: "root",
   clean: util.types.toString,
 });
@@ -341,8 +332,7 @@ export const moveFileInputs = {
   parentItemId: {
     ...parentItemId,
     label: "Destination Parent Id",
-    comments:
-      "Provide the Id of the destination parent element to move file to.",
+    comments: "Provide the Id of the destination parent element to move file to.",
   },
 };
 
@@ -433,8 +423,7 @@ export const includeSubfolders = input({
   type: "boolean",
   required: false,
   default: "false",
-  comments:
-    "When enabled, changes in subfolders will also be tracked recursively.",
+  comments: "When enabled, changes in subfolders will also be tracked recursively.",
   clean: util.types.toBool,
 });
 
@@ -450,8 +439,7 @@ export const checkItemExistsInputs = {
   },
   itemPath: {
     ...itemPath,
-    comments:
-      "Provide the path to the file or folder, relative to the drive root.",
+    comments: "Provide the path to the file or folder, relative to the drive root.",
   },
 };
 

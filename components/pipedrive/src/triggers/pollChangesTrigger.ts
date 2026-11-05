@@ -2,11 +2,7 @@ import { pollingTrigger } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { DEFAULT_BATCH_SIZE, POLL_RESOURCE_CONFIG } from "../constants";
 import { pollChangesTriggerExamplePayload } from "../examplePayloads/triggers";
-import type {
-  PollingChangesObject,
-  PollingRecordChange,
-  PollingState,
-} from "../types";
+import type { PollingChangesObject, PollingRecordChange, PollingState } from "../types";
 import { pollChangesTriggerInputs } from "../inputs";
 import {
   fetchRecentsSince,
@@ -31,13 +27,7 @@ export const pollChangesTrigger = pollingTrigger({
   perform: async (
     context,
     payload,
-    {
-      connection,
-      resourceType,
-      lookBackDate,
-      showNewRecords,
-      showUpdatedRecords,
-    },
+    { connection, resourceType, lookBackDate, showNewRecords, showUpdatedRecords },
   ) => {
     const now = new Date();
     const lastState = context.polling.getState() as PollingState | undefined;
@@ -49,26 +39,15 @@ export const pollChangesTrigger = pollingTrigger({
     const sinceTimestamp = formatPipedriveTimestamp(sinceDate);
 
     const client = createClient(connection, context.debug.enabled);
-    const records = await fetchRecentsSince(
-      client,
-      sinceTimestamp,
-      resourceType,
-    );
+    const records = await fetchRecentsSince(client, sinceTimestamp, resourceType);
 
     const config = POLL_RESOURCE_CONFIG[resourceType] ?? {
       createdAtField: null,
       updatedAtField: null,
     };
-    const { created, updated } = partitionByTimestamp(
-      records,
-      sinceDate,
-      config,
-    );
+    const { created, updated } = partitionByTimestamp(records, sinceDate, config);
 
-    context.polling.setState({ lastPolledAt: now.toISOString() } as Record<
-      string,
-      unknown
-    >);
+    context.polling.setState({ lastPolledAt: now.toISOString() } as Record<string, unknown>);
 
     const isInitialSync = !lastState?.lastPolledAt && !!lookBackDate;
 
@@ -85,8 +64,7 @@ export const pollChangesTrigger = pollingTrigger({
 
     return {
       payload: { ...payload, body: { data: result } },
-      polledNoChanges:
-        result.created.length === 0 && result.updated.length === 0,
+      polledNoChanges: result.created.length === 0 && result.updated.length === 0,
     };
   },
   examplePayload: pollChangesTriggerExamplePayload,

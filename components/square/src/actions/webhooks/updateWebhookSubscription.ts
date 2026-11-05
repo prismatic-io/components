@@ -8,21 +8,12 @@ export const updateWebhookSubscription = action({
     label: "Update Webhook Subscription",
     description: "Updates a webhook subscription.",
   },
-  perform: async (
-    context,
-    { squareConnection, subscriptionId, updatedWebhookSubscription },
-  ) => {
-    const client = await createAuthorizedClient(
-      squareConnection,
-      context.debug.enabled,
-    );
+  perform: async (context, { squareConnection, subscriptionId, updatedWebhookSubscription }) => {
+    const client = await createAuthorizedClient(squareConnection, context.debug.enabled);
 
-    const response = await client.put(
-      `/v2/webhooks/subscriptions/${subscriptionId}`,
-      {
-        subscription: updatedWebhookSubscription,
-      },
-    );
+    const response = await client.put(`/v2/webhooks/subscriptions/${subscriptionId}`, {
+      subscription: updatedWebhookSubscription,
+    });
 
     return {
       data: response.data,

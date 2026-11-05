@@ -20,8 +20,7 @@ import { cleanStringInput } from "../../utils";
 export const updateSalesOrder = action({
   display: {
     label: "Update Sales Order",
-    description:
-      "Updates a sales order object in your Business Central organization.",
+    description: "Updates a sales order object in your Business Central organization.",
   },
   perform: async (
     context,
@@ -41,11 +40,7 @@ export const updateSalesOrder = action({
       salesOrderId,
     },
   ) => {
-    const client = getMsBusinessCentralClient(
-      connection,
-      context,
-      context.debug.enabled,
-    );
+    const client = getMsBusinessCentralClient(connection, context, context.debug.enabled);
     const payload = {
       ...additionalProperties,
       email,

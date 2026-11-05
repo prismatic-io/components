@@ -12,9 +12,7 @@ export const listItems = action({
   perform: async (context, { connection, driveId, folderId }) => {
     const client = await createClient(connection, context.debug.enabled);
 
-    const { data } = await client.get(
-      `/drives/${driveId}/items/${folderId}/children`,
-    );
+    const { data } = await client.get(`/drives/${driveId}/items/${folderId}/children`);
     return { data };
   },
   examplePayload: listItemsExamplePayload,

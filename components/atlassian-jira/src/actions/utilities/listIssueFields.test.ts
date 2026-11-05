@@ -8,14 +8,11 @@ beforeAll(() => nock.disableNetConnect());
 afterAll(() => nock.enableNetConnect());
 afterEach(() => nock.cleanAll());
 
-const run = () =>
-  invoke(listIssueFields, { jiraConnection: basicConnection() });
+const run = () => invoke(listIssueFields, { jiraConnection: basicConnection() });
 
 describe("listIssueFields", () => {
   test("returns every field Jira lists", async () => {
-    const scope = jiraApi()
-      .get("/rest/api/3/field")
-      .reply(200, listIssueFieldsExamplePayload.data);
+    const scope = jiraApi().get("/rest/api/3/field").reply(200, listIssueFieldsExamplePayload.data);
 
     const { result } = await run();
 

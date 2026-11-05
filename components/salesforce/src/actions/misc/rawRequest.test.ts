@@ -23,9 +23,7 @@ describe("rawRequest", () => {
     const scope = nock(INSTANCE_URL, {
       reqheaders: { authorization: `Bearer ${ACCESS_TOKEN}` },
     })
-      .get(
-        `/services/data/v${DEFAULT_SF_VERSION}/sobjects/Account/003RM000006pL5gQAE`,
-      )
+      .get(`/services/data/v${DEFAULT_SF_VERSION}/sobjects/Account/003RM000006pL5gQAE`)
       .reply(200, getRecordExamplePayload.data);
 
     const { result } = await invoke(rawRequest, {

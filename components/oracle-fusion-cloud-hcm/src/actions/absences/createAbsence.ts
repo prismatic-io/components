@@ -12,14 +12,8 @@ export const createAbsence = action({
   },
   examplePayload: createAbsenceExamplePayload,
   inputs: createAbsenceInputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: absenceOutputSchema,
-  }),
-  perform: async (
-    context,
-    { connection, absenceDetails, additionalFields, ...fields },
-  ) => {
+  outputSchema: outputSchema({ type: "actionOutput", schema: absenceOutputSchema }),
+  perform: async (context, { connection, absenceDetails, additionalFields, ...fields }) => {
     const client = createClient(connection, context.debug.enabled);
     const body = { ...fields, ...absenceDetails, ...additionalFields };
     const { data } = await client.post<Absence>("/absences", body);

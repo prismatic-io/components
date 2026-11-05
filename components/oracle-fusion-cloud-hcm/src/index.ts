@@ -7,8 +7,7 @@ import triggers from "./triggers";
 
 export default component({
   key: "oracle-fusion-cloud-hcm",
-  documentationUrl:
-    "https://prismatic.io/docs/components/oracle-fusion-cloud-hcm/",
+  documentationUrl: "https://prismatic.io/docs/components/oracle-fusion-cloud-hcm/",
   public: true,
   display: {
     label: "Oracle Fusion Cloud HCM (Beta)",

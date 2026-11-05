@@ -1,10 +1,6 @@
 import type { MockedFunction } from "vitest";
 import { getHubspotClient } from "../client";
-import {
-  BATCHED_WINDOW_LIMIT,
-  MAX_SEARCH_LIMIT,
-  MAX_SEARCH_RESULTS,
-} from "../constants";
+import { BATCHED_WINDOW_LIMIT, MAX_SEARCH_LIMIT, MAX_SEARCH_RESULTS } from "../constants";
 import type {
   PollingChangesObject,
   PollResult,
@@ -16,9 +12,7 @@ import { pollChangesTrigger } from "./pollChangesTrigger";
 
 vi.mock("../client");
 
-const mockedGetHubspotClient = getHubspotClient as MockedFunction<
-  typeof getHubspotClient
->;
+const mockedGetHubspotClient = getHubspotClient as MockedFunction<typeof getHubspotClient>;
 
 const createContext = (
   initialState: SearchRecordsPollingState = {},
@@ -40,24 +34,13 @@ const createContext = (
 };
 
 const searchPage = (results: unknown[], after?: string) => ({
-  data: {
-    total: results.length,
-    results,
-    ...(after ? { paging: { next: { after } } } : {}),
-  },
+  data: { total: results.length, results, ...(after ? { paging: { next: { after } } } : {}) },
 });
 
-const rec = (id: string, createdAt: string, updatedAt: string) => ({
-  id,
-  createdAt,
-  updatedAt,
-});
+const rec = (id: string, createdAt: string, updatedAt: string) => ({ id, createdAt, updatedAt });
 
 const baseParams = (overrides: Record<string, unknown> = {}) => ({
-  hubspotConnection: {
-    key: "privateAppAccessToken",
-    fields: { accessToken: "t" },
-  },
+  hubspotConnection: { key: "privateAppAccessToken", fields: { accessToken: "t" } },
   searchEndpoint: "/crm/v3/objects/deals/search",
   searchProperties: undefined,
   showNewRecords: true,
@@ -71,10 +54,7 @@ beforeEach(() => vi.clearAllMocks());
 describe("pollChangesTrigger composition", () => {
   test("declares batching with a serial default", () => {
     expect(pollChangesTrigger.triggerResolverSupport).toBe("valid");
-    expect(pollChangesTrigger.batchConfig).toEqual({
-      batchSize: 50,
-      concurrentBatchLimit: 1,
-    });
+    expect(pollChangesTrigger.batchConfig).toEqual({ batchSize: 50, concurrentBatchLimit: 1 });
     expect(pollChangesCustomObjectsTrigger.batchConfig).toEqual({
       batchSize: 50,
       concurrentBatchLimit: 1,
@@ -95,15 +75,12 @@ describe("pollChangesTrigger composition", () => {
   test("custom objects resolveItems flattens the payload into tagged changes", () => {
     const a = rec("a", "2026-08-02T00:00:00.000Z", "2026-08-02T00:00:00.000Z");
     const b = rec("b", "2026-08-01T00:00:00.000Z", "2026-08-03T00:00:00.000Z");
-    const items =
-      pollChangesCustomObjectsTrigger.triggerResolver?.resolveItems?.(
-        {} as never,
-        {
-          payload: {
-            body: { data: { createdRecords: [a], updatedRecords: [b] } },
-          },
-        } as never,
-      );
+    const items = pollChangesCustomObjectsTrigger.triggerResolver?.resolveItems?.(
+      {} as never,
+      {
+        payload: { body: { data: { createdRecords: [a], updatedRecords: [b] } } },
+      } as never,
+    );
     expect(items).toEqual([
       { changeType: "created", record: a },
       { changeType: "updated", record: b },
@@ -124,9 +101,7 @@ describe("pollChangesTrigger composition", () => {
         { payload: { paginationState: cursor } } as never,
       ),
     ).toEqual(cursor);
-    expect(
-      resolver?.getNextPaginationState?.({} as never, { payload: {} } as never),
-    ).toBeNull();
+    expect(resolver?.getNextPaginationState?.({} as never, { payload: {} } as never)).toBeNull();
   });
 });
 
@@ -144,37 +119,23 @@ describe("pollChangesTrigger perform", () => {
 
     const body = post.mock.calls[0][1];
     expect(body.filterGroups[0].filters).toEqual([
-      {
-        propertyName: "createdate",
-        operator: "GTE",
-        value: "2026-01-01T00:00:00.000Z",
-      },
+      { propertyName: "createdate", operator: "GTE", value: "2026-01-01T00:00:00.000Z" },
       { propertyName: "createdate", operator: "LT", value: expect.any(String) },
     ]);
-    expect(body.sorts).toEqual([
-      { propertyName: "createdate", direction: "ASCENDING" },
-    ]);
+    expect(body.sorts).toEqual([{ propertyName: "createdate", direction: "ASCENDING" }]);
   });
 
   test("commits windowEnd and omits the cursor when a window is exhausted", async () => {
     const post = vi
       .fn()
       .mockResolvedValue(
-        searchPage([
-          rec("a", "2026-08-02T00:00:00.000Z", "2026-08-02T00:00:00.000Z"),
-        ]),
+        searchPage([rec("a", "2026-08-02T00:00:00.000Z", "2026-08-02T00:00:00.000Z")]),
       );
     mockedGetHubspotClient.mockReturnValue({ post } as never);
-    const { context, getState } = createContext({
-      lastPolledAt: "2026-08-01T00:00:00.000Z",
-    });
+    const { context, getState } = createContext({ lastPolledAt: "2026-08-01T00:00:00.000Z" });
 
     const before = new Date().toISOString();
-    const result = await pollChangesTrigger.perform(
-      context,
-      {} as never,
-      baseParams() as never,
-    );
+    const result = await pollChangesTrigger.perform(context, {} as never, baseParams() as never);
     const after = new Date().toISOString();
 
     expect(getState().cursor).toBeUndefined();
@@ -194,15 +155,9 @@ describe("pollChangesTrigger perform", () => {
     );
     const post = vi.fn().mockResolvedValue(searchPage(results, "next"));
     mockedGetHubspotClient.mockReturnValue({ post } as never);
-    const { context, getState } = createContext({
-      lastPolledAt: "2026-08-01T00:00:00.000Z",
-    });
+    const { context, getState } = createContext({ lastPolledAt: "2026-08-01T00:00:00.000Z" });
 
-    const result = await pollChangesTrigger.perform(
-      context,
-      {} as never,
-      baseParams() as never,
-    );
+    const result = await pollChangesTrigger.perform(context, {} as never, baseParams() as never);
     const cursor = result.payload.paginationState as PollingCursor;
 
     expect(cursor).toBeDefined();
@@ -222,20 +177,11 @@ describe("pollChangesTrigger perform", () => {
       { enabled: true, batchSize: 50 },
     );
 
-    const result = await pollChangesTrigger.perform(
-      context,
-      {} as never,
-      baseParams() as never,
-    );
+    const result = await pollChangesTrigger.perform(context, {} as never, baseParams() as never);
 
     const cursor = result.payload.paginationState as PollingCursor;
-    expect(cursor.idWalk).toEqual({
-      denseTimestamp: "2026-08-05T00:00:00.000Z",
-      idWatermark: "",
-    });
-    expect(getState().cursor?.idWalk?.denseTimestamp).toBe(
-      "2026-08-05T00:00:00.000Z",
-    );
+    expect(cursor.idWalk).toEqual({ denseTimestamp: "2026-08-05T00:00:00.000Z", idWatermark: "" });
+    expect(getState().cursor?.idWalk?.denseTimestamp).toBe("2026-08-05T00:00:00.000Z");
     expect((result as unknown as PollResult).polledNoChanges).toBe(false);
   });
 
@@ -254,11 +200,7 @@ describe("pollChangesTrigger perform", () => {
       { enabled: true, batchSize: 50 },
     );
 
-    const result = await pollChangesTrigger.perform(
-      context,
-      {} as never,
-      baseParams() as never,
-    );
+    const result = await pollChangesTrigger.perform(context, {} as never, baseParams() as never);
 
     expect(post).toHaveBeenCalledTimes(BATCHED_WINDOW_LIMIT / MAX_SEARCH_LIMIT);
     expect(result.payload.paginationState).toBeDefined();
@@ -274,9 +216,7 @@ describe("pollChangesTrigger perform", () => {
     );
     const post = vi.fn().mockResolvedValue(searchPage(results, "next"));
     mockedGetHubspotClient.mockReturnValue({ post } as never);
-    const { context } = createContext({
-      lastPolledAt: "2026-08-01T00:00:00.000Z",
-    });
+    const { context } = createContext({ lastPolledAt: "2026-08-01T00:00:00.000Z" });
 
     const result = await pollChangesTrigger.perform(
       context,
@@ -291,15 +231,9 @@ describe("pollChangesTrigger perform", () => {
   test("reports polledNoChanges only when the drain is done and nothing changed", async () => {
     const post = vi.fn().mockResolvedValue(searchPage([]));
     mockedGetHubspotClient.mockReturnValue({ post } as never);
-    const { context } = createContext({
-      lastPolledAt: "2026-08-01T00:00:00.000Z",
-    });
+    const { context } = createContext({ lastPolledAt: "2026-08-01T00:00:00.000Z" });
 
-    const result = await pollChangesTrigger.perform(
-      context,
-      {} as never,
-      baseParams() as never,
-    );
+    const result = await pollChangesTrigger.perform(context, {} as never, baseParams() as never);
     expect((result as unknown as PollResult).polledNoChanges).toBe(true);
   });
 
@@ -316,9 +250,7 @@ describe("pollChangesTrigger perform", () => {
     const post = vi
       .fn()
       .mockResolvedValue(
-        searchPage([
-          rec("a", "2026-08-06T00:00:00.000Z", "2026-08-06T00:00:00.000Z"),
-        ]),
+        searchPage([rec("a", "2026-08-06T00:00:00.000Z", "2026-08-06T00:00:00.000Z")]),
       );
     mockedGetHubspotClient.mockReturnValue({ post } as never);
     const { context } = createContext(channel === "state" ? { cursor } : {});
@@ -340,11 +272,7 @@ describe("pollChangesTrigger perform", () => {
       windowEnd: "2026-08-10T00:00:00.000Z",
       isBackfill: false,
     };
-    const record = rec(
-      "a",
-      "2026-08-06T00:00:00.000Z",
-      "2026-08-06T00:00:00.000Z",
-    );
+    const record = rec("a", "2026-08-06T00:00:00.000Z", "2026-08-06T00:00:00.000Z");
 
     const viaPayloadPost = vi.fn().mockResolvedValue(searchPage([record]));
     mockedGetHubspotClient.mockReturnValue({ post: viaPayloadPost } as never);
@@ -362,23 +290,13 @@ describe("pollChangesTrigger perform", () => {
       baseParams() as never,
     );
 
-    expect(viaStatePost.mock.calls[0][1]).toEqual(
-      viaPayloadPost.mock.calls[0][1],
-    );
+    expect(viaStatePost.mock.calls[0][1]).toEqual(viaPayloadPost.mock.calls[0][1]);
     expect(viaState.payload.body).toEqual(viaPayload.payload.body);
 
     const sharedBody = viaStatePost.mock.calls[0][1];
     expect(sharedBody.filterGroups[0].filters).toEqual([
-      {
-        propertyName: "hs_lastmodifieddate",
-        operator: "GTE",
-        value: cursor.watermark,
-      },
-      {
-        propertyName: "hs_lastmodifieddate",
-        operator: "LT",
-        value: cursor.windowEnd,
-      },
+      { propertyName: "hs_lastmodifieddate", operator: "GTE", value: cursor.watermark },
+      { propertyName: "hs_lastmodifieddate", operator: "LT", value: cursor.windowEnd },
     ]);
   });
 
@@ -387,9 +305,7 @@ describe("pollChangesTrigger perform", () => {
       rec("a", "2026-01-01T00:00:00.000Z", "2026-08-05T00:00:00.000Z"),
       rec("b", "2026-01-01T00:00:00.000Z", "2026-08-06T00:00:00.000Z"),
     ];
-    const post = vi
-      .fn()
-      .mockResolvedValue({ data: { total: 100, results: nonAscending } });
+    const post = vi.fn().mockResolvedValue({ data: { total: 100, results: nonAscending } });
     mockedGetHubspotClient.mockReturnValue({ post } as never);
     const { context, getState } = createContext({
       lastPolledAt: "2026-08-10T00:00:00.000Z",
@@ -413,14 +329,10 @@ describe("pollChangesTrigger perform", () => {
     const post = vi
       .fn()
       .mockResolvedValue(
-        searchPage([
-          rec("a", "2026-08-02T00:00:00.000Z", "2026-08-02T00:00:00.000Z"),
-        ]),
+        searchPage([rec("a", "2026-08-02T00:00:00.000Z", "2026-08-02T00:00:00.000Z")]),
       );
     mockedGetHubspotClient.mockReturnValue({ post } as never);
-    const { context } = createContext({
-      lastPolledAt: "2026-08-01T00:00:00.000Z",
-    });
+    const { context } = createContext({ lastPolledAt: "2026-08-01T00:00:00.000Z" });
 
     const result = await pollChangesTrigger.perform(
       context,
@@ -464,25 +376,18 @@ describe("pollChangesCustomObjectsTrigger perform", () => {
   test("filters on hs_lastmodifieddate against the object-type endpoint", async () => {
     const post = vi.fn().mockResolvedValue(searchPage([]));
     mockedGetHubspotClient.mockReturnValue({ post } as never);
-    const { context } = createContext({
-      lastPolledAt: "2026-08-01T00:00:00.000Z",
-    });
+    const { context } = createContext({ lastPolledAt: "2026-08-01T00:00:00.000Z" });
 
     await pollChangesCustomObjectsTrigger.perform(
       context,
       {} as never,
-      baseParams({
-        searchEndpoint: undefined,
-        objectType: "equipment",
-      }) as never,
+      baseParams({ searchEndpoint: undefined, objectType: "equipment" }) as never,
     );
 
     expect(post).toHaveBeenCalledWith(
       "/crm/objects/2026-09/equipment/search",
       expect.objectContaining({
-        sorts: [
-          { propertyName: "hs_lastmodifieddate", direction: "ASCENDING" },
-        ],
+        sorts: [{ propertyName: "hs_lastmodifieddate", direction: "ASCENDING" }],
       }),
     );
     const names = post.mock.calls[0][1].filterGroups[0].filters.map(
@@ -499,10 +404,7 @@ describe("pollChangesCustomObjectsTrigger perform", () => {
       pollChangesCustomObjectsTrigger.perform(
         context,
         {} as never,
-        baseParams({
-          searchEndpoint: undefined,
-          objectType: undefined,
-        }) as never,
+        baseParams({ searchEndpoint: undefined, objectType: undefined }) as never,
       ),
     ).rejects.toThrow(/Object Type/);
     expect(post).not.toHaveBeenCalled();
@@ -517,9 +419,7 @@ describe("pollChangesTrigger stored Search Endpoint values", () => {
   ])("posts %s to the dated path and filters on the contacts date property", async (_, stored) => {
     const post = vi.fn().mockResolvedValue(searchPage([]));
     mockedGetHubspotClient.mockReturnValue({ post } as never);
-    const { context } = createContext({
-      lastPolledAt: "2026-08-01T00:00:00.000Z",
-    });
+    const { context } = createContext({ lastPolledAt: "2026-08-01T00:00:00.000Z" });
 
     await pollChangesTrigger.perform(
       context,

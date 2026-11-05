@@ -7,8 +7,7 @@ import { computeEndpointBasedOnConnection } from "../../util";
 export const getCurrentUser = action({
   display: {
     label: "Get Current User",
-    description:
-      "Gets the information and metadata of the user that is currently logged in.",
+    description: "Gets the information and metadata of the user that is currently logged in.",
   },
   perform: async (context, params) => {
     const client = createClient(params.connection, context.debug.enabled);

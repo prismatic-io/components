@@ -9,10 +9,7 @@ export const createFolder = action({
     description: "Create a Folder in a Drive",
   },
   inputs: createFolderInputs,
-  perform: async (
-    context,
-    { connection, siteId, driveId, parentItemId, folderName },
-  ) => {
+  perform: async (context, { connection, siteId, driveId, parentItemId, folderName }) => {
     const client = await createClient(connection, context.debug.enabled);
 
     const { data } = await client.post(

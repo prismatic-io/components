@@ -54,20 +54,16 @@ export const updateSubscription = action({
           pushConfig: additionalFields.pushConfig || undefined,
           bigqueryConfig: additionalFields.bigqueryConfig || undefined,
           ackDeadlineSeconds: additionalFields.ackDeadlineSeconds || undefined,
-          retainAckedMessages:
-            additionalFields.retainAckedMessages || undefined,
-          messageRetentionDuration:
-            additionalFields.messageRetentionDuration || undefined,
+          retainAckedMessages: additionalFields.retainAckedMessages || undefined,
+          messageRetentionDuration: additionalFields.messageRetentionDuration || undefined,
           labels: additionalFields.labels || undefined,
-          enableMessageOrdering:
-            additionalFields.enableMessageOrdering || undefined,
+          enableMessageOrdering: additionalFields.enableMessageOrdering || undefined,
           expirationPolicy: additionalFields.expirationPolicy || undefined,
           filter: additionalFields.filter || undefined,
           deadLetterPolicy: additionalFields.deadLetterPolicy || undefined,
           retryPolicy: additionalFields.retryPolicy || undefined,
           detached: additionalFields.detached || undefined,
-          enableExactlyOnceDelivery:
-            additionalFields.enableExactlyOnceDelivery || undefined,
+          enableExactlyOnceDelivery: additionalFields.enableExactlyOnceDelivery || undefined,
           topicMessageRetentionDuration:
             additionalFields.topicMessageRetentionDuration || undefined,
           state: additionalFields.state || undefined,

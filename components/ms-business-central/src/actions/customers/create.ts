@@ -60,11 +60,7 @@ export const createCustomer = action({
       companyId,
     },
   ) => {
-    const client = getMsBusinessCentralClient(
-      connection,
-      context,
-      context.debug.enabled,
-    );
+    const client = getMsBusinessCentralClient(connection, context, context.debug.enabled);
     const payload = {
       addressLine1,
       addressLine2,
@@ -87,10 +83,7 @@ export const createCustomer = action({
       currencyId,
       displayName,
     };
-    const { data } = await client.post<Customer>(
-      `/companies(${companyId})/customers`,
-      payload,
-    );
+    const { data } = await client.post<Customer>(`/companies(${companyId})/customers`, payload);
 
     return {
       data,

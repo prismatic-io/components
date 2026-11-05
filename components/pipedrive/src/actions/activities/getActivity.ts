@@ -12,19 +12,12 @@ export const getActivity = action({
   },
   performSafety: "safe",
   perform: async (context, { connection, id }) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      WebhookVersion.V2,
-    );
+    const client = createClient(connection, context.debug.enabled, WebhookVersion.V2);
     const { data } = await client.get(`/activities/${id}`);
     return { data };
   },
   inputs: getActivityInputs,
   examplePayload: getActivityExamplePayload,
   examplePerform: async () => getActivityExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getActivityOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getActivityOutputSchema }),
 });

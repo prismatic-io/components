@@ -16,8 +16,7 @@ const descriptionInput = input({
   placeholder: "Enter profile description",
   type: "string",
   required: true,
-  comments:
-    "A short summary of what the profile grants and who it is intended for.",
+  comments: "A short summary of what the profile grants and who it is intended for.",
   clean: util.types.toString,
 });
 

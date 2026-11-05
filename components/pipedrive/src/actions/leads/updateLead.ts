@@ -19,14 +19,7 @@ export const updateLead = action({
       labelIds,
       personId,
       organizationId,
-      additionalFields: {
-        title,
-        value,
-        expectedCloseDate,
-        visibleTo,
-        wasSeen,
-        isArchived,
-      } = {},
+      additionalFields: { title, value, expectedCloseDate, visibleTo, wasSeen, isArchived } = {},
     },
   ) => {
     const client = createClient(connection, context.debug.enabled);
@@ -46,8 +39,5 @@ export const updateLead = action({
   },
   inputs: updateLeadInputs,
   examplePayload: updateLeadExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: updateLeadOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: updateLeadOutputSchema }),
 });

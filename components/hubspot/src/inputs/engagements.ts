@@ -1,13 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { ENGAGEMENT_OBJECTS, ENGAGEMENT_PROPERTIES } from "../constants";
 import { valueListInputClean } from "../util";
-import {
-  archived,
-  connectionInput,
-  idProperty,
-  properties,
-  timeout,
-} from "./common";
+import { archived, connectionInput, idProperty, properties, timeout } from "./common";
 
 const engagementObject = input({
   label: "Engagement Object",
@@ -34,8 +28,7 @@ const engagementId = input({
   type: "string",
   required: true,
   placeholder: "Enter Engagement ID",
-  comments:
-    "The unique identifier of the engagement. A taskId, meetingId, etc.",
+  comments: "The unique identifier of the engagement. A taskId, meetingId, etc.",
   example: "123456",
   dataSource: "selectEngagement",
   clean: util.types.toString,

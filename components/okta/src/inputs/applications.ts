@@ -26,8 +26,7 @@ export const useOptimization = input({
 
 export const includeNonDeleted = input({
   label: "Include Non-Deleted",
-  comments:
-    "When true, both deleted and non-deleted applications are returned.",
+  comments: "When true, both deleted and non-deleted applications are returned.",
   type: "boolean",
   required: false,
   default: "false",
@@ -50,8 +49,7 @@ export const username = input({
   label: "Username",
   type: "string",
   required: false,
-  comments:
-    "The username of the user to whom the application will be assigned.",
+  comments: "The username of the user to whom the application will be assigned.",
   example: "johndoe",
   placeholder: "Enter username",
   clean: cleanString,
@@ -78,8 +76,7 @@ export const profile = input({
 export const resultOptions = structuredObjectInput({
   label: "Result Options",
   required: false,
-  comments:
-    "Options that control which records are returned and how the response is shaped.",
+  comments: "Options that control which records are returned and how the response is shaped.",
   inputs: { useOptimization, expand, includeNonDeleted },
 });
 

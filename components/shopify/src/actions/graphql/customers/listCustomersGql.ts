@@ -13,10 +13,7 @@ export const listCustomersGql = action({
     description: "Lists all customers.",
   },
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { shopifyConnection, getAlldata, pagination = {} },
-  ) => {
+  perform: async (context, { shopifyConnection, getAlldata, pagination = {} }) => {
     const client = getShopifyGraphQlClient(
       shopifyConnection,
       undefined,

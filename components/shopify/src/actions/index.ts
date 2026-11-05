@@ -10,14 +10,12 @@ import webhooks from "./webhooks";
 
 const { createCustomer, getCustomer, listCustomers } = customers;
 const { listDraftOrders } = draftOrders;
-const { getFulfillmentOrder, listFulfillmentOrders, listFulfillments } =
-  fulfillments;
+const { getFulfillmentOrder, listFulfillmentOrders, listFulfillments } = fulfillments;
 const { getShopConfig, graphQlRawRequest, rawRequest } = misc;
 const { getOrder } = orders;
 const { listProductImages } = productImages;
 const { countProducts, getProduct, listProducts } = products;
-const { createWebhook, deleteInstanceWebhooks, deleteWebhook, listWebhooks } =
-  webhooks;
+const { createWebhook, deleteInstanceWebhooks, deleteWebhook, listWebhooks } = webhooks;
 
 export default {
   createWebhook,

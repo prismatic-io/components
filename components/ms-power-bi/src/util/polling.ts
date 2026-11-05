@@ -14,11 +14,7 @@ export const lookBackDateClean = (value: unknown): string => {
   const month = util.types.toNumber(parts[1]);
   const day = util.types.toNumber(parts[2]);
   const parsed = new Date(year, month - 1, day);
-  if (
-    parsed.getFullYear() !== year ||
-    parsed.getMonth() !== month - 1 ||
-    parsed.getDate() !== day
-  ) {
+  if (parsed.getFullYear() !== year || parsed.getMonth() !== month - 1 || parsed.getDate() !== day) {
     throw new Error(`Look-back Date "${str}" is not a valid calendar date.`);
   }
   if (parsed > new Date()) {
@@ -27,9 +23,7 @@ export const lookBackDateClean = (value: unknown): string => {
   return str;
 };
 
-export const resolvePollingRecordChanges = (
-  data: PowerBIChangesObject | undefined,
-): PowerBIRecordChange[] => {
+export const resolvePollingRecordChanges = (data: PowerBIChangesObject | undefined): PowerBIRecordChange[] => {
   if (!data) return [];
   const changes: PowerBIRecordChange[] = [];
   for (const record of data.created ?? []) {

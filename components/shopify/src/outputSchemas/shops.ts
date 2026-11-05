@@ -52,10 +52,7 @@ const restShopSchema = {
     multi_location_enabled: { type: "boolean" as const },
     setup_required: { type: "boolean" as const },
     pre_launch_enabled: { type: "boolean" as const },
-    enabled_presentment_currencies: {
-      type: "array" as const,
-      items: { type: "string" as const },
-    },
+    enabled_presentment_currencies: { type: "array" as const, items: { type: "string" as const } },
     transactional_sms_disabled: { type: "boolean" as const },
     marketing_sms_consent_enabled_at_checkout: { type: "boolean" as const },
   },
@@ -119,9 +116,7 @@ export const getShopConfigGqlOutputSchema = {
               type: "array" as const,
               items: { type: "string" as const },
             },
-            marketing_sms_consent_enabled_at_checkout: {
-              type: "boolean" as const,
-            },
+            marketing_sms_consent_enabled_at_checkout: { type: "boolean" as const },
             transactional_sms_disabled: { type: "boolean" as const },
           },
         },

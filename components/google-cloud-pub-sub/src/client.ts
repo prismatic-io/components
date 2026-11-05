@@ -11,10 +11,7 @@ const validateConnection = (connection: Connection) => {
     throw new ConnectionError(connection, UNKNOWN_CONNECTION_ERROR);
   }
 
-  if (
-    connection.key === googleConnection.key &&
-    !connection.token?.access_token
-  ) {
+  if (connection.key === googleConnection.key && !connection.token?.access_token) {
     throw new ConnectionError(
       connection,
       "Received valid Connection type but did not find valid access token.",
@@ -23,25 +20,19 @@ const validateConnection = (connection: Connection) => {
 };
 
 const getPrivateKeyAuth = (connection: Connection): Auth.GoogleAuth => {
-  const cleanedScopesString = util.types
-    .toString(connection.fields.scopes)
-    .replace(/\s+/g, " ");
+  const cleanedScopesString = util.types.toString(connection.fields.scopes).replace(/\s+/g, " ");
   const scopesArray = cleanedScopesString.split(" ");
   return new Auth.GoogleAuth({
     projectId: util.types.toString(connection.fields.projectId),
     credentials: {
       client_email: util.types.toString(connection.fields.clientEmail),
-      private_key: util.types
-        .toString(connection.fields.privateKey)
-        .replace(/\\n/g, "\n"),
+      private_key: util.types.toString(connection.fields.privateKey).replace(/\\n/g, "\n"),
     },
     scopes: scopesArray,
   });
 };
 
-export const getGoogleAuth = (
-  connection: Connection,
-): Auth.GoogleAuth | Auth.OAuth2Client => {
+export const getGoogleAuth = (connection: Connection): Auth.GoogleAuth | Auth.OAuth2Client => {
   switch (connection.key) {
     case googleConnection.key: {
       const oauth2Client = new google.auth.OAuth2(
@@ -64,10 +55,7 @@ export const getGoogleAuth = (
   }
 };
 
-function getClient(
-  connection: Connection,
-  version: Version = "v1",
-): pubsub_v1.Pubsub {
+function getClient(connection: Connection, version: Version = "v1"): pubsub_v1.Pubsub {
   const auth = getGoogleAuth(connection);
   return google.pubsub({
     version,
@@ -75,10 +63,7 @@ function getClient(
   });
 }
 
-export const createClient = (
-  connection: Connection,
-  version: Version = "v1",
-) => {
+export const createClient = (connection: Connection, version: Version = "v1") => {
   validateConnection(connection);
   return getClient(connection, version);
 };

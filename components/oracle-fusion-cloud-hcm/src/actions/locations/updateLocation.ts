@@ -13,10 +13,7 @@ export const updateLocation = action({
   },
   examplePayload: updateLocationExamplePayload,
   inputs: updateLocationInputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: locationOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: locationOutputSchema }),
   perform: async (
     context,
     {
@@ -48,10 +45,7 @@ export const updateLocation = action({
       addresses,
       ...additionalFields,
     };
-    const { data } = await client.patch<Location>(
-      `/locationsV2/${locationId}`,
-      body,
-    );
+    const { data } = await client.patch<Location>(`/locationsV2/${locationId}`, body);
     return { data };
   },
 });

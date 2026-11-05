@@ -12,15 +12,8 @@ export const createPurchaseOrder = action({
     ...createPurchaseOrdersInputs,
     connection,
   },
-  perform: async (
-    context,
-    { connection, bodyFields, CardCode, DocumentLines },
-  ) => {
-    const client = await createClient(
-      connection,
-      context,
-      context.debug.enabled,
-    );
+  perform: async (context, { connection, bodyFields, CardCode, DocumentLines }) => {
+    const client = await createClient(connection, context, context.debug.enabled);
 
     const { data } = await client.post(`/PurchaseOrders`, {
       CardCode,

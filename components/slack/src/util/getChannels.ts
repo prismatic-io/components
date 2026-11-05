@@ -38,7 +38,7 @@ export const generateChannelTypesString = ({
 export const getChannels = async (
   client: WebClient,
   params: Record<string, unknown>,
-  fetchAll: boolean,
+  fetchAll: boolean
 ) => {
   const promiseArray: Promise<Channel[]>[] = [];
   const channelsMapper = [
@@ -61,7 +61,7 @@ export const getChannels = async (
   }
 
   const channels = await Promise.all(promiseArray).then((channels) =>
-    channels.flat(),
+    channels.flat()
   );
 
   return { ok: channels?.length > 0, channels: channels };
@@ -71,7 +71,7 @@ export const listChannels = async (
   client: WebClient,
   params: Record<string, unknown>,
   fetchAll: boolean,
-  types: string,
+  types: string
 ) => {
   if (fetchAll) {
     const response = await paginateResults(
@@ -79,7 +79,7 @@ export const listChannels = async (
       "conversations",
       "channels",
       "list",
-      { ...params, types, limit: params.limit || 200 },
+      { ...params, types, limit: params.limit || 200 }
     );
     const { channels } = response.data as ConversationsListResponse;
 

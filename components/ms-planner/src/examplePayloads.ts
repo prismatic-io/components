@@ -151,40 +151,25 @@ const taskDetails: PlannerTaskDetails & Etagged = {
   },
 };
 
-const planCollectionContext =
-  "https://graph.microsoft.com/v1.0/$metadata#planner/plans";
-const bucketCollectionContext =
-  "https://graph.microsoft.com/v1.0/$metadata#planner/buckets";
-const taskCollectionContext =
-  "https://graph.microsoft.com/v1.0/$metadata#planner/tasks";
+const planCollectionContext = "https://graph.microsoft.com/v1.0/$metadata#planner/plans";
+const bucketCollectionContext = "https://graph.microsoft.com/v1.0/$metadata#planner/buckets";
+const taskCollectionContext = "https://graph.microsoft.com/v1.0/$metadata#planner/tasks";
 
 export const listPlansInGroupExamplePayload: {
   data: GraphCollectionResponse<PlannerPlan & Etagged> & { truncated: boolean };
 } = {
-  data: {
-    "@odata.context": planCollectionContext,
-    value: [plan],
-    truncated: false,
-  },
+  data: { "@odata.context": planCollectionContext, value: [plan], truncated: false },
 };
 
 export const listPlansForUserExamplePayload: {
   data: GraphCollectionResponse<PlannerPlan & Etagged> & { truncated: boolean };
 } = {
-  data: {
-    "@odata.context": planCollectionContext,
-    value: [plan],
-    truncated: false,
-  },
+  data: { "@odata.context": planCollectionContext, value: [plan], truncated: false },
 };
 
-export const getPlanExamplePayload: { data: PlannerPlan & Etagged } = {
-  data: plan,
-};
+export const getPlanExamplePayload: { data: PlannerPlan & Etagged } = { data: plan };
 
-export const createPlanExamplePayload: { data: PlannerPlan & Etagged } = {
-  data: plan,
-};
+export const createPlanExamplePayload: { data: PlannerPlan & Etagged } = { data: plan };
 
 export const updatePlanExamplePayload: { data: PlannerPlan & Etagged } = {
   data: {
@@ -198,37 +183,23 @@ export const deletePlanExamplePayload: { data: DeleteResult } = {
   data: { success: true, id: PLAN_ID, message: "Plan deleted successfully" },
 };
 
-export const getPlanDetailsExamplePayload: {
-  data: PlannerPlanDetails & Etagged;
-} = {
+export const getPlanDetailsExamplePayload: { data: PlannerPlanDetails & Etagged } = {
   data: planDetails,
 };
 
-export const updatePlanDetailsExamplePayload: {
-  data: PlannerPlanDetails & Etagged;
-} = {
+export const updatePlanDetailsExamplePayload: { data: PlannerPlanDetails & Etagged } = {
   data: planDetails,
 };
 
 export const listBucketsInPlanExamplePayload: {
-  data: GraphCollectionResponse<PlannerBucket & Etagged> & {
-    truncated: boolean;
-  };
+  data: GraphCollectionResponse<PlannerBucket & Etagged> & { truncated: boolean };
 } = {
-  data: {
-    "@odata.context": bucketCollectionContext,
-    value: [bucket],
-    truncated: false,
-  },
+  data: { "@odata.context": bucketCollectionContext, value: [bucket], truncated: false },
 };
 
-export const getBucketExamplePayload: { data: PlannerBucket & Etagged } = {
-  data: bucket,
-};
+export const getBucketExamplePayload: { data: PlannerBucket & Etagged } = { data: bucket };
 
-export const createBucketExamplePayload: { data: PlannerBucket & Etagged } = {
-  data: bucket,
-};
+export const createBucketExamplePayload: { data: PlannerBucket & Etagged } = { data: bucket };
 
 export const updateBucketExamplePayload: { data: PlannerBucket & Etagged } = {
   data: {
@@ -239,52 +210,31 @@ export const updateBucketExamplePayload: { data: PlannerBucket & Etagged } = {
 };
 
 export const deleteBucketExamplePayload: { data: DeleteResult } = {
-  data: {
-    success: true,
-    id: BUCKET_ID,
-    message: "Bucket deleted successfully",
-  },
+  data: { success: true, id: BUCKET_ID, message: "Bucket deleted successfully" },
 };
 
 export const listTasksInPlanExamplePayload: {
   data: GraphCollectionResponse<PlannerTask & Etagged> & { truncated: boolean };
 } = {
-  data: {
-    "@odata.context": taskCollectionContext,
-    value: [task],
-    truncated: false,
-  },
+  data: { "@odata.context": taskCollectionContext, value: [task], truncated: false },
 };
 
 export const listTasksInBucketExamplePayload: {
   data: GraphCollectionResponse<PlannerTask & Etagged> & { truncated: boolean };
 } = {
-  data: {
-    "@odata.context": taskCollectionContext,
-    value: [task],
-    truncated: false,
-  },
+  data: { "@odata.context": taskCollectionContext, value: [task], truncated: false },
 };
 
 export const listTasksForUserExamplePayload: {
   data: GraphCollectionResponse<PlannerTask & Etagged> & { truncated: boolean };
 } = {
-  data: {
-    "@odata.context": taskCollectionContext,
-    value: [task],
-    truncated: false,
-  },
+  data: { "@odata.context": taskCollectionContext, value: [task], truncated: false },
 };
 
-export const getTaskExamplePayload: { data: PlannerTask & Etagged } = {
-  data: task,
-};
+export const getTaskExamplePayload: { data: PlannerTask & Etagged } = { data: task };
 
 export const createTaskExamplePayload: {
-  data: {
-    task: PlannerTask & Etagged;
-    details: (PlannerTaskDetails & Etagged) | null;
-  };
+  data: { task: PlannerTask & Etagged; details: (PlannerTaskDetails & Etagged) | null };
 } = {
   data: { task, details: taskDetails },
 };
@@ -301,21 +251,15 @@ export const deleteTaskExamplePayload: { data: DeleteResult } = {
   data: { success: true, id: TASK_ID, message: "Task deleted successfully" },
 };
 
-export const getTaskDetailsExamplePayload: {
-  data: PlannerTaskDetails & Etagged;
-} = {
+export const getTaskDetailsExamplePayload: { data: PlannerTaskDetails & Etagged } = {
   data: taskDetails,
 };
 
-export const updateTaskDetailsExamplePayload: {
-  data: PlannerTaskDetails & Etagged;
-} = {
+export const updateTaskDetailsExamplePayload: { data: PlannerTaskDetails & Etagged } = {
   data: taskDetails,
 };
 
-export const completeTaskExamplePayload: { data: PlannerTask & Etagged } = {
-  data: completedTask,
-};
+export const completeTaskExamplePayload: { data: PlannerTask & Etagged } = { data: completedTask };
 
 export const assignTaskExamplePayload: { data: PlannerTask & Etagged } = {
   data: { ...task, "@odata.etag": 'W/"JzItVGFzayAgQEBAQEBAQEBAQEBAQEBAWCc="' },
@@ -366,13 +310,8 @@ export const pollChangesTriggerExamplePayload: {
     webhookUrls: {},
     webhookApiKeys: {},
     invokeUrl: "",
-    executionId:
-      "SW5zdGFuY2VFeGVjdXRpb25SZXN1bHQ6ZjMwZjk4NDgtNzk1Ny00ZTBmLTk5NzMtMTU5NzZlNzAwZjA5",
-    customer: {
-      id: "Q3VzdG9tZXI6ZTU5YQ==",
-      externalId: "abc-123",
-      name: "Contoso",
-    },
+    executionId: "SW5zdGFuY2VFeGVjdXRpb25SZXN1bHQ6ZjMwZjk4NDgtNzk1Ny00ZTBmLTk5NzMtMTU5NzZlNzAwZjA5",
+    customer: { id: "Q3VzdG9tZXI6ZTU5YQ==", externalId: "abc-123", name: "Contoso" },
     instance: { id: "SW5zdGFuY2U6NTU1", name: "Contoso Planner Sync" },
     user: {
       id: "VXNlcjo3ODk=",
@@ -386,11 +325,7 @@ export const pollChangesTriggerExamplePayload: {
       versionSequenceId: "SW50ZWdyYXRpb25WZXJzaW9uOjQ1Ng==",
       externalVersion: "1.0.0",
     },
-    flow: {
-      id: "SW50ZWdyYXRpb25GbG93Ojk5OQ==",
-      name: "New Tasks",
-      stableId: "new-tasks",
-    },
+    flow: { id: "SW50ZWdyYXRpb25GbG93Ojk5OQ==", name: "New Tasks", stableId: "new-tasks" },
     startedAt: "2024-01-22T14:05:00.000Z",
     globalDebug: false,
   },

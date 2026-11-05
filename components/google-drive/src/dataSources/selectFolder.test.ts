@@ -1,16 +1,9 @@
-import {
-  createConnection,
-  invokeDataSource,
-} from "@prismatic-io/spectral/dist/testing";
+import { createConnection, invokeDataSource } from "@prismatic-io/spectral/dist/testing";
 import nock from "nock";
 import { connection as connectionDefinition } from "../connections";
 import { selectFolder } from "./selectFolder";
 
-const connection = createConnection(
-  connectionDefinition,
-  {},
-  { access_token: "test-token" },
-);
+const connection = createConnection(connectionDefinition, {}, { access_token: "test-token" });
 const DRIVE = "https://www.googleapis.com";
 
 describe("selectFolder", () => {
@@ -52,10 +45,7 @@ describe("selectFolder", () => {
       })
       .reply(200, { files: [] });
 
-    await invokeDataSource(selectFolder, {
-      connection,
-      driveId: "0AAvGyortvuqEXAMPLE",
-    });
+    await invokeDataSource(selectFolder, { connection, driveId: "0AAvGyortvuqEXAMPLE" });
 
     expect(received.q).toBe("mimeType='application/vnd.google-apps.folder'");
     expect(received.driveId).toBe("0AAvGyortvuqEXAMPLE");
@@ -65,9 +55,7 @@ describe("selectFolder", () => {
     nock(DRIVE)
       .get("/drive/v3/drives")
       .query(true)
-      .reply(200, {
-        drives: [{ id: "0AAvGyortvuqEUk9PVA", name: "Marketing Team Drive" }],
-      });
+      .reply(200, { drives: [{ id: "0AAvGyortvuqEUk9PVA", name: "Marketing Team Drive" }] });
     nock(DRIVE)
       .get("/drive/v3/files")
       .query(true)
@@ -77,10 +65,7 @@ describe("selectFolder", () => {
       .query(true)
       .reply(200, { files: [{ id: "f-finance", name: "Finance" }] });
 
-    const { result } = await invokeDataSource(selectFolder, {
-      connection,
-      driveId: undefined,
-    });
+    const { result } = await invokeDataSource(selectFolder, { connection, driveId: undefined });
 
     expect(result).toEqual([
       { key: "f-campaign", label: "[Marketing Team Drive] Campaign Assets" },
@@ -92,10 +77,7 @@ describe("selectFolder", () => {
     nock(DRIVE).get("/drive/v3/drives").query(true).reply(200, { drives: [] });
     nock(DRIVE).get("/drive/v3/files").query(true).reply(200, { files: [] });
 
-    const { result } = await invokeDataSource(selectFolder, {
-      connection,
-      driveId: undefined,
-    });
+    const { result } = await invokeDataSource(selectFolder, { connection, driveId: undefined });
 
     expect(result).toEqual([]);
   });
@@ -128,9 +110,7 @@ describe("selectFolder", () => {
     nock(DRIVE)
       .get("/drive/v3/drives")
       .query(true)
-      .reply(200, {
-        drives: [{ id: "0AAvGyortvuqEUk9PVA", name: "Marketing Team Drive" }],
-      });
+      .reply(200, { drives: [{ id: "0AAvGyortvuqEUk9PVA", name: "Marketing Team Drive" }] });
     nock(DRIVE)
       .get("/drive/v3/files")
       .query(true)
@@ -140,10 +120,7 @@ describe("selectFolder", () => {
       .query(true)
       .reply(200, { files: [{ id: "f-mine", name: "Projects" }] });
 
-    const { result } = await invokeDataSource(selectFolder, {
-      connection,
-      driveId: undefined,
-    });
+    const { result } = await invokeDataSource(selectFolder, { connection, driveId: undefined });
 
     expect(result).toEqual([
       { key: "f-marketing", label: "[Marketing Team Drive] Projects" },
@@ -158,10 +135,7 @@ describe("selectFolder", () => {
       .reply(403, { error: { message: "forbidden" } });
 
     await expect(
-      invokeDataSource(selectFolder, {
-        connection,
-        driveId: "0AAvGyortvuqEXAMPLE",
-      }),
+      invokeDataSource(selectFolder, { connection, driveId: "0AAvGyortvuqEXAMPLE" }),
     ).rejects.toThrow();
   });
 });

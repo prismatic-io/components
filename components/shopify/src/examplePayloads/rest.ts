@@ -34,8 +34,7 @@ const paginationExtraPayloadData = {
     "x-stats-apiclientid": "6511233",
     "x-stats-apipermissionid": "429538012345",
     "x-shopify-api-version": "2023-04",
-    "x-shopify-api-version-warning":
-      "https://shopify.dev/concepts/about-apis/versioning",
+    "x-shopify-api-version-warning": "https://shopify.dev/concepts/about-apis/versioning",
     http_x_shopify_shop_api_call_limit: "1/40",
     "x-shopify-shop-api-call-limit": "1/40",
     link: '<https://test-store.myshopify.com/admin/api/2023-04/resource?limit=2&page_info=eyJkaXJlY3Rpb24iOiJwcmV2IiwibGFzdF9pZCI6NTMyNjQwNDQ4NTI3MywibGFzdF92YWx1ZSI6IjIwMjQtMDMtMDYgMjE6MzE6MTQuNDMxO123456>; rel="previous", <https://test-store.myshopify.com/admin/api/2023-04/resource?limit=2&page_info=eyJkaXJlY3Rpb24iOiJuZXh0IiwibGFzdF9pZCI6NTMyNjQwNDMyMTQzMywibGFzdF92YWx1ZSI6IjIwMjQtMDMtMDYgMjE6MzA6NTYuOTY1NDYabcd>; rel="next"',
@@ -79,8 +78,7 @@ const genericHeaders = {
     "x-stats-apiclientid": "6511123",
     "x-stats-apipermissionid": "429538082969",
     "x-shopify-api-version": "2023-04",
-    "x-shopify-api-version-warning":
-      "https://shopify.dev/concepts/about-apis/versioning",
+    "x-shopify-api-version-warning": "https://shopify.dev/concepts/about-apis/versioning",
     http_x_shopify_shop_api_call_limit: "3/40",
     "x-shopify-shop-api-call-limit": "3/40",
     "strict-transport-security": "max-age=7889238",
@@ -824,8 +822,7 @@ const orderExamplePayload = {
             transactions: [
               {
                 id: 179259969,
-                admin_graphql_api_id:
-                  "gid://shopify/OrderTransaction/179259969",
+                admin_graphql_api_id: "gid://shopify/OrderTransaction/179259969",
                 amount: "209.00",
                 authorization: "authorization-key",
                 created_at: "2005-08-05T12:59:12-04:00",
@@ -1360,19 +1357,9 @@ const restCreateWebhookExamplePayload = {
 };
 
 export const createCustomerExamplePayload = { data: customerExamplePayload };
-export const countProductsExamplePayload = {
-  data: restCountProductsExamplePayload,
-};
-export const listProductsExamplePayload = {
-  data: restListProductsExamplePayload,
-};
-export const listWebhooksExamplePayload = {
-  data: restListWebhooksExamplePayload,
-};
-export const createWebhookExamplePayload = {
-  data: restCreateWebhookExamplePayload,
-};
+export const countProductsExamplePayload = { data: restCountProductsExamplePayload };
+export const listProductsExamplePayload = { data: restListProductsExamplePayload };
+export const listWebhooksExamplePayload = { data: restListWebhooksExamplePayload };
+export const createWebhookExamplePayload = { data: restCreateWebhookExamplePayload };
 export const deleteWebhookExamplePayload = { data: {} };
-export const getOrderExamplePayload = {
-  data: { order: orderExamplePayload.order.orders[0] },
-};
+export const getOrderExamplePayload = { data: { order: orderExamplePayload.order.orders[0] } };

@@ -55,8 +55,7 @@ export const createLead = action({
       data: response,
     };
   },
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    genericCreateUpdateExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => genericCreateUpdateExamplePayload,
   inputs: createLeadInputs,
   outputSchema: outputSchema({
     type: "actionOutput",

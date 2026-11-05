@@ -10,8 +10,4 @@ export {
   jiraOAuthConnection,
 };
 
-export default [
-  jiraOAuthConnection,
-  jiraOAuthClientCredentialsConnection,
-  jiraBasicConnection,
-];
+export default [jiraOAuthConnection, jiraOAuthClientCredentialsConnection, jiraBasicConnection];

@@ -25,11 +25,7 @@ export const searchPerform = async (
     headers: { "Content-Type": "application/json" },
   });
 
-  const endpoint = resolveEndpoint(
-    searchEndpoint,
-    objectType,
-    searchOnlyCustomObjects,
-  );
+  const endpoint = resolveEndpoint(searchEndpoint, objectType, searchOnlyCustomObjects);
 
   const payload = {
     limit: fetchAll ? MAX_SEARCH_LIMIT : searchLimit,
@@ -46,10 +42,7 @@ export const searchPerform = async (
         after,
         ...searchProperties,
       };
-      const { data: nextData } = await client.post<SearchResponse>(
-        endpoint,
-        nextPayload,
-      );
+      const { data: nextData } = await client.post<SearchResponse>(endpoint, nextPayload);
       data.results.push(...nextData.results);
       data.paging = nextData.paging;
     }

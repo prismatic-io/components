@@ -16,14 +16,8 @@ export const updateWebhook = action({
   }),
   examplePayload: updateWebhookExamplePayload,
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { clickUpConnection, webhookId, endpoint, events, allEvents, status },
-  ) => {
-    const client = createClickUpClient(
-      clickUpConnection,
-      context.debug.enabled,
-    );
+  perform: async (context, { clickUpConnection, webhookId, endpoint, events, allEvents, status }) => {
+    const client = createClickUpClient(clickUpConnection, context.debug.enabled);
     const body: UpdateWebhookBody = {
       endpoint,
       events: allEvents ? "*" : events,

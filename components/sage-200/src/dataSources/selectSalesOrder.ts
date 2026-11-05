@@ -9,19 +9,14 @@ export const selectSalesOrder = dataSource({
   },
   perform: async (_context, { connection, site, company }) => {
     const client = getClient(connection, false, site, company);
-    const { data } =
-      await client.get<{ id: number; document_no: string }[]>("/sop_orders");
+    const { data } = await client.get<{ id: number; document_no: string }[]>("/sop_orders");
 
     const objects = data.map<Element>((order) => ({
       key: util.types.toString(order.id),
       label: order.document_no,
     }));
 
-    return {
-      result: objects.sort((a, b) =>
-        (a.label ?? "").localeCompare(b.label ?? ""),
-      ),
-    };
+    return { result: objects.sort((a, b) => (a.label ?? "").localeCompare(b.label ?? "")) };
   },
   dataSourceType: "picklist",
   inputs: {

@@ -1,12 +1,6 @@
 import { invoke } from "@prismatic-io/spectral/testing";
 import { listVendorsResponse } from "../../examplePayloads/vendors";
-import {
-  apiPath,
-  listActionParams,
-  rampNock,
-  resetNock,
-  terminatePaging,
-} from "../../testHarness";
+import { apiPath, listActionParams, rampNock, resetNock, terminatePaging } from "../../testHarness";
 import { listVendors } from "./list";
 
 const PATH = apiPath("/accounting/vendors");
@@ -28,10 +22,7 @@ describe("listVendors", () => {
       .query({ page_size: "50" })
       .reply(200, terminatePaging(listVendorsResponse));
 
-    const { result } = await invoke(
-      listVendors,
-      listActionParams({ fetchAll: true }),
-    );
+    const { result } = await invoke(listVendors, listActionParams({ fetchAll: true }));
 
     expect(result.data).toEqual({ data: listVendorsResponse.data, page: null });
   });

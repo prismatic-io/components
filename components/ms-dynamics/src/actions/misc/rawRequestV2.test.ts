@@ -23,9 +23,7 @@ describe("rawRequestV2", () => {
   afterEach(() => vi.clearAllMocks());
 
   test("happy path returns response data", async () => {
-    mockSendRawRequest.mockResolvedValueOnce({
-      data: rawRequestV2ExamplePayload.data,
-    });
+    mockSendRawRequest.mockResolvedValueOnce({ data: rawRequestV2ExamplePayload.data });
 
     const result = await rawRequestV2.perform(ctx, {
       connection: conn,

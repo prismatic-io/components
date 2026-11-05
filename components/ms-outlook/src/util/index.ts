@@ -35,40 +35,31 @@ export const filterFalsyValuesFromArray = (array: unknown[]) => {
 export const cleanFunctionForBccAndCcInputs = (values: unknown): string[] => {
   if (!values) return [];
 
-  const filteredValues = filterFalsyValuesFromArray(
-    values as unknown[],
-  ) as string[];
+  const filteredValues = filterFalsyValuesFromArray(values as unknown[]) as string[];
   if (!filteredValues?.length) return [];
   return filteredValues.reduce((acc: string[], address: string) => {
     return acc.concat(address.split(","));
   }, [] as string[]);
 };
 
-export const cleanAttachments = (
-  values: unknown,
-  inputName: string,
-): unknown[] => {
+export const cleanAttachments = (values: unknown, inputName: string): unknown[] => {
   if (!values) return [];
   try {
     const attachments = util.types.toObject(values);
     if (Array.isArray(attachments)) {
       if (attachments?.length) {
-        const data = ((attachments as KeyValuePair[]) || []).map(
-          (attachment) => {
-            if (typeof attachment !== "object" || attachment === null) {
-              throw new Error("Attachment is not an object");
-            }
-            const { data, contentType } = util.types.toBufferDataPayload(
-              attachment.value,
-            );
-            return {
-              "@odata.type": "#microsoft.graph.fileAttachment",
-              name: attachment.key,
-              contentBytes: data.toString("base64"),
-              contentType,
-            };
-          },
-        );
+        const data = ((attachments as KeyValuePair[]) || []).map((attachment) => {
+          if (typeof attachment !== "object" || attachment === null) {
+            throw new Error("Attachment is not an object");
+          }
+          const { data, contentType } = util.types.toBufferDataPayload(attachment.value);
+          return {
+            "@odata.type": "#microsoft.graph.fileAttachment",
+            name: attachment.key,
+            contentBytes: data.toString("base64"),
+            contentType,
+          };
+        });
         return data;
       }
       return [];
@@ -97,9 +88,7 @@ export const fetchAllData = async <T>(
         : {
             params: fetchAll
               ? Object.fromEntries(
-                  Object.entries(params).filter(
-                    ([key]) => !["$top", "$skip"].includes(key),
-                  ),
+                  Object.entries(params).filter(([key]) => !["$top", "$skip"].includes(key)),
                 )
               : params,
           },
@@ -145,18 +134,12 @@ export const cleanStringInput = (value: unknown) =>
 
 export const validateConnection = (connection: Connection) => {
   if (!connections.map((c) => c.key).includes(connection.key)) {
-    throw new ConnectionError(
-      connection,
-      `Invalid connection: ${connection.key}`,
-    );
+    throw new ConnectionError(connection, `Invalid connection: ${connection.key}`);
   }
   return true;
 };
 
-export const computeEndpointBasedOnConnection = (
-  connection: Connection,
-  endpoint: string,
-) => {
+export const computeEndpointBasedOnConnection = (connection: Connection, endpoint: string) => {
   if (connection.key !== oauthClientCredentials.key) {
     return endpoint;
   }
@@ -177,8 +160,7 @@ const modifiedStamp = (message: Message): string | undefined => {
   return Number.isNaN(parsed) ? undefined : toWholeSecond(parsed);
 };
 
-const safeHorizon = (now: Date): string =>
-  toWholeSecond(now.getTime() - WATERMARK_SKEW_MARGIN_MS);
+const safeHorizon = (now: Date): string => toWholeSecond(now.getTime() - WATERMARK_SKEW_MARGIN_MS);
 
 const fetchMessagesWindow = async (
   client: HttpClient,
@@ -187,9 +169,7 @@ const fetchMessagesWindow = async (
 ): Promise<MessagesWindow> => {
   const endpoint = computeEndpointBasedOnConnection(
     connection,
-    folderId
-      ? POLLING_ENDPOINTS.MAIL_FOLDER_MESSAGES(folderId)
-      : POLLING_ENDPOINTS.MESSAGES,
+    folderId ? POLLING_ENDPOINTS.MAIL_FOLDER_MESSAGES(folderId) : POLLING_ENDPOINTS.MESSAGES,
   );
 
   const messages: Message[] = [];
@@ -229,17 +209,11 @@ const fetchMessagesWindow = async (
     });
     take(data.value ?? []);
 
-    const noProgress =
-      watermark === startWatermark && boundaryIds.length === startCount;
-    if (
-      data["@odata.nextLink"] &&
-      (noProgress || boundaryIds.length >= pageSize)
-    ) {
+    const noProgress = watermark === startWatermark && boundaryIds.length === startCount;
+    if (data["@odata.nextLink"] && (noProgress || boundaryIds.length >= pageSize)) {
       const stalledAt = watermark;
       while (data["@odata.nextLink"] && watermark === stalledAt) {
-        ({ data } = await client.get<PaginatedResponse<Message>>(
-          data["@odata.nextLink"],
-        ));
+        ({ data } = await client.get<PaginatedResponse<Message>>(data["@odata.nextLink"]));
         take(data.value ?? []);
       }
     }
@@ -248,9 +222,7 @@ const fetchMessagesWindow = async (
   return { messages, position: { watermark, boundaryIds }, drained };
 };
 
-const pollWindowBounds = (
-  batching: boolean,
-): { pageSize: number; maxPages: number } => ({
+const pollWindowBounds = (batching: boolean): { pageSize: number; maxPages: number } => ({
   pageSize: POLL_PAGE_SIZE,
   maxPages: batching ? 1 : POLL_UNBATCHED_MAX_PAGES,
 });
@@ -264,9 +236,7 @@ export const readPollingWindow = async (
     return {
       messages: [],
       position:
-        horizonISO > position.watermark
-          ? { watermark: horizonISO, boundaryIds: [] }
-          : position,
+        horizonISO > position.watermark ? { watermark: horizonISO, boundaryIds: [] } : position,
       drained: true,
     };
   }
@@ -286,9 +256,7 @@ export const resolvePollingStart = (
   const seedSince = lookBackDate ? new Date(lookBackDate) : now;
   return {
     sinceDate: state.lastPolledAt ? new Date(state.lastPolledAt) : seedSince,
-    isBackfill:
-      state.backfillActive === true ||
-      (!state.lastPolledAt && Boolean(lookBackDate)),
+    isBackfill: state.backfillActive === true || (!state.lastPolledAt && Boolean(lookBackDate)),
   };
 };
 
@@ -299,14 +267,8 @@ export const resolvePollingStream = (
   sinceDate: Date,
 ): PollingStream => {
   const resumable = (held: Partial<PollingCursor> | PollingState): boolean =>
-    typeof held.watermark === "string" &&
-    (held.folderId ?? undefined) === folderId;
-  const held =
-    incoming && resumable(incoming)
-      ? incoming
-      : resumable(state)
-        ? state
-        : undefined;
+    typeof held.watermark === "string" && (held.folderId ?? undefined) === folderId;
+  const held = incoming && resumable(incoming) ? incoming : resumable(state) ? state : undefined;
   if (held?.watermark) {
     return {
       position: {
@@ -323,21 +285,14 @@ export const resolvePollingStream = (
 };
 
 export const lookBackDateClean = (value: unknown): string => {
-  if (
-    value === undefined ||
-    value === null ||
-    (typeof value === "string" && value.trim() === "")
-  ) {
+  if (value === undefined || value === null || (typeof value === "string" && value.trim() === "")) {
     return "";
   }
 
   const raw = typeof value === "string" ? value.trim() : String(value);
-  const match =
-    typeof value === "string" ? raw.match(LOOK_BACK_DATE_PATTERN) : null;
+  const match = typeof value === "string" ? raw.match(LOOK_BACK_DATE_PATTERN) : null;
   if (!match) {
-    throw new Error(
-      `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
-    );
+    throw new Error(`Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`);
   }
 
   const [, yearStr, monthStr, dayStr] = match;
@@ -350,9 +305,7 @@ export const lookBackDateClean = (value: unknown): string => {
     parsed.getUTCMonth() !== month - 1 ||
     parsed.getUTCDate() !== day
   ) {
-    throw new Error(
-      `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
-    );
+    throw new Error(`Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`);
   }
 
   if (parsed.getTime() > Date.now()) {
@@ -362,9 +315,7 @@ export const lookBackDateClean = (value: unknown): string => {
   return parsed.toISOString();
 };
 
-export const resolveMessageChanges = (
-  data: MessageChangesObject | undefined,
-): MessageChange[] => {
+export const resolveMessageChanges = (data: MessageChangesObject | undefined): MessageChange[] => {
   const changesObject = data ?? { created: [], updated: [] };
   return [
     ...(changesObject.created ?? []).map(
@@ -387,12 +338,9 @@ export const partitionMessagesByTimestamp = (
   const updated: import("@microsoft/microsoft-graph-types").Message[] = [];
   for (const message of messages) {
     const createdValue = message.createdDateTime;
-    const createdDate =
-      typeof createdValue === "string" ? new Date(createdValue) : null;
+    const createdDate = typeof createdValue === "string" ? new Date(createdValue) : null;
     const isNew =
-      createdDate !== null &&
-      !Number.isNaN(createdDate.getTime()) &&
-      createdDate > since;
+      createdDate !== null && !Number.isNaN(createdDate.getTime()) && createdDate > since;
     if (isNew) created.push(message);
     else updated.push(message);
   }
@@ -400,24 +348,17 @@ export const partitionMessagesByTimestamp = (
 };
 
 export const createWebhookPerformFN = (resourceType?: string) => {
-  const resourceConfig = resourceType
-    ? WEBHOOK_RESOURCE_CONFIG[resourceType]
-    : undefined;
+  const resourceConfig = resourceType ? WEBHOOK_RESOURCE_CONFIG[resourceType] : undefined;
 
   return createMsWebhookPerformFN({
     createClient,
     renewalExpirationMinutes: RENEWAL_EXPIRATION_MINUTES,
     fetchResourceData: resourceConfig
       ? async (client, notification, _context, params) => {
-          const resourceId = util.types.toString(
-            notification?.resourceData?.id,
-          );
+          const resourceId = util.types.toString(notification?.resourceData?.id);
           const endpoint = `${resourceConfig.endpoint}/${resourceId}`;
           const { data } = await client.get(
-            computeEndpointBasedOnConnection(
-              params.connection as Connection,
-              endpoint,
-            ),
+            computeEndpointBasedOnConnection(params.connection as Connection, endpoint),
           );
           return { key: resourceConfig.dataKey, data };
         }

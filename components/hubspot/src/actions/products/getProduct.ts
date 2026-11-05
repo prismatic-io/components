@@ -9,8 +9,7 @@ import { hubspotPaths } from "../../constants";
 export const getProduct = action({
   display: {
     label: "Get Product",
-    description:
-      "Retrieve the information and metadata of a product by Id or name.",
+    description: "Retrieve the information and metadata of a product by Id or name.",
   },
   performSafety: "notAllowed",
   perform: async (
@@ -26,9 +25,7 @@ export const getProduct = action({
     },
   ) => {
     if (!productId && !productName) {
-      throw new Error(
-        "You must supply an Id or name to retrieve a product record",
-      );
+      throw new Error("You must supply an Id or name to retrieve a product record");
     }
 
     const debugRequest = context.debug.enabled;
@@ -39,10 +36,7 @@ export const getProduct = action({
       debugRequest,
     });
 
-    const parameterizedProperties = getProps(
-      ["name"],
-      additionalProperties || [],
-    );
+    const parameterizedProperties = getProps(["name"], additionalProperties || []);
 
     const params = {
       ...parameterizedProperties,
@@ -66,12 +60,9 @@ export const getProduct = action({
       return { data: filteredProducts };
     }
 
-    const { data } = await client.get(
-      hubspotPaths.objects("products", `/${productId}`),
-      {
-        params,
-      },
-    );
+    const { data } = await client.get(hubspotPaths.objects("products", `/${productId}`), {
+      params,
+    });
 
     return { data };
   },
@@ -80,8 +71,5 @@ export const getProduct = action({
     data: getProductExamplePayload.data,
   }),
   examplePayload: getProductExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getProductOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getProductOutputSchema }),
 });

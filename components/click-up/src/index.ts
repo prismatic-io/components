@@ -12,8 +12,7 @@ export default component({
   display: {
     category: "Application Connectors",
     label: "ClickUp",
-    description:
-      "Manage tasks, lists, spaces, time tracking, and team members in ClickUp.",
+    description: "Manage tasks, lists, spaces, time tracking, and team members in ClickUp.",
     iconPath: "icon.png",
   },
   actions,

@@ -14,12 +14,7 @@ const dueDatesFeatureSchema = {
     remap_due_dates: { type: "boolean" },
     remap_closed_due_date: { type: "boolean" },
   },
-  required: [
-    "enabled",
-    "start_date",
-    "remap_due_dates",
-    "remap_closed_due_date",
-  ],
+  required: ["enabled", "start_date", "remap_due_dates", "remap_closed_due_date"],
 };
 
 const spaceFeaturesProperties = {
@@ -42,14 +37,7 @@ const spaceCoreProperties = {
   multiple_assignees: { type: "boolean" },
 };
 
-const spaceCoreRequired = [
-  "id",
-  "name",
-  "private",
-  "statuses",
-  "multiple_assignees",
-  "features",
-];
+const spaceCoreRequired = ["id", "name", "private", "statuses", "multiple_assignees", "features"];
 
 const spaceSchema = {
   type: "object" as const,
@@ -84,10 +72,7 @@ export const createSpaceOutputSchema = {
     ...spaceCoreProperties,
     statuses: {
       type: "array",
-      items: {
-        ...statusRefSchema,
-        required: ["id", "status", "type", "orderindex", "color"],
-      },
+      items: { ...statusRefSchema, required: ["id", "status", "type", "orderindex", "color"] },
     },
     features: {
       type: "object" as const,
@@ -155,13 +140,7 @@ export const listSpacesOutputSchema = {
           features: {
             type: "object" as const,
             properties: spaceFeaturesProperties,
-            required: [
-              "due_dates",
-              "time_tracking",
-              "tags",
-              "time_estimates",
-              "checklists",
-            ],
+            required: ["due_dates", "time_tracking", "tags", "time_estimates", "checklists"],
           },
         },
         required: spaceCoreRequired,

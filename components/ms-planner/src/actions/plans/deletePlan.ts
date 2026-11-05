@@ -20,11 +20,8 @@ export const deletePlan = action({
   perform: async (context, { connection, planId, etag }) => {
     const client = createClient(connection, context.debug.enabled);
     await deleteWithEtag(client, PLANNER_ENDPOINTS.PLAN(planId), etag);
-    return {
-      data: { success: true, id: planId, message: "Plan deleted successfully" },
-    };
+    return { data: { success: true, id: planId, message: "Plan deleted successfully" } };
   },
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    deletePlanExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => deletePlanExamplePayload,
   examplePayload: deletePlanExamplePayload,
 });

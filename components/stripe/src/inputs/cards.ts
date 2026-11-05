@@ -52,8 +52,7 @@ export const cvc = input({
 export const billingCity = input({
   label: "City",
   type: "string",
-  comments:
-    "The city portion of the card's billing address, used for address verification.",
+  comments: "The city portion of the card's billing address, used for address verification.",
   example: "San Francisco",
   placeholder: "Enter city",
   required: false,
@@ -73,8 +72,7 @@ export const billingCountry = input({
 export const billingAddress1 = input({
   label: "Street Address",
   type: "string",
-  comments:
-    "The first line of the card's billing address, typically the street number and name.",
+  comments: "The first line of the card's billing address, typically the street number and name.",
   example: "123 Main Street",
   placeholder: "Enter street address",
   required: false,
@@ -84,8 +82,7 @@ export const billingAddress1 = input({
 export const billingAddress2 = input({
   label: "Street Address Line 2",
   type: "string",
-  comments:
-    "Additional address information for the billing address (optional).",
+  comments: "Additional address information for the billing address (optional).",
   example: "Suite 100",
   placeholder: "Enter apartment, suite, etc.",
   required: false,
@@ -127,8 +124,7 @@ export const billingEmail = input({
 export const billingName = input({
   label: "Full Name",
   type: "string",
-  comments:
-    "The cardholder name as it appears on the card, used for verification.",
+  comments: "The cardholder name as it appears on the card, used for verification.",
   example: "John Doe",
   placeholder: "Enter full name",
   required: false,
@@ -138,8 +134,7 @@ export const billingName = input({
 export const phone = input({
   label: "Phone",
   type: "string",
-  comments:
-    "The phone number associated with the billing contact, including country code.",
+  comments: "The phone number associated with the billing contact, including country code.",
   example: "18005551234",
   placeholder: "Enter phone number",
   required: false,

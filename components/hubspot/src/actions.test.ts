@@ -90,9 +90,7 @@ describe("test raw request", () => {
       fileDataFileNames: undefined,
     });
 
-    expect(patchResult.data.data.properties.dealname).toStrictEqual(
-      updatedName,
-    );
+    expect(patchResult.data.data.properties.dealname).toStrictEqual(updatedName);
   });
 
   test("verify can delete a deal with raw request", async () => {

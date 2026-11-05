@@ -9,20 +9,13 @@ import { getAuthorizationHeader } from "../../util";
 export const getCurrentUser = action({
   display: {
     label: "Get Current User",
-    description:
-      "Retrieves information about the currently logged-in CRM user.",
+    description: "Retrieves information about the currently logged-in CRM user.",
   },
   inputs: getCurrentUserInputs,
   outputSchema: getCurrentUserOutputSchema,
   perform: async (context, params) => {
-    const webApiUrl = await getWebApiUrl(
-      params.connection,
-      context.debug.enabled,
-    );
-    const webClient = createClient({
-      baseUrl: webApiUrl,
-      debug: context.debug.enabled,
-    });
+    const webApiUrl = await getWebApiUrl(params.connection, context.debug.enabled);
+    const webClient = createClient({ baseUrl: webApiUrl, debug: context.debug.enabled });
     const { data } = await webClient.get(`/WhoAmI()`, {
       headers: {
         Authorization: getAuthorizationHeader(params.connection),

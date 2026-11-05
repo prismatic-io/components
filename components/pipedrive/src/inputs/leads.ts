@@ -43,8 +43,7 @@ const labelIds = input({
   type: "string",
   required: false,
   clean: cleanString,
-  comments:
-    "The IDs of the lead labels which will be associated with the lead.",
+  comments: "The IDs of the lead labels which will be associated with the lead.",
   example: "3cde3b05-035c-ae14-dcfc-172bd8000d08",
   placeholder: "Enter Label IDs (comma-separated)",
 });
@@ -110,8 +109,7 @@ const wasSeen = input({
   type: "boolean",
   required: false,
   clean: util.types.toBool,
-  comments:
-    "A flag indicating whether the lead was seen by someone in the Pipedrive UI",
+  comments: "A flag indicating whether the lead was seen by someone in the Pipedrive UI",
 });
 
 const isArchived = input({
@@ -202,8 +200,7 @@ const exactMatch = input({
   label: "Exact Match",
   type: "boolean",
   clean: util.types.toBool,
-  comments:
-    "When enabled, only full exact matches against the given term are returned",
+  comments: "When enabled, only full exact matches against the given term are returned",
 });
 
 const searchPersonId = input({
@@ -229,8 +226,7 @@ const includeFields = input({
   type: "string",
   model: [{ label: "Lead Was Seen", value: "lead.was_seen" }],
   clean: cleanString,
-  comments:
-    "Supports including optional fields in the results which are not provided by default",
+  comments: "Supports including optional fields in the results which are not provided by default",
 });
 
 export const addLeadInputs = {

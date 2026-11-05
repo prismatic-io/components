@@ -30,23 +30,15 @@ import {
 const shippingAddress = structuredObjectInput({
   label: "Shipping Address",
   required: false,
-  comments:
-    "Street, city, state, postal code, and country for the shipping address.",
+  comments: "Street, city, state, postal code, and country for the shipping address.",
   inputs: { street, city, state, postalCode, country },
 });
 
 const billingAddress = structuredObjectInput({
   label: "Billing Address",
   required: false,
-  comments:
-    "Street, city, state, postal code, and country for the billing address.",
-  inputs: {
-    billingStreet,
-    billingCity,
-    billingState,
-    billingPostalCode,
-    billingCountry,
-  },
+  comments: "Street, city, state, postal code, and country for the billing address.",
+  inputs: { billingStreet, billingCity, billingState, billingPostalCode, billingCountry },
 });
 
 const additionalFields = structuredObjectInput({

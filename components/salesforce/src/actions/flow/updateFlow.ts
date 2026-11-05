@@ -3,11 +3,7 @@ import { saveFlowOutputSchema } from "../../outputSchemas";
 import { createSalesforceClient } from "../../client";
 import { updateFlowInputs } from "../../inputs";
 import type { FlowMetadata } from "../../types";
-import {
-  getFlowFunction,
-  updateFlowFunction,
-  processMetadataResult,
-} from "../../util";
+import { getFlowFunction, updateFlowFunction, processMetadataResult } from "../../util";
 import { generateApiName } from "../../util";
 import { updateFlowExamplePayload } from "../../examplePayloads";
 
@@ -43,8 +39,7 @@ export const updateFlow = action({
     const result = await updateFlowFunction(client, flowData as FlowMetadata);
     return { data: processMetadataResult(result) };
   },
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    updateFlowExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => updateFlowExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: saveFlowOutputSchema,

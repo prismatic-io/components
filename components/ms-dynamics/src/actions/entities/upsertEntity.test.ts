@@ -37,7 +37,7 @@ describe("upsertEntity", () => {
         fieldValues: {},
         dynamicValues: {},
         connection: conn,
-      } as any),
+      } as any)
     ).rejects.toThrow("Conflict");
   });
 });

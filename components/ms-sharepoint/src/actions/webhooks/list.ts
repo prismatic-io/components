@@ -30,8 +30,7 @@ export const listSubscriptions = action({
   },
   examplePayload: {
     data: {
-      "@odata.context":
-        "https://graph.microsoft.com/v1.0/$metadata#subscriptions",
+      "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#subscriptions",
       value: [
         {
           id: "38031b7d-16b1-448a-8e68-68b8aec6df45",

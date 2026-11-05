@@ -27,10 +27,7 @@ export const listTasksInBucket = action({
     );
     return { data };
   },
-  examplePerform: async (
-    _context,
-    { planId, bucketId },
-  ): Promise<{ data: unknown }> => ({
+  examplePerform: async (_context, { planId, bucketId }): Promise<{ data: unknown }> => ({
     data: {
       ...listTasksInBucketExamplePayload.data,
       value: listTasksInBucketExamplePayload.data.value.map((task) => ({

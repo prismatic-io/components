@@ -1,15 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import {
-  createTopicExamplePayload,
-  setPolicyExamplePayload,
-} from "../../examplePayloads";
-import {
-  connectionInput,
-  projectId,
-  topic,
-  topicAdditionalFields,
-} from "../../inputs";
+import { createTopicExamplePayload, setPolicyExamplePayload } from "../../examplePayloads";
+import { connectionInput, projectId, topic, topicAdditionalFields } from "../../inputs";
 
 export const createTopic = action({
   display: {
@@ -22,33 +14,23 @@ export const createTopic = action({
     topic: { ...topic, comments: "Name of the new topic" },
     additionalFields: topicAdditionalFields,
   },
-  perform: async (
-    { logger },
-    { connectionInput, projectId, topic, additionalFields },
-  ) => {
+  perform: async ({ logger }, { connectionInput, projectId, topic, additionalFields }) => {
     const client = createClient(connectionInput);
     try {
       const { data } = await client.projects.topics.create({
         name: `projects/${projectId}/topics/${topic}`,
         requestBody: {
           labels: additionalFields.labels || undefined,
-          messageStoragePolicy:
-            additionalFields.messageStoragePolicy || undefined,
+          messageStoragePolicy: additionalFields.messageStoragePolicy || undefined,
           kmsKeyName: additionalFields.kmsKeyName || undefined,
           schemaSettings: additionalFields.schemaSettings || undefined,
           satisfiesPzs: additionalFields.satisfiesPzs || undefined,
-          messageRetentionDuration:
-            additionalFields.messageRetentionDuration || undefined,
+          messageRetentionDuration: additionalFields.messageRetentionDuration || undefined,
         },
       });
       return { data: { ...data, alreadyExisted: false } };
     } catch (error: unknown) {
-      if (
-        typeof error === "object" &&
-        error !== null &&
-        "code" in error &&
-        error.code === 409
-      ) {
+      if (typeof error === "object" && error !== null && "code" in error && error.code === 409) {
         logger.warn("Skipping creation of topic because it already exists.");
         return {
           data: {
@@ -86,9 +68,7 @@ export const setTopicIamPolicy = action({
           bindings: [
             {
               role: "roles/pubsub.publisher",
-              members: [
-                "serviceAccount:gmail-api-push@system.gserviceaccount.com",
-              ],
+              members: ["serviceAccount:gmail-api-push@system.gserviceaccount.com"],
             },
           ],
         },

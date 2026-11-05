@@ -1,7 +1,4 @@
-import {
-  SubscribeCommand,
-  type SubscribeCommandInput,
-} from "@aws-sdk/client-sns";
+import { SubscribeCommand, type SubscribeCommandInput } from "@aws-sdk/client-sns";
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { createSNSClient } from "../../client";
 import { subscribeToTopicExamplePayload } from "../../examplePayloads";

@@ -14,13 +14,7 @@ export const createEngagement = action({
   performSafety: "notAllowed",
   perform: async (
     context,
-    {
-      timeout,
-      hubspotConnection,
-      engagementObject,
-      associationsJson,
-      properties,
-    },
+    { timeout, hubspotConnection, engagementObject, associationsJson, properties },
   ) => {
     const debugRequest = context.debug.enabled;
     const client = getHubspotClient({
@@ -32,10 +26,7 @@ export const createEngagement = action({
 
     const payload = { associations: associationsJson, properties };
 
-    const { data } = await client.post(
-      hubspotPaths.objects(engagementObject),
-      payload,
-    );
+    const { data } = await client.post(hubspotPaths.objects(engagementObject), payload);
 
     return {
       data,

@@ -8,8 +8,7 @@ import { toSortedPicklist } from "./helpers";
 export const selectPurchaseReceipt = dataSource({
   display: {
     label: "Select Purchase Receipt",
-    description:
-      "A picklist of purchase receipts in your Business Central organization.",
+    description: "A picklist of purchase receipts in your Business Central organization.",
   },
   inputs: {
     connection: connectionInput,
@@ -31,10 +30,7 @@ export const selectPurchaseReceipt = dataSource({
   dataSourceType: "picklist",
   examplePayload: {
     result: [
-      {
-        label: "PR-001 - First Up Consultants",
-        key: "5d115c9c-44e3-ea11-bb43-000d3a2feca1",
-      },
+      { label: "PR-001 - First Up Consultants", key: "5d115c9c-44e3-ea11-bb43-000d3a2feca1" },
     ],
   },
 });

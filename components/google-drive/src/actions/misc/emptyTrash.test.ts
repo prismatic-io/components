@@ -3,11 +3,7 @@ import { createConnection, invoke } from "@prismatic-io/spectral/dist/testing";
 import { connection as connectionDefinition } from "../../connections";
 import { emptyTrash } from "./emptyTrash";
 
-const connection = createConnection(
-  connectionDefinition,
-  {},
-  { access_token: "test-token" },
-);
+const connection = createConnection(connectionDefinition, {}, { access_token: "test-token" });
 const DRIVE = "https://www.googleapis.com";
 
 describe("emptyTrash", () => {

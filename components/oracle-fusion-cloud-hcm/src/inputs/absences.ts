@@ -13,8 +13,7 @@ const absenceEntryId = input({
   label: "Absence Entry ID",
   type: "string",
   required: true,
-  comments:
-    "The unique numeric identifier for the Oracle HCM absence entry (AbsenceEntryId).",
+  comments: "The unique numeric identifier for the Oracle HCM absence entry (AbsenceEntryId).",
   placeholder: "Enter absence entry ID",
   example: "300100012345678",
   clean: cleanId,
@@ -44,8 +43,7 @@ const legalEntityId = input({
   label: "Legal Entity ID",
   type: "string",
   required: false,
-  comments:
-    "The employer/legal entity the absence is recorded against (legalEntityId).",
+  comments: "The employer/legal entity the absence is recorded against (legalEntityId).",
   placeholder: "Enter legal entity ID",
   example: "300100000000002",
   clean: cleanOptionalNumber,
@@ -75,8 +73,7 @@ const duration = input({
   label: "Duration",
   type: "string",
   required: false,
-  comments:
-    "The total duration of the absence, in the specified unit of measure.",
+  comments: "The total duration of the absence, in the specified unit of measure.",
   placeholder: "Enter duration",
   example: "5",
   clean: cleanOptionalNumber,
@@ -106,8 +103,7 @@ const absenceStatusCd = input({
   label: "Absence Status Code",
   type: "string",
   required: false,
-  comments:
-    "The status of the absence entry. Defaults to SUBMITTED on the API.",
+  comments: "The status of the absence entry. Defaults to SUBMITTED on the API.",
   placeholder: "Enter absence status code",
   example: "SUBMITTED",
   clean: cleanString,
@@ -166,8 +162,7 @@ export const listAbsencesInputs = {
   personId: {
     ...personIdFilter,
     required: false,
-    comments:
-      "Filter absences by Person ID. Omit to retrieve absences across all workers.",
+    comments: "Filter absences by Person ID. Omit to retrieve absences across all workers.",
   },
   includeMetadataLinks,
 };

@@ -55,15 +55,8 @@ const serviceError = (name: string, httpStatusCode: number) =>
     message: `${name} error`,
   });
 
-const expectServiceError = async (
-  promise: Promise<unknown>,
-  name: string,
-  status: number,
-) => {
-  await expect(promise).rejects.toMatchObject({
-    name,
-    $metadata: { httpStatusCode: status },
-  });
+const expectServiceError = async (promise: Promise<unknown>, name: string, status: number) => {
+  await expect(promise).rejects.toMatchObject({ name, $metadata: { httpStatusCode: status } });
 };
 
 describe("object lock actions", () => {
@@ -84,9 +77,7 @@ describe("object lock actions", () => {
     });
 
     test("propagates an SDK service error", async () => {
-      sendMock.mockRejectedValue(
-        serviceError("ObjectLockConfigurationNotFoundError", 404),
-      );
+      sendMock.mockRejectedValue(serviceError("ObjectLockConfigurationNotFoundError", 404));
       await expectServiceError(
         invoke(getObjectLockConfiguration, baseInputs),
         "ObjectLockConfigurationNotFoundError",
@@ -119,11 +110,7 @@ describe("object lock actions", () => {
 
     test("propagates an SDK service error", async () => {
       sendMock.mockRejectedValue(serviceError("NoSuchKey", 404));
-      await expectServiceError(
-        invoke(getObjectRetention, inputs),
-        "NoSuchKey",
-        404,
-      );
+      await expectServiceError(invoke(getObjectRetention, inputs), "NoSuchKey", 404);
     });
   });
 
@@ -147,11 +134,7 @@ describe("object lock actions", () => {
         ObjectLockConfiguration: {
           ObjectLockEnabled: "Enabled",
           Rule: {
-            DefaultRetention: {
-              Days: 30,
-              Mode: "GOVERNANCE",
-              Years: undefined,
-            },
+            DefaultRetention: { Days: 30, Mode: "GOVERNANCE", Years: undefined },
           },
         },
       });
@@ -198,11 +181,7 @@ describe("object lock actions", () => {
 
     test("propagates an SDK service error", async () => {
       sendMock.mockRejectedValue(serviceError("AccessDenied", 403));
-      await expectServiceError(
-        invoke(putObjectRetention, inputs),
-        "AccessDenied",
-        403,
-      );
+      await expectServiceError(invoke(putObjectRetention, inputs), "AccessDenied", 403);
     });
   });
 });

@@ -10,29 +10,27 @@ export const templatedOauth = getMicrosoftOAuth2AuthorizationCodeConnection({
   defaultScopes: scopesForAuthorizationCodeFlow,
 });
 
-export const oauthClientCredentials =
-  getMicrosoftOAuth2ClientCredentialsConnection({
-    key: "oauthClientCredentials",
-    additionalInputs: {
-      userId: {
-        label: "User ID",
-        placeholder: "Enter User ID",
-        type: "string",
-        required: true,
-        shown: true,
-        example: "user@example.com",
-        comments:
-          "Unique identifier of the user whose data will be accessed. Required for client credentials authentication to work with user-specific endpoints.",
-      },
+export const oauthClientCredentials = getMicrosoftOAuth2ClientCredentialsConnection({
+  key: "oauthClientCredentials",
+  additionalInputs: {
+    userId: {
+      label: "User ID",
+      placeholder: "Enter User ID",
+      type: "string",
+      required: true,
+      shown: true,
+      example: "user@example.com",
+      comments:
+        "Unique identifier of the user whose data will be accessed. Required for client credentials authentication to work with user-specific endpoints.",
     },
-  });
+  },
+});
 
 export const oauth = oauth2Connection({
   key: "oauth",
   display: {
     label: "OAuth 2.0 Authorization Code (Deprecated)",
-    description:
-      "Authenticate using OAuth 2.0 Authorization Code (Deprecated).",
+    description: "Authenticate using OAuth 2.0 Authorization Code (Deprecated).",
   },
   oauth2Type: OAuth2Type.AuthorizationCode,
   inputs: {
@@ -53,12 +51,9 @@ export const oauth = oauth2Connection({
       type: "string",
       required: true,
       shown: true,
-      comments:
-        "OAuth 2.0 Authorization URL for Microsoft Outlook authentication.",
-      example:
-        "https://login.microsoftonline.com/common/oauth2/v2.0/authorize?prompt=consent",
-      default:
-        "https://login.microsoftonline.com/common/oauth2/v2.0/authorize?prompt=consent",
+      comments: "OAuth 2.0 Authorization URL for Microsoft Outlook authentication.",
+      example: "https://login.microsoftonline.com/common/oauth2/v2.0/authorize?prompt=consent",
+      default: "https://login.microsoftonline.com/common/oauth2/v2.0/authorize?prompt=consent",
     },
     tokenUrl: {
       label: "Token URL",
@@ -78,8 +73,7 @@ export const oauth = oauth2Connection({
       shown: true,
       comments:
         "List of OAuth permission scopes. These scopes should be configured in the Microsoft Entra App Registration.",
-      example:
-        "https://graph.microsoft.com/User.Read https://graph.microsoft.com/Mail.Read",
+      example: "https://graph.microsoft.com/User.Read https://graph.microsoft.com/Mail.Read",
       default:
         "https://graph.microsoft.com/User.Read https://graph.microsoft.com/Calendars.ReadWrite https://graph.microsoft.com/Mail.ReadWrite https://graph.microsoft.com/Mail.Send offline_access",
     },
@@ -89,8 +83,7 @@ export const oauth = oauth2Connection({
       type: "string",
       required: true,
       shown: true,
-      comments:
-        "Application (client) ID from the Microsoft Entra App Registration.",
+      comments: "Application (client) ID from the Microsoft Entra App Registration.",
       example: "12345678-1234-1234-1234-123456789abc",
     },
     clientSecret: {

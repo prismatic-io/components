@@ -1,8 +1,5 @@
 import { action, input } from "@prismatic-io/spectral";
-import {
-  inputs as httpClientInputs,
-  sendRawRequest,
-} from "@prismatic-io/spectral/http";
+import { inputs as httpClientInputs, sendRawRequest } from "@prismatic-io/spectral/http";
 import { rawRequestExamplePayload } from "../../examplePayloads";
 
 const { debugRequest: _, ...rawRequestInputs } = httpClientInputs;

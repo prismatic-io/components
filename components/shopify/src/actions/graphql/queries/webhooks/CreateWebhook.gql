@@ -3,10 +3,7 @@ mutation CreateWebhook(
   $topic: WebhookSubscriptionTopic!
   $webhookSubscription: WebhookSubscriptionInput!
 ) {
-  webhookSubscriptionCreate(
-    topic: $topic
-    webhookSubscription: $webhookSubscription
-  ) {
+  webhookSubscriptionCreate(topic: $topic, webhookSubscription: $webhookSubscription) {
     userErrors {
       field
       message

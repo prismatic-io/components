@@ -9,21 +9,12 @@ import { mapCreatedAssociations, resolveAssociationSpec } from "../../util";
 export const createAssociations = action({
   display: {
     label: "Create Association",
-    description:
-      "Create an association between the objects identified in the step.",
+    description: "Create an association between the objects identified in the step.",
   },
   performSafety: "notAllowed",
   perform: async (
     context,
-    {
-      fromObjectType,
-      toObjectType,
-      fromId,
-      toId,
-      associateType,
-      timeout,
-      hubspotConnection,
-    },
+    { fromObjectType, toObjectType, fromId, toId, associateType, timeout, hubspotConnection },
   ) => {
     const debugRequest = context.debug.enabled;
     const client = getHubspotClient({
@@ -32,12 +23,7 @@ export const createAssociations = action({
       debugRequest,
     });
 
-    const spec = await resolveAssociationSpec(
-      client,
-      fromObjectType,
-      toObjectType,
-      associateType,
-    );
+    const spec = await resolveAssociationSpec(client, fromObjectType, toObjectType, associateType);
 
     const { data } = await client.post(
       hubspotPaths.associations(fromObjectType, toObjectType, "/batch/create"),
@@ -63,8 +49,5 @@ export const createAssociations = action({
   }),
   inputs: createAssociationsInputs,
   examplePayload: createAssociationsExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: createAssociationsOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: createAssociationsOutputSchema }),
 });

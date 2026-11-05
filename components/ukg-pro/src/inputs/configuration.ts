@@ -41,8 +41,7 @@ export const employeeType = input({
   label: "Employee Type",
   type: "string",
   required: false,
-  comments:
-    "Filter by employee type (Full-Time, Part-Time, Contractor, Temporary).",
+  comments: "Filter by employee type (Full-Time, Part-Time, Contractor, Temporary).",
   placeholder: "Select employee type",
   example: "FT",
   model: EMPLOYEE_TYPE_OPTIONS,
@@ -63,8 +62,7 @@ export const statusCode = input({
   label: "Status Code",
   type: "string",
   required: false,
-  comments:
-    "Filter by employee status code (Active, Inactive, Terminated, Leave of Absence).",
+  comments: "Filter by employee status code (Active, Inactive, Terminated, Leave of Absence).",
   placeholder: "Select status code",
   example: "A",
   model: STATUS_CODE_OPTIONS,
@@ -129,8 +127,7 @@ export const isElegibleForBenefits = input({
   label: "Is Eligible For Benefits",
   type: "boolean",
   required: false,
-  comments:
-    "When true, filters to only employee positions eligible for benefits.",
+  comments: "When true, filters to only employee positions eligible for benefits.",
   clean: util.types.toBool,
 });
 

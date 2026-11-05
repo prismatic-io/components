@@ -7,8 +7,7 @@ import { unsubscribeFromTopicInputs } from "../../inputs";
 export const unsubscribeFromTopic = action({
   display: {
     label: "Unsubscribe from SNS Topic",
-    description:
-      "Unsubscribe from an Amazon SNS Topic for S3 Event Notifications",
+    description: "Unsubscribe from an Amazon SNS Topic for S3 Event Notifications",
   },
   performSafety: "notAllowed",
   perform: async (

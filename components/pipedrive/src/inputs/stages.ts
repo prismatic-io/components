@@ -1,19 +1,12 @@
 import { input, util } from "@prismatic-io/spectral";
-import {
-  connectionInput,
-  cursorPagination,
-  sortBy,
-  sortDirection,
-  stageIdInput,
-} from "./common";
+import { connectionInput, cursorPagination, sortBy, sortDirection, stageIdInput } from "./common";
 import { cleanNumber, cleanString } from "../util";
 
 const stageName = input({
   label: "Name",
   type: "string",
   required: true,
-  comments:
-    "A human-readable label that identifies the stage within a pipeline.",
+  comments: "A human-readable label that identifies the stage within a pipeline.",
   example: "Qualified Lead",
   placeholder: "Enter stage name",
   clean: util.types.toString,
@@ -24,8 +17,7 @@ const stageNameOptional = input({
   type: "string",
   required: false,
   clean: cleanString,
-  comments:
-    "A human-readable label that identifies the stage within a pipeline.",
+  comments: "A human-readable label that identifies the stage within a pipeline.",
   example: "Qualified Lead",
   placeholder: "Enter stage name",
 });
@@ -81,8 +73,7 @@ const rottenDays = input({
   type: "string",
   required: false,
   clean: cleanNumber,
-  comments:
-    "The number of days the deals not updated in this stage would become rotten.",
+  comments: "The number of days the deals not updated in this stage would become rotten.",
   example: "30",
   placeholder: "Enter number of days",
 });
@@ -100,8 +91,7 @@ const stageDealsFilterId = input({
   label: "Filter ID",
   type: "string",
   clean: cleanNumber,
-  comments:
-    "If supplied, only deals matching the given filter will be returned.",
+  comments: "If supplied, only deals matching the given filter will be returned.",
   example: "123",
   placeholder: "Enter Filter ID",
 });

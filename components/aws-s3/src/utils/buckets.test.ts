@@ -24,26 +24,18 @@ describe("listAllBuckets", () => {
 
   test("follows ContinuationToken across pages and concatenates the buckets in order", async () => {
     sendMock
-      .mockResolvedValueOnce({
-        Buckets: [{ Name: "bucket-1" }],
-        ContinuationToken: "tok-1",
-      })
-      .mockResolvedValueOnce({
-        Buckets: [{ Name: "bucket-2" }],
-        ContinuationToken: "tok-2",
-      })
+      .mockResolvedValueOnce({ Buckets: [{ Name: "bucket-1" }], ContinuationToken: "tok-1" })
+      .mockResolvedValueOnce({ Buckets: [{ Name: "bucket-2" }], ContinuationToken: "tok-2" })
       .mockResolvedValueOnce({ Buckets: [{ Name: "bucket-3" }] });
 
     const buckets = await listAllBuckets(s3);
 
-    expect(
-      sendMock.mock.calls.map(([command]) => command.input.ContinuationToken),
-    ).toEqual([undefined, "tok-1", "tok-2"]);
-    expect(buckets.map(({ Name }) => Name)).toEqual([
-      "bucket-1",
-      "bucket-2",
-      "bucket-3",
+    expect(sendMock.mock.calls.map(([command]) => command.input.ContinuationToken)).toEqual([
+      undefined,
+      "tok-1",
+      "tok-2",
     ]);
+    expect(buckets.map(({ Name }) => Name)).toEqual(["bucket-1", "bucket-2", "bucket-3"]);
   });
 
   test("returns an empty list when a response has no Buckets field", async () => {

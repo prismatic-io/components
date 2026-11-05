@@ -18,8 +18,7 @@ const nextLinkInput = input({
   placeholder: "Enter @odata.nextLink URL",
   type: "string",
   required: false,
-  comments:
-    "The @odata.nextLink URL from a previous response to get the next page of results.",
+  comments: "The @odata.nextLink URL from a previous response to get the next page of results.",
   clean: toOptionalString,
 });
 

@@ -44,12 +44,7 @@ describe("validateConnection", () => {
   test("returns false when Salesforce rejects the token with 401", async () => {
     const base = nock(INSTANCE_URL)
       .get(BASE_PATH)
-      .reply(401, [
-        {
-          message: "Session expired or invalid",
-          errorCode: "INVALID_SESSION_ID",
-        },
-      ]);
+      .reply(401, [{ message: "Session expired or invalid", errorCode: "INVALID_SESSION_ID" }]);
 
     const { result } = await invoke(validateConnection, {
       connection,

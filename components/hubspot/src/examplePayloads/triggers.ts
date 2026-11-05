@@ -82,8 +82,7 @@ export const pollChangesTriggerExamplePayload: { payload: TriggerPayload } = {
   },
 };
 
-export const pollChangesCustomObjectsTriggerExamplePayload =
-  pollChangesTriggerExamplePayload;
+export const pollChangesCustomObjectsTriggerExamplePayload = pollChangesTriggerExamplePayload;
 
 export const webhookExamplePayload = {
   payload: {

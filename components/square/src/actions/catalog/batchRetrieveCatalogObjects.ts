@@ -10,18 +10,9 @@ export const batchRetrieveCatalogObjects = action({
   },
   perform: async (
     context,
-    {
-      squareConnection,
-      objectIds,
-      includeRelatedObjects,
-      catalogVersion,
-      includeDeletedObjects,
-    },
+    { squareConnection, objectIds, includeRelatedObjects, catalogVersion, includeDeletedObjects },
   ) => {
-    const client = await createAuthorizedClient(
-      squareConnection,
-      context.debug.enabled,
-    );
+    const client = await createAuthorizedClient(squareConnection, context.debug.enabled);
 
     const requestBody = {
       object_ids: objectIds,
@@ -30,10 +21,7 @@ export const batchRetrieveCatalogObjects = action({
       include_deleted_objects: includeDeletedObjects,
     };
 
-    const response = await client.post(
-      "/v2/catalog/batch-retrieve",
-      requestBody,
-    );
+    const response = await client.post("/v2/catalog/batch-retrieve", requestBody);
 
     return {
       data: response.data,

@@ -1,9 +1,4 @@
-import {
-  type HttpResponse,
-  type TriggerPayload,
-  trigger,
-  util,
-} from "@prismatic-io/spectral";
+import { type HttpResponse, type TriggerPayload, trigger, util } from "@prismatic-io/spectral";
 import { webhookExamplePayload } from "../examplePayloads";
 import { webhookInputs } from "../inputs";
 import { parseXml } from "../util/xml";
@@ -29,9 +24,7 @@ export const webhook = trigger({
 
     const finalPayload: TriggerPayload = { ...payload };
 
-    finalPayload.body.data = parseXml(
-      util.types.toString(finalPayload.body.data),
-    );
+    finalPayload.body.data = parseXml(util.types.toString(finalPayload.body.data));
     finalPayload.body.contentType = undefined;
 
     return Promise.resolve({

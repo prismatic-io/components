@@ -3,9 +3,7 @@ import { oauth } from "../../connections";
 
 import component from "../..";
 
-const describeIntegrationTest = process.env.PRISMATIC_CONNECTION_VALUE
-  ? describe
-  : describe.skip;
+const describeIntegrationTest = process.env.PRISMATIC_CONNECTION_VALUE ? describe : describe.skip;
 
 describeIntegrationTest("calendars", () => {
   const harness = testing.createHarness(component);

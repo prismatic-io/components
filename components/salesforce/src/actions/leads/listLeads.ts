@@ -55,8 +55,7 @@ export const listLeads = action({
       data: response,
     };
   },
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    listLeadsExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => listLeadsExamplePayload,
   inputs: listLeadsInputs,
   examplePayload: listLeadsExamplePayload as unknown,
 });

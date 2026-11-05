@@ -13,10 +13,7 @@ export const findIssue = action({
   },
   inputs: findIssueInputs,
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { searchType, searchValue, jiraConnection, fields },
-  ) => {
+  perform: async (context, { searchType, searchValue, jiraConnection, fields }) => {
     const client = await createV3Client(jiraConnection, context.debug.enabled);
 
     if (searchType === "number") {
@@ -32,9 +29,7 @@ export const findIssue = action({
         });
         return { data };
       } catch (error) {
-        if (
-          (error as { response?: { status?: number } }).response?.status === 400
-        ) {
+        if ((error as { response?: { status?: number } }).response?.status === 400) {
           return { data: [] };
         }
         throw error;

@@ -31,10 +31,7 @@ describe("toFindOptions", () => {
     { pageSize: 20, pageNumber: 0 },
     { pageSize: "0", pageNumber: "1" },
     { pageSize: 0, pageNumber: 1 },
-  ])("should return undefined for invalid values", ({
-    pageSize,
-    pageNumber,
-  }) => {
+  ])("should return undefined for invalid values", ({ pageSize, pageNumber }) => {
     const result = toFindOptions(pageSize, pageNumber);
     expect(result).toBeUndefined();
   });
@@ -73,11 +70,7 @@ describe("toFullNameIdentifier", () => {
       name: "helloworld",
       expected: "Account.helloworld",
     },
-  ])("should return valid fullName identifiers", ({
-    objectType,
-    name,
-    expected,
-  }) => {
+  ])("should return valid fullName identifiers", ({ objectType, name, expected }) => {
     const result = toFullNameIdentifier(objectType, name);
     expect(result).toStrictEqual(expected);
   });
@@ -117,11 +110,7 @@ describe("processOutboundMessageFields", () => {
       expected: ["id", "name", "description"],
     },
     { fields: ["name"], dynamicFields: ["name"], expected: ["name"] },
-  ])("should combine fields from multiple sources", ({
-    fields,
-    dynamicFields,
-    expected,
-  }) => {
+  ])("should combine fields from multiple sources", ({ fields, dynamicFields, expected }) => {
     const result = processOutboundMessageFields(fields, dynamicFields);
     expect(result).toStrictEqual(expected);
   });
@@ -129,27 +118,19 @@ describe("processOutboundMessageFields", () => {
 
 describe("formatSOQLDateTime", () => {
   test("emits an unquoted second-precision UTC literal", () => {
-    expect(formatSOQLDateTime("2026-08-10T12:34:56.789+0000")).toBe(
-      "2026-08-10T12:34:56Z",
-    );
+    expect(formatSOQLDateTime("2026-08-10T12:34:56.789+0000")).toBe("2026-08-10T12:34:56Z");
   });
 
   test("floors sub-second precision downward rather than rounding", () => {
-    expect(formatSOQLDateTime("2026-08-10T12:34:56.999Z")).toBe(
-      "2026-08-10T12:34:56Z",
-    );
+    expect(formatSOQLDateTime("2026-08-10T12:34:56.999Z")).toBe("2026-08-10T12:34:56Z");
   });
 
   test("accepts a Date", () => {
-    expect(formatSOQLDateTime(new Date("2026-01-02T03:04:05.500Z"))).toBe(
-      "2026-01-02T03:04:05Z",
-    );
+    expect(formatSOQLDateTime(new Date("2026-01-02T03:04:05.500Z"))).toBe("2026-01-02T03:04:05Z");
   });
 
   test("throws on an unparseable value", () => {
-    expect(() => formatSOQLDateTime("not-a-date")).toThrow(
-      "Invalid date value for SOQL literal",
-    );
+    expect(() => formatSOQLDateTime("not-a-date")).toThrow("Invalid date value for SOQL literal");
   });
 });
 
@@ -299,10 +280,7 @@ describe("advanceCursor", () => {
   });
 
   test("a page entirely at the cursor's own timestamp still drains across rounds", () => {
-    let walking: PollingCursor = {
-      ...cursor,
-      watermark: "2026-08-10T12:00:05Z",
-    };
+    let walking: PollingCursor = { ...cursor, watermark: "2026-08-10T12:00:05Z" };
     const emitted: string[] = [];
     for (let page = 0; page < 4; page++) {
       const records = [
@@ -371,32 +349,26 @@ describe("advanceCursor", () => {
 });
 
 describe("resolvePollingFields", () => {
-  const logger = {
-    debug: jest.fn(),
-    info: jest.fn(),
-    warn: jest.fn(),
-    error: jest.fn(),
-  };
+  const logger = { debug: jest.fn(), info: jest.fn(), warn: jest.fn(), error: jest.fn() };
 
-  const clientWithFields = (
-    fields: { name: string; type: string; length?: number }[],
-  ) => ({ describe: jest.fn().mockResolvedValue({ fields }) }) as never;
+  const clientWithFields = (fields: { name: string; type: string; length?: number }[]) =>
+    ({ describe: jest.fn().mockResolvedValue({ fields }) }) as never;
 
   beforeEach(() => jest.clearAllMocks());
 
   test("returns only the required fields when returnIdsOnly is set", async () => {
     const client = clientWithFields([{ name: "Name", type: "string" }]);
-    await expect(
-      resolvePollingFields(client, "Account", ["Name"], true, logger),
-    ).resolves.toEqual(["Id", "CreatedDate", "LastModifiedDate"]);
+    await expect(resolvePollingFields(client, "Account", ["Name"], true, logger)).resolves.toEqual([
+      "Id",
+      "CreatedDate",
+      "LastModifiedDate",
+    ]);
   });
 
   test("returnIdsOnly does not trigger a describe call", async () => {
     const client = clientWithFields([{ name: "Name", type: "string" }]);
     await resolvePollingFields(client, "Account", [], true, logger);
-    expect(
-      (client as unknown as { describe: jest.Mock }).describe,
-    ).not.toHaveBeenCalled();
+    expect((client as unknown as { describe: jest.Mock }).describe).not.toHaveBeenCalled();
   });
 
   test("merges selected fields with the required fields, without duplicates", async () => {
@@ -413,9 +385,12 @@ describe("resolvePollingFields", () => {
       { name: "CreatedDate", type: "datetime" },
       { name: "LastModifiedDate", type: "datetime" },
     ]);
-    await expect(
-      resolvePollingFields(client, "Account", [], false, logger),
-    ).resolves.toEqual(["Id", "CreatedDate", "LastModifiedDate", "Name"]);
+    await expect(resolvePollingFields(client, "Account", [], false, logger)).resolves.toEqual([
+      "Id",
+      "CreatedDate",
+      "LastModifiedDate",
+      "Name",
+    ]);
   });
 
   test("warns when two or more long text areas would clamp the query batch size", async () => {
@@ -424,9 +399,7 @@ describe("resolvePollingFields", () => {
       { name: "Detail__c", type: "textarea", length: 32000 },
     ]);
     await resolvePollingFields(client, "Account", [], false, logger);
-    expect(logger.warn).toHaveBeenCalledWith(
-      expect.stringContaining("200 records per page"),
-    );
+    expect(logger.warn).toHaveBeenCalledWith(expect.stringContaining("200 records per page"));
   });
 
   test("does not warn for ordinary short text-area fields", async () => {
@@ -444,16 +417,12 @@ describe("resolvePollingFields", () => {
       { name: "Attachment__c", type: "base64" },
     ]);
     await resolvePollingFields(client, "Account", [], false, logger);
-    expect(logger.warn).toHaveBeenCalledWith(
-      expect.stringContaining("200 records per page"),
-    );
+    expect(logger.warn).toHaveBeenCalledWith(expect.stringContaining("200 records per page"));
   });
 });
 
 describe("lookBackDate input", () => {
-  const clean = pollChangesTriggerInputs.lookBackDate.clean as (
-    v: unknown,
-  ) => string;
+  const clean = pollChangesTriggerInputs.lookBackDate.clean as (v: unknown) => string;
 
   test("accepts a YYYY-MM-DD date, normalized to midnight UTC", () => {
     expect(clean("2026-02-01")).toBe("2026-02-01T00:00:00.000Z");
@@ -559,9 +528,7 @@ describe("keyset drain delivers every record exactly once", () => {
       query: (soql: string) => {
         queries.push(soql);
         const keyset =
-          /LastModifiedDate > (\S+) OR \(LastModifiedDate = \S+ AND Id > '([^']+)'\)/.exec(
-            soql,
-          );
+          /LastModifiedDate > (\S+) OR \(LastModifiedDate = \S+ AND Id > '([^']+)'\)/.exec(soql);
         const inclusive = /LastModifiedDate >= (\S+)/.exec(soql)?.[1] ?? "";
         const upper = /LastModifiedDate < (\S+)/.exec(soql)?.[1] ?? "";
         const limit = Number(/LIMIT (\d+)/.exec(soql)?.[1] ?? "0");
@@ -577,15 +544,11 @@ describe("keyset drain delivers every record exactly once", () => {
         });
         rows.sort(
           (a, b) =>
-            new Date(a.LastModifiedDate).getTime() -
-              new Date(b.LastModifiedDate).getTime() ||
+            new Date(a.LastModifiedDate).getTime() - new Date(b.LastModifiedDate).getTime() ||
             (a.Id as string).localeCompare(b.Id as string),
         );
 
-        return Promise.resolve({
-          done: rows.length <= limit,
-          records: rows.slice(0, limit),
-        });
+        return Promise.resolve({ done: rows.length <= limit, records: rows.slice(0, limit) });
       },
     } as unknown as Parameters<typeof fetchPollingWindow>[0];
     return { client, queries };
@@ -632,10 +595,7 @@ describe("keyset drain delivers every record exactly once", () => {
       LastModifiedDate: "2026-08-10T12:00:05.000+0000",
     })) as PollingTriggerObject[];
 
-    const { emitted, perRound, cursor } = await drain(
-      [...before, ...inside],
-      500,
-    );
+    const { emitted, perRound, cursor } = await drain([...before, ...inside], 500);
 
     expect(cursor).toBeNull();
     expect(emitted).toHaveLength(4010);
@@ -670,9 +630,7 @@ describe("keyset drain delivers every record exactly once", () => {
     expect(queries[1]).toContain(
       "(LastModifiedDate > 2026-08-10T12:00:05Z OR (LastModifiedDate = 2026-08-10T12:00:05Z AND Id > '0035g0000000001499'))",
     );
-    expect(
-      queries.every((q) => q.includes("ORDER BY LastModifiedDate ASC, Id ASC")),
-    ).toBe(true);
+    expect(queries.every((q) => q.includes("ORDER BY LastModifiedDate ASC, Id ASC"))).toBe(true);
   });
 });
 
@@ -710,9 +668,7 @@ describe("classifyFromCursor", () => {
       windowEnd: "2026-08-10T13:00:00.000Z",
       isBackfill: false,
     };
-    const naiveClassifyFrom = new Date(
-      new Date(cursor.watermark).getTime() - 1,
-    );
+    const naiveClassifyFrom = new Date(new Date(cursor.watermark).getTime() - 1);
     const recordAtFlooredSecond: PollingTriggerObject = {
       Id: "001",
       CreatedDate: "2020-01-01T00:00:00.000Z",
@@ -735,9 +691,7 @@ describe("classifyFromCursor", () => {
       windowEnd: "2026-08-10T13:00:00.000Z",
       isBackfill: false,
     };
-    expect(classifyFromCursor(cursor).toISOString()).toBe(
-      "2026-08-10T11:59:59.999Z",
-    );
+    expect(classifyFromCursor(cursor).toISOString()).toBe("2026-08-10T11:59:59.999Z");
   });
 });
 
@@ -756,12 +710,8 @@ describe("createdSinceCursor", () => {
   };
 
   test("anchors on the cycle's start, not the page's watermark", () => {
-    expect(createdSinceCursor(pageThreeCursor).toISOString()).toBe(
-      "2026-08-10T09:59:59.999Z",
-    );
-    expect(classifyFromCursor(pageThreeCursor).toISOString()).toBe(
-      "2026-08-10T10:29:59.999Z",
-    );
+    expect(createdSinceCursor(pageThreeCursor).toISOString()).toBe("2026-08-10T09:59:59.999Z");
+    expect(classifyFromCursor(pageThreeCursor).toISOString()).toBe("2026-08-10T10:29:59.999Z");
   });
 
   test("equals classifyFromCursor on page 1, where the two anchors coincide", () => {
@@ -771,9 +721,7 @@ describe("createdSinceCursor", () => {
       windowEnd: "2026-08-10T11:00:00.000Z",
       isBackfill: false,
     };
-    expect(createdSinceCursor(pageOne).getTime()).toBe(
-      classifyFromCursor(pageOne).getTime(),
-    );
+    expect(createdSinceCursor(pageOne).getTime()).toBe(classifyFromCursor(pageOne).getTime());
   });
 
   test("a record created inside the window is classified as created on a later page", () => {
@@ -847,36 +795,20 @@ describe("getPollingChanges snapshot mode (backfill seed)", () => {
 
   test("the total item count equals the record count: no record is emitted twice", () => {
     const records = [createdInsideEditedSince, createdBeforeEditedSince];
-    const { changes, changesObject } = getPollingChanges(
-      true,
-      true,
-      records,
-      floor,
-      floor,
-      [],
-      {
-        snapshot: true,
-      },
-    );
+    const { changes, changesObject } = getPollingChanges(true, true, records, floor, floor, [], {
+      snapshot: true,
+    });
     expect(changes).toBe(records.length);
-    expect(
-      changesObject.createdRecords.length + changesObject.updatedRecords.length,
-    ).toBe(records.length);
+    expect(changesObject.createdRecords.length + changesObject.updatedRecords.length).toBe(
+      records.length,
+    );
   });
 
   test("with both Show New Records and Show Updated Records off, records are still delivered", () => {
     const records = [createdInsideEditedSince, createdBeforeEditedSince];
-    const { changes, changesObject } = getPollingChanges(
-      false,
-      false,
-      records,
-      floor,
-      floor,
-      [],
-      {
-        snapshot: true,
-      },
-    );
+    const { changes, changesObject } = getPollingChanges(false, false, records, floor, floor, [], {
+      snapshot: true,
+    });
     expect(changesObject.createdRecords).toEqual([createdInsideEditedSince]);
     expect(changesObject.updatedRecords).toEqual([createdBeforeEditedSince]);
     expect(changes).toBe(records.length);
@@ -885,26 +817,12 @@ describe("getPollingChanges snapshot mode (backfill seed)", () => {
   test("regression guard: a steady-state poll (no snapshot option) still double-reports and still honors the toggles", () => {
     const createdAndUpdated = createdInsideEditedSince;
 
-    const bothOn = getPollingChanges(
-      true,
-      true,
-      [createdAndUpdated],
-      floor,
-      floor,
-    );
+    const bothOn = getPollingChanges(true, true, [createdAndUpdated], floor, floor);
     expect(bothOn.changesObject.createdRecords).toEqual([createdAndUpdated]);
     expect(bothOn.changesObject.updatedRecords).toEqual([createdAndUpdated]);
 
-    const updatedOff = getPollingChanges(
-      true,
-      false,
-      [createdAndUpdated],
-      floor,
-      floor,
-    );
-    expect(updatedOff.changesObject.createdRecords).toEqual([
-      createdAndUpdated,
-    ]);
+    const updatedOff = getPollingChanges(true, false, [createdAndUpdated], floor, floor);
+    expect(updatedOff.changesObject.createdRecords).toEqual([createdAndUpdated]);
     expect(updatedOff.changesObject.updatedRecords).toEqual([]);
   });
 });
@@ -919,9 +837,7 @@ describe("fetchPollingPage", () => {
 
   test("queries ascending with an explicit LIMIT and returns the records", async () => {
     const records = [{ Id: "a", CreatedDate: "x", LastModifiedDate: "x" }];
-    const client = {
-      query: jest.fn().mockResolvedValue({ records, done: true }),
-    } as never;
+    const client = { query: jest.fn().mockResolvedValue({ records, done: true }) } as never;
 
     const result = await fetchPollingPage(client, {
       recordType: "Account",
@@ -932,8 +848,7 @@ describe("fetchPollingPage", () => {
     });
 
     expect(result).toEqual(records);
-    const soql = (client as unknown as { query: jest.Mock }).query.mock
-      .calls[0][0];
+    const soql = (client as unknown as { query: jest.Mock }).query.mock.calls[0][0];
     expect(soql).toContain("ORDER BY LastModifiedDate ASC, Id ASC");
     expect(soql).toContain("LIMIT 500");
     expect(soql).toContain("Industry = 'Banking'");
@@ -942,9 +857,7 @@ describe("fetchPollingPage", () => {
   });
 
   test("does not auto-fetch beyond the requested page", async () => {
-    const client = {
-      query: jest.fn().mockResolvedValue({ records: [], done: true }),
-    } as never;
+    const client = { query: jest.fn().mockResolvedValue({ records: [], done: true }) } as never;
     await fetchPollingPage(client, {
       recordType: "Account",
       fields: [],
@@ -952,12 +865,10 @@ describe("fetchPollingPage", () => {
       cursor,
       pageSize: 500,
     });
-    expect(
-      (client as unknown as { query: jest.Mock }).query,
-    ).toHaveBeenCalledWith(expect.any(String), {
-      autoFetch: true,
-      maxFetch: 500,
-    });
+    expect((client as unknown as { query: jest.Mock }).query).toHaveBeenCalledWith(
+      expect.any(String),
+      { autoFetch: true, maxFetch: 500 },
+    );
   });
 
   test.each([
@@ -975,19 +886,13 @@ describe("fetchPollingPage", () => {
         cursor,
         pageSize,
       }),
-    ).rejects.toThrow(
-      `Invalid polling page size ${pageSize}: must be a positive integer.`,
-    );
-    expect(
-      (client as unknown as { query: jest.Mock }).query,
-    ).not.toHaveBeenCalled();
+    ).rejects.toThrow(`Invalid polling page size ${pageSize}: must be a positive integer.`);
+    expect((client as unknown as { query: jest.Mock }).query).not.toHaveBeenCalled();
   });
 
   test("returns a short page normally when Salesforce confirms the result set is complete", async () => {
     const records = [{ Id: "a", CreatedDate: "x", LastModifiedDate: "x" }];
-    const client = {
-      query: jest.fn().mockResolvedValue({ records, done: true }),
-    } as never;
+    const client = { query: jest.fn().mockResolvedValue({ records, done: true }) } as never;
 
     const result = await fetchPollingPage(client, {
       recordType: "Account",
@@ -1002,9 +907,7 @@ describe("fetchPollingPage", () => {
 
   test("throws on a short page when Salesforce reports the result set is not complete", async () => {
     const records = [{ Id: "a", CreatedDate: "x", LastModifiedDate: "x" }];
-    const client = {
-      query: jest.fn().mockResolvedValue({ records, done: false }),
-    } as never;
+    const client = { query: jest.fn().mockResolvedValue({ records, done: false }) } as never;
 
     await expect(
       fetchPollingPage(client, {
@@ -1038,9 +941,7 @@ describe("fetchPollingPage", () => {
       CreatedDate: "x",
       LastModifiedDate: "x",
     }));
-    const client = {
-      query: jest.fn().mockResolvedValue({ records, done: false }),
-    } as never;
+    const client = { query: jest.fn().mockResolvedValue({ records, done: false }) } as never;
 
     const result = await fetchPollingPage(client, {
       recordType: "Account",
@@ -1055,20 +956,13 @@ describe("fetchPollingPage", () => {
 });
 
 describe("fetchDeletedRecords", () => {
-  const logger = {
-    debug: jest.fn(),
-    info: jest.fn(),
-    warn: jest.fn(),
-    error: jest.fn(),
-  };
+  const logger = { debug: jest.fn(), info: jest.fn(), warn: jest.fn(), error: jest.fn() };
 
   beforeEach(() => jest.clearAllMocks());
 
   const deleteClient = (result: Record<string, unknown>) =>
     ({
-      sobject: jest
-        .fn()
-        .mockReturnValue({ deleted: jest.fn().mockResolvedValue(result) }),
+      sobject: jest.fn().mockReturnValue({ deleted: jest.fn().mockResolvedValue(result) }),
     }) as never;
 
   const now = "2026-08-10T12:00:00.000Z";
@@ -1108,48 +1002,28 @@ describe("fetchDeletedRecords", () => {
   test("falls back to the window's own start, never `now`, when the API omits latestDateCovered", async () => {
     const client = deleteClient({ deletedRecords: [] });
     const since = "2026-08-10T10:00:00.000Z";
-    const { coveredUntil } = await fetchDeletedRecords(
-      client,
-      "Account",
-      since,
-      now,
-      logger,
-    );
+    const { coveredUntil } = await fetchDeletedRecords(client, "Account", since, now, logger);
     expect(coveredUntil).toBe(since);
     expect(coveredUntil).not.toBe(now);
   });
 
   test("clamps a start older than the 15-day window to the exact boundary and warns", async () => {
     const client = deleteClient({ deletedRecords: [] });
-    await fetchDeletedRecords(
-      client,
-      "Account",
-      "2020-01-01T00:00:00.000Z",
-      now,
-      logger,
-    );
-    const start = (client as unknown as { sobject: jest.Mock }).sobject.mock
-      .results[0].value.deleted.mock.calls[0][0];
-    expect(start).toBe(
-      new Date(
-        new Date(now).getTime() - 15 * 24 * 60 * 60 * 1000,
-      ).toISOString(),
-    );
-    expect(logger.warn).toHaveBeenCalledWith(
-      expect.stringContaining("15 days"),
-    );
+    await fetchDeletedRecords(client, "Account", "2020-01-01T00:00:00.000Z", now, logger);
+    const start = (client as unknown as { sobject: jest.Mock }).sobject.mock.results[0].value
+      .deleted.mock.calls[0][0];
+    expect(start).toBe(new Date(new Date(now).getTime() - 15 * 24 * 60 * 60 * 1000).toISOString());
+    expect(logger.warn).toHaveBeenCalledWith(expect.stringContaining("15 days"));
   });
 
   test("passes a since inside the window through untouched and does not warn about clamping", async () => {
     const client = deleteClient({ deletedRecords: [] });
     const since = "2026-08-05T00:00:00.000Z";
     await fetchDeletedRecords(client, "Account", since, now, logger);
-    const start = (client as unknown as { sobject: jest.Mock }).sobject.mock
-      .results[0].value.deleted.mock.calls[0][0];
+    const start = (client as unknown as { sobject: jest.Mock }).sobject.mock.results[0].value
+      .deleted.mock.calls[0][0];
     expect(start).toBe(since);
-    expect(logger.warn).not.toHaveBeenCalledWith(
-      expect.stringContaining("15 days"),
-    );
+    expect(logger.warn).not.toHaveBeenCalledWith(expect.stringContaining("15 days"));
   });
 
   test("warns when earliestDateAvailable is later than the requested start", async () => {
@@ -1158,16 +1032,8 @@ describe("fetchDeletedRecords", () => {
       latestDateCovered: now,
       earliestDateAvailable: "2026-08-10T09:00:00.000Z",
     });
-    await fetchDeletedRecords(
-      client,
-      "Account",
-      "2026-08-10T08:00:00.000Z",
-      now,
-      logger,
-    );
-    expect(logger.warn).toHaveBeenCalledWith(
-      expect.stringContaining("2026-08-10T09:00:00.000Z"),
-    );
+    await fetchDeletedRecords(client, "Account", "2026-08-10T08:00:00.000Z", now, logger);
+    expect(logger.warn).toHaveBeenCalledWith(expect.stringContaining("2026-08-10T09:00:00.000Z"));
   });
 
   test("does not warn when earliestDateAvailable precedes the requested start", async () => {
@@ -1176,13 +1042,7 @@ describe("fetchDeletedRecords", () => {
       latestDateCovered: now,
       earliestDateAvailable: "2026-08-10T07:00:00.000Z",
     });
-    await fetchDeletedRecords(
-      client,
-      "Account",
-      "2026-08-10T08:00:00.000Z",
-      now,
-      logger,
-    );
+    await fetchDeletedRecords(client, "Account", "2026-08-10T08:00:00.000Z", now, logger);
     expect(logger.warn).not.toHaveBeenCalled();
   });
 });
@@ -1197,9 +1057,7 @@ describe("resolveCursor", () => {
       windowEnd: "2026-08-10T11:30:00Z",
       isBackfill: true,
     };
-    expect(
-      resolveCursor({ incoming, state: {}, lookBackDate: "", now }),
-    ).toEqual(incoming);
+    expect(resolveCursor({ incoming, state: {}, lookBackDate: "", now })).toEqual(incoming);
   });
 
   test("prefers the platform cursor over the persisted one", () => {
@@ -1215,14 +1073,9 @@ describe("resolveCursor", () => {
       windowEnd: "2026-08-01T01:00:00Z",
       isBackfill: false,
     };
-    expect(
-      resolveCursor({
-        incoming,
-        state: { cursor: stale },
-        lookBackDate: "",
-        now,
-      }),
-    ).toEqual(incoming);
+    expect(resolveCursor({ incoming, state: { cursor: stale }, lookBackDate: "", now })).toEqual(
+      incoming,
+    );
   });
 
   test("falls back to the persisted cursor when the platform sends none", () => {
@@ -1233,12 +1086,7 @@ describe("resolveCursor", () => {
       isBackfill: true,
     };
     expect(
-      resolveCursor({
-        incoming: undefined,
-        state: { cursor: persisted },
-        lookBackDate: "",
-        now,
-      }),
+      resolveCursor({ incoming: undefined, state: { cursor: persisted }, lookBackDate: "", now }),
     ).toEqual(persisted);
   });
 
@@ -1267,12 +1115,7 @@ describe("resolveCursor", () => {
       isBackfill: false,
     };
     expect(
-      resolveCursor({
-        incoming: undefined,
-        state: { cursor: resumed },
-        lookBackDate: "",
-        now,
-      }),
+      resolveCursor({ incoming: undefined, state: { cursor: resumed }, lookBackDate: "", now }),
     ).toEqual(resumed);
   });
 
@@ -1367,36 +1210,21 @@ describe("resolveCursor", () => {
 
     test("falls back to the watermark rather than throwing, for a persisted cursor", () => {
       expect(
-        resolveCursor({
-          incoming: undefined,
-          state: { cursor: legacy },
-          lookBackDate: "",
-          now,
-        }),
+        resolveCursor({ incoming: undefined, state: { cursor: legacy }, lookBackDate: "", now }),
       ).toEqual({ ...legacy, windowStart: "2026-08-10T11:00:00Z" });
     });
 
     test("falls back to the watermark rather than throwing, for a platform cursor", () => {
-      expect(
-        resolveCursor({ incoming: legacy, state: {}, lookBackDate: "", now }),
-      ).toEqual({
+      expect(resolveCursor({ incoming: legacy, state: {}, lookBackDate: "", now })).toEqual({
         ...legacy,
         windowStart: "2026-08-10T11:00:00Z",
       });
     });
 
     test("still rejects a windowStart that is present but not a valid date", () => {
-      const corrupted = {
-        ...legacy,
-        windowStart: 1699999999999,
-      } as unknown as PollingCursor;
+      const corrupted = { ...legacy, windowStart: 1699999999999 } as unknown as PollingCursor;
       expect(() =>
-        resolveCursor({
-          incoming: corrupted,
-          state: {},
-          lookBackDate: "",
-          now,
-        }),
+        resolveCursor({ incoming: corrupted, state: {}, lookBackDate: "", now }),
       ).toThrow(/windowStart/i);
     });
   });
@@ -1409,12 +1237,7 @@ describe("resolveCursor", () => {
         isBackfill: false,
       } as unknown as PollingCursor;
       expect(() =>
-        resolveCursor({
-          incoming: undefined,
-          state: { cursor: corrupted },
-          lookBackDate: "",
-          now,
-        }),
+        resolveCursor({ incoming: undefined, state: { cursor: corrupted }, lookBackDate: "", now }),
       ).toThrow(/watermark/i);
     });
 
@@ -1425,12 +1248,7 @@ describe("resolveCursor", () => {
         isBackfill: false,
       } as unknown as PollingCursor;
       expect(() =>
-        resolveCursor({
-          incoming: corrupted,
-          state: {},
-          lookBackDate: "",
-          now,
-        }),
+        resolveCursor({ incoming: corrupted, state: {}, lookBackDate: "", now }),
       ).toThrow(/windowEnd/i);
     });
 
@@ -1441,22 +1259,15 @@ describe("resolveCursor", () => {
         isBackfill: "false",
       } as unknown as PollingCursor;
       expect(() =>
-        resolveCursor({
-          incoming: undefined,
-          state: { cursor: corrupted },
-          lookBackDate: "",
-          now,
-        }),
+        resolveCursor({ incoming: undefined, state: { cursor: corrupted }, lookBackDate: "", now }),
       ).toThrow(/isBackfill/i);
     });
 
     test("throws when lastPolledAt is a number instead of an ISO date string", () => {
-      const state = { lastPolledAt: 1699999999999 } as unknown as {
-        lastPolledAt: string;
-      };
-      expect(() =>
-        resolveCursor({ incoming: undefined, state, lookBackDate: "", now }),
-      ).toThrow(/lastPolledAt/i);
+      const state = { lastPolledAt: 1699999999999 } as unknown as { lastPolledAt: string };
+      expect(() => resolveCursor({ incoming: undefined, state, lookBackDate: "", now })).toThrow(
+        /lastPolledAt/i,
+      );
     });
 
     test("throws when lastPolledAt is an unparseable string", () => {
@@ -1471,9 +1282,7 @@ describe("resolveCursor", () => {
     });
 
     test("treats a null lastPolledAt as absent rather than validating it, falling back to backfill", () => {
-      const state = { lastPolledAt: null } as unknown as {
-        lastPolledAt: string;
-      };
+      const state = { lastPolledAt: null } as unknown as { lastPolledAt: string };
       expect(
         resolveCursor({
           incoming: undefined,
@@ -1500,16 +1309,14 @@ describe("resolveCursor", () => {
 
     test("resumes a keyset cursor unchanged", () => {
       const incoming = { ...base, lastId: "0035g00000XyZaBAAV" };
-      expect(
-        resolveCursor({ incoming, state: {}, lookBackDate: "", now }),
-      ).toEqual(incoming);
+      expect(resolveCursor({ incoming, state: {}, lookBackDate: "", now })).toEqual(incoming);
     });
 
     test("rejects a non-string lastId", () => {
       const incoming = { ...base, lastId: 42 } as unknown as PollingCursor;
-      expect(() =>
-        resolveCursor({ incoming, state: {}, lookBackDate: "", now }),
-      ).toThrow("cursor.lastId");
+      expect(() => resolveCursor({ incoming, state: {}, lookBackDate: "", now })).toThrow(
+        "cursor.lastId",
+      );
     });
   });
 });
@@ -1529,10 +1336,7 @@ describe("resolveCursorSafely", () => {
 
     const result = resolveCursorSafely({
       incoming: undefined,
-      state: {
-        cursor: corruptedPersisted,
-        lastPolledAt: "2026-08-10T11:00:00.000Z",
-      },
+      state: { cursor: corruptedPersisted, lastPolledAt: "2026-08-10T11:00:00.000Z" },
       lookBackDate: "",
       now,
       logger,
@@ -1545,9 +1349,7 @@ describe("resolveCursorSafely", () => {
       isBackfill: false,
     });
     expect(logger.warn).toHaveBeenCalledTimes(1);
-    expect(logger.warn).toHaveBeenCalledWith(
-      expect.stringContaining("watermark"),
-    );
+    expect(logger.warn).toHaveBeenCalledWith(expect.stringContaining("watermark"));
   });
 
   test("discards a corrupted persisted cursor with no lastPolledAt, falling back to a fresh backfill", () => {
@@ -1594,18 +1396,10 @@ describe("resolveCursorSafely", () => {
   });
 
   test("does not intervene when there is no persisted cursor to blame — an unrelated throw still propagates", () => {
-    const state = { lastPolledAt: "not-a-date" } as unknown as {
-      lastPolledAt: string;
-    };
+    const state = { lastPolledAt: "not-a-date" } as unknown as { lastPolledAt: string };
 
     expect(() =>
-      resolveCursorSafely({
-        incoming: undefined,
-        state,
-        lookBackDate: "",
-        now,
-        logger,
-      }),
+      resolveCursorSafely({ incoming: undefined, state, lookBackDate: "", now, logger }),
     ).toThrow(/lastPolledAt/i);
     expect(logger.warn).not.toHaveBeenCalled();
   });
@@ -1656,13 +1450,7 @@ describe("resolveCursorSafely", () => {
       isBackfill: true,
     });
     expect(logger.warn).toHaveBeenCalledTimes(2);
-    expect(logger.warn).toHaveBeenNthCalledWith(
-      1,
-      expect.stringContaining("watermark"),
-    );
-    expect(logger.warn).toHaveBeenNthCalledWith(
-      2,
-      expect.stringContaining("lastPolledAt"),
-    );
+    expect(logger.warn).toHaveBeenNthCalledWith(1, expect.stringContaining("watermark"));
+    expect(logger.warn).toHaveBeenNthCalledWith(2, expect.stringContaining("lastPolledAt"));
   });
 });

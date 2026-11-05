@@ -11,18 +11,13 @@ export const calendars = dataSource({
   },
   perform: async (_context, { spaceId, connection }) => {
     const client = createClient(connection);
-    const { data } = await client.get<GetSpaceViewsResponse>(
-      `/space/${spaceId}/view`,
-      {
-        params: {
-          include_closed: false,
-        },
+    const { data } = await client.get<GetSpaceViewsResponse>(`/space/${spaceId}/view`, {
+      params: {
+        include_closed: false,
       },
-    );
+    });
     const calendarViews = data.views.filter(
-      (view) =>
-        view.type === "calendar" ||
-        view.name.toLowerCase().includes("calendar"),
+      (view) => view.type === "calendar" || view.name.toLowerCase().includes("calendar")
     );
     const options = calendarViews.map<Element>((view) => {
       return { label: view.name, key: view.id };

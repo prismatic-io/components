@@ -9,10 +9,7 @@ export const listDatasets = action({
     description: "Returns a list of datasets from 'My Workspace'",
   },
   perform: async (context, params) => {
-    const client = createClient(
-      { connection: params.connection },
-      context.debug.enabled,
-    );
+    const client = createClient({ connection: params.connection }, context.debug.enabled);
     const { data } = await client.get("/datasets", {
       params: { $top: params.top, $skipToken: params.skipToken },
     });

@@ -29,10 +29,7 @@ export const listContentFragments = action({
     return { data };
   },
   inputs: listContentFragmentsInputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: listContentFragmentsOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: listContentFragmentsOutputSchema }),
   examplePerform: async () => listContentFragmentsExamplePayload,
   examplePayload: listContentFragmentsExamplePayload,
 });

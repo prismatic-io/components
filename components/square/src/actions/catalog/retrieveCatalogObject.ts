@@ -12,10 +12,7 @@ export const retrieveCatalogObject = action({
     context,
     { squareConnection, objectId, includeRelatedObjects, catalogVersion },
   ) => {
-    const client = await createAuthorizedClient(
-      squareConnection,
-      context.debug.enabled,
-    );
+    const client = await createAuthorizedClient(squareConnection, context.debug.enabled);
 
     const requestQuery: Record<string, unknown> = {
       include_related_objects: includeRelatedObjects,

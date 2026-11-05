@@ -12,11 +12,7 @@ export const addProductFollower = action({
   },
   performSafety: "notAllowed",
   perform: async (context, { connection, id, userId }) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      WebhookVersion.V2,
-    );
+    const client = createClient(connection, context.debug.enabled, WebhookVersion.V2);
     const { data } = await client.post(`/products/${id}/followers`, {
       user_id: userId,
     });
@@ -24,8 +20,5 @@ export const addProductFollower = action({
   },
   inputs: addProductFollowerInputs,
   examplePayload: addProductFollowerExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: addProductFollowerOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: addProductFollowerOutputSchema }),
 });

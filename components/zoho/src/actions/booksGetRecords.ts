@@ -48,11 +48,7 @@ const booksGetRecords = action({
       ifModifiedSince,
     }: BooksGetRecordsPerformInput,
   ) => {
-    const booksClient = createClient(
-      connection,
-      ClientType.BOOKS,
-      context.debug.enabled,
-    );
+    const booksClient = createClient(connection, ClientType.BOOKS, context.debug.enabled);
 
     const url = getBooksUrl(parentRecordType, parentRecordId, recordType);
     const params = Object.fromEntries(
@@ -69,9 +65,7 @@ const booksGetRecords = action({
       params,
       recordType,
       fetchAll ?? false,
-      ifModifiedSince
-        ? { modifiedSince: ifModifiedSince, clientType: ClientType.BOOKS }
-        : {},
+      ifModifiedSince ? { modifiedSince: ifModifiedSince, clientType: ClientType.BOOKS } : {},
     );
     return { data };
   },

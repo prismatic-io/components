@@ -56,15 +56,11 @@ describe("getPublishedPageHtml", () => {
         sitemapUrl: undefined,
         pageUrl: "https://169.254.169.254/latest/meta-data",
       }),
-    ).rejects.toThrow(
-      "Refusing to fetch a non-public address: 169.254.169.254",
-    );
+    ).rejects.toThrow("Refusing to fetch a non-public address: 169.254.169.254");
   });
 
   test("surfaces a missing page", async () => {
-    nock("https://www.example.com")
-      .get("/en/missing.html")
-      .reply(404, "Not Found");
+    nock("https://www.example.com").get("/en/missing.html").reply(404, "Not Found");
     await expect(
       invoke(getPublishedPageHtml, {
         connection,
@@ -78,11 +74,7 @@ describe("getPublishedPageHtml", () => {
 describe("getPublishedPageHtml display", () => {
   test("is labelled by its family and names compatible sources", () => {
     expect(getPublishedPageHtml.display.label).toBe("Get Published Page HTML");
-    expect(getPublishedPageHtml.display.description).toContain(
-      "List Sitemap URLs",
-    );
-    expect(getPublishedPageHtml.display.description).toContain(
-      "AEM Sites Event Subscription",
-    );
+    expect(getPublishedPageHtml.display.description).toContain("List Sitemap URLs");
+    expect(getPublishedPageHtml.display.description).toContain("AEM Sites Event Subscription");
   });
 });

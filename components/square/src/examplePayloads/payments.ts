@@ -57,8 +57,7 @@ export const listPaymentsExamplePayload = {
           currency: "USD",
         },
         receipt_number: "KkAk",
-        receipt_url:
-          "https://squareup.com/receipt/preview/KkAkhdMsgzn59SM8A89WgKwekxLZY",
+        receipt_url: "https://squareup.com/receipt/preview/KkAkhdMsgzn59SM8A89WgKwekxLZY",
         delay_action: "CANCEL",
         delayed_until: "2023-05-08T21:23:59.255Z",
         version_token: "zpCBiO0YgSg5cCEqjUxHQGEuZA9SJBdp1WwI",
@@ -126,8 +125,7 @@ export const getPaymentExamplePayload = {
         currency: "USD",
       },
       receipt_number: "KkAk",
-      receipt_url:
-        "https://squareup.com/receipt/preview/KkAkhdMsgzn59SM8A89WgKwekxLZY",
+      receipt_url: "https://squareup.com/receipt/preview/KkAkhdMsgzn59SM8A89WgKwekxLZY",
       version_token: "zpCBiO0YgSg5cCEqjUxHQGEuZA9SJBdp1WwI",
     },
   },

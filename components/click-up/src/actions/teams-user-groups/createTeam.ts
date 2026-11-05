@@ -7,8 +7,7 @@ import { createTeamOutputSchema } from "../../outputSchemas";
 export const createTeam = action({
   display: {
     label: "Create Team",
-    description:
-      "Create a user group (Team) of users that can be assigned to items in a workspace.",
+    description: "Create a user group (Team) of users that can be assigned to items in a workspace.",
   },
   outputSchema: outputSchema({
     type: "actionOutput",
@@ -17,10 +16,7 @@ export const createTeam = action({
   examplePayload: createTeamExamplePayload,
   performSafety: "notAllowed",
   perform: async (context, { clickUpConnection, teamId, name, members }) => {
-    const client = createClickUpClient(
-      clickUpConnection,
-      context.debug.enabled,
-    );
+    const client = createClickUpClient(clickUpConnection, context.debug.enabled);
     const body = {
       name,
       members,

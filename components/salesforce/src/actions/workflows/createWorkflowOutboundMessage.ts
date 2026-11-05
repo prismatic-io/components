@@ -45,14 +45,10 @@ export const createWorkflowOutboundMessage = action({
 
     const client = await createSalesforceClient(connection, version);
 
-    const integrationUser = await getIntegrationUser(
-      client,
-      integrationUserEmail,
-    );
+    const integrationUser = await getIntegrationUser(client, integrationUserEmail);
 
     const result = await createWorkflowOutboundMessageFunction(client, {
-      apiVersion:
-        util.types.toNumber(version) || util.types.toNumber(client.version),
+      apiVersion: util.types.toNumber(version) || util.types.toNumber(client.version),
       fullName: toFullNameIdentifier(recordType, name),
       name,
       description,
@@ -62,8 +58,7 @@ export const createWorkflowOutboundMessage = action({
     });
     return { data: result };
   },
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    genericCreateUpdateFullNameExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => genericCreateUpdateFullNameExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: createWorkflowComponentOutputSchema,

@@ -12,7 +12,7 @@ export const getEntity = action({
   examplePayload: getEntityExamplePayload,
   perform: async (
     context,
-    { entityId, entityType, fieldNames, expandPropertyNames, connection },
+    { entityId, entityType, fieldNames, expandPropertyNames, connection }
   ) => {
     const client = await createCrmClient(connection, context.debug.enabled);
 

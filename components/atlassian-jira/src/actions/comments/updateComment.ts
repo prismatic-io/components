@@ -11,32 +11,26 @@ export const updateComment = action({
   },
   performSafety: "notAllowed",
   perform: async (context, params) => {
-    const client = await createV3Client(
-      params.jiraConnection,
-      context.debug.enabled,
-    );
-    const { data } = await client.put(
-      `/issue/${params.issueId}/comment/${params.commentId}`,
-      {
-        body: {
-          content: [
-            {
-              content: [
-                {
-                  text: params.comment || undefined,
-                  type: "text",
-                },
-              ],
-              type: "paragraph",
-            },
-          ],
-          type: "doc",
-          version: 1,
-          ...params.dynamicValues,
-          ...params.fieldValues,
-        },
+    const client = await createV3Client(params.jiraConnection, context.debug.enabled);
+    const { data } = await client.put(`/issue/${params.issueId}/comment/${params.commentId}`, {
+      body: {
+        content: [
+          {
+            content: [
+              {
+                text: params.comment || undefined,
+                type: "text",
+              },
+            ],
+            type: "paragraph",
+          },
+        ],
+        type: "doc",
+        version: 1,
+        ...params.dynamicValues,
+        ...params.fieldValues,
       },
-    );
+    });
     return { data };
   },
   examplePerform: async () => updateCommentExamplePayload,

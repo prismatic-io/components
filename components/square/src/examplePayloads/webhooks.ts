@@ -22,12 +22,7 @@ export const retrieveWebhookSubscriptionExamplePayload = {
       id: "wbhk_b35f6b3145074cf9ad513610786c19d5",
       name: "Example Webhook Subscription",
       enabled: true,
-      event_types: [
-        "payment.created",
-        "payment.updated",
-        "refund.created",
-        "refund.updated",
-      ],
+      event_types: ["payment.created", "payment.updated", "refund.created", "refund.updated"],
       notification_url: "https://example.com/webhook",
       api_version: "2023-05-17",
       signature_key: "1k9bIJKhi0QQ...",

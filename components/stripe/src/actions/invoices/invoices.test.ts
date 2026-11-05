@@ -25,9 +25,7 @@ afterEach(() => nock.cleanAll());
 
 describe("createInvoice", () => {
   it("creates the invoice and returns it", async () => {
-    const scope = nock(BASE)
-      .post("/v1/invoices")
-      .reply(200, createInvoiceExamplePayload.data);
+    const scope = nock(BASE).post("/v1/invoices").reply(200, createInvoiceExamplePayload.data);
 
     const { result } = await invoke(
       createInvoice,
@@ -48,9 +46,7 @@ describe("createInvoice", () => {
   it("surfaces a Stripe error response", async () => {
     nock(BASE)
       .post("/v1/invoices")
-      .reply(400, {
-        error: { type: "invalid_request_error", message: "No such customer" },
-      });
+      .reply(400, { error: { type: "invalid_request_error", message: "No such customer" } });
 
     await expect(
       invoke(
@@ -84,15 +80,10 @@ describe("getInvoice", () => {
   it("surfaces a Stripe error response", async () => {
     nock(BASE)
       .get("/v1/invoices/in_missing")
-      .reply(404, {
-        error: { type: "invalid_request_error", message: "No such invoice" },
-      });
+      .reply(404, { error: { type: "invalid_request_error", message: "No such invoice" } });
 
     await expect(
-      invoke(
-        getInvoice,
-        params({ invoiceId: "in_missing", stripeConnection: conn }),
-      ),
+      invoke(getInvoice, params({ invoiceId: "in_missing", stripeConnection: conn })),
     ).rejects.toThrow("No such invoice");
   });
 });
@@ -117,9 +108,7 @@ describe("listInvoices", () => {
     nock(BASE)
       .get("/v1/invoices")
       .query(true)
-      .reply(400, {
-        error: { type: "invalid_request_error", message: "Invalid limit" },
-      });
+      .reply(400, { error: { type: "invalid_request_error", message: "Invalid limit" } });
 
     await expect(
       invoke(listInvoices, params({ pagination: {}, stripeConnection: conn })),
@@ -152,9 +141,7 @@ describe("updateInvoice", () => {
   it("surfaces a Stripe error response", async () => {
     nock(BASE)
       .post("/v1/invoices/in_missing")
-      .reply(404, {
-        error: { type: "invalid_request_error", message: "No such invoice" },
-      });
+      .reply(404, { error: { type: "invalid_request_error", message: "No such invoice" } });
 
     await expect(
       invoke(
@@ -190,17 +177,11 @@ describe("deleteInvoice", () => {
     nock(BASE)
       .delete("/v1/invoices/in_missing")
       .reply(400, {
-        error: {
-          type: "invalid_request_error",
-          message: "You can only delete draft invoices",
-        },
+        error: { type: "invalid_request_error", message: "You can only delete draft invoices" },
       });
 
     await expect(
-      invoke(
-        deleteInvoice,
-        params({ invoiceId: "in_missing", stripeConnection: conn }),
-      ),
+      invoke(deleteInvoice, params({ invoiceId: "in_missing", stripeConnection: conn })),
     ).rejects.toThrow("only delete draft invoices");
   });
 });

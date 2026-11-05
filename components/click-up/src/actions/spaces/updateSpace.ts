@@ -8,8 +8,7 @@ import type { SpaceBody as Body } from "../../types";
 export const updateSpace = action({
   display: {
     label: "Update Space",
-    description:
-      "Rename a space, set its color, and enable ClickApps for the space.",
+    description: "Rename a space, set its color, and enable ClickApps for the space.",
   },
   outputSchema: outputSchema({
     type: "actionOutput",
@@ -39,12 +38,9 @@ export const updateSpace = action({
       color,
       privateInput,
       adminCanManage,
-    },
+    }
   ) => {
-    const client = createClickUpClient(
-      clickUpConnection,
-      context.debug.enabled,
-    );
+    const client = createClickUpClient(clickUpConnection, context.debug.enabled);
     const body: Body = {
       name: spaceName,
       color,

@@ -11,15 +11,10 @@ export const updateUser = action({
     description: "Update a Salesforce user.",
   },
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { version, dynamicValues, fieldValues, userName, connection },
-  ) => {
+  perform: async (context, { version, dynamicValues, fieldValues, userName, connection }) => {
     const salesforceClient = await createSalesforceClient(connection, version);
 
-    const userResponse = await salesforceClient
-      .sobject("User")
-      .findOne({ UserName: userName });
+    const userResponse = await salesforceClient.sobject("User").findOne({ UserName: userName });
 
     if (!userResponse?.Id) {
       throw new Error(`Unable to find User matching "${userName}"`);
@@ -35,8 +30,7 @@ export const updateUser = action({
       data: response,
     };
   },
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    genericCreateUpdateExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => genericCreateUpdateExamplePayload,
   inputs: updateUserInputs,
   outputSchema: outputSchema({
     type: "actionOutput",

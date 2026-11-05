@@ -19,8 +19,7 @@ export const deleteLead = action({
       data: response,
     };
   },
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    genericCreateUpdateExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => genericCreateUpdateExamplePayload,
   inputs: deleteLeadInputs,
   outputSchema: outputSchema({
     type: "actionOutput",

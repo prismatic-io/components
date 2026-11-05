@@ -6,8 +6,4 @@ export { adminApiAccessToken } from "./adminApiAccessToken";
 export { shopifyConnection } from "./oauth2";
 export { shopifyTemplatedConnection } from "./oauth2DynamicInputs";
 
-export default [
-  shopifyTemplatedConnection,
-  adminApiAccessToken,
-  shopifyConnection,
-];
+export default [shopifyTemplatedConnection, adminApiAccessToken, shopifyConnection];

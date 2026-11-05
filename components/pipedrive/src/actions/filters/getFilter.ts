@@ -18,8 +18,5 @@ export const getFilter = action({
   inputs: getFilterInputs,
   examplePayload: getFilterExamplePayload,
   examplePerform: async () => getFilterExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getFilterOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getFilterOutputSchema }),
 });

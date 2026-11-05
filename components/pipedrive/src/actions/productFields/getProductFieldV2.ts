@@ -12,19 +12,12 @@ export const getProductFieldV2 = action({
   },
   performSafety: "safe",
   perform: async (context, { connection, fieldCode }) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      WebhookVersion.V2,
-    );
+    const client = createClient(connection, context.debug.enabled, WebhookVersion.V2);
     const { data } = await client.get(`productFields/${fieldCode}`);
     return { data };
   },
   inputs: getProductFieldV2Inputs,
   examplePayload: getProductFieldV2ExamplePayload,
   examplePerform: async () => getProductFieldV2ExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getProductFieldV2OutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getProductFieldV2OutputSchema }),
 });

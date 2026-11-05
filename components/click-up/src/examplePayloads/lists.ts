@@ -49,8 +49,7 @@ const listObject = {
       type: "closed",
     },
   ],
-  inbound_address:
-    "add.task.124.U-81942673.ccc7c26e-3ab9-46d5-ad07-62a9a7d0f0c4@tasks.clickup.com",
+  inbound_address: "add.task.124.U-81942673.ccc7c26e-3ab9-46d5-ad07-62a9a7d0f0c4@tasks.clickup.com",
   archived: false,
   permission_level: "create",
 };
@@ -78,8 +77,7 @@ export const createListExamplePayload = {
       color: "#7b68ee",
       username: "John Doe",
       initials: "JD",
-      profilePicture:
-        "https://attachments.clickup.com/profilePictures/81942673_abc.jpg",
+      profilePicture: "https://attachments.clickup.com/profilePictures/81942673_abc.jpg",
     },
   },
 };

@@ -3,11 +3,7 @@ import { createConnection, invoke } from "@prismatic-io/spectral/dist/testing";
 import { connection as connectionDefinition } from "../../connections";
 import { getAbout } from "./getAbout";
 
-const connection = createConnection(
-  connectionDefinition,
-  {},
-  { access_token: "test-token" },
-);
+const connection = createConnection(connectionDefinition, {}, { access_token: "test-token" });
 const DRIVE = "https://www.googleapis.com";
 
 describe("getAbout", () => {
@@ -42,8 +38,6 @@ describe("getAbout", () => {
       .query(true)
       .reply(403, { error: { message: "forbidden" } });
 
-    await expect(
-      invoke(getAbout, { connection, fields: "*" }),
-    ).rejects.toThrow();
+    await expect(invoke(getAbout, { connection, fields: "*" })).rejects.toThrow();
   });
 });

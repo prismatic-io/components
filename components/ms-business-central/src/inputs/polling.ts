@@ -1,9 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
-import {
-  cleanStringInput,
-  lookBackDateClean,
-  pollResourceModel,
-} from "../utils";
+import { cleanStringInput, lookBackDateClean, pollResourceModel } from "../utils";
 import { companyId } from "./accounts/getAccountsInputs";
 import { connectionInput } from "./general";
 

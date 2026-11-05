@@ -18,9 +18,6 @@ export const countProducts = action({
     };
   },
   inputs: countProductsInputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: countProductsOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: countProductsOutputSchema }),
   examplePayload: countProductsExamplePayload,
 });

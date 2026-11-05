@@ -27,9 +27,6 @@ export const getInventoryLevelsGql = action({
     };
   },
   inputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getInventoryLevelsGqlOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getInventoryLevelsGqlOutputSchema }),
   examplePayload,
 });

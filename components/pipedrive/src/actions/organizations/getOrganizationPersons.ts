@@ -11,15 +11,8 @@ export const getOrganizationPersons = action({
     description: "Lists persons of an organization.",
   },
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { connection, id, pagination: { limit, cursor } = {} },
-  ) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      WebhookVersion.V2,
-    );
+  perform: async (context, { connection, id, pagination: { limit, cursor } = {} }) => {
+    const client = createClient(connection, context.debug.enabled, WebhookVersion.V2);
     const { data } = await client.get("/persons", {
       params: { limit, org_id: id, cursor },
     });
@@ -27,8 +20,5 @@ export const getOrganizationPersons = action({
   },
   inputs: getOrganizationPersonsInputs,
   examplePayload: getOrganizationPersonsExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getOrganizationPersonsOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getOrganizationPersonsOutputSchema }),
 });

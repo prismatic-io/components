@@ -14,34 +14,19 @@ export const listWorkers = action({
   },
   examplePayload: listWorkersExamplePayload,
   inputs: listWorkersInputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: listWorkersOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: listWorkersOutputSchema }),
   perform: async (
     context,
-    {
-      connection,
-      fetchAll,
-      pagination,
-      effectiveDate,
-      expand,
-      includeMetadataLinks,
-    },
+    { connection, fetchAll, pagination, effectiveDate, expand, includeMetadataLinks },
   ) => {
     const client = createClient(connection, context.debug.enabled);
-    const data = await paginateResults<WorkerRecord>(
-      client,
-      "/workers",
-      fetchAll,
-      {
-        offset: pagination.offset,
-        limit: pagination.limit,
-        effectiveDate,
-        expand,
-        onlyData: includeMetadataLinks,
-      },
-    );
+    const data = await paginateResults<WorkerRecord>(client, "/workers", fetchAll, {
+      offset: pagination.offset,
+      limit: pagination.limit,
+      effectiveDate,
+      expand,
+      onlyData: includeMetadataLinks,
+    });
     return { data };
   },
 });

@@ -16,19 +16,11 @@ export const deleteSubscription = action({
       timeout,
     });
     return {
-      data: await client.subscriptions.cancel(
-        util.types.toString(subscriptionId),
-      ),
+      data: await client.subscriptions.cancel(util.types.toString(subscriptionId)),
     };
   },
-  examplePerform: async (
-    _context,
-    { subscriptionId },
-  ): Promise<{ data: unknown }> => {
-    const subscription = deleteSubscriptionExamplePayload.data as Record<
-      string,
-      unknown
-    >;
+  examplePerform: async (_context, { subscriptionId }): Promise<{ data: unknown }> => {
+    const subscription = deleteSubscriptionExamplePayload.data as Record<string, unknown>;
 
     return {
       data: {

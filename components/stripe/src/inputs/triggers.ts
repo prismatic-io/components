@@ -1,11 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanStringListInput } from "../util";
 import { connectionInput } from "./common";
-import {
-  disableWebhookValidation,
-  webhookEvents,
-  webhookSecret,
-} from "./webhooks";
+import { disableWebhookValidation, webhookEvents, webhookSecret } from "./webhooks";
 
 export const pollEventTypes = input({
   label: "Event Types",

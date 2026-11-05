@@ -8,8 +8,7 @@ import { hubspotPaths } from "../../constants";
 export const updateLineItem = action({
   display: {
     label: "Update Line Item",
-    description:
-      "Update the information and metadata of an existing line item.",
+    description: "Update the information and metadata of an existing line item.",
   },
   performSafety: "notAllowed",
   perform: async (
@@ -34,21 +33,18 @@ export const updateLineItem = action({
       debugRequest: context.debug.enabled,
     });
 
-    const { data } = await client.patch(
-      hubspotPaths.objects("line_items", `/${lineItemId}`),
-      {
-        properties: {
-          name: updateLineItemName,
-          hs_product_id: updateProductId,
-          hs_recurring_billing_period: recurringBillingPeriod,
-          recurringbillingfrequency: recurringBillingFrequency,
-          quantity: quantity,
-          price: updatePrice,
-          ...fieldValues,
-          ...dynamicValues,
-        },
+    const { data } = await client.patch(hubspotPaths.objects("line_items", `/${lineItemId}`), {
+      properties: {
+        name: updateLineItemName,
+        hs_product_id: updateProductId,
+        hs_recurring_billing_period: recurringBillingPeriod,
+        recurringbillingfrequency: recurringBillingFrequency,
+        quantity: quantity,
+        price: updatePrice,
+        ...fieldValues,
+        ...dynamicValues,
       },
-    );
+    });
 
     return { data };
   },

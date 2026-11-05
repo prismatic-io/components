@@ -55,8 +55,7 @@ const showNewMessages = input({
   required: false,
   default: "true",
   example: "true",
-  comments:
-    "When true, messages created since the last poll are included in the trigger output.",
+  comments: "When true, messages created since the last poll are included in the trigger output.",
   clean: util.types.toBool,
 });
 
@@ -66,8 +65,7 @@ const showUpdatedMessages = input({
   required: false,
   default: "true",
   example: "true",
-  comments:
-    "When true, messages updated since the last poll are included in the trigger output.",
+  comments: "When true, messages updated since the last poll are included in the trigger output.",
   clean: util.types.toBool,
 });
 

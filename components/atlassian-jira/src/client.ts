@@ -12,10 +12,7 @@ import {
 import type { JiraApiCustomOptions } from "./types";
 import { CONNECTION_KEYS, jiraBasicConnection } from "./connections";
 
-export const downloadFile = async (
-  connection: Connection,
-  url: string,
-): Promise<Buffer> => {
+export const downloadFile = async (connection: Connection, url: string): Promise<Buffer> => {
   const { data } = await createHttpClient({
     baseUrl: url,
     responseType: "arraybuffer",
@@ -27,9 +24,7 @@ export const downloadFile = async (
 export const getHost = (connection: Connection): Promise<string> =>
   resolveAtlassianHost(connection, CONNECTION_KEYS);
 
-export const getPayload = async (
-  jiraConnection: Connection,
-): Promise<JiraApiCustomOptions> => {
+export const getPayload = async (jiraConnection: Connection): Promise<JiraApiCustomOptions> => {
   validateAtlassianConnection(jiraConnection, CONNECTION_KEYS);
 
   if (jiraConnection.key === jiraBasicConnection.key) {
@@ -38,9 +33,7 @@ export const getPayload = async (
     return {
       username,
       password,
-      host: util.types
-        .toString(jiraConnection.fields.host)
-        .replace(/https?:\/\//g, ""),
+      host: util.types.toString(jiraConnection.fields.host).replace(/https?:\/\//g, ""),
       apiVersion: util.types.toString(jiraConnection.fields.version),
       auth: `Basic ${Buffer.from(`${username}:${password}`).toString("base64")}`,
     };

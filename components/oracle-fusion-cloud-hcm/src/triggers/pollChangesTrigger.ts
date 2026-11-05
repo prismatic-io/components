@@ -24,20 +24,14 @@ export const pollChangesTrigger = pollingTrigger({
   batchConfig: { batchSize: DEFAULT_BATCH_SIZE },
   triggerResolver: {
     resolveItems: (_context, { payload }): HcmAtomRecordChange[] =>
-      resolveAtomPollingRecordChanges(
-        payload.body.data as HcmAtomChangesObject,
-      ),
+      resolveAtomPollingRecordChanges(payload.body.data as HcmAtomChangesObject),
   },
   perform: async (context, payload, params) => {
     const now = new Date().toISOString();
     const pollState = context.polling.getState() as PollingState;
-    const lastPolledAt =
-      pollState?.lastPolledAt ?? (params.lookBackDate || now);
+    const lastPolledAt = pollState?.lastPolledAt ?? (params.lookBackDate || now);
 
-    const client = createAtomFeedClient(
-      params.connection,
-      context.debug.enabled,
-    );
+    const client = createAtomFeedClient(params.connection, context.debug.enabled);
     const entries: AtomFeedEntry[] = await fetchAtomEntries(
       client,
       params.feedName,

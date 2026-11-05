@@ -5,9 +5,7 @@ import { pollRecordsTrigger } from "./pollRecordsTrigger";
 const mockGet = vi.fn();
 
 vi.mock("../client", () => ({
-  createClient: vi
-    .fn()
-    .mockReturnValue({ get: (...args: unknown[]) => mockGet(...args) }),
+  createClient: vi.fn().mockReturnValue({ get: (...args: unknown[]) => mockGet(...args) }),
 }));
 
 vi.mock("../util", async (importOriginal) => {
@@ -38,9 +36,7 @@ interface PollingStore {
   context: Partial<ActionContext>;
 }
 
-const createPollingStore = (
-  seedState: Record<string, unknown> = {},
-): PollingStore => {
+const createPollingStore = (seedState: Record<string, unknown> = {}): PollingStore => {
   let state: Record<string, unknown> = seedState;
   const writes: Record<string, unknown>[] = [];
   return {
@@ -74,9 +70,7 @@ const triggerUnderTest = {
 
 interface PollResult {
   payload: {
-    body: {
-      data: { records: Record<string, unknown>[]; resourceType: string };
-    };
+    body: { data: { records: Record<string, unknown>[]; resourceType: string } };
   };
   polledNoChanges: boolean;
 }
@@ -86,17 +80,12 @@ const poll = async (
   resourceType = "Workers",
   lookBackDate?: string,
 ): Promise<PollResult> => {
-  const { result } = await invokeTrigger(
-    triggerUnderTest,
-    store.context,
-    undefined,
-    {
-      connection: {},
-      resourceType,
-      pageSize: 500,
-      lookBackDate: lookBackDate ?? undefined,
-    } as Record<string, unknown>,
-  );
+  const { result } = await invokeTrigger(triggerUnderTest, store.context, undefined, {
+    connection: {},
+    resourceType,
+    pageSize: 500,
+    lookBackDate: lookBackDate ?? undefined,
+  } as Record<string, unknown>);
   return result as unknown as PollResult;
 };
 

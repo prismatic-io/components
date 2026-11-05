@@ -1,9 +1,6 @@
 import { invoke } from "@prismatic-io/spectral/dist/testing";
 import nock from "nock";
-import {
-  downloadAttachmentExamplePayload,
-  getIssueExamplePayload,
-} from "../../examplePayloads";
+import { downloadAttachmentExamplePayload, getIssueExamplePayload } from "../../examplePayloads";
 import { basicConnection, jiraApi } from "../../testHelpers";
 import { downloadAttachment } from "./downloadAttachment";
 

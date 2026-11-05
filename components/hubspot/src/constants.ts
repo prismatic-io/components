@@ -5,8 +5,7 @@ export const API_VERSION = "2026-09";
 export const hubspotPaths = {
   objects: (objectType: string, suffix = "") =>
     `/crm/objects/${API_VERSION}/${objectType}${suffix}`,
-  schemas: (suffix = "") =>
-    `/crm-object-schemas/${API_VERSION}/schemas${suffix}`,
+  schemas: (suffix = "") => `/crm-object-schemas/${API_VERSION}/schemas${suffix}`,
   properties: (objectType: string, suffix = "") =>
     `/crm/properties/${API_VERSION}/${objectType}${suffix}`,
   imports: (suffix = "") => `/crm/imports/${API_VERSION}${suffix}`,
@@ -88,8 +87,7 @@ export const POLL_REQUEST_TIMEOUT_MS = 10_000;
 export const CUSTOM_OBJECT_LAST_MODIFIED_PROPERTY = "hs_lastmodifieddate";
 export const CUSTOM_OBJECT_CREATED_PROPERTY = "hs_createdate";
 
-export const CUSTOM_OBJECT_SEARCH_ENDPOINT =
-  "/crm/v3/objects/{objectType}/search";
+export const CUSTOM_OBJECT_SEARCH_ENDPOINT = "/crm/v3/objects/{objectType}/search";
 
 export const CUSTOM_OBJECT_PLACEHOLDER = "{objecttype}";
 
@@ -227,11 +225,7 @@ export const ENGAGEMENT_OBJECTS = [
   { label: "Communications", value: "communications" },
 ];
 
-export const STANDARD_OBJECT_TYPES: ReadonlyArray<{
-  label: string;
-  key: string;
-  name: string;
-}> = [
+export const STANDARD_OBJECT_TYPES: ReadonlyArray<{ label: string; key: string; name: string }> = [
   { label: "Contacts", key: "0-1", name: "contacts" },
   { label: "Companies", key: "0-2", name: "companies" },
   { label: "Deals", key: "0-3", name: "deals" },
@@ -320,14 +314,7 @@ export const LOOK_BACK_DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
 
 export const COMPANY_PROPS = ["name", "state", "city", "domain", "industry"];
 
-export const CONTACT_PROPS = [
-  "firstname",
-  "lastname",
-  "email",
-  "company",
-  "website",
-  "phone",
-];
+export const CONTACT_PROPS = ["firstname", "lastname", "email", "company", "website", "phone"];
 
 export const DEAL_PROPS = ["dealname", "closedate", "dealstage"];
 

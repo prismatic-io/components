@@ -12,19 +12,12 @@ export const getOrganization = action({
   },
   performSafety: "safe",
   perform: async (context, { connection, id }) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      WebhookVersion.V2,
-    );
+    const client = createClient(connection, context.debug.enabled, WebhookVersion.V2);
     const { data } = await client.get(`/organizations/${id}`);
     return { data };
   },
   inputs: getOrganizationInputs,
   examplePayload: getOrganizationSingleExamplePayload,
   examplePerform: async () => getOrganizationSingleExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: singleOrganizationV2OutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: singleOrganizationV2OutputSchema }),
 });

@@ -19,21 +19,15 @@ describe("getCurrentUser", () => {
   afterEach(() => nock.cleanAll());
 
   test("happy path returns WhoAmI data", async () => {
-    nock(API_BASE)
-      .get("/WhoAmI()")
-      .reply(200, getCurrentUserExamplePayload.data);
+    nock(API_BASE).get("/WhoAmI()").reply(200, getCurrentUserExamplePayload.data);
 
-    const result = await getCurrentUser.perform(ctx, {
-      connection: conn,
-    } as any);
+    const result = await getCurrentUser.perform(ctx, { connection: conn } as any);
     expect(result.data).toEqual(getCurrentUserExamplePayload.data);
   });
 
   test("error path surfaces the failure", async () => {
     nock(API_BASE).get("/WhoAmI()").reply(401, { error: "unauthorized" });
 
-    await expect(
-      getCurrentUser.perform(ctx, { connection: conn } as any),
-    ).rejects.toThrow();
+    await expect(getCurrentUser.perform(ctx, { connection: conn } as any)).rejects.toThrow();
   });
 });

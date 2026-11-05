@@ -6,17 +6,9 @@ import { getPlanDetailsExamplePayload } from "../../examplePayloads";
 import { getPlanDetails } from "./getPlanDetails";
 
 const BASE = "https://graph.microsoft.com";
-const connection = createConnection(
-  templatedOauth,
-  {},
-  { access_token: "test-token" },
-);
+const connection = createConnection(templatedOauth, {}, { access_token: "test-token" });
 
-const params = {
-  connection,
-  groupId: undefined,
-  planId: "xqQg5FS2LkCp935s-FIFm2QAFkHM",
-};
+const params = { connection, groupId: undefined, planId: "xqQg5FS2LkCp935s-FIFm2QAFkHM" };
 
 beforeAll(() => {
   nock.disableNetConnect();
@@ -41,8 +33,6 @@ test("surfaces a failed lookup", async () => {
     .get("/v1.0/planner/plans/xqQg5FS2LkCp935s-FIFm2QAFkHM/details")
     .reply(404, { error: { code: "itemNotFound" } });
 
-  await expect(invoke(getPlanDetails, params)).rejects.toThrow(
-    /status code 404/,
-  );
+  await expect(invoke(getPlanDetails, params)).rejects.toThrow(/status code 404/);
   expect(errorScope.isDone()).toBe(true);
 });

@@ -13,7 +13,7 @@ export const listUsers = action({
   performSafety: "notAllowed",
   perform: async (
     { debug: { enabled: debug } },
-    { fetchAll, connection, pagination, teamId },
+    { fetchAll, connection, pagination, teamId }
   ) => {
     const { cursor, limit } = pagination;
     debugLogger({ cursor, limit, teamId, debug });

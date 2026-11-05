@@ -8,8 +8,7 @@ import {
 } from "./common";
 import { includeCustom, includeOnlyTopLevel } from "./entities";
 
-const { dataSource: _entityIdDataSource, ...entityIdWithoutDataSource } =
-  entityId;
+const { dataSource: _entityIdDataSource, ...entityIdWithoutDataSource } = entityId;
 
 export const selectAttributeInputs = {
   connection: connectionInput,

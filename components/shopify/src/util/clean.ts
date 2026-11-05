@@ -4,15 +4,11 @@ import { SHOPIFY_GID_PREFIX } from "../constants";
 export const cleanStringInput = (value: unknown): string | undefined =>
   value ? util.types.toString(value) : undefined;
 
-export const toArray = (value: unknown): unknown[] =>
-  Array.isArray(value) ? value : [value];
+export const toArray = (value: unknown): unknown[] => (Array.isArray(value) ? value : [value]);
 
-export const cleanCodeInput = (value: unknown): object =>
-  value ? util.types.toObject(value) : {};
+export const cleanCodeInput = (value: unknown): object => (value ? util.types.toObject(value) : {});
 
-export const cleanKeyValueListInput = (
-  value: unknown,
-): Record<string, unknown> => {
+export const cleanKeyValueListInput = (value: unknown): Record<string, unknown> => {
   if (Array.isArray(value)) return util.types.keyValPairListToObject(value);
   return {};
 };
@@ -21,10 +17,7 @@ const throwCodeInputError = (inputLabel: string): never => {
   throw new Error(`Invalid code for ${inputLabel} input.`);
 };
 
-export const cleanArrayCodeInput = (
-  value: unknown,
-  inputLabel: string,
-): unknown[] | undefined => {
+export const cleanArrayCodeInput = (value: unknown, inputLabel: string): unknown[] | undefined => {
   if (value) {
     let object: unknown;
     try {
@@ -48,10 +41,7 @@ export const cleanValueListInput = (
   return returnUndefinedOnNoValue ? undefined : [];
 };
 
-export const cleanCodeInputEmptyObject = (
-  value: unknown,
-  inputLabel: string,
-): object => {
+export const cleanCodeInputEmptyObject = (value: unknown, inputLabel: string): object => {
   if (value) {
     try {
       return util.types.toObject(value);
@@ -62,9 +52,8 @@ export const cleanCodeInputEmptyObject = (
   return {};
 };
 
-export const cleanOptionalBooleanInput = (
-  value: unknown,
-): boolean | undefined => (value ? util.types.toBool(value) : undefined);
+export const cleanOptionalBooleanInput = (value: unknown): boolean | undefined =>
+  value ? util.types.toBool(value) : undefined;
 
 export const getNumericId = (gid: string): number | null => {
   const match = gid.match(/\/(\d+)(?:\?|$)/);

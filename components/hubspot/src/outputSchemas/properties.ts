@@ -39,14 +39,7 @@ export const propertySchema = {
     name: { type: "string" },
     numberDisplayHint: {
       type: "string",
-      enum: [
-        "currency",
-        "duration",
-        "formatted",
-        "percentage",
-        "probability",
-        "unformatted",
-      ],
+      enum: ["currency", "duration", "formatted", "percentage", "probability", "unformatted"],
     },
     options: {
       type: "array" as const,
@@ -63,10 +56,7 @@ export const propertySchema = {
       },
     },
     referencedObjectType: { type: "string" },
-    sensitiveDataCategories: {
-      type: "array" as const,
-      items: { type: "string" },
-    },
+    sensitiveDataCategories: { type: "array" as const, items: { type: "string" } },
     showCurrencySymbol: { type: "boolean" },
     textDisplayHint: {
       type: "string",
@@ -85,15 +75,7 @@ export const propertySchema = {
     updatedAt: { type: "string", format: "date-time" },
     updatedUserId: { type: "string" },
   },
-  required: [
-    "description",
-    "fieldType",
-    "groupName",
-    "label",
-    "name",
-    "options",
-    "type",
-  ],
+  required: ["description", "fieldType", "groupName", "label", "name", "options", "type"],
 };
 
 export const listPropertiesOutputSchema = {

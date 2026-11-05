@@ -21,8 +21,7 @@ const taskObject = {
     username: "John Doe",
     color: "#7b68ee",
     email: "john.doe@example.com",
-    profilePicture:
-      "https://attachments.clickup.com/profilePictures/81942673_abc.jpg",
+    profilePicture: "https://attachments.clickup.com/profilePictures/81942673_abc.jpg",
   },
   assignees: [
     {

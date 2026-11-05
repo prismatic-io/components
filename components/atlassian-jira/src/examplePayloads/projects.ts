@@ -18,10 +18,8 @@ export const getProjectExamplePayload = {
     components: [],
     versions: [],
     roles: {
-      Developers:
-        "https://your-domain.atlassian.net/rest/api/3/project/EX/role/10001",
-      Users:
-        "https://your-domain.atlassian.net/rest/api/3/project/EX/role/10002",
+      Developers: "https://your-domain.atlassian.net/rest/api/3/project/EX/role/10001",
+      Users: "https://your-domain.atlassian.net/rest/api/3/project/EX/role/10002",
     },
   },
 };

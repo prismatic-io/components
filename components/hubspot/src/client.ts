@@ -1,8 +1,5 @@
 import { type Connection, ConnectionError, util } from "@prismatic-io/spectral";
-import {
-  type ClientProps,
-  createClient,
-} from "@prismatic-io/spectral/dist/clients/http";
+import { type ClientProps, createClient } from "@prismatic-io/spectral/dist/clients/http";
 import { hubspotOAuth, privateAppAccessToken } from "./connections";
 import { BASE_URL } from "./constants";
 
@@ -14,10 +11,7 @@ interface GetHubspotClientProps {
 }
 
 export const validateConnection = (connection: Connection): void => {
-  if (
-    connection.key !== hubspotOAuth.key &&
-    connection.key !== privateAppAccessToken.key
-  ) {
+  if (connection.key !== hubspotOAuth.key && connection.key !== privateAppAccessToken.key) {
     throw new ConnectionError(
       connection,
       `HubSpot connection is required for this action. Received connection type: ${connection.key}.`,
@@ -26,12 +20,7 @@ export const validateConnection = (connection: Connection): void => {
 };
 
 const getClientConfiguration = (
-  {
-    hubspotConnection,
-    timeout,
-    headers = {},
-    debugRequest,
-  }: GetHubspotClientProps,
+  { hubspotConnection, timeout, headers = {}, debugRequest }: GetHubspotClientProps,
   addBearerToken: boolean,
 ): ClientProps => {
   const toReturn: ClientProps = {
@@ -63,10 +52,7 @@ const getClientConfiguration = (
   return toReturn;
 };
 
-export const getHubspotClient = (
-  params: GetHubspotClientProps,
-  addBearerToken = true,
-) => {
+export const getHubspotClient = (params: GetHubspotClientProps, addBearerToken = true) => {
   validateConnection(params.hubspotConnection);
   const config = getClientConfiguration(params, addBearerToken);
   const client = createClient(config);

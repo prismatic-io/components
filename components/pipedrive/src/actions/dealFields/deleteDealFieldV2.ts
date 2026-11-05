@@ -12,18 +12,11 @@ export const deleteDealFieldV2 = action({
   },
   performSafety: "notAllowed",
   perform: async (context, { connection, fieldCode }) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      WebhookVersion.V2,
-    );
+    const client = createClient(connection, context.debug.enabled, WebhookVersion.V2);
     const { data } = await client.delete(`dealFields/${fieldCode}`);
     return { data };
   },
   inputs: deleteDealFieldV2Inputs,
   examplePayload: deleteDealFieldV2ExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: deleteDealFieldV2OutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: deleteDealFieldV2OutputSchema }),
 });

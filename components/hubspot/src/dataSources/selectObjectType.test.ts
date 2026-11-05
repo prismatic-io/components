@@ -7,9 +7,7 @@ import { selectObjectType } from "./selectObjectType";
 
 vi.mock("../client");
 
-const mockedGetHubspotClient = getHubspotClient as MockedFunction<
-  typeof getHubspotClient
->;
+const mockedGetHubspotClient = getHubspotClient as MockedFunction<typeof getHubspotClient>;
 
 const context = {} as never;
 const connection = { key: privateAppAccessToken.key, fields: {} };
@@ -49,17 +47,10 @@ describe("selectObjectType", () => {
 
   test("lists the 10 standard objects first, in fixed order, keyed by objectTypeId", async () => {
     mockGet({
-      results: [
-        {
-          objectTypeId: "2-1",
-          labels: { singular: "Aardvark", plural: "Aardvarks" },
-        },
-      ],
+      results: [{ objectTypeId: "2-1", labels: { singular: "Aardvark", plural: "Aardvarks" } }],
     });
     const { result } = await run();
-    expect(
-      STANDARD_OBJECT_TYPES.map(({ label, key }) => ({ label, key })),
-    ).toEqual(STANDARD);
+    expect(STANDARD_OBJECT_TYPES.map(({ label, key }) => ({ label, key }))).toEqual(STANDARD);
     expect(result.slice(0, 10)).toEqual(STANDARD);
     expect(result).toHaveLength(11);
   });
@@ -67,22 +58,10 @@ describe("selectObjectType", () => {
   test("custom objects follow, keyed by objectTypeId, label falls back plural to singular to name, sorted by label", async () => {
     mockGet({
       results: [
-        {
-          objectTypeId: "2-300",
-          name: "zebra",
-          labels: { singular: "Zebra", plural: "Zebras" },
-        },
-        {
-          objectTypeId: "2-100",
-          name: "machine",
-          labels: { singular: "Machine" },
-        },
+        { objectTypeId: "2-300", name: "zebra", labels: { singular: "Zebra", plural: "Zebras" } },
+        { objectTypeId: "2-100", name: "machine", labels: { singular: "Machine" } },
         { objectTypeId: "2-200", name: "bicycle" },
-        {
-          objectTypeId: "2-400",
-          name: "pet",
-          labels: { singular: "", plural: "" },
-        },
+        { objectTypeId: "2-400", name: "pet", labels: { singular: "", plural: "" } },
       ],
     });
     const { result } = await run();
@@ -135,9 +114,7 @@ describe("selectObjectType", () => {
     const { result } = await run();
     expect(result).toEqual([...STANDARD, custom]);
     expect(
-      selectObjectTypeExamplePayload.result.filter(({ key }) =>
-        standardKeys.has(key),
-      ),
+      selectObjectTypeExamplePayload.result.filter(({ key }) => standardKeys.has(key)),
     ).toEqual(STANDARD.slice(0, 3));
   });
 });

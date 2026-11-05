@@ -11,10 +11,7 @@ export const getGuest = action({
   examplePayload: getGuestExamplePayload,
   performSafety: "safe",
   perform: async (context, { clickUpConnection, teamId, guestId }) => {
-    const client = createClickUpClient(
-      clickUpConnection,
-      context.debug.enabled,
-    );
+    const client = createClickUpClient(clickUpConnection, context.debug.enabled);
 
     const { data } = await client.get(`/team/${teamId}/guest/${guestId}`);
 

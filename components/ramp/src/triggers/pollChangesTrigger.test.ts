@@ -1,8 +1,5 @@
 import { invokeTrigger } from "@prismatic-io/spectral/testing";
-import {
-  getDepartmentResponse,
-  listDepartmentsResponse,
-} from "../examplePayloads/departments";
+import { getDepartmentResponse, listDepartmentsResponse } from "../examplePayloads/departments";
 import {
   apiPath,
   createPollingStore,
@@ -41,28 +38,19 @@ interface PollResult {
 
 const changesOf = (result: PollResult): PollChanges => result.payload.body.data;
 
-const idsOf = (records: RampRecord[]): string[] =>
-  records.map((record) => record.id);
+const idsOf = (records: RampRecord[]): string[] => records.map((record) => record.id);
 
 const triggerUnderTest = {
   perform: pollChangesTrigger.perform,
 } as unknown as Parameters<typeof invokeTrigger>[0];
 
-const poll = async (
-  store: PollingStore,
-  resourceType: string,
-): Promise<{ result: PollResult }> => {
-  const { result } = await invokeTrigger(
-    triggerUnderTest,
-    store.context,
-    undefined,
-    {
-      connection: testConnection,
-      resourceType,
-      showNewRecords: true,
-      showUpdatedRecords: true,
-    },
-  );
+const poll = async (store: PollingStore, resourceType: string): Promise<{ result: PollResult }> => {
+  const { result } = await invokeTrigger(triggerUnderTest, store.context, undefined, {
+    connection: testConnection,
+    resourceType,
+    showNewRecords: true,
+    showUpdatedRecords: true,
+  });
 
   return { result: result as unknown as PollResult };
 };
@@ -110,10 +98,7 @@ describe("pollChangesTrigger", () => {
 
       expect(idsOf(changesOf(pollTwo.result).created)).toEqual(["rb_2"]);
       expect(store.currentState()).toEqual({ lastPolledAt: POLL_TWO_AT });
-      expect(store.writes).toEqual([
-        { lastPolledAt: POLL_ONE_AT },
-        { lastPolledAt: POLL_TWO_AT },
-      ]);
+      expect(store.writes).toEqual([{ lastPolledAt: POLL_ONE_AT }, { lastPolledAt: POLL_TWO_AT }]);
     });
 
     test("splits results into created and updated, preferring created when both timestamps are new", async () => {
@@ -193,10 +178,7 @@ describe("pollChangesTrigger", () => {
           200,
           listBody([
             { id: "tx_old", user_transaction_time: "2026-05-15T00:00:00.000Z" },
-            {
-              id: "tx_recent",
-              user_transaction_time: "2026-06-01T11:59:59.000Z",
-            },
+            { id: "tx_recent", user_transaction_time: "2026-06-01T11:59:59.000Z" },
           ]),
         );
 
@@ -224,9 +206,7 @@ describe("pollChangesTrigger", () => {
         .query(true)
         .reply(200, listBody([inFlight]));
       const pollOne = await poll(store, "reimbursements");
-      expect(idsOf(changesOf(pollOne.result).created)).toEqual([
-        "rb_in_flight",
-      ]);
+      expect(idsOf(changesOf(pollOne.result).created)).toEqual(["rb_in_flight"]);
 
       freezeClockAt(POLL_TWO_AT);
       rampNock()
@@ -235,9 +215,7 @@ describe("pollChangesTrigger", () => {
         .reply(200, listBody([inFlight]));
       const pollTwo = await poll(store, "reimbursements");
 
-      expect(idsOf(changesOf(pollTwo.result).created)).toEqual([
-        "rb_in_flight",
-      ]);
+      expect(idsOf(changesOf(pollTwo.result).created)).toEqual(["rb_in_flight"]);
     });
   });
 
@@ -300,19 +278,14 @@ describe("pollChangesTrigger", () => {
       resourceType: string,
       overrides: Record<string, unknown>,
     ): Promise<{ result: PollResult }> => {
-      const { result } = await invokeTrigger(
-        triggerUnderTest,
-        store.context,
-        undefined,
-        {
-          connection: testConnection,
-          resourceType,
-          showNewRecords: true,
-          showUpdatedRecords: true,
-          lookBackDate: undefined,
-          ...overrides,
-        },
-      );
+      const { result } = await invokeTrigger(triggerUnderTest, store.context, undefined, {
+        connection: testConnection,
+        resourceType,
+        showNewRecords: true,
+        showUpdatedRecords: true,
+        lookBackDate: undefined,
+        ...overrides,
+      });
       return { result: result as unknown as PollResult };
     };
 
@@ -404,9 +377,7 @@ describe("pollChangesTrigger", () => {
 
     freezeClockAt(POLL_ONE_AT);
 
-    await expect(poll(store, "invoices")).rejects.toThrow(
-      "Unsupported resource type: invoices",
-    );
+    await expect(poll(store, "invoices")).rejects.toThrow("Unsupported resource type: invoices");
     expect(store.writes).toEqual([]);
   });
 });

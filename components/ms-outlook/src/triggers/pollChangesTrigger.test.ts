@@ -7,33 +7,18 @@ import { pollChangesTrigger } from "./pollChangesTrigger";
 const { createClient } = vi.hoisted(() => ({ createClient: vi.fn() }));
 vi.mock("../client", () => ({ createClient: () => createClient() }));
 
-const message = (
-  id: string,
-  createdDateTime: string,
-  lastModifiedDateTime: string,
-): Message => ({ id, createdDateTime, lastModifiedDateTime }) as Message;
+const message = (id: string, createdDateTime: string, lastModifiedDateTime: string): Message =>
+  ({ id, createdDateTime, lastModifiedDateTime }) as Message;
 
-const createdMessage = message(
-  "1",
-  "2026-06-01T12:00:00Z",
-  "2026-06-01T12:00:00Z",
-);
-const updatedMessage = message(
-  "2",
-  "2020-01-01T00:00:00Z",
-  "2026-06-01T12:00:00Z",
-);
+const createdMessage = message("1", "2026-06-01T12:00:00Z", "2026-06-01T12:00:00Z");
+const updatedMessage = message("2", "2020-01-01T00:00:00Z", "2026-06-01T12:00:00Z");
 
 describe("pollChangesTrigger batching declaration", () => {
   test("declares opt-in batching with a default batch size and a pagination cursor", () => {
     expect(pollChangesTrigger.triggerResolverSupport).toBe("valid");
     expect(pollChangesTrigger.batchConfig).toEqual({ batchSize: 50 });
-    expect(pollChangesTrigger.triggerResolver?.resolveItems).toBeInstanceOf(
-      Function,
-    );
-    expect(
-      pollChangesTrigger.triggerResolver?.getNextPaginationState,
-    ).toBeInstanceOf(Function);
+    expect(pollChangesTrigger.triggerResolver?.resolveItems).toBeInstanceOf(Function);
+    expect(pollChangesTrigger.triggerResolver?.getNextPaginationState).toBeInstanceOf(Function);
   });
 
   test("offers the Look-back Date directly below the connection", () => {
@@ -49,26 +34,23 @@ describe("pollChangesTrigger batching declaration", () => {
 
 describe("resolveMessageChanges", () => {
   test("tags every message with how it changed", () => {
-    expect(
-      resolveMessageChanges({
-        created: [createdMessage],
-        updated: [updatedMessage],
-      }),
-    ).toEqual([
-      { changeType: "created", record: createdMessage },
-      { changeType: "updated", record: updatedMessage },
-    ]);
+    expect(resolveMessageChanges({ created: [createdMessage], updated: [updatedMessage] })).toEqual(
+      [
+        { changeType: "created", record: createdMessage },
+        { changeType: "updated", record: updatedMessage },
+      ],
+    );
   });
 
   test("tolerates an absent envelope, an empty one, and a single absent array", () => {
     expect(resolveMessageChanges(undefined)).toEqual([]);
     expect(resolveMessageChanges({ created: [], updated: [] })).toEqual([]);
-    expect(
-      resolveMessageChanges({ created: [createdMessage] } as never),
-    ).toEqual([{ changeType: "created", record: createdMessage }]);
-    expect(
-      resolveMessageChanges({ updated: [updatedMessage] } as never),
-    ).toEqual([{ changeType: "updated", record: updatedMessage }]);
+    expect(resolveMessageChanges({ created: [createdMessage] } as never)).toEqual([
+      { changeType: "created", record: createdMessage },
+    ]);
+    expect(resolveMessageChanges({ updated: [updatedMessage] } as never)).toEqual([
+      { changeType: "updated", record: updatedMessage },
+    ]);
   });
 });
 
@@ -77,11 +59,7 @@ describe("triggerResolver.resolveItems", () => {
     const items = pollChangesTrigger.triggerResolver?.resolveItems?.(
       {} as never,
       {
-        payload: {
-          body: {
-            data: { created: [createdMessage], updated: [updatedMessage] },
-          },
-        },
+        payload: { body: { data: { created: [createdMessage], updated: [updatedMessage] } } },
       } as never,
     );
 
@@ -103,15 +81,9 @@ describe("lookBackDateClean", () => {
   });
 
   test("rejects a wrong format, a non-calendar date, and a future date", () => {
-    expect(() => lookBackDateClean("01/01/2026")).toThrow(
-      "Look-back Date must be",
-    );
-    expect(() => lookBackDateClean("2026-02-31")).toThrow(
-      "Look-back Date must be",
-    );
-    expect(() => lookBackDateClean("2999-01-01")).toThrow(
-      "cannot be a future date",
-    );
+    expect(() => lookBackDateClean("01/01/2026")).toThrow("Look-back Date must be");
+    expect(() => lookBackDateClean("2026-02-31")).toThrow("Look-back Date must be");
+    expect(() => lookBackDateClean("2999-01-01")).toThrow("cannot be a future date");
   });
 });
 
@@ -123,15 +95,10 @@ describe("keyset polling", () => {
   const HORIZON = "2026-06-09T23:59:00.000Z";
   const ENDPOINT = "/me/messages";
 
-  const graphTs = (hour: number) =>
-    `2026-06-01T${String(hour).padStart(2, "0")}:00:00Z`;
-  const cursorTs = (hour: number) =>
-    `2026-06-01T${String(hour).padStart(2, "0")}:00:00.000Z`;
-  const modifiedAt = (
-    id: string,
-    hour: number,
-    created = "2020-01-01T00:00:00Z",
-  ): Message => message(id, created, graphTs(hour));
+  const graphTs = (hour: number) => `2026-06-01T${String(hour).padStart(2, "0")}:00:00Z`;
+  const cursorTs = (hour: number) => `2026-06-01T${String(hour).padStart(2, "0")}:00:00.000Z`;
+  const modifiedAt = (id: string, hour: number, created = "2020-01-01T00:00:00Z"): Message =>
+    message(id, created, graphTs(hour));
 
   let store: PollingState;
   let get: ReturnType<typeof vi.fn>;
@@ -173,10 +140,7 @@ describe("keyset polling", () => {
     );
 
   const delivered = (result: Awaited<ReturnType<typeof run>>) => {
-    const data = result.payload.body.data as {
-      created: Message[];
-      updated: Message[];
-    };
+    const data = result.payload.body.data as { created: Message[]; updated: Message[] };
     return [...data.created, ...data.updated].map((m) => m.id);
   };
 
@@ -207,17 +171,10 @@ describe("keyset polling", () => {
 
   test("advances to the last record's timestamp and remembers every id sharing it", async () => {
     get.mockResolvedValue(
-      page(
-        [modifiedAt("a", 1), modifiedAt("b", 2), modifiedAt("c", 2)],
-        "https://graph/next",
-      ),
+      page([modifiedAt("a", 1), modifiedAt("b", 2), modifiedAt("c", 2)], "https://graph/next"),
     );
 
-    const result = await run(
-      undefined,
-      { lookBackDate: "2026-06-01T00:00:00.000Z" },
-      true,
-    );
+    const result = await run(undefined, { lookBackDate: "2026-06-01T00:00:00.000Z" }, true);
 
     const cursor = {
       watermark: cursorTs(2),
@@ -236,12 +193,7 @@ describe("keyset polling", () => {
   test("re-reads ties at the watermark without re-delivering or losing any of them", async () => {
     store = { lastPolledAt: cursorTs(0), backfillActive: true };
     get.mockResolvedValue(
-      page([
-        modifiedAt("b", 2),
-        modifiedAt("c", 2),
-        modifiedAt("d", 2),
-        modifiedAt("e", 3),
-      ]),
+      page([modifiedAt("b", 2), modifiedAt("c", 2), modifiedAt("d", 2), modifiedAt("e", 3)]),
     );
 
     const result = await run({
@@ -306,10 +258,7 @@ describe("keyset polling", () => {
     };
     get.mockResolvedValue(page([modifiedAt("a", 1), modifiedAt("b", 4)]));
 
-    const result = await run({
-      nextLink: "https://graph/legacy",
-      streamStartedAt: cursorTs(9),
-    });
+    const result = await run({ nextLink: "https://graph/legacy", streamStartedAt: cursorTs(9) });
 
     expect(get.mock.calls[0][0]).toBe(ENDPOINT);
     expect(get.mock.calls[0][1].params.$filter).toContain(`ge ${cursorTs(1)}`);
@@ -334,11 +283,7 @@ describe("keyset polling", () => {
     expect(get).toHaveBeenCalledTimes(10);
     for (const [url] of get.mock.calls) expect(url).toBe(ENDPOINT);
     expect(get.mock.calls[9][1].params.$filter).toContain(`ge ${cursorTs(9)}`);
-    const cursor = {
-      watermark: cursorTs(10),
-      boundaryIds: ["h10"],
-      classifySince: cursorTs(0),
-    };
+    const cursor = { watermark: cursorTs(10), boundaryIds: ["h10"], classifySince: cursorTs(0) };
     expect(store).toEqual({ ...cursor, lastPolledAt: cursorTs(0) });
     expect(result.payload.paginationState).toEqual(cursor);
   });
@@ -368,11 +313,7 @@ describe("keyset polling", () => {
     };
     get.mockResolvedValue(page([]));
 
-    await run({
-      watermark: cursorTs(6),
-      boundaryIds: [],
-      classifySince: cursorTs(0),
-    });
+    await run({ watermark: cursorTs(6), boundaryIds: [], classifySince: cursorTs(0) });
 
     expect(get.mock.calls[0][1].params.$filter).toContain(`ge ${cursorTs(6)}`);
   });
@@ -408,11 +349,7 @@ describe("keyset polling", () => {
   });
 
   test("an empty drained poll keeps the boundary where the data left it", async () => {
-    store = {
-      watermark: cursorTs(2),
-      boundaryIds: ["b"],
-      lastPolledAt: cursorTs(2),
-    };
+    store = { watermark: cursorTs(2), boundaryIds: ["b"], lastPolledAt: cursorTs(2) };
     get.mockResolvedValue(page([]));
 
     await run();
@@ -451,16 +388,8 @@ describe("keyset polling", () => {
 
   describe("a non-backfill poll against a stored boundary", () => {
     const boundary = "2026-06-01T00:00:00.000Z";
-    const afterBoundary = message(
-      "10",
-      "2026-06-02T00:00:00Z",
-      "2026-06-02T00:00:00Z",
-    );
-    const beforeBoundary = message(
-      "11",
-      "2026-05-01T00:00:00Z",
-      "2026-06-02T00:00:00Z",
-    );
+    const afterBoundary = message("10", "2026-06-02T00:00:00Z", "2026-06-02T00:00:00Z");
+    const beforeBoundary = message("11", "2026-05-01T00:00:00Z", "2026-06-02T00:00:00Z");
 
     beforeEach(() => {
       store = { lastPolledAt: boundary };
@@ -479,26 +408,17 @@ describe("keyset polling", () => {
     test("hides new messages when only Show New Messages is off", async () => {
       const result = await run(undefined, { showNewMessages: false });
 
-      expect(result.payload.body.data).toEqual({
-        created: [],
-        updated: [beforeBoundary],
-      });
+      expect(result.payload.body.data).toEqual({ created: [], updated: [beforeBoundary] });
     });
 
     test("hides updated messages when only Show Updated Messages is off", async () => {
       const result = await run(undefined, { showUpdatedMessages: false });
 
-      expect(result.payload.body.data).toEqual({
-        created: [afterBoundary],
-        updated: [],
-      });
+      expect(result.payload.body.data).toEqual({ created: [afterBoundary], updated: [] });
     });
 
     test("never calls Graph when both toggles are off", async () => {
-      const result = await run(undefined, {
-        showNewMessages: false,
-        showUpdatedMessages: false,
-      });
+      const result = await run(undefined, { showNewMessages: false, showUpdatedMessages: false });
 
       expect(get).not.toHaveBeenCalled();
       expect(result.payload.body.data).toEqual({ created: [], updated: [] });

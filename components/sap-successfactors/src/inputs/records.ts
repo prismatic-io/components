@@ -28,8 +28,7 @@ const recordType = input({
   label: "Record Type",
   type: "string",
   required: true,
-  comments:
-    "The OData entity name identifying the kind of record to operate on.",
+  comments: "The OData entity name identifying the kind of record to operate on.",
   placeholder: "Enter a record type",
   example: "Candidate",
   clean: util.types.toString,

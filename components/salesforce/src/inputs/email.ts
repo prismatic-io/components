@@ -6,8 +6,7 @@ const messageKey = input({
   placeholder: "Enter message key",
   type: "string",
   required: true,
-  comments:
-    "The unique key identifying the transactional message template to send.",
+  comments: "The unique key identifying the transactional message template to send.",
   example: "welcome_message",
   clean: util.types.toString,
 });
@@ -17,8 +16,7 @@ const definitionKey = input({
   placeholder: "Enter definition key",
   type: "string",
   required: true,
-  comments:
-    "The unique key of the message template definition used for the transactional send.",
+  comments: "The unique key of the message template definition used for the transactional send.",
   example: "welcome_message",
   clean: util.types.toString,
 });
@@ -28,8 +26,7 @@ const recipientContactKey = input({
   placeholder: "Enter recipient contact key",
   type: "string",
   required: true,
-  comments:
-    "The unique key identifying the recipient contact in Salesforce Marketing Cloud.",
+  comments: "The unique key identifying the recipient contact in Salesforce Marketing Cloud.",
   example: "sf_contact_0034R00002abcDEF",
   clean: util.types.toString,
 });

@@ -9,8 +9,7 @@ import { hubspotPaths } from "../../constants";
 export const listWebhooks = action({
   display: {
     label: "List Webhooks",
-    description:
-      "Retrieve a list of all webhook subscriptions for the HubSpot app.",
+    description: "Retrieve a list of all webhook subscriptions for the HubSpot app.",
   },
   performSafety: "safe",
   perform: async (context, { hubspotConnection, timeout }) => {
@@ -23,21 +22,14 @@ export const listWebhooks = action({
       },
       false,
     );
-    const { developerApiKey, appId } =
-      checkDeveloperApiKeyAndAppId(hubspotConnection);
-    const { data } = await client.get(
-      hubspotPaths.appWebhooks(appId, "/subscriptions"),
-      {
-        params: { hapikey: developerApiKey },
-      },
-    );
+    const { developerApiKey, appId } = checkDeveloperApiKeyAndAppId(hubspotConnection);
+    const { data } = await client.get(hubspotPaths.appWebhooks(appId, "/subscriptions"), {
+      params: { hapikey: developerApiKey },
+    });
 
     return { data };
   },
   inputs: listWebhooksInputs,
   examplePayload: listWebhooksExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: listWebhooksOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: listWebhooksOutputSchema }),
 });

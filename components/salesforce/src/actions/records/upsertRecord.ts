@@ -13,10 +13,7 @@ export const upsertRecord = action({
   },
   inputs: upsertRecordInputs,
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { version, recordType, externalIdFieldName, connection, records },
-  ) => {
+  perform: async (context, { version, recordType, externalIdFieldName, connection, records }) => {
     const salesforceClient = await createSalesforceClient(connection, version);
 
     if (context.debug.enabled) {
@@ -27,16 +24,13 @@ export const upsertRecord = action({
       });
     }
 
-    const command = salesforceClient
-      .sobject(recordType)
-      .upsert(records, externalIdFieldName);
+    const command = salesforceClient.sobject(recordType).upsert(records, externalIdFieldName);
     const response = await executeSFAction(context, command);
     return {
       data: response,
     };
   },
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    genericUpsertExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => genericUpsertExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: upsertRecordOutputSchema,

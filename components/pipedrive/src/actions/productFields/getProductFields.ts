@@ -10,10 +10,7 @@ export const getProductFields = action({
     description: "Gets all product fields.",
   },
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { connection, pagination: { start, limit } = {} },
-  ) => {
+  perform: async (context, { connection, pagination: { start, limit } = {} }) => {
     const client = createClient(connection, context.debug.enabled);
     const { data } = await client.get("/productFields", {
       params: { start, limit },
@@ -22,8 +19,5 @@ export const getProductFields = action({
   },
   inputs: getProductFieldsInputs,
   examplePayload: getProductFieldsExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getProductFieldsOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getProductFieldsOutputSchema }),
 });

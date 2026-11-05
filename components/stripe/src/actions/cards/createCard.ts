@@ -63,15 +63,7 @@ export const createCard = action({
   },
   examplePerform: async (
     _context,
-    {
-      customerId,
-      cardNumber,
-      expMonth,
-      expYear,
-      billingAddress,
-      contactInfo,
-      metadata,
-    },
+    { customerId, cardNumber, expMonth, expYear, billingAddress, contactInfo, metadata },
   ): Promise<{ data: unknown }> => {
     const card = createCardExamplePayload.data as Record<string, unknown>;
     const cardDetails = card.card as Record<string, unknown>;

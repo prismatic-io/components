@@ -1,8 +1,4 @@
-import {
-  apiVersionSchema,
-  columnDelimiterSchema,
-  lineEndingSchema,
-} from "./bulkShared";
+import { apiVersionSchema, columnDelimiterSchema, lineEndingSchema } from "./bulkShared";
 
 const ingestJobInfoSchema = {
   type: "object" as const,
@@ -15,24 +11,14 @@ const ingestJobInfoSchema = {
     systemModstamp: { type: "string" },
     state: {
       type: "string",
-      enum: [
-        "Open",
-        "UploadComplete",
-        "InProgress",
-        "JobComplete",
-        "Aborted",
-        "Failed",
-      ],
+      enum: ["Open", "UploadComplete", "InProgress", "JobComplete", "Aborted", "Failed"],
     },
     concurrencyMode: { type: "string" },
     contentType: { type: "string" },
     apiVersion: apiVersionSchema,
     assignmentRuleId: { type: "string" },
     externalIdFieldName: { type: "string" },
-    jobType: {
-      type: "string",
-      enum: ["BigObjectIngest", "Classic", "V2Ingest"],
-    },
+    jobType: { type: "string", enum: ["BigObjectIngest", "Classic", "V2Ingest"] },
     contentUrl: { type: "string" },
     lineEnding: lineEndingSchema,
     columnDelimiter: columnDelimiterSchema,
@@ -54,9 +40,7 @@ export const completeUploadBulkJobOutputSchema = ingestJobInfoSchema;
 
 export const abortBulkJobOutputSchema = ingestJobInfoSchema;
 
-export const getJobFailedRecordResultsOutputSchema = {
-  type: "string" as const,
-};
+export const getJobFailedRecordResultsOutputSchema = { type: "string" as const };
 
 export const getJobSuccessfulRecordResultsOutputSchema = {
   type: "string" as const,

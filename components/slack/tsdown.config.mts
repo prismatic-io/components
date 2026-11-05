@@ -39,7 +39,7 @@ export default defineConfig([
             'import component from "../src/index";',
             "export default callableComponent(component);",
             "",
-          ].join("\n"),
+          ].join("\n")
         );
       },
       "build:done": async ({ options }) => {

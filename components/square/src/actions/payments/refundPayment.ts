@@ -6,17 +6,13 @@ import { refundPaymentInputs } from "../../inputs";
 export const refundPayment = action({
   display: {
     label: "Refund Payment",
-    description:
-      "Refunds a payment, either the entire amount or a portion of it.",
+    description: "Refunds a payment, either the entire amount or a portion of it.",
   },
   perform: async (
     context,
     { squareConnection, paymentId, idempotencyKey, refundAmount, reason },
   ) => {
-    const client = await createAuthorizedClient(
-      squareConnection,
-      context.debug.enabled,
-    );
+    const client = await createAuthorizedClient(squareConnection, context.debug.enabled);
     const body = {
       idempotency_key: idempotencyKey,
       payment_id: paymentId,

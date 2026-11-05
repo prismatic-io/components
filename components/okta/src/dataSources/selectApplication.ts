@@ -15,12 +15,7 @@ export const selectApplication = dataSource({
   },
   perform: async (_context, { connection }) => {
     const client = await createClient(connection, false);
-    const data = await paginateRecordsWithLink<Application>(
-      client,
-      "/apps",
-      true,
-      {},
-    );
+    const data = await paginateRecordsWithLink<Application>(client, "/apps", true, {});
 
     const result = data.map<Element>((app) => ({
       label: app.label,

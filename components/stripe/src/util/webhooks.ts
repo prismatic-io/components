@@ -12,8 +12,7 @@ export const createWebhookFn = async (
 ) => {
   const data = await client.webhookEndpoints.create({
     url: webhookUrl,
-    enabled_events:
-      webhookEvents as Stripe.WebhookEndpointUpdateParams.EnabledEvent[],
+    enabled_events: webhookEvents as Stripe.WebhookEndpointUpdateParams.EnabledEvent[],
     metadata: {},
   });
   return data;
@@ -25,8 +24,7 @@ export const updateWebhookEventsFn = async (
   webhookEvents: string[],
 ) => {
   const data = await client.webhookEndpoints.update(webhookId, {
-    enabled_events:
-      webhookEvents as Stripe.WebhookEndpointUpdateParams.EnabledEvent[],
+    enabled_events: webhookEvents as Stripe.WebhookEndpointUpdateParams.EnabledEvent[],
   });
   return data;
 };
@@ -36,13 +34,8 @@ export const deleteWebhookFn = async (client: Stripe, webhookId: string) => {
   return data;
 };
 
-export const deleteWebhookEventsFn = async (
-  client: Stripe,
-  webhookIds: string[],
-) => {
-  const data = await Promise.all(
-    webhookIds.map((id) => deleteWebhookFn(client, id)),
-  );
+export const deleteWebhookEventsFn = async (client: Stripe, webhookIds: string[]) => {
+  const data = await Promise.all(webhookIds.map((id) => deleteWebhookFn(client, id)));
   return data;
 };
 
@@ -59,32 +52,19 @@ export const listWebhookEventsFn = async (
   return data;
 };
 
-export const onInstanceDeploy = async (
-  context: ActionContext,
-  { connection, webhookEvents },
-) => {
+export const onInstanceDeploy = async (context: ActionContext, { connection, webhookEvents }) => {
   const client = createStripeClient({
     stripeConnection: connection,
     timeout: 5000,
   });
   const flowName = context.flow.name;
   const webhookUrl = context.webhookUrls[flowName];
-  const previousCrossFlowState = context.crossFlowState[flowName] as Record<
-    string,
-    unknown
-  >;
+  const previousCrossFlowState = context.crossFlowState[flowName] as Record<string, unknown>;
 
-  const existingWebhook = await findWebhookForUrl(
-    client.webhookEndpoints,
-    webhookUrl,
-  );
+  const existingWebhook = await findWebhookForUrl(client.webhookEndpoints, webhookUrl);
 
   if (!existingWebhook) {
-    const createdWebhook = await createWebhookFn(
-      client,
-      webhookUrl,
-      webhookEvents as string[],
-    );
+    const createdWebhook = await createWebhookFn(client, webhookUrl, webhookEvents as string[]);
     context.crossFlowState[flowName] = {
       ...previousCrossFlowState,
       webhook: createdWebhook,
@@ -101,24 +81,17 @@ export const onInstanceDeploy = async (
     existingWebhook.id,
     webhookEvents as string[],
   );
-  const previousSecret = (
-    previousCrossFlowState?.webhook as CreatedWebhook["webhook"] | undefined
-  )?.secret;
+  const previousSecret = (previousCrossFlowState?.webhook as CreatedWebhook["webhook"] | undefined)
+    ?.secret;
   context.crossFlowState[flowName] = {
     ...previousCrossFlowState,
-    webhook: {
-      ...updatedWebhook,
-      secret: updatedWebhook.secret ?? previousSecret,
-    },
+    webhook: { ...updatedWebhook, secret: updatedWebhook.secret ?? previousSecret },
   };
 
   return;
 };
 
-export const onInstanceDelete = async (
-  context: ActionContext,
-  { connection },
-) => {
+export const onInstanceDelete = async (context: ActionContext, { connection }) => {
   const client = createStripeClient({
     stripeConnection: connection,
     timeout: 5000,
@@ -130,9 +103,7 @@ export const onInstanceDelete = async (
     .map(({ id }) => deleteWebhookFn(client, id));
   await Promise.all(webhookToDelete);
 
-  const previousStore = context.crossFlowState[
-    context.flow.name
-  ] as CreatedWebhook;
+  const previousStore = context.crossFlowState[context.flow.name] as CreatedWebhook;
 
   context.crossFlowState[context.flow.name] = {
     ...previousStore,
@@ -156,9 +127,7 @@ export const validateTrigger = (
   }
 };
 
-export const getStripeHeaderSignature = (
-  headers: Record<string, string>,
-): string => {
+export const getStripeHeaderSignature = (headers: Record<string, string>): string => {
   if (headers) {
     const stripeSignature = headers["stripe-signature"];
     if (!stripeSignature) {

@@ -12,19 +12,12 @@ export const getProduct = action({
   },
   performSafety: "safe",
   perform: async (context, { connection, id }) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      WebhookVersion.V2,
-    );
+    const client = createClient(connection, context.debug.enabled, WebhookVersion.V2);
     const { data } = await client.get(`/products/${id}`);
     return { data };
   },
   inputs: getProductInputs,
   examplePayload: getProductExamplePayload,
   examplePerform: async () => getProductExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getProductOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getProductOutputSchema }),
 });

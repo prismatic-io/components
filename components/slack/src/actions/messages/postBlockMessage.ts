@@ -13,7 +13,7 @@ export const postBlockMessage = action({
   performSafety: "notAllowed",
   perform: async (
     { debug: { enabled: debug } },
-    { connection, blocks, message, channelName, username, messageId },
+    { connection, blocks, message, channelName, username, messageId }
   ) => {
     debugLogger({ blocks, message, channelName, username, messageId, debug });
     const client = await createOauthClient({
@@ -31,7 +31,7 @@ export const postBlockMessage = action({
   },
   examplePerform: async (
     _context,
-    { channelName, message, username, messageId },
+    { channelName, message, username, messageId }
   ): Promise<{ data: unknown }> => ({
     data: {
       ...postBlockMessageExamplePayload,

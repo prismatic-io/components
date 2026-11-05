@@ -9,10 +9,7 @@ export const retrieveTeamMember = action({
     description: "Retrieves a team member based on the provided ID.",
   },
   perform: async (context, { teamMemberId, squareConnection }) => {
-    const client = await createAuthorizedClient(
-      squareConnection,
-      context.debug.enabled,
-    );
+    const client = await createAuthorizedClient(squareConnection, context.debug.enabled);
 
     const response = await client.request({
       url: `/v2/team-members/${teamMemberId}`,

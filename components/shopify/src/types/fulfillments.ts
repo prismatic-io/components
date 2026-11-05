@@ -219,10 +219,7 @@ interface RestFulfillmentLineItemDutyTaxLine {
   title: string | null;
   price_set: {
     shop_money: { amount: string | null; currency_code: string | null } | null;
-    presentment_money: {
-      amount: string | null;
-      currency_code: string | null;
-    } | null;
+    presentment_money: { amount: string | null; currency_code: string | null } | null;
   } | null;
   channel_liable: boolean | null;
 }
@@ -245,40 +242,23 @@ interface RestFulfillmentLineItem {
   fulfillment_status: string | null;
   price_set: {
     shop_money: { amount: string | null; currency_code: string | null } | null;
-    presentment_money: {
-      amount: string | null;
-      currency_code: string | null;
-    } | null;
+    presentment_money: { amount: string | null; currency_code: string | null } | null;
   } | null;
   total_discount_set: {
     shop_money: { amount: string | null; currency_code: string | null } | null;
-    presentment_money: {
-      amount: string | null;
-      currency_code: string | null;
-    } | null;
+    presentment_money: { amount: string | null; currency_code: string | null } | null;
   } | null;
   discount_allocations: {
     amount: string | null;
     discount_application_index: number | null;
     amount_set: {
-      shop_money: {
-        amount: string | null;
-        currency_code: string | null;
-      } | null;
-      presentment_money: {
-        amount: string | null;
-        currency_code: string | null;
-      } | null;
+      shop_money: { amount: string | null; currency_code: string | null } | null;
+      presentment_money: { amount: string | null; currency_code: string | null } | null;
     } | null;
   }[];
   duties: {
     id: number | null;
-    price: {
-      shop_money: {
-        amount: string | null;
-        currency_code: string | null;
-      } | null;
-    } | null;
+    price: { shop_money: { amount: string | null; currency_code: string | null } | null } | null;
     tax_lines: RestFulfillmentLineItemDutyTaxLine[];
   }[];
   admin_graphql_api_id: string | null;
@@ -339,10 +319,7 @@ interface RestFulfillmentOrderDeliveryMethod {
   method_type: string | null;
   min_delivery_date_time: string | null;
   max_delivery_date_time: string | null;
-  additional_information: {
-    instructions: string | null;
-    phone: string | null;
-  } | null;
+  additional_information: { instructions: string | null; phone: string | null } | null;
   service_code: string | null;
   source_reference: string | null;
   branded_promise: { name: string | null; handle: string | null } | null;

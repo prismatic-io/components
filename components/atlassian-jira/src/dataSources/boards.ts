@@ -1,9 +1,6 @@
 import { dataSource, type Element, util } from "@prismatic-io/spectral";
 import { createClient } from "../client";
-import {
-  selectBoardExamplePayload,
-  selectBoardVersionExamplePayload,
-} from "../examplePayloads";
+import { selectBoardExamplePayload, selectBoardVersionExamplePayload } from "../examplePayloads";
 import { selectBoardInputs, selectBoardVersionInputs } from "../inputs";
 
 const selectBoard = dataSource({
@@ -12,10 +9,7 @@ const selectBoard = dataSource({
     description: "Select a board.",
   },
   inputs: selectBoardInputs,
-  perform: async (
-    _context,
-    { jiraConnection, startAt, maxResults, filter },
-  ) => {
+  perform: async (_context, { jiraConnection, startAt, maxResults, filter }) => {
     const client = await createClient(jiraConnection, false);
 
     const {
@@ -52,10 +46,7 @@ const selectBoardVersion = dataSource({
     description: "Select a board version.",
   },
   inputs: selectBoardVersionInputs,
-  perform: async (
-    _context,
-    { jiraConnection, boardId, startAt, maxResults },
-  ) => {
+  perform: async (_context, { jiraConnection, boardId, startAt, maxResults }) => {
     const client = await createClient(jiraConnection, false);
 
     const {

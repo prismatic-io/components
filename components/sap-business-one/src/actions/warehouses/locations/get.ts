@@ -16,20 +16,13 @@ export const getWarehouseLocation = action({
     connection,
   },
   perform: async (context, { connection, $select, warehouseLocationId }) => {
-    const client = await createClient(
-      connection,
-      context,
-      context.debug.enabled,
-    );
+    const client = await createClient(connection, context, context.debug.enabled);
 
-    const { data } = await client.get(
-      `/WarehouseLocations(${warehouseLocationId})`,
-      {
-        params: {
-          $select,
-        },
+    const { data } = await client.get(`/WarehouseLocations(${warehouseLocationId})`, {
+      params: {
+        $select,
       },
-    );
+    });
     return {
       data,
     };

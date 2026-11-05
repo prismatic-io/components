@@ -19,8 +19,7 @@ export const connectionInput = input({
 export const timeout = input({
   label: "Timeout",
   type: "string",
-  comments:
-    "The maximum time a client will await a response (in milliseconds).",
+  comments: "The maximum time a client will await a response (in milliseconds).",
   example: "60000",
   placeholder: "Enter timeout in ms",
   required: false,
@@ -62,8 +61,7 @@ export const endingBefore = input({
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
-  comments:
-    "When true, automatically fetches all pages of results using pagination.",
+  comments: "When true, automatically fetches all pages of results using pagination.",
   required: false,
   default: "false",
   clean: util.types.toBool,
@@ -148,8 +146,7 @@ export const fieldValues = input({
 export const description = input({
   label: "Description",
   type: "string",
-  comments:
-    "An arbitrary description for the object, displayed in the Stripe Dashboard.",
+  comments: "An arbitrary description for the object, displayed in the Stripe Dashboard.",
   example: "Monthly subscription invoice",
   placeholder: "Enter description",
   required: false,
@@ -159,8 +156,7 @@ export const description = input({
 export const currency = input({
   label: "Currency",
   type: "string",
-  comments:
-    "The three-letter ISO currency code in lowercase (e.g., usd, eur, gbp).",
+  comments: "The three-letter ISO currency code in lowercase (e.g., usd, eur, gbp).",
   example: "usd",
   placeholder: "Enter currency code",
   required: false,

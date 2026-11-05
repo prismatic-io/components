@@ -1,9 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
-import {
-  cleanCodeInput,
-  cleanKeyValueListInput,
-  toOptionalString,
-} from "../util";
+import { cleanCodeInput, cleanKeyValueListInput, toOptionalString } from "../util";
 
 export const connection = input({
   label: "Connection",
@@ -16,8 +12,7 @@ export const additionalInputs = input({
   type: "code",
   language: "json",
   required: false,
-  comments:
-    "The additional fields to send in the request body, as a JSON object.",
+  comments: "The additional fields to send in the request body, as a JSON object.",
   example: JSON.stringify({}, null, 2),
   clean: cleanCodeInput,
 });
@@ -76,8 +71,7 @@ export const $filter = input({
   label: "Filter",
   type: "string",
   required: false,
-  comments:
-    "The OData filter expression used to narrow results by property values.",
+  comments: "The OData filter expression used to narrow results by property values.",
   placeholder: "Enter an OData filter expression",
   example: "Price lt 10.00",
   clean: toOptionalString,
@@ -97,8 +91,7 @@ export const $count = input({
   label: "Count",
   type: "boolean",
   required: false,
-  comments:
-    "When true, includes a count of the matching items in the response.",
+  comments: "When true, includes a count of the matching items in the response.",
   clean: util.types.toBool,
 });
 
@@ -106,8 +99,7 @@ export const $select = input({
   label: "Select",
   type: "string",
   required: false,
-  comments:
-    "The comma-separated list of properties to include in the response.",
+  comments: "The comma-separated list of properties to include in the response.",
   placeholder: "Enter properties to return",
   example: "Rating,ReleaseDate",
   clean: toOptionalString,

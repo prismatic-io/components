@@ -10,8 +10,7 @@ export const putBucketNotificationConfigurationExamplePayload: {
     $metadata: {
       httpStatusCode: 200,
       requestId: "3G6FNXP71KGVQ",
-      extendedRequestId:
-        "epeRYyT9tl3QOMTMck4AG+NqmGa5fRKv5nME7gRl8KMxfnCAKWZzKbWVKp4ED7RaZIGvVcS=",
+      extendedRequestId: "epeRYyT9tl3QOMTMck4AG+NqmGa5fRKv5nME7gRl8KMxfnCAKWZzKbWVKp4ED7RaZIGvVcS=",
       cfId: null,
       attempts: 1,
       totalRetryDelay: 0,
@@ -26,8 +25,7 @@ export const getBucketNotificationConfigurationExamplePayload: {
     $metadata: {
       httpStatusCode: 200,
       requestId: "2KMYXFM4GHPES",
-      extendedRequestId:
-        "dLu9EloFaZ2UeACk5l4IovjfHXHTkM7kFLdThrbIJIjn05dgO7bdU3TUJ7/8DzZvcQ==",
+      extendedRequestId: "dLu9EloFaZ2UeACk5l4IovjfHXHTkM7kFLdThrbIJIjn05dgO7bdU3TUJ7/8DzZvcQ==",
       cfId: null,
       attempts: 1,
       totalRetryDelay: 0,

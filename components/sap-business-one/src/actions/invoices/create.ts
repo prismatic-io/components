@@ -12,15 +12,8 @@ export const createInvoice = action({
     ...createInvoiceInputs,
     connection,
   },
-  perform: async (
-    context,
-    { connection, bodyFields, CardCode, DocumentLines },
-  ) => {
-    const client = await createClient(
-      connection,
-      context,
-      context.debug.enabled,
-    );
+  perform: async (context, { connection, bodyFields, CardCode, DocumentLines }) => {
+    const client = await createClient(connection, context, context.debug.enabled);
 
     const { data } = await client.post(`/Invoices`, {
       CardCode,

@@ -26,10 +26,7 @@ export const deleteFlowsAndOutboundMessages = async (
 
   if (outboundMessages.length > 0) {
     const flows = await getAllFlowMetadata(client);
-    const flowsUsingOutboundMessages = findFlowsUsingOutboundMessages(
-      flows,
-      outboundMessages,
-    );
+    const flowsUsingOutboundMessages = findFlowsUsingOutboundMessages(flows, outboundMessages);
 
     for (const flow of flowsUsingOutboundMessages) {
       const flowName = flow.fullName;

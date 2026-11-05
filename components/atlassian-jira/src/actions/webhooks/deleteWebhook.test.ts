@@ -9,10 +9,7 @@ afterAll(() => nock.enableNetConnect());
 afterEach(() => nock.cleanAll());
 
 const remove = () =>
-  invoke(deleteWebhook, {
-    jiraConnection: basicConnection(),
-    webhookId: "10001",
-  });
+  invoke(deleteWebhook, { jiraConnection: basicConnection(), webhookId: "10001" });
 
 describe("deleteWebhook under basic auth", () => {
   test("deletes the legacy webhook addressed by its id in the path", async () => {

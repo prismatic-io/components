@@ -160,8 +160,7 @@ export const fetchAll = input({
   type: "boolean",
   required: false,
   default: "false",
-  comments:
-    "When true, automatically fetches all pages of results using pagination.",
+  comments: "When true, automatically fetches all pages of results using pagination.",
   clean: util.types.toBool,
 });
 
@@ -183,8 +182,7 @@ export const code = input({
   label: "Code",
   type: "string",
   required: false,
-  comments:
-    "Code of the vendor; provide an empty string to reset the remote code.",
+  comments: "Code of the vendor; provide an empty string to reset the remote code.",
   example: "19566",
   placeholder: "19566",
   clean: cleanString,
@@ -289,8 +287,7 @@ export const isSplittable = input({
   label: "Is Splittable",
   type: "string",
   required: false,
-  comments:
-    "If set to True, the accounting field can be used to annotate split line items",
+  comments: "If set to True, the accounting field can be used to annotate split line items",
   model: mapObjectModel(BOOLEAN_VALUES),
   clean: cleanBoolean,
 });

@@ -23,7 +23,7 @@ export const selectChannels = dataSource({
       (channel) => ({
         key: channel.id,
         label: getChannelDisplayName(params.showIdInDropdown, channel),
-      }),
+      })
     );
 
     return { result: objects };

@@ -34,10 +34,7 @@ export const createLocation = action({
       data,
     };
   },
-  examplePerform: async (
-    _context,
-    { entityId, name },
-  ): Promise<{ data: unknown }> => ({
+  examplePerform: async (_context, { entityId, name }): Promise<{ data: unknown }> => ({
     data: {
       ...createLocationResponse,
       entity_id: entityId || createLocationResponse.entity_id,

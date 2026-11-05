@@ -11,10 +11,7 @@ export const deleteTeam = action({
   examplePayload: deleteTeamExamplePayload,
   performSafety: "notAllowed",
   perform: async (context, { clickUpConnection, groupId }) => {
-    const client = createClickUpClient(
-      clickUpConnection,
-      context.debug.enabled,
-    );
+    const client = createClickUpClient(clickUpConnection, context.debug.enabled);
 
     const { data } = await client.delete(`/group/${groupId}`);
 

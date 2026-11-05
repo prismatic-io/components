@@ -126,8 +126,7 @@ export const zip = input({
   required: false,
   example: "45260",
   placeholder: "Enter zipcode",
-  comments:
-    "The postal or zip code used for shipping rate calculation and tax determination.",
+  comments: "The postal or zip code used for shipping rate calculation and tax determination.",
   clean: cleanStringInput,
 });
 
@@ -137,8 +136,7 @@ export const country = input({
   required: false,
   example: "United States",
   placeholder: "Enter country",
-  comments:
-    "The full country name for the customer's address (e.g. United States, Canada).",
+  comments: "The full country name for the customer's address (e.g. United States, Canada).",
   clean: cleanStringInput,
 });
 

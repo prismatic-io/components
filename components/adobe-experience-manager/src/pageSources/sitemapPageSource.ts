@@ -1,18 +1,10 @@
 import { util } from "@prismatic-io/spectral";
 import type { HttpClient } from "@prismatic-io/spectral/http";
 import { MAX_SITEMAPS } from "../constants";
-import type {
-  ListPagesParams,
-  PageContent,
-  PageRef,
-  PageSource,
-} from "../types";
+import type { ListPagesParams, PageContent, PageRef, PageSource } from "../types";
 import { filterPages, parseSitemap } from "../utils/sitemap";
 
-const headerOrNull = (
-  headers: Record<string, unknown>,
-  name: string,
-): string | null => {
+const headerOrNull = (headers: Record<string, unknown>, name: string): string | null => {
   const value = headers[name];
   return typeof value === "string" ? value : null;
 };
@@ -48,8 +40,7 @@ export const createSitemapPageSource = (client: HttpClient): PageSource => ({
     const response = await client.get<string>(url);
     const headers = response.headers as Record<string, unknown>;
     const finalUrl =
-      (response.request as { res?: { responseUrl?: string } } | undefined)?.res
-        ?.responseUrl ?? url;
+      (response.request as { res?: { responseUrl?: string } } | undefined)?.res?.responseUrl ?? url;
     return {
       url,
       finalUrl,

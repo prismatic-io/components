@@ -12,14 +12,7 @@ export const getLeads = action({
   performSafety: "notAllowed",
   perform: async (
     context,
-    {
-      connection,
-      pagination: { limit, start } = {},
-      archivedStatus,
-      ownerId,
-      filterId,
-      sort,
-    },
+    { connection, pagination: { limit, start } = {}, archivedStatus, ownerId, filterId, sort },
   ) => {
     const client = createClient(connection, context.debug.enabled);
     const { data } = await client.get("/leads", {
@@ -36,8 +29,5 @@ export const getLeads = action({
   },
   inputs: getLeadsInputs,
   examplePayload: getLeadsExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getLeadsOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getLeadsOutputSchema }),
 });

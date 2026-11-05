@@ -39,15 +39,10 @@ describe("getCharge", () => {
   it("surfaces a Stripe error response", async () => {
     nock(BASE)
       .get("/v1/charges/ch_missing")
-      .reply(404, {
-        error: { type: "invalid_request_error", message: "No such charge" },
-      });
+      .reply(404, { error: { type: "invalid_request_error", message: "No such charge" } });
 
     await expect(
-      invoke(
-        getCharge,
-        params({ chargeId: "ch_missing", stripeConnection: conn }),
-      ),
+      invoke(getCharge, params({ chargeId: "ch_missing", stripeConnection: conn })),
     ).rejects.toThrow("No such charge");
   });
 });
@@ -72,15 +67,10 @@ describe("listCharges", () => {
     nock(BASE)
       .get("/v1/charges")
       .query(true)
-      .reply(400, {
-        error: { type: "invalid_request_error", message: "Invalid limit" },
-      });
+      .reply(400, { error: { type: "invalid_request_error", message: "Invalid limit" } });
 
     await expect(
-      invoke(
-        listCharges,
-        params({ pagination: { limit: 0 }, stripeConnection: conn }),
-      ),
+      invoke(listCharges, params({ pagination: { limit: 0 }, stripeConnection: conn })),
     ).rejects.toThrow("Invalid limit");
   });
 });
@@ -89,10 +79,7 @@ describe("searchCharges", () => {
   it("returns the search result for the supplied query", async () => {
     const scope = nock(BASE)
       .get("/v1/charges/search")
-      .query({
-        query: "amount>999 AND metadata['order_id']:'6735'",
-        limit: "10",
-      })
+      .query({ query: "amount>999 AND metadata['order_id']:'6735'", limit: "10" })
       .reply(200, searchChargesExamplePayload.data);
 
     const { result } = await invoke(
@@ -113,17 +100,11 @@ describe("searchCharges", () => {
       .get("/v1/charges/search")
       .query(true)
       .reply(400, {
-        error: {
-          type: "invalid_request_error",
-          message: "Invalid search query",
-        },
+        error: { type: "invalid_request_error", message: "Invalid search query" },
       });
 
     await expect(
-      invoke(
-        searchCharges,
-        params({ query: "bad query", pagination: {}, stripeConnection: conn }),
-      ),
+      invoke(searchCharges, params({ query: "bad query", pagination: {}, stripeConnection: conn })),
     ).rejects.toThrow("Invalid search query");
   });
 });
@@ -151,18 +132,12 @@ describe("updateCharge", () => {
   it("surfaces a Stripe error response", async () => {
     nock(BASE)
       .post("/v1/charges/ch_missing")
-      .reply(404, {
-        error: { type: "invalid_request_error", message: "No such charge" },
-      });
+      .reply(404, { error: { type: "invalid_request_error", message: "No such charge" } });
 
     await expect(
       invoke(
         updateCharge,
-        params({
-          chargeId: "ch_missing",
-          metadata: {},
-          stripeConnection: conn,
-        }),
+        params({ chargeId: "ch_missing", metadata: {}, stripeConnection: conn }),
       ),
     ).rejects.toThrow("No such charge");
   });

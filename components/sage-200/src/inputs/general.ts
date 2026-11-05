@@ -41,8 +41,7 @@ export const company = input({
 export const filterDataAfterDate = input({
   label: "Filter Data After Date",
   type: "string",
-  comments:
-    "Filter data to only include items that have been updated after this date.",
+  comments: "Filter data to only include items that have been updated after this date.",
   required: false,
   example: "2021-01-01T00:00:00Z",
   placeholder: "2021-01-01T00:00:00Z",

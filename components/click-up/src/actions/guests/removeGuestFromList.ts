@@ -16,14 +16,8 @@ export const removeGuestFromList = action({
   }),
   examplePayload: removeGuestFromListExamplePayload,
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { clickUpConnection, listId, guestId, includeShared },
-  ) => {
-    const client = createClickUpClient(
-      clickUpConnection,
-      context.debug.enabled,
-    );
+  perform: async (context, { clickUpConnection, listId, guestId, includeShared }) => {
+    const client = createClickUpClient(clickUpConnection, context.debug.enabled);
 
     const params: RemoveGuestFromListQueryParams = {
       include_shared: includeShared,

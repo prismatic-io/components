@@ -1,9 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
-import {
-  cleanObjectInput,
-  cleanStringInput,
-  cleanTriStateBoolInput,
-} from "../util";
+import { cleanObjectInput, cleanStringInput, cleanTriStateBoolInput } from "../util";
 import {
   chargeId,
   connectionInput,
@@ -49,17 +45,9 @@ export const disputeId = input({
   clean: util.types.toString,
 });
 
-export const closeDisputeInputs = {
-  timeout,
-  stripeConnection: connectionInput,
-  disputeId,
-};
+export const closeDisputeInputs = { timeout, stripeConnection: connectionInput, disputeId };
 
-export const getDisputeInputs = {
-  timeout,
-  stripeConnection: connectionInput,
-  disputeId,
-};
+export const getDisputeInputs = { timeout, stripeConnection: connectionInput, disputeId };
 
 export const listDisputesInputs = {
   timeout,
@@ -68,8 +56,7 @@ export const listDisputesInputs = {
     ...chargeId,
     label: "Charge ID",
     required: false,
-    comments:
-      "Only return disputes associated to the charge specified by this charge ID.",
+    comments: "Only return disputes associated to the charge specified by this charge ID.",
     clean: cleanStringInput,
   },
   paymentIntent,

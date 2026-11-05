@@ -16,12 +16,7 @@ export const selectTimezone = dataSource({
     const { data } = await client.get<{
       "@odata.context": string;
       value: { alias: string; displayName: string }[];
-    }>(
-      computeEndpointBasedOnConnection(
-        connection,
-        "/me/outlook/supportedTimeZones",
-      ),
-    );
+    }>(computeEndpointBasedOnConnection(connection, "/me/outlook/supportedTimeZones"));
 
     const result = data.value.map<Element>((timezone) => ({
       label: `${timezone.displayName} (${timezone.alias})`,

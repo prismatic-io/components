@@ -14,14 +14,7 @@ export const capturePaymentIntent = action({
   performSafety: "notAllowed",
   perform: async (
     context,
-    {
-      timeout,
-      stripeConnection,
-      paymentIntentId,
-      amountToCapture,
-      metadata,
-      additionalFields,
-    },
+    { timeout, stripeConnection, paymentIntentId, amountToCapture, metadata, additionalFields },
   ) => {
     const client = createStripeClient({
       stripeConnection,
@@ -43,10 +36,7 @@ export const capturePaymentIntent = action({
     _context,
     { paymentIntentId, amountToCapture, metadata, additionalFields },
   ): Promise<{ data: unknown }> => {
-    const intent = capturePaymentIntentExamplePayload.data as Record<
-      string,
-      unknown
-    >;
+    const intent = capturePaymentIntentExamplePayload.data as Record<string, unknown>;
 
     return {
       data: {
@@ -54,13 +44,10 @@ export const capturePaymentIntent = action({
         id: paymentIntentId,
         amount_received: amountToCapture ?? intent.amount_received,
         application_fee_amount:
-          additionalFields.applicationFeeAmount ??
-          intent.application_fee_amount,
-        statement_descriptor:
-          additionalFields.statementDescriptor ?? intent.statement_descriptor,
+          additionalFields.applicationFeeAmount ?? intent.application_fee_amount,
+        statement_descriptor: additionalFields.statementDescriptor ?? intent.statement_descriptor,
         statement_descriptor_suffix:
-          additionalFields.statementDescriptorSuffix ??
-          intent.statement_descriptor_suffix,
+          additionalFields.statementDescriptorSuffix ?? intent.statement_descriptor_suffix,
         transfer_data: additionalFields.transferData ?? intent.transfer_data,
         metadata,
       },

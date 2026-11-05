@@ -59,8 +59,7 @@ export const createWorkflowRule = action({
     });
     return { data: processMetadataResult(result) };
   },
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    genericCreateUpdateFullNameExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => genericCreateUpdateFullNameExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: createWorkflowComponentOutputSchema,

@@ -1,8 +1,5 @@
 import type { PollingContext, TriggerPayload } from "@prismatic-io/spectral";
-import {
-  createConnection,
-  invokeTrigger,
-} from "@prismatic-io/spectral/dist/testing";
+import { createConnection, invokeTrigger } from "@prismatic-io/spectral/dist/testing";
 import nock from "nock";
 import { adminApiAccessToken } from "../connections";
 import { DEFAULT_SHOPIFY_GRAPHQL_API_VERSION } from "../constants";
@@ -53,39 +50,29 @@ const mockFinalPage = (listKey: string, nodes: unknown[]) => {
       return true;
     })
     .reply(200, {
-      data: {
-        [listKey]: { nodes, pageInfo: { hasNextPage: false, endCursor: null } },
-      },
+      data: { [listKey]: { nodes, pageInfo: { hasNextPage: false, endCursor: null } } },
     });
   return sent;
 };
 
-const cases: [
-  string,
-  InvokableTrigger,
-  string,
-  PollingChangesObject<unknown>,
-][] = [
+const cases: [string, InvokableTrigger, string, PollingChangesObject<unknown>][] = [
   [
     "customersPollingTrigger",
     customersPollingTrigger as unknown as InvokableTrigger,
     "customers",
-    customersPollingTriggerExamplePayload.payload.body
-      .data as PollingChangesObject<unknown>,
+    customersPollingTriggerExamplePayload.payload.body.data as PollingChangesObject<unknown>,
   ],
   [
     "productsPollingTrigger",
     productsPollingTrigger as unknown as InvokableTrigger,
     "products",
-    productsPollingTriggerExamplePayload.payload.body
-      .data as PollingChangesObject<unknown>,
+    productsPollingTriggerExamplePayload.payload.body.data as PollingChangesObject<unknown>,
   ],
   [
     "ordersPollingTrigger",
     ordersPollingTrigger as unknown as InvokableTrigger,
     "orders",
-    ordersPollingTriggerExamplePayload.payload.body
-      .data as PollingChangesObject<unknown>,
+    ordersPollingTriggerExamplePayload.payload.body.data as PollingChangesObject<unknown>,
   ],
 ];
 
@@ -105,10 +92,7 @@ describe("polling triggers across sequential polls", () => {
     cases,
   )("%s second poll starts at the first poll's committed window end and redelivers nothing", async (_name, trigger, listKey, example) => {
     const { context, store } = createStatefulContext({ lastPolledAt: SEED });
-    const params = {
-      shopifyConnection,
-      lookBackDate: "",
-    } as unknown as InvokableParams;
+    const params = { shopifyConnection, lookBackDate: "" } as unknown as InvokableParams;
     const records = [...example.created, ...example.updated];
 
     vi.setSystemTime(new Date(FIRST_POLL_AT));
@@ -118,9 +102,7 @@ describe("polling triggers across sequential polls", () => {
     expect(firstSent.variables?.query).toBe(
       `updated_at:>='${SEED}' updated_at:<'${FIRST_POLL_AT}'`,
     );
-    expect((first.result?.payload as TriggerPayload).body.data).toEqual(
-      example,
-    );
+    expect((first.result?.payload as TriggerPayload).body.data).toEqual(example);
     expect(store.state).toEqual({ lastPolledAt: FIRST_POLL_AT });
 
     vi.setSystemTime(new Date(SECOND_POLL_AT));
@@ -135,9 +117,7 @@ describe("polling triggers across sequential polls", () => {
       created: [],
       updated: [],
     });
-    expect(
-      (second.result as { polledNoChanges?: boolean }).polledNoChanges,
-    ).toBe(true);
+    expect((second.result as { polledNoChanges?: boolean }).polledNoChanges).toBe(true);
     expect(store.state).toEqual({ lastPolledAt: SECOND_POLL_AT });
   });
 });

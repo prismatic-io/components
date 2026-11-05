@@ -28,12 +28,7 @@ export const eventTypeSubscription = trigger({
   webhookLifecycleHandlers: {
     create: async (
       context,
-      {
-        hubspotConnection,
-        eventTypes,
-        propertyChangeProperties,
-        overwriteWebhookSettings,
-      },
+      { hubspotConnection, eventTypes, propertyChangeProperties, overwriteWebhookSettings },
     ) => {
       const webhookUrl = context.webhookUrls[context.flow.name];
       const client = getHubspotClient(
@@ -43,15 +38,10 @@ export const eventTypeSubscription = trigger({
         },
         false,
       );
-      const { developerApiKey, appId } =
-        checkDeveloperApiKeyAndAppId(hubspotConnection);
+      const { developerApiKey, appId } = checkDeveloperApiKeyAndAppId(hubspotConnection);
 
       const getConfigurationResults = await Promise.all([
-        appWebhookSettingsExists(
-          client,
-          appId,
-          developerApiKey,
-        ) as Promise<boolean>,
+        appWebhookSettingsExists(client, appId, developerApiKey) as Promise<boolean>,
         appWebhookSubscriptionsExists(client, appId, developerApiKey),
       ]);
 
@@ -68,9 +58,7 @@ export const eventTypeSubscription = trigger({
         !appWebhookConfigurationExists ||
         (appWebhookConfigurationExists && overwriteWebhookSettings)
       ) {
-        context.logger.info(
-          `Creating webhook configuration for App ID ${appId}.`,
-        );
+        context.logger.info(`Creating webhook configuration for App ID ${appId}.`);
 
         await createAppWebhookConfiguration(
           client,
@@ -84,8 +72,7 @@ export const eventTypeSubscription = trigger({
     },
     delete: async (context, { hubspotConnection }): Promise<void> => {
       const webhookUrl = context.webhookUrls[context.flow.name];
-      const { developerApiKey, appId } =
-        checkDeveloperApiKeyAndAppId(hubspotConnection);
+      const { developerApiKey, appId } = checkDeveloperApiKeyAndAppId(hubspotConnection);
       const client = getHubspotClient(
         {
           hubspotConnection,
@@ -105,9 +92,7 @@ export const eventTypeSubscription = trigger({
         currentAppWebhookSettings &&
         (currentAppWebhookSettings as WebhookSettings).targetUrl === webhookUrl
       ) {
-        context.logger.info(
-          `Deleting webhook configuration for App ID ${appId}.`,
-        );
+        context.logger.info(`Deleting webhook configuration for App ID ${appId}.`);
         await Promise.all([
           deleteAllAppSubscriptions(client, appId, developerApiKey),
           deleteAppSettings(client, appId, developerApiKey),

@@ -31,8 +31,9 @@ export const createDraftOrderGql = action({
       context.logger,
     );
 
-    const data: { draftOrderCreate: Record<string, unknown> } =
-      await client.request(createDraftOrderQuery, {
+    const data: { draftOrderCreate: Record<string, unknown> } = await client.request(
+      createDraftOrderQuery,
+      {
         input: {
           customerId: customerIdGql,
           lineItems,
@@ -42,17 +43,15 @@ export const createDraftOrderGql = action({
           tags,
           ...additionalFields,
         },
-      });
+      },
+    );
 
     return {
       data: data.draftOrderCreate,
     };
   },
   inputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: createDraftOrderGqlOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: createDraftOrderGqlOutputSchema }),
   examplePerform: async () => examplePayload,
   examplePayload,
 });

@@ -11,10 +11,7 @@ export const createWebhook = action({
     description: "Create a new webhook endpoint.",
   },
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { stripeConnection, timeout, webhookEvents, webhookUrl },
-  ) => {
+  perform: async (context, { stripeConnection, timeout, webhookEvents, webhookUrl }) => {
     const client = createStripeClient({
       stripeConnection,
       timeout,
@@ -24,10 +21,7 @@ export const createWebhook = action({
       data,
     };
   },
-  examplePerform: async (
-    _context,
-    { webhookUrl, webhookEvents },
-  ): Promise<{ data: unknown }> => ({
+  examplePerform: async (_context, { webhookUrl, webhookEvents }): Promise<{ data: unknown }> => ({
     data: {
       ...createWebhookExamplePayload.data,
       url: webhookUrl,

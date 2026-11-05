@@ -14,9 +14,7 @@ export const updateDraft = action({
       },
       context.debug.enabled,
     );
-    const { data } = await client.post(
-      `/Projects('${params.guId}')/Draft/update()`,
-    );
+    const { data } = await client.post(`/Projects('${params.guId}')/Draft/update()`);
 
     return {
       data,

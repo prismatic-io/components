@@ -11,9 +11,7 @@ const departmentExample: Department = {
   LastUpdateDate: "2024-01-15T08:00:00.000Z",
 };
 
-export const listDepartmentsExamplePayload: {
-  data: OracleHcmListResponse<Department>;
-} = {
+export const listDepartmentsExamplePayload: { data: OracleHcmListResponse<Department> } = {
   data: {
     items: [departmentExample],
     count: 1,
@@ -23,9 +21,7 @@ export const listDepartmentsExamplePayload: {
   },
 };
 
-export const getDepartmentExamplePayload: { data: Department } = {
-  data: departmentExample,
-};
+export const getDepartmentExamplePayload: { data: Department } = { data: departmentExample };
 
 export const selectDepartmentExamplePayload: { result: Element[] } = {
   result: [{ key: "300100012340002", label: "Engineering" }],

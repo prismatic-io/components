@@ -14,15 +14,8 @@ export const createShipmentMethod = action({
     label: "Create Shipment Method",
     description: "Create a new shipment method",
   },
-  perform: async (
-    context,
-    { shipmentMethodName, shipmentCode, connection, companyId },
-  ) => {
-    const client = getMsBusinessCentralClient(
-      connection,
-      context,
-      context.debug.enabled,
-    );
+  perform: async (context, { shipmentMethodName, shipmentCode, connection, companyId }) => {
+    const client = getMsBusinessCentralClient(connection, context, context.debug.enabled);
     const payload = {
       code: shipmentCode,
       displayName: shipmentMethodName,

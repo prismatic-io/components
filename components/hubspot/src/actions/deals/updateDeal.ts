@@ -38,23 +38,20 @@ export const updateDeal = action({
       debugRequest,
     });
 
-    const { data } = await client.patch(
-      hubspotPaths.objects("deals", `/${dealId}`),
-      {
-        properties: {
-          amount,
-          closedate: closeDate,
-          dealname: updateDealName,
-          dealstage: updateDealStage,
-          hubspot_owner_id: hubspotOwnerId,
-          pipeline: updatePipeline,
-          dealtype: dealType,
-          hs_priority: priority,
-          ...fieldValues,
-          ...dynamicValues,
-        },
+    const { data } = await client.patch(hubspotPaths.objects("deals", `/${dealId}`), {
+      properties: {
+        amount,
+        closedate: closeDate,
+        dealname: updateDealName,
+        dealstage: updateDealStage,
+        hubspot_owner_id: hubspotOwnerId,
+        pipeline: updatePipeline,
+        dealtype: dealType,
+        hs_priority: priority,
+        ...fieldValues,
+        ...dynamicValues,
       },
-    );
+    });
 
     return { data };
   },

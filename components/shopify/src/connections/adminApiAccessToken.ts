@@ -5,8 +5,7 @@ export const adminApiAccessToken = connection({
   key: "adminApiAccessToken",
   display: {
     label: "Access Token",
-    description:
-      "Authenticate requests to Shopify using an Admin API access token.",
+    description: "Authenticate requests to Shopify using an Admin API access token.",
   },
   inputs: {
     adminApiAccessToken: input({

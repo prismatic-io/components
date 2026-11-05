@@ -19,10 +19,7 @@ const objectTypeDefinitionProperties = {
   primaryDisplayProperty: { type: "string" },
   requiredProperties: { type: "array" as const, items: { type: "string" } },
   searchableProperties: { type: "array" as const, items: { type: "string" } },
-  secondaryDisplayProperties: {
-    type: "array" as const,
-    items: { type: "string" },
-  },
+  secondaryDisplayProperties: { type: "array" as const, items: { type: "string" } },
   updatedAt: { type: "string", format: "date-time" },
 };
 

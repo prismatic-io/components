@@ -4,11 +4,7 @@ import {
   partitionByTimestamp,
   resolvePollingRecordChanges,
 } from "./polling";
-import type {
-  PipedriveRecentItem,
-  PollingChangesObject,
-  PollResourceConfig,
-} from "../types";
+import type { PipedriveRecentItem, PollingChangesObject, PollResourceConfig } from "../types";
 
 describe("formatPipedriveTimestamp", () => {
   it("converts ISO to Pipedrive v1 format (space-separated, no millis)", () => {
@@ -23,22 +19,14 @@ describe("partitionByTimestamp", () => {
     updatedAtField: "update_time",
   };
   const sinceDate = new Date("2024-06-01T00:00:00Z");
-  const makeRecord = (
-    id: number,
-    data: Record<string, unknown>,
-  ): PipedriveRecentItem => ({
+  const makeRecord = (id: number, data: Record<string, unknown>): PipedriveRecentItem => ({
     id,
     data,
   });
 
   it("classifies as created when add_time is after sinceDate", () => {
     const result = partitionByTimestamp(
-      [
-        makeRecord(1, {
-          add_time: "2024-06-15T00:00:00Z",
-          update_time: "2024-06-15T00:00:00Z",
-        }),
-      ],
+      [makeRecord(1, { add_time: "2024-06-15T00:00:00Z", update_time: "2024-06-15T00:00:00Z" })],
       sinceDate,
       config,
     );
@@ -48,12 +36,7 @@ describe("partitionByTimestamp", () => {
 
   it("classifies as updated when only update_time is after sinceDate", () => {
     const result = partitionByTimestamp(
-      [
-        makeRecord(2, {
-          add_time: "2024-01-01T00:00:00Z",
-          update_time: "2024-06-15T00:00:00Z",
-        }),
-      ],
+      [makeRecord(2, { add_time: "2024-01-01T00:00:00Z", update_time: "2024-06-15T00:00:00Z" })],
       sinceDate,
       config,
     );
@@ -63,12 +46,7 @@ describe("partitionByTimestamp", () => {
 
   it("excludes records where both timestamps are before sinceDate", () => {
     const result = partitionByTimestamp(
-      [
-        makeRecord(3, {
-          add_time: "2024-01-01T00:00:00Z",
-          update_time: "2024-01-01T00:00:00Z",
-        }),
-      ],
+      [makeRecord(3, { add_time: "2024-01-01T00:00:00Z", update_time: "2024-01-01T00:00:00Z" })],
       sinceDate,
       config,
     );
@@ -86,10 +64,7 @@ describe("partitionByTimestamp", () => {
   });
 
   it("falls back to updated when config has null timestamp fields", () => {
-    const noFieldsConfig: PollResourceConfig = {
-      createdAtField: null,
-      updatedAtField: null,
-    };
+    const noFieldsConfig: PollResourceConfig = { createdAtField: null, updatedAtField: null };
     const result = partitionByTimestamp(
       [makeRecord(5, { add_time: "2024-06-15T00:00:00Z" })],
       sinceDate,
@@ -100,10 +75,7 @@ describe("partitionByTimestamp", () => {
 });
 
 describe("resolvePollingRecordChanges", () => {
-  const makeRecord = (id: number): PipedriveRecentItem => ({
-    id,
-    data: { name: `Record ${id}` },
-  });
+  const makeRecord = (id: number): PipedriveRecentItem => ({ id, data: { name: `Record ${id}` } });
 
   it("flattens created and updated into tagged records", () => {
     const data: PollingChangesObject = {

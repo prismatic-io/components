@@ -1,7 +1,4 @@
-import {
-  createConnection,
-  invokeDataSource,
-} from "@prismatic-io/spectral/testing";
+import { createConnection, invokeDataSource } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { aemOAuthServerToServer } from "../connections";
 import {
@@ -34,10 +31,7 @@ describe("selectAssetRendition", () => {
     nock(BASE)
       .get(`/adobe/assets/${encodeURIComponent(assetId)}/renditions`)
       .reply(200, listAssetRenditionsExamplePayload.data);
-    const result = await invokeDataSource(selectAssetRendition, {
-      connection,
-      assetId,
-    });
+    const result = await invokeDataSource(selectAssetRendition, { connection, assetId });
     expect(result).toEqual(selectAssetRenditionExamplePayload);
   });
 
@@ -45,10 +39,7 @@ describe("selectAssetRendition", () => {
     nock(BASE)
       .get(`/adobe/assets/${encodeURIComponent(assetId)}/renditions`)
       .reply(200, { assetId, items: [] });
-    const result = await invokeDataSource(selectAssetRendition, {
-      connection,
-      assetId,
-    });
+    const result = await invokeDataSource(selectAssetRendition, { connection, assetId });
     expect(result).toEqual({ result: [] });
   });
 });

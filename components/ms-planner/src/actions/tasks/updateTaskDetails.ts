@@ -5,19 +5,13 @@ import { PLANNER_ENDPOINTS } from "../../constants";
 import { updateTaskDetailsExamplePayload } from "../../examplePayloads";
 import { updateTaskDetailsOutputSchema } from "../../outputSchemas";
 import type { Etagged } from "../../types";
-import {
-  buildChecklist,
-  buildReferences,
-  compact,
-  patchWithEtag,
-} from "../../utils";
+import { buildChecklist, buildReferences, compact, patchWithEtag } from "../../utils";
 import { updateTaskDetailsInputs } from "../../inputs";
 
 export const updateTaskDetails = action({
   display: {
     label: "Update Task Details",
-    description:
-      "Set a task's description, checklist items, and external links.",
+    description: "Set a task's description, checklist items, and external links.",
   },
   inputs: updateTaskDetailsInputs,
   outputSchema: outputSchema({
@@ -27,23 +21,11 @@ export const updateTaskDetails = action({
   performSafety: "notAllowed",
   perform: async (
     context,
-    {
-      connection,
-      taskId,
-      description,
-      checklist,
-      references,
-      previewType,
-      etag,
-    },
+    { connection, taskId, description, checklist, references, previewType, etag },
   ) => {
     const client = createClient(connection, context.debug.enabled);
 
-    const checklistBody = buildChecklist(
-      checklist?.addItems,
-      [],
-      checklist?.removeItemIds,
-    );
+    const checklistBody = buildChecklist(checklist?.addItems, [], checklist?.removeItemIds);
     const referencesBody = buildReferences(
       references?.addReferences,
       references?.removeReferenceUrls,
@@ -53,9 +35,7 @@ export const updateTaskDetails = action({
       description,
       previewType,
       checklist: Object.keys(checklistBody).length ? checklistBody : undefined,
-      references: Object.keys(referencesBody).length
-        ? referencesBody
-        : undefined,
+      references: Object.keys(referencesBody).length ? referencesBody : undefined,
     });
 
     const data = await patchWithEtag<PlannerTaskDetails & Etagged>(
@@ -66,16 +46,11 @@ export const updateTaskDetails = action({
     );
     return { data };
   },
-  examplePerform: async (
-    _context,
-    { description, previewType },
-  ): Promise<{ data: unknown }> => ({
+  examplePerform: async (_context, { description, previewType }): Promise<{ data: unknown }> => ({
     data: {
       ...updateTaskDetailsExamplePayload.data,
-      description:
-        description ?? updateTaskDetailsExamplePayload.data.description,
-      previewType:
-        previewType ?? updateTaskDetailsExamplePayload.data.previewType,
+      description: description ?? updateTaskDetailsExamplePayload.data.description,
+      previewType: previewType ?? updateTaskDetailsExamplePayload.data.previewType,
     },
   }),
   examplePayload: updateTaskDetailsExamplePayload,

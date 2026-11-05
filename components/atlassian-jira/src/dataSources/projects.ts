@@ -1,8 +1,5 @@
 import { dataSource } from "@prismatic-io/spectral";
-import {
-  selectProjectExamplePayload,
-  selectProjectsExamplePayload,
-} from "../examplePayloads";
+import { selectProjectExamplePayload, selectProjectsExamplePayload } from "../examplePayloads";
 import { selectProjectInputs, selectProjectsInputs } from "../inputs";
 import { getProjects } from "../util";
 

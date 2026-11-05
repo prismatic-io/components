@@ -165,15 +165,7 @@ export const customerOutputSchema = {
               type: "boolean",
             },
           },
-          required: [
-            "created",
-            "duration",
-            "id",
-            "livemode",
-            "object",
-            "times_redeemed",
-            "valid",
-          ],
+          required: ["created", "duration", "id", "livemode", "object", "times_redeemed", "valid"],
         },
         customer: {
           type: ["string", "null"],
@@ -336,12 +328,7 @@ export const customerOutputSchema = {
       properties: {
         automatic_tax: {
           type: "string",
-          enum: [
-            "failed",
-            "not_collecting",
-            "supported",
-            "unrecognized_location",
-          ],
+          enum: ["failed", "not_collecting", "supported", "unrecognized_location"],
         },
         ip_address: {
           type: ["string", "null"],
@@ -354,12 +341,7 @@ export const customerOutputSchema = {
             },
             source: {
               type: "string",
-              enum: [
-                "billing_address",
-                "ip_address",
-                "payment_method",
-                "shipping_destination",
-              ],
+              enum: ["billing_address", "ip_address", "payment_method", "shipping_destination"],
             },
             state: {
               type: ["string", "null"],

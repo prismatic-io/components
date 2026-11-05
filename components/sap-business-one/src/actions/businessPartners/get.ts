@@ -16,11 +16,7 @@ export const getBusinessPartner = action({
     connection,
   },
   perform: async (context, { connection, $select, cardCode }) => {
-    const client = await createClient(
-      connection,
-      context,
-      context.debug.enabled,
-    );
+    const client = await createClient(connection, context, context.debug.enabled);
 
     const { data } = await client.get(`/BusinessPartners('${cardCode}')`, {
       params: {

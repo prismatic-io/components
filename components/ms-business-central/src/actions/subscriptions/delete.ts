@@ -11,11 +11,7 @@ export const deleteSubscription = action({
   },
   inputs: deleteSubscriptionInputs,
   perform: async (context, { connection, subscriptionId, etag }) => {
-    const client = getMsBusinessCentralClient(
-      connection,
-      context,
-      context.debug.enabled,
-    );
+    const client = getMsBusinessCentralClient(connection, context, context.debug.enabled);
     await client.delete(`/subscriptions('${subscriptionId}')`, {
       headers: { "If-Match": etag },
     });

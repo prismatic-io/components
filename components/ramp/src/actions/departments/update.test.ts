@@ -1,11 +1,6 @@
 import { invoke } from "@prismatic-io/spectral/testing";
 import { getDepartmentResponse } from "../../examplePayloads/departments";
-import {
-  apiPath,
-  rampNock,
-  resetNock,
-  testConnection,
-} from "../../testHarness";
+import { apiPath, rampNock, resetNock, testConnection } from "../../testHarness";
 import { updateDepartment } from "./update";
 
 const DEPARTMENT_ID = "c16b6ee1-2f5d-45e9-9fb4-c1c541a9ea70";
@@ -25,10 +20,7 @@ describe("updateDepartment", () => {
       name: "Accounting",
     });
 
-    expect(result.data).toEqual({
-      ...getDepartmentResponse,
-      name: "Accounting",
-    });
+    expect(result.data).toEqual({ ...getDepartmentResponse, name: "Accounting" });
   });
 
   test("surfaces an API failure", async () => {

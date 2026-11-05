@@ -8,8 +8,7 @@ import { executeSFAction } from "../../util";
 export const createOpportunity = action({
   display: {
     label: "Create Opportunity",
-    description:
-      "Create a Salesforce opportunity record representing a sale or pending deal.",
+    description: "Create a Salesforce opportunity record representing a sale or pending deal.",
   },
   performSafety: "notAllowed",
   perform: async (
@@ -49,17 +48,14 @@ export const createOpportunity = action({
       context.logger.debug("Payload", payload);
     }
 
-    const command = await salesforceClient
-      .sobject("Opportunity")
-      .create(payload);
+    const command = await salesforceClient.sobject("Opportunity").create(payload);
     const response = await executeSFAction(context, command);
 
     return {
       data: response,
     };
   },
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    genericCreateUpdateExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => genericCreateUpdateExamplePayload,
   inputs: createOpportunityInputs,
   outputSchema: outputSchema({
     type: "actionOutput",

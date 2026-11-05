@@ -2,16 +2,9 @@ import queryString from "node:querystring";
 import { type KeyValuePair, util } from "@prismatic-io/spectral";
 import type { HttpClient } from "@prismatic-io/spectral/http";
 import { LOOK_BACK_DATE_PATTERN } from "./constants";
-import type {
-  QBTimeRecord,
-  QBTimeRecordChange,
-  QBTimeRecordChanges,
-} from "./types";
+import type { QBTimeRecord, QBTimeRecordChange, QBTimeRecordChanges } from "./types";
 
-export const injectQueryParams = (
-  url: string,
-  queryParams: KeyValuePair[],
-): string => {
+export const injectQueryParams = (url: string, queryParams: KeyValuePair[]): string => {
   const paramObject = queryParams.reduce(
     (result, { key, value }) => ({ ...result, [key]: value }),
     {},
@@ -36,9 +29,7 @@ export const fetchRecords = async (
       limit: "200",
     });
     const { data } = await client.get(`/${object}?${params.toString()}`);
-    const items = Object.values(
-      data?.results?.[object] ?? {},
-    ) as QBTimeRecord[];
+    const items = Object.values(data?.results?.[object] ?? {}) as QBTimeRecord[];
     allRecords.push(...items);
     hasMore = data?.more === true;
     page++;
@@ -48,21 +39,14 @@ export const fetchRecords = async (
 };
 
 export const lookBackDateClean = (value: unknown): string => {
-  if (
-    value === undefined ||
-    value === null ||
-    (typeof value === "string" && value.trim() === "")
-  ) {
+  if (value === undefined || value === null || (typeof value === "string" && value.trim() === "")) {
     return "";
   }
 
   const raw = typeof value === "string" ? value.trim() : String(value);
-  const match =
-    typeof value === "string" ? raw.match(LOOK_BACK_DATE_PATTERN) : null;
+  const match = typeof value === "string" ? raw.match(LOOK_BACK_DATE_PATTERN) : null;
   if (!match) {
-    throw new Error(
-      `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
-    );
+    throw new Error(`Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`);
   }
 
   const [, yearStr, monthStr, dayStr] = match;
@@ -75,9 +59,7 @@ export const lookBackDateClean = (value: unknown): string => {
     parsed.getUTCMonth() !== month - 1 ||
     parsed.getUTCDate() !== day
   ) {
-    throw new Error(
-      `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
-    );
+    throw new Error(`Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`);
   }
 
   if (parsed.getTime() > Date.now()) {
@@ -87,15 +69,10 @@ export const lookBackDateClean = (value: unknown): string => {
   return parsed.toISOString();
 };
 
-export const filterCreatedOnOrAfter = (
-  records: QBTimeRecord[],
-  since: string,
-): QBTimeRecord[] => {
+export const filterCreatedOnOrAfter = (records: QBTimeRecord[], since: string): QBTimeRecord[] => {
   const threshold = Date.parse(since);
   return records.filter(
-    (record) =>
-      typeof record.created === "string" &&
-      Date.parse(record.created) >= threshold,
+    (record) => typeof record.created === "string" && Date.parse(record.created) >= threshold,
   );
 };
 

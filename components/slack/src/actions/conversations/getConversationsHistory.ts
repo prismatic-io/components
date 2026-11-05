@@ -20,7 +20,7 @@ export const getConversationsHistory = action({
       channelName,
       timeRange,
       fetchAll,
-    },
+    }
   ) => {
     const { cursor, limit } = pagination;
     const { oldest, latest, inclusive } = timeRange;
@@ -53,7 +53,7 @@ export const getConversationsHistory = action({
         "conversations",
         "messages",
         "history",
-        params,
+        params
       );
     }
 

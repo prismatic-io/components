@@ -1,7 +1,6 @@
 import type { MetadataPatchOperation } from "../types";
 
-const toPointerSegment = (field: string): string =>
-  field.replace(/~/g, "~0").replace(/\//g, "~1");
+const toPointerSegment = (field: string): string => field.replace(/~/g, "~0").replace(/\//g, "~1");
 
 export const buildMetadataPatch = (
   values: Record<string, string>,
@@ -23,9 +22,7 @@ export const buildMetadataPatch = (
     ),
   ];
   if (!operations.length) {
-    throw new Error(
-      "Update Asset Metadata needs at least one metadata value or field to remove.",
-    );
+    throw new Error("Update Asset Metadata needs at least one metadata value or field to remove.");
   }
   return operations;
 };

@@ -14,24 +14,12 @@ describe("selectCustomer", () => {
       .query(true)
       .reply(200, {
         items: [
-          {
-            id: 1,
-            firstname: "John",
-            lastname: "Doe",
-            email: "john@example.com",
-          },
-          {
-            id: 2,
-            firstname: "Alice",
-            lastname: "Adams",
-            email: "alice@example.com",
-          },
+          { id: 1, firstname: "John", lastname: "Doe", email: "john@example.com" },
+          { id: 2, firstname: "Alice", lastname: "Adams", email: "alice@example.com" },
         ],
       });
 
-    const result = await invokeDataSource(selectCustomer, {
-      connectionInput: storeConnection(),
-    });
+    const result = await invokeDataSource(selectCustomer, { connectionInput: storeConnection() });
 
     expect(result.result).toEqual([
       { label: "Alice Adams (alice@example.com)", key: "2" },
@@ -40,14 +28,9 @@ describe("selectCustomer", () => {
   });
 
   test("returns an empty array rather than throwing when the store has no customers", async () => {
-    nock(STORE_HOST)
-      .get("/rest/default/V1/customers/search")
-      .query(true)
-      .reply(200, { items: [] });
+    nock(STORE_HOST).get("/rest/default/V1/customers/search").query(true).reply(200, { items: [] });
 
-    const result = await invokeDataSource(selectCustomer, {
-      connectionInput: storeConnection(),
-    });
+    const result = await invokeDataSource(selectCustomer, { connectionInput: storeConnection() });
 
     expect(result.result).toEqual([]);
   });

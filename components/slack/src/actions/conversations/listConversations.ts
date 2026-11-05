@@ -18,7 +18,7 @@ export const listConversations = action({
     assertTeamIdForOrgToken(
       params.connection,
       params.teamId,
-      "conversations.list",
+      "conversations.list"
     );
     const client = await createOauthClient({
       slackConnection: params.connection,

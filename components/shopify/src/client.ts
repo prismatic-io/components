@@ -1,12 +1,5 @@
-import {
-  type ActionLogger,
-  type Connection,
-  util,
-} from "@prismatic-io/spectral";
-import {
-  createClient,
-  type HttpClient,
-} from "@prismatic-io/spectral/dist/clients/http";
+import { type ActionLogger, type Connection, util } from "@prismatic-io/spectral";
+import { createClient, type HttpClient } from "@prismatic-io/spectral/dist/clients/http";
 import { GraphQLClient } from "graphql-request";
 import { shopifyConnection as deprecatedOAuth2Connection } from "./connections/oauth2";
 import {
@@ -53,9 +46,7 @@ const getApiVersion = (
   defaultVersion: string,
   logger?: ActionLogger,
 ): string => {
-  const connectionApiVersion = util.types.toString(
-    shopifyConnection.fields.apiVersion,
-  );
+  const connectionApiVersion = util.types.toString(shopifyConnection.fields.apiVersion);
   if (connectionApiVersion) {
     if (logger && connectionApiVersion < defaultVersion) {
       logger.warn(
@@ -77,17 +68,14 @@ export const getShopifyClient = (
   logger?: ActionLogger,
 ): HttpClient => {
   const shopifyHostname = getConnectionHostname(shopifyConnection);
-  const version =
-    apiVersion ??
-    getApiVersion(shopifyConnection, DEFAULT_SHOPIFY_VERSION, logger);
+  const version = apiVersion ?? getApiVersion(shopifyConnection, DEFAULT_SHOPIFY_VERSION, logger);
 
   return createClient({
     debug,
     baseUrl: `https://${shopifyHostname}${ADMIN_API_PATH}/${version}`,
     headers: {
       [SHOPIFY_ACCESS_TOKEN_HEADER]: util.types.toString(
-        shopifyConnection.token?.access_token ||
-          shopifyConnection.fields.adminApiAccessToken,
+        shopifyConnection.token?.access_token || shopifyConnection.fields.adminApiAccessToken,
       ),
       Accept: "application/json",
       "Content-type": "application/json",
@@ -103,18 +91,12 @@ export const getShopifyGraphQlClient = (
 ): GraphQLClient => {
   const shopifyHostname = getConnectionHostname(shopifyConnection);
   const version =
-    apiVersion ??
-    getApiVersion(
-      shopifyConnection,
-      DEFAULT_SHOPIFY_GRAPHQL_API_VERSION,
-      logger,
-    );
+    apiVersion ?? getApiVersion(shopifyConnection, DEFAULT_SHOPIFY_GRAPHQL_API_VERSION, logger);
   const url = `https://${shopifyHostname}${ADMIN_API_PATH}/${version}/graphql.json`;
   return new GraphQLClient(url, {
     headers: {
       [SHOPIFY_ACCESS_TOKEN_HEADER]: util.types.toString(
-        shopifyConnection.token?.access_token ||
-          shopifyConnection.fields.adminApiAccessToken,
+        shopifyConnection.token?.access_token || shopifyConnection.fields.adminApiAccessToken,
       ),
       "Content-type": "application/json",
     },

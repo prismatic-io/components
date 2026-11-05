@@ -7,8 +7,7 @@ import { getAccessibleCustomFieldsOutputSchema } from "../../outputSchemas";
 export const getAccessibleCustomFields = action({
   display: {
     label: "Get Accessible Custom Fields",
-    description:
-      "List the custom fields available on tasks in a specific list.",
+    description: "List the custom fields available on tasks in a specific list.",
   },
   outputSchema: outputSchema({
     type: "actionOutput",

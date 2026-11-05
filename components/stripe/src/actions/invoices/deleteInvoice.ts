@@ -19,10 +19,7 @@ export const deleteInvoice = action({
       data: await client.invoices.del(invoiceId),
     };
   },
-  examplePerform: async (
-    _context,
-    { invoiceId },
-  ): Promise<{ data: unknown }> => {
+  examplePerform: async (_context, { invoiceId }): Promise<{ data: unknown }> => {
     const deleted = deleteInvoiceExamplePayload.data as Record<string, unknown>;
 
     return {

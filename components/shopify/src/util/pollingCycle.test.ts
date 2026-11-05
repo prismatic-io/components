@@ -1,8 +1,4 @@
-import type {
-  Connection,
-  PollingContext,
-  TriggerPayload,
-} from "@prismatic-io/spectral";
+import type { Connection, PollingContext, TriggerPayload } from "@prismatic-io/spectral";
 import { defaultTriggerPayload } from "@prismatic-io/spectral/dist/testing";
 import nock from "nock";
 import pollOrdersQuery from "../actions/graphql/queries/orders/PollOrders.gql";
@@ -18,24 +14,15 @@ const connection = {
   fields: { host: HOST, adminApiAccessToken: "shpat_test" },
 } as unknown as Connection;
 
-const ordersResource: PollingResource = {
-  listKey: "orders",
-  query: pollOrdersQuery,
-};
+const ordersResource: PollingResource = { listKey: "orders", query: pollOrdersQuery };
 
 interface TestOrder extends Record<string, unknown> {
   id: string;
   createdAt: string;
 }
 
-const oldOrder: TestOrder = {
-  id: "gid://shopify/Order/1",
-  createdAt: "2020-01-01T00:00:00.000Z",
-};
-const newOrder: TestOrder = {
-  id: "gid://shopify/Order/2",
-  createdAt: "2026-08-25T00:00:00.000Z",
-};
+const oldOrder: TestOrder = { id: "gid://shopify/Order/1", createdAt: "2020-01-01T00:00:00.000Z" };
+const newOrder: TestOrder = { id: "gid://shopify/Order/2", createdAt: "2026-08-25T00:00:00.000Z" };
 
 const createContext = (state: PollingState) => {
   const setState = vi.fn();
@@ -53,11 +40,7 @@ const createContext = (state: PollingState) => {
   return { context, setState };
 };
 
-const mockPage = (page: {
-  nodes: TestOrder[];
-  hasNextPage: boolean;
-  endCursor: string | null;
-}) => {
+const mockPage = (page: { nodes: TestOrder[]; hasNextPage: boolean; endCursor: string | null }) => {
   const sent: { variables?: Record<string, unknown> } = {};
   nock(`https://${HOST}`)
     .post(PATH, (body) => {
@@ -68,10 +51,7 @@ const mockPage = (page: {
       data: {
         orders: {
           nodes: page.nodes,
-          pageInfo: {
-            hasNextPage: page.hasNextPage,
-            endCursor: page.endCursor,
-          },
+          pageInfo: { hasNextPage: page.hasNextPage, endCursor: page.endCursor },
         },
       },
     });
@@ -118,29 +98,18 @@ describe("runPollingCycle", () => {
   });
 
   test("a first run with a look-back date queries the historical window", async () => {
-    const sent = mockPage({
-      nodes: [oldOrder],
-      hasNextPage: false,
-      endCursor: "C1",
-    });
+    const sent = mockPage({ nodes: [oldOrder], hasNextPage: false, endCursor: "C1" });
 
     const result = await run({}, "2026-01-01T00:00:00.000Z");
 
-    expect(sent.variables?.query).toContain(
-      "updated_at:>='2026-01-01T00:00:00.000Z'",
-    );
+    expect(sent.variables?.query).toContain("updated_at:>='2026-01-01T00:00:00.000Z'");
     expect(sent.variables?.query).toContain("updated_at:<'");
     expect(sent.variables?.cursor).toBeUndefined();
-    expect(result.payload.body.data).toEqual({
-      created: [],
-      updated: [oldOrder],
-    });
+    expect(result.payload.body.data).toEqual({ created: [], updated: [oldOrder] });
   });
 
   test("a non-final page keeps the committed watermark where it was", async () => {
-    const priorState: PollingState = {
-      lastPolledAt: "2026-08-24T00:00:00.000Z",
-    };
+    const priorState: PollingState = { lastPolledAt: "2026-08-24T00:00:00.000Z" };
     const { context, setState } = createContext(priorState);
     mockPage({ nodes: [newOrder], hasNextPage: true, endCursor: "CURSOR-1" });
 
@@ -155,16 +124,13 @@ describe("runPollingCycle", () => {
     expect(written.lastPolledAt).toBe("2026-08-24T00:00:00.000Z");
     expect(written.cursor?.after).toBe("CURSOR-1");
     expect(written.cursor?.windowStart).toBe("2026-08-24T00:00:00.000Z");
-    expect(
-      (result.payload as { paginationState?: PollingCursor }).paginationState
-        ?.after,
-    ).toBe("CURSOR-1");
+    expect((result.payload as { paginationState?: PollingCursor }).paginationState?.after).toBe(
+      "CURSOR-1",
+    );
   });
 
   test("the final page commits the window end and drops the cursor", async () => {
-    const priorState: PollingState = {
-      lastPolledAt: "2026-08-24T00:00:00.000Z",
-    };
+    const priorState: PollingState = { lastPolledAt: "2026-08-24T00:00:00.000Z" };
     const { context, setState } = createContext(priorState);
     mockPage({ nodes: [newOrder], hasNextPage: false, endCursor: "CURSOR-2" });
 
@@ -178,9 +144,7 @@ describe("runPollingCycle", () => {
     const written = setState.mock.calls[0][0] as PollingState;
     expect(written.cursor).toBeUndefined();
     expect(written.lastPolledAt).not.toBe("2026-08-24T00:00:00.000Z");
-    expect(
-      (result.payload as { paginationState?: PollingCursor }).paginationState,
-    ).toBeUndefined();
+    expect((result.payload as { paginationState?: PollingCursor }).paginationState).toBeUndefined();
   });
 
   test("the first drain persists a usable lower bound even before any watermark is committed", async () => {
@@ -190,10 +154,7 @@ describe("runPollingCycle", () => {
     await runPollingCycle<TestOrder>(
       context,
       defaultTriggerPayload(),
-      {
-        shopifyConnection: connection,
-        lookBackDate: "2026-01-01T00:00:00.000Z",
-      },
+      { shopifyConnection: connection, lookBackDate: "2026-01-01T00:00:00.000Z" },
       ordersResource,
     );
 
@@ -255,15 +216,9 @@ describe("runPollingCycle", () => {
   });
 
   test("classification anchors on the window start, not on the page", async () => {
-    const priorState: PollingState = {
-      lastPolledAt: "2026-08-24T00:00:00.000Z",
-    };
+    const priorState: PollingState = { lastPolledAt: "2026-08-24T00:00:00.000Z" };
     const { context } = createContext(priorState);
-    mockPage({
-      nodes: [oldOrder, newOrder],
-      hasNextPage: false,
-      endCursor: "C3",
-    });
+    mockPage({ nodes: [oldOrder, newOrder], hasNextPage: false, endCursor: "C3" });
 
     const result = await runPollingCycle<TestOrder>(
       context,
@@ -272,9 +227,6 @@ describe("runPollingCycle", () => {
       ordersResource,
     );
 
-    expect(result.payload.body.data).toEqual({
-      created: [newOrder],
-      updated: [oldOrder],
-    });
+    expect(result.payload.body.data).toEqual({ created: [newOrder], updated: [oldOrder] });
   });
 });

@@ -9,14 +9,8 @@ export const listInvoices = action({
     label: "List Invoices",
     description: "Returns a list of invoices for a given location.",
   },
-  perform: async (
-    context,
-    { squareConnection, fetchAll, locationId, pagination = {} },
-  ) => {
-    const client = await createAuthorizedClient(
-      squareConnection,
-      context.debug.enabled,
-    );
+  perform: async (context, { squareConnection, fetchAll, locationId, pagination = {} }) => {
+    const client = await createAuthorizedClient(squareConnection, context.debug.enabled);
 
     const data = await fetchAllPages(
       client,

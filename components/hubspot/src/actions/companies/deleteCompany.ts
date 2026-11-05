@@ -19,9 +19,7 @@ export const deleteCompany = action({
       debugRequest,
     });
 
-    const { data } = await client.delete(
-      hubspotPaths.objects("companies", `/${companyId}`),
-    );
+    const { data } = await client.delete(hubspotPaths.objects("companies", `/${companyId}`));
 
     return { data };
   },

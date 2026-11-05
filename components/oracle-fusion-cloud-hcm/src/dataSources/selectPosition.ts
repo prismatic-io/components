@@ -9,8 +9,7 @@ import { mapToElements } from "../util";
 export const selectPosition = dataSource({
   display: {
     label: "Select Position",
-    description:
-      "Select an approved headcount position from Oracle Fusion Cloud HCM.",
+    description: "Select an approved headcount position from Oracle Fusion Cloud HCM.",
   },
   dataSourceType: "picklist",
   inputs: selectPositionInputs,

@@ -18,22 +18,9 @@ export const createList = action({
   performSafety: "notAllowed",
   perform: async (
     context,
-    {
-      clickUpConnection,
-      folderId,
-      name,
-      content,
-      dueDate,
-      dueDateTime,
-      priority,
-      assigneeInt,
-      status,
-    },
+    { clickUpConnection, folderId, name, content, dueDate, dueDateTime, priority, assigneeInt, status }
   ) => {
-    const client = createClickUpClient(
-      clickUpConnection,
-      context.debug.enabled,
-    );
+    const client = createClickUpClient(clickUpConnection, context.debug.enabled);
     const body: CreateListBody = {
       name,
       ...(content?.length && { content }),

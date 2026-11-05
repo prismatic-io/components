@@ -5,8 +5,7 @@ import { selectRecordTypesWithFieldsInputs } from "../../inputs";
 export const selectRecordTypesWithFields = dataSource({
   display: {
     label: "Select Record Type With Fields",
-    description:
-      "A picklist of available Salesforce Record Types with their associated fields.",
+    description: "A picklist of available Salesforce Record Types with their associated fields.",
   },
   inputs: selectRecordTypesWithFieldsInputs,
   perform: async (
@@ -54,9 +53,7 @@ export const selectRecordTypesWithFields = dataSource({
       .map(async ({ name, label }) => {
         const {
           data: { fields },
-        } = await httpClient.get(
-          `/sobjects/${util.types.toString(name)}/describe/`,
-        );
+        } = await httpClient.get(`/sobjects/${util.types.toString(name)}/describe/`);
 
         return {
           object: { key: name, label },

@@ -116,17 +116,15 @@ describe("lookBackDateClean", () => {
 
   test("invalid format throws", () => {
     expect(() => lookBackDateClean("01-15-2025")).toThrow(
-      "Look-back Date must be a date in YYYY-MM-DD format",
+      "Look-back Date must be a date in YYYY-MM-DD format"
     );
     expect(() => lookBackDateClean("not-a-date")).toThrow(
-      "Look-back Date must be a date in YYYY-MM-DD format",
+      "Look-back Date must be a date in YYYY-MM-DD format"
     );
   });
 
   test("future date throws", () => {
-    expect(() => lookBackDateClean("2099-12-31")).toThrow(
-      "Look-back Date cannot be a future date",
-    );
+    expect(() => lookBackDateClean("2099-12-31")).toThrow("Look-back Date cannot be a future date");
   });
 
   test("falsy value returns undefined", () => {
@@ -137,7 +135,7 @@ describe("lookBackDateClean", () => {
 
   test("impossible calendar date throws", () => {
     expect(() => lookBackDateClean("2024-02-30")).toThrow(
-      "Look-back Date must be a date in YYYY-MM-DD format",
+      "Look-back Date must be a date in YYYY-MM-DD format"
     );
   });
 });

@@ -8,20 +8,10 @@ vi.mock("../client", () => ({
   createV3Client: (...args: unknown[]) => createV3Client(...args),
 }));
 
-type Spy = Mock<
-  (
-    url: string,
-    options?: { params: Record<string, string> },
-  ) => Promise<unknown>
->;
+type Spy = Mock<(url: string, options?: { params: Record<string, string> }) => Promise<unknown>>;
 
 const issue = (id: string, created: string): JiraIssue =>
-  ({
-    id,
-    key: `PROJ-${id}`,
-    self: `https://x/${id}`,
-    fields: { created },
-  }) as unknown as JiraIssue;
+  ({ id, key: `PROJ-${id}`, self: `https://x/${id}`, fields: { created } }) as unknown as JiraIssue;
 
 const createdIssue = issue("1", "2026-06-02T12:00:00.000+0000");
 const updatedIssue = issue("2", "2020-01-01T00:00:00.000+0000");
@@ -30,12 +20,8 @@ describe("pollChangesTrigger batching declaration", () => {
   test("declares opt-in batching with a default batch size and a pagination cursor", () => {
     expect(pollChangesTrigger.triggerResolverSupport).toBe("valid");
     expect(pollChangesTrigger.batchConfig).toEqual({ batchSize: 50 });
-    expect(pollChangesTrigger.triggerResolver?.resolveItems).toBeInstanceOf(
-      Function,
-    );
-    expect(
-      pollChangesTrigger.triggerResolver?.getNextPaginationState,
-    ).toBeInstanceOf(Function);
+    expect(pollChangesTrigger.triggerResolver?.resolveItems).toBeInstanceOf(Function);
+    expect(pollChangesTrigger.triggerResolver?.getNextPaginationState).toBeInstanceOf(Function);
   });
 
   test("offers the Look-back Date directly below the connection", () => {
@@ -50,25 +36,15 @@ describe("pollChangesTrigger batching declaration", () => {
 
   test("getNextPaginationState echoes the round's cursor, or null when there is none", () => {
     const next = pollChangesTrigger.triggerResolver?.getNextPaginationState;
-    const cursor = {
-      nextPageToken: "t",
-      streamStartedAt: "2026-06-02T00:00:00.000Z",
-    };
-    expect(
-      next?.({} as never, { payload: { paginationState: cursor } } as never),
-    ).toEqual(cursor);
+    const cursor = { nextPageToken: "t", streamStartedAt: "2026-06-02T00:00:00.000Z" };
+    expect(next?.({} as never, { payload: { paginationState: cursor } } as never)).toEqual(cursor);
     expect(next?.({} as never, { payload: {} } as never)).toBeNull();
   });
 });
 
 describe("resolveJiraIssueChanges", () => {
   test("tags every issue with how it changed", () => {
-    expect(
-      resolveJiraIssueChanges({
-        created: [createdIssue],
-        updated: [updatedIssue],
-      }),
-    ).toEqual([
+    expect(resolveJiraIssueChanges({ created: [createdIssue], updated: [updatedIssue] })).toEqual([
       { changeType: "created", record: createdIssue },
       { changeType: "updated", record: updatedIssue },
     ]);
@@ -77,12 +53,12 @@ describe("resolveJiraIssueChanges", () => {
   test("tolerates an absent envelope, an empty one, and a single absent array", () => {
     expect(resolveJiraIssueChanges(undefined)).toEqual([]);
     expect(resolveJiraIssueChanges({ created: [], updated: [] })).toEqual([]);
-    expect(
-      resolveJiraIssueChanges({ created: [createdIssue] } as never),
-    ).toEqual([{ changeType: "created", record: createdIssue }]);
-    expect(
-      resolveJiraIssueChanges({ updated: [updatedIssue] } as never),
-    ).toEqual([{ changeType: "updated", record: updatedIssue }]);
+    expect(resolveJiraIssueChanges({ created: [createdIssue] } as never)).toEqual([
+      { changeType: "created", record: createdIssue },
+    ]);
+    expect(resolveJiraIssueChanges({ updated: [updatedIssue] } as never)).toEqual([
+      { changeType: "updated", record: updatedIssue },
+    ]);
   });
 });
 
@@ -91,9 +67,7 @@ describe("triggerResolver.resolveItems", () => {
     const items = pollChangesTrigger.triggerResolver?.resolveItems?.(
       {} as never,
       {
-        payload: {
-          body: { data: { created: [createdIssue], updated: [updatedIssue] } },
-        },
+        payload: { body: { data: { created: [createdIssue], updated: [updatedIssue] } } },
       } as never,
     );
 
@@ -115,15 +89,9 @@ describe("lookBackDateClean", () => {
   });
 
   test("rejects a wrong format, a non-calendar date, and a future date", () => {
-    expect(() => lookBackDateClean("01/01/2026")).toThrow(
-      "Look-back Date must be",
-    );
-    expect(() => lookBackDateClean("2026-02-31")).toThrow(
-      "Look-back Date must be",
-    );
-    expect(() => lookBackDateClean("2999-01-01")).toThrow(
-      "cannot be a future date",
-    );
+    expect(() => lookBackDateClean("01/01/2026")).toThrow("Look-back Date must be");
+    expect(() => lookBackDateClean("2026-02-31")).toThrow("Look-back Date must be");
+    expect(() => lookBackDateClean("2999-01-01")).toThrow("cannot be a future date");
   });
 });
 
@@ -291,10 +259,7 @@ describe("polling state across a multi-round drain", () => {
   });
 
   test("resumes from the round's own cursor, not a stale stored one", async () => {
-    store = {
-      nextPageToken: "stale",
-      lastPolledAt: "2026-06-01T00:00:00.000Z",
-    };
+    store = { nextPageToken: "stale", lastPolledAt: "2026-06-01T00:00:00.000Z" };
     get.mockResolvedValue(page([updatedIssue]));
     await run(true, {
       nextPageToken: "fresh",
@@ -326,10 +291,7 @@ describe("polling state across a multi-round drain", () => {
       showNewIssues: false,
       showUpdatedIssues: false,
     });
-    expect(result.payload.body.data).toEqual({
-      created: [createdIssue],
-      updated: [updatedIssue],
-    });
+    expect(result.payload.body.data).toEqual({ created: [createdIssue], updated: [updatedIssue] });
     expect(store.backfillActive).toBeUndefined();
   });
 
@@ -345,17 +307,12 @@ describe("polling state across a multi-round drain", () => {
         created: [createdIssue],
         updated: [updatedIssue],
       });
-      expect(get.mock.calls[0][1].params.jql).toBe(
-        'updated >= "2026/06/01 00:00"',
-      );
+      expect(get.mock.calls[0][1].params.jql).toBe('updated >= "2026/06/01 00:00"');
     });
 
     test("hides new issues when only Show New Issues is off", async () => {
       const result = await run(false, undefined, { showNewIssues: false });
-      expect(result.payload.body.data).toEqual({
-        created: [],
-        updated: [updatedIssue],
-      });
+      expect(result.payload.body.data).toEqual({ created: [], updated: [updatedIssue] });
     });
 
     test("never calls Jira when both toggles are off", async () => {
@@ -381,25 +338,17 @@ describe("polling state across a multi-round drain", () => {
 
 describe("toJqlDate", () => {
   test("formats the instant in the given IANA zone, floored to the minute", () => {
-    expect(toJqlDate("2026-01-15T15:30:45Z", "America/Chicago")).toBe(
-      "2026/01/15 09:30",
-    );
+    expect(toJqlDate("2026-01-15T15:30:45Z", "America/Chicago")).toBe("2026/01/15 09:30");
     expect(toJqlDate("2026-01-15T15:30:45Z", "UTC")).toBe("2026/01/15 15:30");
-    expect(toJqlDate("2026-01-15T15:30:45Z", "Asia/Kolkata")).toBe(
-      "2026/01/15 21:00",
-    );
+    expect(toJqlDate("2026-01-15T15:30:45Z", "Asia/Kolkata")).toBe("2026/01/15 21:00");
   });
 
   test("honors daylight saving time", () => {
-    expect(toJqlDate("2026-07-15T15:30:00Z", "America/Chicago")).toBe(
-      "2026/07/15 10:30",
-    );
+    expect(toJqlDate("2026-07-15T15:30:00Z", "America/Chicago")).toBe("2026/07/15 10:30");
   });
 
   test("renders midnight as 00, not 24", () => {
-    expect(toJqlDate("2026-01-15T06:00:00Z", "America/Chicago")).toBe(
-      "2026/01/15 00:00",
-    );
+    expect(toJqlDate("2026-01-15T06:00:00Z", "America/Chicago")).toBe("2026/01/15 00:00");
   });
 });
 
@@ -438,13 +387,9 @@ describe("account time zone in the JQL literal", () => {
 
   beforeEach(() => {
     store = { lastPolledAt: "2026-01-15T15:30:45.000Z" };
-    get = vi
-      .fn()
-      .mockResolvedValue({ data: { issues: [], nextPageToken: undefined } });
+    get = vi.fn().mockResolvedValue({ data: { issues: [], nextPageToken: undefined } });
     warn = vi.fn();
-    myself = vi
-      .fn()
-      .mockResolvedValue({ data: { timeZone: "America/Chicago" } });
+    myself = vi.fn().mockResolvedValue({ data: { timeZone: "America/Chicago" } });
     createV3Client.mockResolvedValue({
       get: (url: string, options?: { params: Record<string, string> }) =>
         url === "/myself" ? myself(url, options) : get(url, options),
@@ -454,9 +399,7 @@ describe("account time zone in the JQL literal", () => {
   test("a stream-starting round reads /myself once and searches in the account zone", async () => {
     await run();
     expect(myself).toHaveBeenCalledTimes(1);
-    expect(get.mock.calls[0][1].params.jql).toBe(
-      'updated >= "2026/01/15 09:30"',
-    );
+    expect(get.mock.calls[0][1].params.jql).toBe('updated >= "2026/01/15 09:30"');
     expect(warn).not.toHaveBeenCalled();
   });
 
@@ -481,9 +424,7 @@ describe("account time zone in the JQL literal", () => {
       timeZone: "Asia/Kolkata",
     });
     expect(myself).not.toHaveBeenCalled();
-    expect(get.mock.calls[0][1].params.jql).toBe(
-      'updated >= "2026/01/15 21:00"',
-    );
+    expect(get.mock.calls[0][1].params.jql).toBe('updated >= "2026/01/15 21:00"');
   });
 
   test("a resumed round from stored state reuses the stored zone", async () => {
@@ -495,20 +436,13 @@ describe("account time zone in the JQL literal", () => {
     };
     await run();
     expect(myself).not.toHaveBeenCalled();
-    expect(get.mock.calls[0][1].params.jql).toBe(
-      'updated >= "2026/01/15 21:00"',
-    );
+    expect(get.mock.calls[0][1].params.jql).toBe('updated >= "2026/01/15 21:00"');
   });
 
   test("a held token without a zone (older state) keeps the UTC literal it was issued for", async () => {
-    await run({
-      nextPageToken: "t",
-      streamStartedAt: "2026-01-15T16:00:00.000Z",
-    });
+    await run({ nextPageToken: "t", streamStartedAt: "2026-01-15T16:00:00.000Z" });
     expect(myself).not.toHaveBeenCalled();
-    expect(get.mock.calls[0][1].params.jql).toBe(
-      'updated >= "2026/01/15 15:30"',
-    );
+    expect(get.mock.calls[0][1].params.jql).toBe('updated >= "2026/01/15 15:30"');
   });
 
   test.each([
@@ -518,9 +452,7 @@ describe("account time zone in the JQL literal", () => {
   ])("a %s timeZone falls back to UTC with one warning", async (_name, data) => {
     myself.mockResolvedValue({ data });
     await run();
-    expect(get.mock.calls[0][1].params.jql).toBe(
-      'updated >= "2026/01/15 15:30"',
-    );
+    expect(get.mock.calls[0][1].params.jql).toBe('updated >= "2026/01/15 15:30"');
     expect(warn).toHaveBeenCalledTimes(1);
     expect(warn.mock.calls[0][0]).toContain("UTC");
   });

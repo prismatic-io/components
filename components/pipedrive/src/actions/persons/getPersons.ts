@@ -15,20 +15,9 @@ export const getPersons = action({
   performSafety: "notAllowed",
   perform: async (
     context,
-    {
-      connection,
-      filterId,
-      pagination: { limit, cursor } = {},
-      sortBy,
-      sortDirection,
-      fetchAll,
-    },
+    { connection, filterId, pagination: { limit, cursor } = {}, sortBy, sortDirection, fetchAll },
   ) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      WebhookVersion.V2,
-    );
+    const client = createClient(connection, context.debug.enabled, WebhookVersion.V2);
 
     const data = await paginateRecordsWithCursor<Person>(
       client,
@@ -46,8 +35,5 @@ export const getPersons = action({
   },
   inputs: getPersonsInputs,
   examplePayload: getPersonsExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getPersonsOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getPersonsOutputSchema }),
 });

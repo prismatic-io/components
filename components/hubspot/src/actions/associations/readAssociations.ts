@@ -9,8 +9,7 @@ import { mapReadAssociations } from "../../util";
 export const readAssociations = action({
   display: {
     label: "Read Association",
-    description:
-      "Get the Ids of the objects associated with those specified in the step.",
+    description: "Get the Ids of the objects associated with those specified in the step.",
   },
   performSafety: "safe",
   perform: async (
@@ -39,8 +38,5 @@ export const readAssociations = action({
   },
   inputs: readAssociationsInputs,
   examplePayload: readAssociationsExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: readAssociationsOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: readAssociationsOutputSchema }),
 });

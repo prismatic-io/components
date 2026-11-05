@@ -28,9 +28,6 @@ export const getInventoryItemsGql = action({
     };
   },
   inputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getInventoryItemsGqlOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getInventoryItemsGqlOutputSchema }),
   examplePayload,
 });

@@ -26,8 +26,7 @@ export const updateMetadata = action({
 
     return { data: result };
   },
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    updateMetadataExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => updateMetadataExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: saveMetadataOutputSchema,

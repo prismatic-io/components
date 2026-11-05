@@ -1,12 +1,6 @@
 import { type InputFieldChoice, input, util } from "@prismatic-io/spectral";
 import { listTimeZones } from "timezone-support";
-import {
-  connectionInput,
-  dynamicValues,
-  fieldValues,
-  listInputs,
-  version,
-} from "./common";
+import { connectionInput, dynamicValues, fieldValues, listInputs, version } from "./common";
 import { email, firstName, lastName } from "./fields";
 
 const profile = input({
@@ -36,8 +30,7 @@ const permissionName = input({
   type: "string",
   required: true,
   placeholder: "Enter permission set name",
-  comments:
-    "The name of the Salesforce Permission Set to assign to or remove from the user.",
+  comments: "The name of the Salesforce Permission Set to assign to or remove from the user.",
   example: "Standard User",
   clean: util.types.toString,
 });
@@ -47,8 +40,7 @@ const alias = input({
   type: "string",
   required: true,
   placeholder: "Enter alias",
-  comments:
-    "A short identifier for the Salesforce user, typically used in reports and list views.",
+  comments: "A short identifier for the Salesforce user, typically used in reports and list views.",
   example: "JD",
   clean: util.types.toString,
 });
@@ -62,8 +54,7 @@ const timeZone = input({
   type: "string",
   required: true,
   placeholder: "Select time zone",
-  comments:
-    "The time zone for the user. Uses IANA format (e.g., America/New_York).",
+  comments: "The time zone for the user. Uses IANA format (e.g., America/New_York).",
   model: timeZones,
   clean: util.types.toString,
 });

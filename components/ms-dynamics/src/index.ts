@@ -11,8 +11,7 @@ export default component({
   documentationUrl: "https://prismatic.io/docs/components/ms-dynamics/",
   display: {
     label: "Microsoft Dynamics 365",
-    description:
-      "Query, create, update, or delete Microsoft Dynamics 365 entity records.",
+    description: "Query, create, update, or delete Microsoft Dynamics 365 entity records.",
     iconPath: "icon.png",
     category: "Application Connectors",
   },

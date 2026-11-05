@@ -13,12 +13,7 @@ export const selectDraftOrders = dataSource({
     description: "Selects a draft order from a list of all draft orders.",
   },
   perform: async (context, { shopifyConnection }) => {
-    const client = getShopifyGraphQlClient(
-      shopifyConnection,
-      undefined,
-      false,
-      context.logger,
-    );
+    const client = getShopifyGraphQlClient(shopifyConnection, undefined, false, context.logger);
 
     const { draftOrders } = await fetchData<DataSourceRecord>(
       client,

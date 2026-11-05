@@ -1,14 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanStringArray } from "../util";
-import {
-  connectionInput,
-  getFolderId,
-  getlistId,
-  getSpaceId,
-  getStatus,
-  getTaskId,
-  getTeamId,
-} from "./common";
+import { connectionInput, getFolderId, getlistId, getSpaceId, getStatus, getTaskId, getTeamId } from "./common";
 
 const getWebhookId = (required: boolean, comments: string) =>
   input({
@@ -46,8 +38,7 @@ const events = input({
 const allEvents = input({
   label: "All Events",
   type: "boolean",
-  comments:
-    "When true, subscribes to all events and overrides the event inputs.",
+  comments: "When true, subscribes to all events and overrides the event inputs.",
   required: false,
   default: "false",
   clean: util.types.toBool,

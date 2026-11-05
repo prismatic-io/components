@@ -17,31 +17,16 @@ export const getSingularTimeEntry = action({
   }),
   examplePayload: getSingularTimeEntryExamplePayload,
   performSafety: "safe",
-  perform: async (
-    context,
-    {
-      clickUpConnection,
-      teamId,
-      timerId,
-      includeTaskTags,
-      includeLocationNames,
-    },
-  ) => {
-    const client = createClickUpClient(
-      clickUpConnection,
-      context.debug.enabled,
-    );
+  perform: async (context, { clickUpConnection, teamId, timerId, includeTaskTags, includeLocationNames }) => {
+    const client = createClickUpClient(clickUpConnection, context.debug.enabled);
     const queryParams: SingularTimeEntryQueryParams = addToObjectIfContent({
       include_task_tags: booleanToString(includeTaskTags),
       include_location_names: booleanToString(includeLocationNames),
     });
 
-    const { data } = await client.get(
-      `/team/${teamId}/time_entries/${timerId}`,
-      {
-        params: queryParams,
-      },
-    );
+    const { data } = await client.get(`/team/${teamId}/time_entries/${timerId}`, {
+      params: queryParams,
+    });
 
     return {
       data,

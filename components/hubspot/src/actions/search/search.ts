@@ -7,8 +7,7 @@ import { searchPerform } from "../../util";
 export const search = action({
   display: {
     label: "Search Records",
-    description:
-      "Filter, sort, and search objects, records, and engagements across the CRM.",
+    description: "Filter, sort, and search objects, records, and engagements across the CRM.",
   },
   performSafety: "notAllowed",
   perform: async (
@@ -38,8 +37,5 @@ export const search = action({
     data: searchExamplePayload.data,
   }),
   examplePayload: searchExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: searchResponseSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: searchResponseSchema }),
 });

@@ -8,14 +8,11 @@ beforeAll(() => nock.disableNetConnect());
 afterAll(() => nock.enableNetConnect());
 afterEach(() => nock.cleanAll());
 
-const run = () =>
-  invoke(getBoard, { jiraConnection: basicConnection(), boardId: "84" });
+const run = () => invoke(getBoard, { jiraConnection: basicConnection(), boardId: "84" });
 
 describe("getBoard", () => {
   test("fetches the board from the Agile API", async () => {
-    const scope = jiraApi()
-      .get("/rest/agile/1.0/board/84")
-      .reply(200, getBoardExamplePayload.data);
+    const scope = jiraApi().get("/rest/agile/1.0/board/84").reply(200, getBoardExamplePayload.data);
 
     const { result } = await run();
 

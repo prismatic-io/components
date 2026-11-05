@@ -12,19 +12,12 @@ export const getDeal = action({
   },
   performSafety: "safe",
   perform: async (context, { connection, id }) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      WebhookVersion.V2,
-    );
+    const client = createClient(connection, context.debug.enabled, WebhookVersion.V2);
     const { data } = await client.get(`/deals/${id}`);
     return { data };
   },
   inputs: getDealInputs,
   examplePayload: getDealExamplePayload,
   examplePerform: async () => getDealExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getDealOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getDealOutputSchema }),
 });

@@ -1,7 +1,4 @@
-import {
-  createConnection,
-  ComponentTestHarness,
-} from "@prismatic-io/spectral/dist/testing";
+import { createConnection, ComponentTestHarness } from "@prismatic-io/spectral/dist/testing";
 import component from ".";
 import { amqpConnection } from "./connections";
 
@@ -31,9 +28,7 @@ describe("Create client & establish connection", () => {
     const result = await harness.action("checkConnection", {
       amqpConnection: connection,
     });
-    expect((result.data as CheckConnectionResult).product).toStrictEqual(
-      "RabbitMQ",
-    );
+    expect((result.data as CheckConnectionResult).product).toStrictEqual("RabbitMQ");
   });
 
   it("sends a message", async () => {

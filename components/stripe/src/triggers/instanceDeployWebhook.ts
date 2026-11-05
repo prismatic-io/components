@@ -15,14 +15,8 @@ export const instanceDeployWebhook = trigger({
     description:
       "Receive event notifications from Stripe. Automatically creates and manages a webhook subscription for the selected events when the instance is deployed, and removes the subscription when the instance is deleted. Incoming webhook signatures are validated by default.",
   },
-  perform: async (
-    context,
-    payload,
-    { connection, disableWebhookValidation, webhookSecret },
-  ) => {
-    const createdWebhook = context.crossFlowState[context.flow.name] as
-      | CreatedWebhook
-      | undefined;
+  perform: async (context, payload, { connection, disableWebhookValidation, webhookSecret }) => {
+    const createdWebhook = context.crossFlowState[context.flow.name] as CreatedWebhook | undefined;
     const client = createStripeClient({
       stripeConnection: connection,
       timeout: 5000,
@@ -36,16 +30,9 @@ export const instanceDeployWebhook = trigger({
         );
       }
 
-      const sig = getStripeHeaderSignature(
-        util.types.lowerCaseHeaders(payload.headers),
-      );
+      const sig = getStripeHeaderSignature(util.types.lowerCaseHeaders(payload.headers));
 
-      validateTrigger(
-        client,
-        payload.rawBody.data as string,
-        sig,
-        signingSecret,
-      );
+      validateTrigger(client, payload.rawBody.data as string, sig, signingSecret);
     }
 
     return Promise.resolve({

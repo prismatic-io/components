@@ -12,11 +12,7 @@ export const getPurchaseInvoice = action({
   },
   inputs: getPurchaseInvoiceInputs,
   perform: async (context, { connection, purchaseInvoiceId, companyId }) => {
-    const client = getMsBusinessCentralClient(
-      connection,
-      context,
-      context.debug.enabled,
-    );
+    const client = getMsBusinessCentralClient(connection, context, context.debug.enabled);
     const { data } = await client.get<PurchaseInvoice>(
       `/companies(${companyId})/purchaseInvoices(${purchaseInvoiceId})`,
     );

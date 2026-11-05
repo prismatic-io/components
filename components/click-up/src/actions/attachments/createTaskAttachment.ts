@@ -17,10 +17,7 @@ export const createTaskAttachment = action({
   }),
   examplePayload: createTaskAttachmentExamplePayload,
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { connection, taskId, customTaskIds, teamId, file, fileName },
-  ) => {
+  perform: async (context, { connection, taskId, customTaskIds, teamId, file, fileName }) => {
     const client = createClickUpClient(connection, context.debug.enabled);
     const formData = new FormData();
     formData.append("attachment", file.data, { filename: fileName });
@@ -28,14 +25,10 @@ export const createTaskAttachment = action({
       custom_task_ids: customTaskIds,
     };
     if (teamId?.length) params.team_id = teamId;
-    const { data } = await client.post(
-      `/task/${taskId}/attachment`,
-      formData.getBuffer(),
-      {
-        params,
-        headers: formData.getHeaders(),
-      },
-    );
+    const { data } = await client.post(`/task/${taskId}/attachment`, formData.getBuffer(), {
+      params,
+      headers: formData.getHeaders(),
+    });
 
     return {
       data,

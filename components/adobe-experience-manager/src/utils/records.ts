@@ -1,15 +1,10 @@
 import { util } from "@prismatic-io/spectral";
-import type {
-  AemContentRecord,
-  AssetSearchHit,
-  ContentFragment,
-} from "../types";
+import type { AemContentRecord, AssetSearchHit, ContentFragment } from "../types";
 
 export const toPublishUrl = (
   publishBaseUrl: string | undefined,
   path: string | null,
-): string | null =>
-  publishBaseUrl && path ? `${publishBaseUrl}${path}` : null;
+): string | null => (publishBaseUrl && path ? `${publishBaseUrl}${path}` : null);
 
 export const toContentFragmentRecord = (
   fragment: ContentFragment,
@@ -41,25 +36,18 @@ export const toAssetRecord = (
   const repo = hit.repositoryMetadata ?? {};
   const meta = hit.assetMetadata ?? {};
   const path = repo["repo:path"] ?? null;
-  const keywords = Array.isArray(meta["xcm:keywords"])
-    ? meta["xcm:keywords"]
-    : [];
+  const keywords = Array.isArray(meta["xcm:keywords"]) ? meta["xcm:keywords"] : [];
   return {
     resourceType: "asset",
     id: hit.assetId,
     path,
     url: toPublishUrl(publishBaseUrl, path),
-    title:
-      typeof meta["dc:title"] === "string"
-        ? meta["dc:title"]
-        : (repo["repo:name"] ?? null),
+    title: typeof meta["dc:title"] === "string" ? meta["dc:title"] : (repo["repo:name"] ?? null),
     tags: keywords.map((keyword) => {
       const entry = keyword as { tagId?: string; value?: string };
       return {
         id: entry.tagId ?? entry.value ?? util.types.toString(keyword),
-        title: entry.value
-          ? (entry.value.split(/\s*[/:]\s*/).pop() ?? null)
-          : null,
+        title: entry.value ? (entry.value.split(/\s*[/:]\s*/).pop() ?? null) : null,
         titlePath: entry.value ?? null,
       };
     }),

@@ -24,8 +24,7 @@ export const listContentFragmentsOutputSchema = {
   required: ["items"],
 };
 
-export const searchContentFragmentsOutputSchema =
-  listContentFragmentsOutputSchema;
+export const searchContentFragmentsOutputSchema = listContentFragmentsOutputSchema;
 
 export const getContentFragmentOutputSchema = contentFragmentSchema;
 

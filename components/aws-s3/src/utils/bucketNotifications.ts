@@ -22,11 +22,7 @@ const parseConfigurationValue = (value: unknown): unknown => {
   return typeof value === "string" ? JSON.parse(value) : value;
 };
 
-const parseConfigurationArray = <T>(
-  value: unknown,
-  label: string,
-  example: unknown,
-): T[] => {
+const parseConfigurationArray = <T>(value: unknown, label: string, example: unknown): T[] => {
   const parsed = parseConfigurationValue(value);
   if (parsed === undefined) return undefined;
   if (!Array.isArray(parsed))
@@ -36,18 +32,14 @@ const parseConfigurationArray = <T>(
   return parsed;
 };
 
-export const getTopicConfigurations = (
-  topicConfigurations: unknown,
-): TopicConfiguration[] =>
+export const getTopicConfigurations = (topicConfigurations: unknown): TopicConfiguration[] =>
   parseConfigurationArray(
     topicConfigurations,
     "Topic configurations",
     TOPIC_CONFIGURATIONS_EXAMPLE,
   );
 
-export const getQueueConfigurations = (
-  queueConfigurations: unknown,
-): QueueConfiguration[] =>
+export const getQueueConfigurations = (queueConfigurations: unknown): QueueConfiguration[] =>
   parseConfigurationArray(
     queueConfigurations,
     "Queue configurations",
@@ -80,16 +72,14 @@ export const getBucketNotificationConfiguration = async (
       ExpectedBucketOwner: bucketOwnerAccountid,
     };
 
-  const getBucketNotificationConfigurationCommand =
-    new GetBucketNotificationConfigurationCommand(
-      getBucketNotificationConfigurationCommandInput,
-    );
+  const getBucketNotificationConfigurationCommand = new GetBucketNotificationConfigurationCommand(
+    getBucketNotificationConfigurationCommandInput,
+  );
   const getBucketNotificationConfigurationCommandOutput = await s3Client.send(
     getBucketNotificationConfigurationCommand,
   );
 
-  if (removeMetadata)
-    getBucketNotificationConfigurationCommandOutput.$metadata = undefined;
+  if (removeMetadata) getBucketNotificationConfigurationCommandOutput.$metadata = undefined;
 
   return getBucketNotificationConfigurationCommandOutput;
 };
@@ -105,10 +95,9 @@ export const putBucketNotificationConfiguration = async (
       NotificationConfiguration: notificationConfiguration,
       SkipDestinationValidation: true,
     };
-  const putBucketNotificationConfigurationCommand =
-    new PutBucketNotificationConfigurationCommand(
-      putBucketNotificationConfigurationCommandInput,
-    );
+  const putBucketNotificationConfigurationCommand = new PutBucketNotificationConfigurationCommand(
+    putBucketNotificationConfigurationCommandInput,
+  );
   const putBucketNotificationConfigurationCommandOutput = await s3Client.send(
     putBucketNotificationConfigurationCommand,
   );
@@ -132,29 +121,21 @@ export const processTopicConfiguration = async (
     notificationConfiguration.TopicConfigurations = [];
 
   let existingTopicConfigurationIndex = -1;
-  notificationConfiguration.TopicConfigurations.find(
-    (topicConfiguration, index) => {
-      const topicConfigurationIdEqualsEventNotificationName =
-        topicConfiguration.Id === eventNotificationName;
+  notificationConfiguration.TopicConfigurations.find((topicConfiguration, index) => {
+    const topicConfigurationIdEqualsEventNotificationName =
+      topicConfiguration.Id === eventNotificationName;
 
-      if (topicConfigurationIdEqualsEventNotificationName)
-        existingTopicConfigurationIndex = index;
+    if (topicConfigurationIdEqualsEventNotificationName) existingTopicConfigurationIndex = index;
 
-      return topicConfigurationIdEqualsEventNotificationName;
-    },
-  );
+    return topicConfigurationIdEqualsEventNotificationName;
+  });
 
   if (existingTopicConfigurationIndex === -1) {
     notificationConfiguration.TopicConfigurations.push(topicConfiguration);
   } else {
-    notificationConfiguration.TopicConfigurations[
-      existingTopicConfigurationIndex
-    ] = topicConfiguration;
+    notificationConfiguration.TopicConfigurations[existingTopicConfigurationIndex] =
+      topicConfiguration;
   }
 
-  return await putBucketNotificationConfiguration(
-    s3Client,
-    bucket,
-    notificationConfiguration,
-  );
+  return await putBucketNotificationConfiguration(s3Client, bucket, notificationConfiguration);
 };

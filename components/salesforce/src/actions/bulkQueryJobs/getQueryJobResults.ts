@@ -17,22 +17,18 @@ export const getQueryJobResults = action({
       connection,
       context.debug.enabled,
     );
-    const { data } = await salesforceClient.get(
-      `/jobs/query/${queryJobId}/results`,
-      {
-        headers: { Accept: "text/csv" },
-        params: {
-          locator: pagination.locator,
-          maxRecords: pagination.maxRecords || undefined,
-        },
+    const { data } = await salesforceClient.get(`/jobs/query/${queryJobId}/results`, {
+      headers: { Accept: "text/csv" },
+      params: {
+        locator: pagination.locator,
+        maxRecords: pagination.maxRecords || undefined,
       },
-    );
+    });
     return {
       data,
     };
   },
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    getQueryJobResultsExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => getQueryJobResultsExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: getQueryJobResultsOutputSchema,

@@ -4,27 +4,20 @@ import { createCustomObject } from "./createCustomObject";
 
 vi.mock("../../client");
 
-const mockedGetHubspotClient = getHubspotClient as MockedFunction<
-  typeof getHubspotClient
->;
+const mockedGetHubspotClient = getHubspotClient as MockedFunction<typeof getHubspotClient>;
 
 const context = { debug: { enabled: false } } as never;
 
 const baseParams = (overrides: Record<string, unknown> = {}) =>
   ({
-    hubspotConnection: {
-      key: "privateAppAccessToken",
-      fields: { accessToken: "t" },
-    },
+    hubspotConnection: { key: "privateAppAccessToken", fields: { accessToken: "t" } },
     timeout: undefined,
     singularLabel: "Equipment",
     pluralLabel: "Equipments",
     requiredProperties: ["name"],
     searchableProperties: ["name"],
     secondaryDisplayProperties: [],
-    properties: [
-      { name: "name", label: "Name", type: "string", fieldType: "text" },
-    ],
+    properties: [{ name: "name", label: "Name", type: "string", fieldType: "text" }],
     associatedObjects: ["CONTACT"],
     name: "equipment",
     fieldValues: {},
@@ -47,25 +40,18 @@ describe("createCustomObject", () => {
 
     expect(post).toHaveBeenCalledWith(
       "/crm-object-schemas/2026-09/schemas",
-      expect.objectContaining({
-        name: "equipment",
-        allowsSensitiveProperties: false,
-      }),
+      expect.objectContaining({ name: "equipment", allowsSensitiveProperties: false }),
     );
   });
 
   test("lets a value supplied in fieldValues win over the default", async () => {
-    const post = await run({
-      fieldValues: { allowsSensitiveProperties: true },
-    });
+    const post = await run({ fieldValues: { allowsSensitiveProperties: true } });
 
     expect(post.mock.calls[0][1].allowsSensitiveProperties).toBe(true);
   });
 
   test("lets a value supplied in dynamicValues win over the default", async () => {
-    const post = await run({
-      dynamicValues: { allowsSensitiveProperties: true },
-    });
+    const post = await run({ dynamicValues: { allowsSensitiveProperties: true } });
 
     expect(post.mock.calls[0][1].allowsSensitiveProperties).toBe(true);
   });

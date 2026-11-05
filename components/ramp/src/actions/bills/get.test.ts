@@ -1,11 +1,6 @@
 import { invoke } from "@prismatic-io/spectral/testing";
 import { getBillResponse } from "../../examplePayloads/bills";
-import {
-  apiPath,
-  rampNock,
-  resetNock,
-  testConnection,
-} from "../../testHarness";
+import { apiPath, rampNock, resetNock, testConnection } from "../../testHarness";
 import { getBill } from "./get";
 
 const BILL_ID = "6e3816e3-0e53-42ae-b075-bdb0adff10c4";

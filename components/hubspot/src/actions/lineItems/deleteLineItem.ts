@@ -18,9 +18,7 @@ export const deleteLineItem = action({
       debugRequest,
     });
 
-    const { data } = await client.delete(
-      hubspotPaths.objects("line_items", `/${lineItemId}`),
-    );
+    const { data } = await client.delete(hubspotPaths.objects("line_items", `/${lineItemId}`));
 
     return { data };
   },

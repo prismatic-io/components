@@ -16,11 +16,7 @@ describe("selectWebhook (basic auth)", () => {
       .get("/rest/webhooks/1.0/webhook")
       .reply(200, [
         ...listWebhooksExamplePayload.data.values,
-        {
-          ...listWebhooksExamplePayload.data.values[0],
-          id: 2,
-          events: ["a", "b"],
-        },
+        { ...listWebhooksExamplePayload.data.values[0], id: 2, events: ["a", "b"] },
       ]);
 
     const { result } = await invokeDataSource(selectWebhook, {

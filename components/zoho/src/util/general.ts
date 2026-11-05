@@ -1,9 +1,4 @@
-import {
-  type Connection,
-  ConnectionError,
-  type KeyValuePair,
-  util,
-} from "@prismatic-io/spectral";
+import { type Connection, ConnectionError, type KeyValuePair, util } from "@prismatic-io/spectral";
 import connections from "../connections";
 import { LOOK_BACK_DATE_PATTERN } from "../constants";
 import type {
@@ -17,9 +12,7 @@ import type {
 export const cleanKeyValList = (values: unknown) =>
   util.types.keyValPairListToObject(values as KeyValuePair<unknown>[]);
 
-export const validateConnection = (
-  connection: Connection,
-): connection is Connection => {
+export const validateConnection = (connection: Connection): connection is Connection => {
   if (!connections.map((c) => c.key).includes(connection.key)) {
     throw new ConnectionError(
       connection,
@@ -51,15 +44,8 @@ export const getBooksUrl = (
   return url;
 };
 
-export const fillNotificationsBody = (
-  params: NotificationsBody,
-  watchConfig: WatchConfig,
-) => {
-  if (
-    params.events &&
-    Array.isArray(params.events) &&
-    params.events.length > 0
-  ) {
+export const fillNotificationsBody = (params: NotificationsBody, watchConfig: WatchConfig) => {
+  if (params.events && Array.isArray(params.events) && params.events.length > 0) {
     watchConfig.events = params.events;
   }
 
@@ -93,9 +79,7 @@ export const fillNotificationsBody = (
 };
 
 export const getCrmRecordLabel = (record: CRMRecord): string => {
-  return (
-    record.Full_Name || record.Name || record.Subject || record.id || "Unknown"
-  );
+  return record.Full_Name || record.Name || record.Subject || record.id || "Unknown";
 };
 
 export const getBooksRecordLabel = (record: BookRecord): string => {
@@ -109,16 +93,12 @@ export const getBooksRecordLabel = (record: BookRecord): string => {
   );
 };
 
-export const getNotificationChannelLabel = (
-  channel: NotificationChannel,
-): string => {
+export const getNotificationChannelLabel = (channel: NotificationChannel): string => {
   const events = channel.events?.join(", ") || "No events";
   return `Channel ${channel.channel_id} (${events})`;
 };
 
-export const getBooksRecordIdField = (
-  record: BookRecord,
-): string | undefined => {
+export const getBooksRecordIdField = (record: BookRecord): string | undefined => {
   const idField = Object.keys(record).find((key) => key.endsWith("_id"));
 
   if (!idField && "id" in record) {
@@ -141,21 +121,14 @@ export const toZohoTimestamp = (iso: string): string => {
 };
 
 export const lookBackDateClean = (value: unknown): string => {
-  if (
-    value === undefined ||
-    value === null ||
-    (typeof value === "string" && value.trim() === "")
-  ) {
+  if (value === undefined || value === null || (typeof value === "string" && value.trim() === "")) {
     return "";
   }
 
   const raw = typeof value === "string" ? value.trim() : String(value);
-  const match =
-    typeof value === "string" ? raw.match(LOOK_BACK_DATE_PATTERN) : null;
+  const match = typeof value === "string" ? raw.match(LOOK_BACK_DATE_PATTERN) : null;
   if (!match) {
-    throw new Error(
-      `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
-    );
+    throw new Error(`Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`);
   }
 
   const [, yearStr, monthStr, dayStr] = match;
@@ -168,9 +141,7 @@ export const lookBackDateClean = (value: unknown): string => {
     parsed.getUTCMonth() !== month - 1 ||
     parsed.getUTCDate() !== day
   ) {
-    throw new Error(
-      `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
-    );
+    throw new Error(`Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`);
   }
 
   if (parsed.getTime() > Date.now()) {

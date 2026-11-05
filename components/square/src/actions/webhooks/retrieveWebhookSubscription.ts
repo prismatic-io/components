@@ -9,14 +9,9 @@ export const retrieveWebhookSubscription = action({
     description: "Retrieves a webhook subscription identified by its ID.",
   },
   perform: async (context, { squareConnection, subscriptionId }) => {
-    const client = await createAuthorizedClient(
-      squareConnection,
-      context.debug.enabled,
-    );
+    const client = await createAuthorizedClient(squareConnection, context.debug.enabled);
 
-    const response = await client.get(
-      `/v2/webhooks/subscriptions/${subscriptionId}`,
-    );
+    const response = await client.get(`/v2/webhooks/subscriptions/${subscriptionId}`);
 
     return {
       data: response.data,

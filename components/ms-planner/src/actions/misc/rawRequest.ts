@@ -25,9 +25,7 @@ export const rawRequest = action({
           ...params.headers,
         ],
       },
-      {
-        Authorization: `Bearer ${util.types.toString(connection.token?.access_token)}`,
-      },
+      { Authorization: `Bearer ${util.types.toString(connection.token?.access_token)}` },
     );
     return { data };
   },

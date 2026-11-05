@@ -12,18 +12,11 @@ export const deletePipeline = action({
   },
   performSafety: "notAllowed",
   perform: async (context, { connection, id }) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      WebhookVersion.V2,
-    );
+    const client = createClient(connection, context.debug.enabled, WebhookVersion.V2);
     const { data } = await client.delete(`/pipelines/${id}`);
     return { data };
   },
   inputs: deletePipelineInputs,
   examplePayload: deletePipelineExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: deletePipelineOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: deletePipelineOutputSchema }),
 });

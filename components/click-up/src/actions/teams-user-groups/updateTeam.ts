@@ -3,16 +3,12 @@ import { createClickUpClient } from "../../client";
 import { updateTeamExamplePayload } from "../../examplePayloads";
 import { updateTeamInputs } from "../../inputs";
 import { updateTeamOutputSchema } from "../../outputSchemas";
-import type {
-  UpdateTeamBody as Body,
-  UpdateTeamMembers as Members,
-} from "../../types";
+import type { UpdateTeamBody as Body, UpdateTeamMembers as Members } from "../../types";
 
 export const updateTeam = action({
   display: {
     label: "Update Team",
-    description:
-      "Update a user group (Team) of users that can be assigned to items in a workspace.",
+    description: "Update a user group (Team) of users that can be assigned to items in a workspace.",
   },
   outputSchema: outputSchema({
     type: "actionOutput",
@@ -20,21 +16,8 @@ export const updateTeam = action({
   }),
   examplePayload: updateTeamExamplePayload,
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    {
-      clickUpConnection,
-      groupId,
-      teamName,
-      teamHandle,
-      addMember,
-      removeMember,
-    },
-  ) => {
-    const client = createClickUpClient(
-      clickUpConnection,
-      context.debug.enabled,
-    );
+  perform: async (context, { clickUpConnection, groupId, teamName, teamHandle, addMember, removeMember }) => {
+    const client = createClickUpClient(clickUpConnection, context.debug.enabled);
     const body: Body = {};
 
     if (teamName?.length) body.name = teamName;

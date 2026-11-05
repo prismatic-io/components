@@ -14,16 +14,11 @@ export const selectPosition = dataSource({
   dataSourceType: "picklist",
   perform: async (_context, { connection, companyId }) => {
     const client = createBasicAuthClient(connection);
-    const positions = await fetchAllPages<EmployeePosition>(
-      client,
-      "/configuration/v1/positions",
-      {
-        params: { company: companyId },
-      },
-    );
+    const positions = await fetchAllPages<EmployeePosition>(client, "/configuration/v1/positions", {
+      params: { company: companyId },
+    });
     const result = toPicklistResult(positions, {
-      getLabel: (position) =>
-        `${position.alternateTitle} (${position.positionCode})`,
+      getLabel: (position) => `${position.alternateTitle} (${position.positionCode})`,
       getKey: (position) => position.positionCode,
     });
     return { result };

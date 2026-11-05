@@ -426,12 +426,7 @@ export const disputeOutputSchema = {
           type: "integer",
         },
       },
-      required: [
-        "enhanced_eligibility",
-        "has_evidence",
-        "past_due",
-        "submission_count",
-      ],
+      required: ["enhanced_eligibility", "has_evidence", "past_due", "submission_count"],
     },
     id: {
       type: "string",

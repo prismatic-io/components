@@ -7,7 +7,7 @@ test("New and Updated Messages is opt-in batchable with a default batch size", (
   expect(pollChangesTrigger.triggerResolverSupport).toBe("valid");
   expect(pollChangesTrigger.batchConfig).toEqual({ batchSize: 50 });
   expect(pollChangesTrigger.triggerResolver?.resolveItems).toBeInstanceOf(
-    Function,
+    Function
   );
 });
 
@@ -25,7 +25,7 @@ test("resolvePollingRecordChanges tags every record with how it changed", () => 
     text: "edited",
   };
   expect(
-    resolvePollingRecordChanges({ created: [created], updated: [updated] }),
+    resolvePollingRecordChanges({ created: [created], updated: [updated] })
   ).toEqual([
     { changeType: "created", record: created },
     { changeType: "updated", record: updated },
@@ -51,6 +51,6 @@ test("resolveItems flattens the payload shape perform actually returns", () => {
   expect(
     pollChangesTrigger.triggerResolver?.resolveItems?.({} as never, {
       payload,
-    }),
+    })
   ).toEqual([{ changeType: "created", record: created }]);
 });

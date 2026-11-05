@@ -18,8 +18,5 @@ export const getActivityTypes = action({
   inputs: getActivityTypesInputs,
   examplePayload: getActivityTypesExamplePayload,
   examplePerform: async () => getActivityTypesExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getActivityTypesOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getActivityTypesOutputSchema }),
 });

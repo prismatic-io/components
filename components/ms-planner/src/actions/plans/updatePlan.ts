@@ -11,8 +11,7 @@ import { updatePlanInputs } from "../../inputs";
 export const updatePlan = action({
   display: {
     label: "Update Plan",
-    description:
-      "Rename a plan. The title is the only property a plan allows changing.",
+    description: "Rename a plan. The title is the only property a plan allows changing.",
   },
   inputs: updatePlanInputs,
   outputSchema: outputSchema({

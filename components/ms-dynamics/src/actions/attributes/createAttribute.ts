@@ -11,10 +11,7 @@ export const createAttribute = action({
   inputs: createAttributeInputs,
   examplePayload: createAttributeExamplePayload,
   perform: async (context, params) => {
-    const client = await createCrmClient(
-      params.connection,
-      context.debug.enabled,
-    );
+    const client = await createCrmClient(params.connection, context.debug.enabled);
 
     const result = await client.createAttribute({
       entityKey: params.entityId,

@@ -14,10 +14,7 @@ export const getPurchaseRequisition = action({
     description:
       "Gets the header details of a purchase requisition using the purchase requisition number provided.",
   },
-  perform: async (
-    _,
-    { expand, select, connectionInput, purchaseRequisitionNumber },
-  ) => {
+  perform: async (_, { expand, select, connectionInput, purchaseRequisitionNumber }) => {
     const headers = {
       Accept: "application/json",
     };

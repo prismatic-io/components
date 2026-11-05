@@ -23,9 +23,7 @@ const book = (id: string): BookRecord => ({
 
 describe("resolveCRMRecordChanges", () => {
   test("tags every record with how it changed", () => {
-    expect(
-      resolveCRMRecordChanges({ created: [crm("1")], updated: [crm("2")] }),
-    ).toEqual([
+    expect(resolveCRMRecordChanges({ created: [crm("1")], updated: [crm("2")] })).toEqual([
       { changeType: "created", record: crm("1") },
       { changeType: "updated", record: crm("2") },
     ]);
@@ -49,9 +47,7 @@ describe("resolveCRMRecordChanges", () => {
 
 describe("resolveBooksRecordChanges", () => {
   test("tags every record with how it changed", () => {
-    expect(
-      resolveBooksRecordChanges({ created: [book("a")], updated: [book("b")] }),
-    ).toEqual([
+    expect(resolveBooksRecordChanges({ created: [book("a")], updated: [book("b")] })).toEqual([
       { changeType: "created", record: book("a") },
       { changeType: "updated", record: book("b") },
     ]);
@@ -93,8 +89,7 @@ describe("resolvePollingStart", () => {
 
   test("reads the pre-batching lastUpdated key as a fallback", () => {
     expect(
-      resolvePollingStart({ lastUpdated: "2026-02-01T00:00:00.000Z" }, "", now)
-        .sinceDate,
+      resolvePollingStart({ lastUpdated: "2026-02-01T00:00:00.000Z" }, "", now).sinceDate,
     ).toEqual(new Date("2026-02-01T00:00:00.000Z"));
   });
 
@@ -132,33 +127,22 @@ describe("resolveCRMStream and buildCRMPollingState", () => {
     const since = new Date("2026-02-01T00:00:00.000Z");
     const start = new Date(started);
     expect(
-      buildCRMPollingState(
-        { pageToken: "t", streamStartedAt: started },
-        start,
-        since,
-        true,
-      ),
+      buildCRMPollingState({ pageToken: "t", streamStartedAt: started }, start, since, true),
     ).toEqual({
       pageToken: "t",
       streamStartedAt: started,
       lastPolledAt: since.toISOString(),
       backfillActive: true,
     });
-    expect(buildCRMPollingState(null, start, since, true)).toEqual({
-      lastPolledAt: started,
-    });
+    expect(buildCRMPollingState(null, start, since, true)).toEqual({ lastPolledAt: started });
   });
 });
 
 describe("isRejectedPageToken", () => {
-  const err = (status: number, code: string) => ({
-    response: { status, data: { code } },
-  });
+  const err = (status: number, code: string) => ({ response: { status, data: { code } } });
   test("matches only the documented expired and mismatch rejections", () => {
     expect(isRejectedPageToken(err(400, "EXPIRED_VALUE"))).toBe(true);
-    expect(isRejectedPageToken(err(400, "TOKEN_BOUND_DATA_MISMATCH"))).toBe(
-      true,
-    );
+    expect(isRejectedPageToken(err(400, "TOKEN_BOUND_DATA_MISMATCH"))).toBe(true);
     expect(isRejectedPageToken(err(400, "REQUIRED_PARAM_MISSING"))).toBe(false);
     expect(isRejectedPageToken(err(401, "EXPIRED_VALUE"))).toBe(false);
     expect(isRejectedPageToken(new Error("boom"))).toBe(false);
@@ -176,15 +160,9 @@ describe("lookBackDateClean", () => {
   });
 
   test("rejects a bad format, a non-calendar date and a future date", () => {
-    expect(() => lookBackDateClean("01/01/2026")).toThrow(
-      "Look-back Date must be",
-    );
-    expect(() => lookBackDateClean("2026-02-31")).toThrow(
-      "Look-back Date must be",
-    );
-    expect(() => lookBackDateClean("2999-01-01")).toThrow(
-      "cannot be a future date",
-    );
+    expect(() => lookBackDateClean("01/01/2026")).toThrow("Look-back Date must be");
+    expect(() => lookBackDateClean("2026-02-31")).toThrow("Look-back Date must be");
+    expect(() => lookBackDateClean("2999-01-01")).toThrow("cannot be a future date");
     expect(() => lookBackDateClean(20260101)).toThrow("Look-back Date must be");
   });
 });

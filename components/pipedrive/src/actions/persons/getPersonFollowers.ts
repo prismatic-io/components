@@ -11,15 +11,8 @@ export const getPersonFollowers = action({
     description: "Lists followers of a person.",
   },
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { connection, id, pagination: { limit, cursor } = {} },
-  ) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      WebhookVersion.V2,
-    );
+  perform: async (context, { connection, id, pagination: { limit, cursor } = {} }) => {
+    const client = createClient(connection, context.debug.enabled, WebhookVersion.V2);
     const { data } = await client.get(`/persons/${id}/followers`, {
       params: { limit, cursor },
     });
@@ -27,8 +20,5 @@ export const getPersonFollowers = action({
   },
   inputs: getPersonFollowersInputs,
   examplePayload: getPersonFollowersExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getPersonFollowersOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getPersonFollowersOutputSchema }),
 });

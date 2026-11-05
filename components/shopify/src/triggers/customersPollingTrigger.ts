@@ -11,10 +11,7 @@ import type {
 } from "../types";
 import { resolvePollingRecordChanges, runPollingCycle } from "../util";
 
-const customersResource: PollingResource = {
-  listKey: "customers",
-  query: pollCustomersQuery,
-};
+const customersResource: PollingResource = { listKey: "customers", query: pollCustomersQuery };
 
 export const customersPollingTrigger = pollingTrigger({
   display: {
@@ -28,9 +25,7 @@ export const customersPollingTrigger = pollingTrigger({
   batchConfig: { batchSize: 50, concurrentBatchLimit: 1 },
   triggerResolver: {
     resolveItems: (_context, { payload }): PollingRecordChange<Customer>[] =>
-      resolvePollingRecordChanges(
-        payload.body.data as PollingChangesObject<Customer>,
-      ),
+      resolvePollingRecordChanges(payload.body.data as PollingChangesObject<Customer>),
     getNextPaginationState: (_context, { payload }): PollingCursor | null =>
       (payload.paginationState as PollingCursor | undefined) ?? null,
   },

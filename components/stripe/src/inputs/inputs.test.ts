@@ -15,26 +15,11 @@ const asInput = (value: unknown) => value as CleanableInput;
 const optionalStringOverrides: Array<[string, CleanableInput]> = [
   ["updateChargeInputs.customerId", asInput(updateChargeInputs.customerId)],
   ["updateChargeInputs.description", asInput(updateChargeInputs.description)],
-  [
-    "createPaymentIntentInputs.customerId",
-    asInput(createPaymentIntentInputs.customerId),
-  ],
-  [
-    "createPaymentIntentInputs.description",
-    asInput(createPaymentIntentInputs.description),
-  ],
-  [
-    "listPaymentIntentsInputs.customerId",
-    asInput(listPaymentIntentsInputs.customerId),
-  ],
-  [
-    "updatePaymentIntentInputs.customerId",
-    asInput(updatePaymentIntentInputs.customerId),
-  ],
-  [
-    "updatePaymentIntentInputs.description",
-    asInput(updatePaymentIntentInputs.description),
-  ],
+  ["createPaymentIntentInputs.customerId", asInput(createPaymentIntentInputs.customerId)],
+  ["createPaymentIntentInputs.description", asInput(createPaymentIntentInputs.description)],
+  ["listPaymentIntentsInputs.customerId", asInput(listPaymentIntentsInputs.customerId)],
+  ["updatePaymentIntentInputs.customerId", asInput(updatePaymentIntentInputs.customerId)],
+  ["updatePaymentIntentInputs.description", asInput(updatePaymentIntentInputs.description)],
 ];
 
 describe.each(optionalStringOverrides)("%s (optional)", (_name, field) => {

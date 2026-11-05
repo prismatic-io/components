@@ -13,7 +13,7 @@ export const postEphemeralMessage = action({
   performSafety: "notAllowed",
   perform: async (
     { debug: { enabled: debug } },
-    { connection, channelName, userId, username, message },
+    { connection, channelName, userId, username, message }
   ) => {
     debugLogger({ channelName, userId, username, message, debug });
     const client = await createOauthClient({

@@ -12,12 +12,7 @@ export const getCurrentAccount = action({
   performSafety: "safe",
   perform: async (
     context,
-    {
-      accessKey,
-      dynamicAccessKeyId,
-      dynamicSecretAccessKey,
-      dynamicSessionToken,
-    },
+    { accessKey, dynamicAccessKeyId, dynamicSecretAccessKey, dynamicSessionToken },
   ) => {
     const s3 = await createS3Client({
       awsConnection: accessKey,

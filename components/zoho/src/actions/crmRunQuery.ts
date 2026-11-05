@@ -18,16 +18,11 @@ const crmRunQuery = action({
       comments:
         "COQL query to execute. See [Zoho COQL documentation](https://www.zoho.com/crm/developer/docs/api/v8/COQL-Overview.html) for syntax.",
       clean: util.types.toString,
-      example:
-        "select Last_Name, Email from Contacts where Last_Name is not null",
+      example: "select Last_Name, Email from Contacts where Last_Name is not null",
     }),
   },
   perform: async (context, { connection, query }) => {
-    const crmClient = createClient(
-      connection,
-      ClientType.CRM,
-      context.debug.enabled,
-    );
+    const crmClient = createClient(connection, ClientType.CRM, context.debug.enabled);
 
     const payload = {
       select_query: query,

@@ -1,8 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
-import {
-  cleanCodeInputEmptyObject,
-  cleanProductIdForVariant,
-} from "../../util";
+import { cleanCodeInputEmptyObject, cleanProductIdForVariant } from "../../util";
 import { getAlldata, pagination, productId, shopifyConnection } from "./common";
 
 const variant = input({

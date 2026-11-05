@@ -11,18 +11,14 @@ export const customFieldOptions = dataSource({
   },
   perform: async (_context, { listId, connection, fieldName }) => {
     const client = createClient(connection);
-    const { data } = await client.get<GetAccessibleCustomFieldsResponse>(
-      `/list/${listId}/field`,
-    );
+    const { data } = await client.get<GetAccessibleCustomFieldsResponse>(`/list/${listId}/field`);
     const field = data.fields.find((field) => field.name === fieldName);
     if (!field) {
       throw new Error("Unable to find custom field options");
     }
-    const options = (field?.type_config?.options || []).map<Element>(
-      (option) => {
-        return { label: option.name, key: option.id };
-      },
-    );
+    const options = (field?.type_config?.options || []).map<Element>((option) => {
+      return { label: option.name, key: option.id };
+    });
     return { result: options };
   },
   inputs: customFieldOptionsInputs,

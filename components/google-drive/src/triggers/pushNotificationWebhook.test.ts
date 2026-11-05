@@ -1,7 +1,4 @@
-import {
-  defaultTriggerPayload,
-  invokeTrigger,
-} from "@prismatic-io/spectral/dist/testing";
+import { defaultTriggerPayload, invokeTrigger } from "@prismatic-io/spectral/dist/testing";
 import { pushNotificationWebhook } from "./pushNotificationWebhook";
 
 describe("pushNotificationWebhook", () => {
@@ -15,12 +12,7 @@ describe("pushNotificationWebhook", () => {
       },
     };
 
-    const { result } = await invokeTrigger(
-      pushNotificationWebhook,
-      undefined,
-      payload,
-      {},
-    );
+    const { result } = await invokeTrigger(pushNotificationWebhook, undefined, payload, {});
 
     expect(result.payload).toEqual(payload);
     expect(result.payload.headers["X-Goog-Resource-State"]).toBe("change");
@@ -41,12 +33,7 @@ describe("pushNotificationWebhook", () => {
   test("accepts a request carrying no Google channel headers at all", async () => {
     const payload = { ...defaultTriggerPayload(), headers: {} };
 
-    const { result } = await invokeTrigger(
-      pushNotificationWebhook,
-      undefined,
-      payload,
-      {},
-    );
+    const { result } = await invokeTrigger(pushNotificationWebhook, undefined, payload, {});
 
     expect(result.payload.headers).toEqual({});
   });

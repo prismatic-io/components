@@ -17,12 +17,10 @@ export const selectRecordType = dataSource({
       data: { sobjects },
     } = await httpClient.get("/sobjects");
 
-    const objects: ElementWithLabel[] = sobjects.map(
-      (sobject: Record<string, unknown>) => ({
-        label: sobject.label,
-        key: sobject.name,
-      }),
-    );
+    const objects: ElementWithLabel[] = sobjects.map((sobject: Record<string, unknown>) => ({
+      label: sobject.label,
+      key: sobject.name,
+    }));
 
     return {
       result: filterAndSort(objects, filterQuery),

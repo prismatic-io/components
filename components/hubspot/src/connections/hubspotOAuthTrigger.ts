@@ -14,8 +14,7 @@ export const hubspotOAuthTrigger = connection({
       type: "password",
       required: true,
       shown: true,
-      comments:
-        "The Client Secret from the HubSpot app, used to verify webhook signatures.",
+      comments: "The Client Secret from the HubSpot app, used to verify webhook signatures.",
     },
   },
 });

@@ -34,8 +34,7 @@ export const confirmPaymentIntent = action({
       setup_future_usage: additionalFields.setupFutureUsage as
         | Stripe.PaymentIntentConfirmParams.SetupFutureUsage
         | undefined,
-      capture_method:
-        captureMethod as Stripe.PaymentIntentConfirmParams.CaptureMethod,
+      capture_method: captureMethod as Stripe.PaymentIntentConfirmParams.CaptureMethod,
       error_on_requires_action: additionalFields.errorOnRequiresAction,
       mandate: additionalFields.mandate,
       mandate_data: additionalFields.mandateData,
@@ -53,18 +52,9 @@ export const confirmPaymentIntent = action({
   },
   examplePerform: async (
     _context,
-    {
-      paymentIntentId,
-      paymentMethod,
-      receiptEmail,
-      captureMethod,
-      additionalFields,
-    },
+    { paymentIntentId, paymentMethod, receiptEmail, captureMethod, additionalFields },
   ): Promise<{ data: unknown }> => {
-    const intent = confirmPaymentIntentExamplePayload.data as Record<
-      string,
-      unknown
-    >;
+    const intent = confirmPaymentIntentExamplePayload.data as Record<string, unknown>;
 
     return {
       data: {
@@ -73,11 +63,9 @@ export const confirmPaymentIntent = action({
         payment_method: paymentMethod ?? intent.payment_method,
         receipt_email: receiptEmail ?? intent.receipt_email,
         capture_method: captureMethod ?? intent.capture_method,
-        setup_future_usage:
-          additionalFields.setupFutureUsage ?? intent.setup_future_usage,
+        setup_future_usage: additionalFields.setupFutureUsage ?? intent.setup_future_usage,
         payment_method_options:
-          additionalFields.paymentMethodOptions ??
-          intent.payment_method_options,
+          additionalFields.paymentMethodOptions ?? intent.payment_method_options,
       },
     };
   },

@@ -16,9 +16,7 @@ export const STORE_CREDENTIALS = {
   accessTokenSecret: "test-access-token-secret",
 };
 
-export const storeConnection = (
-  fields: Record<string, unknown> = {},
-): Connection => ({
+export const storeConnection = (fields: Record<string, unknown> = {}): Connection => ({
   key: adobeCommerceOauth1.key,
   configVarKey: "Adobe Commerce Connection",
   fields: {
@@ -29,9 +27,7 @@ export const storeConnection = (
   },
 });
 
-export const marketplaceConnection = (
-  fields: Record<string, unknown> = {},
-): Connection => ({
+export const marketplaceConnection = (fields: Record<string, unknown> = {}): Connection => ({
   key: adobeCommerceApiKey.key,
   configVarKey: "Adobe Commerce Connection",
   fields: {
@@ -49,8 +45,7 @@ export const isOauth1Header = (value: string): boolean =>
   value.includes('oauth_signature_method="HMAC-SHA256"') &&
   /oauth_signature="[^"]+"/.test(value);
 
-const UNRESERVED =
-  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~";
+const UNRESERVED = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~";
 
 const encodeRfc3986 = (value: string): string =>
   Array.from(Buffer.from(value, "utf8"))
@@ -99,10 +94,7 @@ export const verifyOauth1Signature = (
   }
 
   const normalizedParameters = signed
-    .map(([name, value]): [string, string] => [
-      encodeRfc3986(name),
-      encodeRfc3986(value),
-    ])
+    .map(([name, value]): [string, string] => [encodeRfc3986(name), encodeRfc3986(value)])
     .sort(([nameA, valueA], [nameB, valueB]) =>
       nameA === nameB ? (valueA < valueB ? -1 : 1) : nameA < nameB ? -1 : 1,
     )
@@ -118,10 +110,7 @@ export const verifyOauth1Signature = (
   const signingKey = `${encodeRfc3986(credentials.consumerSecret)}&${encodeRfc3986(
     credentials.accessTokenSecret,
   )}`;
-  const expected = crypto
-    .createHmac("sha256", signingKey)
-    .update(baseString)
-    .digest("base64");
+  const expected = crypto.createHmac("sha256", signingKey).update(baseString).digest("base64");
 
   return expected === headerParameters.get("oauth_signature");
 };

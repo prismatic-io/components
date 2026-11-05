@@ -12,9 +12,7 @@ vi.mock("../../util", async (importOriginal) => {
   const actual = (await importOriginal()) as Record<string, unknown>;
   return {
     ...actual,
-    paginateFetchXml: vi
-      .fn()
-      .mockResolvedValue({ data: fetchXmlExamplePayload.data }),
+    paginateFetchXml: vi.fn().mockResolvedValue({ data: fetchXmlExamplePayload.data }),
   };
 });
 
@@ -30,8 +28,7 @@ describe("fetchXml", () => {
     mockFetch.mockResolvedValueOnce(fetchXmlExamplePayload.data);
     const result = await fetchXml.perform(ctx, {
       entityType: "accounts",
-      xmlQuery:
-        '<fetch><entity name="account"><attribute name="name"/></entity></fetch>',
+      xmlQuery: '<fetch><entity name="account"><attribute name="name"/></entity></fetch>',
       includeAnnotations: undefined,
       pagination: { pageNumber: undefined, nextPageId: undefined },
       impersonateUserId: undefined,
@@ -52,7 +49,7 @@ describe("fetchXml", () => {
         impersonateUserId: undefined,
         fetchAll: false,
         connection: conn,
-      } as any),
+      } as any)
     ).rejects.toThrow("Invalid XML");
   });
 });

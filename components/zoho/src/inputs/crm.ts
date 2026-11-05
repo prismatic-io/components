@@ -48,9 +48,7 @@ export const fields = input({
   comments: "The field names to retrieve. Leave empty to retrieve all fields.",
   example: "Last_Name",
   clean: (values): string[] =>
-    (Array.isArray(values) ? values : []).map((value) =>
-      util.types.toString(value),
-    ),
+    (Array.isArray(values) ? values : []).map((value) => util.types.toString(value)),
 });
 
 export const crmPollingAdditionalFields = {

@@ -1,16 +1,9 @@
-import {
-  createConnection,
-  invokeTrigger,
-} from "@prismatic-io/spectral/dist/testing";
+import { createConnection, invokeTrigger } from "@prismatic-io/spectral/dist/testing";
 import nock from "nock";
 import { createSalesforceClient } from "../client";
 import { salesforceOAuth } from "../connections";
 import { DEFAULT_SF_VERSION } from "../constants";
-import type {
-  PollingState,
-  PollingTriggerObject,
-  SalesforceChangesObject,
-} from "../types";
+import type { PollingState, PollingTriggerObject, SalesforceChangesObject } from "../types";
 import {
   advanceCursor,
   fetchDeletedRecords,
@@ -40,12 +33,7 @@ const cursor = {
   isBackfill: false,
 };
 
-const logger = {
-  debug: jest.fn(),
-  info: jest.fn(),
-  warn: jest.fn(),
-  error: jest.fn(),
-};
+const logger = { debug: jest.fn(), info: jest.fn(), warn: jest.fn(), error: jest.fn() };
 
 const WINDOW_OPEN_MS = new Date("2026-08-10T12:00:00Z").getTime();
 
@@ -154,9 +142,7 @@ describe("pollChangesTrigger over HTTP (real jsforce against nock)", () => {
     });
 
     expect(assembled).toHaveLength(pageSize);
-    expect(assembled.map((r) => r.Id)).toEqual(
-      [...first, ...second].map((r) => r.Id),
-    );
+    expect(assembled.map((r) => r.Id)).toEqual([...first, ...second].map((r) => r.Id));
     expect(nock.isDone()).toBe(true);
 
     const { emit, nextCursor } = advanceCursor(assembled, cursor, pageSize);
@@ -211,21 +197,9 @@ describe("pollChangesTrigger over HTTP (real jsforce against nock)", () => {
         ],
       });
 
-    const fields = await resolvePollingFields(
-      await client(),
-      "Account",
-      [],
-      false,
-      logger,
-    );
+    const fields = await resolvePollingFields(await client(), "Account", [], false, logger);
 
-    expect(fields).toEqual([
-      "Id",
-      "CreatedDate",
-      "LastModifiedDate",
-      "Name",
-      "Description",
-    ]);
+    expect(fields).toEqual(["Id", "CreatedDate", "LastModifiedDate", "Name", "Description"]);
     expect(nock.isDone()).toBe(true);
   });
 
@@ -241,12 +215,7 @@ describe("pollChangesTrigger over HTTP (real jsforce against nock)", () => {
         return true;
       })
       .reply(200, {
-        deletedRecords: [
-          {
-            id: "001000000000001AAA",
-            deletedDate: "2026-08-10T11:30:00.000+0000",
-          },
-        ],
+        deletedRecords: [{ id: "001000000000001AAA", deletedDate: "2026-08-10T11:30:00.000+0000" }],
         earliestDateAvailable: "2026-07-27T00:00:00.000+0000",
         latestDateCovered: "2026-08-10T12:59:00.000+0000",
       });
@@ -298,11 +267,7 @@ describe("pollChangesTrigger over HTTP (real jsforce against nock)", () => {
         sentSOQL.push(actual.q as string);
         return true;
       })
-      .reply(200, {
-        totalSize: 3,
-        done: true,
-        records: [...roundOne, ...roundTwo, ...boundary],
-      })
+      .reply(200, { totalSize: 3, done: true, records: [...roundOne, ...roundTwo, ...boundary] })
       .get(`${BASE_PATH}/query`)
       .query((actual) => {
         sentSOQL.push(actual.q as string);
@@ -345,20 +310,14 @@ describe("pollChangesTrigger over HTTP (real jsforce against nock)", () => {
         params,
       );
       return result as unknown as {
-        payload: {
-          paginationState?: unknown;
-          body: { data: SalesforceChangesObject };
-        };
+        payload: { paginationState?: unknown; body: { data: SalesforceChangesObject } };
       };
     };
 
     const first = await invokePoll(undefined);
     const firstCursor = first.payload.paginationState;
     expect(firstCursor).toEqual(
-      expect.objectContaining({
-        watermark: "2026-08-10T12:00:03Z",
-        isBackfill: false,
-      }),
+      expect.objectContaining({ watermark: "2026-08-10T12:00:03Z", isBackfill: false }),
     );
 
     const second = await invokePoll(firstCursor);
@@ -374,13 +333,9 @@ describe("pollChangesTrigger over HTTP (real jsforce against nock)", () => {
 
     const ids = [first, second].flatMap((round) => {
       const data = round.payload.body.data;
-      return [...data.createdRecords, ...data.updatedRecords].map(
-        (r) => r.Id as string,
-      );
+      return [...data.createdRecords, ...data.updatedRecords].map((r) => r.Id as string);
     });
-    expect(ids).toEqual(
-      [...roundOne, ...roundTwo, ...boundary].map((r) => r.Id),
-    );
+    expect(ids).toEqual([...roundOne, ...roundTwo, ...boundary].map((r) => r.Id));
     expect(nock.isDone()).toBe(true);
   });
 });

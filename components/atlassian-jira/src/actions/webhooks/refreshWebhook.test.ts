@@ -9,10 +9,7 @@ afterAll(() => nock.enableNetConnect());
 afterEach(() => nock.cleanAll());
 
 const refresh = () =>
-  invoke(refreshWebhook, {
-    jiraConnection: basicConnection(),
-    webhookId: "10001",
-  });
+  invoke(refreshWebhook, { jiraConnection: basicConnection(), webhookId: "10001" });
 
 describe("refreshWebhook", () => {
   test("refreshes the webhook id through the v3 API, even under basic auth", async () => {
@@ -34,8 +31,6 @@ describe("refreshWebhook", () => {
       .put("/rest/api/3/webhook/refresh")
       .reply(403, { errorMessages: ["forbidden"] });
 
-    await expect(refresh()).rejects.toMatchObject({
-      response: { status: 403 },
-    });
+    await expect(refresh()).rejects.toMatchObject({ response: { status: 403 } });
   });
 });

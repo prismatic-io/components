@@ -44,8 +44,7 @@ export const clientCredentials = oauth2Connection({
       type: "string",
       required: true,
       shown: true,
-      comments:
-        "Generated when registering an application in the Azure portal.",
+      comments: "Generated when registering an application in the Azure portal.",
     },
     clientSecret: {
       label: "Client secret value",
@@ -53,8 +52,7 @@ export const clientCredentials = oauth2Connection({
       type: "password",
       required: true,
       shown: true,
-      comments:
-        "Generated when registering an application in the Azure portal.",
+      comments: "Generated when registering an application in the Azure portal.",
     },
   },
 });

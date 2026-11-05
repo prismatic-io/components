@@ -61,9 +61,7 @@ export const dynamicFieldsClean = (value: unknown): KeyValuePair[] => {
     const data = recordsInputClean(value);
     data.forEach((pair) => {
       if (!("key" in pair) || !("value" in pair)) {
-        throw new TypeError(
-          "Each item in dynamicValues should be a key-value pair",
-        );
+        throw new TypeError("Each item in dynamicValues should be a key-value pair");
       }
     });
 
@@ -93,9 +91,7 @@ export const cleanAttachmentArray = (value: unknown) => {
   const attachmentArray = cleanCodeInput(value);
   attachmentArray?.forEach((attachment) => {
     if (!attachment.id || !attachment.mimeType) {
-      throw new Error(
-        "Each attachment object must have an 'id' and a 'mimeType' property",
-      );
+      throw new Error("Each attachment object must have an 'id' and a 'mimeType' property");
     }
   });
   return attachmentArray;
@@ -110,11 +106,7 @@ export const toOptionalObject = (value: unknown) =>
 export const toTrimmedLowerCase = (value: unknown): string =>
   util.types.toString(value).toLowerCase().trim();
 
-export const toAllowedValue = (
-  value: unknown,
-  allowed: string[],
-  label: string,
-): string => {
+export const toAllowedValue = (value: unknown, allowed: string[], label: string): string => {
   const str = util.types.toString(value);
   if (!allowed.includes(str)) {
     throw new Error(`Invalid ${label} provided: ${str}`);
@@ -134,21 +126,14 @@ export const toPageSize = (value: unknown, fallback: number): number => {
 };
 
 export const lookBackDateClean = (value: unknown): string => {
-  if (
-    value === undefined ||
-    value === null ||
-    (typeof value === "string" && value.trim() === "")
-  ) {
+  if (value === undefined || value === null || (typeof value === "string" && value.trim() === "")) {
     return "";
   }
 
   const raw = typeof value === "string" ? value.trim() : String(value);
-  const match =
-    typeof value === "string" ? raw.match(LOOK_BACK_DATE_PATTERN) : null;
+  const match = typeof value === "string" ? raw.match(LOOK_BACK_DATE_PATTERN) : null;
   if (!match) {
-    throw new Error(
-      `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
-    );
+    throw new Error(`Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`);
   }
 
   const [, yearStr, monthStr, dayStr] = match;
@@ -161,9 +146,7 @@ export const lookBackDateClean = (value: unknown): string => {
     parsed.getUTCMonth() !== month - 1 ||
     parsed.getUTCDate() !== day
   ) {
-    throw new Error(
-      `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
-    );
+    throw new Error(`Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`);
   }
 
   if (parsed.getTime() > Date.now()) {

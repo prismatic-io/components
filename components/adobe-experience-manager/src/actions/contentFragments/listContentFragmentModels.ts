@@ -10,8 +10,7 @@ import { fetchCursorPages } from "../../utils";
 export const listContentFragmentModels = action({
   display: {
     label: "List Content Fragment Models",
-    description:
-      "List the content fragment models available in the environment.",
+    description: "List the content fragment models available in the environment.",
   },
   performSafety: "notAllowed",
   perform: async (context, params) => {

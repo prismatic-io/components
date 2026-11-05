@@ -32,8 +32,7 @@ export const oauth = oauth2Connection({
       type: "string",
       required: false,
       shown: false,
-      comments:
-        "Space separated OAuth 2.0 permission scopes for Quickbooks Time",
+      comments: "Space separated OAuth 2.0 permission scopes for Quickbooks Time",
       default: "",
     },
     clientId: {

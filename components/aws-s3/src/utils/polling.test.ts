@@ -1,9 +1,5 @@
 import type { PollingCursorContext, PollingState } from "../types";
-import {
-  readLastPolledAt,
-  resolvePolledBucketChanges,
-  resolvePolledFileChanges,
-} from "./polling";
+import { readLastPolledAt, resolvePolledBucketChanges, resolvePolledFileChanges } from "./polling";
 
 const createContext = (state: PollingState): PollingCursorContext =>
   ({
@@ -32,15 +28,11 @@ describe("readLastPolledAt", () => {
   });
 
   test("stored state present: uses it regardless of Look-back Date, strict", () => {
-    expect(
-      readLastPolledAt(createContext({ lastPolledAt: STORED }), NOW, LOOK_BACK),
-    ).toEqual({
+    expect(readLastPolledAt(createContext({ lastPolledAt: STORED }), NOW, LOOK_BACK)).toEqual({
       since: STORED,
       inclusive: false,
     });
-    expect(
-      readLastPolledAt(createContext({ lastPolledAt: STORED }), NOW, ""),
-    ).toEqual({
+    expect(readLastPolledAt(createContext({ lastPolledAt: STORED }), NOW, "")).toEqual({
       since: STORED,
       inclusive: false,
     });

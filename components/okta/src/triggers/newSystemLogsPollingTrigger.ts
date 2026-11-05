@@ -27,20 +27,14 @@ export const newSystemLogsPollingTrigger = pollingTrigger({
   batchConfig: { batchSize: TRIGGER_BATCH_SIZE },
   triggerResolver: {
     resolveItems: (_context, { payload }) =>
-      resolveSystemLogChanges(
-        payload.body.data as SystemLogEvent[] | undefined,
-      ),
+      resolveSystemLogChanges(payload.body.data as SystemLogEvent[] | undefined),
     getNextPaginationState: (_context, { payload }): SystemLogsCursor | null =>
       (payload.paginationState as SystemLogsCursor | undefined) ?? null,
   },
   perform: async (context, payload, { connection, lookBackDate, filter }) => {
     const state = (context.polling.getState() ?? {}) as SystemLogsPollingState;
     const incoming = payload.paginationState as SystemLogsCursor | undefined;
-    const link = resolveSystemLogsLink(
-      incoming ?? state,
-      filter,
-      getBaseUrl(connection),
-    );
+    const link = resolveSystemLogsLink(incoming ?? state, filter, getBaseUrl(connection));
     const window = await fetchSystemLogsWindow(
       await createClient(connection, context.debug.enabled),
       {
@@ -60,11 +54,7 @@ export const newSystemLogsPollingTrigger = pollingTrigger({
       window.hasMore && window.next ? { next: window.next, filter } : null;
 
     return {
-      payload: {
-        ...payload,
-        paginationState: next ?? undefined,
-        body: { data: window.events },
-      },
+      payload: { ...payload, paginationState: next ?? undefined, body: { data: window.events } },
       polledNoChanges: window.events.length === 0 && next === null && !incoming,
     };
   },

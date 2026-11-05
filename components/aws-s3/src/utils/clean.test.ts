@@ -40,32 +40,22 @@ describe("toPositiveInt", () => {
     expect(toPositiveInt(value, 5)).toBe(expected);
   });
 
-  test.each([
-    [""],
-    [undefined],
-    [null],
-  ])("returns the fallback for blank value %j", (value) => {
+  test.each([[""], [undefined], [null]])("returns the fallback for blank value %j", (value) => {
     expect(toPositiveInt(value, 5)).toBe(5);
   });
 
-  test.each([
-    ["abc"],
-    ["0"],
-    ["-2"],
-    ["1.5"],
-    ["10abc"],
-  ])("throws for %j", (value) => {
-    expect(() => toPositiveInt(value, 5)).toThrow(
-      "must be a whole number greater than 0",
-    );
+  test.each([["abc"], ["0"], ["-2"], ["1.5"], ["10abc"]])("throws for %j", (value) => {
+    expect(() => toPositiveInt(value, 5)).toThrow("must be a whole number greater than 0");
   });
 });
 
 describe("toTrimmedStringArray", () => {
   test("trims every item and coerces non-strings", () => {
-    expect(
-      toTrimmedStringArray([" s3:ObjectCreated:* ", "s3:ObjectRemoved:*", 7]),
-    ).toEqual(["s3:ObjectCreated:*", "s3:ObjectRemoved:*", "7"]);
+    expect(toTrimmedStringArray([" s3:ObjectCreated:* ", "s3:ObjectRemoved:*", 7])).toEqual([
+      "s3:ObjectCreated:*",
+      "s3:ObjectRemoved:*",
+      "7",
+    ]);
   });
 
   test("throws a TypeError for a non-array value", () => {
@@ -75,9 +65,7 @@ describe("toTrimmedStringArray", () => {
 
 describe("toObjectCannedACL", () => {
   test("passes a canned ACL through as a string", () => {
-    expect(toObjectCannedACL("bucket-owner-full-control")).toBe(
-      "bucket-owner-full-control",
-    );
+    expect(toObjectCannedACL("bucket-owner-full-control")).toBe("bucket-owner-full-control");
   });
 
   test("passes the blank BUCKET DEFAULT option through as an empty string", () => {
@@ -102,9 +90,7 @@ describe("toObjectLockRetentionMode", () => {
 describe("toBufferFromData", () => {
   test("unwraps the buffer from a data payload", () => {
     const data = Buffer.from("chunk");
-    expect(
-      toBufferFromData({ data, contentType: "application/octet-stream" }),
-    ).toBe(data);
+    expect(toBufferFromData({ data, contentType: "application/octet-stream" })).toBe(data);
   });
 
   test("returns a bare buffer unchanged", () => {
@@ -149,10 +135,7 @@ describe("getObjectIdentifiers", () => {
 
 describe("getObjectAttributes", () => {
   test("returns a non-empty attribute list unchanged", () => {
-    expect(getObjectAttributes(["ETag", "ObjectSize"])).toEqual([
-      "ETag",
-      "ObjectSize",
-    ]);
+    expect(getObjectAttributes(["ETag", "ObjectSize"])).toEqual(["ETag", "ObjectSize"]);
   });
 
   test("throws for an empty attribute list", () => {
@@ -167,12 +150,7 @@ describe("getObjectAttributes", () => {
 });
 
 describe("lookBackDateClean", () => {
-  test.each([
-    [""],
-    ["   "],
-    [undefined],
-    [null],
-  ])("returns an empty string for %j", (value) => {
+  test.each([[""], ["   "], [undefined], [null]])("returns an empty string for %j", (value) => {
     expect(lookBackDateClean(value)).toBe("");
   });
 

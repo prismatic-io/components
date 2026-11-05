@@ -1,7 +1,4 @@
-import {
-  createConnection,
-  invokeDataSource,
-} from "@prismatic-io/spectral/testing";
+import { createConnection, invokeDataSource } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { aemOAuthServerToServer } from "../connections";
 import { listFolderContentsExamplePayload } from "../examplePayloads";
@@ -51,8 +48,6 @@ describe("selectFolderPath", () => {
       .query({ path: "/content/dam", types: "FOLDER", limit: "50" })
       .reply(200, { children: [] });
     const result = await invokeDataSource(selectFolderPath, { connection });
-    expect(result).toEqual({
-      result: [{ key: "/content/dam", label: "/content/dam" }],
-    });
+    expect(result).toEqual({ result: [{ key: "/content/dam", label: "/content/dam" }] });
   });
 });

@@ -1,11 +1,6 @@
 import { invoke } from "@prismatic-io/spectral/testing";
 import { getVendorResponse } from "../../examplePayloads/vendors";
-import {
-  apiPath,
-  rampNock,
-  resetNock,
-  testConnection,
-} from "../../testHarness";
+import { apiPath, rampNock, resetNock, testConnection } from "../../testHarness";
 import { updateVendor } from "./update";
 
 const VENDOR_ID = "40218";
@@ -23,11 +18,7 @@ describe("updateVendor", () => {
         reactivate: true,
         subsidiaries: SUBSIDIARIES,
       })
-      .reply(200, {
-        ...getVendorResponse,
-        code: "20134",
-        name: "Amazon Web Services",
-      });
+      .reply(200, { ...getVendorResponse, code: "20134", name: "Amazon Web Services" });
 
     const { result } = await invoke(updateVendor, {
       connection: testConnection,

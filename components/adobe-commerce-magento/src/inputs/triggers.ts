@@ -8,12 +8,8 @@ const pollResourceType = input({
   type: "string",
   required: true,
   default: "orders",
-  model: POLL_RESOURCE_TYPES.map((value) => ({
-    label: POLL_RESOURCE_LABELS[value],
-    value,
-  })),
-  comments:
-    "The Magento resource collection to poll for new and updated records.",
+  model: POLL_RESOURCE_TYPES.map((value) => ({ label: POLL_RESOURCE_LABELS[value], value })),
+  comments: "The Magento resource collection to poll for new and updated records.",
   clean: util.types.toString,
 });
 

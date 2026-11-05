@@ -75,8 +75,7 @@ const lineType = input({
 const lineObjectNumber = input({
   label: "Line Object Number",
   required: false,
-  comments:
-    "The number of the object (account or item) of the purchase order line.",
+  comments: "The number of the object (account or item) of the purchase order line.",
   type: "string",
   example: "1996-S",
   placeholder: "Enter line object number",

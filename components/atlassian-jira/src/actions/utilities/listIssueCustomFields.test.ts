@@ -11,8 +11,7 @@ beforeAll(() => nock.disableNetConnect());
 afterAll(() => nock.enableNetConnect());
 afterEach(() => nock.cleanAll());
 
-const run = () =>
-  invoke(listIssueCustomFields, { jiraConnection: basicConnection() });
+const run = () => invoke(listIssueCustomFields, { jiraConnection: basicConnection() });
 
 describe("listIssueCustomFields", () => {
   test("keeps only the fields Jira marks as custom", async () => {

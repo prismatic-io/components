@@ -7,8 +7,7 @@ import type { PurchaseInvoice } from "../../interfaces";
 export const updatePurchaseInvoice = action({
   display: {
     label: "Update Purchase Invoice",
-    description:
-      "Update a purchase invoice object in your Business Central organization.",
+    description: "Update a purchase invoice object in your Business Central organization.",
   },
   inputs: updatePurchaseInvoiceInputs,
   perform: async (
@@ -34,11 +33,7 @@ export const updatePurchaseInvoice = action({
       connection,
     },
   ) => {
-    const client = getMsBusinessCentralClient(
-      connection,
-      context,
-      context.debug.enabled,
-    );
+    const client = getMsBusinessCentralClient(connection, context, context.debug.enabled);
 
     const { data } = await client.patch<PurchaseInvoice>(
       `/companies(${companyId})/purchaseInvoices(${purchaseInvoiceId})`,

@@ -32,11 +32,7 @@ export const updateDeal = action({
       } = {},
     },
   ) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      WebhookVersion.V2,
-    );
+    const client = createClient(connection, context.debug.enabled, WebhookVersion.V2);
     const { data } = await client.patch(`/deals/${id}`, {
       title,
       value,
@@ -55,8 +51,5 @@ export const updateDeal = action({
   },
   inputs: updateDealInputs,
   examplePayload: updateDealExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: updateDealOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: updateDealOutputSchema }),
 });

@@ -1,8 +1,4 @@
-import {
-  assetMetadataResourceSchema,
-  commandResultMessageSchema,
-  jobStateSchema,
-} from "./shared";
+import { assetMetadataResourceSchema, commandResultMessageSchema, jobStateSchema } from "./shared";
 
 export const searchAssetsOutputSchema = {
   type: "object" as const,
@@ -26,10 +22,7 @@ export const searchAssetsOutputSchema = {
             type: ["array", "object"],
             items: {
               type: "object",
-              properties: {
-                value: { type: "string" },
-                count: { type: "integer" },
-              },
+              properties: { value: { type: "string" }, count: { type: "integer" } },
               required: ["value", "count"],
             },
             properties: { min: { type: "string" }, max: { type: "string" } },
@@ -72,10 +65,7 @@ export const listAssetRenditionsOutputSchema = {
           size: { type: "integer" },
           dimensions: {
             type: "object",
-            properties: {
-              width: { type: "integer" },
-              height: { type: "integer" },
-            },
+            properties: { width: { type: "integer" }, height: { type: "integer" } },
           },
         },
         required: ["name", "size", "format"],

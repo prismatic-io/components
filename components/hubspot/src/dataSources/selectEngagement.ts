@@ -1,11 +1,7 @@
 import { URLSearchParams } from "node:url";
 import { dataSource, type Element, util } from "@prismatic-io/spectral";
 import { getHubspotClient } from "../client";
-import {
-  ENGAGEMENT_OBJECTS,
-  ENGAGEMENT_PROPERTIES,
-  hubspotPaths,
-} from "../constants";
+import { ENGAGEMENT_OBJECTS, ENGAGEMENT_PROPERTIES, hubspotPaths } from "../constants";
 import { selectEngagementExamplePayload } from "../examplePayloads";
 import { selectEngagementInputs } from "../inputs";
 import type { Engagement } from "../types";
@@ -36,9 +32,7 @@ export const selectEngagement = dataSource({
         {
           params: addUrlSearchParamsFromStringArray(
             new URLSearchParams(),
-            ENGAGEMENT_PROPERTIES.map(
-              (engagementProperty) => engagementProperty.value,
-            ),
+            ENGAGEMENT_PROPERTIES.map((engagementProperty) => engagementProperty.value),
             "properties",
           ),
         },

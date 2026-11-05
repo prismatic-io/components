@@ -61,7 +61,6 @@ export const findRecords = action({
       data: response,
     };
   },
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    findRecordsExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => findRecordsExamplePayload,
   examplePayload: findRecordsExamplePayload,
 });

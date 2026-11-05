@@ -14,7 +14,7 @@ const validateConnection = (connection: Connection) => {
   if (!connection.token?.access_token) {
     throw new ConnectionError(
       connection,
-      "Received valid Connection type but did not find valid access token.",
+      "Received valid Connection type but did not find valid access token."
     );
   }
 };
@@ -24,7 +24,7 @@ export const createClient = ({ connection }: CreateClientPrams) => {
 
   const oauth2Client = new auth.OAuth2(
     util.types.toString(connection.fields.clientId),
-    util.types.toString(connection.fields.clientSecret),
+    util.types.toString(connection.fields.clientSecret)
   );
 
   const token = util.types.toString(connection.token.access_token);

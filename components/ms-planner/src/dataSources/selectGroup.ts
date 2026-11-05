@@ -21,14 +21,10 @@ export const selectGroup = dataSource({
           $select: "id,displayName",
           $top: DIRECTORY_PAGE_SIZE,
         })
-      : await fetchAllDirectory<Group>(
-          client,
-          PLANNER_ENDPOINTS.MEMBER_OF_GROUPS,
-          {
-            $select: "id,displayName",
-            $top: DIRECTORY_PAGE_SIZE,
-          },
-        );
+      : await fetchAllDirectory<Group>(client, PLANNER_ENDPOINTS.MEMBER_OF_GROUPS, {
+          $select: "id,displayName",
+          $top: DIRECTORY_PAGE_SIZE,
+        });
 
     const result = value.map<Element>((group) => ({
       label: util.types.toString(group.displayName),

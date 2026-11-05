@@ -9,10 +9,7 @@ export const graphQlRawRequest = action({
   },
   inputs,
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { connection, apiVersion, query, variables, variablesObject },
-  ) => {
+  perform: async (context, { connection, apiVersion, query, variables, variablesObject }) => {
     const client = getShopifyGraphQlClient(
       connection,
       apiVersion,

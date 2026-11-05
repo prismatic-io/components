@@ -23,10 +23,7 @@ export const searchCatalogItems = action({
       customAttributeFilters,
     },
   ) => {
-    const client = await createAuthorizedClient(
-      squareConnection,
-      context.debug.enabled,
-    );
+    const client = await createAuthorizedClient(squareConnection, context.debug.enabled);
 
     const requestBody = {
       textFilter,
@@ -40,10 +37,7 @@ export const searchCatalogItems = action({
       customAttributeFilters,
     };
 
-    const response = await client.post(
-      "/v2/catalog/search-catalog-items",
-      requestBody,
-    );
+    const response = await client.post("/v2/catalog/search-catalog-items", requestBody);
 
     return {
       data: response.data,

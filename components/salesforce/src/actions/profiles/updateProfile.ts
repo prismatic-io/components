@@ -12,10 +12,7 @@ export const updateProfile = action({
   },
   inputs: updateProfileInputs,
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { version, recordId, name, description, permissions, connection },
-  ) => {
+  perform: async (context, { version, recordId, name, description, permissions, connection }) => {
     const client = await createSalesforceClient(connection, version);
 
     if (context.debug.enabled) {
@@ -37,8 +34,7 @@ export const updateProfile = action({
 
     return { data: response };
   },
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    genericCreateUpdateExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => genericCreateUpdateExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: updateRecordOutputSchema,

@@ -14,11 +14,7 @@ export const deleteWarehouse = action({
     connection,
   },
   perform: async (context, { connection, warehouseCode }) => {
-    const client = await createClient(
-      connection,
-      context,
-      context.debug.enabled,
-    );
+    const client = await createClient(connection, context, context.debug.enabled);
 
     await client.delete(`/Warehouses('${warehouseCode}')`);
     return {

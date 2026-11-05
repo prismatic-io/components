@@ -49,9 +49,7 @@ describe("createSubscription", () => {
   it("surfaces a Stripe error response", async () => {
     nock(BASE)
       .post("/v1/subscriptions")
-      .reply(400, {
-        error: { type: "invalid_request_error", message: "No such customer" },
-      });
+      .reply(400, { error: { type: "invalid_request_error", message: "No such customer" } });
 
     await expect(
       invoke(
@@ -87,18 +85,10 @@ describe("getSubscription", () => {
   it("surfaces a Stripe error response", async () => {
     nock(BASE)
       .get("/v1/subscriptions/sub_missing")
-      .reply(404, {
-        error: {
-          type: "invalid_request_error",
-          message: "No such subscription",
-        },
-      });
+      .reply(404, { error: { type: "invalid_request_error", message: "No such subscription" } });
 
     await expect(
-      invoke(
-        getSubscription,
-        params({ subscriptionId: "sub_missing", stripeConnection: conn }),
-      ),
+      invoke(getSubscription, params({ subscriptionId: "sub_missing", stripeConnection: conn })),
     ).rejects.toThrow("No such subscription");
   });
 });
@@ -123,15 +113,10 @@ describe("listSubscriptions", () => {
     nock(BASE)
       .get("/v1/subscriptions")
       .query(true)
-      .reply(400, {
-        error: { type: "invalid_request_error", message: "Invalid limit" },
-      });
+      .reply(400, { error: { type: "invalid_request_error", message: "Invalid limit" } });
 
     await expect(
-      invoke(
-        listSubscriptions,
-        params({ pagination: {}, stripeConnection: conn }),
-      ),
+      invoke(listSubscriptions, params({ pagination: {}, stripeConnection: conn })),
     ).rejects.toThrow("Invalid limit");
   });
 });
@@ -161,12 +146,7 @@ describe("updateSubscription", () => {
   it("surfaces a Stripe error response", async () => {
     nock(BASE)
       .post("/v1/subscriptions/sub_missing")
-      .reply(404, {
-        error: {
-          type: "invalid_request_error",
-          message: "No such subscription",
-        },
-      });
+      .reply(404, { error: { type: "invalid_request_error", message: "No such subscription" } });
 
     await expect(
       invoke(
@@ -202,17 +182,11 @@ describe("deleteSubscription", () => {
     nock(BASE)
       .delete("/v1/subscriptions/sub_missing")
       .reply(404, {
-        error: {
-          type: "invalid_request_error",
-          message: "No such subscription",
-        },
+        error: { type: "invalid_request_error", message: "No such subscription" },
       });
 
     await expect(
-      invoke(
-        deleteSubscription,
-        params({ subscriptionId: "sub_missing", stripeConnection: conn }),
-      ),
+      invoke(deleteSubscription, params({ subscriptionId: "sub_missing", stripeConnection: conn })),
     ).rejects.toThrow("No such subscription");
   });
 });

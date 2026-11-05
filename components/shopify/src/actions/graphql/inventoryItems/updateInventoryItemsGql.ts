@@ -11,10 +11,7 @@ export const updateInventoryItemsGql = action({
     description: "Updates an existing inventory item.",
   },
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { shopifyConnection, itemId, sku, cost, tracked },
-  ) => {
+  perform: async (context, { shopifyConnection, itemId, sku, cost, tracked }) => {
     const client = getShopifyGraphQlClient(
       shopifyConnection,
       undefined,
@@ -36,10 +33,7 @@ export const updateInventoryItemsGql = action({
     };
   },
   inputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: updateInventoryItemsGqlOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: updateInventoryItemsGqlOutputSchema }),
   examplePerform: async () => examplePayload,
   examplePayload,
 });

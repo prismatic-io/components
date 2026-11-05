@@ -31,8 +31,7 @@ export const listPurchaseInvoice = action({
       params: {
         items_per_page: util.types.toInt(params.itemsPerPage) || undefined,
         page: util.types.toInt(params.page) || undefined,
-        updated_or_created_since:
-          util.types.toString(params.updated_or_created_since) || undefined,
+        updated_or_created_since: util.types.toString(params.updated_or_created_since) || undefined,
       },
     });
 
@@ -51,9 +50,7 @@ export const getPurchaseInvoice = action({
   perform: async (context, params) => {
     const client = getSageClient(params.connection, context.debug.enabled);
 
-    const { data } = await client.get(
-      `/purchase_invoices/${params.purchaseInvoiceId}`,
-    );
+    const { data } = await client.get(`/purchase_invoices/${params.purchaseInvoiceId}`);
 
     return {
       data,
@@ -65,15 +62,12 @@ export const getPurchaseInvoice = action({
 export const deletePurchaseInvoice = action({
   display: {
     label: "Delete Purchase Invoice",
-    description:
-      "Delete the information and metadata of a purchase invoice by Id",
+    description: "Delete the information and metadata of a purchase invoice by Id",
   },
   perform: async (context, params) => {
     const client = getSageClient(params.connection, context.debug.enabled);
 
-    const { data } = await client.delete(
-      `/purchase_invoices/${params.purchaseInvoiceId}`,
-    );
+    const { data } = await client.delete(`/purchase_invoices/${params.purchaseInvoiceId}`);
 
     return {
       data,
@@ -85,31 +79,26 @@ export const deletePurchaseInvoice = action({
 export const updatePurchaseInvoice = action({
   display: {
     label: "Update Purchase Invoice",
-    description:
-      "Update the information and metadata of a purchase invoice by Id",
+    description: "Update the information and metadata of a purchase invoice by Id",
   },
   perform: async (context, params) => {
     const client = getSageClient(params.connection, context.debug.enabled);
 
-    const { data } = await client.put(
-      `/purchase_invoices/${params.purchaseInvoiceId}`,
-      {
-        purchase_invoice: {
-          contact_id: util.types.toString(params.contactId) || undefined,
-          date: util.types.toString(params.date) || undefined,
-          due_date: util.types.toString(params.dueDate) || undefined,
-          contact_name: util.types.toString(params.contactName) || undefined,
-          notes: util.types.toString(params.notes) || undefined,
-          total_quantity:
-            util.types.toNumber(params.totalQuantity) || undefined,
-          net_amount: util.types.toNumber(params.totalAmount) || undefined,
-          tax_amount: util.types.toNumber(params.taxAmount) || undefined,
-          total_amount: util.types.toNumber(params.totalAmount) || undefined,
-          currency_id: util.types.toString(params.currencyId) || undefined,
-          invoiceLines: params.invoiceLines || [],
-        },
+    const { data } = await client.put(`/purchase_invoices/${params.purchaseInvoiceId}`, {
+      purchase_invoice: {
+        contact_id: util.types.toString(params.contactId) || undefined,
+        date: util.types.toString(params.date) || undefined,
+        due_date: util.types.toString(params.dueDate) || undefined,
+        contact_name: util.types.toString(params.contactName) || undefined,
+        notes: util.types.toString(params.notes) || undefined,
+        total_quantity: util.types.toNumber(params.totalQuantity) || undefined,
+        net_amount: util.types.toNumber(params.totalAmount) || undefined,
+        tax_amount: util.types.toNumber(params.taxAmount) || undefined,
+        total_amount: util.types.toNumber(params.totalAmount) || undefined,
+        currency_id: util.types.toString(params.currencyId) || undefined,
+        invoiceLines: params.invoiceLines || [],
       },
-    );
+    });
 
     return {
       data,
@@ -145,8 +134,7 @@ export const createPurchaseInvoice = action({
         contact_id: util.types.toString(params.contactId),
         date: util.types.toString(params.date),
         due_date: util.types.toString(params.dueDate),
-        invoice_lines:
-          JSON.parse(util.types.toString(params.invoiceLines)) || [],
+        invoice_lines: JSON.parse(util.types.toString(params.invoiceLines)) || [],
         total_amount: util.types.toNumber(params.totalAmount),
       },
     });

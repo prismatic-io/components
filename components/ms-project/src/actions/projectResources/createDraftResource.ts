@@ -1,13 +1,6 @@
 import { action } from "@prismatic-io/spectral";
 import { createProjectsClient } from "../../client";
-import {
-  account,
-  connection,
-  email,
-  guId,
-  notes,
-  resourceName,
-} from "../../inputs";
+import { account, connection, email, guId, notes, resourceName } from "../../inputs";
 
 export const createDraftProjectResources = action({
   display: {
@@ -21,17 +14,14 @@ export const createDraftProjectResources = action({
       },
       context.debug.enabled,
     );
-    const { data } = await client.post(
-      `/Projects('${params.guId}')/Draft/ProjectResources/add()`,
-      {
-        parameters: {
-          Name: params.resourceName || undefined,
-          Account: params.account || undefined,
-          Email: params.email || undefined,
-          Notes: params.notes || undefined,
-        },
+    const { data } = await client.post(`/Projects('${params.guId}')/Draft/ProjectResources/add()`, {
+      parameters: {
+        Name: params.resourceName || undefined,
+        Account: params.account || undefined,
+        Email: params.email || undefined,
+        Notes: params.notes || undefined,
       },
-    );
+    });
 
     return {
       data,

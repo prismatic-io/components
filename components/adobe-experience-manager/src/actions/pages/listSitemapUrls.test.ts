@@ -55,10 +55,7 @@ describe("listSitemapUrls", () => {
       .get("/en/sitemap.xml")
       .reply(
         200,
-        urlset(
-          urlEntry(surfCamp.loc, "2026-09-18T09:25:02Z"),
-          urlEntry(aboutUs.loc, null),
-        ),
+        urlset(urlEntry(surfCamp.loc, "2026-09-18T09:25:02Z"), urlEntry(aboutUs.loc, null)),
       );
     const { result } = await invoke(listSitemapUrls, params);
     expect(result).toEqual(listSitemapUrlsExamplePayload);
@@ -91,10 +88,7 @@ describe("listSitemapUrls", () => {
       ...params,
       includePathPrefixes: ["/en/adventures"],
     });
-    expect(included.result.data.map((page) => page.loc)).toEqual([
-      surfCamp.loc,
-      old,
-    ]);
+    expect(included.result.data.map((page) => page.loc)).toEqual([surfCamp.loc, old]);
   });
 
   test("surfaces a missing sitemap", async () => {

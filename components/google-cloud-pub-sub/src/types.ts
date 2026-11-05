@@ -5,9 +5,7 @@ export type PaginateResult<T> = {
   [key: string]: T[] | string | undefined;
 };
 
-export type GoogleListMethod = {
-  data: { nextPageToken?: string; [key: string]: unknown };
-};
+export type GoogleListMethod = { data: { nextPageToken?: string; [key: string]: unknown } };
 
 export type GenericListMethod<TParams> = (
   params: TParams & { pageToken?: string },

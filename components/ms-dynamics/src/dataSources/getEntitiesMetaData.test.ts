@@ -24,20 +24,12 @@ describe("getEntitiesMetaData datasource", () => {
   test("returns objectSelection with entity/attribute mapping", async () => {
     mockRetrieveEntities.mockResolvedValueOnce({
       value: [
-        {
-          MetadataId: "id-1",
-          SchemaName: "Account",
-          IsCustomEntity: false,
-          IsChildEntity: false,
-        },
+        { MetadataId: "id-1", SchemaName: "Account", IsCustomEntity: false, IsChildEntity: false },
       ],
     });
     mockRetrieveAttributes.mockResolvedValueOnce({
       value: [
-        {
-          LogicalName: "name",
-          DisplayName: { UserLocalizedLabel: { Label: "Account Name" } },
-        },
+        { LogicalName: "name", DisplayName: { UserLocalizedLabel: { Label: "Account Name" } } },
       ],
     });
 

@@ -40,9 +40,7 @@ describe("getContentFragment", () => {
   });
 
   test("surfaces a 404 for an unknown fragment", async () => {
-    nock(BASE)
-      .get("/adobe/sites/cf/fragments/missing")
-      .reply(404, { title: "Not Found" });
+    nock(BASE).get("/adobe/sites/cf/fragments/missing").reply(404, { title: "Not Found" });
     await expect(
       invoke(getContentFragment, {
         connection,

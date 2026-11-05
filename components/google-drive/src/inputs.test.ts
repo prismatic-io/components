@@ -45,17 +45,13 @@ describe("inputs delegating straight to util.types (spectral behavior, covered t
   });
 
   test("the webhook ID inputs stringify their value", () => {
-    expect(
-      createFileWebhookInputs.resourceId.clean("ret08u3rv24htgh289g"),
-    ).toBe("ret08u3rv24htgh289g");
-    expect(
-      deleteWebhookInputs.webhookId.clean(
-        "00000000-0000-0000-0000-000000000000",
-      ),
-    ).toBe("00000000-0000-0000-0000-000000000000");
-    expect(deleteWebhookInputs.resourceId.clean("ret08u3rv24htgh289g")).toBe(
+    expect(createFileWebhookInputs.resourceId.clean("ret08u3rv24htgh289g")).toBe(
       "ret08u3rv24htgh289g",
     );
+    expect(deleteWebhookInputs.webhookId.clean("00000000-0000-0000-0000-000000000000")).toBe(
+      "00000000-0000-0000-0000-000000000000",
+    );
+    expect(deleteWebhookInputs.resourceId.clean("ret08u3rv24htgh289g")).toBe("ret08u3rv24htgh289g");
   });
 });
 
@@ -65,9 +61,7 @@ describe("inputs delegating to cleanStringInput", () => {
     expect(fileName.clean("")).toBeUndefined();
     expect(folderId.clean("1xYz2AbC")).toBe("1xYz2AbC");
     expect(folderId.clean(undefined)).toBeUndefined();
-    expect(query.clean("name contains 'report'")).toBe(
-      "name contains 'report'",
-    );
+    expect(query.clean("name contains 'report'")).toBe("name contains 'report'");
     expect(exportType.clean("application/pdf")).toBe("application/pdf");
     expect(filter.clean("time > 1452409200000")).toBe("time > 1452409200000");
     expect(filter.clean("")).toBeUndefined();
@@ -84,19 +78,14 @@ describe("inputs delegating to cleanItemInput", () => {
   test("prefix a bare ID with items/ and drop the My Drive sentinel", () => {
     expect(itemName.clean("1a2b3c")).toBe("items/1a2b3c");
     expect(itemName.clean("items/1a2b3c")).toBe("items/1a2b3c");
-    expect(ancestorName.clean("0ALiN8fRST0gxUk9PVA")).toBe(
-      "items/0ALiN8fRST0gxUk9PVA",
-    );
+    expect(ancestorName.clean("0ALiN8fRST0gxUk9PVA")).toBe("items/0ALiN8fRST0gxUk9PVA");
     expect(ancestorName.clean(MY_DRIVE)).toBeUndefined();
   });
 });
 
 describe("triggerEvents", () => {
   test("keeps the selected event values and drops the empty ones", () => {
-    expect(triggerEvents.clean(["CREATE", "", "EDIT"])).toEqual([
-      "CREATE",
-      "EDIT",
-    ]);
+    expect(triggerEvents.clean(["CREATE", "", "EDIT"])).toEqual(["CREATE", "EDIT"]);
   });
 
   test("returns an empty array when nothing is selected", () => {
@@ -127,9 +116,7 @@ describe("pageSize", () => {
   });
 
   test("rejects a value that is not a number", () => {
-    expect(() => pageSize.clean("not a number")).toThrow(
-      "cannot be coerced to int",
-    );
+    expect(() => pageSize.clean("not a number")).toThrow("cannot be coerced to int");
   });
 });
 

@@ -11,12 +11,9 @@ export const activateUser = action({
   inputs: activateUserInputs,
   perform: async (context, { connection, id, sendEmail }) => {
     const client = await createClient(connection, context.debug.enabled);
-    const { data } = await client.post(
-      `/users/${encodeURIComponent(id)}/lifecycle/activate`,
-      {
-        sendEmail,
-      },
-    );
+    const { data } = await client.post(`/users/${encodeURIComponent(id)}/lifecycle/activate`, {
+      sendEmail,
+    });
 
     return { data };
   },

@@ -8,8 +8,7 @@ import { connectionInput, fetchAll, odataParams } from "../../inputs/general";
 export const listSalesOrders = action({
   display: {
     label: "List Sales Orders",
-    description:
-      "List all sales orders objects in your Business Central Organization.",
+    description: "List all sales orders objects in your Business Central Organization.",
   },
   perform: async (
     context,
@@ -29,11 +28,7 @@ export const listSalesOrders = action({
       $select,
     },
   ) => {
-    const client = getMsBusinessCentralClient(
-      connection,
-      context,
-      context.debug.enabled,
-    );
+    const client = getMsBusinessCentralClient(connection, context, context.debug.enabled);
     const params = {
       $orderBy,
       $format,
@@ -46,9 +41,7 @@ export const listSalesOrders = action({
       $select,
     };
 
-    return await paginateResults<
-      (typeof listSalesOrdersExamplePayload)["data"]["value"][number]
-    >({
+    return await paginateResults<(typeof listSalesOrdersExamplePayload)["data"]["value"][number]>({
       client,
       endpoint: `/companies(${companyId})/salesOrders`,
       params,

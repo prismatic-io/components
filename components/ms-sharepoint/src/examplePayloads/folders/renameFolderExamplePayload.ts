@@ -9,8 +9,7 @@ export const renameFolderExamplePayload = {
     lastModifiedDateTime: "2025-06-12T22:28:24Z",
     name: "NewFolder",
     size: 0,
-    webUrl:
-      "https://example.sharepoint.com/sites/ExampleSite/Shared%20Documents/NewFolder",
+    webUrl: "https://example.sharepoint.com/sites/ExampleSite/Shared%20Documents/NewFolder",
     cTag: '"c:{EXAMPLE-ETAG-ID},0"',
     commentSettings: {
       commentingDisabled: {

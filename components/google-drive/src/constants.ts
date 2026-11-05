@@ -2,8 +2,7 @@ export const MY_DRIVE = "my-drive";
 
 export const MY_DRIVE_LABEL = "My Drive";
 
-export const LIST_CHANGES_STATE_KEY_PREFIX =
-  "google-drive-list-changes-page-token";
+export const LIST_CHANGES_STATE_KEY_PREFIX = "google-drive-list-changes-page-token";
 
 export const FOLDER_MIME_TYPE = "application/vnd.google-apps.folder";
 
@@ -25,11 +24,8 @@ export const WEBHOOK_CHANNEL_TYPE = "web_hook";
 
 export const DEFAULT_BATCH_SIZE = 50;
 
-export const BACKFILL_FILE_FIELDS =
-  "nextPageToken, files(id, name, mimeType, kind, modifiedTime)";
+export const BACKFILL_FILE_FIELDS = "nextPageToken, files(id, name, mimeType, kind, modifiedTime)";
 
-export const ACTIVITY_SYNC_HANDOFF_KEY_PREFIX =
-  "google-drive-activity-sync-handoff";
+export const ACTIVITY_SYNC_HANDOFF_KEY_PREFIX = "google-drive-activity-sync-handoff";
 
-export const INITIAL_SYNC_COMPLETED_KEY_PREFIX =
-  "google-drive-initial-sync-completed";
+export const INITIAL_SYNC_COMPLETED_KEY_PREFIX = "google-drive-initial-sync-completed";

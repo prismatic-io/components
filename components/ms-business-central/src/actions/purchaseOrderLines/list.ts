@@ -7,18 +7,13 @@ import { listPurchaseOrderLinesInputs as inputs } from "../../inputs/purchaseOrd
 export const listPurchaseOrderLines = action({
   display: {
     label: "List Purchase Order Lines",
-    description:
-      "List all purchase order line objects in your Business Central Organization.",
+    description: "List all purchase order line objects in your Business Central Organization.",
   },
   perform: async (
     context,
     { companyId, purchaseOrderId, connection, fetchAll, odataQueryParams },
   ) => {
-    const client = getMsBusinessCentralClient(
-      connection,
-      context,
-      context.debug.enabled,
-    );
+    const client = getMsBusinessCentralClient(connection, context, context.debug.enabled);
     const params = {
       $orderBy: odataQueryParams.$orderBy,
       $format: odataQueryParams.$format,
@@ -31,9 +26,7 @@ export const listPurchaseOrderLines = action({
       $select: odataQueryParams.$select,
     };
 
-    return await paginateResults<
-      (typeof examplePayload)["data"]["value"][number]
-    >({
+    return await paginateResults<(typeof examplePayload)["data"]["value"][number]>({
       client,
       endpoint: `/companies(${companyId})/purchaseOrders(${purchaseOrderId})/purchaseOrderLines`,
       params,

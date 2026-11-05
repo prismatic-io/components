@@ -5,7 +5,7 @@ export const paginateResults = async (
   object: string,
   returnObject: string,
   method: string,
-  params: Record<string, unknown>,
+  params: Record<string, unknown>
 ) => {
   let cursor: string | undefined;
   const toReturn = [];

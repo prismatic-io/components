@@ -1,7 +1,4 @@
-import {
-  createConnection,
-  invokeDataSource,
-} from "@prismatic-io/spectral/testing";
+import { createConnection, invokeDataSource } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { aemOAuthServerToServer } from "../connections";
 import { MAX_DATA_SOURCE_ITEMS, MAX_PAGE_LIMIT } from "../constants";
@@ -36,10 +33,7 @@ describe("selectContentFragment", () => {
       .get("/adobe/sites/cf/fragments")
       .query({ limit: "50" })
       .reply(200, { items: [fragment] });
-    const result = await invokeDataSource(selectContentFragment, {
-      connection,
-      path: undefined,
-    });
+    const result = await invokeDataSource(selectContentFragment, { connection, path: undefined });
     expect(result).toEqual(selectContentFragmentExamplePayload);
   });
 
@@ -49,12 +43,7 @@ describe("selectContentFragment", () => {
       .query({ path: "/content/dam/wknd", limit: "50" })
       .reply(200, {
         items: [
-          {
-            ...fragment,
-            id: "b",
-            title: "Zebra",
-            path: "/content/dam/wknd/zebra",
-          },
+          { ...fragment, id: "b", title: "Zebra", path: "/content/dam/wknd/zebra" },
           { ...fragment, id: "a", title: "", path: "/content/dam/wknd/alpha" },
         ],
       });

@@ -45,8 +45,9 @@ export const createProductGql = action({
         ]
       : undefined;
 
-    const { productCreate }: { productCreate: { product: Product } } =
-      await client.request(createProductQuery, {
+    const { productCreate }: { productCreate: { product: Product } } = await client.request(
+      createProductQuery,
+      {
         input: {
           title,
           descriptionHtml,
@@ -57,7 +58,8 @@ export const createProductGql = action({
           ...additionalFields,
         },
         media,
-      });
+      },
+    );
 
     return {
       data: {
@@ -66,10 +68,7 @@ export const createProductGql = action({
     };
   },
   inputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: createProductGqlOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: createProductGqlOutputSchema }),
   examplePerform: async () => createProductGqlExamplePayload.restMap,
   examplePayload: createProductGqlExamplePayload.restMap,
 });

@@ -10,8 +10,7 @@ import { updateTopicPolicyInputs } from "../../inputs";
 export const updateTopicPolicy = action({
   display: {
     label: "Update SNS Topic Policy for S3 Event Notification",
-    description:
-      "Update an Amazon SNS Topic Policy to grant S3 permission to publish",
+    description: "Update an Amazon SNS Topic Policy to grant S3 permission to publish",
   },
   performSafety: "notAllowed",
   perform: async (

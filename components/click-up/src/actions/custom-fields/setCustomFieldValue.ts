@@ -10,10 +10,7 @@ export const setCustomFieldValue = action({
   },
   examplePayload: setCustomFieldValueExamplePayload,
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { connection, taskId, fieldId, fieldValue, valueType },
-  ) => {
+  perform: async (context, { connection, taskId, fieldId, fieldValue, valueType }) => {
     const client = createClickUpClient(connection, context.debug.enabled);
     let value = fieldValue;
     if (valueType === "date") {

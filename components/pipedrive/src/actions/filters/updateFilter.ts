@@ -17,8 +17,5 @@ export const updateFilter = action({
   },
   inputs: updateFilterInputs,
   examplePayload: updateFilterExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: updateFilterOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: updateFilterOutputSchema }),
 });

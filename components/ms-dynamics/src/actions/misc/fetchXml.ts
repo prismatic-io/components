@@ -7,8 +7,7 @@ import { paginateFetchXml } from "../../util";
 export const fetchXml = action({
   display: {
     label: "Run Fetch XML Query",
-    description:
-      "Executes a Fetch XML query against the Microsoft Dynamics 365 CRM instance.",
+    description: "Executes a Fetch XML query against the Microsoft Dynamics 365 CRM instance.",
   },
   examplePayload: fetchXmlExamplePayload,
   perform: async (
@@ -21,7 +20,7 @@ export const fetchXml = action({
       impersonateUserId,
       fetchAll: shouldFetchAll,
       connection,
-    },
+    }
   ) => {
     const { pageNumber, nextPageId } = pagination;
     const client = await createCrmClient(connection, context.debug.enabled);

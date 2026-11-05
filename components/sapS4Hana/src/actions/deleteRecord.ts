@@ -15,9 +15,7 @@ export const deleteRecord = action({
     };
     const client = getSapClient(connectionInput, headers);
     try {
-      const { data } = await client.delete(
-        `/sap/opu/odata/sap/${recordType}('${recordId}')`,
-      );
+      const { data } = await client.delete(`/sap/opu/odata/sap/${recordType}('${recordId}')`);
       return { data };
     } catch (error) {
       const handled = handleErrors(error);

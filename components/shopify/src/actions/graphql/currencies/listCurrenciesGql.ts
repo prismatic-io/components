@@ -14,10 +14,7 @@ export const listCurrenciesGql = action({
     description: "Lists all enabled currencies.",
   },
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { shopifyConnection, getAlldata, pagination = {} },
-  ) => {
+  perform: async (context, { shopifyConnection, getAlldata, pagination = {} }) => {
     const client = getShopifyGraphQlClient(
       shopifyConnection,
       undefined,
@@ -42,10 +39,7 @@ export const listCurrenciesGql = action({
     };
   },
   inputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: listCurrenciesGqlOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: listCurrenciesGqlOutputSchema }),
   examplePerform: async () => examplePayload,
   examplePayload,
 });

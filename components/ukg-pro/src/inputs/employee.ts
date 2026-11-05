@@ -1,11 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanString } from "../util";
-import {
-  connectionInput,
-  dateRangeInputs,
-  filterParameters,
-  paginationInputs,
-} from "./common";
+import { connectionInput, dateRangeInputs, filterParameters, paginationInputs } from "./common";
 
 export const employeeId = input({
   label: "Employee ID",
@@ -33,8 +28,7 @@ export const companyIds = input({
   label: "Company IDs",
   type: "string",
   required: false,
-  comments:
-    "Filter by one or more company IDs (comma-separated). Example: ABC,DEF,GHI",
+  comments: "Filter by one or more company IDs (comma-separated). Example: ABC,DEF,GHI",
   placeholder: "Enter company ID(s)",
   example: "ABC,DEF",
   clean: cleanString,
@@ -44,8 +38,7 @@ export const primaryJobCode = input({
   label: "Primary Job Code",
   type: "string",
   required: false,
-  comments:
-    "Filter by one or more primary job codes (comma-separated). Example: SW-ENG,MKT-MGR",
+  comments: "Filter by one or more primary job codes (comma-separated). Example: SW-ENG,MKT-MGR",
   placeholder: "Enter job code(s)",
   example: "SW-ENG,MKT-MGR",
   clean: cleanString,
@@ -55,8 +48,7 @@ export const primaryWorkLocationCode = input({
   label: "Primary Work Location Code",
   type: "string",
   required: false,
-  comments:
-    "Filter by one or more work location codes (comma-separated). Example: ATL-HQ,SF-WEST",
+  comments: "Filter by one or more work location codes (comma-separated). Example: ATL-HQ,SF-WEST",
   placeholder: "Enter location code(s)",
   example: "ATL-HQ,SF-WEST",
   clean: cleanString,
@@ -66,8 +58,7 @@ export const primaryProjectCode = input({
   label: "Primary Project Code",
   type: "string",
   required: false,
-  comments:
-    "Filter by one or more project codes (comma-separated). Example: PROJ-001,PROJ-002",
+  comments: "Filter by one or more project codes (comma-separated). Example: PROJ-001,PROJ-002",
   placeholder: "Enter project code(s)",
   example: "PROJ-001,PROJ-002",
   clean: cleanString,

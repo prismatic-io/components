@@ -18,8 +18,5 @@ export const getUserSettings = action({
   inputs: getUserSettingsInputs,
   examplePayload: getUserSettingsExamplePayload,
   examplePerform: async () => getUserSettingsExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getUserSettingsOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getUserSettingsOutputSchema }),
 });

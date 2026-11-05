@@ -19,15 +19,11 @@ export const deleteAsset = action({
       `${ASSETS_API_PATH}/${encodeURIComponent(assetId)}`,
       { params: { force } },
     );
-    const result: AemJob | DeletedAsset =
-      status === 204 ? { assetId, deleted: true } : data;
+    const result: AemJob | DeletedAsset = status === 204 ? { assetId, deleted: true } : data;
     return { data: result };
   },
   inputs: deleteAssetInputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: deleteAssetOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: deleteAssetOutputSchema }),
   examplePerform: async () => deleteAssetExamplePayload,
   examplePayload: deleteAssetExamplePayload,
 });

@@ -59,10 +59,7 @@ export const nextPollingState = (
   nextCursor: PollWindowCursor | undefined,
 ): PollingState =>
   nextCursor
-    ? {
-        ...(state.lastPolledAt ? { lastPolledAt: state.lastPolledAt } : {}),
-        cursor: nextCursor,
-      }
+    ? { ...(state.lastPolledAt ? { lastPolledAt: state.lastPolledAt } : {}), cursor: nextCursor }
     : { lastPolledAt: window.windowEnd };
 
 const readWindow = async <T>(
@@ -86,8 +83,7 @@ const isInWindow = (value: string | undefined, window: PollWindow): boolean => {
   if (!value) return false;
   const time = toIsoDate(value).getTime();
   return (
-    time >= toIsoDate(window.windowStart).getTime() &&
-    time < toIsoDate(window.windowEnd).getTime()
+    time >= toIsoDate(window.windowStart).getTime() && time < toIsoDate(window.windowEnd).getTime()
   );
 };
 
@@ -97,12 +93,8 @@ export const listChangedContentFragments = async (
   window: PollWindow,
   isBatching: boolean,
 ): Promise<WindowPage<ContentFragment>> => {
-  const after = new Date(
-    toIsoDate(window.windowStart).getTime() - 1,
-  ).toISOString();
-  const before = new Date(
-    toIsoDate(window.windowEnd).getTime() + 1,
-  ).toISOString();
+  const after = new Date(toIsoDate(window.windowStart).getTime() - 1).toISOString();
+  const before = new Date(toIsoDate(window.windowEnd).getTime() + 1).toISOString();
   const query = JSON.stringify({
     filter: { ...baseFilter, modifiedOrCreated: { after, before } },
     sort: [{ on: "modifiedOrCreated", order: "ASC" }],
@@ -138,22 +130,14 @@ export const listChangedAssets = async (
         query: [
           ...buildAssetFilterClauses(filters),
           {
-            range: {
-              [ASSET_MODIFY_DATE_FIELD]: {
-                gte: window.windowStart,
-                lt: window.windowEnd,
-              },
-            },
+            range: { [ASSET_MODIFY_DATE_FIELD]: { gte: window.windowStart, lt: window.windowEnd } },
           },
         ],
         sort: [{ field: ASSET_MODIFY_DATE_FIELD, order: "ASC" }],
         limit: MAX_PAGE_LIMIT,
         cursor,
       };
-      const { data } = await client.post<AssetSearchResponse>(
-        `${ASSETS_API_PATH}/search`,
-        body,
-      );
+      const { data } = await client.post<AssetSearchResponse>(`${ASSETS_API_PATH}/search`, body);
       return { records: data.hits?.results ?? [], cursor: data.cursor };
     },
     window.cursor,

@@ -10,13 +10,8 @@ export const deleteComment = action({
   },
   performSafety: "notAllowed",
   perform: async (context, params) => {
-    const client = await createV3Client(
-      params.jiraConnection,
-      context.debug.enabled,
-    );
-    const { data } = await client.delete(
-      `/issue/${params.issueId}/comment/${params.commentId}`,
-    );
+    const client = await createV3Client(params.jiraConnection, context.debug.enabled);
+    const { data } = await client.delete(`/issue/${params.issueId}/comment/${params.commentId}`);
     return { data };
   },
   examplePerform: async () => deleteCommentExamplePayload,

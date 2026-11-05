@@ -11,9 +11,7 @@ describe("lookBackDateClean", () => {
   });
 
   test("trims whitespace before processing", () => {
-    expect(lookBackDateClean("  2025-01-01  ")).toBe(
-      "2025-01-01T00:00:00.000Z",
-    );
+    expect(lookBackDateClean("  2025-01-01  ")).toBe("2025-01-01T00:00:00.000Z");
   });
 
   test("throws for invalid format", () => {
@@ -22,14 +20,10 @@ describe("lookBackDateClean", () => {
   });
 
   test("throws for an invalid calendar date", () => {
-    expect(() => lookBackDateClean("2025-02-30")).toThrow(
-      "not a valid calendar date",
-    );
+    expect(() => lookBackDateClean("2025-02-30")).toThrow("not a valid calendar date");
   });
 
   test("throws for a future date", () => {
-    expect(() => lookBackDateClean("2099-01-01")).toThrow(
-      "cannot be a future date",
-    );
+    expect(() => lookBackDateClean("2099-01-01")).toThrow("cannot be a future date");
   });
 });

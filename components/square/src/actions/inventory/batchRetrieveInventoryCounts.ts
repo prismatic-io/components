@@ -11,19 +11,9 @@ export const batchRetrieveInventoryCounts = action({
   },
   perform: async (
     context,
-    {
-      squareConnection,
-      catalogObjectIds,
-      locationIds,
-      updatedAfter,
-      pagination = {},
-      states,
-    },
+    { squareConnection, catalogObjectIds, locationIds, updatedAfter, pagination = {}, states },
   ) => {
-    const client = await createAuthorizedClient(
-      squareConnection,
-      context.debug.enabled,
-    );
+    const client = await createAuthorizedClient(squareConnection, context.debug.enabled);
 
     const requestBody = {
       catalog_object_ids: catalogObjectIds,
@@ -34,10 +24,7 @@ export const batchRetrieveInventoryCounts = action({
       limit: pagination.limit,
     };
 
-    const response = await client.post(
-      "/v2/inventory/counts/batch-retrieve",
-      requestBody,
-    );
+    const response = await client.post("/v2/inventory/counts/batch-retrieve", requestBody);
 
     return {
       data: response.data,

@@ -6,11 +6,7 @@ import { createClient } from "../client";
 import { templatedOauth } from "../connections";
 import { MAX_PAGES, PLANNER_ENDPOINTS } from "../constants";
 import { listTasksInPlanExamplePayload } from "../examplePayloads";
-import {
-  fetchAllDirectory,
-  fetchAllPlanner,
-  fetchTasksCreatedSince,
-} from "./pagination";
+import { fetchAllDirectory, fetchAllPlanner, fetchTasksCreatedSince } from "./pagination";
 
 const BASE = "https://graph.microsoft.com";
 const PLAN_ID = "xqQg5FS2LkCp935s-FIFm2QAFkHM";
@@ -18,11 +14,7 @@ const TASKS_PATH = PLANNER_ENDPOINTS.PLAN_TASKS(PLAN_ID);
 const TASKS_URL = `/v1.0${TASKS_PATH}`;
 const CONTEXT = "https://graph.microsoft.com/v1.0/$metadata#planner/tasks";
 
-const connection = createConnection(
-  templatedOauth,
-  {},
-  { access_token: "test-token" },
-);
+const connection = createConnection(templatedOauth, {}, { access_token: "test-token" });
 const client = () => createClient(connection, false);
 
 const exampleTask = listTasksInPlanExamplePayload.data.value[0];
@@ -48,8 +40,7 @@ describe("fetchAllPlanner", () => {
       .get(TASKS_URL)
       .query({ $skiptoken: "page2" })
       .reply(200, {
-        "@odata.context":
-          "https://graph.microsoft.com/v1.0/$metadata#SECOND-PAGE-CONTEXT",
+        "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#SECOND-PAGE-CONTEXT",
         value: [{ id: "t_2" }],
       });
 
@@ -76,9 +67,7 @@ describe("fetchAllPlanner", () => {
 
     await fetchAllPlanner<{ id: string }>(client(), TASKS_PATH);
 
-    expect(requested).toEqual([
-      `${TASKS_URL}?%24skiptoken=Skip%3D%2710%27&opaque=a%2Bb`,
-    ]);
+    expect(requested).toEqual([`${TASKS_URL}?%24skiptoken=Skip%3D%2710%27&opaque=a%2Bb`]);
   });
 
   test("returns an empty list when the service omits `value`", async () => {
@@ -125,10 +114,7 @@ describe("fetchAllDirectory", () => {
         requested.push(this.req.path);
         return [
           200,
-          {
-            value: [{ id: "u_1" }],
-            "@odata.nextLink": `${BASE}/v1.0/users?%24skiptoken=next`,
-          },
+          { value: [{ id: "u_1" }], "@odata.nextLink": `${BASE}/v1.0/users?%24skiptoken=next` },
         ];
       });
     nock(BASE)
@@ -139,14 +125,10 @@ describe("fetchAllDirectory", () => {
         return [200, { value: [{ id: "u_2" }] }];
       });
 
-    const result = await fetchAllDirectory<{ id: string }>(
-      client(),
-      PLANNER_ENDPOINTS.USERS,
-      {
-        $select: "id,displayName",
-        $top: 999,
-      },
-    );
+    const result = await fetchAllDirectory<{ id: string }>(client(), PLANNER_ENDPOINTS.USERS, {
+      $select: "id,displayName",
+      $top: 999,
+    });
 
     expect(result.value).toEqual([{ id: "u_1" }, { id: "u_2" }]);
     expect(requested).toEqual([
@@ -178,11 +160,7 @@ describe("fetchTasksCreatedSince", () => {
   test("reports the newest createdDateTime across every fetched task, not only the created ones", async () => {
     const { created, newestCreatedDateTime } = await invoke([
       { ...exampleTask, id: "older", createdDateTime: "2024-01-09T09:00:00Z" },
-      {
-        ...exampleTask,
-        id: "newer",
-        createdDateTime: "2024-01-09T11:00:00.1239999Z",
-      },
+      { ...exampleTask, id: "newer", createdDateTime: "2024-01-09T11:00:00.1239999Z" },
     ]);
 
     expect(created.map((task) => task.id)).toEqual(["newer"]);
@@ -195,21 +173,15 @@ describe("fetchTasksCreatedSince", () => {
       .reply(200, {
         "@odata.context": CONTEXT,
         value: [
-          {
-            ...exampleTask,
-            id: "older",
-            createdDateTime: "2024-01-09T09:00:00Z",
-          },
-          {
-            ...exampleTask,
-            id: "newer",
-            createdDateTime: "2024-01-09T11:00:00Z",
-          },
+          { ...exampleTask, id: "older", createdDateTime: "2024-01-09T09:00:00Z" },
+          { ...exampleTask, id: "newer", createdDateTime: "2024-01-09T11:00:00Z" },
         ],
       });
 
-    const { fetched, created, newestCreatedDateTime } =
-      await fetchTasksCreatedSince<PlannerTask>(client(), TASKS_PATH);
+    const { fetched, created, newestCreatedDateTime } = await fetchTasksCreatedSince<PlannerTask>(
+      client(),
+      TASKS_PATH,
+    );
 
     expect(fetched).toBe(2);
     expect(created).toEqual([]);
@@ -224,9 +196,7 @@ describe("fetchTasksCreatedSince", () => {
   });
 
   test("excludes a task whose createdDateTime equals the watermark", async () => {
-    const { created } = await invoke([
-      { ...exampleTask, id: "boundary", createdDateTime: since },
-    ]);
+    const { created } = await invoke([{ ...exampleTask, id: "boundary", createdDateTime: since }]);
     expect(created).toEqual([]);
   });
 
@@ -242,16 +212,8 @@ describe("fetchTasksCreatedSince", () => {
 
   test("normalizes a UTC offset instead of ordering timestamps lexically", async () => {
     const { created } = await invoke([
-      {
-        ...exampleTask,
-        id: "ahead-of-utc",
-        createdDateTime: "2024-01-09T11:30:00+02:00",
-      },
-      {
-        ...exampleTask,
-        id: "behind-utc",
-        createdDateTime: "2024-01-09T09:30:00-02:00",
-      },
+      { ...exampleTask, id: "ahead-of-utc", createdDateTime: "2024-01-09T11:30:00+02:00" },
+      { ...exampleTask, id: "behind-utc", createdDateTime: "2024-01-09T09:30:00-02:00" },
     ]);
 
     expect(created.map((task) => task.id)).toEqual(["behind-utc"]);
@@ -267,20 +229,17 @@ describe("fetchTasksCreatedSince", () => {
         return [
           200,
           {
-            value: [
-              {
-                ...exampleTask,
-                id: `t_${pages}`,
-                createdDateTime: "2024-01-09T11:00:00Z",
-              },
-            ],
+            value: [{ ...exampleTask, id: `t_${pages}`, createdDateTime: "2024-01-09T11:00:00Z" }],
             "@odata.nextLink": `${BASE}${TASKS_URL}?p=${pages + 1}`,
           },
         ];
       });
 
-    const { fetched, created, truncated } =
-      await fetchTasksCreatedSince<PlannerTask>(client(), TASKS_PATH, since);
+    const { fetched, created, truncated } = await fetchTasksCreatedSince<PlannerTask>(
+      client(),
+      TASKS_PATH,
+      since,
+    );
 
     expect(fetched).toBe(MAX_PAGES);
     expect(created).toHaveLength(MAX_PAGES);

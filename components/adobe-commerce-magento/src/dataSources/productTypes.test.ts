@@ -16,9 +16,7 @@ describe("productTypes", () => {
         { name: "bundle", label: "Bundle Product", extension_attributes: {} },
       ]);
 
-    const result = await invokeDataSource(productTypes, {
-      connectionInput: storeConnection(),
-    });
+    const result = await invokeDataSource(productTypes, { connectionInput: storeConnection() });
 
     expect(result.result).toEqual([
       { label: "Bundle Product", key: "bundle" },
@@ -29,9 +27,7 @@ describe("productTypes", () => {
   test("returns an empty array rather than throwing when the store declares no types", async () => {
     nock(STORE_HOST).get("/rest/default/V1/products/types").reply(200, []);
 
-    const result = await invokeDataSource(productTypes, {
-      connectionInput: storeConnection(),
-    });
+    const result = await invokeDataSource(productTypes, { connectionInput: storeConnection() });
 
     expect(result.result).toEqual([]);
   });

@@ -1,8 +1,4 @@
-import type {
-  ActionLogger,
-  Connection,
-  FlowAttributes,
-} from "@prismatic-io/spectral";
+import type { ActionLogger, Connection, FlowAttributes } from "@prismatic-io/spectral";
 
 export type PushNotificationWebhookDeleteContext = {
   logger: ActionLogger;

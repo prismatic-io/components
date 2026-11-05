@@ -11,8 +11,7 @@ import { updateBucketInputs } from "../../inputs";
 export const updateBucket = action({
   display: {
     label: "Update Bucket",
-    description:
-      "Rename a bucket. A bucket cannot be moved to a different plan.",
+    description: "Rename a bucket. A bucket cannot be moved to a different plan.",
   },
   inputs: updateBucketInputs,
   outputSchema: outputSchema({

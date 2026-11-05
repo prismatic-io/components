@@ -2,14 +2,10 @@ import { afterEach, describe, expect, test, vi } from "vitest";
 import { getAttributeExamplePayload } from "../../examplePayloads";
 import { createMockConnection, createMockContext } from "../../testHelpers";
 
-const { mockRetrieveAttribute } = vi.hoisted(() => ({
-  mockRetrieveAttribute: vi.fn(),
-}));
+const { mockRetrieveAttribute } = vi.hoisted(() => ({ mockRetrieveAttribute: vi.fn() }));
 
 vi.mock("../../client", () => ({
-  createCrmClient: vi
-    .fn()
-    .mockResolvedValue({ retrieveAttribute: mockRetrieveAttribute }),
+  createCrmClient: vi.fn().mockResolvedValue({ retrieveAttribute: mockRetrieveAttribute }),
 }));
 
 import { getAttribute } from "./getAttribute";
@@ -21,9 +17,7 @@ describe("getAttribute", () => {
   afterEach(() => vi.clearAllMocks());
 
   test("happy path returns attribute data", async () => {
-    mockRetrieveAttribute.mockResolvedValueOnce(
-      getAttributeExamplePayload.data,
-    );
+    mockRetrieveAttribute.mockResolvedValueOnce(getAttributeExamplePayload.data);
     const result = await getAttribute.perform(ctx, {
       connection: conn,
       entityId: "id-1",
@@ -35,9 +29,7 @@ describe("getAttribute", () => {
   });
 
   test("error path surfaces the failure", async () => {
-    mockRetrieveAttribute.mockRejectedValueOnce(
-      new Error("Attribute not found"),
-    );
+    mockRetrieveAttribute.mockRejectedValueOnce(new Error("Attribute not found"));
     await expect(
       getAttribute.perform(ctx, {
         connection: conn,
@@ -45,7 +37,7 @@ describe("getAttribute", () => {
         attributeType: "bad-key",
         fieldNames: undefined,
         expandPropertyNames: undefined,
-      } as any),
+      } as any)
     ).rejects.toThrow("Attribute not found");
   });
 });

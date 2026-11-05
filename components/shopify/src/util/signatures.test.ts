@@ -3,8 +3,7 @@ import type { Mock } from "vitest";
 import { signaturesMatch } from ".";
 
 vi.mock("node:crypto", async () => {
-  const actual =
-    await vi.importActual<typeof import("node:crypto")>("node:crypto");
+  const actual = await vi.importActual<typeof import("node:crypto")>("node:crypto");
   return { ...actual, timingSafeEqual: vi.fn(actual.timingSafeEqual) };
 });
 
@@ -35,12 +34,7 @@ describe("signaturesMatch", () => {
     expect(signaturesMatch(SIGNATURE, received)).toBe(false);
   });
 
-  test.each([
-    undefined,
-    null,
-    42,
-    [SIGNATURE],
-  ])("fails closed on %p", (received) => {
+  test.each([undefined, null, 42, [SIGNATURE]])("fails closed on %p", (received) => {
     expect(signaturesMatch(SIGNATURE, received)).toBe(false);
   });
 

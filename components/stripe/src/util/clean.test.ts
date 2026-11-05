@@ -20,12 +20,8 @@ describe("cleanIntegerInput", () => {
   });
 
   it("rejects a fractional value instead of truncating it", () => {
-    expect(() => cleanIntegerInput(10.7)).toThrow(
-      "Value '10.7' must be a whole number.",
-    );
-    expect(() => cleanIntegerInput("10.7")).toThrow(
-      "Value '10.7' must be a whole number.",
-    );
+    expect(() => cleanIntegerInput(10.7)).toThrow("Value '10.7' must be a whole number.");
+    expect(() => cleanIntegerInput("10.7")).toThrow("Value '10.7' must be a whole number.");
   });
 
   it("resolves an absent value to undefined so the field is omitted", () => {
@@ -87,9 +83,7 @@ describe("cleanNumberInput", () => {
   });
 
   it("throws on a value it cannot coerce", () => {
-    expect(() => cleanNumberInput("Hello")).toThrow(
-      "Value 'Hello' cannot be coerced to a number.",
-    );
+    expect(() => cleanNumberInput("Hello")).toThrow("Value 'Hello' cannot be coerced to a number.");
   });
 
   it("resolves an absent value to undefined", () => {
@@ -189,9 +183,7 @@ describe("cleanKeyValueListInput", () => {
   });
 
   it("leaves non-string values as they are", () => {
-    expect(
-      cleanKeyValueListInput([{ key: "nested", value: { a: 1 } }]),
-    ).toEqual({
+    expect(cleanKeyValueListInput([{ key: "nested", value: { a: 1 } }])).toEqual({
       nested: { a: 1 },
     });
   });
@@ -267,9 +259,9 @@ describe("util.types.toNumber used as a clean", () => {
 
 describe("util.types.toObject used as a clean", () => {
   it("parses a JSON string and passes a value through otherwise", () => {
-    expect(util.types.toObject('[{"price":"price_123","quantity":1}]')).toEqual(
-      [{ price: "price_123", quantity: 1 }],
-    );
+    expect(util.types.toObject('[{"price":"price_123","quantity":1}]')).toEqual([
+      { price: "price_123", quantity: 1 },
+    ]);
     const value = [{ price: "price_123" }];
     expect(util.types.toObject(value)).toBe(value);
   });
@@ -285,9 +277,7 @@ describe("cleanRequiredAmountInput", () => {
   });
 
   it("rejects a fractional value instead of truncating it", () => {
-    expect(() => cleanRequiredAmountInput(10.7)).toThrow(
-      "Value '10.7' must be a whole number.",
-    );
+    expect(() => cleanRequiredAmountInput(10.7)).toThrow("Value '10.7' must be a whole number.");
     expect(() => cleanRequiredAmountInput("44.55")).toThrow(
       "Value '44.55' must be a whole number.",
     );

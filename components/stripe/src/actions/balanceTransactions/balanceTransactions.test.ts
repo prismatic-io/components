@@ -23,10 +23,7 @@ describe("getBalanceTransaction", () => {
 
     const { result } = await invoke(
       getBalanceTransaction,
-      params({
-        balanceTransactionId: "txn_1MiN3gLkdIwHu7ixxapQrznl",
-        stripeConnection: conn,
-      }),
+      params({ balanceTransactionId: "txn_1MiN3gLkdIwHu7ixxapQrznl", stripeConnection: conn }),
     );
 
     expect(result.data).toEqual(getBalanceTransactionExamplePayload.data);
@@ -37,10 +34,7 @@ describe("getBalanceTransaction", () => {
     nock(BASE)
       .get("/v1/balance_transactions/txn_missing")
       .reply(404, {
-        error: {
-          type: "invalid_request_error",
-          message: "No such balancetransaction",
-        },
+        error: { type: "invalid_request_error", message: "No such balancetransaction" },
       });
 
     await expect(
@@ -61,11 +55,7 @@ describe("listBalanceTransactions", () => {
 
     const { result } = await invoke(
       listBalanceTransactions,
-      params({
-        currency: "usd",
-        pagination: { limit: 10 },
-        stripeConnection: conn,
-      }),
+      params({ currency: "usd", pagination: { limit: 10 }, stripeConnection: conn }),
     );
 
     expect(result.data).toEqual(listBalanceTransactionsExamplePayload.data);
@@ -77,10 +67,7 @@ describe("listBalanceTransactions", () => {
       .get("/v1/balance_transactions")
       .query(true)
       .reply(400, {
-        error: {
-          type: "invalid_request_error",
-          message: "Invalid currency: xyz",
-        },
+        error: { type: "invalid_request_error", message: "Invalid currency: xyz" },
       });
 
     await expect(

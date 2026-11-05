@@ -1,8 +1,4 @@
-import type {
-  ActionContext,
-  Connection,
-  TriggerEventFunctionReturn,
-} from "@prismatic-io/spectral";
+import type { ActionContext, Connection, TriggerEventFunctionReturn } from "@prismatic-io/spectral";
 
 export type AemSitesEventCode =
   | "aem.sites.contentFragment.created"

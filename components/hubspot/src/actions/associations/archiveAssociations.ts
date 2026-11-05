@@ -15,15 +15,7 @@ export const archiveAssociations = action({
   performSafety: "notAllowed",
   perform: async (
     context,
-    {
-      fromObjectType,
-      toObjectType,
-      fromId,
-      toId,
-      associateType,
-      timeout,
-      hubspotConnection,
-    },
+    { fromObjectType, toObjectType, fromId, toId, associateType, timeout, hubspotConnection },
   ) => {
     const debugRequest = context.debug.enabled;
     const client = getHubspotClient({
@@ -32,19 +24,10 @@ export const archiveAssociations = action({
       debugRequest,
     });
 
-    const spec = await resolveAssociationSpec(
-      client,
-      fromObjectType,
-      toObjectType,
-      associateType,
-    );
+    const spec = await resolveAssociationSpec(client, fromObjectType, toObjectType, associateType);
 
     const { data } = await client.post(
-      hubspotPaths.associations(
-        fromObjectType,
-        toObjectType,
-        "/batch/labels/archive",
-      ),
+      hubspotPaths.associations(fromObjectType, toObjectType, "/batch/labels/archive"),
       {
         inputs: [
           {
@@ -67,8 +50,5 @@ export const archiveAssociations = action({
   }),
   inputs: archiveAssociationsInputs,
   examplePayload: archiveAssociationsExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: archiveAssociationsOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: archiveAssociationsOutputSchema }),
 });

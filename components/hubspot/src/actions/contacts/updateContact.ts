@@ -34,21 +34,18 @@ export const updateContact = action({
       debugRequest,
     });
 
-    const { data } = await client.patch(
-      hubspotPaths.objects("contacts", `/${contactId}`),
-      {
-        properties: {
-          company: contactUpdateCompany,
-          email: contactInfo.contactUpdateEmail,
-          firstname: contactUpdateFirstName,
-          lastname: contactUpdatelastName,
-          phone: contactInfo.updatePhone,
-          website: contactInfo.updateWebsite,
-          ...fieldValues,
-          ...dynamicValues,
-        },
+    const { data } = await client.patch(hubspotPaths.objects("contacts", `/${contactId}`), {
+      properties: {
+        company: contactUpdateCompany,
+        email: contactInfo.contactUpdateEmail,
+        firstname: contactUpdateFirstName,
+        lastname: contactUpdatelastName,
+        phone: contactInfo.updatePhone,
+        website: contactInfo.updateWebsite,
+        ...fieldValues,
+        ...dynamicValues,
       },
-    );
+    });
 
     return { data };
   },

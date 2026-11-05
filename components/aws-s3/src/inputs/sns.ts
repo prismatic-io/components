@@ -51,8 +51,7 @@ const subscriptionArn = input({
   label: "Subscription ARN",
   type: "string",
   required: true,
-  example:
-    "arn:aws:sns:us-east-2:123456789012:MyTopic:a1b2c3d4-e5f6-7890-a1b2-c3d4e5f67890",
+  example: "arn:aws:sns:us-east-2:123456789012:MyTopic:a1b2c3d4-e5f6-7890-a1b2-c3d4e5f67890",
   placeholder: "Enter subscription ARN",
   comments: "The Amazon Resource Name (ARN) of the SNS topic subscription.",
   clean: util.types.toString,

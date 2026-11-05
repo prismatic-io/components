@@ -237,10 +237,7 @@ export const deleteCatalogObjectExamplePayload = {
 
 export const batchDeleteCatalogObjectsExamplePayload = {
   data: {
-    deleted_object_ids: [
-      "W62UWFY35CWMYGVWK6TWJDNI",
-      "X6NH6N2H6TK4W8AD4VFKZL8J",
-    ],
+    deleted_object_ids: ["W62UWFY35CWMYGVWK6TWJDNI", "X6NH6N2H6TK4W8AD4VFKZL8J"],
     deleted_at: "2023-05-21T10:30:00.000Z",
   },
 };

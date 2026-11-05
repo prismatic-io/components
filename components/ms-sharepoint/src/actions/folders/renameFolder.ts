@@ -9,18 +9,12 @@ export const renameFolder = action({
     description: "Rename a Folder in a Drive",
   },
   inputs: renameFolderInputs,
-  perform: async (
-    context,
-    { connection, siteId, driveId, folderId, folderName },
-  ) => {
+  perform: async (context, { connection, siteId, driveId, folderId, folderName }) => {
     const client = await createClient(connection, context.debug.enabled);
 
-    const { data } = await client.patch(
-      `/sites/${siteId}/drives/${driveId}/items/${folderId}`,
-      {
-        name: folderName,
-      },
-    );
+    const { data } = await client.patch(`/sites/${siteId}/drives/${driveId}/items/${folderId}`, {
+      name: folderName,
+    });
 
     return { data };
   },

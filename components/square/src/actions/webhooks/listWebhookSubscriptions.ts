@@ -11,18 +11,9 @@ export const listWebhookSubscriptions = action({
   },
   perform: async (
     context,
-    {
-      squareConnection,
-      fetchAll,
-      pagination = {},
-      includeDisabled,
-      sortOrderSubscriptions,
-    },
+    { squareConnection, fetchAll, pagination = {}, includeDisabled, sortOrderSubscriptions },
   ) => {
-    const client = await createAuthorizedClient(
-      squareConnection,
-      context.debug.enabled,
-    );
+    const client = await createAuthorizedClient(squareConnection, context.debug.enabled);
 
     const data = await fetchAllPages(
       client,

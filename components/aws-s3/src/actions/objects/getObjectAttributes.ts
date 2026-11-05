@@ -8,8 +8,7 @@ import { getObjectAttributesOutputSchema } from "../../outputSchemas";
 export const getObjectAttributes = action({
   display: {
     label: "Get Object Attributes",
-    description:
-      "Retrieves all the metadata from an object without returning the object itself",
+    description: "Retrieves all the metadata from an object without returning the object itself",
   },
   performSafety: "safe",
   perform: async (

@@ -19,14 +19,10 @@ export const countProductsGql = action({
       context.debug.enabled,
       context.logger,
     );
-    const data: { productsCount: Count } =
-      await client.request(countProductsQuery);
+    const data: { productsCount: Count } = await client.request(countProductsQuery);
     return { data: { data: data.productsCount } };
   },
   inputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: countProductsGqlOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: countProductsGqlOutputSchema }),
   examplePayload,
 });

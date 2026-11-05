@@ -7,15 +7,11 @@ import { searchProjectsOutputSchema } from "../../outputSchemas";
 export const searchProjects = action({
   display: {
     label: "Search Projects",
-    description:
-      "Return a list of projects that match the given string of text.",
+    description: "Return a list of projects that match the given string of text.",
   },
   performSafety: "notAllowed",
   perform: async (context, params) => {
-    const client = await createV3Client(
-      params.jiraConnection,
-      context.debug.enabled,
-    );
+    const client = await createV3Client(params.jiraConnection, context.debug.enabled);
     const {
       data: { values },
     } = await client.get("/project/search", {

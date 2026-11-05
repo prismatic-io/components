@@ -26,10 +26,7 @@ export const updateCustomer = action({
       taxIds,
     },
   ) => {
-    const client = await createAuthorizedClient(
-      squareConnection,
-      context.debug.enabled,
-    );
+    const client = await createAuthorizedClient(squareConnection, context.debug.enabled);
     const version = getVersionFromConnection(squareConnection);
     const euCountries = [
       "BE",
@@ -81,10 +78,7 @@ export const updateCustomer = action({
       version,
     };
 
-    const response = await client.put(
-      `/v2/customers/${customerId}`,
-      updateBody,
-    );
+    const response = await client.put(`/v2/customers/${customerId}`, updateBody);
 
     return {
       data: response.data,

@@ -10,41 +10,19 @@ import {
 } from "./common";
 
 describe("common inputs: happy-path normalization", () => {
-  test.each<
-    [string, ((value: unknown) => unknown) | undefined, unknown, unknown]
-  >([
+  test.each<[string, ((value: unknown) => unknown) | undefined, unknown, unknown]>([
     ["fetchAll (true)", fetchAll.clean, "true", true],
     ["fetchAll (false)", fetchAll.clean, "false", false],
-    [
-      "searchCriteriaConditionType",
-      searchCriteriaConditionType.clean,
-      "gteq",
-      "gteq",
-    ],
-    [
-      "searchCriteriaField",
-      searchCriteriaField.clean,
-      "updated_at",
-      "updated_at",
-    ],
+    ["searchCriteriaConditionType", searchCriteriaConditionType.clean, "gteq", "gteq"],
+    ["searchCriteriaField", searchCriteriaField.clean, "updated_at", "updated_at"],
     [
       "searchCriteriaValue",
       searchCriteriaValue.clean,
       "2026-01-01 00:00:00",
       "2026-01-01 00:00:00",
     ],
-    [
-      "searchCriteriaSortDirection",
-      searchCriteriaSortDirection.clean,
-      "DESC",
-      "DESC",
-    ],
-    [
-      "searchCriteriaSortField",
-      searchCriteriaSortField.clean,
-      "created_at",
-      "created_at",
-    ],
+    ["searchCriteriaSortDirection", searchCriteriaSortDirection.clean, "DESC", "DESC"],
+    ["searchCriteriaSortField", searchCriteriaSortField.clean, "created_at", "created_at"],
   ])("%s normalizes a valid value", (_label, clean, raw, expected) => {
     expect(clean?.(raw)).toEqual(expected);
   });

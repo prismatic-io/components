@@ -20,14 +20,8 @@ export const deleteCustomer = action({
       data: await client.customers.del(util.types.toString(customerId)),
     };
   },
-  examplePerform: async (
-    _context,
-    { customerId },
-  ): Promise<{ data: unknown }> => {
-    const deleted = deleteCustomerExamplePayload.data as Record<
-      string,
-      unknown
-    >;
+  examplePerform: async (_context, { customerId }): Promise<{ data: unknown }> => {
+    const deleted = deleteCustomerExamplePayload.data as Record<string, unknown>;
 
     return {
       data: {

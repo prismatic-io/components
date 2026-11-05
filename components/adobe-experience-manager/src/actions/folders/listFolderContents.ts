@@ -12,21 +12,12 @@ export const listFolderContents = action({
     description: "List the folders and assets directly inside a folder.",
   },
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { connection, path, fetchAll, pagination, types, orderBy },
-  ) => {
+  perform: async (context, { connection, path, fetchAll, pagination, types, orderBy }) => {
     const client = createAemClient(connection, context.debug.enabled);
     const url = `${FOLDERS_API_PATH}/`;
     if (!fetchAll) {
       const { data } = await client.get<FolderListingResponse>(url, {
-        params: {
-          path,
-          types,
-          orderBy,
-          cursor: pagination?.cursor,
-          limit: pagination?.limit,
-        },
+        params: { path, types, orderBy, cursor: pagination?.cursor, limit: pagination?.limit },
       });
       return { data };
     }
@@ -44,10 +35,7 @@ export const listFolderContents = action({
     return { data: { self, children } };
   },
   inputs: listFolderContentsInputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: listFolderContentsOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: listFolderContentsOutputSchema }),
   examplePerform: async () => listFolderContentsExamplePayload,
   examplePayload: listFolderContentsExamplePayload,
 });

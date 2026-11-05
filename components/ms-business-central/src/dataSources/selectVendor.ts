@@ -29,11 +29,6 @@ export const selectVendor = dataSource({
   },
   dataSourceType: "picklist",
   examplePayload: {
-    result: [
-      {
-        label: "First Up Consultants",
-        key: "5d115c9c-44e3-ea11-bb43-000d3a2feca1",
-      },
-    ],
+    result: [{ label: "First Up Consultants", key: "5d115c9c-44e3-ea11-bb43-000d3a2feca1" }],
   },
 });

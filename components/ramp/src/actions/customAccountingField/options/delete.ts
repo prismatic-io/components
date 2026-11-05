@@ -24,9 +24,7 @@ export const deleteCustomAccountingFieldOption = action({
   perform: async (context, { connection, customAccountingFieldOptionId }) => {
     const client = createClient(connection, context.debug.enabled);
 
-    await client.delete(
-      `/accounting/field-options/${customAccountingFieldOptionId}`,
-    );
+    await client.delete(`/accounting/field-options/${customAccountingFieldOptionId}`);
     return {
       data: GENERIC_DELETE_RESPONSE,
     };

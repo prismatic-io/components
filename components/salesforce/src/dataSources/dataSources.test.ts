@@ -63,15 +63,12 @@ describe("previewRecordTypeFieldValues", () => {
   it("should return a valid list of field values", async () => {
     if (!connection) return;
 
-    const { result } = await harness.dataSource(
-      "previewRecordTypeFieldValues",
-      {
-        version,
-        connection,
-        dynamicRecordType: "Account",
-        dynamicFieldName: "Name",
-      },
-    );
+    const { result } = await harness.dataSource("previewRecordTypeFieldValues", {
+      version,
+      connection,
+      dynamicRecordType: "Account",
+      dynamicFieldName: "Name",
+    });
     expect(util.types.isPicklist(result)).toBe(true);
   });
 });

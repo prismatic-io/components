@@ -4,10 +4,7 @@ import { listWorkflowOutboundMessagesFunction } from "../../util";
 import type { WorkflowOutboundMessage } from "../../types";
 import type { Connection, Schema } from "jsforce";
 
-const processBatch = async <T>(
-  promises: Promise<T>[],
-  batchSize: number = 10,
-): Promise<T[]> => {
+const processBatch = async <T>(promises: Promise<T>[], batchSize: number = 10): Promise<T[]> => {
   const results: T[] = [];
   for (let i = 0; i < promises.length; i += batchSize) {
     const batch = promises.slice(i, i + batchSize);
@@ -22,24 +19,19 @@ export const getOutboundMessagesPointingToEndpointUrl = async (
   endpointUrl: string,
   logger: ActionLogger,
 ) => {
-  const listWorkflowOutboundMessagesResult =
-    await listWorkflowOutboundMessagesFunction(client);
+  const listWorkflowOutboundMessagesResult = await listWorkflowOutboundMessagesFunction(client);
 
-  if (
-    !listWorkflowOutboundMessagesResult ||
-    listWorkflowOutboundMessagesResult.length === 0
-  ) {
+  if (!listWorkflowOutboundMessagesResult || listWorkflowOutboundMessagesResult.length === 0) {
     logger.info("No outbound messages found.");
     return [];
   }
 
-  const toRetrieveWorkflowOutboundMessagesData =
-    listWorkflowOutboundMessagesResult.map(
-      (msg) =>
-        client.tooling
-          .sobject("WorkflowOutboundMessage")
-          .retrieve(msg.id) as unknown as Promise<WorkflowOutboundMessage>,
-    );
+  const toRetrieveWorkflowOutboundMessagesData = listWorkflowOutboundMessagesResult.map(
+    (msg) =>
+      client.tooling
+        .sobject("WorkflowOutboundMessage")
+        .retrieve(msg.id) as unknown as Promise<WorkflowOutboundMessage>,
+  );
   const workflowOutboundMessagesDataResult = await processBatch(
     toRetrieveWorkflowOutboundMessagesData,
     10,

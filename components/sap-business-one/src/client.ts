@@ -1,15 +1,8 @@
 import type { ActionContext, Connection } from "@prismatic-io/spectral";
 import axios, { type AxiosInstance } from "axios";
 import https from "node:https";
-import {
-  getAuthCredentials,
-  getBaseUrlAndProxy,
-  validateConnection,
-} from "./util";
-import type {
-  CustomAxiosClient,
-  LoginClientParams,
-} from "./interfaces/general";
+import { getAuthCredentials, getBaseUrlAndProxy, validateConnection } from "./util";
+import type { CustomAxiosClient, LoginClientParams } from "./interfaces/general";
 import type { DataSourceContext } from "@prismatic-io/spectral/dist/serverTypes";
 
 export const createClient = async (
@@ -43,12 +36,7 @@ export const getCookies = async (
   return { cookie };
 };
 
-const login = async ({
-  credentials,
-  context,
-  debug,
-  connection,
-}: LoginClientParams) => {
+const login = async ({ credentials, context, debug, connection }: LoginClientParams) => {
   const client = createAxiosClient({
     context,
     debug,

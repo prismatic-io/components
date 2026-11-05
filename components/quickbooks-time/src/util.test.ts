@@ -2,15 +2,12 @@ import type { HttpClient } from "@prismatic-io/spectral/http";
 import type { Mock } from "vitest";
 import { fetchRecords, lookBackDateClean } from "./util";
 
-const createMockClient = (getMock: Mock) =>
-  ({ get: getMock }) as unknown as HttpClient;
+const createMockClient = (getMock: Mock) => ({ get: getMock }) as unknown as HttpClient;
 
 const page = (object: string, ids: number[], more: boolean) => ({
   data: {
     results: {
-      [object]: Object.fromEntries(
-        ids.map((id) => [String(id), { id, name: `Record ${id}` }]),
-      ),
+      [object]: Object.fromEntries(ids.map((id) => [String(id), { id, name: `Record ${id}` }])),
     },
     more,
     supplemental_data: {},
@@ -40,11 +37,7 @@ describe("fetchRecords", () => {
       .mockResolvedValueOnce(page("jobcodes", [1, 2], true))
       .mockResolvedValueOnce(page("jobcodes", [3], false));
 
-    const records = await fetchRecords(
-      createMockClient(getMock),
-      "jobcodes",
-      {},
-    );
+    const records = await fetchRecords(createMockClient(getMock), "jobcodes", {});
 
     expect(records.map((r) => r.id)).toEqual([1, 2, 3]);
     expect(getMock).toHaveBeenCalledTimes(2);
@@ -111,9 +104,7 @@ describe("lookBackDateClean", () => {
   });
 
   it("trims surrounding whitespace", () => {
-    expect(lookBackDateClean("  2026-01-15\n")).toBe(
-      "2026-01-15T00:00:00.000Z",
-    );
+    expect(lookBackDateClean("  2026-01-15\n")).toBe("2026-01-15T00:00:00.000Z");
   });
 
   it("accepts today", () => {
@@ -139,9 +130,7 @@ describe("lookBackDateClean", () => {
     ["a number", 20260115],
     ["a Date", new Date("2026-01-15T00:00:00.000Z")],
   ])("rejects %s", (_label, value) => {
-    expect(() => lookBackDateClean(value)).toThrow(
-      /Look-back Date must be a date/,
-    );
+    expect(() => lookBackDateClean(value)).toThrow(/Look-back Date must be a date/);
   });
 
   it("rejects a non-calendar date", () => {

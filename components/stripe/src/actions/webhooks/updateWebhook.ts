@@ -11,10 +11,7 @@ export const updateWebhook = action({
     description: "Update an existing webhook endpoint by ID.",
   },
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { stripeConnection, timeout, webhookEvents, webhookId, webhookUrl },
-  ) => {
+  perform: async (context, { stripeConnection, timeout, webhookEvents, webhookId, webhookUrl }) => {
     const client = createStripeClient({
       stripeConnection,
       timeout,
@@ -37,8 +34,7 @@ export const updateWebhook = action({
       ...updateWebhookExamplePayload.data,
       id: webhookId,
       url: webhookUrl ?? updateWebhookExamplePayload.data.url,
-      enabled_events:
-        webhookEvents ?? updateWebhookExamplePayload.data.enabled_events,
+      enabled_events: webhookEvents ?? updateWebhookExamplePayload.data.enabled_events,
     },
   }),
   inputs: updateWebhookInputs,

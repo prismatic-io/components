@@ -7,17 +7,13 @@ import { validateConnectionExamplePayload } from "../../examplePayloads";
 export const validateConnection = action({
   display: {
     label: "Validate Connection",
-    description:
-      "Validate the provided connection and return whether it is valid.",
+    description: "Validate the provided connection and return whether it is valid.",
   },
   inputs: validateConnectionInputs,
   performSafety: "safe",
   perform: async (_context, { version, connection }) => {
     try {
-      const salesforceClient = await createSalesforceClient(
-        connection,
-        version,
-      );
+      const salesforceClient = await createSalesforceClient(connection, version);
 
       await salesforceClient.identity();
 

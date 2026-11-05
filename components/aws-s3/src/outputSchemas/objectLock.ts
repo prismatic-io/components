@@ -1,8 +1,4 @@
-import {
-  dateTimeSchema,
-  requestChargedSchema,
-  retentionModeSchema,
-} from "./shared";
+import { dateTimeSchema, requestChargedSchema, retentionModeSchema } from "./shared";
 
 export const getObjectLockConfigurationOutputSchema = {
   type: "object" as const,

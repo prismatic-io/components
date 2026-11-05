@@ -1,39 +1,12 @@
 import { pollChangesInputs } from "./triggers";
 
 describe("triggers inputs (pollChangesInputs): happy-path normalization", () => {
-  test.each<
-    [string, ((value: unknown) => unknown) | undefined, unknown, unknown]
-  >([
-    [
-      "pollResourceType",
-      pollChangesInputs.pollResourceType.clean,
-      "orders",
-      "orders",
-    ],
-    [
-      "showNewRecords (true)",
-      pollChangesInputs.showNewRecords.clean,
-      "true",
-      true,
-    ],
-    [
-      "showNewRecords (false)",
-      pollChangesInputs.showNewRecords.clean,
-      "false",
-      false,
-    ],
-    [
-      "showUpdatedRecords (true)",
-      pollChangesInputs.showUpdatedRecords.clean,
-      "true",
-      true,
-    ],
-    [
-      "showUpdatedRecords (false)",
-      pollChangesInputs.showUpdatedRecords.clean,
-      "false",
-      false,
-    ],
+  test.each<[string, ((value: unknown) => unknown) | undefined, unknown, unknown]>([
+    ["pollResourceType", pollChangesInputs.pollResourceType.clean, "orders", "orders"],
+    ["showNewRecords (true)", pollChangesInputs.showNewRecords.clean, "true", true],
+    ["showNewRecords (false)", pollChangesInputs.showNewRecords.clean, "false", false],
+    ["showUpdatedRecords (true)", pollChangesInputs.showUpdatedRecords.clean, "true", true],
+    ["showUpdatedRecords (false)", pollChangesInputs.showUpdatedRecords.clean, "false", false],
   ])("%s.clean normalizes a valid value", (_label, clean, raw, expected) => {
     expect(clean?.(raw)).toEqual(expected);
   });

@@ -11,27 +11,15 @@ const gqlFulfillmentLineItemSchema = {
         quantity: { type: "number" as const },
         originalUnitPriceSet: {
           type: "object" as const,
-          properties: {
-            shopMoney: moneyV2Schema,
-            presentmentMoney: moneyV2Schema,
-          },
+          properties: { shopMoney: moneyV2Schema, presentmentMoney: moneyV2Schema },
         },
         totalDiscountSet: {
           type: "object" as const,
-          properties: {
-            shopMoney: moneyV2Schema,
-            presentmentMoney: moneyV2Schema,
-          },
+          properties: { shopMoney: moneyV2Schema, presentmentMoney: moneyV2Schema },
         },
-        discountAllocations: {
-          type: "array" as const,
-          items: { type: "object" },
-        },
+        discountAllocations: { type: "array" as const, items: { type: "object" } },
         duties: { type: "array" as const, items: { type: "object" } },
-        discountedTotalSet: {
-          type: "object" as const,
-          properties: { shopMoney: moneyV2Schema },
-        },
+        discountedTotalSet: { type: "object" as const, properties: { shopMoney: moneyV2Schema } },
         variant: { type: ["object", "null"] },
         requiresShipping: { type: "boolean" as const },
         vendor: { type: "string" as const },
@@ -48,17 +36,11 @@ const gqlFulfillmentSchema = {
   type: "object" as const,
   properties: {
     id: { type: "string" as const },
-    order: {
-      type: "object" as const,
-      properties: { id: { type: "string" as const } },
-    },
+    order: { type: "object" as const, properties: { id: { type: "string" as const } } },
     status: { type: "string" as const },
     createdAt: { type: "string" as const },
     updatedAt: { type: "string" as const },
-    service: {
-      type: "object" as const,
-      properties: { type: { type: "string" as const } },
-    },
+    service: { type: "object" as const, properties: { type: { type: "string" as const } } },
     trackingInfo: {
       type: "array" as const,
       items: {
@@ -70,10 +52,7 @@ const gqlFulfillmentSchema = {
         },
       },
     },
-    location: {
-      type: "object" as const,
-      properties: { id: { type: "string" as const } },
-    },
+    location: { type: "object" as const, properties: { id: { type: "string" as const } } },
     originAddress: {
       type: ["object", "null"],
       properties: {
@@ -109,15 +88,9 @@ const restFulfillmentSchema = {
     origin_address: { type: ["object", "null"] },
     line_items: { type: "array" as const, items: { type: "object" } },
     tracking_number: { type: ["string", "null"] },
-    tracking_numbers: {
-      type: "array" as const,
-      items: { type: "string" as const },
-    },
+    tracking_numbers: { type: "array" as const, items: { type: "string" as const } },
     tracking_url: { type: ["string", "null"] },
-    tracking_urls: {
-      type: "array" as const,
-      items: { type: "string" as const },
-    },
+    tracking_urls: { type: "array" as const, items: { type: "string" as const } },
     name: { type: "string" as const },
     admin_graphql_api_id: { type: "string" as const },
   },
@@ -149,10 +122,7 @@ const restFulfillmentOrderSchema = {
     order_id: { type: "number" as const },
     request_status: { type: "string" as const },
     status: { type: "string" as const },
-    supported_actions: {
-      type: "array" as const,
-      items: { type: "string" as const },
-    },
+    supported_actions: { type: "array" as const, items: { type: "string" as const } },
     destination: { type: ["object", "null"] },
     line_items: { type: "array" as const, items: { type: "object" } },
     international_duties: { type: ["object", "null"] },
@@ -197,10 +167,7 @@ export const listFulfillmentOrdersOutputSchema = {
     data: {
       type: "object" as const,
       properties: {
-        fulfillment_orders: {
-          type: "array" as const,
-          items: restFulfillmentOrderSchema,
-        },
+        fulfillment_orders: { type: "array" as const, items: restFulfillmentOrderSchema },
       },
     },
     pagination: {
@@ -220,7 +187,6 @@ export const listFulfillmentOrdersOutputSchema = {
   },
 };
 
-export const listFulfillmentOrdersGqlOutputSchema =
-  listFulfillmentOrdersOutputSchema;
+export const listFulfillmentOrdersGqlOutputSchema = listFulfillmentOrdersOutputSchema;
 
 export const listFulfillmentsGqlOutputSchema = listFulfillmentsOutputSchema;

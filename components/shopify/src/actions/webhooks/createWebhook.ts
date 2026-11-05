@@ -11,10 +11,7 @@ export const createWebhook = action({
     description: "Creates a webhook for the specified topic.",
   },
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { postUrl, shopifyConnection, webhookFormat, webhookTopic },
-  ) => {
+  perform: async (context, { postUrl, shopifyConnection, webhookFormat, webhookTopic }) => {
     const { data } = await createWebhookGql.perform(context, {
       shopifyConnection,
       webhookTopic: WEBHOOK_TOPICS_MAP[util.types.toString(webhookTopic)],
@@ -27,10 +24,7 @@ export const createWebhook = action({
     };
   },
   inputs: createWebhookInputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: createWebhookOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: createWebhookOutputSchema }),
   examplePerform: async () => createWebhookExamplePayload,
   examplePayload: createWebhookExamplePayload,
 });

@@ -11,10 +11,7 @@ export const deleteSpace = action({
   examplePayload: deleteSpaceExamplePayload,
   performSafety: "notAllowed",
   perform: async (context, { clickUpConnection, spaceId }) => {
-    const client = createClickUpClient(
-      clickUpConnection,
-      context.debug.enabled,
-    );
+    const client = createClickUpClient(clickUpConnection, context.debug.enabled);
 
     const { data } = await client.delete(`/space/${spaceId}`);
 

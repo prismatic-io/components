@@ -19,8 +19,5 @@ export const findUsersByName = action({
   },
   inputs: findUsersByNameInputs,
   examplePayload: findUsersByNameExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: findUsersByNameOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: findUsersByNameOutputSchema }),
 });

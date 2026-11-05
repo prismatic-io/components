@@ -13,15 +13,8 @@ export const createBusinessPartner = action({
     ...createBusinessPartnersInputs,
     connection,
   },
-  perform: async (
-    context,
-    { connection, bodyFields, CardCode, CardName, CardType },
-  ) => {
-    const client = await createClient(
-      connection,
-      context,
-      context.debug.enabled,
-    );
+  perform: async (context, { connection, bodyFields, CardCode, CardName, CardType }) => {
+    const client = await createClient(connection, context, context.debug.enabled);
 
     const { data } = await client.post(`/BusinessPartners`, {
       CardCode,

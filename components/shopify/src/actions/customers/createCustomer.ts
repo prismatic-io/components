@@ -3,11 +3,7 @@ import { createCustomerExamplePayload } from "../../examplePayloads";
 import { createCustomerInputs } from "../../inputs";
 import { createCustomerOutputSchema } from "../../outputSchemas";
 import type { RestAddress } from "../../types";
-import {
-  addressMapper,
-  cleanArrayCodeInput,
-  cleanValueListInput,
-} from "../../util";
+import { addressMapper, cleanArrayCodeInput, cleanValueListInput } from "../../util";
 import { createCustomerGql } from "../graphql/customers/createCustomerGql";
 
 export const createCustomer = action({
@@ -18,15 +14,7 @@ export const createCustomer = action({
   performSafety: "notAllowed",
   perform: async (
     context,
-    {
-      firstName,
-      lastName,
-      email,
-      shopifyConnection,
-      tags,
-      addressList,
-      additionalFields = {},
-    },
+    { firstName, lastName, email, shopifyConnection, tags, addressList, additionalFields = {} },
   ) => {
     const { data } = await createCustomerGql.perform(context, {
       shopifyConnection,
@@ -35,25 +23,18 @@ export const createCustomer = action({
       email: util.types.toString(email),
       phone: additionalFields.phone,
       notes: util.types.toString(additionalFields.notes),
-      metafields: cleanArrayCodeInput(
-        additionalFields.metafields,
-        "Metafields",
-      ),
+      metafields: cleanArrayCodeInput(additionalFields.metafields, "Metafields"),
       tags: cleanValueListInput(tags),
       taxExempt: util.types.toBool(additionalFields.taxExempt),
-      addressListGql: (
-        cleanArrayCodeInput(addressList, "AddressList") as RestAddress[]
-      ).map(addressMapper),
+      addressListGql: (cleanArrayCodeInput(addressList, "AddressList") as RestAddress[]).map(
+        addressMapper,
+      ),
       additionalFields: {},
     });
     return { data };
   },
   inputs: createCustomerInputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: createCustomerOutputSchema,
-  }),
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    createCustomerExamplePayload,
+  outputSchema: outputSchema({ type: "actionOutput", schema: createCustomerOutputSchema }),
+  examplePerform: async (): Promise<{ data: unknown }> => createCustomerExamplePayload,
   examplePayload: createCustomerExamplePayload,
 });

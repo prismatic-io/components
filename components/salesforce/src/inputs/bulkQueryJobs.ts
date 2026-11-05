@@ -49,8 +49,7 @@ export const lineEnding = input({
   label: "Line Ending",
   type: "string",
   required: true,
-  comments:
-    "The line ending character sequence used in the bulk query results file.",
+  comments: "The line ending character sequence used in the bulk query results file.",
   model: [
     { label: "LF", value: "LF" },
     { label: "CRLF", value: "CRLF" },

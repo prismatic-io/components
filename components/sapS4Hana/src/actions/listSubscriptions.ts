@@ -1,14 +1,7 @@
 import { action, input, util } from "@prismatic-io/spectral";
 import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
 import { getSapClient } from "../client";
-import {
-  connectionInput,
-  top,
-  skip,
-  search,
-  filter,
-  inlinecount,
-} from "../inputs";
+import { connectionInput, top, skip, search, filter, inlinecount } from "../inputs";
 
 const orderByOptions = [
   "BusEventSubscriberCode",
@@ -60,16 +53,7 @@ export const listSubscriptions = action({
   },
   perform: async (
     _context,
-    {
-      connectionInput,
-      top,
-      skip,
-      search,
-      filter,
-      inlinecount,
-      orderBy,
-      select,
-    },
+    { connectionInput, top, skip, search, filter, inlinecount, orderBy, select },
   ) => {
     const headers = {
       Accept: "application/json",

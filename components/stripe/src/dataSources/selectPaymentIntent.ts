@@ -6,14 +6,10 @@ import type { PaymentIntent, StripeResponse } from "../types";
 export const selectPaymentIntent = dataSource({
   display: {
     label: "Select Payment Intent",
-    description:
-      "A picklist of payment intents in the connected Stripe account.",
+    description: "A picklist of payment intents in the connected Stripe account.",
   },
   dataSourceType: "picklist",
-  perform: async (
-    _,
-    { stripeConnection, customerId, startingAfter, endingBefore },
-  ) => {
+  perform: async (_, { stripeConnection, customerId, startingAfter, endingBefore }) => {
     const client = createStripeClient({
       stripeConnection,
     });

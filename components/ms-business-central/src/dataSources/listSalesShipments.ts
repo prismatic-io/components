@@ -8,8 +8,7 @@ import { toSortedPicklist } from "./helpers";
 export const listSalesShipment = dataSource({
   display: {
     label: "Select Sales Shipments",
-    description:
-      "A picklist of sales shipment objects in your Business Central organization.",
+    description: "A picklist of sales shipment objects in your Business Central organization.",
   },
   perform: async (context, { connection, companyId }) => {
     const client = getMsBusinessCentralClient(connection, context, false);
@@ -30,8 +29,6 @@ export const listSalesShipment = dataSource({
   },
   dataSourceType: "picklist",
   examplePayload: {
-    result: [
-      { label: "SHIP-001", key: "5d115c9c-44e3-ea11-bb43-000d3a2feca1" },
-    ],
+    result: [{ label: "SHIP-001", key: "5d115c9c-44e3-ea11-bb43-000d3a2feca1" }],
   },
 });

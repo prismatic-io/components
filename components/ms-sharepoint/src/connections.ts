@@ -1,8 +1,4 @@
-import {
-  type ConnectionInput,
-  oauth2Connection,
-  OAuth2Type,
-} from "@prismatic-io/spectral";
+import { type ConnectionInput, oauth2Connection, OAuth2Type } from "@prismatic-io/spectral";
 import {
   getMicrosoftCertificateCredentialsConnection,
   getMicrosoftOAuth2AuthorizationCodeConnection,
@@ -28,15 +24,13 @@ export const templatedOauth = getMicrosoftOAuth2AuthorizationCodeConnection({
   },
 });
 
-export const oauthClientCredentials =
-  getMicrosoftOAuth2ClientCredentialsConnection({
-    key: ConnectionKeys.OauthClientCredentials,
-  });
+export const oauthClientCredentials = getMicrosoftOAuth2ClientCredentialsConnection({
+  key: ConnectionKeys.OauthClientCredentials,
+});
 
-export const certificateCredentials =
-  getMicrosoftCertificateCredentialsConnection({
-    key: ConnectionKeys.CertificateCredentials,
-  });
+export const certificateCredentials = getMicrosoftCertificateCredentialsConnection({
+  key: ConnectionKeys.CertificateCredentials,
+});
 
 export const oauth = oauth2Connection({
   key: ConnectionKeys.SharedOauth,
@@ -98,16 +92,10 @@ export const oauth = oauth2Connection({
       type: "password",
       required: true,
       shown: true,
-      comments:
-        "Client Secret generated under 'Certificates & Secrets' in your Azure application.",
+      comments: "Client Secret generated under 'Certificates & Secrets' in your Azure application.",
     },
     source,
   },
 });
 
-export default [
-  templatedOauth,
-  oauthClientCredentials,
-  certificateCredentials,
-  oauth,
-];
+export default [templatedOauth, oauthClientCredentials, certificateCredentials, oauth];

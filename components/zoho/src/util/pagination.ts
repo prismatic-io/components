@@ -27,12 +27,8 @@ export const fetchAllPages = async (
     params.page = DEFAULT_PAGE_NUMBER;
     params.per_page = DEFAULT_PER_PAGE;
   } else {
-    params.page = params.page_token
-      ? undefined
-      : params.page || DEFAULT_PAGE_NUMBER;
-    params.per_page = params.page_token
-      ? undefined
-      : params.per_page || DEFAULT_PER_PAGE;
+    params.page = params.page_token ? undefined : params.page || DEFAULT_PAGE_NUMBER;
+    params.per_page = params.page_token ? undefined : params.per_page || DEFAULT_PER_PAGE;
   }
 
   do {
@@ -40,8 +36,7 @@ export const fetchAllPages = async (
     try {
       ({ data } = await client.get(url, { params, headers }));
     } catch (err) {
-      const status = (err as { response?: { status?: number } })?.response
-        ?.status;
+      const status = (err as { response?: { status?: number } })?.response?.status;
       if (isModifiedSince && status === 304) {
         return { [dataKey]: [] };
       }
@@ -50,9 +45,7 @@ export const fetchAllPages = async (
 
     const pageRecords = data[dataKey];
     const info = data.info as { next_page_token?: string } | undefined;
-    const pageContext = data.page_context as
-      | { has_more_page?: boolean }
-      | undefined;
+    const pageContext = data.page_context as { has_more_page?: boolean } | undefined;
     const nextPageToken = info?.next_page_token;
     const hasMorePages = pageContext?.has_more_page;
 

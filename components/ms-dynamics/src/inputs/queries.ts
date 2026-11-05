@@ -8,8 +8,7 @@ const xmlQuery = input({
   type: "code",
   language: "xml",
   required: true,
-  comments:
-    "An XML query string to use as a Fetch query in Microsoft Dynamics 365.",
+  comments: "An XML query string to use as a Fetch query in Microsoft Dynamics 365.",
   example: `<fetch mapping="logical">
   <entity name="account">
     <attribute name="accountid"/>
@@ -24,8 +23,7 @@ const pageNumber = input({
   placeholder: "Enter page number",
   type: "string",
   required: false,
-  comments:
-    "The 1-based page number to retrieve when iterating through Fetch XML query results.",
+  comments: "The 1-based page number to retrieve when iterating through Fetch XML query results.",
   example: "1",
   clean: toOptionalNumber,
 });
@@ -46,8 +44,7 @@ const impersonateUserId = input({
   placeholder: "Enter user GUID to impersonate",
   type: "string",
   required: false,
-  comments:
-    "Specifies the GUID of a user to impersonate when executing the query.",
+  comments: "Specifies the GUID of a user to impersonate when executing the query.",
   example: "7d577253-3ef0-4a0a-bb7f-8335c2596e70",
   clean: toOptionalString,
 });

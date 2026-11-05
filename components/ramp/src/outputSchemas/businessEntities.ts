@@ -409,12 +409,7 @@ const businessEntitySchema = {
             format: "uuid",
           },
         },
-        required: [
-          "account_name",
-          "account_number_last_four",
-          "currency",
-          "id",
-        ],
+        required: ["account_name", "account_number_last_four", "currency", "id"],
       },
     },
   },

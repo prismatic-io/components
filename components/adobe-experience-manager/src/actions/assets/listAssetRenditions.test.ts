@@ -28,19 +28,14 @@ describe("listAssetRenditions", () => {
     nock(BASE)
       .get(`/adobe/assets/${encodeURIComponent(assetId)}/renditions`)
       .reply(200, listAssetRenditionsExamplePayload.data);
-    const { result } = await invoke(listAssetRenditions, {
-      connection,
-      assetId,
-    });
+    const { result } = await invoke(listAssetRenditions, { connection, assetId });
     expect(result).toEqual(listAssetRenditionsExamplePayload);
   });
 
   test("surfaces a 404 for an unknown asset", async () => {
-    nock(BASE)
-      .get("/adobe/assets/missing/renditions")
-      .reply(404, { title: "Not Found" });
-    await expect(
-      invoke(listAssetRenditions, { connection, assetId: "missing" }),
-    ).rejects.toThrow("Request failed with status code 404");
+    nock(BASE).get("/adobe/assets/missing/renditions").reply(404, { title: "Not Found" });
+    await expect(invoke(listAssetRenditions, { connection, assetId: "missing" })).rejects.toThrow(
+      "Request failed with status code 404",
+    );
   });
 });

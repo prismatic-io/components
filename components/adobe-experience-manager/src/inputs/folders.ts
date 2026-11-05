@@ -1,9 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
-import {
-  DEFAULT_DAM_ROOT,
-  FOLDER_LISTING_TYPES,
-  FOLDER_ORDER_BY,
-} from "../constants";
+import { DEFAULT_DAM_ROOT, FOLDER_LISTING_TYPES, FOLDER_ORDER_BY } from "../constants";
 import {
   cleanFolderPaths,
   cleanRequiredDamPath,
@@ -40,8 +36,7 @@ const orderBy = input({
   type: "string",
   required: false,
   model: FOLDER_ORDER_BY,
-  comments:
-    "The field to order items by. Leave empty for the API default order.",
+  comments: "The field to order items by. Leave empty for the API default order.",
   clean: cleanString,
 });
 
@@ -91,8 +86,7 @@ const force = input({
   type: "boolean",
   required: false,
   default: "false",
-  comments:
-    "When true, deletes even when assets in the folders are referenced elsewhere.",
+  comments: "When true, deletes even when assets in the folders are referenced elsewhere.",
   clean: util.types.toBool,
 });
 

@@ -16,12 +16,9 @@ export const listAssignments = action({
       context.debug.enabled,
     );
 
-    const { data } = await client.get(
-      `/Projects('${params.guId}')/Assignments`,
-      {
-        params: toPaginationParams(params.pageSize, params.pageNumber),
-      },
-    );
+    const { data } = await client.get(`/Projects('${params.guId}')/Assignments`, {
+      params: toPaginationParams(params.pageSize, params.pageNumber),
+    });
 
     return {
       data,

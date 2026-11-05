@@ -21,8 +21,7 @@ export const deleteWebhook = action({
       },
       false,
     );
-    const { developerApiKey, appId } =
-      checkDeveloperApiKeyAndAppId(hubspotConnection);
+    const { developerApiKey, appId } = checkDeveloperApiKeyAndAppId(hubspotConnection);
 
     const { data } = await client.delete(
       hubspotPaths.appWebhooks(appId, `/subscriptions/${subscriptionId}`),

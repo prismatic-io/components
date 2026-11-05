@@ -30,9 +30,7 @@ describe("transitionIssue", () => {
   test("rejects when Jira answers with an error", async () => {
     jiraApi()
       .post("/rest/api/3/issue/10201/transitions")
-      .reply(400, {
-        errorMessages: ["Transition id '21' is not valid for this issue."],
-      });
+      .reply(400, { errorMessages: ["Transition id '21' is not valid for this issue."] });
 
     await expect(run()).rejects.toMatchObject({ response: { status: 400 } });
   });

@@ -16,11 +16,7 @@ export const getWarehouse = action({
     connection,
   },
   perform: async (context, { connection, $select, warehouseCode }) => {
-    const client = await createClient(
-      connection,
-      context,
-      context.debug.enabled,
-    );
+    const client = await createClient(connection, context, context.debug.enabled);
 
     const { data } = await client.get(`/Warehouses('${warehouseCode}')`, {
       params: {

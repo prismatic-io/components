@@ -19,39 +19,22 @@ export const updateDealProduct = action({
       id,
       productAttachmentId,
       productVariationId,
-      additionalFields: {
-        itemPrice,
-        quantity,
-        discount,
-        discountType,
-        comments,
-        tax,
-      } = {},
+      additionalFields: { itemPrice, quantity, discount, discountType, comments, tax } = {},
     },
   ) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      WebhookVersion.V2,
-    );
-    const { data } = await client.patch(
-      `/deals/${id}/products/${productAttachmentId}`,
-      {
-        item_price: itemPrice,
-        quantity,
-        discount,
-        discount_type: discountType,
-        product_variation_id: productVariationId,
-        comments,
-        tax,
-      },
-    );
+    const client = createClient(connection, context.debug.enabled, WebhookVersion.V2);
+    const { data } = await client.patch(`/deals/${id}/products/${productAttachmentId}`, {
+      item_price: itemPrice,
+      quantity,
+      discount,
+      discount_type: discountType,
+      product_variation_id: productVariationId,
+      comments,
+      tax,
+    });
     return { data };
   },
   inputs: updateDealProductInputs,
   examplePayload: updateDealProductExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: updateDealProductOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: updateDealProductOutputSchema }),
 });

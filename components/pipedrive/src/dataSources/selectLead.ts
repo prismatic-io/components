@@ -19,12 +19,7 @@ export const selectLead = dataSource({
   },
   perform: async (_context, { connectionInput }) => {
     const client = createClient(connectionInput, false);
-    const { data } = await paginateRecordsWithLimit<Lead>(
-      client,
-      "leads",
-      {},
-      true,
-    );
+    const { data } = await paginateRecordsWithLimit<Lead>(client, "leads", {}, true);
 
     const objects = sortRecords(data, "title").map<Element>((lead) => ({
       key: lead.id.toString(),

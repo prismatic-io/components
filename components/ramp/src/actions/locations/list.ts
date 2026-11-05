@@ -19,10 +19,7 @@ export const listLocations = action({
     schema: listLocationsOutputSchema,
   }),
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { connection, customQueryParams, fetchAll, pagination },
-  ) => {
+  perform: async (context, { connection, customQueryParams, fetchAll, pagination }) => {
     const client = createClient(connection, context.debug.enabled);
 
     const data = await fetchAllData<Location>(
@@ -39,10 +36,7 @@ export const listLocations = action({
       data,
     };
   },
-  examplePerform: async (
-    _context,
-    { fetchAll },
-  ): Promise<{ data: unknown }> => ({
+  examplePerform: async (_context, { fetchAll }): Promise<{ data: unknown }> => ({
     data: {
       ...listLocationsResponse,
       page: fetchAll ? null : listLocationsResponse.page,

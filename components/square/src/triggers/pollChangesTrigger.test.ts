@@ -3,42 +3,24 @@ import type { Payment, PollingState } from "../types";
 import { lookBackDateClean, resolvePaymentChanges } from "../util";
 import { pollChangesTrigger } from "./pollChangesTrigger";
 
-const { createAuthorizedClient } = vi.hoisted(() => ({
-  createAuthorizedClient: vi.fn(),
-}));
+const { createAuthorizedClient } = vi.hoisted(() => ({ createAuthorizedClient: vi.fn() }));
 vi.mock("../client", () => ({ createAuthorizedClient }));
 
-const payment = (
-  id: string,
-  createdAt: string,
-  updatedAt: string,
-): Payment => ({
+const payment = (id: string, createdAt: string, updatedAt: string): Payment => ({
   id,
   created_at: createdAt,
   updated_at: updatedAt,
 });
 
-const createdPayment = payment(
-  "p1",
-  "2026-06-01T12:00:00.000Z",
-  "2026-06-01T12:00:00.000Z",
-);
-const updatedPayment = payment(
-  "p2",
-  "2020-01-01T00:00:00.000Z",
-  "2026-06-01T12:00:00.000Z",
-);
+const createdPayment = payment("p1", "2026-06-01T12:00:00.000Z", "2026-06-01T12:00:00.000Z");
+const updatedPayment = payment("p2", "2020-01-01T00:00:00.000Z", "2026-06-01T12:00:00.000Z");
 
 describe("pollChangesTrigger batching declaration", () => {
   test("declares opt-in batching with a default batch size and a pagination cursor", () => {
     expect(pollChangesTrigger.triggerResolverSupport).toBe("valid");
     expect(pollChangesTrigger.batchConfig).toEqual({ batchSize: 50 });
-    expect(pollChangesTrigger.triggerResolver?.resolveItems).toBeInstanceOf(
-      Function,
-    );
-    expect(
-      pollChangesTrigger.triggerResolver?.getNextPaginationState,
-    ).toBeInstanceOf(Function);
+    expect(pollChangesTrigger.triggerResolver?.resolveItems).toBeInstanceOf(Function);
+    expect(pollChangesTrigger.triggerResolver?.getNextPaginationState).toBeInstanceOf(Function);
   });
 
   test("offers the Look-back Date directly below the connection", () => {
@@ -53,15 +35,12 @@ describe("pollChangesTrigger batching declaration", () => {
 
 describe("resolvePaymentChanges", () => {
   test("tags every payment with how it changed", () => {
-    expect(
-      resolvePaymentChanges({
-        created: [createdPayment],
-        updated: [updatedPayment],
-      }),
-    ).toEqual([
-      { changeType: "created", record: createdPayment },
-      { changeType: "updated", record: updatedPayment },
-    ]);
+    expect(resolvePaymentChanges({ created: [createdPayment], updated: [updatedPayment] })).toEqual(
+      [
+        { changeType: "created", record: createdPayment },
+        { changeType: "updated", record: updatedPayment },
+      ],
+    );
   });
 
   test("tolerates an absent envelope, an empty one, and a single absent array", () => {
@@ -81,11 +60,7 @@ describe("triggerResolver.resolveItems", () => {
     const items = pollChangesTrigger.triggerResolver?.resolveItems?.(
       {} as never,
       {
-        payload: {
-          body: {
-            data: { created: [createdPayment], updated: [updatedPayment] },
-          },
-        },
+        payload: { body: { data: { created: [createdPayment], updated: [updatedPayment] } } },
       } as never,
     );
 
@@ -96,15 +71,9 @@ describe("triggerResolver.resolveItems", () => {
   });
 
   test("getNextPaginationState echoes the round's paginationState", () => {
-    const cursor = {
-      afterCursor: "c1",
-      windowStart: "w",
-      pending: { watermark: "w", ids: [] },
-    };
+    const cursor = { afterCursor: "c1", windowStart: "w", pending: { watermark: "w", ids: [] } };
     const next = pollChangesTrigger.triggerResolver?.getNextPaginationState;
-    expect(
-      next?.({} as never, { payload: { paginationState: cursor } } as never),
-    ).toBe(cursor);
+    expect(next?.({} as never, { payload: { paginationState: cursor } } as never)).toBe(cursor);
     expect(next?.({} as never, { payload: {} } as never)).toBeNull();
   });
 });
@@ -122,9 +91,7 @@ describe("lookBackDateClean", () => {
   test("rejects a bad format, a non-calendar date, and a future date", () => {
     expect(() => lookBackDateClean("01/01/2026")).toThrow(/Look-back Date/);
     expect(() => lookBackDateClean("2026-02-31")).toThrow(/Look-back Date/);
-    expect(() => lookBackDateClean("2999-01-01")).toThrow(
-      /Look-back Date cannot be a future date/,
-    );
+    expect(() => lookBackDateClean("2999-01-01")).toThrow(/Look-back Date cannot be a future date/);
   });
 });
 
@@ -136,9 +103,7 @@ describe("polling state across a multi-round drain", () => {
   let store: PollingState;
   let get: ReturnType<typeof vi.fn>;
 
-  const page = (payments: Payment[], cursor?: string) => ({
-    data: { payments, cursor },
-  });
+  const page = (payments: Payment[], cursor?: string) => ({ data: { payments, cursor } });
 
   const context = (batching = false) =>
     ({
@@ -171,11 +136,7 @@ describe("polling state across a multi-round drain", () => {
   test("starts a seeded drain from the Look-back Date and holds the watermark while pages remain", async () => {
     get.mockResolvedValue(page([updatedPayment], "cursor-1"));
 
-    const first = await pollChangesTrigger.perform(
-      context(),
-      noPayload,
-      seeded,
-    );
+    const first = await pollChangesTrigger.perform(context(), noPayload, seeded);
 
     expect(get).toHaveBeenCalledTimes(10);
     expect(get.mock.calls[0][1].params).toMatchObject({
@@ -221,30 +182,12 @@ describe("polling state across a multi-round drain", () => {
   });
 
   test("commits the data-derived watermark and boundary ids only when drained", async () => {
-    const a = payment(
-      "a",
-      "2026-06-02T00:00:00.000Z",
-      "2026-06-02T00:00:00.000Z",
-    );
-    const b = payment(
-      "b",
-      "2026-06-02T00:00:00.000Z",
-      "2026-06-02T00:00:05.000Z",
-    );
-    const c = payment(
-      "c",
-      "2026-06-02T00:00:01.000Z",
-      "2026-06-02T00:00:05.000Z",
-    );
+    const a = payment("a", "2026-06-02T00:00:00.000Z", "2026-06-02T00:00:00.000Z");
+    const b = payment("b", "2026-06-02T00:00:00.000Z", "2026-06-02T00:00:05.000Z");
+    const c = payment("c", "2026-06-02T00:00:01.000Z", "2026-06-02T00:00:05.000Z");
 
-    get
-      .mockResolvedValueOnce(page([a], "cursor-1"))
-      .mockResolvedValueOnce(page([b, c]));
-    const round = await pollChangesTrigger.perform(
-      context(true),
-      noPayload,
-      seeded,
-    );
+    get.mockResolvedValueOnce(page([a], "cursor-1")).mockResolvedValueOnce(page([b, c]));
+    const round = await pollChangesTrigger.perform(context(true), noPayload, seeded);
     expect(round.payload.paginationState).toBeDefined();
     expect(store.lastPolledAt).toBe(SEED);
     expect(store.cursor?.pending.watermark).toBe("2026-06-02T00:00:00.000Z");
@@ -263,38 +206,15 @@ describe("polling state across a multi-round drain", () => {
 
   test("skips payments at or before the watermark that were already delivered", async () => {
     store = { lastPolledAt: "2026-06-02T00:00:05.000Z", boundaryIds: ["b"] };
-    const older = payment(
-      "old",
-      "2026-06-01T00:00:00.000Z",
-      "2026-06-02T00:00:04.000Z",
-    );
-    const delivered = payment(
-      "b",
-      "2026-06-02T00:00:00.000Z",
-      "2026-06-02T00:00:05.000Z",
-    );
-    const sibling = payment(
-      "c",
-      "2026-06-02T00:00:01.000Z",
-      "2026-06-02T00:00:05.000Z",
-    );
-    const newer = payment(
-      "d",
-      "2026-06-02T00:00:09.000Z",
-      "2026-06-02T00:00:09.000Z",
-    );
+    const older = payment("old", "2026-06-01T00:00:00.000Z", "2026-06-02T00:00:04.000Z");
+    const delivered = payment("b", "2026-06-02T00:00:00.000Z", "2026-06-02T00:00:05.000Z");
+    const sibling = payment("c", "2026-06-02T00:00:01.000Z", "2026-06-02T00:00:05.000Z");
+    const newer = payment("d", "2026-06-02T00:00:09.000Z", "2026-06-02T00:00:09.000Z");
     get.mockResolvedValue(page([older, delivered, sibling, newer]));
 
-    const result = await pollChangesTrigger.perform(
-      context(),
-      noPayload,
-      params,
-    );
+    const result = await pollChangesTrigger.perform(context(), noPayload, params);
 
-    expect(result.payload.body.data).toEqual({
-      created: [newer],
-      updated: [sibling],
-    });
+    expect(result.payload.body.data).toEqual({ created: [newer], updated: [sibling] });
     expect(store.lastPolledAt).toBe("2026-06-02T00:00:09.000Z");
     expect(store.boundaryIds).toEqual(["d"]);
   });
@@ -303,11 +223,7 @@ describe("polling state across a multi-round drain", () => {
     store = { lastPolledAt: SEED, boundaryIds: ["x"] };
     get.mockResolvedValue(page([]));
 
-    const result = await pollChangesTrigger.perform(
-      context(),
-      noPayload,
-      params,
-    );
+    const result = await pollChangesTrigger.perform(context(), noPayload, params);
 
     expect(store.lastPolledAt).toBe(SEED);
     expect(store.boundaryIds).toEqual(["x"]);
@@ -318,18 +234,10 @@ describe("polling state across a multi-round drain", () => {
     vi.useFakeTimers({ toFake: ["Date"] });
     vi.setSystemTime(new Date("2026-06-02T10:00:00.500Z"));
     try {
-      const historical = payment(
-        "h",
-        "2026-05-01T00:00:00.000Z",
-        "2026-06-02T09:59:59.700Z",
-      );
+      const historical = payment("h", "2026-05-01T00:00:00.000Z", "2026-06-02T09:59:59.700Z");
       get.mockResolvedValue(page([historical]));
 
-      const result = await pollChangesTrigger.perform(
-        context(),
-        noPayload,
-        params,
-      );
+      const result = await pollChangesTrigger.perform(context(), noPayload, params);
 
       expect(result.payload.body.data).toEqual({ created: [], updated: [] });
       expect(store.lastPolledAt).toBe("2026-06-02T10:00:00.500Z");
@@ -364,11 +272,7 @@ describe("polling state across a multi-round drain", () => {
 
   test("never reports no changes on a round the platform drove", async () => {
     get.mockResolvedValue(page([]));
-    const cursor = {
-      afterCursor: "c1",
-      windowStart: SEED,
-      pending: { watermark: SEED, ids: [] },
-    };
+    const cursor = { afterCursor: "c1", windowStart: SEED, pending: { watermark: SEED, ids: [] } };
 
     const driven = await pollChangesTrigger.perform(
       context(true),
@@ -377,11 +281,7 @@ describe("polling state across a multi-round drain", () => {
     );
     expect(driven.polledNoChanges).toBe(false);
 
-    const scheduled = await pollChangesTrigger.perform(
-      context(),
-      noPayload,
-      params,
-    );
+    const scheduled = await pollChangesTrigger.perform(context(), noPayload, params);
     expect(scheduled.polledNoChanges).toBe(true);
   });
 });

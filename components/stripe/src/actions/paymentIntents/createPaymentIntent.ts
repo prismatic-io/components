@@ -52,8 +52,7 @@ export const createPaymentIntent = action({
         setup_future_usage:
           additionalFields.setupFutureUsage as Stripe.PaymentIntentCreateParams.SetupFutureUsage,
       }),
-      shipping:
-        additionalFields.shipping as Stripe.PaymentIntentCreateParams.Shipping,
+      shipping: additionalFields.shipping as Stripe.PaymentIntentCreateParams.Shipping,
       ...(additionalFields.statementDescriptor && {
         statement_descriptor: additionalFields.statementDescriptor,
       }),
@@ -73,11 +72,8 @@ export const createPaymentIntent = action({
         error_on_requires_action: additionalFields.errorOnRequiresAction,
       }),
       ...(additionalFields.mandate && { mandate: additionalFields.mandate }),
-      mandate_data:
-        additionalFields.mandateData as Stripe.PaymentIntentCreateParams.MandateData,
-      ...(transferOptions.onBehalfOf && {
-        on_behalf_of: transferOptions.onBehalfOf,
-      }),
+      mandate_data: additionalFields.mandateData as Stripe.PaymentIntentCreateParams.MandateData,
+      ...(transferOptions.onBehalfOf && { on_behalf_of: transferOptions.onBehalfOf }),
       payment_method_data:
         additionalFields.paymentMethodData as Stripe.PaymentIntentCreateParams.PaymentMethodData,
       payment_method_options: additionalFields.paymentMethodOptions,
@@ -85,14 +81,9 @@ export const createPaymentIntent = action({
         payment_method_types: paymentMethodTypes,
       }),
       radar_options: additionalFields.radarOptions,
-      ...(additionalFields.returnUrl && {
-        return_url: additionalFields.returnUrl,
-      }),
-      transfer_data:
-        transferOptions.transferData as Stripe.PaymentIntentCreateParams.TransferData,
-      ...(transferOptions.transferGroup && {
-        transfer_group: transferOptions.transferGroup,
-      }),
+      ...(additionalFields.returnUrl && { return_url: additionalFields.returnUrl }),
+      transfer_data: transferOptions.transferData as Stripe.PaymentIntentCreateParams.TransferData,
+      ...(transferOptions.transferGroup && { transfer_group: transferOptions.transferGroup }),
       ...(additionalFields.useStripeSdk !== undefined && {
         use_stripe_sdk: additionalFields.useStripeSdk,
       }),
@@ -118,10 +109,7 @@ export const createPaymentIntent = action({
       additionalFields,
     },
   ): Promise<{ data: unknown }> => {
-    const intent = createPaymentIntentExamplePayload.data as Record<
-      string,
-      unknown
-    >;
+    const intent = createPaymentIntentExamplePayload.data as Record<string, unknown>;
 
     return {
       data: {
@@ -134,8 +122,7 @@ export const createPaymentIntent = action({
         payment_method: paymentMethod ?? intent.payment_method,
         receipt_email: receiptEmail ?? intent.receipt_email,
         payment_method_types: paymentMethodTypes ?? intent.payment_method_types,
-        automatic_payment_methods:
-          automaticPaymentMethods ?? intent.automatic_payment_methods,
+        automatic_payment_methods: automaticPaymentMethods ?? intent.automatic_payment_methods,
         capture_method: additionalFields.captureMethod ?? intent.capture_method,
         shipping: additionalFields.shipping ?? intent.shipping,
         application_fee_amount:

@@ -16,12 +16,7 @@ export const selectPerson = dataSource({
   },
   perform: async (_context, { connectionInput }) => {
     const client = createClient(connectionInput, false, WebhookVersion.V2);
-    const { data } = await paginateRecordsWithCursor<Person>(
-      client,
-      "persons",
-      {},
-      true,
-    );
+    const { data } = await paginateRecordsWithCursor<Person>(client, "persons", {}, true);
 
     const objects = sortRecords(data, "id").map<Element>((person) => ({
       key: person.id.toString(),

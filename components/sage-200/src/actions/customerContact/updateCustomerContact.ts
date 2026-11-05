@@ -43,10 +43,7 @@ export const updateCustomerContact = action({
       websites,
       roles,
     };
-    const { data } = await client.put(
-      `/customer_contacts/${customerId}`,
-      payload,
-    );
+    const { data } = await client.put(`/customer_contacts/${customerId}`, payload);
     return {
       data,
     };

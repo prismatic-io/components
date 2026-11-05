@@ -54,8 +54,7 @@ export const $top = input({
 export const $skip = input({
   label: "Skip",
   type: "string",
-  comments:
-    "The number of items to skip before returning results. Used for pagination.",
+  comments: "The number of items to skip before returning results. Used for pagination.",
   example: "20",
   placeholder: "Enter number to skip",
   required: false,

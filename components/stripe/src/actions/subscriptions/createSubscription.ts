@@ -64,10 +64,7 @@ export const createSubscription = action({
       metadata,
     },
   ): Promise<{ data: unknown }> => {
-    const subscription = createSubscriptionExamplePayload.data as Record<
-      string,
-      unknown
-    >;
+    const subscription = createSubscriptionExamplePayload.data as Record<string, unknown>;
     const items = subscription.items as Record<string, unknown>;
     const [item] = items.data as Record<string, unknown>[];
 
@@ -80,17 +77,13 @@ export const createSubscription = action({
           data: [
             {
               ...item,
-              price: {
-                ...(item.price as Record<string, unknown>),
-                id: priceId,
-              },
+              price: { ...(item.price as Record<string, unknown>), id: priceId },
               plan: { ...(item.plan as Record<string, unknown>), id: priceId },
               quantity: quantity ?? item.quantity,
             },
           ],
         },
-        default_payment_method:
-          paymentId ?? subscription.default_payment_method,
+        default_payment_method: paymentId ?? subscription.default_payment_method,
         cancel_at: cancelAt ?? subscription.cancel_at,
         collection_method: collectionMethod ?? subscription.collection_method,
         days_until_due: daysUntilDue ?? subscription.days_until_due,

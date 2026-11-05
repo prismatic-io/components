@@ -1,9 +1,4 @@
-import {
-  input,
-  type KeyValuePair,
-  structuredObjectInput,
-  util,
-} from "@prismatic-io/spectral";
+import { input, type KeyValuePair, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { inputs as httpClientInputs } from "@prismatic-io/spectral/dist/clients/http";
 import { DEFAULT_SF_VERSION } from "../constants";
 import {
@@ -49,8 +44,7 @@ export const recordType = input({
   placeholder: "Enter record type (e.g., Account, Contact)",
   type: "string",
   required: true,
-  comments:
-    "The Salesforce object API name to act on (e.g., Account, Contact, Opportunity).",
+  comments: "The Salesforce object API name to act on (e.g., Account, Contact, Opportunity).",
   example: "Account",
   clean: toRequiredTrimmedString("Record Type"),
   dataSource: "selectRecordType",
@@ -61,8 +55,7 @@ export const workflowRecordType = input({
   placeholder: "Enter record type",
   type: "string",
   required: true,
-  comments:
-    "The Salesforce object API name to act on (e.g., Account, Contact, Opportunity).",
+  comments: "The Salesforce object API name to act on (e.g., Account, Contact, Opportunity).",
   dataSource: "selectRecordType",
   example: "Account",
   clean: util.types.toString,
@@ -86,8 +79,7 @@ export const fieldValues = input({
   required: false,
   comments:
     "Key-value pairs mapping Salesforce field API names to the values to set on the record.",
-  clean: (val) =>
-    util.types.keyValPairListToObject((val || []) as KeyValuePair[]),
+  clean: (val) => util.types.keyValPairListToObject((val || []) as KeyValuePair[]),
 });
 
 export const fieldValueTypes = input({
@@ -117,8 +109,7 @@ export const dynamicRecordType = input({
   placeholder: "Enter or select a record type",
   type: "dynamicObjectSelection",
   required: true,
-  comments:
-    "The Salesforce object API name to act on (e.g., Account, Contact, Opportunity).",
+  comments: "The Salesforce object API name to act on (e.g., Account, Contact, Opportunity).",
   example: "Account",
   clean: toRequiredTrimmedString("Record Type"),
 });
@@ -161,8 +152,7 @@ export const pageSize = input({
   placeholder: "Enter page size",
   type: "string",
   required: false,
-  comments:
-    "The maximum number of results to return per page when paginating results.",
+  comments: "The maximum number of results to return per page when paginating results.",
   example: "20",
   clean: cleanNumberInput,
 });
@@ -172,8 +162,7 @@ export const pageNumber = input({
   placeholder: "Enter page number",
   type: "string",
   required: false,
-  comments:
-    "The page number to retrieve when paginating results. Uses 1-based indexing.",
+  comments: "The page number to retrieve when paginating results. Uses 1-based indexing.",
   example: "3",
   clean: cleanNumberInput,
 });
@@ -202,8 +191,7 @@ export const fetchAll = input({
   type: "boolean",
   required: false,
   default: "false",
-  comments:
-    "When true, automatically fetches all pages of results using pagination.",
+  comments: "When true, automatically fetches all pages of results using pagination.",
   clean: util.types.toBool,
 });
 
@@ -265,7 +253,4 @@ export const rawRequestInputs = {
   version,
 };
 
-export const validateConnectionInputs = {
-  version,
-  connection: connectionInput,
-};
+export const validateConnectionInputs = { version, connection: connectionInput };

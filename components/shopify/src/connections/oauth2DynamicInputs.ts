@@ -1,8 +1,4 @@
-import {
-  OAuth2Type,
-  oauth2Connection,
-  templateConnectionInputs,
-} from "@prismatic-io/spectral";
+import { OAuth2Type, oauth2Connection, templateConnectionInputs } from "@prismatic-io/spectral";
 import { DEFAULT_SHOPIFY_GRAPHQL_API_VERSION } from "../constants";
 
 export const shopifyTemplatedConnection = oauth2Connection({
@@ -27,8 +23,7 @@ export const shopifyTemplatedConnection = oauth2Connection({
       scopes: {
         label: "Scopes",
         placeholder: "Enter space-separated scopes",
-        example:
-          "read_customers read_draft_orders read_fulfillments read_orders",
+        example: "read_customers read_draft_orders read_fulfillments read_orders",
         type: "string",
         required: false,
         shown: true,
@@ -57,8 +52,7 @@ export const shopifyTemplatedConnection = oauth2Connection({
         type: "string",
         required: true,
         shown: true,
-        comments:
-          "The Client ID (also called API Key) from the Shopify app credentials.",
+        comments: "The Client ID (also called API Key) from the Shopify app credentials.",
         example: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6",
       },
       clientSecret: {
@@ -67,8 +61,7 @@ export const shopifyTemplatedConnection = oauth2Connection({
         type: "password",
         required: true,
         shown: true,
-        comments:
-          "The Client Secret (also called API Secret) from the Shopify app credentials.",
+        comments: "The Client Secret (also called API Secret) from the Shopify app credentials.",
         example: "shpss_a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6",
       },
       apiVersion: {
@@ -89,15 +82,13 @@ export const shopifyTemplatedConnection = oauth2Connection({
         placeholder: "Enter Authorize URL",
         type: "template",
         comments: "The OAuth 2.0 Authorization URL for Shopify.",
-        templateValue:
-          "https://{{#domain}}.myshopify.com/admin/oauth/authorize/",
+        templateValue: "https://{{#domain}}.myshopify.com/admin/oauth/authorize/",
       },
       tokenUrl: {
         label: "Token URL",
         placeholder: "Enter Token URL",
         type: "template",
-        templateValue:
-          "https://{{#domain}}.myshopify.com/admin/oauth/access_token?expiring=1",
+        templateValue: "https://{{#domain}}.myshopify.com/admin/oauth/access_token?expiring=1",
         comments: "The OAuth 2.0 Token URL for Shopify.",
       },
       host: {
@@ -105,8 +96,7 @@ export const shopifyTemplatedConnection = oauth2Connection({
         placeholder: "Enter Host",
         type: "template",
         templateValue: "{{#domain}}.myshopify.com",
-        comments:
-          "The domain of the Shopify store without the https:// prefix.",
+        comments: "The domain of the Shopify store without the https:// prefix.",
       },
     },
     OAuth2Type.AuthorizationCode,

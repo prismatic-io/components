@@ -15,11 +15,7 @@ export const getPipelines = action({
     context,
     { connection, sortBy, sortDirection, pagination: { limit, cursor } = {} },
   ) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      WebhookVersion.V2,
-    );
+    const client = createClient(connection, context.debug.enabled, WebhookVersion.V2);
     const { data } = await client.get("/pipelines", {
       params: { sort_by: sortBy, sort_direction: sortDirection, limit, cursor },
     });
@@ -28,8 +24,5 @@ export const getPipelines = action({
   inputs: getPipelinesInputs,
   examplePayload: getPipelinesExamplePayload,
   examplePerform: async () => getPipelinesExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getPipelinesOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getPipelinesOutputSchema }),
 });

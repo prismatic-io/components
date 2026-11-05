@@ -32,19 +32,10 @@ export const createSubscription = action({
   },
   perform: async (
     _context,
-    {
-      connectionInput,
-      projectId,
-      topic,
-      additionalFields,
-      topicNameOrFullFormat,
-      subscription,
-    },
+    { connectionInput, projectId, topic, additionalFields, topicNameOrFullFormat, subscription },
   ) => {
     const client = createClient(connectionInput);
-    const topicName = topicNameOrFullFormat
-      ? topic
-      : `projects/${projectId}/topics/${topic}`;
+    const topicName = topicNameOrFullFormat ? topic : `projects/${projectId}/topics/${topic}`;
     const { data } = await client.projects.subscriptions.create({
       name: `projects/${projectId}/subscriptions/${subscription}`,
       requestBody: {
@@ -53,20 +44,16 @@ export const createSubscription = action({
         bigqueryConfig: additionalFields.bigqueryConfig || undefined,
         ackDeadlineSeconds: additionalFields.ackDeadlineSeconds || undefined,
         retainAckedMessages: additionalFields.retainAckedMessages || undefined,
-        messageRetentionDuration:
-          additionalFields.messageRetentionDuration || undefined,
+        messageRetentionDuration: additionalFields.messageRetentionDuration || undefined,
         labels: additionalFields.labels || undefined,
-        enableMessageOrdering:
-          additionalFields.enableMessageOrdering || undefined,
+        enableMessageOrdering: additionalFields.enableMessageOrdering || undefined,
         expirationPolicy: additionalFields.expirationPolicy || undefined,
         filter: additionalFields.filter || undefined,
         deadLetterPolicy: additionalFields.deadLetterPolicy || undefined,
         retryPolicy: additionalFields.retryPolicy || undefined,
         detached: additionalFields.detached || undefined,
-        enableExactlyOnceDelivery:
-          additionalFields.enableExactlyOnceDelivery || undefined,
-        topicMessageRetentionDuration:
-          additionalFields.topicMessageRetentionDuration || undefined,
+        enableExactlyOnceDelivery: additionalFields.enableExactlyOnceDelivery || undefined,
+        topicMessageRetentionDuration: additionalFields.topicMessageRetentionDuration || undefined,
         state: additionalFields.state || undefined,
       },
     });
@@ -112,15 +99,8 @@ export const createWebhookSubscription = action({
       });
       return { data: { ...data, alreadyExisted: false } };
     } catch (error: unknown) {
-      if (
-        typeof error === "object" &&
-        error !== null &&
-        "code" in error &&
-        error.code === 409
-      ) {
-        logger.warn(
-          "Skipping creation of subscription because it already exists.",
-        );
+      if (typeof error === "object" && error !== null && "code" in error && error.code === 409) {
+        logger.warn("Skipping creation of subscription because it already exists.");
         const { data } = await client.projects.subscriptions.get({
           subscription: subscriptionName,
         });

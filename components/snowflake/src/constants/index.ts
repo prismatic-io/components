@@ -1,6 +1,5 @@
 export const CONNECTION_KEY = "snowflakeOauth2";
-export const SNOWFLAKE_API_URL =
-  "https://<account_identifier>.snowflakecomputing.com";
+export const SNOWFLAKE_API_URL = "https://<account_identifier>.snowflakecomputing.com";
 
 export const ACCEPTED = 202;
 

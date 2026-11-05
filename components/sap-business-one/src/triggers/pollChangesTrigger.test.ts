@@ -7,27 +7,17 @@ import { pollChangesTrigger } from "./pollChangesTrigger";
 
 vi.mock("../client", () => ({ createClient: vi.fn() }));
 
-const created: SAPBusinessOneRecord = {
-  CreateDate: "2026-01-02",
-  UpdateDate: "2026-01-02",
-};
-const updated: SAPBusinessOneRecord = {
-  CreateDate: "2025-01-01",
-  UpdateDate: "2026-01-02",
-};
+const created: SAPBusinessOneRecord = { CreateDate: "2026-01-02", UpdateDate: "2026-01-02" };
+const updated: SAPBusinessOneRecord = { CreateDate: "2025-01-01", UpdateDate: "2026-01-02" };
 
 test("New and Updated Records is opt-in batchable with a default batch size", () => {
   expect(pollChangesTrigger.triggerResolverSupport).toBe("valid");
   expect(pollChangesTrigger.batchConfig).toEqual({ batchSize: 50 });
-  expect(pollChangesTrigger.triggerResolver?.resolveItems).toBeInstanceOf(
-    Function,
-  );
+  expect(pollChangesTrigger.triggerResolver?.resolveItems).toBeInstanceOf(Function);
 });
 
 test("resolvePollingRecordChanges tags every record with how it changed", () => {
-  expect(
-    resolvePollingRecordChanges({ created: [created], updated: [updated] }),
-  ).toEqual([
+  expect(resolvePollingRecordChanges({ created: [created], updated: [updated] })).toEqual([
     { changeType: "created", record: created },
     { changeType: "updated", record: updated },
   ]);
@@ -39,15 +29,10 @@ test("resolvePollingRecordChanges returns [] for empty or undefined changes", ()
 });
 
 test("resolveItems flattens the payload shape perform actually returns", () => {
-  const payload = {
-    ...defaultTriggerPayload(),
-    body: { data: { created: [created] } },
-  };
-  expect(
-    pollChangesTrigger.triggerResolver?.resolveItems?.({} as never, {
-      payload,
-    }),
-  ).toEqual([{ changeType: "created", record: created }]);
+  const payload = { ...defaultTriggerPayload(), body: { data: { created: [created] } } };
+  expect(pollChangesTrigger.triggerResolver?.resolveItems?.({} as never, { payload })).toEqual([
+    { changeType: "created", record: created },
+  ]);
 });
 
 describe("Look-back Date initial sync", () => {
@@ -69,16 +54,12 @@ describe("Look-back Date initial sync", () => {
         },
       },
     };
-    const result = await pollChangesTrigger.perform(
-      context as never,
-      defaultTriggerPayload(),
-      {
-        connection: {},
-        pollResourceType: "Orders",
-        lookBackDate,
-        ...toggles,
-      } as never,
-    );
+    const result = await pollChangesTrigger.perform(context as never, defaultTriggerPayload(), {
+      connection: {},
+      pollResourceType: "Orders",
+      lookBackDate,
+      ...toggles,
+    } as never);
     return { result, getState: () => next };
   };
 
@@ -98,12 +79,9 @@ describe("Look-back Date initial sync", () => {
 
   test("sends the look-back day as a day-precision filter and seeds records dated on it", async () => {
     const { result } = await run(undefined, lookBackDateClean("2026-01-01"));
-    expect(get.mock.calls[0][1].params.$filter).toBe(
-      "UpdateDate ge '2026-01-01'",
-    );
-    const data = (
-      result as { payload: { body: { data: Record<string, unknown[]> } } }
-    ).payload.body.data;
+    expect(get.mock.calls[0][1].params.$filter).toBe("UpdateDate ge '2026-01-01'");
+    const data = (result as { payload: { body: { data: Record<string, unknown[]> } } }).payload.body
+      .data;
     expect(data.created).toHaveLength(1);
     expect(data.updated).toHaveLength(1);
   });
@@ -113,9 +91,7 @@ describe("Look-back Date initial sync", () => {
       showNewRecords: false,
       showUpdatedRecords: false,
     });
-    expect((result as { polledNoChanges: boolean }).polledNoChanges).toBe(
-      false,
-    );
+    expect((result as { polledNoChanges: boolean }).polledNoChanges).toBe(false);
   });
 
   test("persisted state wins over the Look-back Date", async () => {
@@ -123,9 +99,7 @@ describe("Look-back Date initial sync", () => {
       { lastPolledAt: "2026-02-01T00:00:00.000Z" },
       lookBackDateClean("2026-01-01"),
     );
-    expect(get.mock.calls[0][1].params.$filter).toBe(
-      "UpdateDate ge '2026-02-01'",
-    );
+    expect(get.mock.calls[0][1].params.$filter).toBe("UpdateDate ge '2026-02-01'");
     expect(getState()?.lastPolledAt).not.toBe("2026-02-01T00:00:00.000Z");
   });
 
@@ -142,10 +116,7 @@ describe("incremental poll behavior", () => {
   const get = vi.fn();
   const NOW = new Date("2026-03-01T12:00:00.000Z");
 
-  const run = async (
-    state: PollingState | undefined,
-    overrides: Record<string, unknown> = {},
-  ) => {
+  const run = async (state: PollingState | undefined, overrides: Record<string, unknown> = {}) => {
     let next: PollingState | undefined = state;
     const context = {
       debug: { enabled: false },
@@ -157,25 +128,16 @@ describe("incremental poll behavior", () => {
         },
       },
     };
-    const result = (await pollChangesTrigger.perform(
-      context as never,
-      defaultTriggerPayload(),
-      {
-        connection: {},
-        pollResourceType: "Orders",
-        lookBackDate: "",
-        showNewRecords: true,
-        showUpdatedRecords: true,
-        ...overrides,
-      } as never,
-    )) as {
+    const result = (await pollChangesTrigger.perform(context as never, defaultTriggerPayload(), {
+      connection: {},
+      pollResourceType: "Orders",
+      lookBackDate: "",
+      showNewRecords: true,
+      showUpdatedRecords: true,
+      ...overrides,
+    } as never)) as {
       payload: {
-        body: {
-          data: {
-            created: SAPBusinessOneRecord[];
-            updated: SAPBusinessOneRecord[];
-          };
-        };
+        body: { data: { created: SAPBusinessOneRecord[]; updated: SAPBusinessOneRecord[] } };
       };
       polledNoChanges: boolean;
     };
@@ -234,9 +196,7 @@ describe("incremental poll behavior", () => {
 
   test("silent init: no state and no look-back seeds state to now and emits nothing", async () => {
     const { result, getState } = await run(undefined);
-    expect(get.mock.calls[0][1].params.$filter).toBe(
-      "UpdateDate ge '2026-03-01'",
-    );
+    expect(get.mock.calls[0][1].params.$filter).toBe("UpdateDate ge '2026-03-01'");
     expect(result.payload.body.data).toEqual({ created: [], updated: [] });
     expect(result.polledNoChanges).toBe(true);
     expect(getState()?.lastPolledAt).toBe(NOW.toISOString());
@@ -280,9 +240,7 @@ describe("lookBackDateClean edge cases", () => {
   });
 
   test("surrounding whitespace is trimmed on a valid date", () => {
-    expect(lookBackDateClean("  2026-01-01  ")).toBe(
-      "2026-01-01T00:00:00.000Z",
-    );
+    expect(lookBackDateClean("  2026-01-01  ")).toBe("2026-01-01T00:00:00.000Z");
   });
 
   test("leap day: 2024-02-29 valid, 2025-02-29 throws", () => {

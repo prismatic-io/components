@@ -33,8 +33,9 @@ export const updateCustomerGql = action({
       context.logger,
     );
 
-    const data: { customerUpdate: Record<string, unknown> } =
-      await client.request(updateCustomerQuery, {
+    const data: { customerUpdate: Record<string, unknown> } = await client.request(
+      updateCustomerQuery,
+      {
         input: {
           id: customerIdGql,
           email: contactInfo.email,
@@ -48,17 +49,15 @@ export const updateCustomerGql = action({
           metafields,
           ...additionalFields,
         },
-      });
+      },
+    );
 
     return {
       data: data.customerUpdate,
     };
   },
   inputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: updateCustomerGqlOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: updateCustomerGqlOutputSchema }),
   examplePerform: async () => examplePayload,
   examplePayload,
 });

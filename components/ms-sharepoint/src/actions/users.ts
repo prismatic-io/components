@@ -5,8 +5,7 @@ import { connection } from "../inputs";
 const getCurrentUser = action({
   display: {
     label: "Get Current User",
-    description:
-      "Get the information and metadata of the user that is currently logged in",
+    description: "Get the information and metadata of the user that is currently logged in",
   },
   perform: async ({ debug: { enabled: debug } }, params) => {
     const client = await createClient(params.connection, debug);

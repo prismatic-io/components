@@ -1,7 +1,9 @@
 {
   "compilerOptions": {
     "target": "es6",
-    "lib": ["esnext"],
+    "lib": [
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -14,7 +16,13 @@
     "isolatedModules": false,
     "strictNullChecks": false,
     "noImplicitAny": false,
-    "types": ["node", "vitest/globals"]
+    "types": [
+      "node",
+      "vitest/globals"
+    ]
   },
-  "include": ["src", ".spectral/*"]
+  "include": [
+    "src",
+    ".spectral/*"
+  ]
 }

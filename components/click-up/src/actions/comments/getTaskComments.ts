@@ -16,10 +16,7 @@ export const getTaskComments = action({
   }),
   examplePayload: getTaskCommentsExamplePayload,
   performSafety: "safe",
-  perform: async (
-    context,
-    { connection, taskId, customTaskIds, teamId, pagination },
-  ) => {
+  perform: async (context, { connection, taskId, customTaskIds, teamId, pagination }) => {
     const client = createClickUpClient(connection, context.debug.enabled);
     const params: GetTaskCommentsQueryParams = {
       custom_task_ids: customTaskIds,

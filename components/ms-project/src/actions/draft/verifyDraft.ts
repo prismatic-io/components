@@ -14,9 +14,7 @@ export const verifyDraft = action({
       },
       context.debug.enabled,
     );
-    const { data } = await client.post(
-      `/Projects('${params.guId}')/Draft/validate()`,
-    );
+    const { data } = await client.post(`/Projects('${params.guId}')/Draft/validate()`);
 
     return {
       data,

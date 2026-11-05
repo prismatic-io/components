@@ -25,8 +25,7 @@ const contentDocumentId = input({
   label: "Content Version ID",
   type: "string",
   required: true,
-  comments:
-    "The unique identifier of the ContentVersion record for the file to retrieve.",
+  comments: "The unique identifier of the ContentVersion record for the file to retrieve.",
   clean: util.types.toString,
   example: "0697000000K2g5AAAR",
   placeholder: "Enter content version ID",

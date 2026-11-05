@@ -3,11 +3,7 @@ import { saveFlowOutputSchema } from "../../outputSchemas";
 import { createSalesforceClient } from "../../client";
 import { createFlowInputs } from "../../inputs";
 import type { FlowMetadata } from "../../types";
-import {
-  createFlowFunction,
-  generateApiName,
-  processMetadataResult,
-} from "../../util";
+import { createFlowFunction, generateApiName, processMetadataResult } from "../../util";
 import { createFlowExamplePayload } from "../../examplePayloads";
 
 export const createFlow = action({
@@ -33,9 +29,7 @@ export const createFlow = action({
       description,
       runInMode: runInMode as FlowMetadata["runInMode"],
       status: "Draft",
-      processMetadataValues: [
-        { name: "CanvasMode", value: { stringValue: "AUTO_LAYOUT_CANVAS" } },
-      ],
+      processMetadataValues: [{ name: "CanvasMode", value: { stringValue: "AUTO_LAYOUT_CANVAS" } }],
       ...(flowMetadata ? flowMetadata : {}),
     };
 
@@ -47,8 +41,7 @@ export const createFlow = action({
 
     return { data: processMetadataResult(result) };
   },
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    createFlowExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => createFlowExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: saveFlowOutputSchema,

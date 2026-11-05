@@ -13,14 +13,8 @@ export const getPublicWorker = action({
   },
   examplePayload: getPublicWorkerExamplePayload,
   inputs: getPublicWorkerInputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: workerOutputSchema,
-  }),
-  perform: async (
-    context,
-    { connection, personId, expand, includeMetadataLinks },
-  ) => {
+  outputSchema: outputSchema({ type: "actionOutput", schema: workerOutputSchema }),
+  perform: async (context, { connection, personId, expand, includeMetadataLinks }) => {
     const client = createClient(connection, context.debug.enabled);
     const { data } = await client.get<Worker>(`/publicWorkers/${personId}`, {
       params: {

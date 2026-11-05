@@ -12,9 +12,7 @@ export const getEmployeeChangesById = action({
   perform: async (context, { connection, employeeId }) => {
     const client = createBasicAuthClient(connection, context.debug.enabled);
 
-    const { data } = await client.get(
-      `/personnel/v1/employee-changes/${employeeId}`,
-    );
+    const { data } = await client.get(`/personnel/v1/employee-changes/${employeeId}`);
 
     return { data };
   },

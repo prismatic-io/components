@@ -1,23 +1,16 @@
 import { util } from "@prismatic-io/spectral";
 import type { HttpClient } from "@prismatic-io/spectral/http";
 import { LOOK_BACK_DATE_PATTERN, POLL_RESOURCE_CONFIG } from "./constants";
-import type {
-  GA4ChangesObject,
-  GA4Record,
-  GA4RecordChange,
-  PaginatedFunction,
-} from "./types";
+import type { GA4ChangesObject, GA4Record, GA4RecordChange, PaginatedFunction } from "./types";
 
 export const toOptionalString = (input: unknown) => {
   return input ? util.types.toString(input) : undefined;
 };
 
-export const pollResourceModel = Object.entries(POLL_RESOURCE_CONFIG).map(
-  ([value, { label }]) => ({
-    label,
-    value,
-  }),
-);
+export const pollResourceModel = Object.entries(POLL_RESOURCE_CONFIG).map(([value, { label }]) => ({
+  label,
+  value,
+}));
 
 export const paginateRecords = async <T, K extends string>(
   client: HttpClient,
@@ -51,9 +44,7 @@ export const paginateRecords = async <T, K extends string>(
           pageToken: nextPageToken,
         },
       });
-      records[propertyKey] = records[propertyKey].concat(
-        response.data[propertyKey] ?? [],
-      );
+      records[propertyKey] = records[propertyKey].concat(response.data[propertyKey] ?? []);
       nextPageToken = response.data.nextPageToken || "";
     }
     return records;
@@ -88,18 +79,14 @@ export const filterByTimestamp = (
 
   for (const record of records) {
     const { createTime, updateTime } = record;
-    const createdAtDate =
-      typeof createTime === "string" ? new Date(createTime) : null;
-    const updatedAtDate =
-      typeof updateTime === "string" ? new Date(updateTime) : null;
+    const createdAtDate = typeof createTime === "string" ? new Date(createTime) : null;
+    const updatedAtDate = typeof updateTime === "string" ? new Date(updateTime) : null;
 
     const isNew = createdAtDate !== null && createdAtDate > lastPolledAtDate;
-    const isUpdated =
-      !isNew && updatedAtDate !== null && updatedAtDate > lastPolledAtDate;
+    const isUpdated = !isNew && updatedAtDate !== null && updatedAtDate > lastPolledAtDate;
 
     if (isNew && (isBackfill || showNewRecords)) created.push(record);
-    else if (isUpdated && (isBackfill || showUpdatedRecords))
-      updated.push(record);
+    else if (isUpdated && (isBackfill || showUpdatedRecords)) updated.push(record);
   }
 
   return { created, updated };

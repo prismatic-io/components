@@ -11,15 +11,8 @@ export const getPersonActivities = action({
     description: "Lists activities associated with a person.",
   },
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { connection, id, pagination: { limit, cursor } = {}, done },
-  ) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      WebhookVersion.V2,
-    );
+  perform: async (context, { connection, id, pagination: { limit, cursor } = {}, done }) => {
+    const client = createClient(connection, context.debug.enabled, WebhookVersion.V2);
     const { data } = await client.get("/activities", {
       params: { limit, done, person_id: id, cursor },
     });
@@ -27,8 +20,5 @@ export const getPersonActivities = action({
   },
   inputs: getPersonActivitiesInputs,
   examplePayload: getPersonActivitiesExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getPersonActivitiesOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getPersonActivitiesOutputSchema }),
 });

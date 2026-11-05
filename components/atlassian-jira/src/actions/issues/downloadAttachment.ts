@@ -3,11 +3,7 @@ import { createV3Client } from "../../client";
 import { downloadAttachmentExamplePayload } from "../../examplePayloads";
 import { downloadAttachmentInputs } from "../../inputs";
 import type { AttachmentResponse } from "../../types";
-import {
-  downloadArrayOfAttachments,
-  downloadAttachmentsFromIssue,
-  getIssueById,
-} from "../../util";
+import { downloadArrayOfAttachments, downloadAttachmentsFromIssue, getIssueById } from "../../util";
 
 export const downloadAttachment = action({
   display: {
@@ -20,18 +16,12 @@ export const downloadAttachment = action({
     const baseUrl = client.defaults.baseURL;
     let data: AttachmentResponse[];
     if (attachmentIds?.length > 0) {
-      data = await downloadArrayOfAttachments(
-        jiraConnection,
-        baseUrl,
-        attachmentIds,
-      );
+      data = await downloadArrayOfAttachments(jiraConnection, baseUrl, attachmentIds);
     } else if (issueId) {
       const issue = await getIssueById(client, issueId);
       data = await downloadAttachmentsFromIssue(issue, jiraConnection, baseUrl);
     } else {
-      throw new Error(
-        "You must provide either an Issue ID or a list of Attachment IDs.",
-      );
+      throw new Error("You must provide either an Issue ID or a list of Attachment IDs.");
     }
     return { data };
   },

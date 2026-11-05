@@ -13,9 +13,7 @@ afterEach(() => nock.cleanAll());
 
 describe("rawRequest", () => {
   it("forwards the method, path and bearer token and returns the response untouched", async () => {
-    const scope = nock(BASE, {
-      reqheaders: { authorization: "Bearer sk_test_123" },
-    })
+    const scope = nock(BASE, { reqheaders: { authorization: "Bearer sk_test_123" } })
       .get("/v1/products")
       .reply(200, rawRequestExamplePayload.data);
 

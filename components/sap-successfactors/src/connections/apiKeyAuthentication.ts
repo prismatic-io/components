@@ -23,8 +23,7 @@ export const apiKeyAuthentication = connection({
       type: "string",
       required: true,
       shown: true,
-      comments:
-        "Enter the SAP SuccessFactors user ID that you use to access the APIs",
+      comments: "Enter the SAP SuccessFactors user ID that you use to access the APIs",
       example: "sfadmin",
     },
     apiKey: {

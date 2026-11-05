@@ -88,11 +88,7 @@ describe("searchAssets", () => {
     expect(body).toEqual({
       query: [
         { match: { text: "city" } },
-        {
-          term: {
-            "repositoryMetadata.repo:ancestors": ["urn:aaid:aem:folder-1"],
-          },
-        },
+        { term: { "repositoryMetadata.repo:ancestors": ["urn:aaid:aem:folder-1"] } },
         { term: { "repositoryMetadata.dc:format": ["image/jpeg"] } },
         {
           range: {
@@ -122,13 +118,8 @@ describe("searchAssets", () => {
         return sent.cursor === searchAssetsExamplePayload.data.cursor;
       })
       .reply(200, { hits: { results: [second] } });
-    const { result } = await invoke(searchAssets, {
-      ...params,
-      fetchAll: true,
-    });
-    expect(result).toEqual({
-      data: { hits: { results: [exampleAssetSearchHit, second] } },
-    });
+    const { result } = await invoke(searchAssets, { ...params, fetchAll: true });
+    expect(result).toEqual({ data: { hits: { results: [exampleAssetSearchHit, second] } } });
     expect(nock.isDone()).toBe(true);
   });
 
@@ -136,23 +127,15 @@ describe("searchAssets", () => {
     nock(BASE)
       .post("/adobe/assets/search")
       .times(MAX_FETCH_ALL_PAGES)
-      .reply(200, {
-        hits: { results: [exampleAssetSearchHit] },
-        cursor: "next-page",
-      });
-    const { result } = await invoke(searchAssets, {
-      ...params,
-      fetchAll: true,
-    });
+      .reply(200, { hits: { results: [exampleAssetSearchHit] }, cursor: "next-page" });
+    const { result } = await invoke(searchAssets, { ...params, fetchAll: true });
     expect(result.data.hits?.results).toHaveLength(MAX_FETCH_ALL_PAGES);
     expect(result.data.cursor).toBe("next-page");
     expect(nock.isDone()).toBe(true);
   }, 15_000);
 
   test("surfaces an API error", async () => {
-    nock(BASE)
-      .post("/adobe/assets/search")
-      .reply(400, { title: "Invalid query" });
+    nock(BASE).post("/adobe/assets/search").reply(400, { title: "Invalid query" });
     await expect(invoke(searchAssets, params)).rejects.toThrow(
       "Request failed with status code 400",
     );

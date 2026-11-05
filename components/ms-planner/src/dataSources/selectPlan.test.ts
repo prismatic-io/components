@@ -1,7 +1,4 @@
-import {
-  createConnection,
-  invokeDataSource,
-} from "@prismatic-io/spectral/testing";
+import { createConnection, invokeDataSource } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { afterEach, beforeAll, expect, test } from "vitest";
 import { oauthClientCredentials, templatedOauth } from "../connections";
@@ -12,11 +9,7 @@ const BASE = "https://graph.microsoft.com";
 const GROUP_ID = "ebf3b108-5234-4e22-b93d-656d7dae5874";
 const USER_ID = "48d31887-5fad-4d73-a9f5-3c356e68a038";
 
-const authCode = createConnection(
-  templatedOauth,
-  {},
-  { access_token: "test-token" },
-);
+const authCode = createConnection(templatedOauth, {}, { access_token: "test-token" });
 const clientCredentials = createConnection(
   oauthClientCredentials,
   { userId: USER_ID },
@@ -41,9 +34,7 @@ test("reads a group's plans when a Group ID is selected", async () => {
     groupId: GROUP_ID,
   });
 
-  expect(result).toEqual([
-    { label: "Q3 Marketing Launch", key: plans.value[0].id },
-  ]);
+  expect(result).toEqual([{ label: "Q3 Marketing Launch", key: plans.value[0].id }]);
 });
 
 test("reads the signed-in user's plans when no Group ID is selected", async () => {
@@ -69,9 +60,7 @@ test("rewrites the /me path to /users/{userId} on a client credentials connectio
 });
 
 test("returns an empty picklist when the group holds no plans", async () => {
-  nock(BASE)
-    .get(`/v1.0/groups/${GROUP_ID}/planner/plans`)
-    .reply(200, { value: [] });
+  nock(BASE).get(`/v1.0/groups/${GROUP_ID}/planner/plans`).reply(200, { value: [] });
 
   const { result } = await invokeDataSource(selectPlan, {
     connection: authCode,

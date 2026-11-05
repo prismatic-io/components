@@ -9,8 +9,7 @@ import { compareElementLabels } from "../utils";
 export const selectAssetRendition = dataSource({
   display: {
     label: "Select Asset Rendition",
-    description:
-      "Select a rendition from the renditions available for an asset.",
+    description: "Select a rendition from the renditions available for an asset.",
   },
   inputs: selectAssetRenditionInputs,
   examplePayload: selectAssetRenditionExamplePayload,
@@ -20,10 +19,7 @@ export const selectAssetRendition = dataSource({
       `${ASSETS_API_PATH}/${encodeURIComponent(assetId)}/renditions`,
     );
     const result = (data.items ?? [])
-      .map<Element>((rendition) => ({
-        label: rendition.name,
-        key: rendition.name,
-      }))
+      .map<Element>((rendition) => ({ label: rendition.name, key: rendition.name }))
       .sort(compareElementLabels);
     return { result };
   },

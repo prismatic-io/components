@@ -5,10 +5,7 @@ interface CreateClientProps {
   connection: Connection;
 }
 
-export const createClient = (
-  { connection }: CreateClientProps,
-  debug: boolean,
-) => {
+export const createClient = ({ connection }: CreateClientProps, debug: boolean) => {
   return createHttpClient({
     baseUrl: "https://api.powerbi.com/v1.0/myorg/",
     headers: {

@@ -20,10 +20,7 @@ export const closeDispute = action({
       data: await client.disputes.close(disputeId),
     };
   },
-  examplePerform: async (
-    _context,
-    { disputeId },
-  ): Promise<{ data: unknown }> => {
+  examplePerform: async (_context, { disputeId }): Promise<{ data: unknown }> => {
     const dispute = closeDisputeExamplePayload.data as Record<string, unknown>;
 
     return {

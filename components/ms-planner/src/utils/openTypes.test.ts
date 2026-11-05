@@ -19,12 +19,7 @@ describe("compact", () => {
         omitted: undefined,
         kept: "value",
       }),
-    ).toEqual({
-      percentComplete: 0,
-      isChecked: false,
-      title: "",
-      kept: "value",
-    });
+    ).toEqual({ percentComplete: 0, isChecked: false, title: "", kept: "value" });
   });
 
   test("preserves null, which Planner uses to remove an open-type entry", () => {
@@ -48,9 +43,7 @@ describe("buildAssignments", () => {
   });
 
   test("resolves a user named in both lists to null, because the unassign loop runs last", () => {
-    expect(buildAssignments(["user-a"], ["user-a"])).toEqual({
-      "user-a": null,
-    });
+    expect(buildAssignments(["user-a"], ["user-a"])).toEqual({ "user-a": null });
   });
 
   test("returns an empty map when neither list has entries", () => {
@@ -68,9 +61,7 @@ describe("buildAppliedCategories", () => {
   });
 
   test("resolves a category named in both lists to false, because removal runs last", () => {
-    expect(buildAppliedCategories(["category1"], ["category1"])).toEqual({
-      category1: false,
-    });
+    expect(buildAppliedCategories(["category1"], ["category1"])).toEqual({ category1: false });
   });
 
   test("returns an empty map when neither list has entries", () => {
@@ -80,28 +71,15 @@ describe("buildAppliedCategories", () => {
 
 describe("buildChecklist", () => {
   test("gives every added item a generated key and defaults isChecked to false", () => {
-    const checklist = buildChecklist([
-      { title: "First" },
-      { title: "Second", isChecked: true },
-    ]);
+    const checklist = buildChecklist([{ title: "First" }, { title: "Second", isChecked: true }]);
 
     expect(Object.values(checklist)).toEqual([
-      {
-        "@odata.type": ODATA_TYPE.checklistItem,
-        title: "First",
-        isChecked: false,
-      },
-      {
-        "@odata.type": ODATA_TYPE.checklistItem,
-        title: "Second",
-        isChecked: true,
-      },
+      { "@odata.type": ODATA_TYPE.checklistItem, title: "First", isChecked: false },
+      { "@odata.type": ODATA_TYPE.checklistItem, title: "Second", isChecked: true },
     ]);
     expect(Object.keys(checklist)).toHaveLength(2);
     for (const key of Object.keys(checklist)) {
-      expect(key).toMatch(
-        /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/,
-      );
+      expect(key).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/);
     }
   });
 
@@ -125,25 +103,19 @@ describe("buildChecklist", () => {
 
 describe("encodeReferenceKey", () => {
   test('escapes "." and ":" while leaving "/" untouched', () => {
-    expect(encodeReferenceKey("https://example.com/spec")).toBe(
-      "https%3A//example%2Ecom/spec",
-    );
+    expect(encodeReferenceKey("https://example.com/spec")).toBe("https%3A//example%2Ecom/spec");
   });
 
   test("reproduces the key from the plannerExternalReferences documentation", () => {
     expect(
-      encodeReferenceKey(
-        "https://contoso.sharepoint.com/teams/agile/documents/AnnualReport.pptx",
-      ),
-    ).toBe(
-      "https%3A//contoso%2Esharepoint%2Ecom/teams/agile/documents/AnnualReport%2Epptx",
-    );
+      encodeReferenceKey("https://contoso.sharepoint.com/teams/agile/documents/AnnualReport.pptx"),
+    ).toBe("https%3A//contoso%2Esharepoint%2Ecom/teams/agile/documents/AnnualReport%2Epptx");
   });
 
   test('escapes "%", "@" and "#", the other characters an open type key cannot contain', () => {
-    expect(
-      encodeReferenceKey("https://user@example.com/Annual%20Report.pptx#page"),
-    ).toBe("https%3A//user%40example%2Ecom/Annual%2520Report%2Epptx%23page");
+    expect(encodeReferenceKey("https://user@example.com/Annual%20Report.pptx#page")).toBe(
+      "https%3A//user%40example%2Ecom/Annual%2520Report%2Epptx%23page",
+    );
   });
 
   test('escapes a literal "%" before the others, so a key is never double-encoded', () => {
@@ -158,9 +130,7 @@ describe("encodeReferenceKey", () => {
 describe("buildReferences", () => {
   test("keys an added reference by its encoded URL and annotates the entry", () => {
     expect(
-      buildReferences([
-        { url: "https://example.com/spec", alias: "Spec", type: "Other" },
-      ]),
+      buildReferences([{ url: "https://example.com/spec", alias: "Spec", type: "Other" }]),
     ).toEqual({
       "https%3A//example%2Ecom/spec": {
         "@odata.type": ODATA_TYPE.externalReference,

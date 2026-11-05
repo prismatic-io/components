@@ -24,8 +24,7 @@ export const abortBulkQueryJob = action({
       data,
     };
   },
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    abortBulkQueryJobExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => abortBulkQueryJobExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: abortBulkQueryJobOutputSchema,

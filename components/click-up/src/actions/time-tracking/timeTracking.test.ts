@@ -13,9 +13,7 @@ import { startTimeEntry } from "./startTimeEntry";
 import { updateTimeEntry } from "./updateTimeEntry";
 
 const API = "https://api.clickup.com";
-const connection = createConnection(clickUpApiKeyConnection, {
-  apiKey: "test-key",
-});
+const connection = createConnection(clickUpApiKeyConnection, { apiKey: "test-key" });
 
 interface Captured {
   body?: unknown;
@@ -23,12 +21,7 @@ interface Captured {
   headers?: Record<string, unknown>;
 }
 
-const mockClickUp = (
-  method: string,
-  path: string,
-  status: number,
-  reply: unknown,
-): Captured => {
+const mockClickUp = (method: string, path: string, status: number, reply: unknown): Captured => {
   const captured: Captured = {};
   nock(API)
     .intercept(`/api/v2${path}`, method, (body) => {
@@ -46,19 +39,11 @@ const mockClickUp = (
   return captured;
 };
 
-type ActionUnderTest = {
-  inputs: Record<string, { type?: string }>;
-  perform: unknown;
-};
+type ActionUnderTest = { inputs: Record<string, { type?: string }>; perform: unknown };
 
 const run = (action: ActionUnderTest, params: Record<string, unknown>) => {
-  const connectionKey = Object.keys(action.inputs).find(
-    (key) => action.inputs[key].type === "connection",
-  ) as string;
-  return invoke(
-    action as any,
-    { [connectionKey]: connection, ...params } as any,
-  );
+  const connectionKey = Object.keys(action.inputs).find((key) => action.inputs[key].type === "connection") as string;
+  return invoke(action as any, { [connectionKey]: connection, ...params } as any);
 };
 
 beforeAll(() => nock.disableNetConnect());
@@ -69,9 +54,7 @@ afterEach(() => {
   expect(consumed).toBe(true);
 });
 
-const tagsCode = JSON.stringify({
-  tags: [{ name: "billable", tag_bg: "#BF55EC", tag_fg: "#FFFFFF" }],
-});
+const tagsCode = JSON.stringify({ tags: [{ name: "billable", tag_bg: "#BF55EC", tag_fg: "#FFFFFF" }] });
 
 describe("createTimeEntry", () => {
   const params = {
@@ -88,12 +71,7 @@ describe("createTimeEntry", () => {
   };
 
   test("happy path parses the tags JSON into the body and returns the response", async () => {
-    const req = mockClickUp(
-      "POST",
-      "/team/9012345/time_entries",
-      200,
-      createTimeEntryExamplePayload.data,
-    );
+    const req = mockClickUp("POST", "/team/9012345/time_entries", 200, createTimeEntryExamplePayload.data);
     const { result } = await run(createTimeEntry, params);
     expect(result).toEqual(createTimeEntryExamplePayload);
     expect(req.query).toEqual({ custom_task_ids: "false", team_id: "9012345" });
@@ -126,12 +104,7 @@ describe("getTimeEntriesWithinDateRange", () => {
   };
 
   test("happy path drops empty filters and returns the time entries", async () => {
-    const req = mockClickUp(
-      "GET",
-      "/team/9012345/time_entries",
-      200,
-      getTimeEntriesWithinDateRangeExamplePayload.data,
-    );
+    const req = mockClickUp("GET", "/team/9012345/time_entries", 200, getTimeEntriesWithinDateRangeExamplePayload.data);
     const { result } = await run(getTimeEntriesWithinDateRange, params);
     expect(result).toEqual(getTimeEntriesWithinDateRangeExamplePayload);
     expect(req.query).toEqual({
@@ -158,12 +131,7 @@ describe("startTimeEntry", () => {
   };
 
   test("happy path maps tag names to tag objects and returns the running entry", async () => {
-    const req = mockClickUp(
-      "POST",
-      "/team/9012345/time_entries/start",
-      200,
-      startTimeEntryExamplePayload.data,
-    );
+    const req = mockClickUp("POST", "/team/9012345/time_entries/start", 200, startTimeEntryExamplePayload.data);
     const { result } = await run(startTimeEntry, params);
     expect(result).toEqual(startTimeEntryExamplePayload);
     expect(req.query).toEqual({ custom_task_ids: "false" });
@@ -197,7 +165,7 @@ describe("updateTimeEntry", () => {
       "PUT",
       "/team/9012345/time_entries/1963465985517105840",
       200,
-      updateTimeEntryExamplePayload.data,
+      updateTimeEntryExamplePayload.data
     );
     const { result } = await run(updateTimeEntry, params);
     expect(result).toEqual(updateTimeEntryExamplePayload);

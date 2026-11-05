@@ -14,9 +14,7 @@ export const listProjectResources = action({
       },
       context.debug.enabled,
     );
-    const { data } = await client.get(
-      `/Projects('${params.guId}')/ProjectResources`,
-    );
+    const { data } = await client.get(`/Projects('${params.guId}')/ProjectResources`);
 
     return {
       data,

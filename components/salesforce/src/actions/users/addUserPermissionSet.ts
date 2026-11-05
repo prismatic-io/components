@@ -10,15 +10,10 @@ export const addUserPermissionSet = action({
     description: "Add a permission set to the specified user.",
   },
   performSafety: "notAllowed",
-  perform: async (
-    _context,
-    { version, userName, permissionName, connection },
-  ) => {
+  perform: async (_context, { version, userName, permissionName, connection }) => {
     const salesforceClient = await createSalesforceClient(connection, version);
 
-    const userResponse = await salesforceClient
-      .sobject("User")
-      .findOne({ UserName: userName });
+    const userResponse = await salesforceClient.sobject("User").findOne({ UserName: userName });
 
     const permissionResponse = await salesforceClient
       .sobject("PermissionSet")
@@ -28,25 +23,20 @@ export const addUserPermissionSet = action({
       throw new Error(`Unable to find User matching "${userName}"`);
     }
     if (!permissionResponse?.Id) {
-      throw new Error(
-        `Unable to find Permission Set matching "${permissionName}"`,
-      );
+      throw new Error(`Unable to find Permission Set matching "${permissionName}"`);
     }
     const userId = userResponse.Id;
     const permissionSetId = permissionResponse.Id;
-    const response = await salesforceClient
-      .sobject("PermissionSetAssignment")
-      .create({
-        AssigneeId: userId,
-        PermissionSetId: permissionSetId,
-      });
+    const response = await salesforceClient.sobject("PermissionSetAssignment").create({
+      AssigneeId: userId,
+      PermissionSetId: permissionSetId,
+    });
 
     return {
       data: response,
     };
   },
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    genericCreateUpdateExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => genericCreateUpdateExamplePayload,
   inputs: addUserPermissionSetInputs,
   outputSchema: outputSchema({
     type: "actionOutput",

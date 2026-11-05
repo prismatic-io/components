@@ -1,9 +1,4 @@
-import {
-  type Connection,
-  pollingTrigger,
-  type TriggerPayload,
-  util,
-} from "@prismatic-io/spectral";
+import { type Connection, pollingTrigger, type TriggerPayload, util } from "@prismatic-io/spectral";
 import type { drive_v3 } from "googleapis";
 import { listChanges } from "../actions/changes/listChanges";
 import { createClient } from "../client";
@@ -64,21 +59,14 @@ export const pollChangesTrigger = pollingTrigger({
   batchConfig: { batchSize: DEFAULT_BATCH_SIZE, concurrentBatchLimit: 1 },
   triggerResolver: {
     resolveItems: (_context, { payload }): ListChange[] =>
-      resolveListChangeItems(
-        payload.body.data as ListChangesResponse | undefined,
-      ),
-    getNextPaginationState: (
-      _context,
-      { payload },
-    ): ChangesPaginationState | null =>
+      resolveListChangeItems(payload.body.data as ListChangesResponse | undefined),
+    getNextPaginationState: (_context, { payload }): ChangesPaginationState | null =>
       (payload.paginationState as ChangesPaginationState | undefined) ?? null,
   },
   onDeployPerform: async (context, payload, params): Promise<PollResult> => {
     const { connection, driveId, lookBackDate } = params as OnDeployParams;
     const stateKey = getListChangesNewStateKey(context);
-    const incoming = payload.paginationState as
-      | ChangesPaginationState
-      | undefined;
+    const incoming = payload.paginationState as ChangesPaginationState | undefined;
     const scopedDriveId = util.types.toString(driveId);
 
     const nothingToDo = () => ({
@@ -116,17 +104,12 @@ export const pollChangesTrigger = pollingTrigger({
         ...payload,
         paginationState: done
           ? undefined
-          : ({
-              pageToken: nextPageToken as string,
-              backfill,
-            } as ChangesPaginationState),
+          : ({ pageToken: nextPageToken as string, backfill } as ChangesPaginationState),
         body: {
           data: {
             kind: CHANGE_LIST_KIND,
             changes,
-            ...(done
-              ? { newStartPageToken: backfill.startPageToken }
-              : { nextPageToken }),
+            ...(done ? { newStartPageToken: backfill.startPageToken } : { nextPageToken }),
           },
         },
       },
@@ -144,27 +127,19 @@ export const pollChangesTrigger = pollingTrigger({
   },
   onDeployResolver: {
     resolveItems: (_context, { payload }): ListChange[] =>
-      resolveListChangeItems(
-        payload.body.data as ListChangesResponse | undefined,
-      ),
-    getNextPaginationState: (
-      _context,
-      { payload },
-    ): ChangesPaginationState | null =>
+      resolveListChangeItems(payload.body.data as ListChangesResponse | undefined),
+    getNextPaginationState: (_context, { payload }): ChangesPaginationState | null =>
       (payload.paginationState as ChangesPaginationState | undefined) ?? null,
   },
   perform: async (context, payload, params): Promise<PollResult> => {
     const client = createClient(params.connection);
     const stateKey = getListChangesNewStateKey(context);
-    const incoming = payload.paginationState as
-      | ChangesPaginationState
-      | undefined;
+    const incoming = payload.paginationState as ChangesPaginationState | undefined;
     const state = context.polling.getState() as ChangesPollingState;
     const isPlatformDrivenRound = Boolean(incoming);
     const isBatching = context.batch?.enabled === true;
 
-    const { value: storedToken, isLegacy } =
-      resolveListChangesPageToken(context);
+    const { value: storedToken, isLegacy } = resolveListChangesPageToken(context);
 
     const backfillRound = async (
       backfill: BackfillCursor,
@@ -178,35 +153,23 @@ export const pollChangesTrigger = pollingTrigger({
       const done = !nextPageToken;
 
       context.polling.setState(
-        done
-          ? {}
-          : ({
-              backfill,
-              backfillPageToken: nextPageToken,
-            } satisfies ChangesPollingState),
+        done ? {} : ({ backfill, backfillPageToken: nextPageToken } satisfies ChangesPollingState),
       );
 
       return {
         data: {
           kind: CHANGE_LIST_KIND,
           changes,
-          ...(done
-            ? { newStartPageToken: backfill.startPageToken }
-            : { nextPageToken }),
+          ...(done ? { newStartPageToken: backfill.startPageToken } : { nextPageToken }),
         },
         cursor: done ? backfill.startPageToken : undefined,
-        nextState: done
-          ? undefined
-          : { pageToken: nextPageToken as string, backfill },
+        nextState: done ? undefined : { pageToken: nextPageToken as string, backfill },
         noChanges: changes.length === 0 && done,
       };
     };
 
     const changesRound = async (pageToken: string): Promise<PollRound> => {
-      const data = await fetchChangesPage(client, {
-        pageToken,
-        driveId: params.driveId,
-      });
+      const data = await fetchChangesPage(client, { pageToken, driveId: params.driveId });
 
       const moreToRead = Boolean(data.nextPageToken);
 
@@ -217,9 +180,7 @@ export const pollChangesTrigger = pollingTrigger({
             ? pageToken
             : (data.nextPageToken as string)
           : (data.newStartPageToken as string),
-        nextState: moreToRead
-          ? { pageToken: data.nextPageToken as string }
-          : undefined,
+        nextState: moreToRead ? { pageToken: data.nextPageToken as string } : undefined,
         noChanges: (data.changes?.length ?? 0) === 0 && !moreToRead,
       };
     };
@@ -238,11 +199,7 @@ export const pollChangesTrigger = pollingTrigger({
         "First time running. Subsequent runs will show changes that occurred since the previous run.",
       );
       return {
-        data: {
-          kind: CHANGE_LIST_KIND,
-          newStartPageToken: startPageToken,
-          changes: [],
-        },
+        data: { kind: CHANGE_LIST_KIND, newStartPageToken: startPageToken, changes: [] },
         cursor: startPageToken as string,
         noChanges: true,
       };
@@ -258,8 +215,9 @@ export const pollChangesTrigger = pollingTrigger({
           ? await changesRound(storedToken)
           : await firstRun();
 
-    const cursorWrite: { crossFlowState?: Record<string, string> } =
-      round.cursor ? { crossFlowState: { [stateKey]: round.cursor } } : {};
+    const cursorWrite: { crossFlowState?: Record<string, string> } = round.cursor
+      ? { crossFlowState: { [stateKey]: round.cursor } }
+      : {};
     const legacyCleanup: { instanceState?: Record<string, unknown> } = isLegacy
       ? {
           instanceState: {

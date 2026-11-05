@@ -12,14 +12,7 @@ export const createCandidate = action({
   inputs: createCandidateInputs,
   perform: async (
     context,
-    {
-      connection,
-      additionalInputs,
-      country,
-      firstName,
-      lastName,
-      primaryEmail,
-    },
+    { connection, additionalInputs, country, firstName, lastName, primaryEmail },
   ) => {
     const client = await createClient(connection, context.debug.enabled);
     const { data } = await client.post(`/Candidate`, {

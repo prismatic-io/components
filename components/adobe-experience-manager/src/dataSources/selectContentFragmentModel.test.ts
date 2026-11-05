@@ -1,7 +1,4 @@
-import {
-  createConnection,
-  invokeDataSource,
-} from "@prismatic-io/spectral/testing";
+import { createConnection, invokeDataSource } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { aemOAuthServerToServer } from "../connections";
 import {
@@ -34,20 +31,13 @@ describe("selectContentFragmentModel", () => {
       .get("/adobe/sites/cf/models")
       .query({ limit: "50" })
       .reply(200, listContentFragmentModelsExamplePayload.data);
-    const result = await invokeDataSource(selectContentFragmentModel, {
-      connection,
-    });
+    const result = await invokeDataSource(selectContentFragmentModel, { connection });
     expect(result).toEqual(selectContentFragmentModelExamplePayload);
   });
 
   test("returns an empty list when there are no models", async () => {
-    nock(BASE)
-      .get("/adobe/sites/cf/models")
-      .query({ limit: "50" })
-      .reply(200, { items: [] });
-    const result = await invokeDataSource(selectContentFragmentModel, {
-      connection,
-    });
+    nock(BASE).get("/adobe/sites/cf/models").query({ limit: "50" }).reply(200, { items: [] });
+    const result = await invokeDataSource(selectContentFragmentModel, { connection });
     expect(result).toEqual({ result: [] });
   });
 });

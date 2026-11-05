@@ -411,8 +411,7 @@ export const getOrganizationMailMessagesExamplePayload = {
         cc: [],
         bcc: [],
         subject: "Acme Corporation - Partnership Proposal",
-        snippet:
-          "Please find attached our partnership proposal for the upcoming...",
+        snippet: "Please find attached our partnership proposal for the upcoming...",
         read_flag: 1,
         draft: "0",
         has_body_flag: 1,

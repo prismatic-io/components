@@ -57,8 +57,7 @@ export const productType = input({
 export const active = input({
   label: "Active",
   type: "boolean",
-  comments:
-    "When true, the object is currently active and available on the platform.",
+  comments: "When true, the object is currently active and available on the platform.",
   required: true,
   clean: util.types.toBool,
 });
@@ -96,17 +95,9 @@ export const createProductInputs = {
   stripeConnection: connectionInput,
 };
 
-export const deleteProductInputs = {
-  productId,
-  timeout,
-  stripeConnection: connectionInput,
-};
+export const deleteProductInputs = { productId, timeout, stripeConnection: connectionInput };
 
-export const getProductInputs = {
-  productId,
-  timeout,
-  stripeConnection: connectionInput,
-};
+export const getProductInputs = { productId, timeout, stripeConnection: connectionInput };
 
 export const listProductsInputs = {
   timeout,

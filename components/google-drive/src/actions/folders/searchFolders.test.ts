@@ -3,11 +3,7 @@ import { createConnection, invoke } from "@prismatic-io/spectral/dist/testing";
 import { connection as connectionDefinition } from "../../connections";
 import { searchFolders } from "./searchFolders";
 
-const connection = createConnection(
-  connectionDefinition,
-  {},
-  { access_token: "test-token" },
-);
+const connection = createConnection(connectionDefinition, {}, { access_token: "test-token" });
 const DRIVE = "https://www.googleapis.com";
 
 const baseParams = {
@@ -31,9 +27,7 @@ describe("searchFolders", () => {
       .query((q) => q.q === finalQuery)
       .reply(200, {
         kind: "drive#fileList",
-        files: [
-          { id: "1QwErTy2UiOp3AsDf4GhJk5LzXcVbNm6", name: "Campaign Assets" },
-        ],
+        files: [{ id: "1QwErTy2UiOp3AsDf4GhJk5LzXcVbNm6", name: "Campaign Assets" }],
       });
 
     const { result } = await invoke(searchFolders, {
@@ -55,26 +49,15 @@ describe("searchFolders", () => {
       .reply(200, { kind: "drive#fileList", files: [] });
 
     await expect(
-      invoke(searchFolders, {
-        ...baseParams,
-        searchQuery: "nonexistent",
-        fetchAll: false,
-      }),
+      invoke(searchFolders, { ...baseParams, searchQuery: "nonexistent", fetchAll: false }),
     ).rejects.toThrow(/No results found/);
   });
 
   test("throws a TypeError, not the custom error, when the API response omits `files` entirely", async () => {
-    nock(DRIVE)
-      .get("/drive/v3/files")
-      .query(true)
-      .reply(200, { kind: "drive#fileList" });
+    nock(DRIVE).get("/drive/v3/files").query(true).reply(200, { kind: "drive#fileList" });
 
     await expect(
-      invoke(searchFolders, {
-        ...baseParams,
-        searchQuery: "nonexistent",
-        fetchAll: false,
-      }),
+      invoke(searchFolders, { ...baseParams, searchQuery: "nonexistent", fetchAll: false }),
     ).rejects.toThrow(TypeError);
   });
 
@@ -85,11 +68,7 @@ describe("searchFolders", () => {
       .reply(500, { error: { message: "Server error" } });
 
     await expect(
-      invoke(searchFolders, {
-        ...baseParams,
-        searchQuery: "Campaign",
-        fetchAll: false,
-      }),
+      invoke(searchFolders, { ...baseParams, searchQuery: "Campaign", fetchAll: false }),
     ).rejects.toThrow();
   });
 });

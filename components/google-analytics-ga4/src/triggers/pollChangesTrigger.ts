@@ -11,11 +11,7 @@ import type {
   PollingState,
   Property,
 } from "../types";
-import {
-  filterByTimestamp,
-  paginateRecords,
-  resolvePollingRecordChanges,
-} from "../util";
+import { filterByTimestamp, paginateRecords, resolvePollingRecordChanges } from "../util";
 
 export const pollChangesTrigger = pollingTrigger({
   display: {

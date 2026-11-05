@@ -7,12 +7,7 @@ import {
   cleanPicklistValuesLowercase,
   toRequiredTrimmedString,
 } from "../util";
-import {
-  connectionInput,
-  dynamicRecordType,
-  filterQuery,
-  version,
-} from "./common";
+import { connectionInput, dynamicRecordType, filterQuery, version } from "./common";
 import { showTriggerableOnly } from "./workflows";
 
 export const dynamicFieldName = input({
@@ -110,8 +105,7 @@ export const objectSelection = input({
   label: "Selected Record Types",
   type: "objectSelection",
   required: true,
-  comments:
-    "The selected Record Types to use as choices for performing field mapping.",
+  comments: "The selected Record Types to use as choices for performing field mapping.",
   clean: cleanObjectSelection,
 });
 

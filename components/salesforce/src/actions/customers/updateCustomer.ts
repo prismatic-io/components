@@ -44,8 +44,7 @@ export const updateCustomer = action({
       data: response,
     };
   },
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    genericCreateUpdateExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => genericCreateUpdateExamplePayload,
   inputs: updateCustomerInputs,
   outputSchema: outputSchema({
     type: "actionOutput",

@@ -28,8 +28,7 @@ const seoName = input({
   placeholder: "Enter file name",
   type: "string",
   required: true,
-  comments:
-    "The file name to request the binary under, usually the asset's own name.",
+  comments: "The file name to request the binary under, usually the asset's own name.",
   example: "city.jpeg",
   clean: cleanRequiredString,
 });
@@ -95,8 +94,7 @@ const searchText = input({
   placeholder: "Enter search text",
   type: "string",
   required: false,
-  comments:
-    "Full-text search across asset metadata. Leave empty to match every asset.",
+  comments: "Full-text search across asset metadata. Leave empty to match every asset.",
   example: "city skyline",
   clean: cleanString,
 });
@@ -134,12 +132,7 @@ export const listAssetRenditionsInputs = { connection, assetId };
 
 export const downloadAssetInputs = { connection, assetId, seoName };
 
-export const downloadAssetRenditionInputs = {
-  connection,
-  assetId,
-  renditionName,
-  seoName,
-};
+export const downloadAssetRenditionInputs = { connection, assetId, renditionName, seoName };
 
 const destinationFolder = input({
   label: "Destination Folder Path",
@@ -158,8 +151,7 @@ const fileUrl = input({
   placeholder: "Enter file URL",
   type: "string",
   required: true,
-  comments:
-    "The https:// URL AEM downloads the file from. It must be reachable from AEM.",
+  comments: "The https:// URL AEM downloads the file from. It must be reachable from AEM.",
   example: "https://cdn.example.com/city.jpeg",
   clean: cleanHttpsUrl,
 });
@@ -194,8 +186,7 @@ const removeFields = input({
   collection: "valuelist",
   required: false,
   default: [],
-  comments:
-    "Metadata field names to remove from the asset, such as dc:description.",
+  comments: "Metadata field names to remove from the asset, such as dc:description.",
   example: "dc:description",
   clean: cleanStringList,
 });
@@ -205,8 +196,7 @@ const forceDelete = input({
   type: "boolean",
   required: false,
   default: "false",
-  comments:
-    "When true, deletes the asset even when it is referenced elsewhere.",
+  comments: "When true, deletes the asset even when it is referenced elsewhere.",
   clean: util.types.toBool,
 });
 
@@ -220,12 +210,7 @@ export const importAssetFromUrlInputs = {
 
 export const getImportJobStatusInputs = { connection, jobId };
 
-export const updateAssetMetadataInputs = {
-  connection,
-  assetId,
-  metadataValues,
-  removeFields,
-};
+export const updateAssetMetadataInputs = { connection, assetId, metadataValues, removeFields };
 
 export const deleteAssetInputs = { connection, assetId, force: forceDelete };
 

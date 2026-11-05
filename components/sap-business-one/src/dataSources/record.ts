@@ -17,10 +17,7 @@ export const selectRecord = dataSource({
     $filter,
     connection,
   },
-  perform: async (
-    context,
-    { connection, recordType, keyField, labelField, $filter },
-  ) => {
+  perform: async (context, { connection, recordType, keyField, labelField, $filter }) => {
     const client = await createClient(connection, context, true);
 
     const data = await fetchAllData(

@@ -10,15 +10,12 @@ import { JwksClient } from "jwks-rsa";
 import { createClient as createHttpClient } from "@prismatic-io/spectral/dist/clients/http";
 import { botId } from "./inputs";
 
-const verify = promisify<string, Secret | GetPublicKeyOrSecret, VerifyOptions>(
-  verifyCb,
-);
+const verify = promisify<string, Secret | GetPublicKeyOrSecret, VerifyOptions>(verifyCb);
 
 const botTrigger = trigger({
   display: {
     label: "Bot Framework Trigger",
-    description:
-      "Trigger that validates incoming requests as coming from Bot Framework",
+    description: "Trigger that validates incoming requests as coming from Bot Framework",
   },
   allowsBranching: true,
   staticBranchNames: ["Notification", "Management"],
@@ -39,8 +36,7 @@ const botTrigger = trigger({
     });
 
     const { data: openIdConfig } = await client.get("/openidconfiguration");
-    const signingAlgorithms =
-      openIdConfig.id_token_signing_alg_values_supported;
+    const signingAlgorithms = openIdConfig.id_token_signing_alg_values_supported;
     if (!signingAlgorithms) {
       throw new Error("Error fetching Open ID Configuration.");
     }
@@ -51,16 +47,12 @@ const botTrigger = trigger({
 
     const authorizationHeader = payload.headers.Authorization;
     if (!authorizationHeader) {
-      throw new Error(
-        "Error validating message signature: missing Authorization header.",
-      );
+      throw new Error("Error validating message signature: missing Authorization header.");
     }
 
     const [scheme, token] = authorizationHeader.trim().split(" ");
     if (scheme !== "Bearer") {
-      throw new Error(
-        "Error validating message signature: invalid Authorization header.",
-      );
+      throw new Error("Error validating message signature: invalid Authorization header.");
     }
 
     const result = (await verify(
@@ -83,17 +75,10 @@ const botTrigger = trigger({
     )) as unknown as { serviceurl: string; serviceUrl: string };
 
     const claimServiceUrl = result.serviceurl || result.serviceUrl;
-    const payloadServiceUrl = (payload.body.data as { serviceUrl: string })
-      .serviceUrl;
+    const payloadServiceUrl = (payload.body.data as { serviceUrl: string }).serviceUrl;
 
-    if (
-      !claimServiceUrl ||
-      !payloadServiceUrl ||
-      claimServiceUrl !== payloadServiceUrl
-    ) {
-      throw new Error(
-        "Error validating message signature: serviceUrl mismatch.",
-      );
+    if (!claimServiceUrl || !payloadServiceUrl || claimServiceUrl !== payloadServiceUrl) {
+      throw new Error("Error validating message signature: serviceUrl mismatch.");
     }
 
     return { payload, branch: "Notification" };
@@ -105,8 +90,7 @@ const botTrigger = trigger({
       ...botId,
       label: "Microsoft App ID",
       example: "467105c0-7417-53fb-a409-4bf400037d17",
-      comments:
-        "Microsoft App ID found in the Azure Bot's Configuration blade.",
+      comments: "Microsoft App ID found in the Azure Bot's Configuration blade.",
     },
   },
 });

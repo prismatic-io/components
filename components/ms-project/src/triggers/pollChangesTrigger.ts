@@ -38,11 +38,7 @@ export const pollChangesTrigger = pollingTrigger({
       state?.lastPolledAt ??
       (params.lookBackDate ? new Date(params.lookBackDate).toISOString() : now);
 
-    if (
-      !params.showNewRecords &&
-      !params.showUpdatedRecords &&
-      !isInitialSync
-    ) {
+    if (!params.showNewRecords && !params.showUpdatedRecords && !isInitialSync) {
       context.polling.setState({ lastPolledAt: now });
       return {
         payload: { ...payload, body: { data: { created: [], updated: [] } } },
@@ -50,10 +46,7 @@ export const pollChangesTrigger = pollingTrigger({
       };
     }
 
-    const client = createProjectsClient(
-      { connection: params.connection },
-      context.debug.enabled,
-    );
+    const client = createProjectsClient({ connection: params.connection }, context.debug.enabled);
 
     const filter = buildPollingFilter(
       CREATED_AT_FIELD,
@@ -63,15 +56,11 @@ export const pollChangesTrigger = pollingTrigger({
       isInitialSync || params.showUpdatedRecords,
     );
 
-    const { data } = await client.get<MsProjectListResponse<MsProjectRecord>>(
-      PROJECTS_ENDPOINT,
-      {
-        params: filter ? { $filter: filter } : undefined,
-      },
-    );
+    const { data } = await client.get<MsProjectListResponse<MsProjectRecord>>(PROJECTS_ENDPOINT, {
+      params: filter ? { $filter: filter } : undefined,
+    });
 
-    const records: MsProjectRecord[] =
-      data?.d?.results ?? data?.value ?? data?.results ?? [];
+    const records: MsProjectRecord[] = data?.d?.results ?? data?.value ?? data?.results ?? [];
 
     const lastPolledAtDate = new Date(lastPolledAt);
     const created: MsProjectRecord[] = [];
@@ -80,19 +69,14 @@ export const pollChangesTrigger = pollingTrigger({
     for (const record of records) {
       const createdValue = record.CreatedDate;
       const updatedValue = record.LastPublishedDate;
-      const createdAtDate =
-        typeof createdValue === "string" ? new Date(createdValue) : null;
-      const updatedAtDate =
-        typeof updatedValue === "string" ? new Date(updatedValue) : null;
+      const createdAtDate = typeof createdValue === "string" ? new Date(createdValue) : null;
+      const updatedAtDate = typeof updatedValue === "string" ? new Date(updatedValue) : null;
 
       const isNew = createdAtDate !== null && createdAtDate > lastPolledAtDate;
-      const isUpdated =
-        !isNew && updatedAtDate !== null && updatedAtDate > lastPolledAtDate;
+      const isUpdated = !isNew && updatedAtDate !== null && updatedAtDate > lastPolledAtDate;
 
-      if (isNew && (isInitialSync || params.showNewRecords))
-        created.push(record);
-      else if (isUpdated && (isInitialSync || params.showUpdatedRecords))
-        updated.push(record);
+      if (isNew && (isInitialSync || params.showNewRecords)) created.push(record);
+      else if (isUpdated && (isInitialSync || params.showUpdatedRecords)) updated.push(record);
     }
 
     const totalMatched = created.length + updated.length;

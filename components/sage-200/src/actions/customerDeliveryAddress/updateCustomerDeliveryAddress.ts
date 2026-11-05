@@ -53,10 +53,7 @@ export const updateCustomerDeliveryAddress = action({
       tax_number: taxNumber,
       country_code_id: countryCodeId,
     };
-    const { data } = await client.put(
-      `/customer_delivery_addresses/${deliveryAddressId}`,
-      payload,
-    );
+    const { data } = await client.put(`/customer_delivery_addresses/${deliveryAddressId}`, payload);
     return {
       data,
     };

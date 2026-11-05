@@ -16,8 +16,7 @@ export const body = input({
   required: false,
   example: "<strong>Try our classic fit!</strong>",
   placeholder: "Enter HTML description",
-  comments:
-    "HTML-formatted description displayed with the product information.",
+  comments: "HTML-formatted description displayed with the product information.",
   clean: util.types.toString,
 });
 
@@ -27,8 +26,7 @@ export const vendor = input({
   required: true,
   example: "Burton inc.",
   placeholder: "Enter vendor name",
-  comments:
-    "The name of the manufacturer or supplier displayed on the product page.",
+  comments: "The name of the manufacturer or supplier displayed on the product page.",
   clean: util.types.toString,
 });
 
@@ -38,8 +36,7 @@ export const productType = input({
   required: true,
   example: "T-shirt",
   placeholder: "Enter product type",
-  comments:
-    "A product classification used for filtering, such as T-shirt, Shoes, or Accessories.",
+  comments: "A product classification used for filtering, such as T-shirt, Shoes, or Accessories.",
   clean: util.types.toString,
 });
 
@@ -51,8 +48,7 @@ export const productStatus = input({
     { label: "Draft", value: "draft" },
     { label: "Active", value: "active" },
   ],
-  comments:
-    "Whether the product is active and visible in the storefront, or a draft.",
+  comments: "Whether the product is active and visible in the storefront, or a draft.",
   placeholder: "Select product status",
   clean: util.types.toString,
 });

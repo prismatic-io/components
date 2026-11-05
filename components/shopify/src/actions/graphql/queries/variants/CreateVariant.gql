@@ -1,7 +1,4 @@
-mutation CreateVariant(
-  $productId: ID!
-  $variants: [ProductVariantsBulkInput!]!
-) {
+mutation CreateVariant($productId: ID!, $variants: [ProductVariantsBulkInput!]!) {
   productVariantsBulkCreate(productId: $productId, variants: $variants) {
     productVariants {
       id

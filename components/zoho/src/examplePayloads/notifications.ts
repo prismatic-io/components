@@ -140,8 +140,7 @@ export const enableNotificationExamplePayload = {
             },
           ],
         },
-        message:
-          "Successfully subscribed for actions-watch of the given module",
+        message: "Successfully subscribed for actions-watch of the given module",
         status: "success",
       },
     ],

@@ -1,13 +1,7 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { getCustomAccountingFieldResponse as createCustomAccountingFieldResponse } from "../../examplePayloads/customAccountingFields";
-import {
-  connection,
-  customAccountingFieldId,
-  inputType,
-  isSplittable,
-  name,
-} from "../../inputs";
+import { connection, customAccountingFieldId, inputType, isSplittable, name } from "../../inputs";
 import { createCustomAccountingFieldOutputSchema } from "../../outputSchemas";
 
 export const createCustomAccountingField = action({
@@ -58,8 +52,7 @@ export const createCustomAccountingField = action({
       ...createCustomAccountingFieldResponse,
       id: customAccountingFieldId,
       input_type: inputType,
-      is_splittable:
-        isSplittable ?? createCustomAccountingFieldResponse.is_splittable,
+      is_splittable: isSplittable ?? createCustomAccountingFieldResponse.is_splittable,
       name: name ?? createCustomAccountingFieldResponse.name,
     },
   }),

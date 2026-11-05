@@ -7,8 +7,7 @@ const timeEntryBase = {
     color: "#7b68ee",
     email: "john.doe@example.com",
     initials: "JD",
-    profilePicture:
-      "https://attachments.clickup.com/profilePictures/81942673_abc.jpg",
+    profilePicture: "https://attachments.clickup.com/profilePictures/81942673_abc.jpg",
   },
   billable: false,
   start: "1704067200000",

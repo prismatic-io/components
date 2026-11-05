@@ -11,10 +11,7 @@ import {
   lookBackDate,
   triggerEvents,
 } from "../inputs";
-import type {
-  ActivityPaginationState,
-  SearchRecordsPollingState,
-} from "../types";
+import type { ActivityPaginationState, SearchRecordsPollingState } from "../types";
 import {
   buildActivityFilter,
   cleanItemInput,
@@ -28,10 +25,7 @@ import {
 
 interface ActivityResult {
   payload: Omit<TriggerPayload, "body" | "paginationState"> & {
-    body: {
-      data: driveactivity_v2.Schema$DriveActivity[];
-      contentType?: string;
-    };
+    body: { data: driveactivity_v2.Schema$DriveActivity[]; contentType?: string };
     paginationState?: ActivityPaginationState;
   };
   instanceState?: Record<string, unknown>;
@@ -51,8 +45,7 @@ export const driveActivityPollingTrigger = pollingTrigger({
       ...ancestorName,
       comments:
         "Return activities for this Drive or folder, plus all children and descendants. You may supply an array of drive or folder IDs.",
-      clean: (value) =>
-        (Array.isArray(value) ? value : [value]).map(cleanItemInput),
+      clean: (value) => (Array.isArray(value) ? value : [value]).map(cleanItemInput),
     },
     consolidationStrategy,
     lookBackDate,
@@ -61,35 +54,19 @@ export const driveActivityPollingTrigger = pollingTrigger({
   triggerResolverSupport: "valid",
   batchConfig: { batchSize: DEFAULT_BATCH_SIZE, concurrentBatchLimit: 1 },
   triggerResolver: {
-    resolveItems: (
-      _context,
-      { payload },
-    ): driveactivity_v2.Schema$DriveActivity[] =>
+    resolveItems: (_context, { payload }): driveactivity_v2.Schema$DriveActivity[] =>
       resolveDriveActivities(
-        payload.body.data as
-          | driveactivity_v2.Schema$DriveActivity[]
-          | undefined,
+        payload.body.data as driveactivity_v2.Schema$DriveActivity[] | undefined,
       ),
-    getNextPaginationState: (
-      _context,
-      { payload },
-    ): ActivityPaginationState | null =>
+    getNextPaginationState: (_context, { payload }): ActivityPaginationState | null =>
       (payload.paginationState as ActivityPaginationState | undefined) ?? null,
   },
   onDeployPerform: async (
     context,
     payload,
-    {
-      triggerEvents,
-      connection,
-      ancestorName: ancestors,
-      lookBackDate,
-      ...params
-    },
+    { triggerEvents, connection, ancestorName: ancestors, lookBackDate, ...params },
   ): Promise<ActivityResult> => {
-    const incoming = payload.paginationState as
-      | ActivityPaginationState
-      | undefined;
+    const incoming = payload.paginationState as ActivityPaginationState | undefined;
 
     const nothingToDo = (): ActivityResult => ({
       payload: { ...payload, paginationState: undefined, body: { data: [] } },
@@ -122,17 +99,11 @@ export const driveActivityPollingTrigger = pollingTrigger({
     );
     const activities = actionReturn.activities || [];
 
-    const nextState: ActivityPaginationState | undefined =
-      actionReturn.nextPageToken
-        ? {
-            ancestorIndex,
-            pageToken: actionReturn.nextPageToken,
-            windowStart,
-            cycleEnd,
-          }
-        : ancestorIndex + 1 < ancestors.length
-          ? { ancestorIndex: ancestorIndex + 1, windowStart, cycleEnd }
-          : undefined;
+    const nextState: ActivityPaginationState | undefined = actionReturn.nextPageToken
+      ? { ancestorIndex, pageToken: actionReturn.nextPageToken, windowStart, cycleEnd }
+      : ancestorIndex + 1 < ancestors.length
+        ? { ancestorIndex: ancestorIndex + 1, windowStart, cycleEnd }
+        : undefined;
 
     return {
       payload: {
@@ -153,36 +124,20 @@ export const driveActivityPollingTrigger = pollingTrigger({
     };
   },
   onDeployResolver: {
-    resolveItems: (
-      _context,
-      { payload },
-    ): driveactivity_v2.Schema$DriveActivity[] =>
+    resolveItems: (_context, { payload }): driveactivity_v2.Schema$DriveActivity[] =>
       resolveDriveActivities(
-        payload.body.data as
-          | driveactivity_v2.Schema$DriveActivity[]
-          | undefined,
+        payload.body.data as driveactivity_v2.Schema$DriveActivity[] | undefined,
       ),
-    getNextPaginationState: (
-      _context,
-      { payload },
-    ): ActivityPaginationState | null =>
+    getNextPaginationState: (_context, { payload }): ActivityPaginationState | null =>
       (payload.paginationState as ActivityPaginationState | undefined) ?? null,
   },
   perform: async (
     context,
     payload,
-    {
-      triggerEvents,
-      connection,
-      ancestorName: ancestors,
-      lookBackDate,
-      ...params
-    },
+    { triggerEvents, connection, ancestorName: ancestors, lookBackDate, ...params },
   ): Promise<ActivityResult> => {
     const pollState = context.polling.getState() as SearchRecordsPollingState;
-    const incoming = payload.paginationState as
-      | ActivityPaginationState
-      | undefined;
+    const incoming = payload.paginationState as ActivityPaginationState | undefined;
     const isBatching = context.batch?.enabled === true;
     const isPlatformDrivenRound = Boolean(incoming);
     const handoff = resolveActivitySyncHandoff(context);
@@ -246,17 +201,11 @@ export const driveActivityPollingTrigger = pollingTrigger({
     );
     const activities = actionReturn.activities || [];
 
-    const nextState: ActivityPaginationState | undefined =
-      actionReturn.nextPageToken
-        ? {
-            ancestorIndex,
-            pageToken: actionReturn.nextPageToken,
-            windowStart,
-            cycleEnd,
-          }
-        : ancestorIndex + 1 < ancestors.length
-          ? { ancestorIndex: ancestorIndex + 1, windowStart, cycleEnd }
-          : undefined;
+    const nextState: ActivityPaginationState | undefined = actionReturn.nextPageToken
+      ? { ancestorIndex, pageToken: actionReturn.nextPageToken, windowStart, cycleEnd }
+      : ancestorIndex + 1 < ancestors.length
+        ? { ancestorIndex: ancestorIndex + 1, windowStart, cycleEnd }
+        : undefined;
 
     if (!nextState) {
       context.polling.setState({ lastPolledAt: cycleEnd });
@@ -269,8 +218,7 @@ export const driveActivityPollingTrigger = pollingTrigger({
         body: { data: activities },
       },
       ...(nextState ? {} : handoffCleanup),
-      polledNoChanges:
-        activities.length === 0 && !nextState && !isPlatformDrivenRound,
+      polledNoChanges: activities.length === 0 && !nextState && !isPlatformDrivenRound,
     };
   },
   examplePayload: { ...driveActivityPollingTriggerExamplePayload },

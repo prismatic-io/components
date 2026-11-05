@@ -14,9 +14,7 @@ describe("quoteJqlString", () => {
   });
 
   test("escapes a backslash before a quote mark so the quote stays escaped", () => {
-    expect(quoteJqlString('x\\" OR project = ABC')).toBe(
-      '"x\\\\\\" OR project = ABC"',
-    );
+    expect(quoteJqlString('x\\" OR project = ABC')).toBe('"x\\\\\\" OR project = ABC"');
   });
 
   test("quotes an empty value", () => {

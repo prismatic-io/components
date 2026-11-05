@@ -14,9 +14,7 @@ export const submitProject = action({
       },
       context.debug.enabled,
     );
-    const { data } = await client.post(
-      `/Projects('${params.guId}')/submitToWorkflow()`,
-    );
+    const { data } = await client.post(`/Projects('${params.guId}')/submitToWorkflow()`);
 
     return {
       data,

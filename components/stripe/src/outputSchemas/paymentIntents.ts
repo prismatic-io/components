@@ -390,12 +390,7 @@ export const paymentIntentOutputSchema = {
                               properties: {
                                 account_type: {
                                   type: "string",
-                                  enum: [
-                                    "checking",
-                                    "credit",
-                                    "prepaid",
-                                    "unknown",
-                                  ],
+                                  enum: ["checking", "credit", "prepaid", "unknown"],
                                 },
                                 application_cryptogram: {
                                   type: ["string", "null"],
@@ -428,12 +423,7 @@ export const paymentIntentOutputSchema = {
                               properties: {
                                 type: {
                                   type: "string",
-                                  enum: [
-                                    "apple_pay",
-                                    "google_pay",
-                                    "samsung_pay",
-                                    "unknown",
-                                  ],
+                                  enum: ["apple_pay", "google_pay", "samsung_pay", "unknown"],
                                 },
                               },
                               required: ["type"],
@@ -726,12 +716,7 @@ export const paymentIntentOutputSchema = {
                   properties: {
                     type: {
                       type: "string",
-                      enum: [
-                        "apple_pay",
-                        "google_pay",
-                        "samsung_pay",
-                        "unknown",
-                      ],
+                      enum: ["apple_pay", "google_pay", "samsung_pay", "unknown"],
                     },
                   },
                   required: ["type"],
@@ -1352,14 +1337,7 @@ export const paymentIntentOutputSchema = {
               type: "object" as const,
             },
           },
-          required: [
-            "billing_details",
-            "created",
-            "id",
-            "livemode",
-            "object",
-            "type",
-          ],
+          required: ["billing_details", "created", "id", "livemode", "object", "type"],
         },
         payment_method_type: {
           type: "string",
@@ -1459,18 +1437,10 @@ export const paymentIntentOutputSchema = {
                           type: "string",
                         },
                       },
-                      required: [
-                        "expires_at",
-                        "image_url_png",
-                        "image_url_svg",
-                      ],
+                      required: ["expires_at", "image_url_png", "image_url_svg"],
                     },
                   },
-                  required: [
-                    "hosted_instructions_url",
-                    "mobile_auth_url",
-                    "qr_code",
-                  ],
+                  required: ["hosted_instructions_url", "mobile_auth_url", "qr_code"],
                 },
                 redirect_to_url: {
                   type: "object" as const,
@@ -1751,12 +1721,7 @@ export const paymentIntentOutputSchema = {
                           type: "array",
                           items: {
                             type: "string",
-                            enum: [
-                              "balances",
-                              "ownership",
-                              "payment_method",
-                              "transactions",
-                            ],
+                            enum: ["balances", "ownership", "payment_method", "transactions"],
                           },
                         },
                         prefetch: {
@@ -3039,12 +3004,7 @@ export const paymentIntentOutputSchema = {
         },
         type: {
           type: "string",
-          enum: [
-            "api_error",
-            "card_error",
-            "idempotency_error",
-            "invalid_request_error",
-          ],
+          enum: ["api_error", "card_error", "idempotency_error", "invalid_request_error"],
         },
       },
       required: ["type"],
@@ -3531,14 +3491,7 @@ export const paymentIntentOutputSchema = {
                   },
                   type: {
                     type: "string",
-                    enum: [
-                      "aba",
-                      "iban",
-                      "sort_code",
-                      "spei",
-                      "swift",
-                      "zengin",
-                    ],
+                    enum: ["aba", "iban", "sort_code", "spei", "swift", "zengin"],
                   },
                   zengin: {
                     type: "object" as const,
@@ -3789,12 +3742,7 @@ export const paymentIntentOutputSchema = {
               type: "string",
             },
           },
-          required: [
-            "data",
-            "hosted_instructions_url",
-            "image_url_png",
-            "image_url_svg",
-          ],
+          required: ["data", "hosted_instructions_url", "image_url_png", "image_url_svg"],
         },
         redirect_to_url: {
           type: "object" as const,
@@ -4790,13 +4738,7 @@ export const paymentIntentOutputSchema = {
                   },
                 },
               },
-              required: [
-                "amount",
-                "amount_type",
-                "interval",
-                "reference",
-                "start_date",
-              ],
+              required: ["amount", "amount_type", "interval", "reference", "start_date"],
             },
             network: {
               type: ["string", "null"],
@@ -5006,15 +4948,7 @@ export const paymentIntentOutputSchema = {
                   type: "array",
                   items: {
                     type: "string",
-                    enum: [
-                      "aba",
-                      "iban",
-                      "sepa",
-                      "sort_code",
-                      "spei",
-                      "swift",
-                      "zengin",
-                    ],
+                    enum: ["aba", "iban", "sepa", "sort_code", "spei", "swift", "zengin"],
                   },
                 },
                 type: {
@@ -6844,12 +6778,7 @@ export const paymentIntentOutputSchema = {
                   type: "array",
                   items: {
                     type: "string",
-                    enum: [
-                      "balances",
-                      "ownership",
-                      "payment_method",
-                      "transactions",
-                    ],
+                    enum: ["balances", "ownership", "payment_method", "transactions"],
                   },
                 },
                 prefetch: {

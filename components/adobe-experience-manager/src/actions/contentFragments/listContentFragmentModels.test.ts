@@ -40,10 +40,7 @@ describe("listContentFragmentModels", () => {
   });
 
   test("surfaces an API error", async () => {
-    nock(BASE)
-      .get("/adobe/sites/cf/models")
-      .query(true)
-      .reply(500, { title: "Server Error" });
+    nock(BASE).get("/adobe/sites/cf/models").query(true).reply(500, { title: "Server Error" });
     await expect(invoke(listContentFragmentModels, params)).rejects.toThrow(
       "Request failed with status code 500",
     );

@@ -1,8 +1,4 @@
-import type {
-  ActionContext,
-  Connection,
-  DataSourceContext,
-} from "@prismatic-io/spectral";
+import type { ActionContext, Connection, DataSourceContext } from "@prismatic-io/spectral";
 
 export interface AuthCredentials {
   UserName: string;

@@ -19,10 +19,7 @@ export const deleteProduct = action({
       data: await client.products.del(productId),
     };
   },
-  examplePerform: async (
-    _context,
-    { productId },
-  ): Promise<{ data: unknown }> => {
+  examplePerform: async (_context, { productId }): Promise<{ data: unknown }> => {
     const deleted = deleteProductExamplePayload.data as Record<string, unknown>;
 
     return {

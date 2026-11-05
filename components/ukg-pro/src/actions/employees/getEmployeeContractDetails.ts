@@ -11,21 +11,13 @@ export const getEmploymentContractDetails = action({
     description: "Retrieve contract details for all employees.",
   },
   inputs: getEmploymentContractDetailsInputs,
-  perform: async (
-    context,
-    { connection, companyId, fetchAll, filterParameters, pagination },
-  ) => {
+  perform: async (context, { connection, companyId, fetchAll, filterParameters, pagination }) => {
     const client = createBasicAuthClient(connection, context.debug.enabled);
 
     const { data } = await fetchWithPagination<EmployeeContractDetails>(
       client,
       "/personnel/v1/employee-contract-details",
-      {
-        ...filterParameters,
-        companyId,
-        page: pagination.page,
-        per_page: pagination.perPage,
-      },
+      { ...filterParameters, companyId, page: pagination.page, per_page: pagination.perPage },
       fetchAll,
     );
 

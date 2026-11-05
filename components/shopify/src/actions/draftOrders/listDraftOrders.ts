@@ -6,10 +6,7 @@ import { listDraftOrdersOutputSchema } from "../../outputSchemas";
 import { listDraftOrdersGql } from "../graphql/draftOrders/listDraftOrdersGql";
 
 export const listDraftOrders = action({
-  display: {
-    label: "List Draft Orders",
-    description: "Lists all draft orders.",
-  },
+  display: { label: "List Draft Orders", description: "Lists all draft orders." },
   performSafety: "notAllowed",
   perform: async (context, params) => {
     const { data } = await listDraftOrdersGql.perform(context, {
@@ -25,10 +22,7 @@ export const listDraftOrders = action({
     return { data };
   },
   inputs: listDraftOrdersInputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: listDraftOrdersOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: listDraftOrdersOutputSchema }),
   examplePerform: async () => listDraftOrdersExamplePayload.restMap,
   examplePayload: listDraftOrdersExamplePayload.restMap,
 });

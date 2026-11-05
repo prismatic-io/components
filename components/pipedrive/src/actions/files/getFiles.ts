@@ -10,10 +10,7 @@ export const getFiles = action({
     description: "Lists all files attached to all entities.",
   },
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { connection, pagination: { start, limit } = {} },
-  ) => {
+  perform: async (context, { connection, pagination: { start, limit } = {} }) => {
     const client = createClient(connection, context.debug.enabled);
     const { data } = await client.get("/files", {
       params: { start, limit },
@@ -22,8 +19,5 @@ export const getFiles = action({
   },
   inputs: getFilesInputs,
   examplePayload: getFilesExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getFilesOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getFilesOutputSchema }),
 });

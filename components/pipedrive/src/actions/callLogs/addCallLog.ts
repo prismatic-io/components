@@ -49,8 +49,5 @@ export const addCallLog = action({
   },
   inputs: addCallLogInputs,
   examplePayload: addCallLogExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: addCallLogOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: addCallLogOutputSchema }),
 });

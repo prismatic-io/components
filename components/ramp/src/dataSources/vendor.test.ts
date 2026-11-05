@@ -18,10 +18,7 @@ describe("selectVendor", () => {
   afterEach(resetNock);
 
   test("maps the vendor list into sorted dropdown elements", async () => {
-    rampNock()
-      .get(PATH)
-      .query(true)
-      .reply(200, terminatePaging(listVendorsResponse));
+    rampNock().get(PATH).query(true).reply(200, terminatePaging(listVendorsResponse));
 
     const { result } = await invokeDataSource(selectVendor, {
       connection: testConnection,

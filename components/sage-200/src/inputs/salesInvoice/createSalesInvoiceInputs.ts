@@ -35,8 +35,7 @@ const dueDate = input({
 
 const exchangeRate = input({
   label: "Exchange Rate",
-  comments:
-    "Exchange rate for the invoice. This defaults to the customer exchange rate.",
+  comments: "Exchange rate for the invoice. This defaults to the customer exchange rate.",
   type: "string",
   required: false,
   placeholder: "ExchangeRateSingle",
@@ -163,11 +162,7 @@ const nominalAnalysisItems = input({
   type: "code",
   language: "json",
   required: false,
-  example: JSON.stringify(
-    [{ code: "123", narrative: "Example narrative" }],
-    null,
-    2,
-  ),
+  example: JSON.stringify([{ code: "123", narrative: "Example narrative" }], null, 2),
   clean: cleanCodeInput,
 });
 

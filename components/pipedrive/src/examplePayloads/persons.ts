@@ -538,9 +538,7 @@ export const mergePersonsExamplePayload = {
       related_lost_deals_count: 0,
       active_flag: true,
       phone: [{ value: "+15551234567", primary: true }],
-      email: [
-        { label: "work", value: "jane.smith@example.com", primary: true },
-      ],
+      email: [{ label: "work", value: "jane.smith@example.com", primary: true }],
       first_char: "j",
       update_time: "2024-11-15 14:22:10",
       delete_time: null,

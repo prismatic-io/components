@@ -16,11 +16,7 @@ export const getPriceList = action({
     connection,
   },
   perform: async (context, { connection, $select, priceListNo }) => {
-    const client = await createClient(
-      connection,
-      context,
-      context.debug.enabled,
-    );
+    const client = await createClient(connection, context, context.debug.enabled);
 
     const { data } = await client.get(`/PriceLists(${priceListNo})`, {
       params: {

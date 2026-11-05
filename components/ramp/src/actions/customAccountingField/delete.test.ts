@@ -1,11 +1,6 @@
 import { invoke } from "@prismatic-io/spectral/testing";
 import { GENERIC_DELETE_RESPONSE } from "../../constants";
-import {
-  apiPath,
-  rampNock,
-  resetNock,
-  testConnection,
-} from "../../testHarness";
+import { apiPath, rampNock, resetNock, testConnection } from "../../testHarness";
 import { deleteCustomAccountingField } from "./delete";
 
 const FIELD_ID = "Department";

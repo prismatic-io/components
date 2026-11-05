@@ -6,17 +6,9 @@ import { listTasksInPlanExamplePayload } from "../../examplePayloads";
 import { listTasksInPlan } from "./listTasksInPlan";
 
 const BASE = "https://graph.microsoft.com";
-const connection = createConnection(
-  templatedOauth,
-  {},
-  { access_token: "test-token" },
-);
+const connection = createConnection(templatedOauth, {}, { access_token: "test-token" });
 
-const params = {
-  connection,
-  groupId: undefined,
-  planId: "xqQg5FS2LkCp935s-FIFm2QAFkHM",
-};
+const params = { connection, groupId: undefined, planId: "xqQg5FS2LkCp935s-FIFm2QAFkHM" };
 
 beforeAll(() => {
   nock.disableNetConnect();
@@ -33,10 +25,7 @@ test("returns every task the paged walk collected", async () => {
 
   const { result } = await invoke(listTasksInPlan, params);
 
-  expect(result.data).toEqual({
-    ...listTasksInPlanExamplePayload.data,
-    truncated: false,
-  });
+  expect(result.data).toEqual({ ...listTasksInPlanExamplePayload.data, truncated: false });
 });
 
 test("surfaces a failed list request", async () => {
@@ -44,8 +33,6 @@ test("surfaces a failed list request", async () => {
     .get("/v1.0/planner/plans/xqQg5FS2LkCp935s-FIFm2QAFkHM/tasks")
     .reply(403, { error: { code: "accessDenied" } });
 
-  await expect(invoke(listTasksInPlan, params)).rejects.toThrow(
-    /status code 403/,
-  );
+  await expect(invoke(listTasksInPlan, params)).rejects.toThrow(/status code 403/);
   expect(errorScope.isDone()).toBe(true);
 });

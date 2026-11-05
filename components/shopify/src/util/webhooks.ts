@@ -22,10 +22,7 @@ import type {
 } from "../types";
 import { fetchData } from "./pagination";
 
-export const signaturesMatch = (
-  expected: string,
-  received: unknown,
-): boolean => {
+export const signaturesMatch = (expected: string, received: unknown): boolean => {
   if (typeof received !== "string") {
     return false;
   }
@@ -87,10 +84,7 @@ export const createWebhook = async (
   client: GraphQLClient,
   input: CreateWebhookParams,
 ): Promise<CreateWebhookResponse> => {
-  const data: CreateWebhookResponse = await client.request(
-    createWebhookQuery,
-    input,
-  );
+  const data: CreateWebhookResponse = await client.request(createWebhookQuery, input);
   return data;
 };
 

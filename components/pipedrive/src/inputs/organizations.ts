@@ -27,8 +27,7 @@ const ownerId = input({
   type: "string",
   required: false,
   clean: cleanNumber,
-  comments:
-    "The ID of the user who will be marked as the owner of this organization",
+  comments: "The ID of the user who will be marked as the owner of this organization",
   example: "123",
   placeholder: "Enter User ID",
 });
@@ -83,8 +82,7 @@ const exactMatch = input({
   label: "Exact Match",
   type: "boolean",
   clean: util.types.toBool,
-  comments:
-    "When true, only full exact matches against the given term are returned",
+  comments: "When true, only full exact matches against the given term are returned",
 });
 
 const mergeWithId = input({
@@ -92,8 +90,7 @@ const mergeWithId = input({
   type: "string",
   required: true,
   clean: util.types.toNumber,
-  comments:
-    "The ID of the organization that the organization will be merged with.",
+  comments: "The ID of the organization that the organization will be merged with.",
   example: "456",
   placeholder: "Enter Organization ID to merge with",
 });

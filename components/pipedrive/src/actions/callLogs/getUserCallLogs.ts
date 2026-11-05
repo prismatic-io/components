@@ -10,10 +10,7 @@ export const getUserCallLogs = action({
     description: "Gets all call logs assigned to a particular user.",
   },
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { connection, pagination: { start, limit } = {} },
-  ) => {
+  perform: async (context, { connection, pagination: { start, limit } = {} }) => {
     const client = createClient(connection, context.debug.enabled);
     const { data } = await client.get("/callLogs", {
       params: { start, limit },
@@ -22,8 +19,5 @@ export const getUserCallLogs = action({
   },
   inputs: getUserCallLogsInputs,
   examplePayload: getUserCallLogsExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getUserCallLogsOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getUserCallLogsOutputSchema }),
 });

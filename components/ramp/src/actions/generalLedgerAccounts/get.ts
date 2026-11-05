@@ -21,9 +21,7 @@ export const getGeneralLedgerAccount = action({
   perform: async (context, { connection, generalLedgerAccountId }) => {
     const client = createClient(connection, context.debug.enabled);
 
-    const { data } = await client.get(
-      `/accounting/accounts/${generalLedgerAccountId}`,
-    );
+    const { data } = await client.get(`/accounting/accounts/${generalLedgerAccountId}`);
     return {
       data,
     };

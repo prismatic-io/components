@@ -22,10 +22,7 @@ export const selectProject = dataSource({
         "/sap/opu/odata/CPD/SC_PROJ_ENGMT_CREATE_UPD_SRV/ProjectSet?$select=ProjectID,ProjectName",
       );
 
-      const results = (data?.d?.results ?? data?.value ?? []) as Record<
-        string,
-        string
-      >[];
+      const results = (data?.d?.results ?? data?.value ?? []) as Record<string, string>[];
 
       const result: Element[] = results
         .map((project) => ({

@@ -38,11 +38,7 @@ export const getEngagement = action({
 
     const urlSearchParams = new URLSearchParams();
     if (propertiesToReturn)
-      addUrlSearchParamsFromStringArray(
-        urlSearchParams,
-        propertiesToReturn,
-        "properties",
-      );
+      addUrlSearchParamsFromStringArray(urlSearchParams, propertiesToReturn, "properties");
 
     if (propertiesWithHistoryToReturn)
       addUrlSearchParamsFromStringArray(
@@ -52,24 +48,16 @@ export const getEngagement = action({
       );
 
     if (associations)
-      addUrlSearchParamsFromStringArray(
-        urlSearchParams,
-        associations,
-        "associations",
-      );
+      addUrlSearchParamsFromStringArray(urlSearchParams, associations, "associations");
 
     if (idProperty) urlSearchParams.append("idProperty", idProperty);
 
     urlSearchParams.append("archived", archived.toString());
-    if (debugRequest)
-      context.logger.debug(`Params: ${urlSearchParams.toString()}`);
+    if (debugRequest) context.logger.debug(`Params: ${urlSearchParams.toString()}`);
 
-    const { data } = await client.get(
-      hubspotPaths.objects(engagementObject, `/${engagementId}`),
-      {
-        params: urlSearchParams,
-      },
-    );
+    const { data } = await client.get(hubspotPaths.objects(engagementObject, `/${engagementId}`), {
+      params: urlSearchParams,
+    });
 
     return {
       data,

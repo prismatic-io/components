@@ -6,8 +6,7 @@ import { genericCreateUpdateExamplePayload } from "../../examplePayloads";
 export const sendTransactionalEmail = action({
   display: {
     label: "Send Transactional Email",
-    description:
-      "Send a transactional email message to a single recipient via Salesforce.",
+    description: "Send a transactional email message to a single recipient via Salesforce.",
   },
   inputs: sendTransactionalEmailInputs,
   performSafety: "notAllowed",
@@ -48,7 +47,6 @@ export const sendTransactionalEmail = action({
       data: response.data,
     };
   },
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    genericCreateUpdateExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => genericCreateUpdateExamplePayload,
   examplePayload: genericCreateUpdateExamplePayload,
 });

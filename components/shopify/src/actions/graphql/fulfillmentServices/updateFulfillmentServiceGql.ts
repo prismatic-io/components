@@ -34,14 +34,16 @@ export const updateFulfillmentServiceGql = action({
       context.logger,
     );
 
-    const data: { fulfillmentServiceUpdate: Record<string, unknown> } =
-      await client.request(updateFulfillmentServiceQuery, {
+    const data: { fulfillmentServiceUpdate: Record<string, unknown> } = await client.request(
+      updateFulfillmentServiceQuery,
+      {
         id: fulfillmentServiceId,
         name: fulfillmentServiceName,
         callbackUrl,
         inventoryManagement,
         trackingSupport,
-      });
+      },
+    );
 
     return {
       data: data.fulfillmentServiceUpdate,

@@ -20,10 +20,7 @@ export const snsS3NotificationWebhook = trigger({
     const data = JSON.parse(bodyData) as SnsMessage;
     const eventType = data.Type;
     if (!eventType) throw new Error("Event type not received");
-    if (
-      eventType !== "Notification" &&
-      eventType !== "SubscriptionConfirmation"
-    ) {
+    if (eventType !== "Notification" && eventType !== "SubscriptionConfirmation") {
       throw new Error(
         `Message type was not "Notification" or "SubscriptionConfirmation", but "${eventType}" instead.`,
       );

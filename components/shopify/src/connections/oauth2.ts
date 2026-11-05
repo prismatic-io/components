@@ -17,8 +17,7 @@ export const shopifyConnection = oauth2Connection({
       required: true,
       shown: true,
       comments: "The OAuth 2.0 Authorization URL for Shopify.",
-      default:
-        "https://YOUR-SHOPIFY-DOMAIN.myshopify.com/admin/oauth/authorize",
+      default: "https://YOUR-SHOPIFY-DOMAIN.myshopify.com/admin/oauth/authorize",
     },
     tokenUrl: {
       label: "Token URL",
@@ -26,8 +25,7 @@ export const shopifyConnection = oauth2Connection({
       type: "string",
       required: true,
       shown: true,
-      default:
-        "https://YOUR-SHOPIFY-DOMAIN.myshopify.com/admin/oauth/access_token?expiring=1",
+      default: "https://YOUR-SHOPIFY-DOMAIN.myshopify.com/admin/oauth/access_token?expiring=1",
       comments: "The OAuth 2.0 Token URL for Shopify.",
     },
     scopes: {
@@ -62,8 +60,7 @@ export const shopifyConnection = oauth2Connection({
       type: "string",
       required: true,
       shown: true,
-      comments:
-        "The Client ID (also called API Key) from the Shopify app credentials.",
+      comments: "The Client ID (also called API Key) from the Shopify app credentials.",
       example: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6",
     },
     clientSecret: {
@@ -72,8 +69,7 @@ export const shopifyConnection = oauth2Connection({
       type: "password",
       required: true,
       shown: true,
-      comments:
-        "The Client Secret (also called API Secret) from the Shopify app credentials.",
+      comments: "The Client Secret (also called API Secret) from the Shopify app credentials.",
       example: "shpss_a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6",
     },
     host: {
@@ -82,8 +78,7 @@ export const shopifyConnection = oauth2Connection({
       type: "string",
       default: "YOUR-SHOPIFY-DOMAIN.myshopify.com",
       example: "my-store.myshopify.com",
-      comments:
-        "The domain of the Shopify store without https:// (e.g., my-store.myshopify.com).",
+      comments: "The domain of the Shopify store without https:// (e.g., my-store.myshopify.com).",
       required: true,
       shown: true,
     },

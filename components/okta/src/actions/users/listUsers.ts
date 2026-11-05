@@ -13,32 +13,20 @@ export const listUsers = action({
   inputs: listUsersInputs,
   perform: async (
     context,
-    {
-      connection,
-      extraParameters,
-      filters = {},
-      sorting = {},
-      fetchAll,
-      pagination = {},
-    },
+    { connection, extraParameters, filters = {}, sorting = {}, fetchAll, pagination = {} },
   ) => {
     const client = await createClient(connection, context.debug.enabled);
 
-    const data = await paginateRecordsWithLink<User>(
-      client,
-      "/users",
-      fetchAll,
-      {
-        after: pagination.after,
-        filter: filters.filter,
-        limit: pagination.limit,
-        search: filters.search,
-        sortBy: sorting.sortBy,
-        sortOrder: sorting.sortOrder,
-        q: filters.q,
-        ...extraParameters,
-      },
-    );
+    const data = await paginateRecordsWithLink<User>(client, "/users", fetchAll, {
+      after: pagination.after,
+      filter: filters.filter,
+      limit: pagination.limit,
+      search: filters.search,
+      sortBy: sorting.sortBy,
+      sortOrder: sorting.sortOrder,
+      q: filters.q,
+      ...extraParameters,
+    });
 
     return {
       data,

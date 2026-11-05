@@ -15,16 +15,13 @@ export const dynamicsWebhookTrigger = trigger({
     const headers = util.types.lowerCaseHeaders(payload.headers);
 
     if (params.webhookKey && !context.isSimulatedTestExecution) {
-      const queryParameters = (payload.queryParameters ?? {}) as Record<
-        string,
-        unknown
-      >;
+      const queryParameters = (payload.queryParameters ?? {}) as Record<string, unknown>;
       const providedKey = util.types.toString(
-        queryParameters.code ?? queryParameters.Auth ?? queryParameters.auth,
+        queryParameters.code ?? queryParameters.Auth ?? queryParameters.auth
       );
       if (providedKey !== params.webhookKey) {
         throw new Error(
-          "Webhook authentication failed: missing or invalid 'code' query parameter.",
+          "Webhook authentication failed: missing or invalid 'code' query parameter."
         );
       }
     }
@@ -46,9 +43,7 @@ export const dynamicsWebhookTrigger = trigger({
     try {
       bodyData = JSON.parse(util.types.toString(payload.body.data));
     } catch (error) {
-      throw new Error(
-        `Failed to parse webhook request body as JSON: ${(error as Error).message}`,
-      );
+      throw new Error(`Failed to parse webhook request body as JSON: ${(error as Error).message}`);
     }
 
     const inputParameters = bodyData.InputParameters;

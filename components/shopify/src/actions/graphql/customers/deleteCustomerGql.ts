@@ -27,10 +27,7 @@ export const deleteCustomerGql = action({
     };
   },
   inputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: deleteCustomerGqlOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: deleteCustomerGqlOutputSchema }),
   examplePerform: async () => deleteCustomerGqlExamplePayload.restMap,
   examplePayload: deleteCustomerGqlExamplePayload.restMap,
 });

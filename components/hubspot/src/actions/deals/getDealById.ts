@@ -9,8 +9,7 @@ import { DEAL_PROPS, hubspotPaths } from "../../constants";
 export const getDealById = action({
   display: {
     label: "Get Deal",
-    description:
-      "Retrieve information and metadata about a deal by its Id or name.",
+    description: "Retrieve information and metadata about a deal by its Id or name.",
   },
   performSafety: "notAllowed",
   perform: async (
@@ -28,9 +27,7 @@ export const getDealById = action({
     const debugRequest = context.debug.enabled;
 
     if (!dealId && !dealName) {
-      throw new Error(
-        "You must supply an Id or deal name to retrieve a deal record.",
-      );
+      throw new Error("You must supply an Id or deal name to retrieve a deal record.");
     }
     const client = getHubspotClient({
       hubspotConnection,
@@ -38,10 +35,7 @@ export const getDealById = action({
       debugRequest,
     });
 
-    const parameterizedProperties = getProps(
-      DEAL_PROPS,
-      additionalProperties || [],
-    );
+    const parameterizedProperties = getProps(DEAL_PROPS, additionalProperties || []);
 
     const params = {
       ...parameterizedProperties,
@@ -65,12 +59,9 @@ export const getDealById = action({
       return { data: filteredDeals };
     }
 
-    const { data } = await client.get(
-      hubspotPaths.objects("deals", `/${dealId}`),
-      {
-        params,
-      },
-    );
+    const { data } = await client.get(hubspotPaths.objects("deals", `/${dealId}`), {
+      params,
+    });
 
     return { data };
   },
@@ -79,8 +70,5 @@ export const getDealById = action({
     data: getDealByIdExamplePayload.data,
   }),
   examplePayload: getDealByIdExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getDealByIdOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getDealByIdOutputSchema }),
 });

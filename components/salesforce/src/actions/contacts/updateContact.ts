@@ -32,12 +32,8 @@ export const updateContact = action({
       ...(recordId && { Id: recordId }),
       ...(nameAndContact.firstName && { FirstName: nameAndContact.firstName }),
       ...(nameAndContact.lastName && { LastName: nameAndContact.lastName }),
-      ...(additionalFields.assistant && {
-        AssistantName: additionalFields.assistant,
-      }),
-      ...(additionalFields.assistantPhone && {
-        AssistantPhone: additionalFields.assistantPhone,
-      }),
+      ...(additionalFields.assistant && { AssistantName: additionalFields.assistant }),
+      ...(additionalFields.assistantPhone && { AssistantPhone: additionalFields.assistantPhone }),
       ...(additionalFields.title && { Title: additionalFields.title }),
       ...(email && { Email: email }),
       ...(nameAndContact.phone && { Phone: nameAndContact.phone }),
@@ -46,32 +42,18 @@ export const updateContact = action({
       ...(nameAndContact.birthdate && {
         Birthdate: new Date(nameAndContact.birthdate),
       }),
-      ...(additionalFields.department && {
-        Department: additionalFields.department,
-      }),
-      ...(additionalFields.description && {
-        description: additionalFields.description,
-      }),
-      ...(billingAddress.billingCity && {
-        OtherCity: billingAddress.billingCity,
-      }),
-      ...(billingAddress.billingCountry && {
-        OtherCountry: billingAddress.billingCountry,
-      }),
+      ...(additionalFields.department && { Department: additionalFields.department }),
+      ...(additionalFields.description && { description: additionalFields.description }),
+      ...(billingAddress.billingCity && { OtherCity: billingAddress.billingCity }),
+      ...(billingAddress.billingCountry && { OtherCountry: billingAddress.billingCountry }),
       ...(billingAddress.billingPostalCode && {
         OtherPostalCode: billingAddress.billingPostalCode,
       }),
-      ...(billingAddress.billingState && {
-        OtherState: billingAddress.billingState,
-      }),
-      ...(billingAddress.billingStreet && {
-        OtherStreet: billingAddress.billingStreet,
-      }),
+      ...(billingAddress.billingState && { OtherState: billingAddress.billingState }),
+      ...(billingAddress.billingStreet && { OtherStreet: billingAddress.billingStreet }),
       ...(mailingAddress.city && { MailingCity: mailingAddress.city }),
       ...(mailingAddress.country && { MailingCountry: mailingAddress.country }),
-      ...(mailingAddress.postalCode && {
-        MailingPostalCode: mailingAddress.postalCode,
-      }),
+      ...(mailingAddress.postalCode && { MailingPostalCode: mailingAddress.postalCode }),
       ...(mailingAddress.state && { MailingState: mailingAddress.state }),
       ...(mailingAddress.street && { MailingStreet: mailingAddress.street }),
       ...dynamicValues,
@@ -89,8 +71,7 @@ export const updateContact = action({
       data: response,
     };
   },
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    genericCreateUpdateExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => genericCreateUpdateExamplePayload,
   inputs: updateContactInputs,
   outputSchema: outputSchema({
     type: "actionOutput",

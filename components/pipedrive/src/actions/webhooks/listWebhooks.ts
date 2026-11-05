@@ -19,8 +19,5 @@ export const listWebhooks = action({
   inputs: listWebhooksInputs,
   examplePayload: listWebhooksExamplePayload,
   examplePerform: async () => listWebhooksExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: listWebhooksOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: listWebhooksOutputSchema }),
 });

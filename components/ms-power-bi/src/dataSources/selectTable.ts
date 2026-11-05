@@ -27,7 +27,7 @@ export const selectTable = dataSource({
       client,
       `/datasets/${params.datasetId}/tables`,
       true,
-      parameters,
+      parameters
     );
 
     return {
@@ -37,7 +37,7 @@ export const selectTable = dataSource({
           ({ id: key, name: label }): Element => ({
             key: label,
             label,
-          }),
+          })
         ),
     };
   },

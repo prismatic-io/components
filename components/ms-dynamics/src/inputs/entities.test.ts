@@ -8,12 +8,7 @@ describe("parseBatchedActions", () => {
   test("valid batch array parses correctly", () => {
     const input = [
       { collection: "accounts", action: "create", data: { name: "test" } },
-      {
-        collection: "accounts",
-        action: "update",
-        key: "abc-123",
-        data: { name: "updated" },
-      },
+      { collection: "accounts", action: "update", key: "abc-123", data: { name: "updated" } },
       { collection: "accounts", action: "delete", key: "abc-456" },
     ];
     const result = parseBatchedActions(input);
@@ -23,7 +18,7 @@ describe("parseBatchedActions", () => {
 
   test("non-array throws", () => {
     expect(() => parseBatchedActions("not-an-array")).toThrow(
-      "Batch Actions must be specified as a JSON or JavaScript array",
+      "Batch Actions must be specified as a JSON or JavaScript array"
     );
   });
 
@@ -35,14 +30,12 @@ describe("parseBatchedActions", () => {
   test("invalid action type throws", () => {
     const input = [{ collection: "accounts", action: "invalid", data: {} }];
     expect(() => parseBatchedActions(input)).toThrow(
-      "missing an action type, or the action type doesn't match",
+      "missing an action type, or the action type doesn't match"
     );
   });
 
   test("update without key throws", () => {
-    const input = [
-      { collection: "accounts", action: "update", data: { name: "test" } },
-    ];
+    const input = [{ collection: "accounts", action: "update", data: { name: "test" } }];
     expect(() => parseBatchedActions(input)).toThrow("missing an entity key");
   });
 

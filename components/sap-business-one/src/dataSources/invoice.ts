@@ -1,12 +1,7 @@
 import { dataSource } from "@prismatic-io/spectral";
 import { $filter, connection } from "../inputs/general";
 import { createClient } from "../client";
-import {
-  fetchAllData,
-  mapLabel,
-  mapPicklistArray,
-  validateArray,
-} from "../util";
+import { fetchAllData, mapLabel, mapPicklistArray, validateArray } from "../util";
 import { orderDataSourceExamplePayload as invoiceDataSourceExamplePayload } from "../examplePayloads/datasources";
 
 export const selectInvoice = dataSource({

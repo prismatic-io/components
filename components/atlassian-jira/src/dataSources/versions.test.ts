@@ -10,22 +10,15 @@ beforeAll(() => nock.disableNetConnect());
 afterAll(() => nock.enableNetConnect());
 afterEach(() => nock.cleanAll());
 
-const params = () => ({
-  jiraConnection: basicConnection(),
-  projectId: "10000",
-});
+const params = () => ({ jiraConnection: basicConnection(), projectId: "10000" });
 
 describe("selectVersion", () => {
   test("reads every page and returns label-sorted key/label elements", async () => {
-    const [firstVersion, secondVersion] =
-      listVersionsExamplePayload.data.values;
+    const [firstVersion, secondVersion] = listVersionsExamplePayload.data.values;
     const scope = jiraApi()
       .get("/rest/api/3/project/10000/version")
       .query({ startAt: "0" })
-      .reply(200, {
-        ...listVersionsExamplePayload.data,
-        values: [secondVersion],
-      })
+      .reply(200, { ...listVersionsExamplePayload.data, values: [secondVersion] })
       .get("/rest/api/3/project/10000/version")
       .query({ startAt: "2" })
       .reply(200, {
@@ -48,11 +41,7 @@ describe("selectVersion", () => {
     jiraApi()
       .get("/rest/api/3/project/10000/version")
       .query({ startAt: "0" })
-      .reply(200, {
-        ...listVersionsExamplePayload.data,
-        isLast: true,
-        values: [],
-      });
+      .reply(200, { ...listVersionsExamplePayload.data, isLast: true, values: [] });
 
     const { result } = await invokeDataSource(selectVersion, params());
 

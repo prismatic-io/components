@@ -10,8 +10,7 @@ import { paginateRecordsWithLimit } from "./pagination";
 export const formatPipedriveTimestamp = (date: Date): string =>
   date.toISOString().replace("T", " ").substring(0, 19);
 
-export const formatPipedriveTimestampV2 = (date: Date): string =>
-  date.toISOString();
+export const formatPipedriveTimestampV2 = (date: Date): string => date.toISOString();
 
 export const fetchRecentsSince = async (
   client: HttpClient,

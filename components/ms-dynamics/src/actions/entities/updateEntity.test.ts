@@ -37,7 +37,7 @@ describe("updateEntity", () => {
         fieldValues: {},
         dynamicValues: {},
         connection: conn,
-      } as any),
+      } as any)
     ).rejects.toThrow("Entity not found");
   });
 });

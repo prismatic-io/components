@@ -27,8 +27,7 @@ const pluralLabel = input({
   type: "string",
   placeholder: "Enter plural label",
   example: "My object",
-  comments:
-    "The word for multiple objects. (There's no way to change this later.)",
+  comments: "The word for multiple objects. (There's no way to change this later.)",
   required: true,
   clean: util.types.toString,
 });
@@ -38,8 +37,7 @@ const requiredProperties = input({
   type: "string",
   collection: "valuelist",
   required: false,
-  comments:
-    "The names of properties that should be required when creating an object of this type.",
+  comments: "The names of properties that should be required when creating an object of this type.",
   default: ["000xxx"],
   clean: valueListInputClean,
   example: "my_object_property",

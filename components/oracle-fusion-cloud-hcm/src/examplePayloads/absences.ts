@@ -15,28 +15,14 @@ const absenceExample: Absence = {
   assignmentId: 300100012340003,
 };
 
-export const listAbsencesExamplePayload: {
-  data: OracleHcmListResponse<Absence>;
-} = {
-  data: {
-    items: [absenceExample],
-    count: 1,
-    hasMore: false,
-    limit: 25,
-    offset: 0,
-  },
+export const listAbsencesExamplePayload: { data: OracleHcmListResponse<Absence> } = {
+  data: { items: [absenceExample], count: 1, hasMore: false, limit: 25, offset: 0 },
 };
 
-export const getAbsenceExamplePayload: { data: Absence } = {
-  data: absenceExample,
-};
+export const getAbsenceExamplePayload: { data: Absence } = { data: absenceExample };
 
 export const createAbsenceExamplePayload: { data: Absence } = {
-  data: {
-    ...absenceExample,
-    personAbsenceEntryId: 300100099990020,
-    approvalStatusCd: "AWAIT",
-  },
+  data: { ...absenceExample, personAbsenceEntryId: 300100099990020, approvalStatusCd: "AWAIT" },
 };
 
 export const updateAbsenceExamplePayload: { data: Absence } = {

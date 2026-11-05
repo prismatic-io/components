@@ -8,10 +8,7 @@ import type { Issue } from "../types";
 export const isBasicAuth = (connection: Connection): boolean =>
   isAtlassianBasicAuth(connection, CONNECTION_KEYS);
 
-export const validateDescription = (
-  description?: string,
-  ADFdescription?: object,
-) => {
+export const validateDescription = (description?: string, ADFdescription?: object) => {
   if (description && ADFdescription) {
     throw new Error(
       `You can only provide a description, either "Description" or "ADF Description".`,
@@ -75,10 +72,7 @@ export const getIssueType = (
 export const toIdRef = (id: string | undefined): { id: string } | undefined =>
   id === undefined ? undefined : { id };
 
-export const getIssueById = async (
-  client: HttpClient,
-  issueId: string,
-): Promise<Issue> => {
+export const getIssueById = async (client: HttpClient, issueId: string): Promise<Issue> => {
   const { data } = await client.get(`/issue/${issueId}`);
   return data;
 };
@@ -90,12 +84,9 @@ export const getIssueTypes = async (
 ) => {
   const client = await createV3Client(connection);
   const promises = projectIds.map(async ({ projectId, projectName }) => {
-    const { data } = await client.get<{ id: string; name: string }[]>(
-      "/issuetype/project",
-      {
-        params: { projectId },
-      },
-    );
+    const { data } = await client.get<{ id: string; name: string }[]>("/issuetype/project", {
+      params: { projectId },
+    });
     return data.map((issueType) => ({
       ...issueType,
       projectName: projectName,

@@ -10,10 +10,7 @@ export const getRecord = action({
     description: "Retrieve a single record from SAP SuccessFactors.",
   },
   inputs: getRecordInputs,
-  perform: async (
-    context,
-    { connection, recordType, recordTypeId, $select },
-  ) => {
+  perform: async (context, { connection, recordType, recordTypeId, $select }) => {
     const client = await createClient(connection, context.debug.enabled);
     const { data } = await client.get(`/${recordType}('${recordTypeId}')`, {
       params: {

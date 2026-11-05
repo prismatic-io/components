@@ -29,11 +29,7 @@ export const listCustomers = action({
       $select,
     },
   ) => {
-    const client = getMsBusinessCentralClient(
-      connection,
-      context,
-      context.debug.enabled,
-    );
+    const client = getMsBusinessCentralClient(connection, context, context.debug.enabled);
     const params = {
       $search,
       $skip,
@@ -46,9 +42,7 @@ export const listCustomers = action({
       $select,
     };
 
-    return await paginateResults<
-      (typeof listCustomersExamplePayload)["data"]["value"][number]
-    >({
+    return await paginateResults<(typeof listCustomersExamplePayload)["data"]["value"][number]>({
       client,
       endpoint: `/companies(${companyId})/customers`,
       params,

@@ -28,8 +28,7 @@ export const callbackUrl = input({
   required: false,
   example: "https://example.com/fulfillment-callback",
   placeholder: "Enter callback URL",
-  comments:
-    "The callback URL that the fulfillment service has registered for request.",
+  comments: "The callback URL that the fulfillment service has registered for request.",
   clean: cleanStringInput,
 });
 
@@ -56,8 +55,7 @@ export const permitsSkuSharing = input({
   label: "Permits SKU Sharing",
   type: "boolean",
   required: false,
-  comments:
-    "When true, the fulfillment service can stock inventory alongside other locations.",
+  comments: "When true, the fulfillment service can stock inventory alongside other locations.",
   clean: util.types.toBool,
 });
 
@@ -65,8 +63,7 @@ export const requiresShippingMethod = input({
   label: "Requires Shipping Method",
   type: "boolean",
   required: false,
-  comments:
-    "When true, the fulfillment service requires a shipping method to be specified.",
+  comments: "When true, the fulfillment service requires a shipping method to be specified.",
   clean: util.types.toBool,
 });
 
@@ -74,7 +71,6 @@ export const trackingSupport = input({
   label: "Tracking Support",
   type: "boolean",
   required: false,
-  comments:
-    "When true, the fulfillment service supports tracking numbers for packages.",
+  comments: "When true, the fulfillment service supports tracking numbers for packages.",
   clean: util.types.toBool,
 });

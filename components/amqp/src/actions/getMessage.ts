@@ -8,15 +8,8 @@ export const getMessage = action({
     label: "Get Message",
     description: "Receives a message from an AMQP-based queue",
   },
-  perform: async (
-    context,
-    { queueName, amqpConnection, acknowledgeMessage },
-  ) => {
-    const client = await createClient(
-      amqpConnection,
-      context.debug.enabled,
-      context.logger,
-    );
+  perform: async (context, { queueName, amqpConnection, acknowledgeMessage }) => {
+    const client = await createClient(amqpConnection, context.debug.enabled, context.logger);
     const channel = await client.createConfirmChannel();
     const result = await channel.get(queueName, { noAck: acknowledgeMessage });
     await channel.waitForConfirms();

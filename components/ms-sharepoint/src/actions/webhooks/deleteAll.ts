@@ -14,10 +14,7 @@ export const deleteAllInstanceSubscriptions = action({
     const client = await createClient(connection, context.debug.enabled);
     const endpoint = notificationUrl || context.webhookUrls[context.flow.name];
 
-    const deletedSubscriptions = await deleteAllSubscriptionsFN(
-      client,
-      endpoint,
-    );
+    const deletedSubscriptions = await deleteAllSubscriptionsFN(client, endpoint);
 
     return {
       data: {

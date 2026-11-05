@@ -1,14 +1,8 @@
 import type { Connection } from "@prismatic-io/spectral";
-import {
-  createClient as createHttpClient,
-  type HttpClient,
-} from "@prismatic-io/spectral/http";
+import { createClient as createHttpClient, type HttpClient } from "@prismatic-io/spectral/http";
 import { getAuthHeaders, getBaseUrl, validConnection } from "./util";
 
-export const createClient = (
-  connection: Connection,
-  debug = false,
-): HttpClient => {
+export const createClient = (connection: Connection, debug = false): HttpClient => {
   validConnection(connection);
 
   const client = createHttpClient({

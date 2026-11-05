@@ -14,8 +14,7 @@ export const getQueryDriveActivity = async (
   params: Record<string, unknown>,
   fetchAll: boolean,
 ): Promise<driveactivity_v2.Schema$QueryDriveActivityResponse> => {
-  const { pageToken, ancestorName, filter, itemName, consolidationStrategy } =
-    params;
+  const { pageToken, ancestorName, filter, itemName, consolidationStrategy } = params;
 
   const strategy = util.types.toString(consolidationStrategy);
   const consolidation = strategy ? { [strategy]: {} } : undefined;

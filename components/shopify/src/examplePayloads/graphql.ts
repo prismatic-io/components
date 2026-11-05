@@ -341,8 +341,7 @@ const exampleDraftOrder = {
     countryCodeV2: "US",
     provinceCode: "CA",
   },
-  invoiceUrl:
-    "https://example-store.myshopify.com/123456/invoices/abcdef123456",
+  invoiceUrl: "https://example-store.myshopify.com/123456/invoices/abcdef123456",
   appliedDiscount: null,
   order: {
     id: "gid://shopify/Order/8765432109876",
@@ -1696,8 +1695,7 @@ export const deleteInstanceWebhooksExamplePayload = {
       {
         webhookSubscriptionDelete: {
           userErrors: [],
-          deletedWebhookSubscriptionId:
-            "gid://shopify/WebhookSubscription/1320479850649",
+          deletedWebhookSubscriptionId: "gid://shopify/WebhookSubscription/1320479850649",
         },
       },
     ],
@@ -1710,8 +1708,7 @@ export const deleteInstanceWebhooksExamplePayload = {
 const exampleWebhookSubscription = {
   id: "gid://shopify/WebhookSubscription/1234567890123",
   endpoint: {
-    callbackUrl:
-      "https://example.com/trigger/SW5zdGFuY2VGbG93Q29uZmlnOmV4YW1wbGVfaWQ=",
+    callbackUrl: "https://example.com/trigger/SW5zdGFuY2VGbG93Q29uZmlnOmV4YW1wbGVfaWQ=",
   },
   topic: "CARTS_CREATE",
   createdAt: "2025-01-12T22:00:35Z",
@@ -1726,8 +1723,7 @@ const exampleWebhookSubscription = {
 
 const exampleWebhookSubscriptionMapRest = {
   id: 1234567890123,
-  address:
-    "https://example.com/trigger/SW5zdGFuY2VGbG93Q29uZmlnOmV4YW1wbGVfaWQ=",
+  address: "https://example.com/trigger/SW5zdGFuY2VGbG93Q29uZmlnOmV4YW1wbGVfaWQ=",
   topic: "carts/create",
   created_at: "2025-01-12T22:00:35Z",
   updated_at: "2025-01-12T22:00:35Z",
@@ -1768,8 +1764,7 @@ export const deleteWebhookGqlExamplePayload = {
   graphql: {
     data: {
       userErrors: [],
-      deletedWebhookSubscriptionId:
-        "gid://shopify/WebhookSubscription/525699895",
+      deletedWebhookSubscriptionId: "gid://shopify/WebhookSubscription/525699895",
     },
   },
   restMap: {
@@ -1945,8 +1940,7 @@ export const getProductImageGqlExamplePayload = {
           altText: "image",
           height: 300,
           id: "gid://shopify/ImageSource/32307802603673",
-          originalSrc:
-            "https://cdn.shopify.com/s/files/1/0606/2820/5721/files/300.jpg?v=123456",
+          originalSrc: "https://cdn.shopify.com/s/files/1/0606/2820/5721/files/300.jpg?v=123456",
           url: "https://cdn.shopify.com/s/files/1/0606/2820/5721/files/300.jpg?v=123456",
           width: 200,
           src: "https://cdn.shopify.com/s/files/1/0606/2820/5721/files/300.jpg?v=123456",
@@ -2236,9 +2230,7 @@ export const eventTopicWebhookGqlExamplePayload: { payload: TriggerPayload } = {
   },
 };
 
-export const customersPollingTriggerExamplePayload: {
-  payload: TriggerPayload;
-} = {
+export const customersPollingTriggerExamplePayload: { payload: TriggerPayload } = {
   payload: {
     ...defaultTriggerPayload(),
     body: {
@@ -2280,9 +2272,7 @@ export const ordersPollingTriggerExamplePayload: { payload: TriggerPayload } = {
             email: "john.doe@example.com",
             createdAt: "2026-10-20T14:30:00.000Z",
             updatedAt: "2026-10-20T14:30:00.000Z",
-            totalPriceSet: {
-              shopMoney: { amount: "59.99", currencyCode: "USD" },
-            },
+            totalPriceSet: { shopMoney: { amount: "59.99", currencyCode: "USD" } },
           },
         ],
         updated: [
@@ -2292,9 +2282,7 @@ export const ordersPollingTriggerExamplePayload: { payload: TriggerPayload } = {
             email: "jane.smith@example.com",
             createdAt: "2026-09-15T10:00:00.000Z",
             updatedAt: "2026-10-20T15:00:00.000Z",
-            totalPriceSet: {
-              shopMoney: { amount: "129.50", currencyCode: "USD" },
-            },
+            totalPriceSet: { shopMoney: { amount: "129.50", currencyCode: "USD" } },
           },
         ],
       },
@@ -2302,37 +2290,36 @@ export const ordersPollingTriggerExamplePayload: { payload: TriggerPayload } = {
   },
 };
 
-export const productsPollingTriggerExamplePayload: { payload: TriggerPayload } =
-  {
-    payload: {
-      ...defaultTriggerPayload(),
-      body: {
-        data: {
-          created: [
-            {
-              id: "gid://shopify/Product/8012345678901",
-              title: "Classic T-Shirt",
-              handle: "classic-t-shirt",
-              productType: "T-shirt",
-              vendor: "Example Vendor",
-              status: "ACTIVE",
-              createdAt: "2026-10-20T14:30:00.000Z",
-              updatedAt: "2026-10-20T14:30:00.000Z",
-            },
-          ],
-          updated: [
-            {
-              id: "gid://shopify/Product/7012345678901",
-              title: "Running Shoes",
-              handle: "running-shoes",
-              productType: "Shoes",
-              vendor: "Example Vendor",
-              status: "ACTIVE",
-              createdAt: "2026-09-15T10:00:00.000Z",
-              updatedAt: "2026-10-20T15:00:00.000Z",
-            },
-          ],
-        },
+export const productsPollingTriggerExamplePayload: { payload: TriggerPayload } = {
+  payload: {
+    ...defaultTriggerPayload(),
+    body: {
+      data: {
+        created: [
+          {
+            id: "gid://shopify/Product/8012345678901",
+            title: "Classic T-Shirt",
+            handle: "classic-t-shirt",
+            productType: "T-shirt",
+            vendor: "Example Vendor",
+            status: "ACTIVE",
+            createdAt: "2026-10-20T14:30:00.000Z",
+            updatedAt: "2026-10-20T14:30:00.000Z",
+          },
+        ],
+        updated: [
+          {
+            id: "gid://shopify/Product/7012345678901",
+            title: "Running Shoes",
+            handle: "running-shoes",
+            productType: "Shoes",
+            vendor: "Example Vendor",
+            status: "ACTIVE",
+            createdAt: "2026-09-15T10:00:00.000Z",
+            updatedAt: "2026-10-20T15:00:00.000Z",
+          },
+        ],
       },
     },
-  };
+  },
+};

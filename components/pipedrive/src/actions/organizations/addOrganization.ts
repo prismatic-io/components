@@ -11,15 +11,8 @@ export const addOrganization = action({
     description: "Adds an organization.",
   },
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { connection, name, ownerId, visibleTo, addTime },
-  ) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      WebhookVersion.V2,
-    );
+  perform: async (context, { connection, name, ownerId, visibleTo, addTime }) => {
+    const client = createClient(connection, context.debug.enabled, WebhookVersion.V2);
     const { data } = await client.post("/organizations", {
       name,
       owner_id: ownerId,
@@ -30,8 +23,5 @@ export const addOrganization = action({
   },
   inputs: addOrganizationInputs,
   examplePayload: addOrganizationExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: singleOrganizationV2OutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: singleOrganizationV2OutputSchema }),
 });

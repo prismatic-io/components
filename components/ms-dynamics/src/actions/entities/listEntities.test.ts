@@ -60,7 +60,7 @@ describe("listEntities", () => {
         connection: conn,
         fetchAll: false,
         pagination: { maxPageSize: 5000, nextLink: undefined },
-      } as any),
+      } as any)
     ).rejects.toThrow();
   });
 });

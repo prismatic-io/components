@@ -24,7 +24,7 @@ export const queryEntities = action({
       nextPageId,
       fetchAll,
       connection,
-    },
+    }
   ) => {
     const client = await createCrmClient(connection, context.debug.enabled);
 

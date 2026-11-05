@@ -41,7 +41,7 @@ describe("dynamicsWebhookTrigger", () => {
       payload as any,
       {
         webhookKey: undefined,
-      } as any,
+      } as any
     );
 
     expect(result.branch).toBe("Event");
@@ -68,7 +68,7 @@ describe("dynamicsWebhookTrigger", () => {
       payload as any,
       {
         webhookKey: undefined,
-      } as any,
+      } as any
     );
 
     expect(result.branch).toBe("URL Validation / Heartbeat");
@@ -85,15 +85,13 @@ describe("dynamicsWebhookTrigger", () => {
         payload as any,
         {
           webhookKey: "secret-key-123",
-        } as any,
-      ),
+        } as any
+      )
     ).rejects.toThrow("Webhook authentication failed");
   });
 
   test("webhook key verification: wrong code query param throws auth error", async () => {
-    const payload = createMockPayload({
-      queryParameters: { code: "wrong-key" },
-    });
+    const payload = createMockPayload({ queryParameters: { code: "wrong-key" } });
     const ctx = createMockContext();
 
     await expect(
@@ -102,15 +100,13 @@ describe("dynamicsWebhookTrigger", () => {
         payload as any,
         {
           webhookKey: "secret-key-123",
-        } as any,
-      ),
+        } as any
+      )
     ).rejects.toThrow("Webhook authentication failed");
   });
 
   test("webhook key verification: correct code query param proceeds", async () => {
-    const payload = createMockPayload({
-      queryParameters: { code: "secret-key-123" },
-    });
+    const payload = createMockPayload({ queryParameters: { code: "secret-key-123" } });
     const ctx = createMockContext();
 
     const result = await dynamicsWebhookTrigger.perform(
@@ -118,7 +114,7 @@ describe("dynamicsWebhookTrigger", () => {
       payload as any,
       {
         webhookKey: "secret-key-123",
-      } as any,
+      } as any
     );
 
     expect(result.branch).toBe("Event");

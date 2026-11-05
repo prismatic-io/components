@@ -29,14 +29,10 @@ export const newUsersPollingTrigger = pollingTrigger({
         context,
         usersPollParams(connection, `lastUpdated gt "${since}"`),
       );
-      users = (data as User[]).filter(
-        (user) => new Date(user.created) >= new Date(since),
-      );
+      users = (data as User[]).filter((user) => new Date(user.created) >= new Date(since));
     }
 
-    context.polling.setState({
-      lastUpdated: pollStartedAt,
-    } satisfies UsersPollingState);
+    context.polling.setState({ lastUpdated: pollStartedAt } satisfies UsersPollingState);
 
     return {
       payload: { ...payload, body: { data: users } },

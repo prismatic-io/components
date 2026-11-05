@@ -31,8 +31,7 @@ export const fieldNames = input({
   type: "string",
   collection: "valuelist",
   required: true,
-  comments:
-    "The OData $select fields to include in the result. Leave empty to return all fields.",
+  comments: "The OData $select fields to include in the result. Leave empty to return all fields.",
   clean: toStringList,
 });
 
@@ -125,7 +124,6 @@ export const fetchAll = input({
   type: "boolean",
   required: false,
   default: "false",
-  comments:
-    "When true, automatically fetches all pages of results using pagination.",
+  comments: "When true, automatically fetches all pages of results using pagination.",
   clean: util.types.toBool,
 });

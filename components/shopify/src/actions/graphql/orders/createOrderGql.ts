@@ -19,19 +19,13 @@ export const createOrderGql = action({
       context.logger,
     );
 
-    const data: { orderCreate: Record<string, unknown> } = await client.request(
-      createOrderQuery,
-      {
-        order: orderData,
-      },
-    );
+    const data: { orderCreate: Record<string, unknown> } = await client.request(createOrderQuery, {
+      order: orderData,
+    });
     return { data: data.orderCreate };
   },
   examplePerform: async () => examplePayload,
   examplePayload,
   inputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: createOrderGqlOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: createOrderGqlOutputSchema }),
 });

@@ -12,10 +12,7 @@ export const listIssues = action({
   },
   performSafety: "notAllowed",
   perform: async (context, params) => {
-    const client = await createV3Client(
-      params.jiraConnection,
-      context.debug.enabled,
-    );
+    const client = await createV3Client(params.jiraConnection, context.debug.enabled);
 
     const requestParams: Record<string, unknown> = {
       jql: `project=${params.projectId}`,

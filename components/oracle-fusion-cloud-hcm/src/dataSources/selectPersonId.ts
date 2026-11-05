@@ -13,10 +13,7 @@ export const selectPersonId = dataSource({
   },
   dataSourceType: "picklist",
   inputs: selectPersonIdInputs,
-  perform: async (
-    _context,
-    { connection, usePublicWorkers, effectiveDate },
-  ) => {
+  perform: async (_context, { connection, usePublicWorkers, effectiveDate }) => {
     const client = createClient(connection, false);
     const resource = usePublicWorkers ? "/publicWorkers" : "/workers";
     const { data } = await client.get<{ items: Worker[] }>(resource, {
@@ -24,8 +21,7 @@ export const selectPersonId = dataSource({
     });
     const result = mapToElements(
       data.items,
-      (w) =>
-        w.DisplayName ? `${w.PersonNumber} - ${w.DisplayName}` : w.PersonNumber,
+      (w) => (w.DisplayName ? `${w.PersonNumber} - ${w.DisplayName}` : w.PersonNumber),
       (w) => w.PersonId,
     );
     return { result };

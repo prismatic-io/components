@@ -159,9 +159,7 @@ interface RestDraftOrderLineItemTaxLine {
   channel_liable: boolean | null;
   rate: number | null;
   title: string | null;
-  price_set: {
-    shop_money: { amount: string | null; currency_code: string | null } | null;
-  } | null;
+  price_set: { shop_money: { amount: string | null; currency_code: string | null } | null } | null;
   price: string | null;
 }
 
@@ -170,9 +168,7 @@ interface RestDraftOrderAppliedDiscount {
   value: number | null;
   value_type: string | null;
   description: string | null;
-  amount_set: {
-    shop_money: { amount: string | null; currency_code: string | null } | null;
-  } | null;
+  amount_set: { shop_money: { amount: string | null; currency_code: string | null } | null } | null;
 }
 
 interface RestDraftOrderLineItem {
@@ -230,9 +226,7 @@ interface RestDraftOrderTaxLine {
   rate: number | null;
   rate_percentage: number | null;
   source: string | null;
-  price_set: {
-    shop_money: { amount: string | null; currency_code: string | null } | null;
-  } | null;
+  price_set: { shop_money: { amount: string | null; currency_code: string | null } | null } | null;
   price: string | null;
   channel_liable: boolean | null;
   title: string | null;
@@ -282,10 +276,7 @@ interface RestDraftOrderCustomer {
   last_order_name: string | null;
   phone: string | null;
   tax_exemptions: string[] | null;
-  email_marketing_consent: {
-    state: string | null;
-    consent_updated_at: string | null;
-  } | null;
+  email_marketing_consent: { state: string | null; consent_updated_at: string | null } | null;
   sms_marketing_consent: {
     state: string | null;
     consent_updated_at: string | null;

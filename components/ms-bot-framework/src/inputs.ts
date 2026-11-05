@@ -4,8 +4,7 @@ export const connection = input({
   label: "Connection",
   type: "connection",
   required: true,
-  comments:
-    "The connection to use for authenticating requests to Microsoft Bot Framework.",
+  comments: "The connection to use for authenticating requests to Microsoft Bot Framework.",
 });
 
 export const serviceUrl = input({

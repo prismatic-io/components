@@ -19,20 +19,19 @@ export const completeDraftOrderGql = action({
       context.logger,
     );
 
-    const data: { draftOrderComplete: Record<string, unknown> } =
-      await client.request(completeDraftOrderQuery, {
+    const data: { draftOrderComplete: Record<string, unknown> } = await client.request(
+      completeDraftOrderQuery,
+      {
         id: draftOrderId,
-      });
+      },
+    );
 
     return {
       data: data.draftOrderComplete,
     };
   },
   inputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: completeDraftOrderGqlOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: completeDraftOrderGqlOutputSchema }),
   examplePerform: async () => examplePayload,
   examplePayload,
 });

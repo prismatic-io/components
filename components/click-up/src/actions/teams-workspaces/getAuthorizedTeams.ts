@@ -16,10 +16,7 @@ export const getAuthorizedTeams = action({
   examplePayload: getAuthorizedTeamsExamplePayload,
   performSafety: "safe",
   perform: async (context, { clickUpConnection }) => {
-    const client = createClickUpClient(
-      clickUpConnection,
-      context.debug.enabled,
-    );
+    const client = createClickUpClient(clickUpConnection, context.debug.enabled);
 
     const { data } = await client.get("/team");
 

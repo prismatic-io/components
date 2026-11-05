@@ -13,7 +13,7 @@ export const searchMessages = action({
   performSafety: "notAllowed",
   perform: async (
     { debug: { enabled: debug } },
-    { connection, pagination, highlight, query, sort, sort_dir, team_id },
+    { connection, pagination, highlight, query, sort, sort_dir, team_id }
   ) => {
     const { count, page } = pagination;
     debugLogger({

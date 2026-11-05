@@ -10,11 +10,7 @@ import {
   getTeamId,
 } from "./common";
 
-const getPermissionLevel = (
-  required: boolean,
-  comments: string,
-  defaultValue?: string,
-) =>
+const getPermissionLevel = (required: boolean, comments: string, defaultValue?: string) =>
   input({
     label: "Permission Level",
     type: "string",
@@ -36,11 +32,7 @@ const getGuestId = (required: boolean, comments: string) =>
     clean: util.types.toString,
   });
 
-const getCanEditTags = (
-  required: boolean,
-  comments: string,
-  defaultValue?: boolean,
-) =>
+const getCanEditTags = (required: boolean, comments: string, defaultValue?: boolean) =>
   input({
     label: "Can Edit Tags",
     type: "boolean",
@@ -50,11 +42,7 @@ const getCanEditTags = (
     ...(defaultValue !== undefined && { default: `${defaultValue}` }),
   });
 
-const getIncludeShared = (
-  required: boolean,
-  comments: string,
-  defaultValue?: boolean,
-) =>
+const getIncludeShared = (required: boolean, comments: string, defaultValue?: boolean) =>
   input({
     label: "Include Shared",
     type: "boolean",
@@ -64,11 +52,7 @@ const getIncludeShared = (
     ...(defaultValue !== undefined && { default: `${defaultValue}` }),
   });
 
-const getCanSeeTimeSpent = (
-  required: boolean,
-  comments: string,
-  defaultValue?: boolean,
-) =>
+const getCanSeeTimeSpent = (required: boolean, comments: string, defaultValue?: boolean) =>
   input({
     label: "Can See Time Spent",
     type: "boolean",
@@ -78,11 +62,7 @@ const getCanSeeTimeSpent = (
     ...(defaultValue !== undefined && { default: `${defaultValue}` }),
   });
 
-const getCanSeeTimeEstimated = (
-  required: boolean,
-  comments: string,
-  defaultValue?: boolean,
-) =>
+const getCanSeeTimeEstimated = (required: boolean, comments: string, defaultValue?: boolean) =>
   input({
     label: "Can See Time Estimated",
     type: "boolean",
@@ -92,11 +72,7 @@ const getCanSeeTimeEstimated = (
     ...(defaultValue !== undefined && { default: `${defaultValue}` }),
   });
 
-const getCanCreateViews = (
-  required: boolean,
-  comments: string,
-  defaultValue?: boolean,
-) =>
+const getCanCreateViews = (required: boolean, comments: string, defaultValue?: boolean) =>
   input({
     label: "Can Create Views",
     type: "boolean",
@@ -120,15 +96,11 @@ export const addGuestToFolderInputs = {
   clickUpConnection: connectionInput,
   folderId: getFolderId(true, "The unique identifier for the Folder."),
   guestId: getGuestId(true, "The unique identifier for the guest."),
-  permissionLevel: getPermissionLevel(
-    true,
-    "Can be read (view only), comment, edit, or create (full).",
-    "create",
-  ),
+  permissionLevel: getPermissionLevel(true, "Can be read (view only), comment, edit, or create (full).", "create"),
   includeShared: getIncludeShared(
     false,
     "When true, includes details of items shared with the guest. Set to false to exclude them.",
-    true,
+    true
   ),
 };
 
@@ -136,15 +108,11 @@ export const addGuestToListInputs = {
   clickUpConnection: connectionInput,
   listId: getlistId(true, "The unique identifier for the List."),
   guestId: getGuestId(true, "The unique identifier for the guest."),
-  permissionLevel: getPermissionLevel(
-    true,
-    "Can be read (view only), comment, edit, or create (full).",
-    "create",
-  ),
+  permissionLevel: getPermissionLevel(true, "Can be read (view only), comment, edit, or create (full).", "create"),
   includeShared: getIncludeShared(
     false,
     "When true, includes details of items shared with the guest. Set to false to exclude them.",
-    true,
+    true
   ),
 };
 
@@ -152,53 +120,28 @@ export const addGuestToTaskInputs = {
   clickUpConnection: connectionInput,
   taskId: getTaskId(true, "The unique identifier for the task."),
   guestId: getGuestId(true, "The unique identifier for the guest."),
-  permissionLevel: getPermissionLevel(
-    true,
-    "Can be read (view only), comment, edit, or create (full).",
-  ),
+  permissionLevel: getPermissionLevel(true, "Can be read (view only), comment, edit, or create (full)."),
   includeShared: getIncludeShared(
     false,
     "When true, includes details of items shared with the guest. Set to false to exclude them.",
-    true,
+    true
   ),
   customTaskIds: getCustomTaskIds(
     false,
     "When true, the Task ID is treated as a custom task ID. Requires Team ID.",
-    true,
+    true
   ),
-  teamId: getTeamId(
-    false,
-    "Only used when the custom_task_ids parameter is set to true",
-  ),
+  teamId: getTeamId(false, "Only used when the custom_task_ids parameter is set to true"),
 };
 
 export const editGuestOnWorkspaceInputs = {
   clickUpConnection: connectionInput,
   teamId: getTeamId(true),
-  username: getUsername(
-    true,
-    "The new username for the guest in the Workspace.",
-  ),
-  canEditTags: getCanEditTags(
-    true,
-    "When true, the guest can edit tags.",
-    true,
-  ),
-  canSeeTimeSpent: getCanSeeTimeSpent(
-    true,
-    "When true, the guest can see time spent on tasks.",
-    true,
-  ),
-  canSeeTimeEstimated: getCanSeeTimeEstimated(
-    true,
-    "When true, the guest can see time estimates on tasks.",
-    true,
-  ),
-  canCreateViews: getCanCreateViews(
-    true,
-    "When true, the guest can create views.",
-    true,
-  ),
+  username: getUsername(true, "The new username for the guest in the Workspace."),
+  canEditTags: getCanEditTags(true, "When true, the guest can edit tags.", true),
+  canSeeTimeSpent: getCanSeeTimeSpent(true, "When true, the guest can see time spent on tasks.", true),
+  canSeeTimeEstimated: getCanSeeTimeEstimated(true, "When true, the guest can see time estimates on tasks.", true),
+  canCreateViews: getCanCreateViews(true, "When true, the guest can create views.", true),
   customRoleId,
   guestId: getGuestId(true, "The unique identifier for the guest."),
 };
@@ -213,26 +156,10 @@ export const inviteGuestToWorkspaceInputs = {
   clickUpConnection: connectionInput,
   teamId: getTeamId(true),
   email: getEmail(true, "Email address of the invited guest"),
-  canEditTags: getCanEditTags(
-    true,
-    "When true, the guest can edit tags.",
-    true,
-  ),
-  canSeeTimeSpent: getCanSeeTimeSpent(
-    true,
-    "When true, the guest can see time spent on tasks.",
-    true,
-  ),
-  canSeeTimeEstimated: getCanSeeTimeEstimated(
-    true,
-    "When true, the guest can see time estimates on tasks.",
-    true,
-  ),
-  canCreateViews: getCanCreateViews(
-    true,
-    "When true, the guest can create views.",
-    true,
-  ),
+  canEditTags: getCanEditTags(true, "When true, the guest can edit tags.", true),
+  canSeeTimeSpent: getCanSeeTimeSpent(true, "When true, the guest can see time spent on tasks.", true),
+  canSeeTimeEstimated: getCanSeeTimeEstimated(true, "When true, the guest can see time estimates on tasks.", true),
+  canCreateViews: getCanCreateViews(true, "When true, the guest can create views.", true),
   customRoleId,
 };
 
@@ -243,7 +170,7 @@ export const removeGuestFromFolderInputs = {
   includeShared: getIncludeShared(
     false,
     "When true, includes details of items shared with the guest. Set to false to exclude them.",
-    true,
+    true
   ),
 };
 
@@ -254,7 +181,7 @@ export const removeGuestFromListInputs = {
   includeShared: getIncludeShared(
     false,
     "When true, includes details of items shared with the guest. Set to false to exclude them.",
-    true,
+    true
   ),
 };
 
@@ -265,17 +192,14 @@ export const removeGuestFromTaskInputs = {
   includeShared: getIncludeShared(
     false,
     "When true, includes details of items shared with the guest. Set to false to exclude them.",
-    true,
+    true
   ),
   customTaskIds: getCustomTaskIds(
     false,
     "When true, the Task ID is treated as a custom task ID. Requires Team ID.",
-    true,
+    true
   ),
-  teamId: getTeamId(
-    false,
-    "Only used when the custom_task_ids parameter is set to true",
-  ),
+  teamId: getTeamId(false, "Only used when the custom_task_ids parameter is set to true"),
 };
 
 export const removeGuestFromWorkspaceInputs = {

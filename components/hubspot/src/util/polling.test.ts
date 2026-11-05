@@ -4,11 +4,7 @@ import {
   MAX_SEARCH_RESULTS,
   RATE_LIMIT_MAX_ATTEMPTS,
 } from "../constants";
-import type {
-  PollingTriggerObject,
-  PollingCursor,
-  SearchRecordsPollingState,
-} from "../types";
+import type { PollingTriggerObject, PollingCursor, SearchRecordsPollingState } from "../types";
 import {
   advanceCursor,
   buildPollingFilterGroups,
@@ -44,14 +40,7 @@ describe("resolveCursor", () => {
   });
 
   test("seeds from now when state is empty and lookBackDate is blank", () => {
-    expect(
-      resolveCursor({
-        incoming: undefined,
-        state: {},
-        lookBackDate: "",
-        now: NOW,
-      }),
-    ).toEqual({
+    expect(resolveCursor({ incoming: undefined, state: {}, lookBackDate: "", now: NOW })).toEqual({
       watermark: NOW,
       windowStart: NOW,
       windowEnd: NOW,
@@ -98,19 +87,11 @@ describe("resolveCursor", () => {
       windowStart: "2026-08-01T00:00:00.000Z",
       windowEnd: "2026-08-11T00:00:00.000Z",
       isBackfill: false,
-      idWalk: {
-        denseTimestamp: "2026-08-03T00:00:00.000Z",
-        idWatermark: "999",
-      },
+      idWalk: { denseTimestamp: "2026-08-03T00:00:00.000Z", idWatermark: "999" },
     };
-    expect(
-      resolveCursor({
-        incoming: cursor,
-        state: {},
-        lookBackDate: "",
-        now: NOW,
-      }),
-    ).toEqual(cursor);
+    expect(resolveCursor({ incoming: cursor, state: {}, lookBackDate: "", now: NOW })).toEqual(
+      cursor,
+    );
   });
 
   test("rejects a corrupted idWalk (non-date denseTimestamp)", () => {
@@ -122,12 +103,7 @@ describe("resolveCursor", () => {
       idWalk: { denseTimestamp: "nope", idWatermark: "1" },
     } as unknown as PollingCursor;
     expect(() =>
-      resolveCursor({
-        incoming: cursor,
-        state: {},
-        lookBackDate: "",
-        now: NOW,
-      }),
+      resolveCursor({ incoming: cursor, state: {}, lookBackDate: "", now: NOW }),
     ).toThrow(/Invalid polling cursor\.idWalk\.denseTimestamp/);
   });
 
@@ -145,12 +121,7 @@ describe("resolveCursor", () => {
       isBackfill: false,
     };
     expect(
-      resolveCursor({
-        incoming,
-        state: { cursor: persisted },
-        lookBackDate: "",
-        now: NOW,
-      }),
+      resolveCursor({ incoming, state: { cursor: persisted }, lookBackDate: "", now: NOW }),
     ).toEqual(incoming);
   });
 
@@ -167,12 +138,7 @@ describe("resolveCursor", () => {
       ...override,
     } as unknown as PollingCursor;
     expect(() =>
-      resolveCursor({
-        incoming: cursor,
-        state: {},
-        lookBackDate: "",
-        now: NOW,
-      }),
+      resolveCursor({ incoming: cursor, state: {}, lookBackDate: "", now: NOW }),
     ).toThrow(/Invalid polling cursor\./);
   });
 
@@ -261,10 +227,7 @@ const CURSOR: PollingCursor = {
 
 describe("advanceCursor", () => {
   test("emits an exhausted window whole and stops", () => {
-    const records = [
-      record("2026-08-02T00:00:00.000Z"),
-      record("2026-08-03T00:00:00.000Z"),
-    ];
+    const records = [record("2026-08-02T00:00:00.000Z"), record("2026-08-03T00:00:00.000Z")];
     expect(advanceCursor({ records, hasMore: false }, CURSOR)).toEqual({
       emit: records,
       nextCursor: null,
@@ -302,10 +265,7 @@ describe("advanceCursor", () => {
   });
 
   test("carries windowStart, windowEnd, and isBackfill through unchanged", () => {
-    const records = [
-      record("2026-08-02T00:00:00.000Z"),
-      record("2026-08-03T00:00:00.000Z"),
-    ];
+    const records = [record("2026-08-02T00:00:00.000Z"), record("2026-08-03T00:00:00.000Z")];
     const { nextCursor } = advanceCursor(
       { records, hasMore: false },
       { ...CURSOR, isBackfill: true },
@@ -315,26 +275,11 @@ describe("advanceCursor", () => {
 
   test("trims and advances by createdAt during a backfill, ignoring updatedAt order", () => {
     const records: PollingTriggerObject[] = [
-      {
-        id: "a",
-        createdAt: "2026-08-02T00:00:00.000Z",
-        updatedAt: "2026-08-09T00:00:00.000Z",
-      },
-      {
-        id: "b",
-        createdAt: "2026-08-03T00:00:00.000Z",
-        updatedAt: "2026-08-08T00:00:00.000Z",
-      },
-      {
-        id: "c",
-        createdAt: "2026-08-03T00:00:00.000Z",
-        updatedAt: "2026-08-07T00:00:00.000Z",
-      },
+      { id: "a", createdAt: "2026-08-02T00:00:00.000Z", updatedAt: "2026-08-09T00:00:00.000Z" },
+      { id: "b", createdAt: "2026-08-03T00:00:00.000Z", updatedAt: "2026-08-08T00:00:00.000Z" },
+      { id: "c", createdAt: "2026-08-03T00:00:00.000Z", updatedAt: "2026-08-07T00:00:00.000Z" },
     ];
-    const result = advanceCursor(
-      { records, hasMore: true },
-      { ...CURSOR, isBackfill: true },
-    );
+    const result = advanceCursor({ records, hasMore: true }, { ...CURSOR, isBackfill: true });
     expect(result.emit.map((r) => r.id)).toEqual(["a"]);
     expect(result.nextCursor).toEqual({
       watermark: "2026-08-03T00:00:00.000Z",
@@ -385,10 +330,7 @@ describe("advanceCursor", () => {
     });
 
     test("exits when a round returns no records", () => {
-      const result = advanceCursor(
-        { records: [], hasMore: true },
-        idWalkCursor,
-      );
+      const result = advanceCursor({ records: [], hasMore: true }, idWalkCursor);
       expect(result.emit).toEqual([]);
       expect(result.nextCursor?.idWalk).toBeUndefined();
       expect(result.nextCursor?.watermark).toBe("2026-08-03T00:00:00.001Z");
@@ -406,10 +348,7 @@ describe("advanceCursor", () => {
   });
 
   test("throws when the trailing boundary is not a parseable date", () => {
-    const records = [
-      record("2026-08-02T00:00:00.000Z", "a"),
-      record("garbage", "b"),
-    ];
+    const records = [record("2026-08-02T00:00:00.000Z", "a"), record("garbage", "b")];
     expect(() => advanceCursor({ records, hasMore: true }, CURSOR)).toThrow(
       /Invalid polling record\.updatedAt/,
     );
@@ -426,23 +365,17 @@ describe("resolveLastModifiedProperty", () => {
   });
 
   test("uses hs_lastmodifieddate for custom objects regardless of endpoint", () => {
-    expect(resolveLastModifiedProperty(undefined, true)).toBe(
-      "hs_lastmodifieddate",
-    );
+    expect(resolveLastModifiedProperty(undefined, true)).toBe("hs_lastmodifieddate");
   });
 
   test("throws a named error for an unknown endpoint", () => {
-    expect(() =>
-      resolveLastModifiedProperty("/crm/v3/objects/nope/search", false),
-    ).toThrow(
+    expect(() => resolveLastModifiedProperty("/crm/v3/objects/nope/search", false)).toThrow(
       /No last-modified property is known for the search endpoint \/crm\/v3\/objects\/nope\/search/,
     );
   });
 
   test("throws when no endpoint is supplied and custom objects are not selected", () => {
-    expect(() => resolveLastModifiedProperty(undefined, false)).toThrow(
-      /\(none provided\)/,
-    );
+    expect(() => resolveLastModifiedProperty(undefined, false)).toThrow(/\(none provided\)/);
   });
 
   test.each([
@@ -480,31 +413,27 @@ describe("resolveCreatedProperty", () => {
 
 describe("resolveEndpoint", () => {
   test("translates a stored legacy value to the dated path", () => {
-    expect(
-      resolveEndpoint("/crm/v3/objects/contacts/search", undefined, false),
-    ).toBe("/crm/objects/2026-09/contacts/search");
+    expect(resolveEndpoint("/crm/v3/objects/contacts/search", undefined, false)).toBe(
+      "/crm/objects/2026-09/contacts/search",
+    );
   });
 
   test("keeps a stored dated value on the current version", () => {
-    expect(
-      resolveEndpoint("/crm/objects/2026-09/deals/search", undefined, false),
-    ).toBe("/crm/objects/2026-09/deals/search");
+    expect(resolveEndpoint("/crm/objects/2026-09/deals/search", undefined, false)).toBe(
+      "/crm/objects/2026-09/deals/search",
+    );
   });
 
   test("translates a mixed-case stored value", () => {
-    expect(
-      resolveEndpoint("/CRM/V3/Objects/contacts/Search", undefined, false),
-    ).toBe("/crm/objects/2026-09/contacts/search");
+    expect(resolveEndpoint("/CRM/V3/Objects/contacts/Search", undefined, false)).toBe(
+      "/crm/objects/2026-09/contacts/search",
+    );
   });
 
   test("substitutes the object type for the custom-objects placeholder", () => {
-    expect(
-      resolveEndpoint(
-        "/crm/v3/objects/{objectType}/search",
-        "p123_equipment",
-        false,
-      ),
-    ).toBe("/crm/objects/2026-09/p123_equipment/search");
+    expect(resolveEndpoint("/crm/v3/objects/{objectType}/search", "p123_equipment", false)).toBe(
+      "/crm/objects/2026-09/p123_equipment/search",
+    );
   });
 
   test("substitutes the object type when custom objects are selected", () => {
@@ -514,9 +443,9 @@ describe("resolveEndpoint", () => {
   });
 
   test("requires an object type for the placeholder", () => {
-    expect(() =>
-      resolveEndpoint("/crm/v3/objects/{objectType}/search", undefined, false),
-    ).toThrow("Object Type input is required");
+    expect(() => resolveEndpoint("/crm/v3/objects/{objectType}/search", undefined, false)).toThrow(
+      "Object Type input is required",
+    );
   });
 
   test("requires a search endpoint", () => {
@@ -534,92 +463,59 @@ describe("resolveEndpoint", () => {
 
 describe("buildPollingFilterGroups", () => {
   const cursorBounds = [
-    {
-      propertyName: "hs_lastmodifieddate",
-      operator: "GTE",
-      value: CURSOR.watermark,
-    },
-    {
-      propertyName: "hs_lastmodifieddate",
-      operator: "LT",
-      value: CURSOR.windowEnd,
-    },
+    { propertyName: "hs_lastmodifieddate", operator: "GTE", value: CURSOR.watermark },
+    { propertyName: "hs_lastmodifieddate", operator: "LT", value: CURSOR.windowEnd },
   ];
 
   test("produces a single bounds-only group when the user set no filters", () => {
-    expect(
-      buildPollingFilterGroups(undefined, "hs_lastmodifieddate", CURSOR),
-    ).toEqual([{ filters: cursorBounds }]);
+    expect(buildPollingFilterGroups(undefined, "hs_lastmodifieddate", CURSOR)).toEqual([
+      { filters: cursorBounds },
+    ]);
   });
 
   test("promotes a bare filters array into one group and ANDs the bounds in", () => {
-    const userFilter = {
-      propertyName: "dealstage",
-      operator: "EQ",
-      value: "closedwon",
-    };
+    const userFilter = { propertyName: "dealstage", operator: "EQ", value: "closedwon" };
     expect(
-      buildPollingFilterGroups(
-        { filters: [userFilter] },
-        "hs_lastmodifieddate",
-        CURSOR,
-      ),
+      buildPollingFilterGroups({ filters: [userFilter] }, "hs_lastmodifieddate", CURSOR),
     ).toEqual([{ filters: [userFilter, ...cursorBounds] }]);
   });
 
   test("distributes the bounds into every user group, preserving OR-of-ANDs", () => {
     const a = { propertyName: "dealstage", operator: "EQ", value: "closedwon" };
-    const b = {
-      propertyName: "dealstage",
-      operator: "EQ",
-      value: "closedlost",
-    };
+    const b = { propertyName: "dealstage", operator: "EQ", value: "closedlost" };
     expect(
       buildPollingFilterGroups(
         { filterGroups: [{ filters: [a] }, { filters: [b] }] },
         "hs_lastmodifieddate",
         CURSOR,
       ),
-    ).toEqual([
-      { filters: [a, ...cursorBounds] },
-      { filters: [b, ...cursorBounds] },
-    ]);
+    ).toEqual([{ filters: [a, ...cursorBounds] }, { filters: [b, ...cursorBounds] }]);
   });
 
   test("never emits a createdate filter", () => {
-    const groups = buildPollingFilterGroups(
-      undefined,
-      "hs_lastmodifieddate",
-      CURSOR,
-    );
-    const names = groups.flatMap((g) =>
-      (g.filters ?? []).map((f) => f.propertyName),
-    );
+    const groups = buildPollingFilterGroups(undefined, "hs_lastmodifieddate", CURSOR);
+    const names = groups.flatMap((g) => (g.filters ?? []).map((f) => f.propertyName));
     expect(names).not.toContain("createdate");
     expect(names).not.toContain("hs_createdate");
   });
 
   test("treats an empty filterGroups array as no filters and produces a bounds-only group", () => {
-    expect(
-      buildPollingFilterGroups(
-        { filterGroups: [] },
-        "hs_lastmodifieddate",
-        CURSOR,
-      ),
-    ).toEqual([{ filters: cursorBounds }]);
+    expect(buildPollingFilterGroups({ filterGroups: [] }, "hs_lastmodifieddate", CURSOR)).toEqual([
+      { filters: cursorBounds },
+    ]);
   });
 
   test("treats an empty filters array as no filters and produces a bounds-only group", () => {
-    expect(
-      buildPollingFilterGroups({ filters: [] }, "hs_lastmodifieddate", CURSOR),
-    ).toEqual([{ filters: cursorBounds }]);
+    expect(buildPollingFilterGroups({ filters: [] }, "hs_lastmodifieddate", CURSOR)).toEqual([
+      { filters: cursorBounds },
+    ]);
   });
 
   test("rejects more than five filter groups", () => {
     const filterGroups = Array.from({ length: 6 }, () => ({ filters: [] }));
-    expect(() =>
-      buildPollingFilterGroups({ filterGroups }, "hs_lastmodifieddate", CURSOR),
-    ).toThrow(/defines 6 filter groups, but HubSpot allows at most 5/);
+    expect(() => buildPollingFilterGroups({ filterGroups }, "hs_lastmodifieddate", CURSOR)).toThrow(
+      /defines 6 filter groups, but HubSpot allows at most 5/,
+    );
   });
 
   test("rejects a group that exceeds six filters once the bounds are added", () => {
@@ -629,11 +525,7 @@ describe("buildPollingFilterGroups", () => {
       value: i,
     }));
     expect(() =>
-      buildPollingFilterGroups(
-        { filterGroups: [{ filters }] },
-        "hs_lastmodifieddate",
-        CURSOR,
-      ),
+      buildPollingFilterGroups({ filterGroups: [{ filters }] }, "hs_lastmodifieddate", CURSOR),
     ).toThrow(/would carry 7 filters .* at most 6 per group/);
   });
 
@@ -644,9 +536,9 @@ describe("buildPollingFilterGroups", () => {
         { propertyName: `b${g}`, operator: "EQ", value: g },
       ],
     }));
-    expect(() =>
-      buildPollingFilterGroups({ filterGroups }, "hs_lastmodifieddate", CURSOR),
-    ).toThrow(/would produce 20 filters .* at most 18 in total/);
+    expect(() => buildPollingFilterGroups({ filterGroups }, "hs_lastmodifieddate", CURSOR)).toThrow(
+      /would produce 20 filters .* at most 18 in total/,
+    );
   });
 });
 
@@ -658,9 +550,7 @@ describe("buildPollingSearchBody", () => {
       CURSOR,
       200,
     );
-    expect(body.sorts).toEqual([
-      { propertyName: "hs_lastmodifieddate", direction: "ASCENDING" },
-    ]);
+    expect(body.sorts).toEqual([{ propertyName: "hs_lastmodifieddate", direction: "ASCENDING" }]);
   });
 
   test("preserves unrelated search properties such as the requested property list", () => {
@@ -688,45 +578,21 @@ describe("buildPollingSearchBody", () => {
     expect(
       buildPollingSearchBody(undefined, "hs_lastmodifieddate", CURSOR, 200),
     ).not.toHaveProperty("after");
-    expect(
-      buildPollingSearchBody(
-        undefined,
-        "hs_lastmodifieddate",
-        CURSOR,
-        200,
-        "400",
-      ).after,
-    ).toBe("400");
+    expect(buildPollingSearchBody(undefined, "hs_lastmodifieddate", CURSOR, 200, "400").after).toBe(
+      "400",
+    );
   });
 
   test("in an id-walk, pins the exact millisecond and sorts by hs_object_id", () => {
     const cursor = {
       ...CURSOR,
-      idWalk: {
-        denseTimestamp: "2026-08-03T00:00:00.000Z",
-        idWatermark: "500",
-      },
+      idWalk: { denseTimestamp: "2026-08-03T00:00:00.000Z", idWatermark: "500" },
     };
-    const body = buildPollingSearchBody(
-      undefined,
-      "hs_lastmodifieddate",
-      cursor,
-      200,
-    );
-    expect(body.sorts).toEqual([
-      { propertyName: "hs_object_id", direction: "ASCENDING" },
-    ]);
+    const body = buildPollingSearchBody(undefined, "hs_lastmodifieddate", cursor, 200);
+    expect(body.sorts).toEqual([{ propertyName: "hs_object_id", direction: "ASCENDING" }]);
     expect(body.filterGroups[0].filters).toEqual([
-      {
-        propertyName: "hs_lastmodifieddate",
-        operator: "GTE",
-        value: "2026-08-03T00:00:00.000Z",
-      },
-      {
-        propertyName: "hs_lastmodifieddate",
-        operator: "LT",
-        value: "2026-08-03T00:00:00.001Z",
-      },
+      { propertyName: "hs_lastmodifieddate", operator: "GTE", value: "2026-08-03T00:00:00.000Z" },
+      { propertyName: "hs_lastmodifieddate", operator: "LT", value: "2026-08-03T00:00:00.001Z" },
       { propertyName: "hs_object_id", operator: "GT", value: "500" },
     ]);
   });
@@ -736,23 +602,10 @@ describe("buildPollingSearchBody", () => {
       ...CURSOR,
       idWalk: { denseTimestamp: "2026-08-03T00:00:00.000Z", idWatermark: "" },
     };
-    const body = buildPollingSearchBody(
-      undefined,
-      "hs_lastmodifieddate",
-      cursor,
-      200,
-    );
+    const body = buildPollingSearchBody(undefined, "hs_lastmodifieddate", cursor, 200);
     expect(body.filterGroups[0].filters).toEqual([
-      {
-        propertyName: "hs_lastmodifieddate",
-        operator: "GTE",
-        value: "2026-08-03T00:00:00.000Z",
-      },
-      {
-        propertyName: "hs_lastmodifieddate",
-        operator: "LT",
-        value: "2026-08-03T00:00:00.001Z",
-      },
+      { propertyName: "hs_lastmodifieddate", operator: "GTE", value: "2026-08-03T00:00:00.000Z" },
+      { propertyName: "hs_lastmodifieddate", operator: "LT", value: "2026-08-03T00:00:00.001Z" },
     ]);
   });
 });
@@ -775,20 +628,14 @@ describe("windowFloor / cycleFloor", () => {
 });
 
 describe("getPollingChanges", () => {
-  const rec = (
-    id: string,
-    createdAt: string,
-    updatedAt: string,
-  ): PollingTriggerObject => ({
+  const rec = (id: string, createdAt: string, updatedAt: string): PollingTriggerObject => ({
     id,
     createdAt,
     updatedAt,
   });
 
   test("emits a record sitting exactly on the watermark", () => {
-    const records = [
-      rec("a", "2026-08-01T00:00:00.000Z", "2026-08-01T00:00:00.000Z"),
-    ];
+    const records = [rec("a", "2026-08-01T00:00:00.000Z", "2026-08-01T00:00:00.000Z")];
     const { changes } = getPollingChanges(
       true,
       true,
@@ -800,9 +647,7 @@ describe("getPollingChanges", () => {
   });
 
   test("classifies a record created inside the cycle as created", () => {
-    const records = [
-      rec("a", "2026-08-02T00:00:00.000Z", "2026-08-02T00:00:00.000Z"),
-    ];
+    const records = [rec("a", "2026-08-02T00:00:00.000Z", "2026-08-02T00:00:00.000Z")];
     const { changesObject } = getPollingChanges(
       true,
       true,
@@ -815,9 +660,7 @@ describe("getPollingChanges", () => {
   });
 
   test("classifies a record created before the cycle but modified inside it as updated", () => {
-    const records = [
-      rec("a", "2025-06-01T00:00:00.000Z", "2026-08-02T00:00:00.000Z"),
-    ];
+    const records = [rec("a", "2025-06-01T00:00:00.000Z", "2026-08-02T00:00:00.000Z")];
     const { changesObject } = getPollingChanges(
       true,
       true,
@@ -836,9 +679,7 @@ describe("getPollingChanges", () => {
       windowEnd: "2026-08-11T12:00:00.000Z",
       isBackfill: false,
     };
-    const records = [
-      rec("a", "2026-02-01T00:00:00.000Z", "2026-08-06T00:00:00.000Z"),
-    ];
+    const records = [rec("a", "2026-02-01T00:00:00.000Z", "2026-08-06T00:00:00.000Z")];
 
     const { changesObject } = getPollingChanges(
       true,
@@ -864,16 +705,11 @@ describe("getPollingChanges", () => {
       windowFloor(CURSOR),
       cycleFloor(CURSOR),
     );
-    expect(Object.keys(changesObject).sort()).toEqual([
-      "createdRecords",
-      "updatedRecords",
-    ]);
+    expect(Object.keys(changesObject).sort()).toEqual(["createdRecords", "updatedRecords"]);
   });
 
   test("counts a created-and-since-modified record as two changes", () => {
-    const records = [
-      rec("a", "2026-08-02T00:00:00.000Z", "2026-08-03T00:00:00.000Z"),
-    ];
+    const records = [rec("a", "2026-08-02T00:00:00.000Z", "2026-08-03T00:00:00.000Z")];
     const { changes, changesObject } = getPollingChanges(
       true,
       true,
@@ -887,9 +723,7 @@ describe("getPollingChanges", () => {
   });
 
   test("snapshot reports a created-and-since-modified record once, as created", () => {
-    const records = [
-      rec("a", "2026-08-02T00:00:00.000Z", "2026-08-03T00:00:00.000Z"),
-    ];
+    const records = [rec("a", "2026-08-02T00:00:00.000Z", "2026-08-03T00:00:00.000Z")];
     const { changes, changesObject } = getPollingChanges(
       true,
       true,
@@ -947,11 +781,7 @@ const windowParams = {
 describe("fetchPollingWindow", () => {
   test("stops with hasMore false when HubSpot returns no next page", async () => {
     const client = { post: vi.fn().mockResolvedValue(page(3)) };
-    const result = await fetchPollingWindow(
-      client as never,
-      windowParams,
-      fakeLogger(),
-    );
+    const result = await fetchPollingWindow(client as never, windowParams, fakeLogger());
     expect(result.hasMore).toBe(false);
     expect(result.records).toHaveLength(3);
     expect(client.post).toHaveBeenCalledTimes(1);
@@ -964,11 +794,7 @@ describe("fetchPollingWindow", () => {
         .mockResolvedValueOnce(page(MAX_SEARCH_LIMIT, "200", 0))
         .mockResolvedValueOnce(page(5, undefined, 1000)),
     };
-    const result = await fetchPollingWindow(
-      client as never,
-      windowParams,
-      fakeLogger(),
-    );
+    const result = await fetchPollingWindow(client as never, windowParams, fakeLogger());
     expect(result.records).toHaveLength(MAX_SEARCH_LIMIT + 5);
     expect(result.hasMore).toBe(false);
     expect(client.post.mock.calls[1][1].after).toBe("200");
@@ -976,31 +802,17 @@ describe("fetchPollingWindow", () => {
 
   test("stops at the result cap with hasMore true", async () => {
     const client = {
-      post: vi
-        .fn()
-        .mockImplementation(() =>
-          Promise.resolve(page(MAX_SEARCH_LIMIT, "next")),
-        ),
+      post: vi.fn().mockImplementation(() => Promise.resolve(page(MAX_SEARCH_LIMIT, "next"))),
     };
-    const result = await fetchPollingWindow(
-      client as never,
-      windowParams,
-      fakeLogger(),
-    );
+    const result = await fetchPollingWindow(client as never, windowParams, fakeLogger());
     expect(result.records).toHaveLength(MAX_SEARCH_RESULTS);
     expect(result.hasMore).toBe(true);
-    expect(client.post).toHaveBeenCalledTimes(
-      MAX_SEARCH_RESULTS / MAX_SEARCH_LIMIT,
-    );
+    expect(client.post).toHaveBeenCalledTimes(MAX_SEARCH_RESULTS / MAX_SEARCH_LIMIT);
   });
 
   test("honors a smaller windowLimit, leaving the rest for a later round", async () => {
     const client = {
-      post: vi
-        .fn()
-        .mockImplementation(() =>
-          Promise.resolve(page(MAX_SEARCH_LIMIT, "next")),
-        ),
+      post: vi.fn().mockImplementation(() => Promise.resolve(page(MAX_SEARCH_LIMIT, "next"))),
     };
     const result = await fetchPollingWindow(
       client as never,
@@ -1009,18 +821,12 @@ describe("fetchPollingWindow", () => {
     );
     expect(result.records).toHaveLength(BATCHED_WINDOW_LIMIT);
     expect(result.hasMore).toBe(true);
-    expect(client.post).toHaveBeenCalledTimes(
-      BATCHED_WINDOW_LIMIT / MAX_SEARCH_LIMIT,
-    );
+    expect(client.post).toHaveBeenCalledTimes(BATCHED_WINDOW_LIMIT / MAX_SEARCH_LIMIT);
   });
 
   test("never requests more than the remaining budget", async () => {
     const client = {
-      post: vi
-        .fn()
-        .mockImplementation(() =>
-          Promise.resolve(page(MAX_SEARCH_LIMIT, "next")),
-        ),
+      post: vi.fn().mockImplementation(() => Promise.resolve(page(MAX_SEARCH_LIMIT, "next"))),
     };
     await fetchPollingWindow(client as never, windowParams, fakeLogger());
     for (const call of client.post.mock.calls) {
@@ -1033,17 +839,10 @@ describe("fetchPollingWindow", () => {
       response: { status: 429, headers: { "retry-after": "0" } },
     };
     const client = {
-      post: vi
-        .fn()
-        .mockRejectedValueOnce(rateLimited)
-        .mockResolvedValueOnce(page(1)),
+      post: vi.fn().mockRejectedValueOnce(rateLimited).mockResolvedValueOnce(page(1)),
     };
     const logger = fakeLogger();
-    const result = await fetchPollingWindow(
-      client as never,
-      windowParams,
-      logger,
-    );
+    const result = await fetchPollingWindow(client as never, windowParams, logger);
     expect(result.records).toHaveLength(1);
     expect(client.post).toHaveBeenCalledTimes(2);
     expect(logger.warn).toHaveBeenCalledTimes(1);
@@ -1054,9 +853,9 @@ describe("fetchPollingWindow", () => {
       response: { status: 429, headers: { "retry-after": "0" } },
     };
     const client = { post: vi.fn().mockRejectedValue(rateLimited) };
-    await expect(
-      fetchPollingWindow(client as never, windowParams, fakeLogger()),
-    ).rejects.toBe(rateLimited);
+    await expect(fetchPollingWindow(client as never, windowParams, fakeLogger())).rejects.toBe(
+      rateLimited,
+    );
     expect(client.post).toHaveBeenCalledTimes(RATE_LIMIT_MAX_ATTEMPTS);
   });
 
@@ -1066,53 +865,31 @@ describe("fetchPollingWindow", () => {
         data: { total: 0, results: [], paging: { next: { after: "200" } } },
       }),
     };
-    const result = await fetchPollingWindow(
-      client as never,
-      windowParams,
-      fakeLogger(),
-    );
+    const result = await fetchPollingWindow(client as never, windowParams, fakeLogger());
     expect(result.hasMore).toBe(false);
     expect(result.records).toEqual([]);
     expect(client.post).toHaveBeenCalledTimes(1);
   });
 
   test("reports hasMore true from total when the last page omits paging.next", async () => {
-    const client = {
-      post: vi.fn().mockResolvedValue(page(3, undefined, 0, 100)),
-    };
-    const result = await fetchPollingWindow(
-      client as never,
-      windowParams,
-      fakeLogger(),
-    );
+    const client = { post: vi.fn().mockResolvedValue(page(3, undefined, 0, 100)) };
+    const result = await fetchPollingWindow(client as never, windowParams, fakeLogger());
     expect(result.hasMore).toBe(true);
     expect(result.records).toHaveLength(3);
     expect(client.post).toHaveBeenCalledTimes(1);
   });
 
   test("reports hasMore false when total equals the records returned and there is no next page", async () => {
-    const client = {
-      post: vi.fn().mockResolvedValue(page(3, undefined, 0, 3)),
-    };
-    const result = await fetchPollingWindow(
-      client as never,
-      windowParams,
-      fakeLogger(),
-    );
+    const client = { post: vi.fn().mockResolvedValue(page(3, undefined, 0, 3)) };
+    const result = await fetchPollingWindow(client as never, windowParams, fakeLogger());
     expect(result.hasMore).toBe(false);
     expect(result.records).toHaveLength(3);
     expect(client.post).toHaveBeenCalledTimes(1);
   });
 
   test("zero progress still wins over a large total", async () => {
-    const client = {
-      post: vi.fn().mockResolvedValue(page(0, undefined, 0, 999)),
-    };
-    const result = await fetchPollingWindow(
-      client as never,
-      windowParams,
-      fakeLogger(),
-    );
+    const client = { post: vi.fn().mockResolvedValue(page(0, undefined, 0, 999)) };
+    const result = await fetchPollingWindow(client as never, windowParams, fakeLogger());
     expect(result.hasMore).toBe(false);
     expect(result.records).toEqual([]);
     expect(client.post).toHaveBeenCalledTimes(1);
@@ -1127,9 +904,7 @@ describe("fetchPollingWindow", () => {
         },
       }),
     };
-    await expect(
-      fetchPollingWindow(client as never, windowParams, fakeLogger()),
-    ).rejects.toThrow(
+    await expect(fetchPollingWindow(client as never, windowParams, fakeLogger())).rejects.toThrow(
       /property "hs_lastmodifieddate" is not searchable on \/crm\/objects\/2026-09\/deals\/search/,
     );
   });
@@ -1137,8 +912,8 @@ describe("fetchPollingWindow", () => {
   test("rethrows an unrelated 400 unchanged", async () => {
     const other = { response: { status: 400, data: { message: "bad limit" } } };
     const client = { post: vi.fn().mockRejectedValue(other) };
-    await expect(
-      fetchPollingWindow(client as never, windowParams, fakeLogger()),
-    ).rejects.toBe(other);
+    await expect(fetchPollingWindow(client as never, windowParams, fakeLogger())).rejects.toBe(
+      other,
+    );
   });
 });

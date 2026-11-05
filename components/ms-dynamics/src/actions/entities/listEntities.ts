@@ -89,19 +89,13 @@ export const listEntities = action({
       return { data: responseData };
     } catch (error: any) {
       if (error.response?.status === 404) {
-        throw new Error(
-          "The specified Dynamics 365 environment or API endpoint was not found",
-        );
+        throw new Error("The specified Dynamics 365 environment or API endpoint was not found");
       }
       if (error.response?.status === 401) {
-        throw new Error(
-          "Authentication failed. Please check your connection credentials",
-        );
+        throw new Error("Authentication failed. Please check your connection credentials");
       }
       if (error.response?.status === 403) {
-        throw new Error(
-          "Access denied. Insufficient permissions to list entities",
-        );
+        throw new Error("Access denied. Insufficient permissions to list entities");
       }
       throw new Error(`Failed to list entities: ${error.message || error}`);
     }

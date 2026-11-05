@@ -49,9 +49,7 @@ export const customerMapper = (customer: Customer): RestCustomer => {
     first_name: customer.firstName,
     last_name: customer.lastName,
     state: customer.state,
-    last_order_id: customer.lastOrder?.id
-      ? getNumericId(customer.lastOrder.id)
-      : null,
+    last_order_id: customer.lastOrder?.id ? getNumericId(customer.lastOrder.id) : null,
     note: customer.note,
     verified_email: customer.verifiedEmail,
     multipass_identifier: customer.multipassIdentifier,
@@ -93,15 +91,12 @@ export const customerMapper = (customer: Customer): RestCustomer => {
           state: customer.smsMarketingConsent.marketingState,
           opt_in_level: customer.smsMarketingConsent.marketingOptInLevel,
           consent_updated_at: customer.smsMarketingConsent.consentUpdatedAt,
-          consent_collected_from:
-            customer.smsMarketingConsent.consentCollectedFrom,
+          consent_collected_from: customer.smsMarketingConsent.consentCollectedFrom,
         }
       : null,
     admin_graphql_api_id: customer.id,
     default_address: {
-      id: customer.defaultAddress?.id
-        ? getNumericId(customer.defaultAddress.id)
-        : null,
+      id: customer.defaultAddress?.id ? getNumericId(customer.defaultAddress.id) : null,
       customer_id: customerId,
       first_name: customer.defaultAddress?.firstName ?? null,
       last_name: customer.defaultAddress?.lastName ?? null,
@@ -137,12 +132,8 @@ export const draftOrderMapper = (draftOrder: DraftOrder): RestDraftOrder => {
     status: draftOrder.status,
     line_items: (draftOrder.lineItems.nodes || []).map((lineItem) => ({
       id: lineItem.id ? getNumericId(lineItem.id) : null,
-      variant_id: lineItem.variant?.id
-        ? getNumericId(lineItem.variant?.id)
-        : null,
-      product_id: lineItem.product?.id
-        ? getNumericId(lineItem.product?.id)
-        : null,
+      variant_id: lineItem.variant?.id ? getNumericId(lineItem.variant?.id) : null,
+      product_id: lineItem.product?.id ? getNumericId(lineItem.product?.id) : null,
       title: lineItem.title,
       variant_title: lineItem.variantTitle,
       sku: lineItem.sku,
@@ -178,11 +169,8 @@ export const draftOrderMapper = (draftOrder: DraftOrder): RestDraftOrder => {
               ? {
                   shop_money: lineItem.appliedDiscount.amountSet.shopMoney
                     ? {
-                        amount:
-                          lineItem.appliedDiscount.amountSet.shopMoney.amount,
-                        currency_code:
-                          lineItem.appliedDiscount.amountSet.shopMoney
-                            .currencyCode,
+                        amount: lineItem.appliedDiscount.amountSet.shopMoney.amount,
+                        currency_code: lineItem.appliedDiscount.amountSet.shopMoney.currencyCode,
                       }
                     : null,
                 }
@@ -191,8 +179,7 @@ export const draftOrderMapper = (draftOrder: DraftOrder): RestDraftOrder => {
         : null,
       name: lineItem.name,
       custom: lineItem.custom,
-      original_unit_price:
-        lineItem.originalUnitPriceSet?.shopMoney?.amount ?? null,
+      original_unit_price: lineItem.originalUnitPriceSet?.shopMoney?.amount ?? null,
       admin_graphql_api_id: lineItem.id,
     })),
     shipping_address: draftOrder.shippingAddress
@@ -245,11 +232,8 @@ export const draftOrderMapper = (draftOrder: DraftOrder): RestDraftOrder => {
             ? {
                 shop_money: draftOrder.appliedDiscount.amountSet.shopMoney
                   ? {
-                      amount:
-                        draftOrder.appliedDiscount.amountSet.shopMoney.amount,
-                      currency_code:
-                        draftOrder.appliedDiscount.amountSet.shopMoney
-                          .currencyCode,
+                      amount: draftOrder.appliedDiscount.amountSet.shopMoney.amount,
+                      currency_code: draftOrder.appliedDiscount.amountSet.shopMoney.currencyCode,
                     }
                   : null,
               }
@@ -266,12 +250,9 @@ export const draftOrderMapper = (draftOrder: DraftOrder): RestDraftOrder => {
             ? {
                 shop_money: draftOrder.shippingLine.originalPriceSet.shopMoney
                   ? {
-                      amount:
-                        draftOrder.shippingLine.originalPriceSet.shopMoney
-                          .amount,
+                      amount: draftOrder.shippingLine.originalPriceSet.shopMoney.amount,
                       currency_code:
-                        draftOrder.shippingLine.originalPriceSet.shopMoney
-                          .currencyCode,
+                        draftOrder.shippingLine.originalPriceSet.shopMoney.currencyCode,
                     }
                   : null,
               }
@@ -280,12 +261,9 @@ export const draftOrderMapper = (draftOrder: DraftOrder): RestDraftOrder => {
             ? {
                 shop_money: draftOrder.shippingLine.discountedPriceSet.shopMoney
                   ? {
-                      amount:
-                        draftOrder.shippingLine.discountedPriceSet.shopMoney
-                          .amount,
+                      amount: draftOrder.shippingLine.discountedPriceSet.shopMoney.amount,
                       currency_code:
-                        draftOrder.shippingLine.discountedPriceSet.shopMoney
-                          .currencyCode,
+                        draftOrder.shippingLine.discountedPriceSet.shopMoney.currencyCode,
                     }
                   : null,
               }
@@ -325,9 +303,7 @@ export const draftOrderMapper = (draftOrder: DraftOrder): RestDraftOrder => {
       : null,
     customer: draftOrder.customer
       ? {
-          id: draftOrder.customer.id
-            ? getNumericId(draftOrder.customer.id)
-            : null,
+          id: draftOrder.customer.id ? getNumericId(draftOrder.customer.id) : null,
           email: draftOrder.customer.email,
           created_at: draftOrder.customer.createdAt,
           updated_at: draftOrder.customer.updatedAt,
@@ -341,24 +317,20 @@ export const draftOrderMapper = (draftOrder: DraftOrder): RestDraftOrder => {
           verified_email: draftOrder.customer.verifiedEmail,
           multipass_identifier: draftOrder.customer.multipassIdentifier,
           tax_exempt: draftOrder.customer.taxExempt,
-          tags: draftOrder.customer.tags
-            ? draftOrder.customer.tags.join(",")
-            : [],
+          tags: draftOrder.customer.tags ? draftOrder.customer.tags.join(",") : [],
           last_order_name: draftOrder.customer.lastOrder?.name ?? null,
           phone: draftOrder.customer.phone,
           tax_exemptions: draftOrder.customer.taxExemptions,
           email_marketing_consent: draftOrder.customer.emailMarketingConsent
             ? {
                 state: draftOrder.customer.emailMarketingConsent.marketingState,
-                consent_updated_at:
-                  draftOrder.customer.emailMarketingConsent.consentUpdatedAt,
+                consent_updated_at: draftOrder.customer.emailMarketingConsent.consentUpdatedAt,
               }
             : null,
           sms_marketing_consent: draftOrder.customer.smsMarketingConsent
             ? {
                 state: draftOrder.customer.smsMarketingConsent.marketingState,
-                consent_updated_at:
-                  draftOrder.customer.smsMarketingConsent.consentUpdatedAt,
+                consent_updated_at: draftOrder.customer.smsMarketingConsent.consentUpdatedAt,
                 consent_collected_from:
                   draftOrder.customer.smsMarketingConsent.consentCollectedFrom,
               }
@@ -391,9 +363,7 @@ export const draftOrderMapper = (draftOrder: DraftOrder): RestDraftOrder => {
   };
 };
 
-export const fulfillmentMapper = (
-  fulfillment: Fulfillment,
-): RestFulfillment => ({
+export const fulfillmentMapper = (fulfillment: Fulfillment): RestFulfillment => ({
   id: fulfillment.id ? getNumericId(fulfillment.id) : null,
   order_id: fulfillment.order?.id ? getNumericId(fulfillment.order.id) : null,
   status: fulfillment.status,
@@ -405,9 +375,7 @@ export const fulfillmentMapper = (
       ? fulfillment.trackingInfo[0].company
       : null,
 
-  location_id: fulfillment.location?.id
-    ? getNumericId(fulfillment.location.id)
-    : null,
+  location_id: fulfillment.location?.id ? getNumericId(fulfillment.location.id) : null,
   origin_address: fulfillment.originAddress
     ? {
         address1: fulfillment.originAddress.address1,
@@ -418,161 +386,130 @@ export const fulfillmentMapper = (
         province_code: fulfillment.originAddress.provinceCode,
       }
     : null,
-  line_items: (fulfillment.fulfillmentLineItems?.nodes || []).map(
-    (fullfilmentLineItem) => ({
-      id: fullfilmentLineItem.id ? getNumericId(fullfilmentLineItem.id) : null,
-      variant_id: fullfilmentLineItem.lineItem?.variant?.id
-        ? getNumericId(fullfilmentLineItem.lineItem.variant.id)
-        : null,
-      title: fullfilmentLineItem.lineItem?.title,
-      quantity: fullfilmentLineItem.lineItem?.quantity,
-      sku: fullfilmentLineItem.lineItem?.sku,
-      variant_title: fullfilmentLineItem.lineItem?.variant?.title,
-      vendor: fullfilmentLineItem.lineItem?.vendor,
-      product_id: fullfilmentLineItem.lineItem?.variant?.product?.id,
-      requires_shipping: fullfilmentLineItem.lineItem?.requiresShipping,
-      taxable: fullfilmentLineItem.lineItem?.taxable,
-      gift_card: fullfilmentLineItem.lineItem?.isGiftCard,
-      name: fullfilmentLineItem.lineItem?.name,
+  line_items: (fulfillment.fulfillmentLineItems?.nodes || []).map((fullfilmentLineItem) => ({
+    id: fullfilmentLineItem.id ? getNumericId(fullfilmentLineItem.id) : null,
+    variant_id: fullfilmentLineItem.lineItem?.variant?.id
+      ? getNumericId(fullfilmentLineItem.lineItem.variant.id)
+      : null,
+    title: fullfilmentLineItem.lineItem?.title,
+    quantity: fullfilmentLineItem.lineItem?.quantity,
+    sku: fullfilmentLineItem.lineItem?.sku,
+    variant_title: fullfilmentLineItem.lineItem?.variant?.title,
+    vendor: fullfilmentLineItem.lineItem?.vendor,
+    product_id: fullfilmentLineItem.lineItem?.variant?.product?.id,
+    requires_shipping: fullfilmentLineItem.lineItem?.requiresShipping,
+    taxable: fullfilmentLineItem.lineItem?.taxable,
+    gift_card: fullfilmentLineItem.lineItem?.isGiftCard,
+    name: fullfilmentLineItem.lineItem?.name,
 
-      price: fullfilmentLineItem.lineItem?.originalUnitPriceSet?.shopMoney,
-      total_discount: fullfilmentLineItem.lineItem?.totalDiscountSet?.shopMoney,
-      fulfillment_status: fullfilmentLineItem.lineItem?.fulfillmentStatus,
-      price_set: fullfilmentLineItem.lineItem?.originalUnitPriceSet
-        ? {
-            shop_money: fullfilmentLineItem.lineItem?.originalUnitPriceSet
-              .shopMoney
-              ? {
-                  amount:
-                    fullfilmentLineItem.lineItem?.originalUnitPriceSet.shopMoney
-                      .amount,
-                  currency_code:
-                    fullfilmentLineItem.lineItem?.originalUnitPriceSet.shopMoney
-                      .currencyCode,
-                }
-              : null,
-            presentment_money: fullfilmentLineItem.lineItem
-              ?.originalUnitPriceSet.presentmentMoney
-              ? {
-                  amount:
-                    fullfilmentLineItem.lineItem?.originalUnitPriceSet
-                      .presentmentMoney.amount,
-                  currency_code:
-                    fullfilmentLineItem.lineItem?.originalUnitPriceSet
-                      .presentmentMoney.currencyCode,
-                }
-              : null,
-          }
-        : null,
-      total_discount_set: fullfilmentLineItem.lineItem?.totalDiscountSet
-        ? {
-            shop_money: fullfilmentLineItem.lineItem?.totalDiscountSet.shopMoney
-              ? {
-                  amount:
-                    fullfilmentLineItem.lineItem?.totalDiscountSet.shopMoney
-                      .amount,
-                  currency_code:
-                    fullfilmentLineItem.lineItem?.totalDiscountSet.shopMoney
-                      .currencyCode,
-                }
-              : null,
-            presentment_money: fullfilmentLineItem.lineItem?.totalDiscountSet
-              .presentmentMoney
-              ? {
-                  amount:
-                    fullfilmentLineItem.lineItem?.totalDiscountSet
-                      .presentmentMoney.amount,
-                  currency_code:
-                    fullfilmentLineItem.lineItem?.totalDiscountSet
-                      .presentmentMoney.currencyCode,
-                }
-              : null,
-          }
-        : null,
-      discount_allocations: (
-        fullfilmentLineItem.lineItem?.discountAllocations || []
-      ).map((discountAllocation) => ({
-        amount:
-          discountAllocation.allocatedAmountSet?.shopMoney?.amount ?? null,
-        discount_application_index:
-          discountAllocation.discountApplication?.index ?? null,
+    price: fullfilmentLineItem.lineItem?.originalUnitPriceSet?.shopMoney,
+    total_discount: fullfilmentLineItem.lineItem?.totalDiscountSet?.shopMoney,
+    fulfillment_status: fullfilmentLineItem.lineItem?.fulfillmentStatus,
+    price_set: fullfilmentLineItem.lineItem?.originalUnitPriceSet
+      ? {
+          shop_money: fullfilmentLineItem.lineItem?.originalUnitPriceSet.shopMoney
+            ? {
+                amount: fullfilmentLineItem.lineItem?.originalUnitPriceSet.shopMoney.amount,
+                currency_code:
+                  fullfilmentLineItem.lineItem?.originalUnitPriceSet.shopMoney.currencyCode,
+              }
+            : null,
+          presentment_money: fullfilmentLineItem.lineItem?.originalUnitPriceSet.presentmentMoney
+            ? {
+                amount: fullfilmentLineItem.lineItem?.originalUnitPriceSet.presentmentMoney.amount,
+                currency_code:
+                  fullfilmentLineItem.lineItem?.originalUnitPriceSet.presentmentMoney.currencyCode,
+              }
+            : null,
+        }
+      : null,
+    total_discount_set: fullfilmentLineItem.lineItem?.totalDiscountSet
+      ? {
+          shop_money: fullfilmentLineItem.lineItem?.totalDiscountSet.shopMoney
+            ? {
+                amount: fullfilmentLineItem.lineItem?.totalDiscountSet.shopMoney.amount,
+                currency_code:
+                  fullfilmentLineItem.lineItem?.totalDiscountSet.shopMoney.currencyCode,
+              }
+            : null,
+          presentment_money: fullfilmentLineItem.lineItem?.totalDiscountSet.presentmentMoney
+            ? {
+                amount: fullfilmentLineItem.lineItem?.totalDiscountSet.presentmentMoney.amount,
+                currency_code:
+                  fullfilmentLineItem.lineItem?.totalDiscountSet.presentmentMoney.currencyCode,
+              }
+            : null,
+        }
+      : null,
+    discount_allocations: (fullfilmentLineItem.lineItem?.discountAllocations || []).map(
+      (discountAllocation) => ({
+        amount: discountAllocation.allocatedAmountSet?.shopMoney?.amount ?? null,
+        discount_application_index: discountAllocation.discountApplication?.index ?? null,
         amount_set: discountAllocation.allocatedAmountSet
           ? {
               shop_money: discountAllocation.allocatedAmountSet.shopMoney
                 ? {
-                    amount:
-                      discountAllocation.allocatedAmountSet.shopMoney.amount,
-                    currency_code:
-                      discountAllocation.allocatedAmountSet.shopMoney
-                        .currencyCode,
+                    amount: discountAllocation.allocatedAmountSet.shopMoney.amount,
+                    currency_code: discountAllocation.allocatedAmountSet.shopMoney.currencyCode,
                   }
                 : null,
-              presentment_money: discountAllocation.allocatedAmountSet
-                .presentmentMoney
+              presentment_money: discountAllocation.allocatedAmountSet.presentmentMoney
                 ? {
-                    amount:
-                      discountAllocation.allocatedAmountSet.presentmentMoney
-                        .amount,
+                    amount: discountAllocation.allocatedAmountSet.presentmentMoney.amount,
                     currency_code:
-                      discountAllocation.allocatedAmountSet.presentmentMoney
-                        .currencyCode,
+                      discountAllocation.allocatedAmountSet.presentmentMoney.currencyCode,
                   }
                 : null,
             }
           : null,
-      })),
-      duties: (fullfilmentLineItem.lineItem?.duties || []).map((duty) => ({
-        id: duty.id ? getNumericId(duty.id) : null,
-        price: duty.price
+      }),
+    ),
+    duties: (fullfilmentLineItem.lineItem?.duties || []).map((duty) => ({
+      id: duty.id ? getNumericId(duty.id) : null,
+      price: duty.price
+        ? {
+            shop_money: duty.price.shopMoney
+              ? {
+                  amount: duty.price.shopMoney.amount,
+                  currency_code: duty.price.shopMoney.currencyCode,
+                }
+              : null,
+          }
+        : null,
+      tax_lines: (duty.taxLines || []).map((taxLine) => ({
+        rate: taxLine.rate,
+        title: taxLine.title,
+        price_set: taxLine.priceSet
           ? {
-              shop_money: duty.price.shopMoney
+              shop_money: taxLine.priceSet.shopMoney
                 ? {
-                    amount: duty.price.shopMoney.amount,
-                    currency_code: duty.price.shopMoney.currencyCode,
+                    amount: taxLine.priceSet.shopMoney.amount,
+                    currency_code: taxLine.priceSet.shopMoney.currencyCode,
+                  }
+                : null,
+              presentment_money: taxLine.priceSet.presentmentMoney
+                ? {
+                    amount: taxLine.priceSet.presentmentMoney.amount,
+                    currency_code: taxLine.priceSet.presentmentMoney.currencyCode,
                   }
                 : null,
             }
           : null,
-        tax_lines: (duty.taxLines || []).map((taxLine) => ({
-          rate: taxLine.rate,
-          title: taxLine.title,
-          price_set: taxLine.priceSet
-            ? {
-                shop_money: taxLine.priceSet.shopMoney
-                  ? {
-                      amount: taxLine.priceSet.shopMoney.amount,
-                      currency_code: taxLine.priceSet.shopMoney.currencyCode,
-                    }
-                  : null,
-                presentment_money: taxLine.priceSet.presentmentMoney
-                  ? {
-                      amount: taxLine.priceSet.presentmentMoney.amount,
-                      currency_code:
-                        taxLine.priceSet.presentmentMoney.currencyCode,
-                    }
-                  : null,
-              }
-            : null,
-          channel_liable: taxLine.channelLiable,
-        })),
+        channel_liable: taxLine.channelLiable,
       })),
-      admin_graphql_api_id: fullfilmentLineItem.id,
-    }),
-  ),
+    })),
+    admin_graphql_api_id: fullfilmentLineItem.id,
+  })),
   tracking_number:
     fulfillment.trackingInfo && fulfillment.trackingInfo.length > 0
       ? fulfillment.trackingInfo[0].number
       : null,
-  tracking_numbers: (fulfillment.trackingInfo || []).map(
-    (trackingInfo) => trackingInfo.number,
-  ),
+  tracking_numbers: (fulfillment.trackingInfo || []).map((trackingInfo) => trackingInfo.number),
   tracking_url:
     fulfillment.trackingInfo && fulfillment.trackingInfo.length > 0
       ? fulfillment.trackingInfo[0].url
       : null,
-  tracking_urls: (fulfillment.trackingInfo || []).map(
-    (trackingInfo) => trackingInfo.url,
-  ),
+  tracking_urls: (fulfillment.trackingInfo || []).map((trackingInfo) => trackingInfo.url),
   name: fulfillment.name,
   admin_graphql_api_id: fulfillment.id,
 });
@@ -580,12 +517,8 @@ export const fulfillmentMapper = (
 export const fulfillmentOrderMapper = (
   fulfillmentOrder: FulfillmentOrder,
 ): RestFulfillmentOrder => {
-  const fulfillmentOrderId = fulfillmentOrder.id
-    ? getNumericId(fulfillmentOrder.id)
-    : null;
-  const orderId = fulfillmentOrder.orderId
-    ? getNumericId(fulfillmentOrder.orderId)
-    : null;
+  const fulfillmentOrderId = fulfillmentOrder.id ? getNumericId(fulfillmentOrder.id) : null;
+  const orderId = fulfillmentOrder.orderId ? getNumericId(fulfillmentOrder.orderId) : null;
 
   const destinationId = fulfillmentOrder.destination.id
     ? getNumericId(fulfillmentOrder.destination.id)
@@ -598,9 +531,7 @@ export const fulfillmentOrderMapper = (
     request_status: fulfillmentOrder.requestStatus
       ? fulfillmentOrder.requestStatus.toLowerCase()
       : null,
-    status: fulfillmentOrder.status
-      ? fulfillmentOrder.status.toLowerCase()
-      : null,
+    status: fulfillmentOrder.status ? fulfillmentOrder.status.toLowerCase() : null,
     supported_actions: (fulfillmentOrder.supportedActions || []).map(
       (supportedAction) => supportedAction.action,
     ),
@@ -623,29 +554,20 @@ export const fulfillmentOrderMapper = (
     line_items: (fulfillmentOrder.lineItems.nodes || []).map((lineItem) => ({
       id: lineItem.id ? getNumericId(lineItem.id) : null,
       quantity: lineItem.totalQuantity,
-      line_item_id: lineItem.lineItem?.id
-        ? getNumericId(lineItem.lineItem.id)
-        : null,
-      inventory_item_id: lineItem.inventoryItemId
-        ? getNumericId(lineItem.inventoryItemId)
-        : null,
-      variant_id: lineItem.variant?.id
-        ? getNumericId(lineItem.variant.id)
-        : null,
+      line_item_id: lineItem.lineItem?.id ? getNumericId(lineItem.lineItem.id) : null,
+      inventory_item_id: lineItem.inventoryItemId ? getNumericId(lineItem.inventoryItemId) : null,
+      variant_id: lineItem.variant?.id ? getNumericId(lineItem.variant.id) : null,
     })),
-    international_duties:
-      fulfillmentOrder.internationalDuties?.incoterm ?? null,
+    international_duties: fulfillmentOrder.internationalDuties?.incoterm ?? null,
     fulfill_at: fulfillmentOrder.fulfillAt,
     fulfill_by: fulfillmentOrder.fulfillBy,
-    fulfillment_holds: (fulfillmentOrder.fulfillmentHolds || []).map(
-      (hold) => ({
-        reason: hold.reason,
-        reasonNotes: hold.reasonNotes,
-        displayReason: hold.displayReason,
-        id: hold.id ? getNumericId(hold.id) : null,
-        heldByRequestingApp: hold.heldByRequestingApp,
-      }),
-    ),
+    fulfillment_holds: (fulfillmentOrder.fulfillmentHolds || []).map((hold) => ({
+      reason: hold.reason,
+      reasonNotes: hold.reasonNotes,
+      displayReason: hold.displayReason,
+      id: hold.id ? getNumericId(hold.id) : null,
+      heldByRequestingApp: hold.heldByRequestingApp,
+    })),
     created_at: fulfillmentOrder.createdAt,
     updated_at: fulfillmentOrder.updatedAt,
     delivery_method: fulfillmentOrder.deliveryMethod
@@ -654,18 +576,12 @@ export const fulfillmentOrderMapper = (
             ? getNumericId(fulfillmentOrder.deliveryMethod.id)
             : null,
           method_type: fulfillmentOrder.deliveryMethod.methodType ?? null,
-          min_delivery_date_time:
-            fulfillmentOrder.deliveryMethod.minDeliveryDateTime ?? null,
-          max_delivery_date_time:
-            fulfillmentOrder.deliveryMethod.maxDeliveryDateTime ?? null,
-          additional_information: fulfillmentOrder.deliveryMethod
-            .additionalInformation
+          min_delivery_date_time: fulfillmentOrder.deliveryMethod.minDeliveryDateTime ?? null,
+          max_delivery_date_time: fulfillmentOrder.deliveryMethod.maxDeliveryDateTime ?? null,
+          additional_information: fulfillmentOrder.deliveryMethod.additionalInformation
             ? {
-                instructions:
-                  fulfillmentOrder.deliveryMethod.additionalInformation
-                    .instructions,
-                phone:
-                  fulfillmentOrder.deliveryMethod.additionalInformation.phone,
+                instructions: fulfillmentOrder.deliveryMethod.additionalInformation.instructions,
+                phone: fulfillmentOrder.deliveryMethod.additionalInformation.phone,
               }
             : null,
           service_code: fulfillmentOrder.deliveryMethod.serviceCode,
@@ -694,13 +610,11 @@ export const fulfillmentOrderMapper = (
           zip: fulfillmentOrder.assignedLocation.zip,
         }
       : null,
-    merchant_requests: (fulfillmentOrder.merchantRequests.nodes || []).map(
-      (merchantRequest) => ({
-        message: merchantRequest.message,
-        request_options: merchantRequest.requestOptions,
-        kind: merchantRequest.kind,
-      }),
-    ),
+    merchant_requests: (fulfillmentOrder.merchantRequests.nodes || []).map((merchantRequest) => ({
+      message: merchantRequest.message,
+      request_options: merchantRequest.requestOptions,
+      kind: merchantRequest.kind,
+    })),
   };
 };
 
@@ -767,9 +681,7 @@ export const productMapper = (product: Product): RestProduct => {
       sku: variant.sku,
       weight: variant.inventoryItem?.measurement?.weight?.value ?? null,
       weight_unit: variant.inventoryItem?.measurement?.weight?.unit ?? null,
-      inventory_item_id: variant.inventoryItem?.id
-        ? getNumericId(variant.inventoryItem.id)
-        : null,
+      inventory_item_id: variant.inventoryItem?.id ? getNumericId(variant.inventoryItem.id) : null,
       inventory_quantity: variant.inventoryQuantity ?? null,
       image_url: imageUrl,
       admin_graphql_api_id: variant.id,
@@ -865,8 +777,7 @@ export const shopMapper = (shop: Shop): RestShop => {
     iana_timezone: shop.ianaTimezone,
     shop_owner: shop.shopOwnerName,
     money_format: shop.currencyFormats?.moneyFormat ?? null,
-    money_with_currency_format:
-      shop.currencyFormats?.moneyWithCurrencyFormat ?? null,
+    money_with_currency_format: shop.currencyFormats?.moneyWithCurrencyFormat ?? null,
     weight_unit: shop.weightUnit,
     province_code: shop.billingAddress?.provinceCode ?? null,
     taxes_included: shop.taxesIncluded,
@@ -879,23 +790,19 @@ export const shopMapper = (shop: Shop): RestShop => {
     checkout_api_supported: shop.checkoutApiSupported,
     setup_required: shop.setupRequired,
     enabled_presentment_currencies: shop.enabledPresentmentCurrencies,
-    marketing_sms_consent_enabled_at_checkout:
-      shop.marketingSmsConsentEnabledAtCheckout,
+    marketing_sms_consent_enabled_at_checkout: shop.marketingSmsConsentEnabledAtCheckout,
     transactional_sms_disabled: shop.transactionalSmsDisabled,
   };
 };
 
-export const webhookMapper = (
-  webhookSubscription: WebhookSubscription,
-): ShopifyWebhook => {
+export const webhookMapper = (webhookSubscription: WebhookSubscription): ShopifyWebhook => {
   return {
     id: getNumericId(webhookSubscription.id),
     address: webhookSubscription.endpoint.callbackUrl,
     topic: findKeyByValue(WEBHOOK_TOPICS_MAP, webhookSubscription.topic),
     created_at: webhookSubscription.createdAt,
     updated_at: webhookSubscription.updatedAt,
-    format:
-      webhookSubscription.format.toLowerCase() as ShopifyWebhook["format"],
+    format: webhookSubscription.format.toLowerCase() as ShopifyWebhook["format"],
     fields: webhookSubscription.includeFields,
     metafield_namespaces: webhookSubscription.metafieldNamespaces,
     api_version: webhookSubscription.apiVersion.displayName,

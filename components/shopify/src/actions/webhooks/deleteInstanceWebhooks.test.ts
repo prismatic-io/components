@@ -18,8 +18,7 @@ const shopifyConnection = createConnection(adminApiAccessToken, {
   adminApiAccessToken: "shpat_test",
 });
 
-const [subscription] =
-  listWebhooksGqlExamplePayload.graphql.data.webhookSubscriptions;
+const [subscription] = listWebhooksGqlExamplePayload.graphql.data.webhookSubscriptions;
 const ownSubscription = {
   ...subscription,
   id: "gid://shopify/WebhookSubscription/1",
@@ -66,17 +65,10 @@ describe("deleteInstanceWebhooks", () => {
       })
       .times(2)
       .reply(200, {
-        data: {
-          webhookSubscriptionDelete:
-            deleteWebhookGqlExamplePayload.graphql.data,
-        },
+        data: { webhookSubscriptionDelete: deleteWebhookGqlExamplePayload.graphql.data },
       });
 
-    const { result } = await invoke(
-      deleteInstanceWebhooks,
-      { shopifyConnection },
-      context,
-    );
+    const { result } = await invoke(deleteInstanceWebhooks, { shopifyConnection }, context);
 
     expect(deletedIds).toEqual([ownSubscription.id]);
     expect(result).toEqual(deleteInstanceWebhooksExamplePayload.restMap);
@@ -86,13 +78,9 @@ describe("deleteInstanceWebhooks", () => {
     nock(BASE)
       .post(PATH, isOperation("query ListWebhooks"))
       .reply(401, { errors: "[API] Invalid API key or access token" });
-    const deleteScope = nock(BASE)
-      .post(PATH, isOperation("mutation DeleteWebhook"))
-      .reply(200, {});
+    const deleteScope = nock(BASE).post(PATH, isOperation("mutation DeleteWebhook")).reply(200, {});
 
-    await expect(
-      invoke(deleteInstanceWebhooks, { shopifyConnection }, context),
-    ).rejects.toThrow();
+    await expect(invoke(deleteInstanceWebhooks, { shopifyConnection }, context)).rejects.toThrow();
     expect(deleteScope.isDone()).toBe(false);
   });
 });

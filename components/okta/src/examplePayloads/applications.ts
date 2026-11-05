@@ -50,15 +50,13 @@ export const getApplicationExamplePayload = {
         recipient: "https://recipient.okta.com",
         destination: "https://destination.okta.com",
         subjectNameIdTemplate: "user.userName",
-        subjectNameIdFormat:
-          "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
+        subjectNameIdFormat: "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
         responseSigned: true,
         assertionSigned: true,
         signatureAlgorithm: "RSA_SHA256",
         digestAlgorithm: "SHA256",
         honorForceAuthn: true,
-        authnContextClassRef:
-          "urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport",
+        authnContextClassRef: "urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport",
         slo: {
           enabled: true,
           spIssuer: "https://testorgone.okta.com",
@@ -71,9 +69,7 @@ export const getApplicationExamplePayload = {
           bindingType: "REDIRECT",
         },
         spCertificate: {
-          x5c: [
-            "MIIFnDCCA4QCCQDBSLbiON2T1zANBgkqhkiG9w0BAQsFADCBjzELMAkGA1UEBhMCVVMxDjAMBgNV\r\n",
-          ],
+          x5c: ["MIIFnDCCA4QCCQDBSLbiON2T1zANBgkqhkiG9w0BAQsFADCBjzELMAkGA1UEBhMCVVMxDjAMBgNV\r\n"],
         },
         assertionEncryption: {
           enabled: false,

@@ -87,8 +87,7 @@ export const queryV3ExamplePayload = {
 export const getStatusListExamplePayload = {
   data: {
     self: "https://your-domain.atlassian.net/rest/api/3/statuses/search",
-    nextPage:
-      "https://your-domain.atlassian.net/rest/api/3/statuses/search?startAt=2",
+    nextPage: "https://your-domain.atlassian.net/rest/api/3/statuses/search?startAt=2",
     maxResults: 2,
     startAt: 0,
     total: 5,
@@ -154,8 +153,7 @@ export const listIssueTypesExamplePayload = {
       self: "https://your-domain.atlassian.net/rest/api/3/issuetype/10000",
       id: "10000",
       description: "A task that needs to be done.",
-      iconUrl:
-        "https://your-domain.atlassian.net/secure/viewavatar?size=xsmall&avatarId=10318",
+      iconUrl: "https://your-domain.atlassian.net/secure/viewavatar?size=xsmall&avatarId=10318",
       name: "Task",
       subtask: false,
       avatarId: 10318,
@@ -165,8 +163,7 @@ export const listIssueTypesExamplePayload = {
       self: "https://your-domain.atlassian.net/rest/api/3/issuetype/10001",
       id: "10001",
       description: "A problem that needs to be fixed.",
-      iconUrl:
-        "https://your-domain.atlassian.net/secure/viewavatar?size=xsmall&avatarId=10303",
+      iconUrl: "https://your-domain.atlassian.net/secure/viewavatar?size=xsmall&avatarId=10303",
       name: "Bug",
       subtask: false,
       avatarId: 10303,
@@ -176,8 +173,7 @@ export const listIssueTypesExamplePayload = {
       self: "https://your-domain.atlassian.net/rest/api/3/issuetype/10002",
       id: "10002",
       description: "A new feature that needs to be implemented.",
-      iconUrl:
-        "https://your-domain.atlassian.net/secure/viewavatar?size=xsmall&avatarId=10310",
+      iconUrl: "https://your-domain.atlassian.net/secure/viewavatar?size=xsmall&avatarId=10310",
       name: "Story",
       subtask: false,
       avatarId: 10310,
@@ -189,8 +185,7 @@ export const listIssueTypesExamplePayload = {
 export const listPrioritiesExamplePayload = {
   data: {
     self: "https://your-domain.atlassian.net/rest/api/3/priority/search",
-    nextPage:
-      "https://your-domain.atlassian.net/rest/api/3/priority/search?startAt=3",
+    nextPage: "https://your-domain.atlassian.net/rest/api/3/priority/search?startAt=3",
     maxResults: 3,
     startAt: 0,
     total: 5,
@@ -200,8 +195,7 @@ export const listPrioritiesExamplePayload = {
         self: "https://your-domain.atlassian.net/rest/api/3/priority/1",
         statusColor: "#d04437",
         description: "This problem will block progress.",
-        iconUrl:
-          "https://your-domain.atlassian.net/images/icons/priorities/highest.svg",
+        iconUrl: "https://your-domain.atlassian.net/images/icons/priorities/highest.svg",
         name: "Highest",
         id: "1",
       },
@@ -209,8 +203,7 @@ export const listPrioritiesExamplePayload = {
         self: "https://your-domain.atlassian.net/rest/api/3/priority/2",
         statusColor: "#ea7d24",
         description: "Serious problem that could block progress.",
-        iconUrl:
-          "https://your-domain.atlassian.net/images/icons/priorities/high.svg",
+        iconUrl: "https://your-domain.atlassian.net/images/icons/priorities/high.svg",
         name: "High",
         id: "2",
       },
@@ -218,8 +211,7 @@ export const listPrioritiesExamplePayload = {
         self: "https://your-domain.atlassian.net/rest/api/3/priority/3",
         statusColor: "#59afe1",
         description: "Has the potential to affect progress.",
-        iconUrl:
-          "https://your-domain.atlassian.net/images/icons/priorities/medium.svg",
+        iconUrl: "https://your-domain.atlassian.net/images/icons/priorities/medium.svg",
         name: "Medium",
         id: "3",
       },

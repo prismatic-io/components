@@ -29,16 +29,9 @@ describe("fetchAtomEntries", () => {
       { id: "e1", updated: "2026-01-01T00:00:00Z" },
       { id: "e2", updated: "2026-01-02T00:00:00Z" },
     ]);
-    const client = {
-      get: vi.fn().mockResolvedValue({ data: xml }),
-    } as unknown as HttpClient;
+    const client = { get: vi.fn().mockResolvedValue({ data: xml }) } as unknown as HttpClient;
 
-    const entries = await fetchAtomEntries(
-      client,
-      "TestFeed",
-      "2025-12-01T00:00:00Z",
-      100,
-    );
+    const entries = await fetchAtomEntries(client, "TestFeed", "2025-12-01T00:00:00Z", 100);
 
     expect(entries).toHaveLength(2);
     expect(entries.map((e) => e.id)).toEqual(["e1", "e2"]);
@@ -63,9 +56,7 @@ describe("fetchAtomEntries", () => {
       { id: "e3", updated: "2026-01-03T00:00:00Z" },
       { id: "e4", updated: "2026-01-04T00:00:00Z" },
     ]);
-    const page3Xml = makeAtomXml([
-      { id: "e5", updated: "2026-01-05T00:00:00Z" },
-    ]);
+    const page3Xml = makeAtomXml([{ id: "e5", updated: "2026-01-05T00:00:00Z" }]);
 
     const client = {
       get: vi
@@ -75,12 +66,7 @@ describe("fetchAtomEntries", () => {
         .mockResolvedValueOnce({ data: page3Xml }),
     } as unknown as HttpClient;
 
-    const entries = await fetchAtomEntries(
-      client,
-      "TestFeed",
-      "2025-12-01T00:00:00Z",
-      pageSize,
-    );
+    const entries = await fetchAtomEntries(client, "TestFeed", "2025-12-01T00:00:00Z", pageSize);
 
     expect(entries).toHaveLength(5);
     expect(entries.map((e) => e.id)).toEqual(["e1", "e2", "e3", "e4", "e5"]);
@@ -101,16 +87,9 @@ describe("fetchAtomEntries", () => {
   test("stops after one request when feed returns zero entries", async () => {
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom"></feed>`;
-    const client = {
-      get: vi.fn().mockResolvedValue({ data: xml }),
-    } as unknown as HttpClient;
+    const client = { get: vi.fn().mockResolvedValue({ data: xml }) } as unknown as HttpClient;
 
-    const entries = await fetchAtomEntries(
-      client,
-      "TestFeed",
-      "2025-12-01T00:00:00Z",
-      100,
-    );
+    const entries = await fetchAtomEntries(client, "TestFeed", "2025-12-01T00:00:00Z", 100);
 
     expect(entries).toHaveLength(0);
     expect(client.get).toHaveBeenCalledTimes(1);
@@ -133,16 +112,9 @@ describe("fetchAtomEntries", () => {
     </content>
   </entry>
 </feed>`;
-    const client = {
-      get: vi.fn().mockResolvedValue({ data: xml }),
-    } as unknown as HttpClient;
+    const client = { get: vi.fn().mockResolvedValue({ data: xml }) } as unknown as HttpClient;
 
-    const entries = await fetchAtomEntries(
-      client,
-      "Employee",
-      "2025-12-01T00:00:00Z",
-      100,
-    );
+    const entries = await fetchAtomEntries(client, "Employee", "2025-12-01T00:00:00Z", 100);
 
     expect(entries[0].changedAttributes).toEqual(["FirstName", "LastName"]);
     expect(entries[0].feedName).toBe("Employee");

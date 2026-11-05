@@ -39,13 +39,7 @@ export const pollChangesTrigger = pollingTrigger({
   perform: async (
     context,
     payload,
-    {
-      jiraConnection,
-      lookBackDate,
-      pollJqlFilter,
-      showNewIssues,
-      showUpdatedIssues,
-    },
+    { jiraConnection, lookBackDate, pollJqlFilter, showNewIssues, showUpdatedIssues },
   ) => {
     const now = new Date();
     const state = (context.polling.getState() ?? {}) as PollingState;
@@ -55,11 +49,7 @@ export const pollChangesTrigger = pollingTrigger({
       streamStartedAt,
       timeZone: heldTimeZone,
     } = resolvePollingStream(state, incoming, pollJqlFilter, now);
-    const { sinceDate, isBackfill } = resolvePollingStart(
-      state,
-      lookBackDate,
-      now,
-    );
+    const { sinceDate, isBackfill } = resolvePollingStart(state, lookBackDate, now);
 
     const skipFetch = !isBackfill && !showNewIssues && !showUpdatedIssues;
     const { timeZone, ...window } = await fetchStreamWindow(
@@ -75,24 +65,14 @@ export const pollChangesTrigger = pollingTrigger({
       },
     );
 
-    const { created, updated } = partitionIssuesByTimestamp(
-      window.issues,
-      sinceDate,
-    );
+    const { created, updated } = partitionIssuesByTimestamp(window.issues, sinceDate);
     const result: JiraIssueChangesObject = {
       created: isBackfill || showNewIssues ? created : [],
       updated: isBackfill || showUpdatedIssues ? updated : [],
     };
-    const next = buildPollingCursor(
-      window.nextPageToken,
-      streamStartedAt,
-      timeZone,
-      pollJqlFilter,
-    );
+    const next = buildPollingCursor(window.nextPageToken, streamStartedAt, timeZone, pollJqlFilter);
 
-    context.polling.setState(
-      buildPollingState(next, streamStartedAt, sinceDate, isBackfill),
-    );
+    context.polling.setState(buildPollingState(next, streamStartedAt, sinceDate, isBackfill));
 
     if (context.debug.enabled) {
       context.logger.debug(
@@ -101,16 +81,9 @@ export const pollChangesTrigger = pollingTrigger({
     }
 
     return {
-      payload: {
-        ...payload,
-        paginationState: next ?? undefined,
-        body: { data: result },
-      },
+      payload: { ...payload, paginationState: next ?? undefined, body: { data: result } },
       polledNoChanges:
-        result.created.length === 0 &&
-        result.updated.length === 0 &&
-        next === null &&
-        !incoming,
+        result.created.length === 0 && result.updated.length === 0 && next === null && !incoming,
     };
   },
 });

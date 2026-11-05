@@ -11,10 +11,7 @@ export const getVersion = action({
   },
   performSafety: "safe",
   perform: async (context, params) => {
-    const client = await createV3Client(
-      params.jiraConnection,
-      context.debug.enabled,
-    );
+    const client = await createV3Client(params.jiraConnection, context.debug.enabled);
     const { data } = await client.get(`/version/${params.versionId}`);
     return { data };
   },

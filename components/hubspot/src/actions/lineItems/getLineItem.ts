@@ -27,9 +27,7 @@ export const getLineItem = action({
     const debugRequest = context.debug.enabled;
 
     if (!lineItemId && !lineItemName) {
-      throw new Error(
-        "You must supply an Id or name to retrieve a line item record.",
-      );
+      throw new Error("You must supply an Id or name to retrieve a line item record.");
     }
     const client = getHubspotClient({
       hubspotConnection,
@@ -37,10 +35,7 @@ export const getLineItem = action({
       debugRequest,
     });
 
-    const parameterizedProperties = getProps(
-      ["name"],
-      additionalProperties || [],
-    );
+    const parameterizedProperties = getProps(["name"], additionalProperties || []);
 
     const params = {
       ...parameterizedProperties,
@@ -64,12 +59,9 @@ export const getLineItem = action({
       return { data: filteredLineItems };
     }
 
-    const { data } = await client.get(
-      hubspotPaths.objects("line_items", `/${lineItemId}`),
-      {
-        params,
-      },
-    );
+    const { data } = await client.get(hubspotPaths.objects("line_items", `/${lineItemId}`), {
+      params,
+    });
 
     return { data };
   },
@@ -78,8 +70,5 @@ export const getLineItem = action({
     data: getLineItemExamplePayload.data,
   }),
   examplePayload: getLineItemExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getLineItemOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getLineItemOutputSchema }),
 });

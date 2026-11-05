@@ -1,7 +1,4 @@
-import type {
-  ContentFragmentSearchFilter,
-  ContentFragmentStatus,
-} from "../types";
+import type { ContentFragmentSearchFilter, ContentFragmentStatus } from "../types";
 
 export const buildContentFragmentTriggerFilter = (params: {
   path?: string;
@@ -11,9 +8,7 @@ export const buildContentFragmentTriggerFilter = (params: {
   locales: string[];
 }): ContentFragmentSearchFilter => ({
   path: params.path,
-  status: params.statuses.length
-    ? (params.statuses as ContentFragmentStatus[])
-    : undefined,
+  status: params.statuses.length ? (params.statuses as ContentFragmentStatus[]) : undefined,
   modelIds: params.modelIds.length ? params.modelIds : undefined,
   tags: params.tags.length ? params.tags : undefined,
   locale: params.locales.length ? params.locales : undefined,

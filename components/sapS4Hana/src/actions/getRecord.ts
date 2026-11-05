@@ -1,13 +1,5 @@
 import { action, input, util } from "@prismatic-io/spectral";
-import {
-  connectionInput,
-  filter,
-  inlinecount,
-  recordId,
-  recordType,
-  skip,
-  top,
-} from "../inputs";
+import { connectionInput, filter, inlinecount, recordId, recordType, skip, top } from "../inputs";
 import { getSapClient } from "../client";
 import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
 

@@ -6,13 +6,9 @@ import { requestBodyCode, connectionInput, projectId } from "../inputs";
 export const updateProject = action({
   display: {
     label: "Update Project",
-    description:
-      "Updates the basic information for a customer or internal project.",
+    description: "Updates the basic information for a customer or internal project.",
   },
-  perform: async (
-    _context,
-    { requestBodyCode, connectionInput, projectId },
-  ) => {
+  perform: async (_context, { requestBodyCode, connectionInput, projectId }) => {
     const headers = {
       Accept: "*/*",
       "Content-Type": "application/json",

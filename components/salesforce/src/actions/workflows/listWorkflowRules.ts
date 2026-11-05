@@ -18,8 +18,7 @@ export const listWorkflowRules = action({
     const result = await listWorkflowRulesFunction(client);
     return { data: result };
   },
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    listWorkflowRulesExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => listWorkflowRulesExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: listMetadataOutputSchema,

@@ -3,10 +3,7 @@ import { createClickUpClient } from "../../client";
 import { startTimeEntryExamplePayload } from "../../examplePayloads";
 import { startTimeEntryInputs } from "../../inputs";
 import { startTimeEntryOutputSchema } from "../../outputSchemas";
-import type {
-  CreateTimeEntryQueryParams,
-  StartTimeEntryBody,
-} from "../../types";
+import type { CreateTimeEntryQueryParams, StartTimeEntryBody } from "../../types";
 
 export const startTimeEntry = action({
   display: {
@@ -21,24 +18,12 @@ export const startTimeEntry = action({
   performSafety: "notAllowed",
   perform: async (
     context,
-    {
-      clickUpConnection,
-      teamId,
-      customTaskIds,
-      customTeamId,
-      description,
-      billable,
-      taskId,
-      tagNamesArray,
-    },
+    { clickUpConnection, teamId, customTaskIds, customTeamId, description, billable, taskId, tagNamesArray }
   ) => {
     const tags = (tagNamesArray ?? []).map((tagName) => ({
       name: util.types.toString(tagName),
     }));
-    const client = createClickUpClient(
-      clickUpConnection,
-      context.debug.enabled,
-    );
+    const client = createClickUpClient(clickUpConnection, context.debug.enabled);
     const queryParams: CreateTimeEntryQueryParams = {
       custom_task_ids: customTaskIds,
       team_id: customTeamId,
@@ -50,13 +35,9 @@ export const startTimeEntry = action({
       billable,
     };
 
-    const { data } = await client.post(
-      `/team/${teamId}/time_entries/start`,
-      body,
-      {
-        params: queryParams,
-      },
-    );
+    const { data } = await client.post(`/team/${teamId}/time_entries/start`, body, {
+      params: queryParams,
+    });
 
     return {
       data,

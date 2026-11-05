@@ -12,20 +12,11 @@ export const deletePersonFollower = action({
   },
   performSafety: "notAllowed",
   perform: async (context, { connection, id, followerId }) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      WebhookVersion.V2,
-    );
-    const { data } = await client.delete(
-      `/persons/${id}/followers/${followerId}`,
-    );
+    const client = createClient(connection, context.debug.enabled, WebhookVersion.V2);
+    const { data } = await client.delete(`/persons/${id}/followers/${followerId}`);
     return { data };
   },
   inputs: deletePersonFollowerInputs,
   examplePayload: deletePersonFollowerExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: deletePersonFollowerOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: deletePersonFollowerOutputSchema }),
 });

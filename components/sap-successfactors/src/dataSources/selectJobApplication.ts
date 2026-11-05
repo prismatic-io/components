@@ -13,12 +13,10 @@ export const selectJobApplication = dataSource({
   perform: async (_context, { connection }) => {
     const client = await createClient(connection, false);
     const data = await paginateData(client, "/JobApplication", true, {});
-    const result = (data as Record<string, unknown>[]).map<Element>(
-      (jobApplication) => ({
-        label: `${jobApplication.firstName} ${jobApplication.lastName} - Job Requisition #${jobApplication.jobReqId}`,
-        key: jobApplication.applicationId as string,
-      }),
-    );
+    const result = (data as Record<string, unknown>[]).map<Element>((jobApplication) => ({
+      label: `${jobApplication.firstName} ${jobApplication.lastName} - Job Requisition #${jobApplication.jobReqId}`,
+      key: jobApplication.applicationId as string,
+    }));
     return { result };
   },
   dataSourceType: "picklist",

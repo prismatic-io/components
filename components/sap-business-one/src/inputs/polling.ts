@@ -6,8 +6,7 @@ const pollResourceType = input({
   type: "string",
   required: true,
   model: pollResourceModel,
-  comments:
-    "The SAP Business One resource type to poll for new or updated records.",
+  comments: "The SAP Business One resource type to poll for new or updated records.",
   clean: util.types.toString,
 });
 
@@ -27,8 +26,7 @@ const showNewRecords = input({
   type: "boolean",
   required: false,
   default: "true",
-  comments:
-    "When true, newly created records will be included in the trigger output.",
+  comments: "When true, newly created records will be included in the trigger output.",
   clean: util.types.toBool,
 });
 

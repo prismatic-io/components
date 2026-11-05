@@ -7,8 +7,7 @@ const showNewRecords = input({
   type: "boolean",
   required: false,
   default: "true",
-  comments:
-    "When true, newly created records are included in the trigger output.",
+  comments: "When true, newly created records are included in the trigger output.",
   clean: util.types.toBool,
 });
 
@@ -17,8 +16,7 @@ const showUpdatedRecords = input({
   type: "boolean",
   required: false,
   default: "true",
-  comments:
-    "When true, records updated after the last poll are included in the trigger output.",
+  comments: "When true, records updated after the last poll are included in the trigger output.",
   clean: util.types.toBool,
 });
 

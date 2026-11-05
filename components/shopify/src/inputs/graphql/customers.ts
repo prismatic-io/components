@@ -1,9 +1,5 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
-import {
-  cleanArrayCodeInput,
-  cleanStringInput,
-  cleanValueListInput,
-} from "../../util";
+import { cleanArrayCodeInput, cleanStringInput, cleanValueListInput } from "../../util";
 import {
   additionalFields,
   customerIdGql,

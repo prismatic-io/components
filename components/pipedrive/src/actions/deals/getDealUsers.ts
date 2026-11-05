@@ -18,8 +18,5 @@ export const getDealUsers = action({
   inputs: getDealUsersInputs,
   examplePayload: getDealUsersExamplePayload,
   examplePerform: async () => getDealUsersExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getDealUsersOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getDealUsersOutputSchema }),
 });

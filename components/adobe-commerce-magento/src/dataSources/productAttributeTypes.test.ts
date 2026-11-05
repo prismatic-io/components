@@ -27,9 +27,7 @@ describe("productAttributeTypes", () => {
   });
 
   test("returns an empty array rather than throwing when the store declares no attribute types", async () => {
-    nock(STORE_HOST)
-      .get("/rest/default/V1/products/attributes/types")
-      .reply(200, []);
+    nock(STORE_HOST).get("/rest/default/V1/products/attributes/types").reply(200, []);
 
     const result = await invokeDataSource(productAttributeTypes, {
       connectionInput: storeConnection(),

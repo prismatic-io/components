@@ -1,23 +1,10 @@
 import { type Connection, ConnectionError, util } from "@prismatic-io/spectral";
-import {
-  createClient as createHttpClient,
-  type HttpClient,
-} from "@prismatic-io/spectral/http";
-import {
-  basicAuthConnection,
-  oauth2ClientCredentialsConnection,
-} from "./connections";
+import { createClient as createHttpClient, type HttpClient } from "@prismatic-io/spectral/http";
+import { basicAuthConnection, oauth2ClientCredentialsConnection } from "./connections";
 
 export const validateConnection = (connection: Connection): void => {
-  if (
-    ![basicAuthConnection.key, oauth2ClientCredentialsConnection.key].includes(
-      connection.key,
-    )
-  ) {
-    throw new ConnectionError(
-      connection,
-      `Unexpected connection type: ${connection.key}`,
-    );
+  if (![basicAuthConnection.key, oauth2ClientCredentialsConnection.key].includes(connection.key)) {
+    throw new ConnectionError(connection, `Unexpected connection type: ${connection.key}`);
   }
 };
 
@@ -26,9 +13,7 @@ const getServerUrl = (connection: Connection): string => {
   return util.types.toString(connection.fields.serverUrl).replace(/\/$/, "");
 };
 
-export const getAuthHeaders = (
-  connection: Connection,
-): Record<string, string> => {
+export const getAuthHeaders = (connection: Connection): Record<string, string> => {
   if (connection.key === oauth2ClientCredentialsConnection.key) {
     return {
       Authorization: `Bearer ${util.types.toString(connection.token?.access_token)}`,
@@ -41,16 +26,10 @@ export const getAuthHeaders = (
       Authorization: `Basic ${Buffer.from(`${username}:${password}`).toString("base64")}`,
     };
   }
-  throw new ConnectionError(
-    connection,
-    `Unexpected connection type: ${connection.key}`,
-  );
+  throw new ConnectionError(connection, `Unexpected connection type: ${connection.key}`);
 };
 
-export const createClient = (
-  connection: Connection,
-  debug = false,
-): HttpClient => {
+export const createClient = (connection: Connection, debug = false): HttpClient => {
   const serverUrl = getServerUrl(connection);
   return createHttpClient({
     baseUrl: `${serverUrl}/hcmRestApi/resources/11.13.18.05`,
@@ -67,10 +46,7 @@ export const createClient = (
 export const getBaseUrl = (connection: Connection): string =>
   `${getServerUrl(connection)}/hcmRestApi/resources/11.13.18.05`;
 
-export const createAtomFeedClient = (
-  connection: Connection,
-  debug = false,
-): HttpClient => {
+export const createAtomFeedClient = (connection: Connection, debug = false): HttpClient => {
   validateConnection(connection);
   return createHttpClient({
     baseUrl: `${getServerUrl(connection)}/hcmRestApi`,

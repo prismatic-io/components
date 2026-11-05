@@ -6,8 +6,7 @@ import { listLocationsInputs } from "../../inputs";
 export const listLocations = action({
   display: {
     label: "List Locations",
-    description:
-      "Retrieve a list of work locations defined in the organization.",
+    description: "Retrieve a list of work locations defined in the organization.",
   },
   inputs: listLocationsInputs,
   perform: async (context, { connection, countryCode, isActive }) => {

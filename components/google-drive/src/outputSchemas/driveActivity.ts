@@ -1,8 +1,4 @@
-const emptyMarkerSchema = {
-  type: "object" as const,
-  properties: {},
-  required: [],
-};
+const emptyMarkerSchema = { type: "object" as const, properties: {}, required: [] };
 
 const activityUserSchema = {
   type: "object" as const,
@@ -166,21 +162,13 @@ const targetReferenceSchema = {
 const fieldValueSchema = {
   type: "object" as const,
   properties: {
-    text: {
-      type: "object",
-      properties: { value: { type: "string" } },
-      required: [],
-    },
+    text: { type: "object", properties: { value: { type: "string" } }, required: [] },
     textList: {
       type: "object",
       properties: {
         values: {
           type: "array",
-          items: {
-            type: "object",
-            properties: { value: { type: "string" } },
-            required: [],
-          },
+          items: { type: "object", properties: { value: { type: "string" } }, required: [] },
         },
       },
       required: [],
@@ -210,35 +198,19 @@ const fieldValueSchema = {
       },
       required: [],
     },
-    integer: {
-      type: "object",
-      properties: { value: { type: "string" } },
-      required: [],
-    },
-    user: {
-      type: "object",
-      properties: { value: { type: "string" } },
-      required: [],
-    },
+    integer: { type: "object", properties: { value: { type: "string" } }, required: [] },
+    user: { type: "object", properties: { value: { type: "string" } }, required: [] },
     userList: {
       type: "object",
       properties: {
         values: {
           type: "array",
-          items: {
-            type: "object",
-            properties: { value: { type: "string" } },
-            required: [],
-          },
+          items: { type: "object", properties: { value: { type: "string" } }, required: [] },
         },
       },
       required: [],
     },
-    date: {
-      type: "object",
-      properties: { value: { type: "string" } },
-      required: [],
-    },
+    date: { type: "object", properties: { value: { type: "string" } }, required: [] },
   },
   required: [],
 };
@@ -311,11 +283,7 @@ const actionDetailSchema = {
       type: "object",
       properties: {
         mentionedUsers: { type: "array", items: activityUserSchema },
-        post: {
-          type: "object",
-          properties: { subtype: { type: "string" } },
-          required: [],
-        },
+        post: { type: "object", properties: { subtype: { type: "string" } }, required: [] },
         assignment: {
           type: "object",
           properties: {
@@ -324,11 +292,7 @@ const actionDetailSchema = {
           },
           required: [],
         },
-        suggestion: {
-          type: "object",
-          properties: { subtype: { type: "string" } },
-          required: [],
-        },
+        suggestion: { type: "object", properties: { subtype: { type: "string" } }, required: [] },
       },
       required: [],
     },

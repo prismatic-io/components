@@ -9,20 +9,14 @@ export const publishInvoice = action({
     description: "Publishes an invoice.",
   },
   perform: async (context, { squareConnection, invoiceId, idempotencyKey }) => {
-    const client = await createAuthorizedClient(
-      squareConnection,
-      context.debug.enabled,
-    );
+    const client = await createAuthorizedClient(squareConnection, context.debug.enabled);
 
     const publishBody = {
       version: getVersionFromConnection(squareConnection),
       idempotency_key: idempotencyKey,
     };
 
-    const response = await client.post(
-      `/v2/invoices/${invoiceId}/publish`,
-      publishBody,
-    );
+    const response = await client.post(`/v2/invoices/${invoiceId}/publish`, publishBody);
 
     return {
       data: response.data,

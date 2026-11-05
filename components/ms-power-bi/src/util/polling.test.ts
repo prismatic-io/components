@@ -23,18 +23,12 @@ describe("lookBackDateClean", () => {
   });
 
   test("throws on invalid calendar date", () => {
-    expect(() => lookBackDateClean("2026-02-30")).toThrow(
-      "not a valid calendar date",
-    );
-    expect(() => lookBackDateClean("2026-13-01")).toThrow(
-      "not a valid calendar date",
-    );
+    expect(() => lookBackDateClean("2026-02-30")).toThrow("not a valid calendar date");
+    expect(() => lookBackDateClean("2026-13-01")).toThrow("not a valid calendar date");
   });
 
   test("throws on future date", () => {
-    expect(() => lookBackDateClean("2099-01-01")).toThrow(
-      "cannot be a future date",
-    );
+    expect(() => lookBackDateClean("2099-01-01")).toThrow("cannot be a future date");
   });
 });
 
@@ -44,9 +38,7 @@ describe("resolvePollingRecordChanges", () => {
   });
 
   test("returns empty array when both arrays are empty", () => {
-    expect(resolvePollingRecordChanges({ created: [], updated: [] })).toEqual(
-      [],
-    );
+    expect(resolvePollingRecordChanges({ created: [], updated: [] })).toEqual([]);
   });
 
   test("maps created records with changeType created", () => {
@@ -54,9 +46,7 @@ describe("resolvePollingRecordChanges", () => {
       created: [{ id: "ds-1", name: "Sales" }],
       updated: [],
     });
-    expect(result).toEqual([
-      { changeType: "created", record: { id: "ds-1", name: "Sales" } },
-    ]);
+    expect(result).toEqual([{ changeType: "created", record: { id: "ds-1", name: "Sales" } }]);
   });
 
   test("maps updated records with changeType updated", () => {
@@ -64,9 +54,7 @@ describe("resolvePollingRecordChanges", () => {
       created: [],
       updated: [{ id: "ds-2", name: "Marketing" }],
     });
-    expect(result).toEqual([
-      { changeType: "updated", record: { id: "ds-2", name: "Marketing" } },
-    ]);
+    expect(result).toEqual([{ changeType: "updated", record: { id: "ds-2", name: "Marketing" } }]);
   });
 
   test("created records come before updated records", () => {

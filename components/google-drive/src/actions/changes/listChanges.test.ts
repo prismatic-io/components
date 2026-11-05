@@ -3,14 +3,9 @@ import { createConnection, invoke } from "@prismatic-io/spectral/dist/testing";
 import { connection as connectionDefinition } from "../../connections";
 import { listChanges } from "./listChanges";
 
-const connection = createConnection(
-  connectionDefinition,
-  {},
-  { access_token: "test-token" },
-);
+const connection = createConnection(connectionDefinition, {}, { access_token: "test-token" });
 const DRIVE = "https://www.googleapis.com";
-const NEW_STATE_KEY =
-  "google-drive-list-changes-page-token:flowStableId:mockStepId";
+const NEW_STATE_KEY = "google-drive-list-changes-page-token:flowStableId:mockStepId";
 
 describe("listChanges", () => {
   afterEach(() => nock.cleanAll());
@@ -21,10 +16,7 @@ describe("listChanges", () => {
       .query(true)
       .reply(200, { startPageToken: "100" });
 
-    const { result } = await invoke(listChanges, {
-      connection,
-      driveId: undefined,
-    });
+    const { result } = await invoke(listChanges, { connection, driveId: undefined });
 
     expect(result.data).toEqual({
       kind: "drive#changeList",
@@ -67,11 +59,7 @@ describe("listChanges", () => {
     nock(DRIVE)
       .get("/drive/v3/changes")
       .query(true)
-      .reply(200, {
-        kind: "drive#changeList",
-        newStartPageToken: "200",
-        changes: [],
-      });
+      .reply(200, { kind: "drive#changeList", newStartPageToken: "200", changes: [] });
 
     const { result } = await invoke(
       listChanges,
@@ -89,8 +77,6 @@ describe("listChanges", () => {
       .query(true)
       .reply(500, { error: { message: "Server error" } });
 
-    await expect(
-      invoke(listChanges, { connection, driveId: undefined }),
-    ).rejects.toThrow();
+    await expect(invoke(listChanges, { connection, driveId: undefined })).rejects.toThrow();
   });
 });

@@ -9,8 +9,7 @@ import type { ImportJob } from "../../types";
 export const getImportJobStatus = action({
   display: {
     label: "Get Import Job Status",
-    description:
-      "Retrieve the state and progress of an Import Asset from URL job.",
+    description: "Retrieve the state and progress of an Import Asset from URL job.",
   },
   performSafety: "safe",
   perform: async (context, { connection, jobId }) => {
@@ -21,9 +20,6 @@ export const getImportJobStatus = action({
     return { data };
   },
   inputs: getImportJobStatusInputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: importJobOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: importJobOutputSchema }),
   examplePayload: getImportJobStatusExamplePayload,
 });

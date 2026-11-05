@@ -9,10 +9,7 @@ export const listReports = action({
     description: "Returns a list of reports from 'My Workspace'",
   },
   perform: async (context, params) => {
-    const client = createClient(
-      { connection: params.connection },
-      context.debug.enabled,
-    );
+    const client = createClient({ connection: params.connection }, context.debug.enabled);
     const { data } = await client.get("/reports", {
       params: { $top: params.top, $skipToken: params.skipToken },
     });

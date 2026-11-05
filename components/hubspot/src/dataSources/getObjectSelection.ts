@@ -7,14 +7,10 @@ import { getObjectSelectionInputs } from "../inputs";
 export const getObjectSelection = dataSource({
   display: {
     label: "Select Object",
-    description:
-      "Select a HubSpot object type from the list of available objects.",
+    description: "Select a HubSpot object type from the list of available objects.",
   },
   inputs: getObjectSelectionInputs,
-  perform: async (
-    _context,
-    { connection, objectsToSelect, includeCustomObjects },
-  ) => {
+  perform: async (_context, { connection, objectsToSelect, includeCustomObjects }) => {
     let customObjects = [];
     const client = getHubspotClient({ hubspotConnection: connection });
 

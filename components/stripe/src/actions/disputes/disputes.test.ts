@@ -39,15 +39,10 @@ describe("getDispute", () => {
   it("surfaces a Stripe error response", async () => {
     nock(BASE)
       .get("/v1/disputes/dp_missing")
-      .reply(404, {
-        error: { type: "invalid_request_error", message: "No such dispute" },
-      });
+      .reply(404, { error: { type: "invalid_request_error", message: "No such dispute" } });
 
     await expect(
-      invoke(
-        getDispute,
-        params({ disputeId: "dp_missing", stripeConnection: conn }),
-      ),
+      invoke(getDispute, params({ disputeId: "dp_missing", stripeConnection: conn })),
     ).rejects.toThrow("No such dispute");
   });
 });
@@ -72,18 +67,12 @@ describe("listDisputes", () => {
     nock(BASE)
       .get("/v1/disputes")
       .query(true)
-      .reply(400, {
-        error: { type: "invalid_request_error", message: "No such charge" },
-      });
+      .reply(400, { error: { type: "invalid_request_error", message: "No such charge" } });
 
     await expect(
       invoke(
         listDisputes,
-        params({
-          chargeId: "ch_missing",
-          pagination: {},
-          stripeConnection: conn,
-        }),
+        params({ chargeId: "ch_missing", pagination: {}, stripeConnection: conn }),
       ),
     ).rejects.toThrow("No such charge");
   });
@@ -114,20 +103,13 @@ describe("updateDispute", () => {
     nock(BASE)
       .post("/v1/disputes/dp_missing")
       .reply(400, {
-        error: {
-          type: "invalid_request_error",
-          message: "This dispute is already closed",
-        },
+        error: { type: "invalid_request_error", message: "This dispute is already closed" },
       });
 
     await expect(
       invoke(
         updateDispute,
-        params({
-          disputeId: "dp_missing",
-          metadata: {},
-          stripeConnection: conn,
-        }),
+        params({ disputeId: "dp_missing", metadata: {}, stripeConnection: conn }),
       ),
     ).rejects.toThrow("already closed");
   });
@@ -152,17 +134,11 @@ describe("closeDispute", () => {
     nock(BASE)
       .post("/v1/disputes/dp_missing/close")
       .reply(400, {
-        error: {
-          type: "invalid_request_error",
-          message: "This dispute is already closed",
-        },
+        error: { type: "invalid_request_error", message: "This dispute is already closed" },
       });
 
     await expect(
-      invoke(
-        closeDispute,
-        params({ disputeId: "dp_missing", stripeConnection: conn }),
-      ),
+      invoke(closeDispute, params({ disputeId: "dp_missing", stripeConnection: conn })),
     ).rejects.toThrow("already closed");
   });
 });

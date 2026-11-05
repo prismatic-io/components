@@ -18,8 +18,5 @@ export const getCompanyAddons = action({
   inputs: getCompanyAddonsInputs,
   examplePayload: getCompanyAddonsExamplePayload,
   examplePerform: async () => getCompanyAddonsExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getCompanyAddonsOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getCompanyAddonsOutputSchema }),
 });

@@ -29,25 +29,12 @@ const booksCreateRecord = action({
   },
   perform: async (
     context,
-    {
-      connection,
-      recordType,
-      parentRecordType,
-      parentRecordId,
-      dynamicValues,
-      fieldValues,
-    },
+    { connection, recordType, parentRecordType, parentRecordId, dynamicValues, fieldValues },
   ) => {
-    const booksClient = createClient(
-      connection,
-      ClientType.BOOKS,
-      context.debug.enabled,
-    );
+    const booksClient = createClient(connection, ClientType.BOOKS, context.debug.enabled);
 
     const payload = {
-      ...util.types.keyValPairListToObject(
-        (dynamicValues as KeyValuePair[]) || [],
-      ),
+      ...util.types.keyValPairListToObject((dynamicValues as KeyValuePair[]) || []),
       ...fieldValues,
     };
 

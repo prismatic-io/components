@@ -3,11 +3,7 @@ import { createConnection, invoke } from "@prismatic-io/spectral/dist/testing";
 import { connection as connectionDefinition } from "../../connections";
 import { listExportTypes } from "./listExportTypes";
 
-const connection = createConnection(
-  connectionDefinition,
-  {},
-  { access_token: "test-token" },
-);
+const connection = createConnection(connectionDefinition, {}, { access_token: "test-token" });
 const DRIVE = "https://www.googleapis.com";
 
 describe("listExportTypes", () => {
@@ -21,17 +17,12 @@ describe("listExportTypes", () => {
         exportLinks: {
           "application/x-vnd.oasis.opendocument.spreadsheet":
             "https://docs.google.com/spreadsheets/export?id=abc&exportFormat=ods",
-          "text/csv":
-            "https://docs.google.com/spreadsheets/export?id=abc&exportFormat=csv",
-          "application/pdf":
-            "https://docs.google.com/spreadsheets/export?id=abc&exportFormat=pdf",
+          "text/csv": "https://docs.google.com/spreadsheets/export?id=abc&exportFormat=csv",
+          "application/pdf": "https://docs.google.com/spreadsheets/export?id=abc&exportFormat=pdf",
         },
       });
 
-    const { result } = await invoke(listExportTypes, {
-      connection,
-      fileId: "abc",
-    });
+    const { result } = await invoke(listExportTypes, { connection, fileId: "abc" });
 
     expect(result.data).toEqual([
       "application/x-vnd.oasis.opendocument.spreadsheet",
@@ -58,8 +49,6 @@ describe("listExportTypes", () => {
       .query(true)
       .reply(404, { error: { message: "File not found" } });
 
-    await expect(
-      invoke(listExportTypes, { connection, fileId: "missing-file" }),
-    ).rejects.toThrow();
+    await expect(invoke(listExportTypes, { connection, fileId: "missing-file" })).rejects.toThrow();
   });
 });

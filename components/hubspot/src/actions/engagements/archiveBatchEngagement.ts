@@ -11,10 +11,7 @@ export const archiveBatchEngagement = action({
     description: "Archives a batch of selected engagements by their IDs.",
   },
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { timeout, hubspotConnection, engagementObject, engagementIds },
-  ) => {
+  perform: async (context, { timeout, hubspotConnection, engagementObject, engagementIds }) => {
     const debugRequest = context.debug.enabled;
     const client = getHubspotClient({
       hubspotConnection,

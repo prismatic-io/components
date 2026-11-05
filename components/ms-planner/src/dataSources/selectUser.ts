@@ -14,14 +14,10 @@ export const selectUser = dataSource({
   inputs: selectUserInputs,
   perform: async (_context, { connection }) => {
     const client = createClient(connection, false);
-    const { value } = await fetchAllDirectory<User>(
-      client,
-      PLANNER_ENDPOINTS.USERS,
-      {
-        $select: "id,displayName,mail",
-        $top: DIRECTORY_PAGE_SIZE,
-      },
-    );
+    const { value } = await fetchAllDirectory<User>(client, PLANNER_ENDPOINTS.USERS, {
+      $select: "id,displayName,mail",
+      $top: DIRECTORY_PAGE_SIZE,
+    });
 
     const result = value.map<Element>((user) => ({
       label: util.types.toString(user.displayName || user.mail),

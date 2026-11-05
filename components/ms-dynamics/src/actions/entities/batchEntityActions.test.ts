@@ -2,19 +2,15 @@ import { afterEach, describe, expect, test, vi } from "vitest";
 import { batchEntityActionsExamplePayload } from "../../examplePayloads";
 import { createMockConnection, createMockContext } from "../../testHelpers";
 
-const {
-  mockStartBatch,
-  mockCreate,
-  mockUpdate,
-  mockDeleteRecord,
-  mockExecuteBatch,
-} = vi.hoisted(() => ({
-  mockStartBatch: vi.fn(),
-  mockCreate: vi.fn(),
-  mockUpdate: vi.fn(),
-  mockDeleteRecord: vi.fn(),
-  mockExecuteBatch: vi.fn(),
-}));
+const { mockStartBatch, mockCreate, mockUpdate, mockDeleteRecord, mockExecuteBatch } = vi.hoisted(
+  () => ({
+    mockStartBatch: vi.fn(),
+    mockCreate: vi.fn(),
+    mockUpdate: vi.fn(),
+    mockDeleteRecord: vi.fn(),
+    mockExecuteBatch: vi.fn(),
+  })
+);
 
 vi.mock("../../client", () => ({
   createCrmClient: vi.fn().mockResolvedValue({
@@ -35,9 +31,7 @@ describe("batchEntityActions", () => {
   afterEach(() => vi.clearAllMocks());
 
   test("happy path executes batch and returns results", async () => {
-    mockExecuteBatch.mockResolvedValueOnce(
-      batchEntityActionsExamplePayload.data,
-    );
+    mockExecuteBatch.mockResolvedValueOnce(batchEntityActionsExamplePayload.data);
 
     const actions = [
       {
@@ -74,14 +68,8 @@ describe("batchEntityActions", () => {
     await expect(
       batchEntityActions.perform(ctx, {
         connection: conn,
-        actions: [
-          {
-            collection: "accounts",
-            action: "create" as const,
-            data: { name: "test" },
-          },
-        ],
-      } as any),
+        actions: [{ collection: "accounts", action: "create" as const, data: { name: "test" } }],
+      } as any)
     ).rejects.toThrow("Batch failed");
   });
 });

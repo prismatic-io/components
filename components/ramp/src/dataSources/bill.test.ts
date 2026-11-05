@@ -18,18 +18,13 @@ describe("selectBill", () => {
   afterEach(resetNock);
 
   test("maps the bill list into dropdown elements", async () => {
-    rampNock()
-      .get(PATH)
-      .query(true)
-      .reply(200, terminatePaging(listBillsResponse));
+    rampNock().get(PATH).query(true).reply(200, terminatePaging(listBillsResponse));
 
     const { result } = await invokeDataSource(selectBill, {
       connection: testConnection,
     });
 
-    expect(result).toEqual([
-      { key: "6e3816e3-0e53-42ae-b075-bdb0adff10c4", label: "432 - OPEN" },
-    ]);
+    expect(result).toEqual([{ key: "6e3816e3-0e53-42ae-b075-bdb0adff10c4", label: "432 - OPEN" }]);
   });
 
   test("sorts by id ascending regardless of reply order", async () => {

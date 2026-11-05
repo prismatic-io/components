@@ -72,8 +72,7 @@ export const listSubscriptions = action({
   },
   examplePayload: {
     data: {
-      "@odata.context":
-        "https://graph.microsoft.com/v1.0/$metadata#subscriptions",
+      "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#subscriptions",
       value: [
         {
           id: "e9d5b726-4478-4412-bfba-268530484566",
@@ -124,9 +123,7 @@ const createSiteListSubscription = action({
     if (!params.allowDuplicates) {
       const {
         data: { value: subscriptions },
-      } = await client.get<{ value: { notificationUrl: string }[] }>(
-        "/subscriptions",
-      );
+      } = await client.get<{ value: { notificationUrl: string }[] }>("/subscriptions");
       const [existingSubscription] = subscriptions.filter(
         ({ notificationUrl }) => params.notificationUrl === notificationUrl,
       );
@@ -148,8 +145,7 @@ const createSiteListSubscription = action({
   },
   examplePayload: {
     data: {
-      "@odata.context":
-        "https://graph.microsoft.com/v1.0/$metadata#subscriptions/$entity",
+      "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#subscriptions/$entity",
       id: "e9d5b726-4478-4412-bfba-268530484566",
       resource:
         "sites/example.sharepoint.com,17cd4ada-1a76-420e-a7ec-4adaa3327c86,87742bc7-2d2f-404c-8255-d3d9fa9a6561/lists/3a3c0f6a-86da-4567-94d4-3b939da63200",
@@ -173,8 +169,7 @@ const createSiteListSubscription = action({
 const updateSiteListSubscriptionExpiration = action({
   display: {
     label: "Update Site List Subscription Expiration",
-    description:
-      "Update existing Site List subscription expiration for Microsoft SharePoint",
+    description: "Update existing Site List subscription expiration for Microsoft SharePoint",
   },
   inputs: {
     connection,
@@ -183,18 +178,14 @@ const updateSiteListSubscriptionExpiration = action({
   },
   perform: async ({ debug: { enabled: debug } }, params) => {
     const client = await createClient(params.connection, debug);
-    const { data } = await client.patch(
-      `/subscriptions/${params.subscriptionId}`,
-      {
-        expirationDateTime: params.expirationDateTime,
-      },
-    );
+    const { data } = await client.patch(`/subscriptions/${params.subscriptionId}`, {
+      expirationDateTime: params.expirationDateTime,
+    });
     return { data };
   },
   examplePayload: {
     data: {
-      "@odata.context":
-        "https://graph.microsoft.com/v1.0/$metadata#subscriptions/$entity",
+      "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#subscriptions/$entity",
       id: "e9d5b726-4478-4412-bfba-268530484566",
       resource:
         "sites/example.sharepoint.com,17cd4ada-1a76-420e-a7ec-4adaa3327c86,87742bc7-2d2f-404c-8255-d3d9fa9a6561/lists/3a3c0f6a-86da-4567-94d4-3b939da63200",
@@ -223,9 +214,7 @@ export const deleteSubscription = action({
   inputs: { connection, subscriptionId: subscriptionIdInput },
   perform: async ({ debug: { enabled: debug } }, params) => {
     const client = await createClient(params.connection, debug);
-    const { data } = await client.delete(
-      `/subscriptions/${params.subscriptionId}`,
-    );
+    const { data } = await client.delete(`/subscriptions/${params.subscriptionId}`);
     return { data };
   },
   examplePayload: { data: "" },
@@ -241,18 +230,14 @@ export const deleteAllInstanceSubscriptions = action({
     const client = await createClient(params.connection, context.debug.enabled);
     const {
       data: { value: subscriptions },
-    } = await client.get<{ value: { notificationUrl: string; id: string }[] }>(
-      "/subscriptions",
-    );
+    } = await client.get<{ value: { notificationUrl: string; id: string }[] }>("/subscriptions");
 
     const instanceWebhooks = new Set(Object.values(context.webhookUrls));
     const subscriptionsToRemove = subscriptions
       .filter(({ notificationUrl }) => instanceWebhooks.has(notificationUrl))
       .map(({ id }) => id);
 
-    await Promise.all(
-      subscriptionsToRemove.map((id) => client.delete(`/subscriptions/${id}`)),
-    );
+    await Promise.all(subscriptionsToRemove.map((id) => client.delete(`/subscriptions/${id}`)));
 
     return { data: { subscriptionsRemoved: subscriptionsToRemove } };
   },

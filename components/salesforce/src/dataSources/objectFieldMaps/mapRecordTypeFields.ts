@@ -12,22 +12,14 @@ export const mapRecordTypeFields = dataSource({
   inputs: mapRecordTypeFieldsInputs,
   perform: async (
     _context,
-    {
-      version,
-      connection,
-      mappingFields,
-      objectSelection,
-      includeSupplementalMetadata,
-    },
+    { version, connection, mappingFields, objectSelection, includeSupplementalMetadata },
   ) => {
     const httpClient = await createSalesforceHttpClient(version, connection);
     const recordTypeMetadata = (
       await Promise.all(
         objectSelection.map(async ({ object: { key: recordType } }) => {
           try {
-            const { data } = await httpClient.get(
-              `/sobjects/${recordType}/describe/`,
-            );
+            const { data } = await httpClient.get(`/sobjects/${recordType}/describe/`);
             return { recordType, data };
           } catch (error) {
             throw new Error(util.types.toJSON(handleErrors(error)));
@@ -40,14 +32,12 @@ export const mapRecordTypeFields = dataSource({
     }, {});
 
     type Fields = { name: string; label: string }[];
-    const options = objectSelection.map(
-      ({ object: { key: recordType, label } }) => ({
-        object: { key: recordType, label },
-        fields: (
-          (recordTypeMetadata?.[recordType]?.fields as Fields) || []
-        ).map(({ name, label }) => ({ key: name, label })),
-      }),
-    );
+    const options = objectSelection.map(({ object: { key: recordType, label } }) => ({
+      object: { key: recordType, label },
+      fields: ((recordTypeMetadata?.[recordType]?.fields as Fields) || []).map(
+        ({ name, label }) => ({ key: name, label }),
+      ),
+    }));
 
     const result: ObjectFieldMap = {
       ...mappingFields,

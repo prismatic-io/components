@@ -12,11 +12,7 @@ export const getPipeline = action({
   },
   performSafety: "safe",
   perform: async (context, { connection, id, totalsConvertCurrency }) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      WebhookVersion.V2,
-    );
+    const client = createClient(connection, context.debug.enabled, WebhookVersion.V2);
     const { data } = await client.get(`/pipelines/${id}`, {
       params: { totals_convert_currency: totalsConvertCurrency },
     });
@@ -25,8 +21,5 @@ export const getPipeline = action({
   inputs: getPipelineInputs,
   examplePayload: getPipelineExamplePayload,
   examplePerform: async () => getPipelineExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getPipelineOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getPipelineOutputSchema }),
 });

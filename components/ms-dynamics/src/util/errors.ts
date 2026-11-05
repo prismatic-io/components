@@ -25,16 +25,12 @@ export const handleErrors = (error: unknown): unknown => {
           errorParts.push(`Inner Error Type: ${error.innererror.type}`);
         }
         if (error.innererror.stacktrace) {
-          errorParts.push(
-            `Inner Error Stacktrace: ${error.innererror.stacktrace}`,
-          );
+          errorParts.push(`Inner Error Stacktrace: ${error.innererror.stacktrace}`);
         }
       }
 
       return new Error(
-        errorParts.length
-          ? errorParts.join("\n")
-          : "An unknown MS Dynamics 365 API error occurred.",
+        errorParts.length ? errorParts.join("\n") : "An unknown MS Dynamics 365 API error occurred."
       );
     }
   }

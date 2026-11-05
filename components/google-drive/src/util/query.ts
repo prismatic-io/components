@@ -30,10 +30,7 @@ export const getDriveQueryParams = (
   };
 };
 
-export const buildActivityFilter = (
-  windowStart: string,
-  triggerEvents: string[],
-): string => {
+export const buildActivityFilter = (windowStart: string, triggerEvents: string[]): string => {
   const timeClause = `time > "${windowStart}"`;
   return triggerEvents.length > 0
     ? `${timeClause} AND detail.action_detail_case:(${triggerEvents.join(" ")})`

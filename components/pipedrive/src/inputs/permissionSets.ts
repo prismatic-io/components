@@ -1,8 +1,4 @@
-import {
-  connectionInput,
-  offsetPagination,
-  permissionSetIdInput,
-} from "./common";
+import { connectionInput, offsetPagination, permissionSetIdInput } from "./common";
 
 export const getPermissionSetsInputs = {
   connection: connectionInput,

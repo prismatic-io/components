@@ -9,8 +9,7 @@ import { createSalesforceClient } from "../../client";
 export const subscribeToRecordChanges = action({
   display: {
     label: "Subscribe to Record Changes",
-    description:
-      "Subscribe to Record Changes in Salesforce using an outbound message action.",
+    description: "Subscribe to Record Changes in Salesforce using an outbound message action.",
   },
   inputs: subscribeToRecordChangesInputs,
   performSafety: "notAllowed",
@@ -51,8 +50,7 @@ export const subscribeToRecordChanges = action({
       data,
     };
   },
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    subscribeToRecordChangesExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => subscribeToRecordChangesExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: subscribeToRecordChangesOutputSchema,

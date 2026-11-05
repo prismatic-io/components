@@ -8,8 +8,7 @@ import type { CustomObjectSchema } from "../types";
 export const selectObjectType = dataSource({
   display: {
     label: "Select Object Type",
-    description:
-      "Select an object type from the list of standard and custom object types.",
+    description: "Select an object type from the list of standard and custom object types.",
   },
   inputs: selectObjectTypeInputs,
   perform: async (_context, { connection }) => {
@@ -28,12 +27,10 @@ export const selectObjectType = dataSource({
       }))
       .sort((a, b) => (a.label ?? "").localeCompare(b.label ?? ""));
 
-    const standardObjects = STANDARD_OBJECT_TYPES.map<Element>(
-      ({ label, key }) => ({
-        label,
-        key,
-      }),
-    );
+    const standardObjects = STANDARD_OBJECT_TYPES.map<Element>(({ label, key }) => ({
+      label,
+      key,
+    }));
 
     return { result: [...standardObjects, ...customObjects] };
   },

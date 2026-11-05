@@ -20,10 +20,7 @@ export const listContacts = action({
       debugRequest,
     });
 
-    const parameterizedProperties = getProps(
-      CONTACT_PROPS,
-      params.additionalProperties || [],
-    );
+    const parameterizedProperties = getProps(CONTACT_PROPS, params.additionalProperties || []);
 
     const data = await getAllPaginatedData(
       client,
@@ -48,8 +45,5 @@ export const listContacts = action({
     data: listContactsExamplePayload.data,
   }),
   examplePayload: listContactsExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: paginatedListSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: paginatedListSchema }),
 });

@@ -560,12 +560,7 @@ export const accountOutputSchema = {
           properties: {
             payer: {
               type: "string",
-              enum: [
-                "account",
-                "application",
-                "application_custom",
-                "application_express",
-              ],
+              enum: ["account", "application", "application_custom", "application_express"],
             },
           },
           required: ["payer"],

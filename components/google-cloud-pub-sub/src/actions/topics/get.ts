@@ -1,11 +1,6 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import {
-  connectionInput,
-  projectId,
-  topic,
-  topicNameOrFullFormat,
-} from "../../inputs";
+import { connectionInput, projectId, topic, topicNameOrFullFormat } from "../../inputs";
 
 export const getTopic = action({
   display: {
@@ -18,14 +13,9 @@ export const getTopic = action({
     topic,
     topicNameOrFullFormat,
   },
-  perform: async (
-    _context,
-    { connectionInput, projectId, topic, topicNameOrFullFormat },
-  ) => {
+  perform: async (_context, { connectionInput, projectId, topic, topicNameOrFullFormat }) => {
     const client = createClient(connectionInput);
-    const topicName = topicNameOrFullFormat
-      ? topic
-      : `projects/${projectId}/topics/${topic}`;
+    const topicName = topicNameOrFullFormat ? topic : `projects/${projectId}/topics/${topic}`;
     const { data } = await client.projects.topics.get({
       topic: topicName,
     });

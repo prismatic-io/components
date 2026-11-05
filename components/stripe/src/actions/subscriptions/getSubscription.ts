@@ -7,8 +7,7 @@ import { subscriptionOutputSchema } from "../../outputSchemas";
 export const getSubscription = action({
   display: {
     label: "Get Subscription",
-    description:
-      "Retrieve the information and metadata of a subscription by ID.",
+    description: "Retrieve the information and metadata of a subscription by ID.",
   },
   performSafety: "safe",
   perform: async (context, { subscriptionId, timeout, stripeConnection }) => {
@@ -17,9 +16,7 @@ export const getSubscription = action({
       timeout,
     });
     return {
-      data: await client.subscriptions.retrieve(
-        util.types.toString(subscriptionId),
-      ),
+      data: await client.subscriptions.retrieve(util.types.toString(subscriptionId)),
     };
   },
   inputs: getSubscriptionInputs,

@@ -1,11 +1,6 @@
 import { invoke } from "@prismatic-io/spectral/testing";
 import { getLocationResponse } from "../../examplePayloads/locations";
-import {
-  apiPath,
-  rampNock,
-  resetNock,
-  testConnection,
-} from "../../testHarness";
+import { apiPath, rampNock, resetNock, testConnection } from "../../testHarness";
 import { updateLocation } from "./update";
 
 const LOCATION_ID = "f4efe11c-221f-4b49-a1e4-33eaf96a49ee";
@@ -27,10 +22,7 @@ describe("updateLocation", () => {
       entityId: ENTITY_ID,
     });
 
-    expect(result.data).toEqual({
-      ...getLocationResponse,
-      name: "Brooklyn, NY",
-    });
+    expect(result.data).toEqual({ ...getLocationResponse, name: "Brooklyn, NY" });
   });
 
   test("surfaces an API failure", async () => {

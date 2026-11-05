@@ -27,8 +27,7 @@ export const toJqlDate = (iso: string, timeZone: string): string => {
     hour: "2-digit",
     minute: "2-digit",
   }).formatToParts(new Date(iso));
-  const part = (type: string): string =>
-    parts.find((p) => p.type === type)?.value ?? "";
+  const part = (type: string): string => parts.find((p) => p.type === type)?.value ?? "";
   return `${part("year")}/${part("month")}/${part("day")} ${part("hour")}:${part("minute")}`;
 };
 
@@ -59,19 +58,10 @@ const resolveAccountTimeZone = async (
 
 const fetchIssuesWindow = async (
   client: HttpClient,
-  {
-    sinceISO,
-    pageSize,
-    maxPages,
-    nextPageToken,
-    additionalJql,
-    timeZone,
-  }: IssuesWindowParams,
+  { sinceISO, pageSize, maxPages, nextPageToken, additionalJql, timeZone }: IssuesWindowParams,
 ): Promise<{ issues: JiraIssue[]; nextPageToken: string | undefined }> => {
   const updatedClause = `updated >= "${toJqlDate(sinceISO, timeZone)}"`;
-  const jql = additionalJql
-    ? `(${additionalJql}) AND ${updatedClause}`
-    : updatedClause;
+  const jql = additionalJql ? `(${additionalJql}) AND ${updatedClause}` : updatedClause;
 
   const issues: JiraIssue[] = [];
   let token = nextPageToken;
@@ -102,11 +92,7 @@ export const fetchStreamWindow = async (
     batching,
     logger,
   }: StreamWindowParams,
-): Promise<{
-  issues: JiraIssue[];
-  nextPageToken: string | undefined;
-  timeZone: string;
-}> => {
+): Promise<{ issues: JiraIssue[]; nextPageToken: string | undefined; timeZone: string }> => {
   let timeZone = heldTimeZone ?? FALLBACK_TIME_ZONE;
   if (skipFetch) return { issues: [], nextPageToken: undefined, timeZone };
   const client = await createClient();
@@ -128,12 +114,7 @@ export const buildPollingCursor = (
   jqlFilter: string | undefined,
 ): PollingCursor | null =>
   nextPageToken
-    ? {
-        nextPageToken,
-        streamStartedAt: streamStartedAt.toISOString(),
-        timeZone,
-        jqlFilter,
-      }
+    ? { nextPageToken, streamStartedAt: streamStartedAt.toISOString(), timeZone, jqlFilter }
     : null;
 
 export const buildPollingState = (
@@ -154,9 +135,7 @@ export const buildPollingState = (
   ...(isBackfill && next ? { backfillActive: true } : {}),
 });
 
-const pollWindowBounds = (
-  batching: boolean,
-): { pageSize: number; maxPages: number } => ({
+const pollWindowBounds = (batching: boolean): { pageSize: number; maxPages: number } => ({
   pageSize: POLL_PAGE_SIZE,
   maxPages: batching ? 1 : POLL_UNBATCHED_MAX_PAGES,
 });
@@ -169,11 +148,8 @@ export const resolvePollingStart = (
   const hasLookBackDate = lookBackDate !== undefined && lookBackDate !== "";
   const seedSince = hasLookBackDate ? util.types.toDate(lookBackDate) : now;
   return {
-    sinceDate: state.lastPolledAt
-      ? util.types.toDate(state.lastPolledAt)
-      : seedSince,
-    isBackfill:
-      state.backfillActive === true || (!state.lastPolledAt && hasLookBackDate),
+    sinceDate: state.lastPolledAt ? util.types.toDate(state.lastPolledAt) : seedSince,
+    isBackfill: state.backfillActive === true || (!state.lastPolledAt && hasLookBackDate),
   };
 };
 
@@ -191,9 +167,7 @@ export const resolvePollingStream = (
   return {
     nextPageToken: resumable ? held.nextPageToken : undefined,
     streamStartedAt:
-      resumable && held.streamStartedAt
-        ? util.types.toDate(held.streamStartedAt)
-        : now,
+      resumable && held.streamStartedAt ? util.types.toDate(held.streamStartedAt) : now,
     timeZone: resumable ? (held.timeZone ?? FALLBACK_TIME_ZONE) : undefined,
   };
 };
@@ -223,12 +197,9 @@ export const partitionIssuesByTimestamp = (
   const updated: JiraIssue[] = [];
   for (const issue of issues) {
     const createdValue = issue.fields?.created;
-    const createdDate =
-      typeof createdValue === "string" ? new Date(createdValue) : null;
+    const createdDate = typeof createdValue === "string" ? new Date(createdValue) : null;
     const isNew =
-      createdDate !== null &&
-      !Number.isNaN(createdDate.getTime()) &&
-      createdDate > since;
+      createdDate !== null && !Number.isNaN(createdDate.getTime()) && createdDate > since;
     if (isNew) created.push(issue);
     else updated.push(issue);
   }

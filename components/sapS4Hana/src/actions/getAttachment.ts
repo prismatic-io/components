@@ -16,8 +16,7 @@ import {
 export const getAttachment = action({
   display: {
     label: "Get Attachment",
-    description:
-      "Reads the attachments associated with a document info record.",
+    description: "Reads the attachments associated with a document info record.",
   },
   perform: async (
     _context,

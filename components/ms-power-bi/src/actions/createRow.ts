@@ -6,16 +6,12 @@ import { createRowExamplePayload } from "../examplePayloads";
 export const createRow = action({
   display: {
     label: "Create Rows",
-    description:
-      "Adds new data rows to the specified table within the specified dataset from 'My Workspace'",
+    description: "Adds new data rows to the specified table within the specified dataset from 'My Workspace'",
   },
   perform: async (context, { connection, datasetId, tableName, rows }) => {
     const client = createClient({ connection }, context.debug.enabled);
 
-    const { data } = await client.post(
-      `/datasets/${datasetId}/tables/${tableName}/rows`,
-      rows,
-    );
+    const { data } = await client.post(`/datasets/${datasetId}/tables/${tableName}/rows`, rows);
 
     return {
       data,

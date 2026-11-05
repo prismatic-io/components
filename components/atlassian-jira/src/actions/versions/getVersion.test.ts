@@ -8,8 +8,7 @@ beforeAll(() => nock.disableNetConnect());
 afterAll(() => nock.enableNetConnect());
 afterEach(() => nock.cleanAll());
 
-const run = () =>
-  invoke(getVersion, { jiraConnection: basicConnection(), versionId: "10000" });
+const run = () => invoke(getVersion, { jiraConnection: basicConnection(), versionId: "10000" });
 
 describe("getVersion", () => {
   test("reads the version addressed by its id in the path", async () => {

@@ -52,22 +52,14 @@ export const resolvePollingRecordChanges = <T>(
 };
 
 export const lookBackDateClean = (value: unknown): string => {
-  if (
-    value === undefined ||
-    value === null ||
-    (typeof value === "string" && value.trim() === "")
-  ) {
+  if (value === undefined || value === null || (typeof value === "string" && value.trim() === "")) {
     return "";
   }
 
-  const raw =
-    typeof value === "string" ? value.trim() : util.types.toString(value);
-  const match =
-    typeof value === "string" ? raw.match(LOOK_BACK_DATE_PATTERN) : null;
+  const raw = typeof value === "string" ? value.trim() : util.types.toString(value);
+  const match = typeof value === "string" ? raw.match(LOOK_BACK_DATE_PATTERN) : null;
   if (!match) {
-    throw new Error(
-      `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
-    );
+    throw new Error(`Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`);
   }
 
   const [, yearStr, monthStr, dayStr] = match;
@@ -80,9 +72,7 @@ export const lookBackDateClean = (value: unknown): string => {
     parsed.getUTCMonth() !== month - 1 ||
     parsed.getUTCDate() !== day
   ) {
-    throw new Error(
-      `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
-    );
+    throw new Error(`Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`);
   }
 
   if (parsed.getTime() > Date.now()) {
@@ -160,10 +150,7 @@ export const runPollingCycle = async <T extends { createdAt: string }>(
   context.polling.setState(
     isFinalPage
       ? { lastPolledAt: cursor.windowEnd }
-      : {
-          lastPolledAt: state.lastPolledAt ?? cursor.windowStart,
-          cursor: nextCursor,
-        },
+      : { lastPolledAt: state.lastPolledAt ?? cursor.windowStart, cursor: nextCursor },
   );
 
   return {
@@ -172,7 +159,6 @@ export const runPollingCycle = async <T extends { createdAt: string }>(
       paginationState: nextCursor,
       body: { data: categorizeByChangeType(page.records, cursor.windowStart) },
     },
-    polledNoChanges:
-      page.records.length === 0 && !nextCursor && !payload.paginationState,
+    polledNoChanges: page.records.length === 0 && !nextCursor && !payload.paginationState,
   };
 };

@@ -9,8 +9,7 @@ import { toSortedPicklist } from "./helpers";
 export const selectPurchaseOrderLine = dataSource({
   display: {
     label: "Select Purchase Order Line",
-    description:
-      "A picklist of purchase order lines for the selected purchase order.",
+    description: "A picklist of purchase order lines for the selected purchase order.",
   },
   inputs: {
     connection: connectionInput,
@@ -19,9 +18,7 @@ export const selectPurchaseOrderLine = dataSource({
   },
   perform: async (context, { connection, companyId, purchaseOrderId }) => {
     const client = getMsBusinessCentralClient(connection, context, false);
-    const { data } = await client.get<
-      MultipleItemsResponse<PurchaseOrderLine[]>
-    >(
+    const { data } = await client.get<MultipleItemsResponse<PurchaseOrderLine[]>>(
       `/companies(${companyId})/purchaseOrders(${purchaseOrderId})/purchaseOrderLines`,
     );
 
@@ -34,11 +31,6 @@ export const selectPurchaseOrderLine = dataSource({
   },
   dataSourceType: "picklist",
   examplePayload: {
-    result: [
-      {
-        label: "10000 - ATHENS Desk",
-        key: "5d115c9c-44e3-ea11-bb43-000d3a2feca1",
-      },
-    ],
+    result: [{ label: "10000 - ATHENS Desk", key: "5d115c9c-44e3-ea11-bb43-000d3a2feca1" }],
   },
 });

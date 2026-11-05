@@ -1,9 +1,5 @@
 import { action, util } from "@prismatic-io/spectral";
-import {
-  connectionInput,
-  purchaseRequisitionNumberInput,
-  requestBodyCode,
-} from "../inputs";
+import { connectionInput, purchaseRequisitionNumberInput, requestBodyCode } from "../inputs";
 import { getSapClient } from "../client";
 import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
 import { ADD_ITEM_TO_PURCHASE_REQUISITION_DEFAULT_VALUE } from "../constants";
@@ -14,10 +10,7 @@ export const addItemToPurchaseRequisition = action({
     description:
       "Adds an item to a purchase requisition using the purchase requisition number provided.",
   },
-  perform: async (
-    _,
-    { connectionInput, purchaseRequisitionNumberInput, requestBodyCode },
-  ) => {
+  perform: async (_, { connectionInput, purchaseRequisitionNumberInput, requestBodyCode }) => {
     const headers = {
       Accept: "application/json",
       "Content-Type": "application/json",

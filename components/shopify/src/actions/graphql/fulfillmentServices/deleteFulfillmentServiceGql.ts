@@ -25,10 +25,12 @@ export const deleteFulfillmentServiceGql = action({
       context.logger,
     );
 
-    const data: { fulfillmentServiceDelete: Record<string, unknown> } =
-      await client.request(deleteFulfillmentServiceQuery, {
+    const data: { fulfillmentServiceDelete: Record<string, unknown> } = await client.request(
+      deleteFulfillmentServiceQuery,
+      {
         id: fulfillmentServiceId,
-      });
+      },
+    );
 
     return {
       data: data.fulfillmentServiceDelete,

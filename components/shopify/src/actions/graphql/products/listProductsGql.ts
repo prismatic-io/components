@@ -14,10 +14,7 @@ export const listProductsGql = action({
     description: "Lists all products.",
   },
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { shopifyConnection, getAlldata, pagination = {} },
-  ) => {
+  perform: async (context, { shopifyConnection, getAlldata, pagination = {} }) => {
     const client = getShopifyGraphQlClient(
       shopifyConnection,
       undefined,
@@ -47,10 +44,7 @@ export const listProductsGql = action({
     };
   },
   inputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: listProductsGqlOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: listProductsGqlOutputSchema }),
   examplePerform: async () => listProductsGqlExamplePayload.restMap,
   examplePayload: listProductsGqlExamplePayload.restMap,
 });

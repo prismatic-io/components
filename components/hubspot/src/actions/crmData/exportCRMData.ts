@@ -8,8 +8,7 @@ import { hubspotPaths } from "../../constants";
 export const exportCRMData = action({
   display: {
     label: "Export CRM Data",
-    description:
-      "Begins exporting CRM data for the portal as specified in the request body.",
+    description: "Begins exporting CRM data for the portal as specified in the request body.",
   },
   performSafety: "notAllowed",
   perform: async (
@@ -36,9 +35,7 @@ export const exportCRMData = action({
       headers: { "Content-Type": "application/json" },
     });
     if (schemaType === "PublicExportListRequest" && !listId) {
-      throw new Error(
-        "List Id is required for Schema Type PublicExportListRequest",
-      );
+      throw new Error("List Id is required for Schema Type PublicExportListRequest");
     }
 
     const payload = {
@@ -53,9 +50,7 @@ export const exportCRMData = action({
       ...(listId && { listId }),
     };
 
-    const data = (
-      await client.post(hubspotPaths.exports("/export/async"), payload)
-    ).data;
+    const data = (await client.post(hubspotPaths.exports("/export/async"), payload)).data;
 
     return {
       data,
@@ -66,8 +61,5 @@ export const exportCRMData = action({
     data: exportCRMDataExamplePayload.data,
   }),
   examplePayload: exportCRMDataExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: exportCRMDataOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: exportCRMDataOutputSchema }),
 });

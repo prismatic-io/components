@@ -14,11 +14,7 @@ export const createPriceList = action({
     connection,
   },
   perform: async (context, { connection, bodyFields, PriceListName }) => {
-    const client = await createClient(
-      connection,
-      context,
-      context.debug.enabled,
-    );
+    const client = await createClient(connection, context, context.debug.enabled);
 
     const { data } = await client.post(`/PriceLists`, {
       PriceListName,

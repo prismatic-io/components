@@ -16,8 +16,7 @@ export const selectInvoice = dataSource({
 
     const result = (allInvoices.invoices as Record<string, unknown>[])
       .map((invoice: Record<string, unknown>) => ({
-        label:
-          `${invoice.invoice_number}` || `${invoice.title}` || `${invoice.id}`,
+        label: `${invoice.invoice_number}` || `${invoice.title}` || `${invoice.id}`,
         key: invoice.id as string,
       }))
       .sort(sortByLabel);

@@ -25,13 +25,7 @@ export const listCustomAccountingFieldOptions = action({
   performSafety: "notAllowed",
   perform: async (
     context,
-    {
-      connection,
-      customQueryParams,
-      fetchAll,
-      pagination,
-      customAccountingFieldId,
-    },
+    { connection, customQueryParams, fetchAll, pagination, customAccountingFieldId },
   ) => {
     const client = createClient(connection, context.debug.enabled);
 
@@ -50,10 +44,7 @@ export const listCustomAccountingFieldOptions = action({
       data,
     };
   },
-  examplePerform: async (
-    _context,
-    { fetchAll },
-  ): Promise<{ data: unknown }> => ({
+  examplePerform: async (_context, { fetchAll }): Promise<{ data: unknown }> => ({
     data: {
       ...lisCustomAccountingFieldOptionsResponse,
       page: fetchAll ? null : lisCustomAccountingFieldOptionsResponse.page,

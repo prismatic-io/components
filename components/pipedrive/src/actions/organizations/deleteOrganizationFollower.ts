@@ -12,14 +12,8 @@ export const deleteOrganizationFollower = action({
   },
   performSafety: "notAllowed",
   perform: async (context, { connection, id, followerId }) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      WebhookVersion.V2,
-    );
-    const { data } = await client.delete(
-      `/organizations/${id}/followers/${followerId}`,
-    );
+    const client = createClient(connection, context.debug.enabled, WebhookVersion.V2);
+    const { data } = await client.delete(`/organizations/${id}/followers/${followerId}`);
     return { data };
   },
   inputs: deleteOrganizationFollowerInputs,

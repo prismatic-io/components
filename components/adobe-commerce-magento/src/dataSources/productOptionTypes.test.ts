@@ -12,18 +12,8 @@ describe("productOptionTypes", () => {
     nock(STORE_HOST)
       .get("/rest/default/V1/products/options/types")
       .reply(200, [
-        {
-          code: "field",
-          label: "Field",
-          group: "Text",
-          extension_attributes: {},
-        },
-        {
-          code: "area",
-          label: "Area",
-          group: "Text",
-          extension_attributes: {},
-        },
+        { code: "field", label: "Field", group: "Text", extension_attributes: {} },
+        { code: "area", label: "Area", group: "Text", extension_attributes: {} },
       ]);
 
     const result = await invokeDataSource(productOptionTypes, {
@@ -37,9 +27,7 @@ describe("productOptionTypes", () => {
   });
 
   test("returns an empty array rather than throwing when the store declares no option types", async () => {
-    nock(STORE_HOST)
-      .get("/rest/default/V1/products/options/types")
-      .reply(200, []);
+    nock(STORE_HOST).get("/rest/default/V1/products/options/types").reply(200, []);
 
     const result = await invokeDataSource(productOptionTypes, {
       connectionInput: storeConnection(),

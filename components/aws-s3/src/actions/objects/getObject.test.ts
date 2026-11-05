@@ -57,10 +57,7 @@ describe("getObject", () => {
   });
 
   test("omits VersionId when the version ID input is blank", async () => {
-    await invoke(getObject, {
-      ...baseInputs,
-      versionId: getObject.inputs.versionId.clean(""),
-    });
+    await invoke(getObject, { ...baseInputs, versionId: getObject.inputs.versionId.clean("") });
 
     expect(sendMock).toHaveBeenCalledTimes(1);
     expect(sendMock.mock.calls[0][0].input.VersionId).toBeUndefined();
@@ -77,9 +74,7 @@ describe("getObject", () => {
       }),
     );
 
-    await expect(
-      invoke(getObject, { ...baseInputs, versionId: undefined }),
-    ).rejects.toMatchObject({
+    await expect(invoke(getObject, { ...baseInputs, versionId: undefined })).rejects.toMatchObject({
       name: "NoSuchKey",
       $metadata: { httpStatusCode: 404 },
     });

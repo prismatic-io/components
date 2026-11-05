@@ -1,15 +1,6 @@
-export type ContentFragmentStatus =
-  | "NEW"
-  | "DRAFT"
-  | "PUBLISHED"
-  | "MODIFIED"
-  | "UNPUBLISHED";
+export type ContentFragmentStatus = "NEW" | "DRAFT" | "PUBLISHED" | "MODIFIED" | "UNPUBLISHED";
 
-export type ContentFragmentSortField =
-  | "title"
-  | "created"
-  | "modified"
-  | "modifiedOrCreated";
+export type ContentFragmentSortField = "title" | "created" | "modified" | "modifiedOrCreated";
 
 interface AemAuditStamp {
   at?: string;

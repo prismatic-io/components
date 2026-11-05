@@ -1,9 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
-import {
-  cleanSingleItemList,
-  cleanStringArray,
-  cleanStringInput,
-} from "../util";
+import { cleanSingleItemList, cleanStringArray, cleanStringInput } from "../util";
 import { connectionInput, version } from "./common";
 
 const metadataInput = input({
@@ -50,8 +46,7 @@ const objectFullName = input({
   type: "string",
   example: "Widget__c",
   required: true,
-  comments:
-    "The full API name of the Salesforce custom object (e.g., Widget__c).",
+  comments: "The full API name of the Salesforce custom object (e.g., Widget__c).",
   clean: cleanSingleItemList,
 });
 
@@ -136,8 +131,7 @@ export const updateMetadataInputs = {
   metadata: {
     ...metadataInput,
     default: undefined,
-    comments:
-      "Check https://jsforce.github.io/document/#update-metadata for related documentation",
+    comments: "Check https://jsforce.github.io/document/#update-metadata for related documentation",
     example: JSON.stringify(
       [
         {

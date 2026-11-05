@@ -11,15 +11,8 @@ export const crmDisableSpecificNotification = action({
       "Disable notifications for specific events in a channel without disabling the entire channel.",
   },
   inputs: notificationSpecificDisableInputs,
-  perform: async (
-    context,
-    { connection, channelId, events, notifyOnRelatedAction },
-  ) => {
-    const crmClient = createClient(
-      connection,
-      ClientType.CRM,
-      context.debug.enabled,
-    );
+  perform: async (context, { connection, channelId, events, notifyOnRelatedAction }) => {
+    const crmClient = createClient(connection, ClientType.CRM, context.debug.enabled);
 
     const data = await disableSpecificNotificationEvents(crmClient, {
       channelId,

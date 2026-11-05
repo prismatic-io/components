@@ -111,8 +111,7 @@ export const setupFutureUsage = input({
 export const captureMethod = input({
   label: "Capture Method",
   type: "string",
-  comments:
-    "Controls when the funds will be captured from the customer's account.",
+  comments: "Controls when the funds will be captured from the customer's account.",
   model: [
     { label: "", value: "" },
     { label: "Automatic", value: "automatic" },
@@ -211,8 +210,7 @@ export const paymentMethodTypes = input({
   label: "Payment Method Types",
   type: "string",
   collection: "valuelist",
-  comments:
-    "The list of payment method types that this PaymentIntent is allowed to use.",
+  comments: "The list of payment method types that this PaymentIntent is allowed to use.",
   example: "card",
   placeholder: "Enter payment method type",
   required: false,
@@ -321,8 +319,7 @@ export const transferData = input({
   type: "code",
   language: "json",
   example: JSON.stringify({ destination: "acct_1F5yQhFjP0puYwXh" }),
-  comments:
-    "The parameters used to automatically create a Transfer when the payment succeeds.",
+  comments: "The parameters used to automatically create a Transfer when the payment succeeds.",
   placeholder: "Enter transfer data",
   required: false,
   clean: cleanObjectInput,
@@ -336,8 +333,7 @@ const paymentApplicationFeeAmount = {
 
 const paymentTransferGroup = {
   ...transferGroup,
-  comments:
-    "A string that identifies the resulting payment as part of a group.",
+  comments: "A string that identifies the resulting payment as part of a group.",
 };
 
 const paymentIntentShipping = {
@@ -455,22 +451,19 @@ export const createPaymentIntentInputs = {
   customerId: {
     ...customerId,
     label: "Customer ID",
-    comments:
-      "ID of the Customer this PaymentIntent belongs to, if one exists.",
+    comments: "ID of the Customer this PaymentIntent belongs to, if one exists.",
     clean: cleanStringInput,
   },
   description: {
     ...description,
-    comments:
-      "An arbitrary string attached to the object. Often useful for displaying to users.",
+    comments: "An arbitrary string attached to the object. Often useful for displaying to users.",
     clean: cleanStringInput,
   },
   metadata,
   paymentMethod,
   receiptEmail: {
     ...receiptEmail,
-    comments:
-      "Email address that the receipt for the resulting payment will be sent to. ",
+    comments: "Email address that the receipt for the resulting payment will be sent to. ",
   },
   paymentMethodTypes,
   transferOptions: createPaymentIntentTransferOptions,
@@ -496,8 +489,7 @@ export const listPaymentIntentsInputs = {
   customerId: {
     ...customerId,
     label: "Customer ID",
-    comments:
-      "Only return PaymentIntents for the customer specified by this customer ID.",
+    comments: "Only return PaymentIntents for the customer specified by this customer ID.",
     clean: cleanStringInput,
   },
   created,
@@ -546,22 +538,19 @@ export const updatePaymentIntentInputs = {
   customerId: {
     ...customerId,
     label: "Customer ID",
-    comments:
-      "ID of the Customer this PaymentIntent belongs to, if one exists.",
+    comments: "ID of the Customer this PaymentIntent belongs to, if one exists.",
     clean: cleanStringInput,
   },
   description: {
     ...description,
-    comments:
-      "An arbitrary string attached to the object. Often useful for displaying to users.",
+    comments: "An arbitrary string attached to the object. Often useful for displaying to users.",
     clean: cleanStringInput,
   },
   metadata,
   paymentMethod,
   receiptEmail: {
     ...receiptEmail,
-    comments:
-      "Email address that the receipt for the resulting payment will be sent to. ",
+    comments: "Email address that the receipt for the resulting payment will be sent to. ",
   },
   paymentMethodTypes,
   transferOptions: updatePaymentIntentTransferOptions,

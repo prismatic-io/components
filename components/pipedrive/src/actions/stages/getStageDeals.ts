@@ -13,20 +13,9 @@ export const getStageDeals = action({
   performSafety: "notAllowed",
   perform: async (
     context,
-    {
-      connection,
-      id,
-      filterId,
-      pagination: { limit, cursor } = {},
-      sortBy,
-      sortDirection,
-    },
+    { connection, id, filterId, pagination: { limit, cursor } = {}, sortBy, sortDirection },
   ) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      WebhookVersion.V2,
-    );
+    const client = createClient(connection, context.debug.enabled, WebhookVersion.V2);
     const { data } = await client.get("/deals", {
       params: {
         filter_id: filterId,
@@ -41,8 +30,5 @@ export const getStageDeals = action({
   },
   inputs: getStageDealsInputs,
   examplePayload: getStageDealsExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getStageDealsOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getStageDealsOutputSchema }),
 });

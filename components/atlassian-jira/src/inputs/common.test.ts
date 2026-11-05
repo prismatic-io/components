@@ -39,18 +39,8 @@ describe("common input cleans", () => {
     ["startAt", startAt, "10", 10, 0],
     ["boardId", boardId, 84, "84", ""],
     ["projectKey", projectKey, "PROJ", "PROJ", undefined],
-    [
-      "fieldValues",
-      fieldValues,
-      [{ key: "name", value: "Example" }],
-      { name: "Example" },
-    ],
-    [
-      "dynamicValues",
-      dynamicValues,
-      '[{"key":"name","value":"Example"}]',
-      { name: "Example" },
-    ],
+    ["fieldValues", fieldValues, [{ key: "name", value: "Example" }], { name: "Example" }],
+    ["dynamicValues", dynamicValues, '[{"key":"name","value":"Example"}]', { name: "Example" }],
     ["fetchAll", fetchAll, "true", true, false],
     ["nextPageToken", nextPageToken, "CAEaAggD", "CAEaAggD"],
   ]);

@@ -10,10 +10,7 @@ export const batchDeleteCatalogObjects = action({
       "Deletes a set of catalog objects based on the provided list of target IDs and returns a set of successfully deleted IDs in the response.",
   },
   perform: async (context, { squareConnection, objectIds }) => {
-    const client = await createAuthorizedClient(
-      squareConnection,
-      context.debug.enabled,
-    );
+    const client = await createAuthorizedClient(squareConnection, context.debug.enabled);
 
     const requestBody = {
       object_ids: objectIds,

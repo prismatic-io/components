@@ -28,9 +28,7 @@ export const selectTask = dataSource({
         label: item.Name || item.Id || "",
         key: item.Id || "",
       }))
-      .sort((a: Element, b: Element) =>
-        (a.label ?? "").localeCompare(b.label ?? ""),
-      );
+      .sort((a: Element, b: Element) => (a.label ?? "").localeCompare(b.label ?? ""));
 
     return { result };
   },

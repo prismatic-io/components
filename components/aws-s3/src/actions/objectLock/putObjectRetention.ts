@@ -43,9 +43,7 @@ export const putObjectRetention = action({
       (retentionModePresent && !retainUntilDatePresent) ||
       (!retentionModePresent && retainUntilDatePresent)
     ) {
-      throw new Error(
-        "Both Retention Mode and Retain Until Date must be set when either is set.",
-      );
+      throw new Error("Both Retention Mode and Retain Until Date must be set when either is set.");
     }
 
     const command = new PutObjectRetentionCommand({

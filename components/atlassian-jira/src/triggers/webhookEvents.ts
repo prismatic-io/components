@@ -22,16 +22,9 @@ export const webhookEvents = trigger({
   inputs: webhookEventsInputs,
   examplePayload: webhookEventsExamplePayload,
   webhookLifecycleHandlers: {
-    create: async (
-      context,
-      { jiraConnection, eventTypes, jqlFilter, fieldIdsFilter },
-    ) => {
+    create: async (context, { jiraConnection, eventTypes, jqlFilter, fieldIdsFilter }) => {
       const useBasicAuth = isBasicAuth(jiraConnection);
-      const client = await createV3Client(
-        jiraConnection,
-        context.debug.enabled,
-        useBasicAuth,
-      );
+      const client = await createV3Client(jiraConnection, context.debug.enabled, useBasicAuth);
 
       const events = Array.isArray(eventTypes) ? eventTypes : [eventTypes];
       const fieldIds =
@@ -53,11 +46,7 @@ export const webhookEvents = trigger({
     },
     delete: async (context, { jiraConnection }) => {
       const useBasicAuth = isBasicAuth(jiraConnection);
-      const client = await createV3Client(
-        jiraConnection,
-        context.debug.enabled,
-        useBasicAuth,
-      );
+      const client = await createV3Client(jiraConnection, context.debug.enabled, useBasicAuth);
 
       if (useBasicAuth) {
         await deleteWebhookTriggerBasic(client, context);
@@ -70,10 +59,7 @@ export const webhookEvents = trigger({
     const useBasicAuth = isBasicAuth(jiraConnection);
 
     if (!useBasicAuth) {
-      const client = await createV3Client(
-        jiraConnection,
-        context.debug.enabled,
-      );
+      const client = await createV3Client(jiraConnection, context.debug.enabled);
       await checkAndRefreshWebhook(client, context);
     }
 

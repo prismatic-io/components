@@ -14,11 +14,7 @@ const exampleTriggerPayloadBase: Omit<TriggerPayload, "headers" | "body"> = {
   webhookApiKeys: {},
   invokeUrl: "",
   executionId: "RXhhbXBsZUV4ZWN1dGlvblJlc3VsdElk",
-  customer: {
-    id: "testCustomerId",
-    name: "Test Customer",
-    externalId: "testExternalId",
-  },
+  customer: { id: "testCustomerId", name: "Test Customer", externalId: "testExternalId" },
   instance: { id: "testInstanceId", name: "Test Instance" },
   user: {
     id: "testUserId",
@@ -144,10 +140,7 @@ const eventItem: AemChangeItem & AemEventEnvelope = {
   eventType: exampleEvent.type,
 };
 
-export const aemSitesEventWebhookExamplePayload: {
-  payload: TriggerPayload;
-  branch: string;
-} = {
+export const aemSitesEventWebhookExamplePayload: { payload: TriggerPayload; branch: string } = {
   payload: {
     ...exampleTriggerPayloadBase,
     headers: { "content-type": "application/cloudevents+json" },
@@ -173,8 +166,7 @@ const exampleAssetEvent = {
       "repo:repositoryId": "author-p12345-e123456.adobeaemcloud.com",
       "repo:assetId": "urn:aaid:aem:5b8f3e2a-9c1d-4e7f-a6b2-3d4c5e6f7a8b",
       "repo:name": "surf-camp-hero.jpg",
-      "repo:path":
-        "/content/dam/wknd/en/adventures/surf-camp/surf-camp-hero.jpg",
+      "repo:path": "/content/dam/wknd/en/adventures/surf-camp/surf-camp-hero.jpg",
       "repo:ancestors": ["urn:aaid:aem:1a2b3c4d-5e6f-4a7b-8c9d-0e1f2a3b4c5d"],
       "repo:state": "ACTIVE",
       "repo:createDate": "2026-09-01T14:02:11.985Z",
@@ -208,10 +200,7 @@ const assetEventItem: AemChangeItem & AemEventEnvelope = {
   eventType: exampleAssetEvent.type,
 };
 
-export const aemAssetsEventWebhookExamplePayload: {
-  payload: TriggerPayload;
-  branch: string;
-} = {
+export const aemAssetsEventWebhookExamplePayload: { payload: TriggerPayload; branch: string } = {
   payload: {
     ...exampleTriggerPayloadBase,
     headers: { "content-type": "application/cloudevents+json" },

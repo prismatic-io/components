@@ -32,15 +32,11 @@ describe("deleteCustomer", () => {
     } as never);
 
     expect(scope.isDone()).toBe(true);
-    expect(result).toStrictEqual({
-      data: { id: RECORD_ID, success: true, errors: [] },
-    });
+    expect(result).toStrictEqual({ data: { id: RECORD_ID, success: true, errors: [] } });
   });
 
   test("does not retrieve the Customer record", async () => {
-    nock(INSTANCE_URL)
-      .delete(`${BASE_PATH}/sobjects/Customer/${RECORD_ID}`)
-      .reply(204);
+    nock(INSTANCE_URL).delete(`${BASE_PATH}/sobjects/Customer/${RECORD_ID}`).reply(204);
     const retrieve = nock(INSTANCE_URL)
       .get(`${BASE_PATH}/sobjects/Customer/${RECORD_ID}`)
       .reply(200, { Id: RECORD_ID });

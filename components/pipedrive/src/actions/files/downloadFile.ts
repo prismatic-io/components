@@ -16,16 +16,10 @@ export const downloadFile = action({
       responseType: "arraybuffer",
     });
     const contentType = headers["content-type"];
-    return {
-      data,
-      contentType: typeof contentType === "string" ? contentType : undefined,
-    };
+    return { data, contentType: typeof contentType === "string" ? contentType : undefined };
   },
   inputs: downloadFileInputs,
   examplePayload: downloadFileExamplePayload,
   examplePerform: async () => downloadFileExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: downloadFileOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: downloadFileOutputSchema }),
 });

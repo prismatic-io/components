@@ -30,11 +30,7 @@ describe("getNumericId", () => {
   });
 
   test("extracts numeric ID from a GID with query params", () => {
-    expect(
-      getNumericId(
-        "gid://shopify/MailingAddress/999?model_name=CustomerAddress",
-      ),
-    ).toBe(999);
+    expect(getNumericId("gid://shopify/MailingAddress/999?model_name=CustomerAddress")).toBe(999);
   });
 
   test("returns null for a GID with no numeric segment", () => {
@@ -48,9 +44,7 @@ describe("getNumericId", () => {
 
 describe("cleanProductId / cleanCustomerId / cleanOrderId / etc.", () => {
   test("passes through a full GID unchanged", () => {
-    expect(cleanProductId("gid://shopify/Product/123")).toBe(
-      "gid://shopify/Product/123",
-    );
+    expect(cleanProductId("gid://shopify/Product/123")).toBe("gid://shopify/Product/123");
   });
 
   test("wraps a bare numeric ID into a GID", () => {
@@ -66,9 +60,7 @@ describe("cleanProductId / cleanCustomerId / cleanOrderId / etc.", () => {
   });
 
   test("cleanFulfillmentOrderId wraps bare ID", () => {
-    expect(cleanFulfillmentOrderId("111")).toBe(
-      "gid://shopify/FulfillmentOrder/111",
-    );
+    expect(cleanFulfillmentOrderId("111")).toBe("gid://shopify/FulfillmentOrder/111");
   });
 
   test("cleanFulfillmentId wraps bare ID", () => {
@@ -86,9 +78,7 @@ describe("cleanProductId / cleanCustomerId / cleanOrderId / etc.", () => {
 
 describe("cleanProductIdForVariant", () => {
   test("extracts numeric ID from a full GID", () => {
-    expect(cleanProductIdForVariant("gid://shopify/Product/123456")).toBe(
-      "123456",
-    );
+    expect(cleanProductIdForVariant("gid://shopify/Product/123456")).toBe("123456");
   });
 
   test("passes through a bare numeric string", () => {
@@ -120,9 +110,7 @@ describe("validateMetafieldType", () => {
 
 describe("generateModelFromSnakeCaseArray", () => {
   test("converts snake_case keys to Title Case labels", () => {
-    expect(
-      generateModelFromSnakeCaseArray(["first_name", "last_name"]),
-    ).toEqual([
+    expect(generateModelFromSnakeCaseArray(["first_name", "last_name"])).toEqual([
       { label: "First Name", value: "first_name" },
       { label: "Last Name", value: "last_name" },
     ]);
@@ -141,23 +129,16 @@ describe("generateModelFromSnakeCaseArray", () => {
 
 describe("createTimezoneString", () => {
   test("formats offset and IANA timezone correctly", () => {
-    expect(createTimezoneString("-0500", "America/New_York")).toBe(
-      "(GMT-05:00) America/New_York",
-    );
+    expect(createTimezoneString("-0500", "America/New_York")).toBe("(GMT-05:00) America/New_York");
   });
 
   test("handles positive offset", () => {
-    expect(createTimezoneString("+0530", "Asia/Kolkata")).toBe(
-      "(GMT+05:30) Asia/Kolkata",
-    );
+    expect(createTimezoneString("+0530", "Asia/Kolkata")).toBe("(GMT+05:30) Asia/Kolkata");
   });
 });
 
 describe("findKeyByValue", () => {
-  const map = {
-    "orders/create": "ORDERS_CREATE",
-    "customers/update": "CUSTOMERS_UPDATE",
-  };
+  const map = { "orders/create": "ORDERS_CREATE", "customers/update": "CUSTOMERS_UPDATE" };
 
   test("finds the key for an existing value", () => {
     expect(findKeyByValue(map, "ORDERS_CREATE")).toBe("orders/create");
@@ -171,9 +152,7 @@ describe("findKeyByValue", () => {
 describe("gqlErrorsCheck", () => {
   test("throws when userErrors are present", () => {
     expect(() =>
-      gqlErrorsCheck({
-        customerCreate: { userErrors: [{ message: "Email taken" }] },
-      }),
+      gqlErrorsCheck({ customerCreate: { userErrors: [{ message: "Email taken" }] } }),
     ).toThrow("Email taken");
   });
 
@@ -186,9 +165,7 @@ describe("gqlErrorsCheck", () => {
   });
 
   test("does not throw when userErrors is empty", () => {
-    expect(() =>
-      gqlErrorsCheck({ customerCreate: { userErrors: [] } }),
-    ).not.toThrow();
+    expect(() => gqlErrorsCheck({ customerCreate: { userErrors: [] } })).not.toThrow();
   });
 
   test("does not throw when no userErrors key exists", () => {
@@ -226,9 +203,7 @@ describe("buildPollingWindowQuery", () => {
       windowEnd: "2026-10-21T00:00:00Z",
       isBackfill: false,
     });
-    expect(result).toBe(
-      "updated_at:>='2026-10-20T00:00:00Z' updated_at:<'2026-10-21T00:00:00Z'",
-    );
+    expect(result).toBe("updated_at:>='2026-10-20T00:00:00Z' updated_at:<'2026-10-21T00:00:00Z'");
   });
 });
 
@@ -250,18 +225,14 @@ describe("clean input helpers", () => {
   });
 
   test("cleanKeyValueListInput converts key-value pairs", () => {
-    expect(cleanKeyValueListInput([{ key: "a", value: "1" }])).toEqual({
-      a: "1",
-    });
+    expect(cleanKeyValueListInput([{ key: "a", value: "1" }])).toEqual({ a: "1" });
     expect(cleanKeyValueListInput("not-an-array")).toEqual({});
   });
 
   test("cleanArrayCodeInput returns array or throws", () => {
     expect(cleanArrayCodeInput("[1,2,3]", "test")).toEqual([1, 2, 3]);
     expect(cleanArrayCodeInput(undefined, "test")).toBeUndefined();
-    expect(() => cleanArrayCodeInput('{"a":1}', "test")).toThrow(
-      "Invalid array",
-    );
+    expect(() => cleanArrayCodeInput('{"a":1}', "test")).toThrow("Invalid array");
   });
 
   test("cleanValueListInput maps array to strings", () => {

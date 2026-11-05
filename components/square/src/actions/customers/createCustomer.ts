@@ -26,13 +26,7 @@ export const createCustomer = action({
       squareConnection,
     },
   ) => {
-    if (
-      !givenName &&
-      !familyName &&
-      !companyName &&
-      !emailAddress &&
-      !phoneNumber
-    ) {
+    if (!givenName && !familyName && !companyName && !emailAddress && !phoneNumber) {
       throw new Error(
         "At least one of `given_name`, `family_name`, `company_name`, `email_address`, or `phone_number` is required for a customer.",
       );
@@ -73,10 +67,7 @@ export const createCustomer = action({
       taxIds = null;
     }
 
-    const client = await createAuthorizedClient(
-      squareConnection,
-      context.debug.enabled,
-    );
+    const client = await createAuthorizedClient(squareConnection, context.debug.enabled);
 
     const requestBody = {
       idempotency_key: idempotencyKey,

@@ -21,9 +21,7 @@ export const getCustomAccountingFieldOption = action({
   perform: async (context, { connection, customAccountingFieldOptionId }) => {
     const client = createClient(connection, context.debug.enabled);
 
-    const { data } = await client.get(
-      `/accounting/field-options/${customAccountingFieldOptionId}`,
-    );
+    const { data } = await client.get(`/accounting/field-options/${customAccountingFieldOptionId}`);
     return {
       data,
     };

@@ -7,21 +7,12 @@ import { fetchWithPagination } from "../../util";
 export const listCompanies = action({
   display: {
     label: "List Companies",
-    description:
-      "Retrieve a list of all companies defined in the organization.",
+    description: "Retrieve a list of all companies defined in the organization.",
   },
   inputs: listCompaniesInputs,
   perform: async (
     context,
-    {
-      connection,
-      companyCode,
-      companyId,
-      fetchAll,
-      isMasterCompany,
-      masterCompanyId,
-      pagination,
-    },
+    { connection, companyCode, companyId, fetchAll, isMasterCompany, masterCompanyId, pagination },
   ) => {
     const client = createBasicAuthClient(connection, context.debug.enabled);
 

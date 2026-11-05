@@ -15,10 +15,7 @@ export const listMetafieldsGql = action({
       "Lists resource metafields. Note: This action currently utilizes an unstable version of the Shopify Admin GraphQL API and is subject to change.",
   },
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { shopifyConnection, resource, getAlldata, pagination = {} },
-  ) => {
+  perform: async (context, { shopifyConnection, resource, getAlldata, pagination = {} }) => {
     const client = getShopifyGraphQlClient(
       shopifyConnection,
       "unstable",
@@ -46,8 +43,5 @@ export const listMetafieldsGql = action({
   examplePerform: async () => examplePayload,
   examplePayload,
   inputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: listMetafieldsGqlOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: listMetafieldsGqlOutputSchema }),
 });

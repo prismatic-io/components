@@ -2,7 +2,7 @@ import type { Channel } from "@slack/web-api/dist/types/response/ConversationsLi
 
 export const getChannelDisplayName = (
   showIdInDropdown: boolean,
-  channel: Channel,
+  channel: Channel
 ): string => {
   let channelName: string;
   const isImChannel = channel.is_im || channel.is_mpim;

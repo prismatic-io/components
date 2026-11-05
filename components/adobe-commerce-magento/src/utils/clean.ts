@@ -7,10 +7,7 @@ export const cleanString = (value: unknown): string | undefined =>
 export const cleanNumber = (value: unknown): number | undefined =>
   util.types.toNumber(value) || undefined;
 
-export const asJsonObject = (
-  value: unknown,
-  label: string,
-): Record<string, unknown> => {
+export const asJsonObject = (value: unknown, label: string): Record<string, unknown> => {
   if (typeof value !== "object" || value === null || Array.isArray(value)) {
     throw new Error(`${label} must be valid JSON.`);
   }

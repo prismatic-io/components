@@ -7,9 +7,7 @@ export interface FileListingWindow {
   startAfter?: string;
 }
 
-export interface FileListingCursor
-  extends FileListingWindow,
-    Record<string, unknown> {
+export interface FileListingCursor extends FileListingWindow, Record<string, unknown> {
   startAfter: string;
 }
 
@@ -23,9 +21,7 @@ export interface PollingState {
   cursor?: FileListingCursor;
 }
 
-export type PolledBucket = Omit<Bucket, "CreationDate"> & {
-  CreationDate: string;
-};
+export type PolledBucket = Omit<Bucket, "CreationDate"> & { CreationDate: string };
 
 export type PollingCursorContext = Pick<ActionContext, "logger" | "debug"> & {
   polling: Pick<PollingContext["polling"], "getState">;

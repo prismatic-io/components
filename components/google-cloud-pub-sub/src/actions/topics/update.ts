@@ -26,32 +26,21 @@ export const updateTopic = action({
   },
   perform: async (
     _context,
-    {
-      connectionInput,
-      projectId,
-      topic,
-      topicNameOrFullFormat,
-      updateMask,
-      additionalFields,
-    },
+    { connectionInput, projectId, topic, topicNameOrFullFormat, updateMask, additionalFields },
   ) => {
     const client = createClient(connectionInput);
-    const name = topicNameOrFullFormat
-      ? topic
-      : `projects/${projectId}/topics/${topic}`;
+    const name = topicNameOrFullFormat ? topic : `projects/${projectId}/topics/${topic}`;
     const { data } = await client.projects.topics.patch({
       name,
       requestBody: {
         updateMask: updateMask || undefined,
         topic: {
           labels: additionalFields.labels || undefined,
-          messageStoragePolicy:
-            additionalFields.messageStoragePolicy || undefined,
+          messageStoragePolicy: additionalFields.messageStoragePolicy || undefined,
           kmsKeyName: additionalFields.kmsKeyName || undefined,
           schemaSettings: additionalFields.schemaSettings || undefined,
           satisfiesPzs: additionalFields.satisfiesPzs || undefined,
-          messageRetentionDuration:
-            additionalFields.messageRetentionDuration || undefined,
+          messageRetentionDuration: additionalFields.messageRetentionDuration || undefined,
           name,
         },
       },

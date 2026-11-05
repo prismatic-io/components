@@ -30,8 +30,7 @@ export const oktaOAuth2AuthorizationCode = oauth2Connection({
         type: "string",
         required: false,
         shown: true,
-        comments:
-          "Okta API permission scopes are set on the OAuth application.",
+        comments: "Okta API permission scopes are set on the OAuth application.",
       },
       clientId: {
         label: "Client ID",
@@ -84,8 +83,7 @@ export const oktaClientCredentialsOrg = connection({
   key: "oktaClientCredentialsOrg",
   display: {
     label: "OAuth 2.0 Client Credentials",
-    description:
-      "Authenticate using OAuth 2.0 Client Credentials with private_key_jwt method",
+    description: "Authenticate using OAuth 2.0 Client Credentials with private_key_jwt method",
   },
   inputs: {
     oktaDomainUrl: {
@@ -110,8 +108,7 @@ export const oktaClientCredentialsOrg = connection({
     },
     privateKey: {
       label: "Private Key (PEM format)",
-      placeholder:
-        "-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----",
+      placeholder: "-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----",
       type: "text",
       required: true,
       shown: true,
@@ -158,8 +155,4 @@ export const oktaApiTokenConnection = connection({
   },
 });
 
-export default [
-  oktaOAuth2AuthorizationCode,
-  oktaClientCredentialsOrg,
-  oktaApiTokenConnection,
-];
+export default [oktaOAuth2AuthorizationCode, oktaClientCredentialsOrg, oktaApiTokenConnection];

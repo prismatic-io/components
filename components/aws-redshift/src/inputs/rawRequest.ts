@@ -14,8 +14,7 @@ const body = input({
       WorkgroupName: "my-workgroup",
       Database: "analytics",
       Sql: "SELECT * FROM users WHERE status = 'active'",
-      SecretArn:
-        "arn:aws:secretsmanager:us-east-1:123456789012:secret:redshift-credentials",
+      SecretArn: "arn:aws:secretsmanager:us-east-1:123456789012:secret:redshift-credentials",
     },
     null,
     2,

@@ -11,16 +11,9 @@ export const deleteAllInstanceSubscriptions = action({
   },
   inputs: deleteAllSubscriptionsInputs,
   perform: async (context, { connection }) => {
-    const client = getMsBusinessCentralClient(
-      connection,
-      context,
-      context.debug.enabled,
-    );
+    const client = getMsBusinessCentralClient(connection, context, context.debug.enabled);
     const instanceWebhooks = new Set(Object.values(context.webhookUrls));
-    const subscriptionsToRemove = await deleteAllSubscriptionsFn(
-      client,
-      instanceWebhooks,
-    );
+    const subscriptionsToRemove = await deleteAllSubscriptionsFn(client, instanceWebhooks);
 
     return { data: { subscriptionsRemoved: subscriptionsToRemove } };
   },

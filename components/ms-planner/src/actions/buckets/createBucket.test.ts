@@ -8,18 +8,9 @@ import { createBucket } from "./createBucket";
 
 const BASE = "https://graph.microsoft.com";
 const PLAN_ID = "xqQg5FS2LkCp935s-FIFm2QAFkHM";
-const connection = createConnection(
-  templatedOauth,
-  {},
-  { access_token: "test-token" },
-);
+const connection = createConnection(templatedOauth, {}, { access_token: "test-token" });
 
-const params = {
-  connection,
-  groupId: undefined,
-  planId: PLAN_ID,
-  name: "In Review",
-};
+const params = { connection, groupId: undefined, planId: PLAN_ID, name: "In Review" };
 
 beforeAll(() => {
   nock.disableNetConnect();
@@ -40,11 +31,7 @@ test("posts to the top-level bucket collection with the plan named in the body",
 
   const { result } = await invoke(createBucket, params);
 
-  expect(postedBody).toEqual({
-    name: "In Review",
-    planId: PLAN_ID,
-    orderHint: DEFAULT_ORDER_HINT,
-  });
+  expect(postedBody).toEqual({ name: "In Review", planId: PLAN_ID, orderHint: DEFAULT_ORDER_HINT });
   expect(DEFAULT_ORDER_HINT).toBe(" !");
   expect(result.data).toEqual(createBucketExamplePayload.data);
 });

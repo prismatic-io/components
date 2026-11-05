@@ -1,10 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { lookBackDateClean } from "../util";
-import {
-  connectionInput,
-  objectType,
-  propertyChangeProperties,
-} from "./common";
+import { connectionInput, objectType, propertyChangeProperties } from "./common";
 import { searchEndpoint, searchProperties } from "./search";
 import { eventTypes, overwriteWebhookSettings } from "./webhook";
 
@@ -55,9 +51,7 @@ export const pollChangesTriggerInputs = {
   hubspotConnection: connectionInput,
   searchEndpoint: {
     ...searchEndpoint,
-    model: searchEndpoint.model.filter(
-      (input) => input.label !== "Custom objects",
-    ),
+    model: searchEndpoint.model.filter((input) => input.label !== "Custom objects"),
   },
   searchProperties,
 };

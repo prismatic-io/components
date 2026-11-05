@@ -14,24 +14,13 @@ import { cleanStringInput } from "../../utils";
 export const updateShipmentMethod = action({
   display: {
     label: "Update Shipment Method",
-    description:
-      "Update a shipment method object in your Business Central organization.",
+    description: "Update a shipment method object in your Business Central organization.",
   },
   perform: async (
     context,
-    {
-      shipmentMethodName,
-      shipmentCode,
-      connection,
-      companyId,
-      shipmentMethodId,
-    },
+    { shipmentMethodName, shipmentCode, connection, companyId, shipmentMethodId },
   ) => {
-    const client = getMsBusinessCentralClient(
-      connection,
-      context,
-      context.debug.enabled,
-    );
+    const client = getMsBusinessCentralClient(connection, context, context.debug.enabled);
     const payload = {
       code: shipmentCode,
       displayName: shipmentMethodName,

@@ -22,10 +22,7 @@ export const expireCheckoutSession = action({
       data: session,
     };
   },
-  examplePerform: async (
-    _context,
-    { sessionId },
-  ): Promise<{ data: unknown }> => ({
+  examplePerform: async (_context, { sessionId }): Promise<{ data: unknown }> => ({
     data: {
       ...examplePayload.data,
       id: sessionId,

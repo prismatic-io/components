@@ -24,17 +24,12 @@ describe("selectCustomAccountingFieldOption", () => {
       .query(true)
       .reply(200, terminatePaging(lisCustomAccountingFieldOptionsResponse));
 
-    const { result } = await invokeDataSource(
-      selectCustomAccountingFieldOption,
-      {
-        connection: testConnection,
-        customAccountingFieldId: FIELD_ID,
-      },
-    );
+    const { result } = await invokeDataSource(selectCustomAccountingFieldOption, {
+      connection: testConnection,
+      customAccountingFieldId: FIELD_ID,
+    });
 
-    expect(result).toEqual([
-      { key: "123", label: "Office/Admin:Phone & Internet" },
-    ]);
+    expect(result).toEqual([{ key: "123", label: "Office/Admin:Phone & Internet" }]);
   });
 
   test("forwards the sibling field id as the field_id query parameter", async () => {
@@ -64,13 +59,10 @@ describe("selectCustomAccountingFieldOption", () => {
         ]),
       );
 
-    const { result } = await invokeDataSource(
-      selectCustomAccountingFieldOption,
-      {
-        connection: testConnection,
-        customAccountingFieldId: FIELD_ID,
-      },
-    );
+    const { result } = await invokeDataSource(selectCustomAccountingFieldOption, {
+      connection: testConnection,
+      customAccountingFieldId: FIELD_ID,
+    });
 
     expect(elementKeys(result)).toEqual(["2", "3", "1"]);
   });
@@ -78,13 +70,10 @@ describe("selectCustomAccountingFieldOption", () => {
   test("returns an empty list when the API returns no records", async () => {
     rampNock().get(PATH).query(true).reply(200, emptyListBody());
 
-    const { result } = await invokeDataSource(
-      selectCustomAccountingFieldOption,
-      {
-        connection: testConnection,
-        customAccountingFieldId: FIELD_ID,
-      },
-    );
+    const { result } = await invokeDataSource(selectCustomAccountingFieldOption, {
+      connection: testConnection,
+      customAccountingFieldId: FIELD_ID,
+    });
 
     expect(result).toEqual([]);
   });

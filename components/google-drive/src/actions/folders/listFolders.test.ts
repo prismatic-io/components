@@ -3,11 +3,7 @@ import { createConnection, invoke } from "@prismatic-io/spectral/dist/testing";
 import { connection as connectionDefinition } from "../../connections";
 import { listFolders } from "./listFolders";
 
-const connection = createConnection(
-  connectionDefinition,
-  {},
-  { access_token: "test-token" },
-);
+const connection = createConnection(connectionDefinition, {}, { access_token: "test-token" });
 const DRIVE = "https://www.googleapis.com";
 
 const baseParams = {
@@ -25,19 +21,14 @@ describe("listFolders", () => {
     nock(DRIVE)
       .get("/drive/v3/files")
       .query(
-        (q) =>
-          typeof q.q === "string" &&
-          q.q === "mimeType='application/vnd.google-apps.folder'",
+        (q) => typeof q.q === "string" && q.q === "mimeType='application/vnd.google-apps.folder'",
       )
       .reply(200, {
         kind: "drive#fileList",
         files: [{ id: "1xYz2AbC3DeF4GhI5JkL6MnO7PqR8StU", name: "Finance" }],
       });
 
-    const { result } = await invoke(listFolders, {
-      ...baseParams,
-      fetchAll: false,
-    });
+    const { result } = await invoke(listFolders, { ...baseParams, fetchAll: false });
 
     expect((result.data as Record<string, unknown>).files).toEqual([
       { id: "1xYz2AbC3DeF4GhI5JkL6MnO7PqR8StU", name: "Finance" },
@@ -75,16 +66,9 @@ describe("listFolders", () => {
     nock(DRIVE)
       .get("/drive/v3/files")
       .query(true)
-      .reply(200, {
-        files: [
-          { id: "1QwErTy2UiOp3AsDf4GhJk5LzXcVbNm6", name: "Campaign Assets" },
-        ],
-      });
+      .reply(200, { files: [{ id: "1QwErTy2UiOp3AsDf4GhJk5LzXcVbNm6", name: "Campaign Assets" }] });
 
-    const { result } = await invoke(listFolders, {
-      ...baseParams,
-      fetchAll: true,
-    });
+    const { result } = await invoke(listFolders, { ...baseParams, fetchAll: true });
 
     expect(result.data).toEqual({
       files: [
@@ -100,8 +84,6 @@ describe("listFolders", () => {
       .query(true)
       .reply(403, { error: { message: "forbidden" } });
 
-    await expect(
-      invoke(listFolders, { ...baseParams, fetchAll: false }),
-    ).rejects.toThrow();
+    await expect(invoke(listFolders, { ...baseParams, fetchAll: false })).rejects.toThrow();
   });
 });

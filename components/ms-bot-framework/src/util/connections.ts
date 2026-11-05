@@ -18,11 +18,7 @@ export const getToken = (connection: Connection) => {
   }
 };
 
-export const getBaseUrl = (
-  connection: Connection,
-  serviceUrl: string,
-  apiVersion: string,
-) => {
+export const getBaseUrl = (connection: Connection, serviceUrl: string, apiVersion: string) => {
   const connectionKey = connection.key;
   const baseUrl = `${serviceUrl}${apiVersion}`;
   switch (connectionKey) {

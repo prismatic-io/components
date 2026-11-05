@@ -46,16 +46,7 @@ export const webhookEndpointOutputSchema = {
       type: "string",
     },
   },
-  required: [
-    "created",
-    "enabled_events",
-    "id",
-    "livemode",
-    "metadata",
-    "object",
-    "status",
-    "url",
-  ],
+  required: ["created", "enabled_events", "id", "livemode", "metadata", "object", "status", "url"],
 };
 
 export const listWebhooksOutputSchema = {

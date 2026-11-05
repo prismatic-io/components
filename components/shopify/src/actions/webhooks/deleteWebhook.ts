@@ -11,10 +11,7 @@ export const deleteWebhook = action({
     description: "Deletes a webhook by ID.",
   },
   inputs: deleteWebhookInputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: deleteWebhookOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: deleteWebhookOutputSchema }),
   performSafety: "notAllowed",
   perform: async (context, params) => {
     const { data } = await deleteWebhookGql.perform(context, {

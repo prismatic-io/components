@@ -69,8 +69,7 @@ const customAccountingFieldSchema = {
   ],
 };
 
-export const createCustomAccountingFieldOutputSchema =
-  customAccountingFieldSchema;
+export const createCustomAccountingFieldOutputSchema = customAccountingFieldSchema;
 
 export const getCustomAccountingFieldOutputSchema = customAccountingFieldSchema;
 
@@ -86,7 +85,6 @@ export const listCustomAccountingFieldOutputSchema = {
   required: ["data", "page"],
 };
 
-export const updateCustomAccountingFieldOutputSchema =
-  customAccountingFieldSchema;
+export const updateCustomAccountingFieldOutputSchema = customAccountingFieldSchema;
 
 export const deleteCustomAccountingFieldOutputSchema = deleteResponseSchema;

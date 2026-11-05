@@ -6,8 +6,7 @@ import { connectionInput } from "../inputs";
 export const selectPurchaseRequisition = dataSource({
   display: {
     label: "Select Purchase Requisition",
-    description:
-      "A picklist of purchase requisitions in the SAP S/4HANA system.",
+    description: "A picklist of purchase requisitions in the SAP S/4HANA system.",
   },
   inputs: {
     connection: connectionInput,
@@ -23,10 +22,7 @@ export const selectPurchaseRequisition = dataSource({
         "/sap/opu/odata/sap/API_PURCHASEREQ_PROCESS_SRV/A_PurchaseRequisitionHeader?$select=PurchaseRequisition,PurReqnDescription",
       );
 
-      const results = (data?.d?.results ?? data?.value ?? []) as Record<
-        string,
-        string
-      >[];
+      const results = (data?.d?.results ?? data?.value ?? []) as Record<string, string>[];
 
       const result: Element[] = results
         .map((req) => ({

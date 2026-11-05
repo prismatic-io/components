@@ -20,14 +20,7 @@ const guestPermissionProperties = {
   can_edit_tags: { type: "boolean" },
 };
 
-const guestRequired = [
-  "user",
-  "invited_by",
-  "can_see_time_spent",
-  "can_see_time_estimated",
-  "can_edit_tags",
-  "shared",
-];
+const guestRequired = ["user", "invited_by", "can_see_time_spent", "can_see_time_estimated", "can_edit_tags", "shared"];
 
 const removedGuestSchema = {
   type: "object" as const,
@@ -168,10 +161,7 @@ export const removeGuestFromWorkspaceOutputSchema = {
       type: "object" as const,
       properties: {
         ...workspaceTeamProperties,
-        members: {
-          type: "array",
-          items: { ...invitedGuestMemberSchema, required: [] },
-        },
+        members: { type: "array", items: { ...invitedGuestMemberSchema, required: [] } },
       },
       required: ["id", "name", "color", "avatar", "members"],
     },

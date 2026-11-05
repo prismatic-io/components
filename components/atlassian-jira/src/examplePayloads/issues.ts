@@ -29,8 +29,7 @@ export const getIssueExamplePayload: { data: Issue } = {
             name: "jdoe",
             self: "https://your-domain.atlassian.net/rest/api/2/user?accountId=5b10ac8d82e05b22cc7d4ef5",
           },
-          content:
-            "https://your-domain.atlassian.net/secure/attachment/12345/document.pdf",
+          content: "https://your-domain.atlassian.net/secure/attachment/12345/document.pdf",
           created: "2023-08-29T10:30:00.000+0000",
           filename: "document.pdf",
           id: 12345,
@@ -46,8 +45,7 @@ export const getIssueExamplePayload: { data: Issue } = {
           outwardIssue: {
             fields: {
               status: {
-                iconUrl:
-                  "https://your-domain.atlassian.net/images/icons/statuses/open.png",
+                iconUrl: "https://your-domain.atlassian.net/images/icons/statuses/open.png",
                 name: "Open",
               },
             },
@@ -80,14 +78,10 @@ export const getIssueExamplePayload: { data: Issue } = {
       },
       project: {
         avatarUrls: {
-          "16x16":
-            "https://your-domain.atlassian.net/secure/projectavatar?size=xsmall&pid=10000",
-          "24x24":
-            "https://your-domain.atlassian.net/secure/projectavatar?size=small&pid=10000",
-          "32x32":
-            "https://your-domain.atlassian.net/secure/projectavatar?size=medium&pid=10000",
-          "48x48":
-            "https://your-domain.atlassian.net/secure/projectavatar?size=large&pid=10000",
+          "16x16": "https://your-domain.atlassian.net/secure/projectavatar?size=xsmall&pid=10000",
+          "24x24": "https://your-domain.atlassian.net/secure/projectavatar?size=small&pid=10000",
+          "32x32": "https://your-domain.atlassian.net/secure/projectavatar?size=medium&pid=10000",
+          "48x48": "https://your-domain.atlassian.net/secure/projectavatar?size=large&pid=10000",
         },
         id: "10000",
         insight: {
@@ -152,8 +146,7 @@ export const getIssueExamplePayload: { data: Issue } = {
           inwardIssue: {
             fields: {
               status: {
-                iconUrl:
-                  "https://your-domain.atlassian.net/images/icons/statuses/inprogress.png",
+                iconUrl: "https://your-domain.atlassian.net/images/icons/statuses/inprogress.png",
                 name: "In Progress",
               },
             },
@@ -324,10 +317,8 @@ export const listIssueTransitionsExamplePayload = {
         name: "In Progress",
         to: {
           self: "https://your-domain.atlassian.net/rest/api/3/status/3",
-          description:
-            "This issue is being actively worked on at the moment by the assignee.",
-          iconUrl:
-            "https://your-domain.atlassian.net/images/icons/statuses/inprogress.png",
+          description: "This issue is being actively worked on at the moment by the assignee.",
+          iconUrl: "https://your-domain.atlassian.net/images/icons/statuses/inprogress.png",
           name: "In Progress",
           id: "3",
         },
@@ -407,8 +398,7 @@ export const addIssueAttachmentExamplePayload = {
       created: "2024-01-15T10:30:00.000+0000",
       size: 1024000,
       mimeType: "application/pdf",
-      content:
-        "https://your-domain.atlassian.net/secure/attachment/10001/document.pdf",
+      content: "https://your-domain.atlassian.net/secure/attachment/10001/document.pdf",
       thumbnail: "https://your-domain.atlassian.net/secure/thumbnail/10001",
     },
   ],
@@ -431,8 +421,7 @@ export const listIssueAttachmentsExamplePayload = {
     },
     {
       id: 10002,
-      mimeType:
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
     },
   ],
 };

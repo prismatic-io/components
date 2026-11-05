@@ -36,9 +36,7 @@ describe("isBlockedAddress", () => {
 
 describe("assertPublicUrl", () => {
   test("accepts an https URL on a public host name", () => {
-    expect(() =>
-      assertPublicUrl("https://www.example.com/sitemap.xml"),
-    ).not.toThrow();
+    expect(() => assertPublicUrl("https://www.example.com/sitemap.xml")).not.toThrow();
   });
 
   test("rejects a non-https URL", () => {
@@ -48,9 +46,9 @@ describe("assertPublicUrl", () => {
   });
 
   test("rejects blocked IPv4 and bracketed IPv6 literals", () => {
-    expect(() =>
-      assertPublicUrl("https://169.254.169.254/latest/meta-data"),
-    ).toThrow("Refusing to fetch a non-public address: 169.254.169.254");
+    expect(() => assertPublicUrl("https://169.254.169.254/latest/meta-data")).toThrow(
+      "Refusing to fetch a non-public address: 169.254.169.254",
+    );
     expect(() => assertPublicUrl("https://[::1]/")).toThrow(
       "Refusing to fetch a non-public address: [::1]",
     );

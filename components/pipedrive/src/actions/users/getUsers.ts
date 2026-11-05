@@ -18,8 +18,5 @@ export const getUsers = action({
   inputs: getUsersInputs,
   examplePayload: getUsersExamplePayload,
   examplePerform: async () => getUsersExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getUsersOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getUsersOutputSchema }),
 });

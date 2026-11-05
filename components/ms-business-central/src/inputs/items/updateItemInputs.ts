@@ -1,10 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { BOOLEAN_INPUT_MODEL } from "../../constants";
-import {
-  cleanBooleanInput,
-  cleanNumberInput,
-  cleanStringInput,
-} from "../../utils";
+import { cleanBooleanInput, cleanNumberInput, cleanStringInput } from "../../utils";
 
 export const itemId = input({
   label: "Item Id",

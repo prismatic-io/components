@@ -12,15 +12,8 @@ export const getActivityFieldsV2 = action({
     description: "Gets all activity fields.",
   },
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { connection, pagination: { limit, cursor } = {}, fetchAll },
-  ) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      WebhookVersion.V2,
-    );
+  perform: async (context, { connection, pagination: { limit, cursor } = {}, fetchAll }) => {
+    const client = createClient(connection, context.debug.enabled, WebhookVersion.V2);
 
     const data = await paginateRecordsWithCursor(
       client,
@@ -35,8 +28,5 @@ export const getActivityFieldsV2 = action({
   },
   inputs: getActivityFieldsV2Inputs,
   examplePayload: getActivityFieldsV2ExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getActivityFieldsV2OutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getActivityFieldsV2OutputSchema }),
 });

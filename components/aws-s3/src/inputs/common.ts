@@ -83,8 +83,7 @@ export const expirationSeconds = input({
   required: true,
   default: "3600",
   placeholder: "Enter seconds (e.g., 3600 for 1 hour)",
-  comments:
-    "Number of seconds until the presigned URL expires. Default is 3600 (1 hour).",
+  comments: "Number of seconds until the presigned URL expires. Default is 3600 (1 hour).",
   clean: util.types.toInt,
 });
 
@@ -94,7 +93,6 @@ export const versionId = input({
   required: false,
   placeholder: "Enter version ID",
   example: "AMn71WZYnWqbvfy0unBOdtaBC.DRiN_r",
-  comments:
-    "The version ID of the object to apply the retention configuration to.",
+  comments: "The version ID of the object to apply the retention configuration to.",
   clean: cleanString,
 });

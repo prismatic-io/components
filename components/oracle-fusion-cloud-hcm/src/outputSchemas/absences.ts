@@ -14,12 +14,7 @@ export const absenceOutputSchema = {
     unitOfMeasure: { type: ["string", "null"] },
     assignmentId: { type: ["integer", "null"] },
   },
-  required: [
-    "personAbsenceEntryId",
-    "personId",
-    "absenceTypeId",
-    "legalEntityId",
-  ],
+  required: ["personAbsenceEntryId", "personId", "absenceTypeId", "legalEntityId"],
 };
 
 export const listAbsencesOutputSchema = {

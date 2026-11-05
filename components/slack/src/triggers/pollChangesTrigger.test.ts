@@ -27,7 +27,7 @@ interface PollingStore {
 }
 
 const createPollingStore = (
-  seedState: Record<string, unknown> = {},
+  seedState: Record<string, unknown> = {}
 ): PollingStore => {
   let state: Record<string, unknown> = seedState;
   const writes: Record<string, unknown>[] = [];
@@ -74,7 +74,7 @@ const poll = async (
   overrides: Partial<{
     showNewRecords: boolean;
     lookBackDate: string;
-  }> = {},
+  }> = {}
 ): Promise<PollResult> => {
   const { result } = await invokeTrigger(
     triggerUnderTest,
@@ -86,7 +86,7 @@ const poll = async (
       showNewRecords: true,
       lookBackDate: undefined,
       ...overrides,
-    } as unknown as Parameters<typeof invokeTrigger>[3],
+    } as unknown as Parameters<typeof invokeTrigger>[3]
   );
   return result as unknown as PollResult;
 };

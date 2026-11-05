@@ -6,8 +6,7 @@ export const subsidiariesExample = [
 export const failedSyncsExample = [
   {
     error: {
-      message:
-        "The account period has closed and the account books cannot be updated.",
+      message: "The account period has closed and the account books cannot be updated.",
     },
     id: "d471d830-2e73-4082-8a75-68540f83e86e",
   },

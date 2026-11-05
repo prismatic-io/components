@@ -23,18 +23,12 @@ describe("lookBackDateClean", () => {
   });
 
   test("throws on invalid calendar date", () => {
-    expect(() => lookBackDateClean("2026-02-30")).toThrow(
-      "not a valid calendar date",
-    );
-    expect(() => lookBackDateClean("2026-13-01")).toThrow(
-      "not a valid calendar date",
-    );
+    expect(() => lookBackDateClean("2026-02-30")).toThrow("not a valid calendar date");
+    expect(() => lookBackDateClean("2026-13-01")).toThrow("not a valid calendar date");
   });
 
   test("throws on future date", () => {
-    expect(() => lookBackDateClean("2099-01-01")).toThrow(
-      "cannot be a future date",
-    );
+    expect(() => lookBackDateClean("2099-01-01")).toThrow("cannot be a future date");
   });
 });
 

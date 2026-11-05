@@ -79,8 +79,7 @@ export const createVersionInputs = {
   description: {
     ...description,
     placeholder: "Enter version description",
-    comments:
-      "A short summary of what the version delivers, shown on the release page.",
+    comments: "A short summary of what the version delivers, shown on the release page.",
   },
   versionName,
   releaseDetails,
@@ -107,8 +106,7 @@ export const updateVersionInputs = {
   description: {
     ...description,
     placeholder: "Enter version description",
-    comments:
-      "A short summary of what the version delivers, shown on the release page.",
+    comments: "A short summary of what the version delivers, shown on the release page.",
   },
   versionName: { ...versionName, required: false, clean: toOptionalString },
   releaseDetails,

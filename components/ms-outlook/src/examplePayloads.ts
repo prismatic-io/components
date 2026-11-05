@@ -39,8 +39,7 @@ export const listCalendarsExamplePayload = {
 
 export const createCalendarExamplePayload = {
   data: {
-    "@odata.context":
-      "https://graph.microsoft.com/v1.0/$metadata#me/calendars/$entity",
+    "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#me/calendars/$entity",
     "@odata.id":
       "https://graph.microsoft.com/v1.0/users('266efe5a-0fd7-4edd-877b-b2d1e561f193@ae01a323-3934-4475-a32d-af1274312bb0')/calendars('AAMkADJmMVAAA=')",
     id: "AAMkADJmMVAAA=",
@@ -64,8 +63,7 @@ export const createCalendarExamplePayload = {
 
 export const updateCalendarExamplePayload = {
   data: {
-    "@odata.context":
-      "https://graph.microsoft.com/v1.0/$metadata#me/calendars/$entity",
+    "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#me/calendars/$entity",
     "@odata.id":
       "https://graph.microsoft.com/v1.0/users('266efe5a-0fd7-4edd-877b-b2d1e561f193@ae01a323-3934-4475-a32d-af1274312bb0')/calendars('AAMkADJmMVAAA=')",
     id: "AAMkADJmMVAAA=",
@@ -92,8 +90,7 @@ export const deleteCalendarExamplePayload = { data: null };
 
 export const getCalendarEventExamplePayload = {
   data: {
-    "@odata.context":
-      "https://graph.microsoft.com/v1.0/$metadata#me/calendars/$entity",
+    "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#me/calendars/$entity",
     "@odata.id":
       "https://graph.microsoft.com/v1.0/users('ddfcd489-628b-40d7-b48b-57002df800e5@1717622f-1d94-4d0c-9d74-709fad664b77')/calendars('AAMkAGI2TGuLAAA=')",
     id: "AAMkAGI2TGuLAAA=",
@@ -195,8 +192,7 @@ export const listEventsExamplePayload = {
         "@odata.etag": 'W/"ZlnW4RIAV06KYYwlrfNZvQAAKGWwbw=="',
         id: "AAMkAGIAAAoZDOFAAA=",
         subject: "Orientation ",
-        bodyPreview:
-          "Please join us for the team orientation. Bring any questions you may have.",
+        bodyPreview: "Please join us for the team orientation. Bring any questions you may have.",
         body: {
           contentType: "html",
           content:
@@ -460,9 +456,7 @@ export const getMessageByIdExamplePayload = {
       } as Record<string, unknown>,
       attachments: [] as Array<{ contentType: string; data: unknown }>,
       text: "Example email body" as string | undefined,
-      html: '<div dir="ltr">Example email body<div><br></div></div>\n' as
-        | string
-        | false,
+      html: '<div dir="ltr">Example email body<div><br></div></div>\n' as string | false,
     },
     rawMessage: "Raw MIME message",
   },
@@ -498,8 +492,7 @@ export const createMailFolderSubscriptionExamplePayload = {
 
 export const listSubscriptionsExamplePayload = {
   data: {
-    "@odata.context":
-      "https://graph.microsoft.com/v1.0/$metadata#subscriptions",
+    "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#subscriptions",
     value: [
       {
         id: "e9d5b726-4478-4412-bfba-268530484566",
@@ -706,8 +699,7 @@ export const webhookLifecycleTriggerExamplePayload = {
     },
     pathFragment: "",
     webhookUrls: {
-      "Calendar Event Webhook Flow":
-        "https://hooks.example.com/trigger/EXAMPLE",
+      "Calendar Event Webhook Flow": "https://hooks.example.com/trigger/EXAMPLE",
     },
     webhookApiKeys: {
       "Calendar Event Webhook Flow": ["example-api-key"],
@@ -753,8 +745,7 @@ export const mailFolderWebhookTriggerExamplePayload = {
             resource: "me/mailFolders('Inbox')/messages/AAMkAGUAAAwTW09AAA=",
             resourceData: {
               "@odata.type": "#Microsoft.Graph.Message",
-              "@odata.id":
-                "me/mailFolders('Inbox')/messages/AAMkAGUAAAwTW09AAA=",
+              "@odata.id": "me/mailFolders('Inbox')/messages/AAMkAGUAAAwTW09AAA=",
               "@odata.etag": 'W/"CQAAABYAAADHcgC8Hl9tRZ/hc1wEUs1TAAAwR4Hg"',
               id: "AAMkAGUAAAwTW09AAA=",
             },

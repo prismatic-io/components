@@ -29,8 +29,7 @@ export const collectionMethod = input({
 export const autoAdvance = input({
   label: "Auto Advance",
   type: "boolean",
-  comments:
-    "When true, Stripe will automatically attempt collection of the invoice.",
+  comments: "When true, Stripe will automatically attempt collection of the invoice.",
   required: false,
   clean: util.types.toBool,
 });
@@ -90,17 +89,9 @@ export const createInvoiceInputs = {
   stripeConnection: connectionInput,
 };
 
-export const deleteInvoiceInputs = {
-  invoiceId,
-  timeout,
-  stripeConnection: connectionInput,
-};
+export const deleteInvoiceInputs = { invoiceId, timeout, stripeConnection: connectionInput };
 
-export const getInvoiceInputs = {
-  invoiceId,
-  timeout,
-  stripeConnection: connectionInput,
-};
+export const getInvoiceInputs = { invoiceId, timeout, stripeConnection: connectionInput };
 
 export const listInvoicesInputs = {
   timeout,

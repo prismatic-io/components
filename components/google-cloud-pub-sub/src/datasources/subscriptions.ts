@@ -28,12 +28,10 @@ export const subscriptions = dataSource({
       true,
     )) as pubsub_v1.Schema$ListSubscriptionsResponse;
     if (data.subscriptions) {
-      const result = data.subscriptions
-        .sort(sortByName)
-        .map<Element>((subscriptions) => ({
-          label: `${subscriptions.name} / ${subscriptions.topic}`,
-          key: util.types.toString(subscriptions.name),
-        }));
+      const result = data.subscriptions.sort(sortByName).map<Element>((subscriptions) => ({
+        label: `${subscriptions.name} / ${subscriptions.topic}`,
+        key: util.types.toString(subscriptions.name),
+      }));
       return { result };
     }
     return { result: [] };

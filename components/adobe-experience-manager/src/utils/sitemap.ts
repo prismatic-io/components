@@ -12,23 +12,16 @@ const XML_ENTITIES: Record<string, string> = {
 const decodeXml = (value: string): string =>
   value
     .replace(/^<!\[CDATA\[([\s\S]*)\]\]>$/, "$1")
-    .replace(
-      /&(amp|lt|gt|quot|apos);/g,
-      (entity) => XML_ENTITIES[entity] ?? entity,
-    )
+    .replace(/&(amp|lt|gt|quot|apos);/g, (entity) => XML_ENTITIES[entity] ?? entity)
     .trim();
 
 const readTag = (block: string, tag: string): string | null => {
-  const match = block.match(
-    new RegExp(`<(?:\\w+:)?${tag}[^>]*>([\\s\\S]*?)</(?:\\w+:)?${tag}>`),
-  );
+  const match = block.match(new RegExp(`<(?:\\w+:)?${tag}[^>]*>([\\s\\S]*?)</(?:\\w+:)?${tag}>`));
   return match ? decodeXml(match[1]) : null;
 };
 
 const readBlocks = (xml: string, tag: string): string[] =>
-  xml.match(
-    new RegExp(`<(?:\\w+:)?${tag}[\\s>][\\s\\S]*?</(?:\\w+:)?${tag}>`, "g"),
-  ) ?? [];
+  xml.match(new RegExp(`<(?:\\w+:)?${tag}[\\s>][\\s\\S]*?</(?:\\w+:)?${tag}>`, "g")) ?? [];
 
 export const parseSitemap = (xml: string): ParsedSitemap => {
   const toIsoOrNull = (value: string | null): string | null => {
@@ -58,11 +51,7 @@ export const filterPages = (
     modifiedAfter,
     includePathPrefixes = [],
     excludePathPrefixes = [],
-  }: {
-    modifiedAfter?: string;
-    includePathPrefixes?: string[];
-    excludePathPrefixes?: string[];
-  },
+  }: { modifiedAfter?: string; includePathPrefixes?: string[]; excludePathPrefixes?: string[] },
 ): PageRef[] =>
   pages.filter((page) => {
     let path: string;
@@ -76,11 +65,7 @@ export const filterPages = (
       !includePathPrefixes.some((prefix) => path.startsWith(prefix))
     )
       return false;
-    if (excludePathPrefixes.some((prefix) => path.startsWith(prefix)))
-      return false;
+    if (excludePathPrefixes.some((prefix) => path.startsWith(prefix))) return false;
     if (!modifiedAfter) return true;
-    return (
-      page.lastmod !== null &&
-      toIsoDate(page.lastmod) > toIsoDate(modifiedAfter)
-    );
+    return page.lastmod !== null && toIsoDate(page.lastmod) > toIsoDate(modifiedAfter);
   });

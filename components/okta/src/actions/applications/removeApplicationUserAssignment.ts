@@ -10,10 +10,7 @@ export const removeApplicationUserAssignment = action({
       "Removes an application assignment from a user, revoking access to the application.",
   },
   inputs: deleteApplicationUserAssignmentsInputs,
-  perform: async (
-    context,
-    { connection, applicationId, userId, sendEmail },
-  ) => {
+  perform: async (context, { connection, applicationId, userId, sendEmail }) => {
     const client = await createClient(connection, context.debug.enabled);
     await client.delete(
       `/apps/${encodeURIComponent(applicationId)}/users/${encodeURIComponent(userId)}`,

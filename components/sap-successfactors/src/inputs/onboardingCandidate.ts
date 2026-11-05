@@ -1,11 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { createCandidateInfoExample } from "../exampleInputs";
-import {
-  $select,
-  additionalInputs,
-  connection,
-  defaultListInputs,
-} from "./common";
+import { $select, additionalInputs, connection, defaultListInputs } from "./common";
 
 const applicantId = input({
   label: "Applicant ID",

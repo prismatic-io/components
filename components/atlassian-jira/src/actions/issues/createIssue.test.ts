@@ -10,9 +10,7 @@ afterEach(() => nock.cleanAll());
 
 type VersionRefs = Array<{ id: string }>;
 
-const create = (
-  overrides: { fixVersions?: VersionRefs; versions?: VersionRefs } = {},
-) =>
+const create = (overrides: { fixVersions?: VersionRefs; versions?: VersionRefs } = {}) =>
   invoke(createIssue, {
     jiraConnection: basicConnection(),
     projectId: "10000",
@@ -41,8 +39,7 @@ describe("createIssue", () => {
   test("sends the version references the inputs cleaned", async () => {
     const scope = expectFields(
       (fields) =>
-        JSON.stringify(fields.fixVersions) ===
-          JSON.stringify([{ id: "10001" }, { id: "10002" }]) &&
+        JSON.stringify(fields.fixVersions) === JSON.stringify([{ id: "10001" }, { id: "10002" }]) &&
         JSON.stringify(fields.versions) === JSON.stringify([{ id: "10000" }]),
     ).reply(201, createIssueExamplePayload.data);
 

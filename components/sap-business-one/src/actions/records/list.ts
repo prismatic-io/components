@@ -28,11 +28,7 @@ export const listRecords = action({
       recordType,
     },
   ) => {
-    const client = await createClient(
-      connection,
-      context,
-      context.debug.enabled,
-    );
+    const client = await createClient(connection, context, context.debug.enabled);
 
     const data = await fetchAllData(
       client,

@@ -1,11 +1,6 @@
 import { invoke } from "@prismatic-io/spectral/testing";
 import { getCustomAccountingFieldOptionResponse } from "../../../examplePayloads/customAccountingFieldOption";
-import {
-  apiPath,
-  rampNock,
-  resetNock,
-  testConnection,
-} from "../../../testHarness";
+import { apiPath, rampNock, resetNock, testConnection } from "../../../testHarness";
 import { updateCustomAccountingFieldOption } from "./update";
 
 const OPTION_ID = "50097";
@@ -17,10 +12,7 @@ describe("updateCustomAccountingFieldOption", () => {
   test("maps the inputs onto the request body and returns the updated option", async () => {
     rampNock()
       .patch(PATH, { reactivate: true, value: "Office/Admin:Utilities" })
-      .reply(200, {
-        ...getCustomAccountingFieldOptionResponse,
-        value: "Office/Admin:Utilities",
-      });
+      .reply(200, { ...getCustomAccountingFieldOptionResponse, value: "Office/Admin:Utilities" });
 
     const { result } = await invoke(updateCustomAccountingFieldOption, {
       connection: testConnection,

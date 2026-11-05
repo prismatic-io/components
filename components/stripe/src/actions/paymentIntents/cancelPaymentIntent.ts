@@ -12,10 +12,7 @@ export const cancelPaymentIntent = action({
       "Cancel a payment intent. A payment intent can be canceled when it is in one of these statuses: requires_payment_method, requires_capture, requires_confirmation, requires_action, or, in rare cases, processing.",
   },
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { timeout, stripeConnection, paymentIntentId, cancellationReason },
-  ) => {
+  perform: async (context, { timeout, stripeConnection, paymentIntentId, cancellationReason }) => {
     const client = createStripeClient({
       stripeConnection,
       timeout,
@@ -33,10 +30,7 @@ export const cancelPaymentIntent = action({
     _context,
     { paymentIntentId, cancellationReason },
   ): Promise<{ data: unknown }> => {
-    const intent = cancelPaymentIntentExamplePayload.data as Record<
-      string,
-      unknown
-    >;
+    const intent = cancelPaymentIntentExamplePayload.data as Record<string, unknown>;
 
     return {
       data: {

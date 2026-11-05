@@ -14,10 +14,7 @@ const replicationStatusSchema = {
   enum: ["PUBLISHED", "UNPUBLISHED", "MODIFIED", "NEVER_PUBLISHED"],
 };
 
-const previewStatusSchema = {
-  type: "string",
-  enum: ["IN_SYNC", "OUT_OF_SYNC"],
-};
+const previewStatusSchema = { type: "string", enum: ["IN_SYNC", "OUT_OF_SYNC"] };
 
 const contentFragmentStatusSchema = {
   type: "string",
@@ -218,18 +215,9 @@ export const contentFragmentSchema = {
               name: { type: "string" },
               type: {
                 type: "string",
-                enum: [
-                  "string",
-                  "integer",
-                  "number",
-                  "boolean",
-                  "array",
-                  "object",
-                ],
+                enum: ["string", "integer", "number", "boolean", "array", "object"],
               },
-              value: {
-                type: ["string", "number", "boolean", "array", "object"],
-              },
+              value: { type: ["string", "number", "boolean", "array", "object"] },
               title: { type: "string" },
             },
             required: ["name", "value"],
@@ -275,10 +263,7 @@ export const modelFieldSchema = {
     maxLength: { type: "integer" },
     unique: { type: "boolean" },
     translatable: { type: "boolean" },
-    validationType: {
-      type: "string",
-      enum: ["none", "email", "url", "custom"],
-    },
+    validationType: { type: "string", enum: ["none", "email", "url", "custom"] },
     customValidationRegex: { type: "string" },
     customErrorMessage: { type: "string" },
     mimeType: {
@@ -477,11 +462,5 @@ export const folderListingItemSchema = {
 
 export const jobStateSchema = {
   type: "string",
-  enum: [
-    "QUEUED",
-    "PROCESSING",
-    "COMPLETED",
-    "COMPLETED_WITH_ERRORS",
-    "FAILED",
-  ],
+  enum: ["QUEUED", "PROCESSING", "COMPLETED", "COMPLETED_WITH_ERRORS", "FAILED"],
 };

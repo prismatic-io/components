@@ -13,7 +13,7 @@ export const renameConversation = action({
   performSafety: "notAllowed",
   perform: async (
     { debug: { enabled: debug } },
-    { connection, newConversationName, conversationName },
+    { connection, newConversationName, conversationName }
   ) => {
     debugLogger({ debug, newConversationName, conversationName });
     const client = await createOauthClient({
@@ -28,7 +28,7 @@ export const renameConversation = action({
   },
   examplePerform: async (
     _context,
-    { newConversationName },
+    { newConversationName }
   ): Promise<{ data: unknown }> => {
     const name = newConversationName
       .toLowerCase()

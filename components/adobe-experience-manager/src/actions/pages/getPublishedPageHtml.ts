@@ -13,17 +13,12 @@ export const getPublishedPageHtml = action({
   },
   performSafety: "notAllowed",
   perform: async (context, { pageUrl }) => {
-    const source = createSitemapPageSource(
-      createPublicClient(context.debug.enabled),
-    );
+    const source = createSitemapPageSource(createPublicClient(context.debug.enabled));
     const data = await source.getPageContent(pageUrl);
     return { data };
   },
   inputs: getPublishedPageHtmlInputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getPublishedPageHtmlOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getPublishedPageHtmlOutputSchema }),
   examplePerform: async () => getPublishedPageHtmlExamplePayload,
   examplePayload: getPublishedPageHtmlExamplePayload,
 });

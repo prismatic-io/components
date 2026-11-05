@@ -25,10 +25,7 @@ export const copyFile = action({
     };
   },
   inputs: copyFileInputs,
-  examplePerform: async (
-    _context,
-    { fileName },
-  ): Promise<{ data: unknown }> => ({
+  examplePerform: async (_context, { fileName }): Promise<{ data: unknown }> => ({
     data: {
       ...copyFileExamplePayload.data,
       name: fileName || copyFileExamplePayload.data.name,

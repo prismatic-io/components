@@ -1,7 +1,4 @@
-import {
-  createConnection,
-  invokeDataSource,
-} from "@prismatic-io/spectral/testing";
+import { createConnection, invokeDataSource } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { stripeConnection } from "../connections/apiKey";
 import { listBalanceTransactionsExamplePayload } from "../examplePayloads/balanceTransactions";
@@ -32,12 +29,7 @@ const conn = createConnection(stripeConnection, { apiKey: "sk_test_123" });
 
 const params = (values: Record<string, unknown>) => values as never;
 
-const emptyList = (url: string) => ({
-  object: "list",
-  url,
-  has_more: false,
-  data: [],
-});
+const emptyList = (url: string) => ({ object: "list", url, has_more: false, data: [] });
 
 const labelAt = (result: unknown, index: number) =>
   (result as Array<Record<string, unknown>>)[index].label;
@@ -87,10 +79,7 @@ describe("selectBalanceTransaction", () => {
 
 describe("selectCard", () => {
   it("returns a key/label pair per card payment method", async () => {
-    nock(BASE)
-      .get("/v1/payment_methods")
-      .query(true)
-      .reply(200, listCardsExamplePayload.data);
+    nock(BASE).get("/v1/payment_methods").query(true).reply(200, listCardsExamplePayload.data);
 
     const { result } = await invokeDataSource(
       selectCard,
@@ -102,10 +91,7 @@ describe("selectCard", () => {
   });
 
   it("returns an empty picklist when the customer has no cards", async () => {
-    nock(BASE)
-      .get("/v1/payment_methods")
-      .query(true)
-      .reply(200, emptyList("/v1/payment_methods"));
+    nock(BASE).get("/v1/payment_methods").query(true).reply(200, emptyList("/v1/payment_methods"));
 
     const { result } = await invokeDataSource(
       selectCard,
@@ -118,30 +104,18 @@ describe("selectCard", () => {
 
 describe("selectCharge", () => {
   it("returns a key/label pair per charge", async () => {
-    nock(BASE)
-      .get("/v1/charges")
-      .query(true)
-      .reply(200, listChargesExamplePayload.data);
+    nock(BASE).get("/v1/charges").query(true).reply(200, listChargesExamplePayload.data);
 
-    const { result } = await invokeDataSource(
-      selectCharge,
-      params({ stripeConnection: conn }),
-    );
+    const { result } = await invokeDataSource(selectCharge, params({ stripeConnection: conn }));
 
     expectPicklist(result, ["ch_3MmlLrLkdIwHu7ix0snN0B15"]);
     expect(labelAt(result, 0)).toBe("Subscription payment - 2000 USD");
   });
 
   it("returns an empty picklist when Stripe has no charges", async () => {
-    nock(BASE)
-      .get("/v1/charges")
-      .query(true)
-      .reply(200, emptyList("/v1/charges"));
+    nock(BASE).get("/v1/charges").query(true).reply(200, emptyList("/v1/charges"));
 
-    const { result } = await invokeDataSource(
-      selectCharge,
-      params({ stripeConnection: conn }),
-    );
+    const { result } = await invokeDataSource(selectCharge, params({ stripeConnection: conn }));
 
     expect(result).toEqual([]);
   });
@@ -159,9 +133,7 @@ describe("selectCheckoutSession", () => {
       params({ stripeConnection: conn }),
     );
 
-    expectPicklist(result, [
-      "cs_test_b1Gk9xQvR3mLpT7wZnY4dHsJ2fCaX8eUoN6iKbMv0rQtLyPh5jWgD1SzAu",
-    ]);
+    expectPicklist(result, ["cs_test_b1Gk9xQvR3mLpT7wZnY4dHsJ2fCaX8eUoN6iKbMv0rQtLyPh5jWgD1SzAu"]);
   });
 
   it("returns an empty picklist when Stripe has no checkout sessions", async () => {
@@ -181,30 +153,18 @@ describe("selectCheckoutSession", () => {
 
 describe("selectCustomer", () => {
   it("returns a key/label pair per customer", async () => {
-    nock(BASE)
-      .get("/v1/customers")
-      .query(true)
-      .reply(200, listCustomersExamplePayload.data);
+    nock(BASE).get("/v1/customers").query(true).reply(200, listCustomersExamplePayload.data);
 
-    const { result } = await invokeDataSource(
-      selectCustomer,
-      params({ stripeConnection: conn }),
-    );
+    const { result } = await invokeDataSource(selectCustomer, params({ stripeConnection: conn }));
 
     expectPicklist(result, ["cus_NffrFeUfNV2Hib"]);
     expect(labelAt(result, 0)).toBe("jenny.rosen@example.com");
   });
 
   it("returns an empty picklist when Stripe has no customers", async () => {
-    nock(BASE)
-      .get("/v1/customers")
-      .query(true)
-      .reply(200, emptyList("/v1/customers"));
+    nock(BASE).get("/v1/customers").query(true).reply(200, emptyList("/v1/customers"));
 
-    const { result } = await invokeDataSource(
-      selectCustomer,
-      params({ stripeConnection: conn }),
-    );
+    const { result } = await invokeDataSource(selectCustomer, params({ stripeConnection: conn }));
 
     expect(result).toEqual([]);
   });
@@ -212,29 +172,17 @@ describe("selectCustomer", () => {
 
 describe("selectDispute", () => {
   it("returns a key/label pair per dispute", async () => {
-    nock(BASE)
-      .get("/v1/disputes")
-      .query(true)
-      .reply(200, listDisputesExamplePayload.data);
+    nock(BASE).get("/v1/disputes").query(true).reply(200, listDisputesExamplePayload.data);
 
-    const { result } = await invokeDataSource(
-      selectDispute,
-      params({ stripeConnection: conn }),
-    );
+    const { result } = await invokeDataSource(selectDispute, params({ stripeConnection: conn }));
 
     expectPicklist(result, ["dp_1MtJUT2eZvKYlo2CNaw2HvEv"]);
   });
 
   it("returns an empty picklist when Stripe has no disputes", async () => {
-    nock(BASE)
-      .get("/v1/disputes")
-      .query(true)
-      .reply(200, emptyList("/v1/disputes"));
+    nock(BASE).get("/v1/disputes").query(true).reply(200, emptyList("/v1/disputes"));
 
-    const { result } = await invokeDataSource(
-      selectDispute,
-      params({ stripeConnection: conn }),
-    );
+    const { result } = await invokeDataSource(selectDispute, params({ stripeConnection: conn }));
 
     expect(result).toEqual([]);
   });
@@ -242,29 +190,17 @@ describe("selectDispute", () => {
 
 describe("selectInvoice", () => {
   it("returns a key/label pair per invoice", async () => {
-    nock(BASE)
-      .get("/v1/invoices")
-      .query(true)
-      .reply(200, listInvoicesExamplePayload.data);
+    nock(BASE).get("/v1/invoices").query(true).reply(200, listInvoicesExamplePayload.data);
 
-    const { result } = await invokeDataSource(
-      selectInvoice,
-      params({ stripeConnection: conn }),
-    );
+    const { result } = await invokeDataSource(selectInvoice, params({ stripeConnection: conn }));
 
     expectPicklist(result, ["in_1MtHbELkdIwHu7ixl4OzzPMv"]);
   });
 
   it("returns an empty picklist when Stripe has no invoices", async () => {
-    nock(BASE)
-      .get("/v1/invoices")
-      .query(true)
-      .reply(200, emptyList("/v1/invoices"));
+    nock(BASE).get("/v1/invoices").query(true).reply(200, emptyList("/v1/invoices"));
 
-    const { result } = await invokeDataSource(
-      selectInvoice,
-      params({ stripeConnection: conn }),
-    );
+    const { result } = await invokeDataSource(selectInvoice, params({ stripeConnection: conn }));
 
     expect(result).toEqual([]);
   });
@@ -286,10 +222,7 @@ describe("selectPaymentIntent", () => {
   });
 
   it("returns an empty picklist when Stripe has no payment intents", async () => {
-    nock(BASE)
-      .get("/v1/payment_intents")
-      .query(true)
-      .reply(200, emptyList("/v1/payment_intents"));
+    nock(BASE).get("/v1/payment_intents").query(true).reply(200, emptyList("/v1/payment_intents"));
 
     const { result } = await invokeDataSource(
       selectPaymentIntent,
@@ -302,30 +235,18 @@ describe("selectPaymentIntent", () => {
 
 describe("selectPrice", () => {
   it("returns a key/label pair per price", async () => {
-    nock(BASE)
-      .get("/v1/prices")
-      .query(true)
-      .reply(200, listPricesExamplePayload.data);
+    nock(BASE).get("/v1/prices").query(true).reply(200, listPricesExamplePayload.data);
 
-    const { result } = await invokeDataSource(
-      selectPrice,
-      params({ stripeConnection: conn }),
-    );
+    const { result } = await invokeDataSource(selectPrice, params({ stripeConnection: conn }));
 
     expectPicklist(result, ["price_1MoBy5LkdIwHu7ixZhnattbH"]);
     expect(labelAt(result, 0)).toBe("Standard Monthly - usd - recurring");
   });
 
   it("returns an empty picklist when Stripe has no prices", async () => {
-    nock(BASE)
-      .get("/v1/prices")
-      .query(true)
-      .reply(200, emptyList("/v1/prices"));
+    nock(BASE).get("/v1/prices").query(true).reply(200, emptyList("/v1/prices"));
 
-    const { result } = await invokeDataSource(
-      selectPrice,
-      params({ stripeConnection: conn }),
-    );
+    const { result } = await invokeDataSource(selectPrice, params({ stripeConnection: conn }));
 
     expect(result).toEqual([]);
   });
@@ -333,30 +254,18 @@ describe("selectPrice", () => {
 
 describe("selectProduct", () => {
   it("returns a key/label pair per product", async () => {
-    nock(BASE)
-      .get("/v1/products")
-      .query(true)
-      .reply(200, listProductsExamplePayload.data);
+    nock(BASE).get("/v1/products").query(true).reply(200, listProductsExamplePayload.data);
 
-    const { result } = await invokeDataSource(
-      selectProduct,
-      params({ stripeConnection: conn }),
-    );
+    const { result } = await invokeDataSource(selectProduct, params({ stripeConnection: conn }));
 
     expectPicklist(result, ["prod_NWjs8kKbJWmuuc"]);
     expect(labelAt(result, 0)).toBe("T-shirt");
   });
 
   it("returns an empty picklist when Stripe has no products", async () => {
-    nock(BASE)
-      .get("/v1/products")
-      .query(true)
-      .reply(200, emptyList("/v1/products"));
+    nock(BASE).get("/v1/products").query(true).reply(200, emptyList("/v1/products"));
 
-    const { result } = await invokeDataSource(
-      selectProduct,
-      params({ stripeConnection: conn }),
-    );
+    const { result } = await invokeDataSource(selectProduct, params({ stripeConnection: conn }));
 
     expect(result).toEqual([]);
   });
@@ -378,10 +287,7 @@ describe("selectSubscription", () => {
   });
 
   it("returns an empty picklist when Stripe has no subscriptions", async () => {
-    nock(BASE)
-      .get("/v1/subscriptions")
-      .query(true)
-      .reply(200, emptyList("/v1/subscriptions"));
+    nock(BASE).get("/v1/subscriptions").query(true).reply(200, emptyList("/v1/subscriptions"));
 
     const { result } = await invokeDataSource(
       selectSubscription,

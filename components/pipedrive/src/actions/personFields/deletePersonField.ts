@@ -17,8 +17,5 @@ export const deletePersonField = action({
   },
   inputs: deletePersonFieldInputs,
   examplePayload: deletePersonFieldExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: deletePersonFieldOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: deletePersonFieldOutputSchema }),
 });

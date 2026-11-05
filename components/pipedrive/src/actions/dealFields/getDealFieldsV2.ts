@@ -12,15 +12,8 @@ export const getDealFieldsV2 = action({
     description: "Gets all deal fields.",
   },
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { connection, pagination: { limit, cursor } = {}, fetchAll },
-  ) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      WebhookVersion.V2,
-    );
+  perform: async (context, { connection, pagination: { limit, cursor } = {}, fetchAll }) => {
+    const client = createClient(connection, context.debug.enabled, WebhookVersion.V2);
 
     const data = await paginateRecordsWithCursor(
       client,
@@ -35,8 +28,5 @@ export const getDealFieldsV2 = action({
   },
   inputs: getDealFieldsV2Inputs,
   examplePayload: getDealFieldsV2ExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getDealFieldsV2OutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getDealFieldsV2OutputSchema }),
 });

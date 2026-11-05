@@ -12,11 +12,7 @@ const TASK_ID = "01gzSlKkIUSUl6DF_EilrmQAKDhh";
 const DETAILS_URL = `/v1.0/planner/tasks/${TASK_ID}/details`;
 const ETAG = 'W/"JzEtVGFza0RldGFpbHNAQEBAQEBAQEBAQEBAQEBARCc="';
 
-const connection = createConnection(
-  templatedOauth,
-  {},
-  { access_token: "test-token" },
-);
+const connection = createConnection(templatedOauth, {}, { access_token: "test-token" });
 const params = {
   connection,
   groupId: undefined,
@@ -62,18 +58,14 @@ test("builds the checklist and reference open types with generated and encoded k
     },
   });
 
-  expect(patchedBody.description).toBe(
-    "Confirm every contact before the launch.",
-  );
+  expect(patchedBody.description).toBe("Confirm every contact before the launch.");
   expect(patchedBody.previewType).toBe("description");
   expect(Object.values(patchedBody.checklist)).toContainEqual({
     "@odata.type": ODATA_TYPE.checklistItem,
     title: "Confirm the mailing address",
     isChecked: true,
   });
-  expect(
-    patchedBody.checklist["95e27074-6c4a-447a-aa24-9d718a0b86fa"],
-  ).toBeNull();
+  expect(patchedBody.checklist["95e27074-6c4a-447a-aa24-9d718a0b86fa"]).toBeNull();
   expect(patchedBody.references).toEqual({
     "https%3A//example%2Ecom/spec": {
       "@odata.type": ODATA_TYPE.externalReference,
@@ -94,25 +86,20 @@ test("omits the checklist and references keys entirely when neither was supplied
       return [200, updateTaskDetailsExamplePayload.data];
     });
 
-  await invoke(updateTaskDetails, {
-    ...params,
-    description: "Just the description.",
-  });
+  await invoke(updateTaskDetails, { ...params, description: "Just the description." });
 
   expect(patchedBody).toEqual({ description: "Just the description." });
 });
 
 test("surfaces a rejected update", async () => {
-  const etagScope = nock(BASE)
-    .get(DETAILS_URL)
-    .reply(200, { "@odata.etag": ETAG });
+  const etagScope = nock(BASE).get(DETAILS_URL).reply(200, { "@odata.etag": ETAG });
   const errorScope = nock(BASE)
     .patch(DETAILS_URL)
     .reply(400, { error: { code: "invalidRequest" } });
 
-  await expect(
-    invoke(updateTaskDetails, { ...params, description: "x" }),
-  ).rejects.toThrow(/status code 400/);
+  await expect(invoke(updateTaskDetails, { ...params, description: "x" })).rejects.toThrow(
+    /status code 400/,
+  );
   expect(etagScope.isDone()).toBe(true);
   expect(errorScope.isDone()).toBe(true);
 });

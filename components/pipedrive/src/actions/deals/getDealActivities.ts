@@ -13,36 +13,15 @@ export const getDealActivities = action({
   performSafety: "notAllowed",
   perform: async (
     context,
-    {
-      connection,
-      id,
-      pagination: { limit, cursor } = {},
-      done,
-      sortBy,
-      sortDirection,
-    },
+    { connection, id, pagination: { limit, cursor } = {}, done, sortBy, sortDirection },
   ) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      WebhookVersion.V2,
-    );
+    const client = createClient(connection, context.debug.enabled, WebhookVersion.V2);
     const { data } = await client.get("/activities", {
-      params: {
-        limit,
-        done,
-        deal_id: id,
-        sort_by: sortBy,
-        sort_direction: sortDirection,
-        cursor,
-      },
+      params: { limit, done, deal_id: id, sort_by: sortBy, sort_direction: sortDirection, cursor },
     });
     return { data };
   },
   inputs: getDealActivitiesInputs,
   examplePayload: getDealActivitiesExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getDealActivitiesOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getDealActivitiesOutputSchema }),
 });

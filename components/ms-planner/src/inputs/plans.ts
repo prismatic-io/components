@@ -1,11 +1,6 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { cleanCategoryLabels, cleanStringList } from "../utils";
-import {
-  connectionInput,
-  etagInput,
-  groupIdInput,
-  planIdInput,
-} from "./common";
+import { connectionInput, etagInput, groupIdInput, planIdInput } from "./common";
 
 const planTitleInput = input({
   label: "Title",
@@ -59,8 +54,7 @@ const unshareWithInput = input({
   dataSource: "selectUser",
   example: '["48d31887-5fad-4d73-a9f5-3c356e68a038"]',
   placeholder: "Select users to remove",
-  comments:
-    "Users to remove from the plan's shared-with list, identified by object ID.",
+  comments: "Users to remove from the plan's shared-with list, identified by object ID.",
   clean: cleanStringList,
 });
 

@@ -37,9 +37,7 @@ describe("cleanCommaSeparatedString", () => {
   });
 
   test("throws on a non-numeric entry", () => {
-    expect(() => cleanCommaSeparatedString("1,abc")).toThrow(
-      "cannot be coerced to a number",
-    );
+    expect(() => cleanCommaSeparatedString("1,abc")).toThrow("cannot be coerced to a number");
   });
 });
 
@@ -54,9 +52,7 @@ describe("cleanNumberArray", () => {
   });
 
   test("throws on a non-numeric entry", () => {
-    expect(() => cleanNumberArray(["x"])).toThrow(
-      "cannot be coerced to a number",
-    );
+    expect(() => cleanNumberArray(["x"])).toThrow("cannot be coerced to a number");
   });
 });
 
@@ -113,9 +109,7 @@ describe("toKeyValuePairList", () => {
 
 describe("toTimestampIfDate", () => {
   test("converts a Date to Unix milliseconds", () => {
-    expect(toTimestampIfDate(new Date("2026-01-01T00:00:00.000Z"))).toBe(
-      1767225600000,
-    );
+    expect(toTimestampIfDate(new Date("2026-01-01T00:00:00.000Z"))).toBe(1767225600000);
   });
 
   test("passes every non-Date value through unchanged (never throws)", () => {

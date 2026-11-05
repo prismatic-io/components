@@ -20,9 +20,7 @@ export const selectWebhookSubscription = dataSource({
 
     const result = (allSubscriptions.subscriptions as Record<string, unknown>[])
       .map((subscription: Record<string, unknown>) => {
-        const eventTypesArray = subscription.event_types as
-          | string[]
-          | undefined;
+        const eventTypesArray = subscription.event_types as string[] | undefined;
         const eventTypes = eventTypesArray?.slice(0, 2).join(", ") || "";
         const label = subscription.name
           ? `${subscription.name as string} (${eventTypes})`

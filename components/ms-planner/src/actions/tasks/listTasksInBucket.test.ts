@@ -6,11 +6,7 @@ import { listTasksInBucketExamplePayload } from "../../examplePayloads";
 import { listTasksInBucket } from "./listTasksInBucket";
 
 const BASE = "https://graph.microsoft.com";
-const connection = createConnection(
-  templatedOauth,
-  {},
-  { access_token: "test-token" },
-);
+const connection = createConnection(templatedOauth, {}, { access_token: "test-token" });
 
 const params = {
   connection,
@@ -34,10 +30,7 @@ test("returns every task the paged walk collected", async () => {
 
   const { result } = await invoke(listTasksInBucket, params);
 
-  expect(result.data).toEqual({
-    ...listTasksInBucketExamplePayload.data,
-    truncated: false,
-  });
+  expect(result.data).toEqual({ ...listTasksInBucketExamplePayload.data, truncated: false });
 });
 
 test("surfaces a failed list request", async () => {
@@ -45,8 +38,6 @@ test("surfaces a failed list request", async () => {
     .get("/v1.0/planner/buckets/hsOf2dhOJkqyYYZEtdzDe2QAIUCR/tasks")
     .reply(403, { error: { code: "accessDenied" } });
 
-  await expect(invoke(listTasksInBucket, params)).rejects.toThrow(
-    /status code 403/,
-  );
+  await expect(invoke(listTasksInBucket, params)).rejects.toThrow(/status code 403/);
   expect(errorScope.isDone()).toBe(true);
 });

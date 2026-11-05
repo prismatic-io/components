@@ -8,20 +8,12 @@ export const createTeamMember = action({
     label: "Create Team Member",
     description: "Creates a new team member.",
   },
-  perform: async (
-    context,
-    { teamMember, idempotencyKey, squareConnection },
-  ) => {
+  perform: async (context, { teamMember, idempotencyKey, squareConnection }) => {
     if (!teamMember.given_name || !teamMember.family_name) {
-      throw new Error(
-        "`given_name` and `family_name` are required for a team member.",
-      );
+      throw new Error("`given_name` and `family_name` are required for a team member.");
     }
 
-    const client = await createAuthorizedClient(
-      squareConnection,
-      context.debug.enabled,
-    );
+    const client = await createAuthorizedClient(squareConnection, context.debug.enabled);
 
     const requestBody = {
       idempotency_key: idempotencyKey,

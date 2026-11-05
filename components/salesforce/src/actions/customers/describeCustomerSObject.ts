@@ -7,8 +7,7 @@ import { describeCustomerSObjectExamplePayload } from "../../examplePayloads";
 export const describeCustomerSObject = action({
   display: {
     label: "Describe Customer SObject",
-    description:
-      "Describe metadata attributes of a Salesforce Customer object.",
+    description: "Describe metadata attributes of a Salesforce Customer object.",
   },
   performSafety: "safe",
   perform: async (_context, { version, connection }) => {

@@ -2,17 +2,8 @@ import { pollingTrigger } from "@prismatic-io/spectral";
 import { getClient } from "../client";
 import { POLL_RESOURCE_CONFIG } from "../constants";
 import { pollChangesInputs } from "../inputs/polling";
-import type {
-  PollingState,
-  Sage200Changes,
-  Sage200Record,
-  Sage200RecordChange,
-} from "../types";
-import {
-  filterByTimestamp,
-  resolvePollWindow,
-  resolveSage200RecordChanges,
-} from "../util";
+import type { PollingState, Sage200Changes, Sage200Record, Sage200RecordChange } from "../types";
+import { filterByTimestamp, resolvePollWindow, resolveSage200RecordChanges } from "../util";
 
 export const pollChangesTrigger = pollingTrigger({
   display: {
@@ -35,11 +26,7 @@ export const pollChangesTrigger = pollingTrigger({
 
     const now = new Date().toISOString();
     const state = context.polling.getState() as PollingState;
-    const { lastPolledAt, includeNew, includeUpdated } = resolvePollWindow(
-      state,
-      params,
-      now,
-    );
+    const { lastPolledAt, includeNew, includeUpdated } = resolvePollWindow(state, params, now);
 
     if (!includeNew && !includeUpdated) {
       context.polling.setState({ lastPolledAt: now });
@@ -49,12 +36,7 @@ export const pollChangesTrigger = pollingTrigger({
       };
     }
 
-    const client = getClient(
-      params.connection,
-      context.debug.enabled,
-      params.site,
-      params.company,
-    );
+    const client = getClient(params.connection, context.debug.enabled, params.site, params.company);
 
     const { data } = await client.get<Sage200Record[]>(config.endpoint, {
       params: { $filter: `date_time_updated gt ${lastPolledAt}` },

@@ -35,8 +35,7 @@ export const getJobExamplePayload = {
     title: "Software Engineer",
     jobFamilyCode: "ENG",
     isActive: true,
-    longDescription:
-      "Designs, develops, and maintains software applications and systems.",
+    longDescription: "Designs, develops, and maintains software applications and systems.",
     jobEE0Category: "Professional",
     jobGroup: "Engineering",
     flsaTypeCode: "EXEMPT",
@@ -924,8 +923,7 @@ export const createNewHireExamplePayload = {
     locationCode: "ATL-HQ",
     companyId: "COMP-001",
     companyName: "ACME Corporation",
-    message:
-      "New hire record created successfully. Onboarding process initiated.",
+    message: "New hire record created successfully. Onboarding process initiated.",
     onboardingLink: "https://onboarding.ukg.com/portal/newhire/NH-12349",
   },
 };
@@ -1156,11 +1154,7 @@ export const getInProgressNewHiresExamplePayload = {
             comments: "Requires a black phone",
           },
         ],
-        summaryEmailRecipients: [
-          "first@last.com",
-          "last@beuh.com",
-          "Joe@erad.com",
-        ],
+        summaryEmailRecipients: ["first@last.com", "last@beuh.com", "Joe@erad.com"],
       },
       identityUserId: "05882bc4-7ae6-40b5-b1ee-2e56dd37bb49",
       externalUserId: "b7a4fd34-73c7-43d6-aaab-7b2bc20ed50f",
@@ -1168,8 +1162,7 @@ export const getInProgressNewHiresExamplePayload = {
       ukgProStatus: "Not in Core",
       personalMessage:
         "Hugo, I was very impressed with your passion. I am looking forward to working with you and I know your expertise in this space will help our team get to the next level.",
-      pastStartDateReason:
-        "An internal audit revealed that the new hire was not initiated",
+      pastStartDateReason: "An internal audit revealed that the new hire was not initiated",
       id: "05882bc4-7ae6-40b5-b1ee-2e56dd37bb49",
       createdAt: "2018-05-29T19:30:35.95Z",
       updatedAt: "2018-06-07T17:44:25.378Z",
@@ -1493,8 +1486,7 @@ export const importXmlDataExamplePayload = {
     stagingId: "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
     dateTimeCreated: "2024-02-15T14:30:00.000Z",
     fileName: "newhire-batch-2024-02-15.xml",
-    message:
-      "XML transaction submitted successfully. Use stagingId to check status.",
+    message: "XML transaction submitted successfully. Use stagingId to check status.",
   },
 };
 

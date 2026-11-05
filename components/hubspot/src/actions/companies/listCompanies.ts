@@ -21,10 +21,7 @@ export const listCompanies = action({
       debugRequest,
     });
 
-    const parameterizedProperties = getProps(
-      COMPANY_PROPS,
-      params.additionalProperties || [],
-    );
+    const parameterizedProperties = getProps(COMPANY_PROPS, params.additionalProperties || []);
     const url = hubspotPaths.objects("companies");
     const configParams = {
       ...parameterizedProperties,
@@ -33,15 +30,9 @@ export const listCompanies = action({
       associations: params.associationsList,
       archived: params.archived,
     };
-    const data = await getAllPaginatedData(
-      client,
-      url,
-      params.fetchAll,
-      false,
-      {
-        params: configParams,
-      },
-    );
+    const data = await getAllPaginatedData(client, url, params.fetchAll, false, {
+      params: configParams,
+    });
 
     return {
       data,
@@ -52,8 +43,5 @@ export const listCompanies = action({
     data: listCompaniesExamplePayload.data,
   }),
   examplePayload: listCompaniesExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: paginatedListSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: paginatedListSchema }),
 });

@@ -7,8 +7,7 @@ import { getAboutExamplePayload } from "../../examplePayloads";
 export const getAbout = action({
   display: {
     label: "Get About",
-    description:
-      "Gets information about the user's Drive and system capabilities",
+    description: "Gets information about the user's Drive and system capabilities",
   },
   performSafety: "safe",
   perform: async (_context, { connection, fields }) => {

@@ -28,11 +28,7 @@ export const addDealProduct = action({
       productId,
     },
   ) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      WebhookVersion.V2,
-    );
+    const client = createClient(connection, context.debug.enabled, WebhookVersion.V2);
     const { data } = await client.post(`/deals/${id}/products`, {
       item_price: itemPrice,
       quantity,
@@ -48,8 +44,5 @@ export const addDealProduct = action({
   },
   inputs: addDealProductInputs,
   examplePayload: addDealProductExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: addDealProductOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: addDealProductOutputSchema }),
 });

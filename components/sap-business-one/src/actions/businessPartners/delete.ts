@@ -7,19 +7,14 @@ import { cardCode } from "../../inputs/businessPartners/general";
 export const deleteBusinessPartner = action({
   display: {
     label: "Delete Business Partner",
-    description:
-      "Delete an instance of BusinessPartners with the specified id.",
+    description: "Delete an instance of BusinessPartners with the specified id.",
   },
   inputs: {
     cardCode,
     connection,
   },
   perform: async (context, { connection, cardCode }) => {
-    const client = await createClient(
-      connection,
-      context,
-      context.debug.enabled,
-    );
+    const client = await createClient(connection, context, context.debug.enabled);
 
     await client.delete(`/BusinessPartners('${cardCode}')`);
     return {

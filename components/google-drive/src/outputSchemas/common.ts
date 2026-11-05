@@ -144,9 +144,7 @@ export const driveSchema = {
         canChangeCopyRequiresWriterPermissionRestriction: { type: "boolean" },
         canChangeDomainUsersOnlyRestriction: { type: "boolean" },
         canChangeDriveMembersOnlyRestriction: { type: "boolean" },
-        canChangeSharingFoldersRequiresOrganizerPermissionRestriction: {
-          type: "boolean",
-        },
+        canChangeSharingFoldersRequiresOrganizerPermissionRestriction: { type: "boolean" },
         canResetDriveRestrictions: { type: "boolean" },
         canDeleteChildren: { type: "boolean" },
         canTrashChildren: { type: "boolean" },

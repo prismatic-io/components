@@ -5,9 +5,7 @@ import type { DynamicsChangesObject } from "../types";
 const getData = (result: { payload: { body: { data: unknown } } }) =>
   result.payload.body.data as DynamicsChangesObject;
 
-const { mockRetrieveMultiple } = vi.hoisted(() => ({
-  mockRetrieveMultiple: vi.fn(),
-}));
+const { mockRetrieveMultiple } = vi.hoisted(() => ({ mockRetrieveMultiple: vi.fn() }));
 
 vi.mock("../client", () => ({
   createCrmClient: vi.fn().mockResolvedValue({
@@ -21,12 +19,10 @@ vi.mock("../util", async (importOriginal) => {
     ...actual,
     paginateQueryEntities: vi
       .fn()
-      .mockImplementation(
-        async (retrieveFn: (...args: unknown[]) => unknown) => {
-          const data = await retrieveFn();
-          return { data };
-        },
-      ),
+      .mockImplementation(async (retrieveFn: (...args: unknown[]) => unknown) => {
+        const data = await retrieveFn();
+        return { data };
+      }),
   };
 });
 
@@ -75,7 +71,7 @@ describe("pollChangesTrigger", () => {
         filterExpression: undefined,
         showNewRecords: true,
         showUpdatedRecords: true,
-      } as any,
+      } as any
     );
 
     const newState = ctx.polling.getState();
@@ -113,7 +109,7 @@ describe("pollChangesTrigger", () => {
         filterExpression: undefined,
         showNewRecords: true,
         showUpdatedRecords: true,
-      } as any,
+      } as any
     );
 
     expect(getData(result).created).toHaveLength(1);
@@ -151,7 +147,7 @@ describe("pollChangesTrigger", () => {
         filterExpression: undefined,
         showNewRecords: false,
         showUpdatedRecords: true,
-      } as any,
+      } as any
     );
 
     expect(getData(result).created).toHaveLength(0);
@@ -192,7 +188,7 @@ describe("pollChangesTrigger", () => {
         filterExpression: undefined,
         showNewRecords: true,
         showUpdatedRecords: true,
-      } as any,
+      } as any
     );
 
     expect(ctx.polling.getState().lastPolledAt).toBe("2025-05-15T14:00:00Z");
@@ -225,11 +221,10 @@ describe("pollChangesTrigger", () => {
         filterExpression: undefined,
         showNewRecords: false,
         showUpdatedRecords: false,
-      } as any,
+      } as any
     );
 
-    const total =
-      getData(result).created.length + getData(result).updated.length;
+    const total = getData(result).created.length + getData(result).updated.length;
     expect(total).toBeGreaterThan(0);
     expect(result.polledNoChanges).toBe(false);
   });
@@ -263,7 +258,7 @@ describe("pollChangesTrigger", () => {
         filterExpression: undefined,
         showNewRecords: false,
         showUpdatedRecords: false,
-      } as any,
+      } as any
     );
 
     expect(getData(result).created).toHaveLength(0);
@@ -286,7 +281,7 @@ describe("pollChangesTrigger", () => {
         filterExpression: undefined,
         showNewRecords: true,
         showUpdatedRecords: true,
-      } as any,
+      } as any
     );
     const after = new Date().toISOString();
 

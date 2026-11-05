@@ -20,8 +20,7 @@ export const deleteAccount = action({
       data: response,
     };
   },
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    deleteAccountExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => deleteAccountExamplePayload,
   inputs: deleteAccountInputs,
   outputSchema: outputSchema({
     type: "actionOutput",

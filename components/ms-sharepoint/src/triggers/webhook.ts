@@ -11,10 +11,7 @@ export const webhook = trigger({
   synchronousResponseSupport: "valid",
   allowsBranching: true,
   inputs: {},
-  staticBranchNames: [
-    TriggerBranches.Notification,
-    TriggerBranches.URLValidation,
-  ],
+  staticBranchNames: [TriggerBranches.Notification, TriggerBranches.URLValidation],
   perform: async (_context, payload) => {
     const rawValidationToken = payload.queryParameters?.validationToken;
     const validationToken = util.types.toString(rawValidationToken);

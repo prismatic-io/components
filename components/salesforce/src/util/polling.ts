@@ -15,9 +15,7 @@ import { buildSOQLQuery, formatSOQLDateTime, formatSOQLId } from "./query";
 const recordId = (record: PollingTriggerObject): string => {
   const id = record.Id;
   if (typeof id !== "string" || id === "") {
-    throw new Error(
-      `Polling record is missing a usable Id: ${JSON.stringify(record.Id)}`,
-    );
+    throw new Error(`Polling record is missing a usable Id: ${JSON.stringify(record.Id)}`);
   }
   return id;
 };
@@ -51,8 +49,7 @@ export const advanceCursor = (
 
   const advanced =
     watermark > previous ||
-    (watermark === previous &&
-      (cursor.lastId === undefined || lastId > cursor.lastId));
+    (watermark === previous && (cursor.lastId === undefined || lastId > cursor.lastId));
   if (!advanced) {
     throw new Error(
       `Cannot advance the polling cursor: the page ended at (${watermark}, ${lastId}), at or before the current position (${cursor.watermark}, ${cursor.lastId ?? "none"}). Records must arrive sorted ascending by LastModifiedDate, Id.`,
@@ -82,9 +79,7 @@ export const buildPollingConditions = (cursor: PollingCursor): string[] => {
           `(LastModifiedDate > ${watermark} OR (LastModifiedDate = ${watermark} AND Id > ${formatSOQLId(cursor.lastId)}))`,
         ]
       : []),
-    ...(cursor.isBackfill
-      ? [`CreatedDate >= ${formatSOQLDateTime(cursor.windowStart)}`]
-      : []),
+    ...(cursor.isBackfill ? [`CreatedDate >= ${formatSOQLDateTime(cursor.windowStart)}`] : []),
   ];
 };
 
@@ -99,9 +94,7 @@ export const fetchPollingPage = async (
   { recordType, fields, filters, cursor, pageSize }: FetchPollingPageParams,
 ): Promise<PollingTriggerObject[]> => {
   if (!Number.isInteger(pageSize) || pageSize < 1) {
-    throw new Error(
-      `Invalid polling page size ${pageSize}: must be a positive integer.`,
-    );
+    throw new Error(`Invalid polling page size ${pageSize}: must be a positive integer.`);
   }
 
   const soql = buildSOQLQuery({
@@ -113,10 +106,7 @@ export const fetchPollingPage = async (
     conditions: buildPollingConditions(cursor),
   });
 
-  const result = await client.query(soql, {
-    autoFetch: true,
-    maxFetch: pageSize,
-  });
+  const result = await client.query(soql, { autoFetch: true, maxFetch: pageSize });
 
   if (result.done !== true && result.records.length < pageSize) {
     throw new Error(
@@ -131,11 +121,7 @@ export const fetchPollingWindow = async (
   client: Connection,
   params: FetchPollingPageParams,
 ): Promise<AdvanceResult> =>
-  advanceCursor(
-    await fetchPollingPage(client, params),
-    params.cursor,
-    params.pageSize,
-  );
+  advanceCursor(await fetchPollingPage(client, params), params.cursor, params.pageSize);
 
 export const getPollingChanges = (
   showNewRecords: boolean,
@@ -152,15 +138,11 @@ export const getPollingChanges = (
       const recordUpdatedAt = new Date(record.LastModifiedDate);
       const recordCreatedAt = new Date(record.CreatedDate);
 
-      const changeExists =
-        recordUpdatedAt > lastPolledAtDate ||
-        recordCreatedAt > createdSinceDate;
+      const changeExists = recordUpdatedAt > lastPolledAtDate || recordCreatedAt > createdSinceDate;
 
       if (changeExists) {
         const isCreated = recordCreatedAt > createdSinceDate;
-        const isUpdated = options.snapshot
-          ? !isCreated
-          : recordUpdatedAt > recordCreatedAt;
+        const isUpdated = options.snapshot ? !isCreated : recordUpdatedAt > recordCreatedAt;
         const reportNew = options.snapshot || showNewRecords;
         const reportUpdated = options.snapshot || showUpdatedRecords;
         if (isCreated && reportNew) {
@@ -227,10 +209,7 @@ export const resolveCursor = ({
 }: ResolveCursorParams): PollingCursor => {
   const resumed = incoming ?? state.cursor;
   if (resumed) {
-    const watermark = assertValidDateString(
-      resumed.watermark,
-      "cursor.watermark",
-    );
+    const watermark = assertValidDateString(resumed.watermark, "cursor.watermark");
     assertValidDateString(resumed.windowEnd, "cursor.windowEnd");
     const windowStart =
       resumed.windowStart === undefined
@@ -251,10 +230,7 @@ export const resolveCursor = ({
   }
 
   if (state.lastPolledAt) {
-    const watermark = assertValidDateString(
-      state.lastPolledAt,
-      "state.lastPolledAt",
-    );
+    const watermark = assertValidDateString(state.lastPolledAt, "state.lastPolledAt");
     return {
       watermark,
       windowStart: watermark,
@@ -295,15 +271,9 @@ export const resolveCursorSafely = (
       `Discarding corrupted persisted polling cursor and restarting from lastPolledAt (or, if that is also absent, from the current time with no backfill unless a Look-back Date is configured): ${message}`,
     );
     try {
-      return resolveCursor({
-        incoming,
-        state: { ...state, cursor: undefined },
-        lookBackDate,
-        now,
-      });
+      return resolveCursor({ incoming, state: { ...state, cursor: undefined }, lookBackDate, now });
     } catch (retryError) {
-      const retryMessage =
-        retryError instanceof Error ? retryError.message : String(retryError);
+      const retryMessage = retryError instanceof Error ? retryError.message : String(retryError);
       logger.warn(
         `Persisted state.lastPolledAt is also corrupted; discarding it too and restarting fresh from the current time (or performing a backfill, if a Look-back Date is configured): ${retryMessage}`,
       );

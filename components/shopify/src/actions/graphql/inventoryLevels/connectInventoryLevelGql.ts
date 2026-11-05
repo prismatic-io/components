@@ -18,11 +18,13 @@ export const connectInventoryLevelGql = action({
       context.debug.enabled,
       context.logger,
     );
-    const data: { inventoryActivate: Record<string, unknown> } =
-      await client.request(connectInventoryLevelQuery, {
+    const data: { inventoryActivate: Record<string, unknown> } = await client.request(
+      connectInventoryLevelQuery,
+      {
         locationId,
         inventoryItemId: itemId,
-      });
+      },
+    );
 
     return {
       data: data.inventoryActivate,

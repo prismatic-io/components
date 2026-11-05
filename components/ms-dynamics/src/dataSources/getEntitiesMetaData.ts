@@ -19,7 +19,7 @@ export const getEntitiesMetaData = dataSource({
       recordTypeFilter,
       includeAllCustomRecordTypes,
       includeOnlyTopLevelRecordTypes,
-    },
+    }
   ) => {
     const defaultSelectedSet = new Set(defaultSelectedRecordTypes);
     const includedTypesSet = new Set(recordTypeFilter);
@@ -28,25 +28,21 @@ export const getEntitiesMetaData = dataSource({
 
     const { value } = await client.retrieveEntities();
 
-    const objects = value.filter(
-      ({ SchemaName, IsCustomEntity, IsChildEntity }) => {
-        if (includedTypesSet.size > 0) {
-          return includedTypesSet.has(
-            (SchemaName as string).trim().toLowerCase(),
-          );
-        }
+    const objects = value.filter(({ SchemaName, IsCustomEntity, IsChildEntity }) => {
+      if (includedTypesSet.size > 0) {
+        return includedTypesSet.has((SchemaName as string).trim().toLowerCase());
+      }
 
-        if (includeAllCustomRecordTypes && IsCustomEntity) {
-          return true;
-        }
-
-        if (includeOnlyTopLevelRecordTypes && IsChildEntity) {
-          return false;
-        }
-
+      if (includeAllCustomRecordTypes && IsCustomEntity) {
         return true;
-      },
-    );
+      }
+
+      if (includeOnlyTopLevelRecordTypes && IsChildEntity) {
+        return false;
+      }
+
+      return true;
+    });
 
     const mappedObjects = [];
     for (const record of objects) {

@@ -1,16 +1,6 @@
-import {
-  input,
-  type KeyValuePair,
-  structuredObjectInput,
-  util,
-} from "@prismatic-io/spectral";
+import { input, type KeyValuePair, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { DEFAULT_MAX_RESULTS, DEFAULT_START_AT } from "../constants";
-import {
-  fieldValuesClean,
-  toOptionalString,
-  toPageSize,
-  toTrimmedLowerCase,
-} from "../util";
+import { fieldValuesClean, toOptionalString, toPageSize, toTrimmedLowerCase } from "../util";
 
 export const projectId = input({
   label: "Project ID",
@@ -62,8 +52,7 @@ export const description = input({
   type: "string",
   placeholder: "Enter issue description",
   required: false,
-  example:
-    "The login button does not respond on mobile devices in portrait mode.",
+  example: "The login button does not respond on mobile devices in portrait mode.",
   comments: "A detailed description of the issue.",
   clean: toOptionalString,
 });
@@ -90,8 +79,7 @@ export const searchValue = input({
   type: "string",
   placeholder: "Enter search value",
   required: true,
-  comments:
-    "The text to look for. Matching ignores case and surrounding whitespace.",
+  comments: "The text to look for. Matching ignores case and surrounding whitespace.",
   clean: toTrimmedLowerCase,
 });
 
@@ -112,8 +100,7 @@ export const startAt = input({
   required: false,
   example: "0",
   default: "0",
-  comments:
-    "The index of the first item to return in the result set (0-based).",
+  comments: "The index of the first item to return in the result set (0-based).",
   clean: (rawValue) => util.types.toInt(rawValue, DEFAULT_START_AT),
 });
 
@@ -180,8 +167,7 @@ export const fetchAll = input({
   type: "boolean",
   required: false,
   default: "false",
-  comments:
-    "When true, automatically fetches all pages of results using pagination.",
+  comments: "When true, automatically fetches all pages of results using pagination.",
   clean: util.types.toBool,
 });
 

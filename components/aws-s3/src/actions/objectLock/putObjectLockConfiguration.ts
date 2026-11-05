@@ -52,9 +52,7 @@ export const putObjectLockConfiguration = action({
       !defaultRetentionDaysPresent &&
       !defaultRetentionYearsPresent
     ) {
-      throw new Error(
-        "You must specify either Default Retention Years or Default Retention Days.",
-      );
+      throw new Error("You must specify either Default Retention Years or Default Retention Days.");
     }
 
     if (
@@ -68,13 +66,9 @@ export const putObjectLockConfiguration = action({
       Rule: defaultRetentionModePresent
         ? {
             DefaultRetention: {
-              Days: defaultRetentionDaysPresent
-                ? defaultRetentionDays
-                : undefined,
+              Days: defaultRetentionDaysPresent ? defaultRetentionDays : undefined,
               Mode: defaultRetentionMode,
-              Years: defaultRetentionYearsPresent
-                ? defaultRetentionYears
-                : undefined,
+              Years: defaultRetentionYearsPresent ? defaultRetentionYears : undefined,
             },
           }
         : undefined,

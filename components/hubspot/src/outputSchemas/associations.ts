@@ -12,12 +12,7 @@ export const listAssociationTypesOutputSchema = {
           name: { type: "string" },
           category: {
             type: "string",
-            enum: [
-              "HUBSPOT_DEFINED",
-              "INTEGRATOR_DEFINED",
-              "USER_DEFINED",
-              "WORK",
-            ],
+            enum: ["HUBSPOT_DEFINED", "INTEGRATOR_DEFINED", "USER_DEFINED", "WORK"],
           },
           typeId: { type: "integer" },
           label: { type: ["string", "null"] as string[] },
@@ -108,12 +103,7 @@ export const readAssociationsOutputSchema = {
                     properties: {
                       category: {
                         type: "string",
-                        enum: [
-                          "HUBSPOT_DEFINED",
-                          "INTEGRATOR_DEFINED",
-                          "USER_DEFINED",
-                          "WORK",
-                        ],
+                        enum: ["HUBSPOT_DEFINED", "INTEGRATOR_DEFINED", "USER_DEFINED", "WORK"],
                       },
                       typeId: { type: "integer" },
                       label: { type: ["string", "null"] as string[] },

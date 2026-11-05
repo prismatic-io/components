@@ -48,8 +48,7 @@ export const pageSize = input({
   type: "string",
   required: false,
   placeholder: "Enter page size (1-1000)",
-  comments:
-    "The maximum number of results to return. Must be between 1 and 1000.",
+  comments: "The maximum number of results to return. Must be between 1 and 1000.",
   example: "20",
   default: "20",
   clean: cleanIntegerInput,
@@ -100,6 +99,5 @@ export const fetchAll = input({
   required: false,
   clean: util.types.toBool,
   default: "false",
-  comments:
-    "When true, automatically fetches all pages of results using pagination.",
+  comments: "When true, automatically fetches all pages of results using pagination.",
 });

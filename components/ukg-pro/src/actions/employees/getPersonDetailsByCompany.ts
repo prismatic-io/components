@@ -8,8 +8,7 @@ import { fetchWithPagination } from "../../util";
 export const getPersonDetailsByCompany = action({
   display: {
     label: "Get Person Details by Company",
-    description:
-      "Retrieve person details for all employees within a specific company.",
+    description: "Retrieve person details for all employees within a specific company.",
   },
   inputs: getPersonDetailsByCompanyInputs,
   perform: async (context, { connection, companyId, fetchAll, pagination }) => {

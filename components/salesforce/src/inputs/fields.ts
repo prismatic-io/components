@@ -55,8 +55,7 @@ export const title = input({
   type: "string",
   required: false,
   placeholder: "Enter title",
-  comments:
-    "The job title or professional title associated with the contact or lead.",
+  comments: "The job title or professional title associated with the contact or lead.",
   example: "Example Title",
   clean: cleanStringInput,
 });
@@ -66,8 +65,7 @@ export const street = input({
   type: "string",
   required: false,
   placeholder: "Enter street address",
-  comments:
-    "Street address line, including the building number and street name.",
+  comments: "Street address line, including the building number and street name.",
   example: "4 Privet Drive",
   clean: cleanStringInput,
 });
@@ -116,8 +114,7 @@ export const leadSource = input({
   type: "string",
   required: false,
   placeholder: "Enter lead source",
-  comments:
-    "The origin or channel from which the lead was generated (e.g., Web, Phone, Email).",
+  comments: "The origin or channel from which the lead was generated (e.g., Web, Phone, Email).",
   example: "Web",
   clean: cleanStringInput,
 });
@@ -127,8 +124,7 @@ export const revenue = input({
   type: "string",
   required: false,
   placeholder: "Enter annual revenue",
-  comments:
-    "The estimated annual revenue of the account, in the organization's default currency.",
+  comments: "The estimated annual revenue of the account, in the organization's default currency.",
   example: "38000",
   clean: cleanStringInput,
 });
@@ -159,8 +155,7 @@ export const billingStreet = input({
   type: "string",
   required: false,
   placeholder: "Enter billing street address",
-  comments:
-    "Street address line, including the building number and street name.",
+  comments: "Street address line, including the building number and street name.",
   example: "4 Privet Drive",
   clean: cleanStringInput,
 });
@@ -210,8 +205,7 @@ export const employeeCount = input({
   type: "string",
   required: false,
   placeholder: "Enter number of employees",
-  comments:
-    "The total number of people the account employs, as a whole number.",
+  comments: "The total number of people the account employs, as a whole number.",
   example: "30",
   clean: cleanStringInput,
 });
@@ -321,8 +315,7 @@ export const industry = input({
     { label: "Transportation", value: "Transportation" },
     { label: "Utilities", value: "Utilities" },
   ],
-  comments:
-    "The primary industry the account operates in, used for segmentation and reporting.",
+  comments: "The primary industry the account operates in, used for segmentation and reporting.",
   clean: util.types.toString,
 });
 

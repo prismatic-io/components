@@ -1,10 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { DEFAULT_PAGE_NUMBER, DEFAULT_PER_PAGE } from "../constants";
-import {
-  cleanKeyValList,
-  lookBackDateClean,
-  toOptionalString,
-} from "../util/general";
+import { cleanKeyValList, lookBackDateClean, toOptionalString } from "../util/general";
 
 export const connectionInput = input({
   label: "Connection",
@@ -61,8 +57,7 @@ export const fetchAll = input({
   type: "boolean",
   required: false,
   default: "false",
-  comments:
-    "When true, automatically fetches all pages of results using pagination.",
+  comments: "When true, automatically fetches all pages of results using pagination.",
   clean: util.types.toBool,
 });
 
@@ -82,11 +77,7 @@ export const fieldValues = input({
   required: false,
   comments:
     "Key-value pairs representing field names and their values for creating or updating records.",
-  example: JSON.stringify(
-    { Last_Name: "Doe", Email: "john.doe@example.com" },
-    null,
-    2,
-  ),
+  example: JSON.stringify({ Last_Name: "Doe", Email: "john.doe@example.com" }, null, 2),
   clean: cleanKeyValList,
 });
 

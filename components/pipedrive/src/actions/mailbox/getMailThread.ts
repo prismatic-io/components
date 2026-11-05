@@ -18,8 +18,5 @@ export const getMailThread = action({
   inputs: getMailThreadInputs,
   examplePayload: getMailThreadExamplePayload,
   examplePerform: async () => getMailThreadExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getMailThreadOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getMailThreadOutputSchema }),
 });

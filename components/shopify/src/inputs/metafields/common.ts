@@ -72,8 +72,7 @@ export const description = input({
   label: "Description",
   type: "string",
   required: false,
-  comments:
-    "A human-readable description of the metafield for reference purposes.",
+  comments: "A human-readable description of the metafield for reference purposes.",
   example: "Sponsor information for the product.",
   placeholder: "Enter description",
   clean: cleanStringInput,

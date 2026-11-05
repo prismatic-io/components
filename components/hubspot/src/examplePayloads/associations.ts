@@ -76,9 +76,7 @@ export const readAssociationsExamplePayload = {
             id: "98765432101",
             type: "Decision Maker",
             toObjectId: "98765432101",
-            associationTypes: [
-              { category: "USER_DEFINED", typeId: 19, label: "Decision Maker" },
-            ],
+            associationTypes: [{ category: "USER_DEFINED", typeId: 19, label: "Decision Maker" }],
           },
           {
             id: "98765432102",

@@ -14,8 +14,7 @@ const assignmentId = input({
   label: "Assignment ID",
   type: "string",
   required: true,
-  comments:
-    "The unique numeric identifier for the Oracle HCM assignment (AssignmentId).",
+  comments: "The unique numeric identifier for the Oracle HCM assignment (AssignmentId).",
   placeholder: "Enter assignment ID",
   example: "300100551559732",
   clean: cleanId,

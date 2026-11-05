@@ -920,8 +920,7 @@ export const createPurchaseOrderLineExamplePayload = {
   },
 };
 
-export const getPurchaseOrderLineExamplePayload =
-  createPurchaseOrderLineExamplePayload;
+export const getPurchaseOrderLineExamplePayload = createPurchaseOrderLineExamplePayload;
 
 export const listPurchaseOrderLinesExamplePayload = {
   data: {
@@ -929,8 +928,7 @@ export const listPurchaseOrderLinesExamplePayload = {
   },
 };
 
-export const updatePurchaseOrderLineExamplePayload =
-  getPurchaseOrderLineExamplePayload;
+export const updatePurchaseOrderLineExamplePayload = getPurchaseOrderLineExamplePayload;
 
 export const getPurchaseReceiptExamplePayload = {
   data: {
@@ -1163,11 +1161,9 @@ export const getPurchaseInvoiceExamplePayload = {
   data: listPurchaseInvoicesExamplePayload.data.value[0],
 };
 
-export const createPurchaseInvoiceExamplePayload =
-  getPurchaseInvoiceExamplePayload;
+export const createPurchaseInvoiceExamplePayload = getPurchaseInvoiceExamplePayload;
 
-export const updatePurchaseInvoiceExamplePayload =
-  getPurchaseInvoiceExamplePayload;
+export const updatePurchaseInvoiceExamplePayload = getPurchaseInvoiceExamplePayload;
 
 export const postPurchaseInvoiceExamplePayload = {
   data: {
@@ -1255,8 +1251,7 @@ export const pollChangesExamplePayload: { payload: TriggerPayload } = {
             taxGroupCode: "",
             baseUnitOfMeasureId: "f957e220-e60b-ef11-9f8e-6045bdc8c192",
             baseUnitOfMeasureCode: "PCS",
-            generalProductPostingGroupId:
-              "9240ba25-e60b-ef11-9f8e-6045bdc8c192",
+            generalProductPostingGroupId: "9240ba25-e60b-ef11-9f8e-6045bdc8c192",
             generalProductPostingGroupCode: "RETAIL",
             inventoryPostingGroupId: "e557e220-e60b-ef11-9f8e-6045bdc8c192",
             inventoryPostingGroupCode: "RESALE",

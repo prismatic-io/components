@@ -24,9 +24,7 @@ export const getTenantIdentifier = (connection: Connection): string => {
   return util.types.toString(connection.fields.tenantIdentifier);
 };
 
-export const getAuthHeaders = async (
-  connection: Connection,
-): Promise<Record<string, string>> => {
+export const getAuthHeaders = async (connection: Connection): Promise<Record<string, string>> => {
   switch (connection.key) {
     case ukgProBasicAuth.key: {
       const { username, password, customerApiKey } = connection.fields;
@@ -40,16 +38,11 @@ export const getAuthHeaders = async (
     }
 
     default:
-      throw new ConnectionError(
-        connection,
-        `Unsupported connection type: ${connection.key}`,
-      );
+      throw new ConnectionError(connection, `Unsupported connection type: ${connection.key}`);
   }
 };
 
-export const getOAuthToken = async (
-  connection: Connection,
-): Promise<string> => {
+export const getOAuthToken = async (connection: Connection): Promise<string> => {
   const clientId = util.types.toString(connection.fields.clientId);
   const clientSecret = util.types.toString(connection.fields.clientSecret);
   const tokenUrl = util.types.toString(connection.fields.tokenUrl);
@@ -109,9 +102,7 @@ export const lookBackDateClean = (value: unknown): string => {
     throw new Error("Look-back Date must be in YYYY-MM-DD format.");
   }
 
-  const [year, month, day] = str
-    .split("-")
-    .map((part) => util.types.toNumber(part));
+  const [year, month, day] = str.split("-").map((part) => util.types.toNumber(part));
   const parsed = new Date(Date.UTC(year, month - 1, day));
   if (
     parsed.getUTCFullYear() !== year ||

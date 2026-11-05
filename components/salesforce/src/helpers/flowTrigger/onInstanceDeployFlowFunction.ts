@@ -6,10 +6,7 @@ import {
   deactivateAndDeleteFlowResources,
 } from "../../util";
 
-import type {
-  FlowTriggerInstanceState,
-  OnInstanceDeployFlowFunctionParams,
-} from "../../types";
+import type { FlowTriggerInstanceState, OnInstanceDeployFlowFunctionParams } from "../../types";
 import { createFlowRecordSubscription } from "./createFlowRecordSubscription";
 import { createSalesforceClient } from "../../client";
 
@@ -29,9 +26,7 @@ export const onInstanceDeployFlowFunction = async (
   const integrationFlowName = context.flow.name;
   context.logger.info(`Deploying flow trigger for ${integrationFlowName}`);
   try {
-    const encodedId = getBase64FromUrl(
-      context.webhookUrls[integrationFlowName],
-    );
+    const encodedId = getBase64FromUrl(context.webhookUrls[integrationFlowName]);
     const flowState: FlowTriggerInstanceState =
       context?.crossFlowState?.flowTriggerState?.[encodedId];
     const endpointUrl = context.webhookUrls[integrationFlowName];
@@ -55,9 +50,7 @@ export const onInstanceDeployFlowFunction = async (
     }
 
     const name = generatePrefixedHash(prefix, encodedId);
-    context.logger.info(
-      `Creating new flow and outbound message with name ${name}`,
-    );
+    context.logger.info(`Creating new flow and outbound message with name ${name}`);
     if (context.debug.enabled) {
       context.logger.info(
         `Creating outbound message with fullName: ${triggerObject}.${name} (org will silently prefix with its NamespacePrefix if namespaced)`,

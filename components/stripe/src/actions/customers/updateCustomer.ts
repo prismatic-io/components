@@ -57,19 +57,9 @@ export const updateCustomer = action({
   },
   examplePerform: async (
     _context,
-    {
-      customerId,
-      contactInfo,
-      address,
-      customerBalance,
-      customerDescription,
-      customerMetadata,
-    },
+    { customerId, contactInfo, address, customerBalance, customerDescription, customerMetadata },
   ): Promise<{ data: unknown }> => {
-    const customer = updateCustomerExamplePayload.data as Record<
-      string,
-      unknown
-    >;
+    const customer = updateCustomerExamplePayload.data as Record<string, unknown>;
     const existingAddress = customer.address as Record<string, unknown>;
 
     return {

@@ -14,10 +14,7 @@ export const STATUS_OPTIONS = [
 ];
 
 export const RAW_REQUEST_ACTION_OPTIONS = [
-  {
-    label: "BatchExecuteStatement",
-    value: "RedshiftData.BatchExecuteStatement",
-  },
+  { label: "BatchExecuteStatement", value: "RedshiftData.BatchExecuteStatement" },
   { label: "CancelStatement", value: "RedshiftData.CancelStatement" },
   { label: "DescribeStatement", value: "RedshiftData.DescribeStatement" },
   { label: "DescribeTable", value: "RedshiftData.DescribeTable" },

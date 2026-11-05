@@ -1,40 +1,34 @@
 import type { Element } from "@prismatic-io/spectral";
-import type {
-  AemJob,
-  FolderCommandResult,
-  FolderListingResponse,
-  FolderTreeAsset,
-} from "../types";
+import type { AemJob, FolderCommandResult, FolderListingResponse, FolderTreeAsset } from "../types";
 
-export const listFolderContentsExamplePayload: { data: FolderListingResponse } =
-  {
-    data: {
-      self: {
-        type: "FOLDER",
-        folderId: "urn:aaid:aem:abcd1234-ab12-ab12-ab12-abcdef123456",
-        name: "en",
-        title: "English",
-        path: "/content/dam/wknd-shared/en",
-      },
-      children: [
-        {
-          type: "FOLDER",
-          folderId: "urn:aaid:aem:bcde2345-bc23-bc23-bc23-bcdef2345678",
-          name: "adventures",
-          title: "Adventures",
-          path: "/content/dam/wknd-shared/en/adventures",
-        },
-        {
-          type: "ASSET",
-          assetId: "urn:aaid:aem:4f2b6c1e-8d3a-4b5c-9e7f-0a1b2c3d4e5f",
-          name: "city.jpeg",
-          size: 338049,
-          lastModifiedAt: "2026-04-15T05:01:44.229Z",
-        },
-      ],
-      cursor: "eyJvZmZzZXQiOjUwfQ",
+export const listFolderContentsExamplePayload: { data: FolderListingResponse } = {
+  data: {
+    self: {
+      type: "FOLDER",
+      folderId: "urn:aaid:aem:abcd1234-ab12-ab12-ab12-abcdef123456",
+      name: "en",
+      title: "English",
+      path: "/content/dam/wknd-shared/en",
     },
-  };
+    children: [
+      {
+        type: "FOLDER",
+        folderId: "urn:aaid:aem:bcde2345-bc23-bc23-bc23-bcdef2345678",
+        name: "adventures",
+        title: "Adventures",
+        path: "/content/dam/wknd-shared/en/adventures",
+      },
+      {
+        type: "ASSET",
+        assetId: "urn:aaid:aem:4f2b6c1e-8d3a-4b5c-9e7f-0a1b2c3d4e5f",
+        name: "city.jpeg",
+        size: 338049,
+        lastModifiedAt: "2026-04-15T05:01:44.229Z",
+      },
+    ],
+    cursor: "eyJvZmZzZXQiOjUwfQ",
+  },
+};
 
 const exampleFolderTreeAsset: FolderTreeAsset = {
   type: "ASSET",
@@ -90,9 +84,6 @@ export const selectFolderExamplePayload: { result: Element[] } = {
 export const selectFolderPathExamplePayload: { result: Element[] } = {
   result: [
     { key: "/content/dam", label: "/content/dam" },
-    {
-      key: "/content/dam/wknd-shared/en",
-      label: "/content/dam/wknd-shared/en",
-    },
+    { key: "/content/dam/wknd-shared/en", label: "/content/dam/wknd-shared/en" },
   ],
 };

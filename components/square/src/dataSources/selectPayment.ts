@@ -12,23 +12,14 @@ export const selectPayment = dataSource({
   perform: async (_context, { squareConnection }) => {
     const client = await createAuthorizedClient(squareConnection);
 
-    const allPayments = await fetchAllPages(
-      client,
-      "/v2/payments",
-      "payments",
-      {
-        additionalParams: { limit: 100 },
-      },
-    );
+    const allPayments = await fetchAllPages(client, "/v2/payments", "payments", {
+      additionalParams: { limit: 100 },
+    });
 
     const result = (allPayments.payments as Record<string, unknown>[])
       .map((payment: Record<string, unknown>) => {
-        const amountMoney = payment.amount_money as
-          | Record<string, unknown>
-          | undefined;
-        const amount = amountMoney
-          ? `$${((amountMoney.amount as number) / 100).toFixed(2)}`
-          : "";
+        const amountMoney = payment.amount_money as Record<string, unknown> | undefined;
+        const amount = amountMoney ? `$${((amountMoney.amount as number) / 100).toFixed(2)}` : "";
         const label = payment.reference_id
           ? `${payment.reference_id as string} (${amount})`
           : `${(payment.id as string).substring(0, 12)}... (${amount})`;

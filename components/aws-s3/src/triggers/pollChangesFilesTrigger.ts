@@ -3,16 +3,8 @@ import { createS3Client } from "../client";
 import { DEFAULT_BATCH_SIZE } from "../constants";
 import { pollChangesFilesTriggerExamplePayload } from "../examplePayloads";
 import { pollChangesFilesTriggerInputs } from "../inputs";
-import type {
-  FileListingCursor,
-  PolledFileChange,
-  PollingState,
-} from "../types";
-import {
-  listObjectsInWindow,
-  resolveFileListingWindow,
-  resolvePolledFileChanges,
-} from "../utils";
+import type { FileListingCursor, PolledFileChange, PollingState } from "../types";
+import { listObjectsInWindow, resolveFileListingWindow, resolvePolledFileChanges } from "../utils";
 
 export const pollChangesFilesTrigger = pollingTrigger({
   display: {
@@ -68,11 +60,7 @@ export const pollChangesFilesTrigger = pollingTrigger({
       ? { keys: [], startAfter: undefined }
       : await listObjectsInWindow(s3, bucket, window, isBatching);
     const nextCursor: FileListingCursor | undefined = startAfter
-      ? {
-          windowStart: window.windowStart,
-          windowEnd: window.windowEnd,
-          startAfter,
-        }
+      ? { windowStart: window.windowStart, windowEnd: window.windowEnd, startAfter }
       : undefined;
 
     context.polling.setState(
@@ -81,9 +69,7 @@ export const pollChangesFilesTrigger = pollingTrigger({
             ...(state.lastPolledAt ? { lastPolledAt: state.lastPolledAt } : {}),
             cursor: nextCursor,
           }
-        : {
-            lastPolledAt: windowIsEmpty ? window.windowStart : window.windowEnd,
-          },
+        : { lastPolledAt: windowIsEmpty ? window.windowStart : window.windowEnd },
     );
 
     if (context.debug.enabled) {
@@ -93,11 +79,7 @@ export const pollChangesFilesTrigger = pollingTrigger({
     }
 
     return {
-      payload: {
-        ...payload,
-        paginationState: nextCursor,
-        body: { data: keys },
-      },
+      payload: { ...payload, paginationState: nextCursor, body: { data: keys } },
       polledNoChanges: keys.length === 0 && !nextCursor && !incoming,
     };
   },

@@ -3,11 +3,7 @@ import { createConnection, invoke } from "@prismatic-io/spectral/dist/testing";
 import { connection as connectionDefinition } from "../../connections";
 import { copyFile } from "./copyFile";
 
-const connection = createConnection(
-  connectionDefinition,
-  {},
-  { access_token: "test-token" },
-);
+const connection = createConnection(connectionDefinition, {}, { access_token: "test-token" });
 const DRIVE = "https://www.googleapis.com";
 
 describe("copyFile", () => {
@@ -17,10 +13,7 @@ describe("copyFile", () => {
     nock(DRIVE)
       .post("/drive/v3/files/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/copy")
       .query(true)
-      .reply(200, {
-        name: "Q3 Revenue Report (copy).xlsx",
-        description: "example",
-      });
+      .reply(200, { name: "Q3 Revenue Report (copy).xlsx", description: "example" });
 
     const { result } = await invoke(copyFile, {
       connection,

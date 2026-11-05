@@ -23,23 +23,15 @@ export const getRecordsForDatasource = async ({
     recordType,
   });
   const command = query.execute();
-  const response = (await executeSFAction(context, command)) as Record<
-    string,
-    unknown
-  >[];
+  const response = (await executeSFAction(context, command)) as Record<string, unknown>[];
   const objects = mapToElement(response, labelKey, valueKey);
   return objects;
 };
 
-export const filterAndSort = (
-  items: ElementWithLabel[],
-  searchQuery: string | undefined,
-) => {
+export const filterAndSort = (items: ElementWithLabel[], searchQuery: string | undefined) => {
   return items
     .filter((item) =>
-      searchQuery
-        ? item.label.toLowerCase().includes(searchQuery.toLowerCase())
-        : true,
+      searchQuery ? item.label.toLowerCase().includes(searchQuery.toLowerCase()) : true,
     )
     .sort((a, b) => a.label.localeCompare(b.label));
 };

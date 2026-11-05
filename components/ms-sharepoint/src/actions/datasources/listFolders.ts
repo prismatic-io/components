@@ -21,11 +21,7 @@ export const listFolders = dataSource({
 
     do {
       const { data } = await client.get(nextLink);
-      files.push(
-        ...(data?.value.filter(
-          (record: Record<string, string>) => record.folder,
-        ) || []),
-      );
+      files.push(...(data?.value.filter((record: Record<string, string>) => record.folder) || []));
       nextLink = data?.["@odata.nextLink"];
     } while (nextLink);
     return {

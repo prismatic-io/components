@@ -9,10 +9,7 @@ export const cancelPayment = action({
     description: "Cancels (voids) a payment.",
   },
   perform: async (context, { squareConnection, paymentId }) => {
-    const client = await createAuthorizedClient(
-      squareConnection,
-      context.debug.enabled,
-    );
+    const client = await createAuthorizedClient(squareConnection, context.debug.enabled);
 
     const response = await client.post(`/v2/payments/${paymentId}/cancel`);
 

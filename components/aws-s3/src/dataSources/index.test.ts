@@ -15,9 +15,6 @@ import { selectBucket } from "./selectBucket";
 describe("dataSources", () => {
   test("registers every data source under its published key", () => {
     expect(dataSources).toEqual({ selectBucket, selectRegion });
-    expect(Object.keys(dataSources).sort()).toEqual([
-      "selectBucket",
-      "selectRegion",
-    ]);
+    expect(Object.keys(dataSources).sort()).toEqual(["selectBucket", "selectRegion"]);
   });
 });

@@ -48,8 +48,7 @@ const cardBrand = input({
   label: "Card Brand",
   placeholder: "Enter card brand",
   example: "VISA",
-  comments:
-    "The brand of the payment card (for example, VISA, MASTERCARD, AMEX).",
+  comments: "The brand of the payment card (for example, VISA, MASTERCARD, AMEX).",
   required: false,
   clean: toOptionalString,
 });
@@ -188,8 +187,7 @@ const showNewRecords = input({
   type: "boolean",
   required: false,
   default: "true",
-  comments:
-    "When true, newly created payments are included in the trigger output.",
+  comments: "When true, newly created payments are included in the trigger output.",
   clean: util.types.toBool,
 });
 
@@ -198,8 +196,7 @@ const showUpdatedRecords = input({
   type: "boolean",
   required: false,
   default: "true",
-  comments:
-    "When true, payments updated since the last poll are included in the trigger output.",
+  comments: "When true, payments updated since the last poll are included in the trigger output.",
   clean: util.types.toBool,
 });
 

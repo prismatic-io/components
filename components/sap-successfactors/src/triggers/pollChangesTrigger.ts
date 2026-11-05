@@ -36,9 +36,7 @@ export const pollChangesTrigger = pollingTrigger({
     const results = await paginateData(client, config.endpoint, true, {
       $filter: filter,
     });
-    const allRecords = (
-      Array.isArray(results) ? results : [results]
-    ) as SAPSuccessFactorsRecord[];
+    const allRecords = (Array.isArray(results) ? results : [results]) as SAPSuccessFactorsRecord[];
 
     const { created: allCreated, updated: allUpdated } = filterByTimestamp(
       allRecords,

@@ -1,9 +1,4 @@
-import {
-  ConnectionError,
-  type Connection,
-  type Element,
-  util,
-} from "@prismatic-io/spectral";
+import { ConnectionError, type Connection, type Element, util } from "@prismatic-io/spectral";
 import type { HttpClient } from "@prismatic-io/spectral/http";
 import type {
   DeltaCursor,
@@ -26,21 +21,14 @@ import { DELTA_NEXT_LINK_SUFFIX } from "./constants";
 export const validateConnection = (connection: Connection): void => {
   const connectionKeys = connections.map((c) => c.key);
   if (!connectionKeys.includes(connection.key)) {
-    throw new ConnectionError(
-      connection,
-      `Unsupported connection method ${connection.key}.`,
-    );
+    throw new ConnectionError(connection, `Unsupported connection method ${connection.key}.`);
   }
 };
 
 export const paginateResults = async <T>(
   client: HttpClient,
   endpoint: string,
-  {
-    returnFullData = false,
-    useTop = true,
-    excludeParents = false,
-  }: PaginateOptions = {},
+  { returnFullData = false, useTop = true, excludeParents = false }: PaginateOptions = {},
 ) => {
   const results = [];
   let nextLink = endpoint;
@@ -55,9 +43,7 @@ export const paginateResults = async <T>(
     });
 
     const existent = results.map((r) => r.id);
-    const toAdd = data.value.filter(
-      (r: Record<string, unknown>) => !existent.includes(r.id),
-    );
+    const toAdd = data.value.filter((r: Record<string, unknown>) => !existent.includes(r.id));
 
     results.push(...toAdd);
     nextLink = data["@odata.nextLink"];
@@ -153,12 +139,8 @@ export const getAccessToken = async (connection: Connection) => {
       auth: {
         clientId: util.types.toString(connection.fields.clientId),
         clientCertificate: {
-          privateKey: util.types
-            .toString(connection.fields.certificate)
-            .replace(/\\n/g, "\n"),
-          thumbprint: util.types.toString(
-            connection.fields.certificateThumbprint,
-          ),
+          privateKey: util.types.toString(connection.fields.certificate).replace(/\\n/g, "\n"),
+          thumbprint: util.types.toString(connection.fields.certificateThumbprint),
         },
         authority,
       },
@@ -170,21 +152,14 @@ export const getAccessToken = async (connection: Connection) => {
         .map((s) => s.trim()),
     });
     if (!result) {
-      throw new ConnectionError(
-        connection,
-        "Could not acquire access token with certificate.",
-      );
+      throw new ConnectionError(connection, "Could not acquire access token with certificate.");
     }
     return result?.accessToken;
   }
   return util.types.toString(connection.token?.access_token);
 };
 
-const addDeleted = ({
-  change,
-  isDeleted,
-  separatedChanges,
-}: DriveTriggerItem) => {
+const addDeleted = ({ change, isDeleted, separatedChanges }: DriveTriggerItem) => {
   if (isDeleted) {
     if (!separatedChanges.deleted) {
       separatedChanges.deleted = [];
@@ -193,11 +168,7 @@ const addDeleted = ({
   }
 };
 
-const addUpdated = ({
-  change,
-  isDeleted,
-  separatedChanges,
-}: DriveTriggerItem) => {
+const addUpdated = ({ change, isDeleted, separatedChanges }: DriveTriggerItem) => {
   if (
     change.lastModifiedDateTime &&
     change.createdDateTime &&
@@ -211,11 +182,7 @@ const addUpdated = ({
   }
 };
 
-const addCreated = ({
-  change,
-  isDeleted,
-  separatedChanges,
-}: DriveTriggerItem) => {
+const addCreated = ({ change, isDeleted, separatedChanges }: DriveTriggerItem) => {
   if (change.lastModifiedDateTime === change.createdDateTime && !isDeleted) {
     if (!separatedChanges.added) {
       separatedChanges.added = [];
@@ -242,23 +209,18 @@ export const separateDriveChanges = (
   return separatedChanges;
 };
 
-const deltaNextLinkKey = (key: string): string =>
-  `${key}${DELTA_NEXT_LINK_SUFFIX}`;
+const deltaNextLinkKey = (key: string): string => `${key}${DELTA_NEXT_LINK_SUFFIX}`;
 
 export const resolveDeltaUrl = (
   state: PollingState,
   key: string,
   rootDelta: string,
   incomingNextLink?: string,
-): string =>
-  incomingNextLink ?? state[deltaNextLinkKey(key)] ?? state[key] ?? rootDelta;
+): string => incomingNextLink ?? state[deltaNextLinkKey(key)] ?? state[key] ?? rootDelta;
 
 const resyncLocation = (error: unknown): string | undefined | null => {
-  const response = (
-    error as {
-      response?: { status?: number; headers?: Record<string, unknown> };
-    }
-  )?.response;
+  const response = (error as { response?: { status?: number; headers?: Record<string, unknown> } })
+    ?.response;
   if (response?.status !== 410) return null;
   const location = response.headers?.location;
   return typeof location === "string" && location ? location : undefined;
@@ -291,11 +253,7 @@ export const fetchDeltaRound = async (
   key: string,
   rootDelta: string,
   incoming: DeltaCursor | undefined,
-): Promise<{
-  page: DriveDeltaPage;
-  next: DeltaCursor | null;
-  cursorState: PollingState;
-}> => {
+): Promise<{ page: DriveDeltaPage; next: DeltaCursor | null; cursorState: PollingState }> => {
   const page = await fetchDeltaPage(
     client,
     resolveDeltaUrl(state, key, rootDelta, incoming?.nextLink),
@@ -312,11 +270,7 @@ export const fetchDeltaRound = async (
       },
     };
   }
-  return {
-    page,
-    next: null,
-    cursorState: { [key]: page["@odata.deltaLink"] as string },
-  };
+  return { page, next: null, cursorState: { [key]: page["@odata.deltaLink"] as string } };
 };
 
 export const folderPathFrom = (
@@ -357,9 +311,9 @@ export const fetchSiteDeltaRound = async (
   newPollingState: PollingState;
 }> => {
   const drivesById = new Map(drives.map((drive) => [drive.id, drive]));
-  let remaining = (
-    incoming?.remaining ?? drives.map((drive) => drive.id)
-  ).filter((id) => drivesById.has(id));
+  let remaining = (incoming?.remaining ?? drives.map((drive) => drive.id)).filter((id) =>
+    drivesById.has(id),
+  );
   let resume: DeltaCursor | undefined =
     incoming?.nextLink && incoming.remaining[0] === remaining[0]
       ? { nextLink: incoming.nextLink }
@@ -390,20 +344,11 @@ export const fetchSiteDeltaRound = async (
     const hasChanges = Object.keys(driveChanges).length > 0;
     if (hasChanges) changes[drive.name] = driveChanges;
 
-    if (next)
-      return {
-        changes,
-        next: { remaining, nextLink: next.nextLink },
-        newPollingState,
-      };
+    if (next) return { changes, next: { remaining, nextLink: next.nextLink }, newPollingState };
     remaining = remaining.slice(1);
     if (hasChanges) break;
   }
-  return {
-    changes,
-    next: remaining.length > 0 ? { remaining } : null,
-    newPollingState,
-  };
+  return { changes, next: remaining.length > 0 ? { remaining } : null, newPollingState };
 };
 
 export const resolvePollingRecordChanges = (
@@ -429,6 +374,4 @@ export const resolvePollingRecordChanges = (
 export const resolveSitePollingRecordChanges = (
   data: PollSiteChangesResult | undefined,
 ): PollingRecordChange[] =>
-  Object.values(data ?? {}).flatMap((driveChanges) =>
-    resolvePollingRecordChanges(driveChanges),
-  );
+  Object.values(data ?? {}).flatMap((driveChanges) => resolvePollingRecordChanges(driveChanges));

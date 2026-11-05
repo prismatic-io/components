@@ -1,8 +1,4 @@
-import type {
-  CustomTaskIdsQueryParams,
-  IncludeSharedQueryParams,
-  PermissionLevelBody,
-} from "./common";
+import type { CustomTaskIdsQueryParams, IncludeSharedQueryParams, PermissionLevelBody } from "./common";
 
 export type AddGuestToFolderBody = PermissionLevelBody;
 
@@ -14,9 +10,7 @@ export type AddGuestToListQueryParams = IncludeSharedQueryParams;
 
 export type AddGuestToTaskBody = PermissionLevelBody;
 
-export interface AddGuestToTaskQueryParams
-  extends IncludeSharedQueryParams,
-    CustomTaskIdsQueryParams {
+export interface AddGuestToTaskQueryParams extends IncludeSharedQueryParams, CustomTaskIdsQueryParams {
   custom_task_ids: boolean;
 }
 

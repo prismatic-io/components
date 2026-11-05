@@ -1,22 +1,9 @@
-import {
-  paginateFetchXml,
-  paginateListEntities,
-  paginateQueryEntities,
-} from "./pagination";
+import { paginateFetchXml, paginateListEntities, paginateQueryEntities } from "./pagination";
 
 const contact1 = { fullname: "Yvonne McKay", contactid: "49b0be2e-d01c-ed11" };
-const contact2 = {
-  fullname: "Susanna Stubberod",
-  contactid: "4bb0be2e-d01c-ed11",
-};
-const contact3 = {
-  fullname: "Nancy Anderson",
-  contactid: "4db0be2e-d01c-ed11",
-};
-const contact4 = {
-  fullname: "Maria Campbell",
-  contactid: "4fb0be2e-d01c-ed11",
-};
+const contact2 = { fullname: "Susanna Stubberod", contactid: "4bb0be2e-d01c-ed11" };
+const contact3 = { fullname: "Nancy Anderson", contactid: "4db0be2e-d01c-ed11" };
+const contact4 = { fullname: "Maria Campbell", contactid: "4fb0be2e-d01c-ed11" };
 
 describe("paginateQueryEntities", () => {
   it("returns initial result as-is when fetchAll is false", async () => {
@@ -32,34 +19,24 @@ describe("paginateQueryEntities", () => {
   it("aggregates values across 2 pages via oDataNextLink", async () => {
     const page1 = {
       value: [contact1, contact2],
-      oDataNextLink:
-        "https://org.crm.dynamics.com/api/data/v9.2/contacts?$skiptoken=2",
+      oDataNextLink: "https://org.crm.dynamics.com/api/data/v9.2/contacts?$skiptoken=2",
     };
     const page2 = { value: [contact3, contact4] };
-    const retrieveFn = vi
-      .fn()
-      .mockResolvedValueOnce(page1)
-      .mockResolvedValueOnce(page2);
+    const retrieveFn = vi.fn().mockResolvedValueOnce(page1).mockResolvedValueOnce(page2);
 
     const result = await paginateQueryEntities(retrieveFn, true);
 
-    expect(result).toEqual({
-      data: { value: [contact1, contact2, contact3, contact4] },
-    });
+    expect(result).toEqual({ data: { value: [contact1, contact2, contact3, contact4] } });
     expect(retrieveFn).toHaveBeenCalledTimes(2);
   });
 
   it("aggregates values across 2 pages via @odata.nextLink", async () => {
     const page1 = {
       value: [contact1],
-      "@odata.nextLink":
-        "https://org.crm.dynamics.com/api/data/v9.2/contacts?$skiptoken=1",
+      "@odata.nextLink": "https://org.crm.dynamics.com/api/data/v9.2/contacts?$skiptoken=1",
     };
     const page2 = { value: [contact2] };
-    const retrieveFn = vi
-      .fn()
-      .mockResolvedValueOnce(page1)
-      .mockResolvedValueOnce(page2);
+    const retrieveFn = vi.fn().mockResolvedValueOnce(page1).mockResolvedValueOnce(page2);
 
     const result = await paginateQueryEntities(retrieveFn, true);
 
@@ -78,14 +55,10 @@ describe("paginateQueryEntities", () => {
   });
 
   it("passes nextLink URL as-is to retrieveFn", async () => {
-    const nextUrl =
-      "https://org.crm.dynamics.com/api/data/v9.2/contacts?$skiptoken=2";
+    const nextUrl = "https://org.crm.dynamics.com/api/data/v9.2/contacts?$skiptoken=2";
     const page1 = { value: [contact1], oDataNextLink: nextUrl };
     const page2 = { value: [contact2] };
-    const retrieveFn = vi
-      .fn()
-      .mockResolvedValueOnce(page1)
-      .mockResolvedValueOnce(page2);
+    const retrieveFn = vi.fn().mockResolvedValueOnce(page1).mockResolvedValueOnce(page2);
 
     await paginateQueryEntities(retrieveFn, true);
 
@@ -96,12 +69,9 @@ describe("paginateQueryEntities", () => {
   it("stops after MAX_PAGES (100) iterations", async () => {
     const makePage = () => ({
       value: [contact1],
-      oDataNextLink:
-        "https://org.crm.dynamics.com/api/data/v9.2/contacts?$skiptoken=next",
+      oDataNextLink: "https://org.crm.dynamics.com/api/data/v9.2/contacts?$skiptoken=next",
     });
-    const retrieveFn = vi
-      .fn()
-      .mockImplementation(() => Promise.resolve(makePage()));
+    const retrieveFn = vi.fn().mockImplementation(() => Promise.resolve(makePage()));
 
     const result = await paginateQueryEntities(retrieveFn, true);
 
@@ -124,25 +94,17 @@ describe("paginateFetchXml", () => {
   it("aggregates values across 2 pages with cookie", async () => {
     const page1 = {
       value: [contact1, contact2],
-      PagingInfo: {
-        cookie: "pagingcookie=%3Ccookie%20page%3D%221%22%3E",
-        nextPage: true,
-      },
+      PagingInfo: { cookie: "pagingcookie=%3Ccookie%20page%3D%221%22%3E", nextPage: true },
     };
     const page2 = {
       value: [contact3, contact4],
       PagingInfo: { cookie: undefined, nextPage: false },
     };
-    const executeFn = vi
-      .fn()
-      .mockResolvedValueOnce(page1)
-      .mockResolvedValueOnce(page2);
+    const executeFn = vi.fn().mockResolvedValueOnce(page1).mockResolvedValueOnce(page2);
 
     const result = await paginateFetchXml(executeFn, true);
 
-    expect(result).toEqual({
-      data: { value: [contact1, contact2, contact3, contact4] },
-    });
+    expect(result).toEqual({ data: { value: [contact1, contact2, contact3, contact4] } });
     expect(executeFn).toHaveBeenCalledTimes(2);
   });
 
@@ -175,14 +137,8 @@ describe("paginateFetchXml", () => {
   it("increments page number on each iteration", async () => {
     const cookie1 = "pagingcookie=%3Ccookie%20page%3D%221%22%3E";
     const cookie2 = "pagingcookie=%3Ccookie%20page%3D%222%22%3E";
-    const page1 = {
-      value: [contact1],
-      PagingInfo: { cookie: cookie1, nextPage: true },
-    };
-    const page2 = {
-      value: [contact2],
-      PagingInfo: { cookie: cookie2, nextPage: true },
-    };
+    const page1 = { value: [contact1], PagingInfo: { cookie: cookie1, nextPage: true } };
+    const page2 = { value: [contact2], PagingInfo: { cookie: cookie2, nextPage: true } };
     const page3 = { value: [contact3], PagingInfo: { nextPage: false } };
     const executeFn = vi
       .fn()
@@ -202,9 +158,7 @@ describe("paginateFetchXml", () => {
       value: [contact1],
       PagingInfo: { cookie: "somecookie", nextPage: true },
     });
-    const executeFn = vi
-      .fn()
-      .mockImplementation(() => Promise.resolve(makePage()));
+    const executeFn = vi.fn().mockImplementation(() => Promise.resolve(makePage()));
 
     const result = await paginateFetchXml(executeFn, true);
 
@@ -225,12 +179,8 @@ describe("paginateListEntities", () => {
   });
 
   it("aggregates values across 2 pages via @odata.nextLink", async () => {
-    const nextUrl =
-      "https://org.crm.dynamics.com/api/data/v9.2/contacts?$skiptoken=2";
-    const page1Data = {
-      value: [contact1, contact2],
-      "@odata.nextLink": nextUrl,
-    };
+    const nextUrl = "https://org.crm.dynamics.com/api/data/v9.2/contacts?$skiptoken=2";
+    const page1Data = { value: [contact1, contact2], "@odata.nextLink": nextUrl };
     const page2Data = { value: [contact3, contact4] };
     const fetchPage = vi
       .fn()
@@ -239,9 +189,7 @@ describe("paginateListEntities", () => {
 
     const result = await paginateListEntities(fetchPage, true);
 
-    expect(result).toEqual({
-      data: { value: [contact1, contact2, contact3, contact4] },
-    });
+    expect(result).toEqual({ data: { value: [contact1, contact2, contact3, contact4] } });
     expect(fetchPage).toHaveBeenCalledTimes(2);
   });
 
@@ -256,8 +204,7 @@ describe("paginateListEntities", () => {
   });
 
   it("passes nextLink URL to fetchPage", async () => {
-    const nextUrl =
-      "https://org.crm.dynamics.com/api/data/v9.2/contacts?$skiptoken=2";
+    const nextUrl = "https://org.crm.dynamics.com/api/data/v9.2/contacts?$skiptoken=2";
     const page1Data = { value: [contact1], "@odata.nextLink": nextUrl };
     const page2Data = { value: [contact2] };
     const fetchPage = vi
@@ -275,13 +222,10 @@ describe("paginateListEntities", () => {
     const makePage = () => ({
       data: {
         value: [contact1],
-        "@odata.nextLink":
-          "https://org.crm.dynamics.com/api/data/v9.2/contacts?$skiptoken=next",
+        "@odata.nextLink": "https://org.crm.dynamics.com/api/data/v9.2/contacts?$skiptoken=next",
       },
     });
-    const fetchPage = vi
-      .fn()
-      .mockImplementation(() => Promise.resolve(makePage()));
+    const fetchPage = vi.fn().mockImplementation(() => Promise.resolve(makePage()));
 
     const result = await paginateListEntities(fetchPage, true);
 

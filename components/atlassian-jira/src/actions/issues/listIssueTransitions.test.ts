@@ -9,10 +9,7 @@ afterAll(() => nock.enableNetConnect());
 afterEach(() => nock.cleanAll());
 
 const run = () =>
-  invoke(listIssueTransitions, {
-    jiraConnection: basicConnection(),
-    issueId: "10201",
-  });
+  invoke(listIssueTransitions, { jiraConnection: basicConnection(), issueId: "10201" });
 
 describe("listIssueTransitions", () => {
   test("lists the transitions available for the issue", async () => {
@@ -30,9 +27,7 @@ describe("listIssueTransitions", () => {
     jiraApi()
       .get("/rest/api/3/issue/10201/transitions")
       .reply(404, {
-        errorMessages: [
-          "Issue does not exist or you do not have permission to see it.",
-        ],
+        errorMessages: ["Issue does not exist or you do not have permission to see it."],
       });
 
     await expect(run()).rejects.toMatchObject({ response: { status: 404 } });

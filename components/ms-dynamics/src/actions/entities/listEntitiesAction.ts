@@ -13,10 +13,7 @@ export const listEntitiesAction = action({
   inputs: listEntitiesActionInputs,
   examplePayload: listEntitiesActionExamplePayload,
   outputSchema: listEntitiesActionOutputSchema,
-  perform: async (
-    context,
-    { connection, includeCustom, includeOnlyTopLevel, includeDetails },
-  ) => {
+  perform: async (context, { connection, includeCustom, includeOnlyTopLevel, includeDetails }) => {
     const client = await createCrmClient(connection, context.debug.enabled);
 
     const { value } = await client.retrieveEntities();
@@ -38,10 +35,8 @@ export const listEntitiesAction = action({
           entityId: entity.MetadataId,
           logicalName: entity.LogicalName,
           schemaName: entity.SchemaName,
-          displayName:
-            entity.DisplayName?.UserLocalizedLabel?.Label || entity.SchemaName,
-          pluralDisplayName:
-            entity.DisplayCollectionName?.UserLocalizedLabel?.Label,
+          displayName: entity.DisplayName?.UserLocalizedLabel?.Label || entity.SchemaName,
+          pluralDisplayName: entity.DisplayCollectionName?.UserLocalizedLabel?.Label,
           isCustomEntity: entity.IsCustomEntity,
           isChildEntity: entity.IsChildEntity,
         };

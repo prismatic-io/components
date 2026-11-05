@@ -36,8 +36,7 @@ export const connectionString = connection({
   key: "connectionString",
   display: {
     label: "Connection String",
-    description:
-      "Authenticates requests to Azure Blob Storage with a connection string.",
+    description: "Authenticates requests to Azure Blob Storage with a connection string.",
   },
   inputs: {
     connectionString: {

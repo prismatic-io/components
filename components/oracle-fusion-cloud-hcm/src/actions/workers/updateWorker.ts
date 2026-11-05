@@ -13,10 +13,7 @@ export const updateWorker = action({
   },
   examplePayload: updateWorkerExamplePayload,
   inputs: updateWorkerInputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: workerRecordOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: workerRecordOutputSchema }),
   perform: async (
     context,
     {
@@ -40,14 +37,7 @@ export const updateWorker = action({
   ) => {
     const client = createClient(connection, context.debug.enabled);
 
-    const nameEntry = {
-      NameType,
-      LastName,
-      LegislationCode,
-      FirstName,
-      MiddleNames,
-      Title,
-    };
+    const nameEntry = { NameType, LastName, LegislationCode, FirstName, MiddleNames, Title };
     const names = dropEmptyRows([nameEntry]);
     const body = {
       PersonNumber,
@@ -61,10 +51,7 @@ export const updateWorker = action({
       workRelationships: dropEmptyRows(workRelationships),
     };
 
-    const { data } = await client.patch<WorkerRecord>(
-      `/workers/${personId}`,
-      body,
-    );
+    const { data } = await client.patch<WorkerRecord>(`/workers/${personId}`, body);
     return { data };
   },
 });

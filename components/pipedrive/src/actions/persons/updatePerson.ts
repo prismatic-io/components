@@ -22,11 +22,7 @@ export const updatePerson = action({
       contactInfo: { emails, phones, visibleTo, marketingStatus } = {},
     },
   ) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      WebhookVersion.V2,
-    );
+    const client = createClient(connection, context.debug.enabled, WebhookVersion.V2);
     const { data } = await client.patch(`/persons/${id}`, {
       name,
       owner_id: ownerId,
@@ -46,8 +42,5 @@ export const updatePerson = action({
   },
   inputs: updatePersonInputs,
   examplePayload: updatePersonExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: singlePersonV2OutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: singlePersonV2OutputSchema }),
 });

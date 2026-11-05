@@ -2,13 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getClient } from "../../client";
 import { listProductsPayload } from "../../examplePayloads";
 import { paginateResults } from "../../helpers/pagination";
-import {
-  company,
-  connection,
-  fetchAll,
-  filterDataAfterDate,
-  site,
-} from "../../inputs/general";
+import { company, connection, fetchAll, filterDataAfterDate, site } from "../../inputs/general";
 import { filterDataChangedAfter } from "../../util";
 
 export const listProducts = action({
@@ -16,10 +10,7 @@ export const listProducts = action({
     label: "List Products",
     description: "Retrieve a list of products",
   },
-  perform: async (
-    context,
-    { connection, site, company, fetchAll, filterDataAfterDate },
-  ) => {
+  perform: async (context, { connection, site, company, fetchAll, filterDataAfterDate }) => {
     const client = getClient(connection, context.debug.enabled, site, company);
     const { data } = await paginateResults({
       client,
@@ -28,9 +19,7 @@ export const listProducts = action({
     });
 
     return {
-      data: filterDataAfterDate
-        ? filterDataChangedAfter(data, filterDataAfterDate)
-        : data,
+      data: filterDataAfterDate ? filterDataChangedAfter(data, filterDataAfterDate) : data,
     };
   },
   inputs: {

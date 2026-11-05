@@ -28,8 +28,7 @@ const fulfillmentServiceName = input({
   label: "Fulfillment Service Name",
   type: "string",
   required: true,
-  comments:
-    "The display name of the fulfillment service, shown to merchants in the Shopify admin.",
+  comments: "The display name of the fulfillment service, shown to merchants in the Shopify admin.",
   example: "MyFulfillmentService",
   placeholder: "Enter fulfillment service name",
   clean: util.types.toString,
@@ -40,8 +39,7 @@ const trackingSupport = input({
   type: "boolean",
   required: false,
   default: "false",
-  comments:
-    "Whether the fulfillment service supports tracking numbers for packages.",
+  comments: "Whether the fulfillment service supports tracking numbers for packages.",
   clean: util.types.toBool,
 });
 

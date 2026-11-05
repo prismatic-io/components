@@ -21,9 +21,7 @@ describe("pollChangesTrigger batching declaration", () => {
   test("New and Updated Records is opt-in batchable with a default batch size", () => {
     expect(pollChangesTrigger.triggerResolverSupport).toBe("valid");
     expect(pollChangesTrigger.batchConfig).toEqual({ batchSize: 50 });
-    expect(pollChangesTrigger.triggerResolver?.resolveItems).toBeInstanceOf(
-      Function,
-    );
+    expect(pollChangesTrigger.triggerResolver?.resolveItems).toBeInstanceOf(Function);
   });
 
   test("offers the Look-back Date directly below the required inputs", () => {
@@ -41,18 +39,14 @@ describe("pollChangesTrigger batching declaration", () => {
 
 describe("resolveSage200RecordChanges", () => {
   test("tags every record with how it changed", () => {
-    expect(
-      resolveSage200RecordChanges({ created: [created], updated: [updated] }),
-    ).toEqual([
+    expect(resolveSage200RecordChanges({ created: [created], updated: [updated] })).toEqual([
       { changeType: "created", record: created },
       { changeType: "updated", record: updated },
     ]);
   });
 
   test("returns [] for empty or undefined changes", () => {
-    expect(resolveSage200RecordChanges({ created: [], updated: [] })).toEqual(
-      [],
-    );
+    expect(resolveSage200RecordChanges({ created: [], updated: [] })).toEqual([]);
     expect(resolveSage200RecordChanges(undefined)).toEqual([]);
   });
 });
@@ -63,11 +57,7 @@ describe("triggerResolver.resolveItems", () => {
       ...defaultTriggerPayload(),
       body: { data: { created: [created], updated: [updated] } },
     };
-    expect(
-      pollChangesTrigger.triggerResolver?.resolveItems?.({} as never, {
-        payload,
-      }),
-    ).toEqual([
+    expect(pollChangesTrigger.triggerResolver?.resolveItems?.({} as never, { payload })).toEqual([
       { changeType: "created", record: created },
       { changeType: "updated", record: updated },
     ]);
@@ -87,9 +77,7 @@ describe("lookBackDateClean", () => {
   test("rejects a malformed, non-calendar, or future date", () => {
     expect(() => lookBackDateClean("01/01/2026")).toThrow(/Look-back Date/);
     expect(() => lookBackDateClean("2026-02-31")).toThrow(/Look-back Date/);
-    expect(() => lookBackDateClean("2999-01-01")).toThrow(
-      /Look-back Date cannot be a future date/,
-    );
+    expect(() => lookBackDateClean("2999-01-01")).toThrow(/Look-back Date cannot be a future date/);
   });
 });
 
@@ -121,8 +109,7 @@ describe("pollChangesTrigger perform", () => {
   } as PerformArgs[2];
   const seed = "2026-01-01T00:00:00.000Z";
   const payload = defaultTriggerPayload();
-  const reply = (...records: Sage200Record[]) =>
-    get.mockResolvedValue({ data: records });
+  const reply = (...records: Sage200Record[]) => get.mockResolvedValue({ data: records });
 
   beforeEach(() => {
     store = undefined;
@@ -132,10 +119,7 @@ describe("pollChangesTrigger perform", () => {
 
   test("seeds the server filter from the Look-back Date, inclusive of the seed instant", async () => {
     reply();
-    await pollChangesTrigger.perform(context(), payload, {
-      ...params,
-      lookBackDate: seed,
-    });
+    await pollChangesTrigger.perform(context(), payload, { ...params, lookBackDate: seed });
     expect(get.mock.calls[0][1].params).toEqual({
       $filter: "date_time_updated gt 2025-12-31T23:59:59.999Z",
     });
@@ -154,9 +138,7 @@ describe("pollChangesTrigger perform", () => {
       showNewRecords: false,
       showUpdatedRecords: false,
     });
-    expect(result?.payload.body).toEqual({
-      data: { created: [onSeed], updated: [updated] },
-    });
+    expect(result?.payload.body).toEqual({ data: { created: [onSeed], updated: [updated] } });
     expect(result?.polledNoChanges).toBe(false);
     expect(store?.lastPolledAt).toBeDefined();
     expect(store?.lastPolledAt).not.toBe(seed);
@@ -173,9 +155,7 @@ describe("pollChangesTrigger perform", () => {
     expect(get.mock.calls[0][1].params.$filter).toBe(
       "date_time_updated gt 2026-05-01T00:00:00.000Z",
     );
-    expect(result?.payload.body).toEqual({
-      data: { created: [], updated: [updated] },
-    });
+    expect(result?.payload.body).toEqual({ data: { created: [], updated: [updated] } });
   });
 
   test("without a Look-back Date the first recurrence only establishes the baseline", async () => {
@@ -199,9 +179,7 @@ describe("pollChangesTrigger perform", () => {
         ...params,
         lookBackDate: seed,
       });
-      expect(first?.payload.body).toEqual({
-        data: { created: [created], updated: [updated] },
-      });
+      expect(first?.payload.body).toEqual({ data: { created: [created], updated: [updated] } });
       expect(store).toEqual({ lastPolledAt: firstPollAt });
 
       vi.setSystemTime(new Date(secondPollAt));
@@ -218,9 +196,7 @@ describe("pollChangesTrigger perform", () => {
       expect(get.mock.calls[1][1].params).toEqual({
         $filter: `date_time_updated gt ${firstPollAt}`,
       });
-      expect(second?.payload.body).toEqual({
-        data: { created: [], updated: [] },
-      });
+      expect(second?.payload.body).toEqual({ data: { created: [], updated: [] } });
       expect(second?.polledNoChanges).toBe(true);
       expect(store).toEqual({ lastPolledAt: secondPollAt });
     });

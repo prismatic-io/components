@@ -32,14 +32,12 @@ export const POLL_RESOURCE_TYPES = ["orders", "customers", "products"] as const;
 
 export type PollResourceType = (typeof POLL_RESOURCE_TYPES)[number];
 
-export const POLL_RESOURCE_CONFIG: Record<
-  PollResourceType,
-  { endpoint: string; idField: string }
-> = {
-  orders: { endpoint: ENDPOINTS.orders, idField: "entity_id" },
-  customers: { endpoint: ENDPOINTS.customerSearch, idField: "id" },
-  products: { endpoint: ENDPOINTS.products, idField: "id" },
-};
+export const POLL_RESOURCE_CONFIG: Record<PollResourceType, { endpoint: string; idField: string }> =
+  {
+    orders: { endpoint: ENDPOINTS.orders, idField: "entity_id" },
+    customers: { endpoint: ENDPOINTS.customerSearch, idField: "id" },
+    products: { endpoint: ENDPOINTS.products, idField: "id" },
+  };
 
 export const POLL_RESOURCE_LABELS: Record<PollResourceType, string> = {
   orders: "Orders",

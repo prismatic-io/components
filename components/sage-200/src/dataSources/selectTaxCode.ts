@@ -10,8 +10,7 @@ export const selectTaxCode = dataSource({
   },
   perform: async (_context, { connection, site, company }) => {
     const client = getClient(connection, false, site, company);
-    const { data } =
-      await client.get<{ name: string; id: number }[]>("/tax_codes");
+    const { data } = await client.get<{ name: string; id: number }[]>("/tax_codes");
 
     const objects = data.map<Element>((taxCode) => ({
       key: util.types.toString(taxCode.id),

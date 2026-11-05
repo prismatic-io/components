@@ -9,8 +9,7 @@ import { createDriveWebhookExamplePayload } from "../../examplePayloads";
 export const createDriveWebhook = action({
   display: {
     label: "Create Webhook for Drive",
-    description:
-      "Create a webhook to receive notifications of changes with a Google Drive",
+    description: "Create a webhook to receive notifications of changes with a Google Drive",
   },
   inputs: createDriveWebhookInputs,
   outputSchema: outputSchema({
@@ -37,15 +36,11 @@ export const createDriveWebhook = action({
     });
     return { data };
   },
-  examplePerform: async (
-    _context,
-    { endpoint, expiration },
-  ): Promise<{ data: unknown }> => ({
+  examplePerform: async (_context, { endpoint, expiration }): Promise<{ data: unknown }> => ({
     data: {
       ...createDriveWebhookExamplePayload.data,
       address: endpoint,
-      expiration:
-        expiration || createDriveWebhookExamplePayload.data.expiration,
+      expiration: expiration || createDriveWebhookExamplePayload.data.expiration,
     },
   }),
   examplePayload: createDriveWebhookExamplePayload,

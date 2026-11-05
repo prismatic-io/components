@@ -20,9 +20,6 @@ export const getAssetJobStatus = action({
     return { data };
   },
   inputs: getAssetJobStatusInputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: aemJobOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: aemJobOutputSchema }),
   examplePayload: getAssetJobStatusExamplePayload,
 });

@@ -12,11 +12,7 @@ const URL_PATH = `/v1.0${TASK_PATH}`;
 const FIRST_ETAG = 'W/"JzEtVGFzayAgQEBAQEBAQEBAQEBAQEBAWCc="';
 const SECOND_ETAG = 'W/"JzItVGFzayAgQEBAQEBAQEBAQEBAQEBAWCc="';
 
-const connection = createConnection(
-  templatedOauth,
-  {},
-  { access_token: "test-token" },
-);
+const connection = createConnection(templatedOauth, {}, { access_token: "test-token" });
 const client = () => createClient(connection, false);
 
 beforeAll(() => {
@@ -29,9 +25,7 @@ afterEach(() => {
 
 describe("resolveEtag", () => {
   test("returns the current @odata.etag", async () => {
-    nock(BASE)
-      .get(URL_PATH)
-      .reply(200, { "@odata.etag": FIRST_ETAG, id: "t_1" });
+    nock(BASE).get(URL_PATH).reply(200, { "@odata.etag": FIRST_ETAG, id: "t_1" });
     await expect(resolveEtag(client(), TASK_PATH)).resolves.toBe(FIRST_ETAG);
   });
 
@@ -129,9 +123,7 @@ describe("patchWithEtag with no caller-supplied etag", () => {
       .times(5)
       .reply(200, { id: "t_1", title: "Renamed" });
 
-    const data = await patchWithEtag<{ id: string }>(client(), TASK_PATH, {
-      title: "Renamed",
-    });
+    const data = await patchWithEtag<{ id: string }>(client(), TASK_PATH, { title: "Renamed" });
 
     expect(data).toEqual({ id: "t_1", title: "Renamed" });
     expect(gets).toBe(1);
@@ -146,10 +138,7 @@ describe("patchWithEtag with no caller-supplied etag", () => {
     nock(BASE)
       .get(URL_PATH)
       .times(5)
-      .reply(() => [
-        200,
-        { "@odata.etag": servedEtags.shift() ?? SECOND_ETAG },
-      ]);
+      .reply(() => [200, { "@odata.etag": servedEtags.shift() ?? SECOND_ETAG }]);
     nock(BASE)
       .patch(URL_PATH)
       .matchHeader("If-Match", (value) => {
@@ -164,9 +153,7 @@ describe("patchWithEtag with no caller-supplied etag", () => {
           : [200, { id: "t_1" }];
       });
 
-    const data = await patchWithEtag<{ id: string }>(client(), TASK_PATH, {
-      title: "Renamed",
-    });
+    const data = await patchWithEtag<{ id: string }>(client(), TASK_PATH, { title: "Renamed" });
 
     expect(data).toEqual({ id: "t_1" });
     expect(patches).toBe(2);
@@ -200,9 +187,7 @@ describe("patchWithEtag with no caller-supplied etag", () => {
     }
 
     expect(error).toBeInstanceOf(Error);
-    expect(error?.message).toContain(
-      `version conflict on ${TASK_PATH} after 3 attempts`,
-    );
+    expect(error?.message).toContain(`version conflict on ${TASK_PATH} after 3 attempts`);
     expect(error?.cause).toBeDefined();
     expect(gets).toBe(3);
     expect(patches).toBe(3);
@@ -227,9 +212,7 @@ describe("patchWithEtag with no caller-supplied etag", () => {
         return [400, { error: { code: "invalidRequest" } }];
       });
 
-    await expect(
-      patchWithEtag(client(), TASK_PATH, { title: "" }),
-    ).rejects.toThrow();
+    await expect(patchWithEtag(client(), TASK_PATH, { title: "" })).rejects.toThrow();
     expect(gets).toBe(1);
     expect(patches).toBe(1);
   });

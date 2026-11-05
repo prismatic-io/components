@@ -17,8 +17,7 @@ export const ancestorName = input({
   label: "Folder or Drive ID",
   type: "string",
   required: false,
-  comments:
-    "Return activities for this Drive or folder, plus all children and descendants.",
+  comments: "Return activities for this Drive or folder, plus all children and descendants.",
   example: "0ALiN8fRST0gxUk9PVA",
   placeholder: "Enter Folder or Drive ID",
   dataSource: "selectFolder",

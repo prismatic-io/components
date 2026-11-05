@@ -7,11 +7,7 @@ import {
   aemAssetsEventWebhookExamplePayload,
   aemSitesEventWebhookExamplePayload,
 } from "../examplePayloads";
-import type {
-  AemChangeItem,
-  AemEventEnvelope,
-  AemWebhookFlowState,
-} from "../types";
+import type { AemChangeItem, AemEventEnvelope, AemWebhookFlowState } from "../types";
 import { clearPublicKeyCache } from "../utils";
 import { aemAssetsEventWebhook } from "./aemAssetsEventWebhook";
 import { aemSitesEventWebhook } from "./aemSitesEventWebhook";
@@ -60,12 +56,9 @@ const connection = createConnection(
   { access_token: "test-access-token" },
 );
 
-const { privateKey, publicKey } = generateKeyPairSync("rsa", {
-  modulusLength: 2048,
-});
+const { privateKey, publicKey } = generateKeyPairSync("rsa", { modulusLength: 2048 });
 const publicPem = publicKey.export({ type: "spki", format: "pem" }).toString();
-const sign = (body: string) =>
-  createSign("RSA-SHA256").update(body).sign(privateKey, "base64");
+const sign = (body: string) => createSign("RSA-SHA256").update(body).sign(privateKey, "base64");
 
 const performContext = (isSimulatedTestExecution = false) =>
   ({
@@ -80,24 +73,15 @@ const signedHeaders = (body: string) => ({
   "X-Adobe-Public-Key1-Path": KEY_PATH,
 });
 
-const bodyItem = (
-  result: Awaited<ReturnType<typeof aemSitesEventWebhook.perform>>,
-) =>
-  (result as { payload: { body: { data: AemChangeItem & AemEventEnvelope } } })
-    .payload.body.data;
+const bodyItem = (result: Awaited<ReturnType<typeof aemSitesEventWebhook.perform>>) =>
+  (result as { payload: { body: { data: AemChangeItem & AemEventEnvelope } } }).payload.body.data;
 
 beforeAll(() => nock.disableNetConnect());
 beforeEach(() => clearPublicKeyCache());
 afterEach(() => nock.cleanAll());
 afterAll(() => nock.enableNetConnect());
 
-describe.each(TRIGGERS)("$name", ({
-  trigger,
-  label,
-  examplePayload,
-  eventTypes,
-  providerId,
-}) => {
+describe.each(TRIGGERS)("$name", ({ trigger, label, examplePayload, eventTypes, providerId }) => {
   const defaultEventType = eventTypes[0];
   const params = (eventTypes: string[] = [defaultEventType]) => ({
     connection,
@@ -109,9 +93,8 @@ describe.each(TRIGGERS)("$name", ({
     publishBaseUrl: "https://www.example.com",
   });
 
-  const exampleEvent = (
-    examplePayload.payload.body.data as { record: { data: object } }
-  ).record.data as Record<string, unknown>;
+  const exampleEvent = (examplePayload.payload.body.data as { record: { data: object } }).record
+    .data as Record<string, unknown>;
 
   const deliveryPayload = (
     event: Record<string, unknown>,
@@ -138,10 +121,7 @@ describe.each(TRIGGERS)("$name", ({
         contentType: "text/plain",
         body: "challenge-123",
       });
-      const branched = result as {
-        branch?: string;
-        payload: { body: { data: unknown } };
-      };
+      const branched = result as { branch?: string; payload: { body: { data: unknown } } };
       expect(branched.branch).toBe("URL Verification");
       expect(branched.payload.body.data).toBeNull();
     });
@@ -187,11 +167,7 @@ describe.each(TRIGGERS)("$name", ({
 
     test("tries the second signature when the first key cannot be fetched", async () => {
       const body = JSON.stringify(exampleEvent);
-      nock(KEY_HOST)
-        .get("/prod/keys/rotated.pem")
-        .reply(404)
-        .get(KEY_PATH)
-        .reply(200, publicPem);
+      nock(KEY_HOST).get("/prod/keys/rotated.pem").reply(404).get(KEY_PATH).reply(200, publicPem);
       const result = await trigger.perform(
         performContext(),
         deliveryPayload(
@@ -224,11 +200,7 @@ describe.each(TRIGGERS)("$name", ({
 
     test("rejects a delivery with no signature headers", async () => {
       await expect(
-        trigger.perform(
-          performContext(),
-          deliveryPayload(exampleEvent, {}),
-          params(),
-        ),
+        trigger.perform(performContext(), deliveryPayload(exampleEvent, {}), params()),
       ).rejects.toThrow("Adobe I/O Events signature verification failed.");
     });
 
@@ -285,9 +257,7 @@ describe.each(TRIGGERS)("$name", ({
         ...deliveryPayload(event, signedHeaders(body), body),
         body: { data: Buffer.from(body) },
       } as unknown as PerformPayload;
-      await expect(
-        trigger.perform(performContext(), payload, params()),
-      ).rejects.toThrow(
+      await expect(trigger.perform(performContext(), payload, params())).rejects.toThrow(
         "AEM event was addressed to a different Adobe client ID.",
       );
     });
@@ -297,9 +267,7 @@ describe.each(TRIGGERS)("$name", ({
         ...deliveryPayload(exampleEvent, {}, "not json"),
         body: { data: Buffer.from("not json") },
       } as unknown as PerformPayload;
-      await expect(
-        trigger.perform(performContext(true), payload, params()),
-      ).rejects.toThrow(
+      await expect(trigger.perform(performContext(true), payload, params())).rejects.toThrow(
         "Adobe I/O Events delivered a body that is not a JSON CloudEvent.",
       );
     });
@@ -314,9 +282,7 @@ describe.each(TRIGGERS)("$name", ({
           deliveryPayload(event, signedHeaders(body), body),
           params(),
         ),
-      ).rejects.toThrow(
-        "AEM event was addressed to a different Adobe client ID.",
-      );
+      ).rejects.toThrow("AEM event was addressed to a different Adobe client ID.");
     });
   });
 
@@ -325,10 +291,7 @@ describe.each(TRIGGERS)("$name", ({
       "aem.sites.contentFragment.created": ["contentFragment", "created"],
       "aem.sites.contentFragment.modified": ["contentFragment", "modified"],
       "aem.sites.contentFragment.published": ["contentFragment", "published"],
-      "aem.sites.contentFragment.unpublished": [
-        "contentFragment",
-        "unpublished",
-      ],
+      "aem.sites.contentFragment.unpublished": ["contentFragment", "unpublished"],
       "aem.sites.contentFragment.deleted": ["contentFragment", "deleted"],
       "aem.sites.page.created": ["page", "created"],
       "aem.sites.page.modified": ["page", "modified"],
@@ -355,11 +318,11 @@ describe.each(TRIGGERS)("$name", ({
         params(),
       );
       const item = bodyItem(result);
-      expect([
-        item.record.resourceType,
-        item.changeType,
-        item.eventType,
-      ]).toEqual([resourceType, changeType, type]);
+      expect([item.record.resourceType, item.changeType, item.eventType]).toEqual([
+        resourceType,
+        changeType,
+        type,
+      ]);
     });
 
     test("builds the URL from the publish base URL when sourceUrl is only the author origin", async () => {
@@ -430,28 +393,25 @@ describe.each(TRIGGERS)("$name", ({
         params(),
       );
       const item = bodyItem(result);
-      expect([
-        item.record.resourceType,
-        item.changeType,
-        item.eventType,
-      ]).toEqual(["page", "modified", "aem.sites.page.moved"]);
+      expect([item.record.resourceType, item.changeType, item.eventType]).toEqual([
+        "page",
+        "modified",
+        "aem.sites.page.moved",
+      ]);
     });
 
     test("passes an unknown event code through as modified", async () => {
       const result = await trigger.perform(
         performContext(true),
-        deliveryPayload(
-          { ...exampleEvent, type: "aem.forms.form.submitted" },
-          {},
-        ),
+        deliveryPayload({ ...exampleEvent, type: "aem.forms.form.submitted" }, {}),
         params(),
       );
       const item = bodyItem(result);
-      expect([
-        item.record.resourceType,
-        item.changeType,
-        item.eventType,
-      ]).toEqual(["unknown", "modified", "aem.forms.form.submitted"]);
+      expect([item.record.resourceType, item.changeType, item.eventType]).toEqual([
+        "unknown",
+        "modified",
+        "aem.forms.form.submitted",
+      ]);
     });
   });
 
@@ -483,10 +443,7 @@ describe.each(TRIGGERS)("$name", ({
         })
         .reply(201, { registration_id: "reg-1", webhook_url: WEBHOOK_URL });
       const selected = eventTypes.slice(0, 2);
-      const result = await handlers.create(
-        lifecycleContext(),
-        params(selected),
-      );
+      const result = await handlers.create(lifecycleContext(), params(selected));
       expect(posted).toMatchObject({
         client_id: CLIENT_ID,
         delivery_type: "webhook",
@@ -504,8 +461,7 @@ describe.each(TRIGGERS)("$name", ({
             previousClientId: CLIENT_ID,
             previousEventTypes: selected,
             previousProviderId: providerId,
-            previousWorkspace:
-              "/123456/4566206088344794931/4566206088344853970",
+            previousWorkspace: "/123456/4566206088344794931/4566206088344853970",
           },
         },
       });
@@ -542,10 +498,7 @@ describe.each(TRIGGERS)("$name", ({
           _embedded: {
             registrations: [
               { registration_id: "reg-1", webhook_url: WEBHOOK_URL },
-              {
-                registration_id: "reg-other",
-                webhook_url: "https://hooks.example.com/other",
-              },
+              { registration_id: "reg-other", webhook_url: "https://hooks.example.com/other" },
             ],
           },
         })
@@ -586,11 +539,7 @@ describe.each(TRIGGERS)("$name", ({
       nock(IO_EVENTS)
         .get(`${WORKSPACE}/registrations`)
         .reply(200, {
-          _embedded: {
-            registrations: [
-              { registration_id: "reg-1", webhook_url: WEBHOOK_URL },
-            ],
-          },
+          _embedded: { registrations: [{ registration_id: "reg-1", webhook_url: WEBHOOK_URL }] },
         })
         .delete(`${WORKSPACE}/registrations/reg-1`)
         .reply(204)
@@ -599,10 +548,7 @@ describe.each(TRIGGERS)("$name", ({
           return true;
         })
         .reply(201, { registration_id: "reg-2" });
-      const result = await handlers.create(
-        lifecycleContext({ [stateKey]: existing }),
-        params(),
-      );
+      const result = await handlers.create(lifecycleContext({ [stateKey]: existing }), params());
       expect(posted.client_id).toBe(CLIENT_ID);
       expect(result).toEqual({
         crossFlowState: {
@@ -627,34 +573,23 @@ describe.each(TRIGGERS)("$name", ({
       nock(IO_EVENTS)
         .get(`${OLD_WORKSPACE}/registrations`)
         .reply(200, {
-          _embedded: {
-            registrations: [
-              { registration_id: "reg-old", webhook_url: WEBHOOK_URL },
-            ],
-          },
+          _embedded: { registrations: [{ registration_id: "reg-old", webhook_url: WEBHOOK_URL }] },
         })
         .delete(`${OLD_WORKSPACE}/registrations/reg-old`)
         .reply(204)
         .get(`${WORKSPACE}/registrations`)
         .reply(200, {
           _embedded: {
-            registrations: [
-              { registration_id: "reg-stale", webhook_url: WEBHOOK_URL },
-            ],
+            registrations: [{ registration_id: "reg-stale", webhook_url: WEBHOOK_URL }],
           },
         })
         .delete(`${WORKSPACE}/registrations/reg-stale`)
         .reply(204)
         .post(`${WORKSPACE}/registrations`)
         .reply(201, { registration_id: "reg-new" });
-      const result = await handlers.create(
-        lifecycleContext({ [stateKey]: existing }),
-        params(),
-      );
+      const result = await handlers.create(lifecycleContext({ [stateKey]: existing }), params());
       expect(result).toEqual({
-        crossFlowState: {
-          [stateKey]: expect.objectContaining({ registrationId: "reg-new" }),
-        },
+        crossFlowState: { [stateKey]: expect.objectContaining({ registrationId: "reg-new" }) },
       });
       expect(nock.isDone()).toBe(true);
     });
@@ -667,10 +602,7 @@ describe.each(TRIGGERS)("$name", ({
             registrations: [
               { registration_id: "reg-1", webhook_url: WEBHOOK_URL },
               { registration_id: "reg-2", webhook_url: WEBHOOK_URL },
-              {
-                registration_id: "reg-other",
-                webhook_url: "https://hooks.example.com/other",
-              },
+              { registration_id: "reg-other", webhook_url: "https://hooks.example.com/other" },
             ],
           },
         })
@@ -700,9 +632,7 @@ describe.each(TRIGGERS)("$name", ({
     });
 
     test("create refuses a Web App connection before calling Adobe I/O Events", async () => {
-      await expect(
-        handlers.create(lifecycleContext(), webAppParams()),
-      ).rejects.toThrow(
+      await expect(handlers.create(lifecycleContext(), webAppParams())).rejects.toThrow(
         `${label} requires the OAuth 2.0 Client Credentials connection`,
       );
     });
@@ -713,9 +643,7 @@ describe.each(TRIGGERS)("$name", ({
     });
 
     test("create refuses an empty event list before calling Adobe I/O Events", async () => {
-      await expect(
-        handlers.create(lifecycleContext(), params([])),
-      ).rejects.toThrow(
+      await expect(handlers.create(lifecycleContext(), params([]))).rejects.toThrow(
         `${label} needs at least one event type. Select the events to subscribe to in Event Types.`,
       );
     });
@@ -726,9 +654,9 @@ describe.each(TRIGGERS)("$name", ({
         .reply(200, { _embedded: { registrations: [] } })
         .post(`${WORKSPACE}/registrations`)
         .reply(400, { message: "invalid provider" });
-      await expect(
-        handlers.create(lifecycleContext(), params()),
-      ).rejects.toThrow("Request failed with status code 400");
+      await expect(handlers.create(lifecycleContext(), params())).rejects.toThrow(
+        "Request failed with status code 400",
+      );
     });
   });
 });

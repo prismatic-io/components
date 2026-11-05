@@ -64,7 +64,7 @@ export const blocks = input({
       ],
     },
     null,
-    2,
+    2
   ),
   comments:
     "A JSON array containing blocks (objects) that make up the desired message. Use Slack's [Block Kit Builder](https://app.slack.com/block-kit-builder/) to build block messages.",

@@ -17,20 +17,15 @@ export const listApplications = action({
   ) => {
     const client = await createClient(connection, context.debug.enabled);
 
-    const data = await paginateRecordsWithLink<Application>(
-      client,
-      "/apps",
-      fetchAll,
-      {
-        after: pagination.after,
-        expand: resultOptions.expand,
-        filter,
-        includeNonDeleted: resultOptions.includeNonDeleted,
-        limit: pagination.limit,
-        q,
-        useOptimization: resultOptions.useOptimization,
-      },
-    );
+    const data = await paginateRecordsWithLink<Application>(client, "/apps", fetchAll, {
+      after: pagination.after,
+      expand: resultOptions.expand,
+      filter,
+      includeNonDeleted: resultOptions.includeNonDeleted,
+      limit: pagination.limit,
+      q,
+      useOptimization: resultOptions.useOptimization,
+    });
 
     return {
       data,

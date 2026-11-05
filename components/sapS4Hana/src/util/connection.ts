@@ -1,9 +1,5 @@
 import { type Connection, util } from "@prismatic-io/spectral";
-import {
-  sapApiKeyConnection,
-  sapBasicAuthConnection,
-  sapOAuthConnection,
-} from "../connections";
+import { sapApiKeyConnection, sapBasicAuthConnection, sapOAuthConnection } from "../connections";
 
 export const getBaseUrl = (connection: Connection): string => {
   switch (connection.key) {
@@ -19,15 +15,11 @@ export const getBaseUrl = (connection: Connection): string => {
     }
 
     default:
-      return util.types.toString(
-        connection.fields?.baseUrl || connection.fields?.tenantUrl,
-      );
+      return util.types.toString(connection.fields?.baseUrl || connection.fields?.tenantUrl);
   }
 };
 
-export const getAuthHeaders = (
-  connection: Connection,
-): Record<string, string> => {
+export const getAuthHeaders = (connection: Connection): Record<string, string> => {
   switch (connection.key) {
     case sapApiKeyConnection.key: {
       return {
@@ -38,9 +30,7 @@ export const getAuthHeaders = (
     case sapBasicAuthConnection.key: {
       const username = util.types.toString(connection.fields?.username);
       const password = util.types.toString(connection.fields?.password);
-      const credentials = Buffer.from(`${username}:${password}`).toString(
-        "base64",
-      );
+      const credentials = Buffer.from(`${username}:${password}`).toString("base64");
       return {
         Authorization: `Basic ${credentials}`,
       };
@@ -49,9 +39,7 @@ export const getAuthHeaders = (
     case sapOAuthConnection.key: {
       const accessToken = util.types.toString(connection.token?.access_token);
       if (!accessToken) {
-        throw new Error(
-          "OAuth access token not available. Please re-authenticate.",
-        );
+        throw new Error("OAuth access token not available. Please re-authenticate.");
       }
       return {
         Authorization: `Bearer ${accessToken}`,
@@ -67,9 +55,7 @@ export const getAuthHeaders = (
       if (connection.fields?.username && connection.fields?.password) {
         const username = util.types.toString(connection.fields.username);
         const password = util.types.toString(connection.fields.password);
-        const credentials = Buffer.from(`${username}:${password}`).toString(
-          "base64",
-        );
+        const credentials = Buffer.from(`${username}:${password}`).toString("base64");
         return {
           Authorization: `Basic ${credentials}`,
         };
@@ -88,14 +74,10 @@ export const validateConnection = (connection: Connection): void => {
   switch (connection.key) {
     case sapApiKeyConnection.key: {
       if (!connection.fields?.apiKey) {
-        throw new Error(
-          "API Key is required for SAP API Business Hub connection",
-        );
+        throw new Error("API Key is required for SAP API Business Hub connection");
       }
       if (!connection.fields?.baseUrl) {
-        throw new Error(
-          "Base URL is required for SAP API Business Hub connection",
-        );
+        throw new Error("Base URL is required for SAP API Business Hub connection");
       }
       break;
     }
@@ -105,9 +87,7 @@ export const validateConnection = (connection: Connection): void => {
         throw new Error("Tenant URL is required for Basic Auth connection");
       }
       if (!connection.fields?.username || !connection.fields?.password) {
-        throw new Error(
-          "Username and password are required for Basic Auth connection",
-        );
+        throw new Error("Username and password are required for Basic Auth connection");
       }
       break;
     }

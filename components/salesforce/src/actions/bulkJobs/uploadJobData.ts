@@ -18,18 +18,13 @@ export const uploadJobData = action({
     );
 
     const { data: fileData } = file;
-    const { data } = await salesforceClient.put(
-      `/jobs/ingest/${bulkJobId}/batches`,
-      fileData,
-      {
-        headers: { "Content-Type": "text/csv" },
-      },
-    );
+    const { data } = await salesforceClient.put(`/jobs/ingest/${bulkJobId}/batches`, fileData, {
+      headers: { "Content-Type": "text/csv" },
+    });
     return {
       data,
     };
   },
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    uploadJobDataExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => uploadJobDataExamplePayload,
   examplePayload: uploadJobDataExamplePayload,
 });

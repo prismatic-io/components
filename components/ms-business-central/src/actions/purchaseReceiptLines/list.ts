@@ -7,18 +7,10 @@ import { listPurchaseReceiptLinesInputs as inputs } from "../../inputs/purchaseR
 export const listPurchaseReceiptLines = action({
   display: {
     label: "List Purchase Receipt Lines",
-    description:
-      "List all purchase receipt line objects in your Business Central Organization.",
+    description: "List all purchase receipt line objects in your Business Central Organization.",
   },
-  perform: async (
-    context,
-    { companyId, connection, fetchAll, odataQueryParams },
-  ) => {
-    const client = getMsBusinessCentralClient(
-      connection,
-      context,
-      context.debug.enabled,
-    );
+  perform: async (context, { companyId, connection, fetchAll, odataQueryParams }) => {
+    const client = getMsBusinessCentralClient(connection, context, context.debug.enabled);
     const params = {
       $orderBy: odataQueryParams.$orderBy,
       $format: odataQueryParams.$format,
@@ -31,9 +23,7 @@ export const listPurchaseReceiptLines = action({
       $select: odataQueryParams.$select,
     };
 
-    return await paginateResults<
-      (typeof examplePayload)["data"]["value"][number]
-    >({
+    return await paginateResults<(typeof examplePayload)["data"]["value"][number]>({
       client,
       endpoint: `/companies(${companyId})/purchaseReceiptLines`,
       params,

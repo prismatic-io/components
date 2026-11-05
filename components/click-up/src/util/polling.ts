@@ -16,20 +16,14 @@ export const fetchTasksSince = async (
   client: HttpClient,
   scopeType: PollScopeType,
   scopeId: string,
-  sinceMs: string,
+  sinceMs: string
 ): Promise<ClickUpTask[]> => {
-  const path =
-    scopeType === "team" ? `/team/${scopeId}/task` : `/list/${scopeId}/task`;
+  const path = scopeType === "team" ? `/team/${scopeId}/task` : `/list/${scopeId}/task`;
   const tasks: ClickUpTask[] = [];
   let page = 0;
   while (true) {
     const { data } = await client.get<ClickUpTaskPage>(path, {
-      params: {
-        date_updated_gt: sinceMs,
-        page,
-        include_closed: true,
-        subtasks: true,
-      },
+      params: { date_updated_gt: sinceMs, page, include_closed: true, subtasks: true },
     });
     const pageTasks = data?.tasks ?? [];
     tasks.push(...pageTasks);
@@ -41,13 +35,9 @@ export const fetchTasksSince = async (
   return tasks;
 };
 
-export const formatClickUpTimestamp = (date: Date): string =>
-  util.types.toString(date.getTime());
+export const formatClickUpTimestamp = (date: Date): string => util.types.toString(date.getTime());
 
-export const partitionTasksByTimestamp = (
-  tasks: ClickUpTask[],
-  sinceMs: number,
-): PartitionedTasks => {
+export const partitionTasksByTimestamp = (tasks: ClickUpTask[], sinceMs: number): PartitionedTasks => {
   const created: ClickUpTask[] = [];
   const updated: ClickUpTask[] = [];
 
@@ -70,33 +60,21 @@ export const partitionTasksByTimestamp = (
 export const resolvePollingWindowStart = (
   state: PollingState | undefined,
   lookBackDate: string,
-  now: Date,
+  now: Date
 ): PollingWindowStart => {
   if (state?.lastPolledAt) {
-    return {
-      sinceMs: new Date(state.lastPolledAt).getTime(),
-      isInitialSync: false,
-    };
+    return { sinceMs: new Date(state.lastPolledAt).getTime(), isInitialSync: false };
   }
   if (lookBackDate) {
-    return {
-      sinceMs: new Date(lookBackDate).getTime() - 1,
-      isInitialSync: true,
-    };
+    return { sinceMs: new Date(lookBackDate).getTime() - 1, isInitialSync: true };
   }
   return { sinceMs: now.getTime(), isInitialSync: false };
 };
 
-export const resolveClickUpTaskChanges = (
-  data: ClickUpTaskChangesObject | undefined,
-): ClickUpTaskChange[] => {
+export const resolveClickUpTaskChanges = (data: ClickUpTaskChangesObject | undefined): ClickUpTaskChange[] => {
   const changesObject = data ?? { created: [], updated: [] };
   return [
-    ...(changesObject.created ?? []).map(
-      (record): ClickUpTaskChange => ({ changeType: "created", record }),
-    ),
-    ...(changesObject.updated ?? []).map(
-      (record): ClickUpTaskChange => ({ changeType: "updated", record }),
-    ),
+    ...(changesObject.created ?? []).map((record): ClickUpTaskChange => ({ changeType: "created", record })),
+    ...(changesObject.updated ?? []).map((record): ClickUpTaskChange => ({ changeType: "updated", record })),
   ];
 };

@@ -62,8 +62,7 @@ export const updateAccount = action({
       data: response,
     };
   },
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    genericCreateUpdateExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => genericCreateUpdateExamplePayload,
   inputs: updateAccountInputs,
   outputSchema: outputSchema({
     type: "actionOutput",

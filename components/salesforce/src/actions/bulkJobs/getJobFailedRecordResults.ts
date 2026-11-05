@@ -12,19 +12,12 @@ export const getJobFailedRecordResults = action({
   },
   performSafety: "notAllowed",
   perform: async (context, { version, connection, bulkJobId }) => {
-    const client = await createSalesforceHttpClient(
-      version,
-      connection,
-      context.debug.enabled,
-    );
-    const { data } = await client.get(
-      `/jobs/ingest/${bulkJobId}/failedResults`,
-    );
+    const client = await createSalesforceHttpClient(version, connection, context.debug.enabled);
+    const { data } = await client.get(`/jobs/ingest/${bulkJobId}/failedResults`);
 
     return { data };
   },
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    getJobFailedRecordResultsExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => getJobFailedRecordResultsExamplePayload,
   inputs: getJobFailedRecordResultsInputs,
   outputSchema: outputSchema({
     type: "actionOutput",

@@ -25,8 +25,7 @@ import { cleanStringInput } from "../../utils";
 export const updateItem = action({
   display: {
     label: "Update Item",
-    description:
-      "Updates an item object from your Business Central Organization.",
+    description: "Updates an item object from your Business Central Organization.",
   },
   perform: async (
     context,
@@ -50,11 +49,7 @@ export const updateItem = action({
       connection,
     },
   ) => {
-    const client = getMsBusinessCentralClient(
-      connection,
-      context,
-      context.debug.enabled,
-    );
+    const client = getMsBusinessCentralClient(connection, context, context.debug.enabled);
     const payload = {
       baseUnitOfMeasureCode,
       baseUnitOfMeasureId,

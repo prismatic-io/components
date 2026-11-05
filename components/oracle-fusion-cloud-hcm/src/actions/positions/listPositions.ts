@@ -14,26 +14,18 @@ export const listPositions = action({
   },
   examplePayload: listPositionsExamplePayload,
   inputs: listPositionsInputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: listPositionsOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: listPositionsOutputSchema }),
   perform: async (
     context,
     { connection, fetchAll, pagination, effectiveDate, includeMetadataLinks },
   ) => {
     const client = createClient(connection, context.debug.enabled);
-    const data = await paginateResults<Position>(
-      client,
-      "/positions",
-      fetchAll,
-      {
-        offset: pagination.offset,
-        limit: pagination.limit,
-        effectiveDate,
-        onlyData: includeMetadataLinks,
-      },
-    );
+    const data = await paginateResults<Position>(client, "/positions", fetchAll, {
+      offset: pagination.offset,
+      limit: pagination.limit,
+      effectiveDate,
+      onlyData: includeMetadataLinks,
+    });
     return { data };
   },
 });

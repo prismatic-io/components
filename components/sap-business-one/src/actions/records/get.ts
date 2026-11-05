@@ -10,11 +10,7 @@ export const getRecord = action({
   },
   inputs: { ...defaultRecordInputs, $select, connection },
   perform: async (context, { connection, $select, recordId, recordType }) => {
-    const client = await createClient(
-      connection,
-      context,
-      context.debug.enabled,
-    );
+    const client = await createClient(connection, context, context.debug.enabled);
 
     const { data } = await client.get(`/${recordType}(${recordId})`, {
       params: {

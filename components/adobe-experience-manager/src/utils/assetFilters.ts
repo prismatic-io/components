@@ -5,8 +5,6 @@ export const buildAssetFilterClauses = ({
   folderIds,
   mimeTypes,
 }: AssetSearchFilters): AssetSearchClause[] => [
-  ...(folderIds.length
-    ? [{ term: { [ASSET_ANCESTORS_FIELD]: folderIds } }]
-    : []),
+  ...(folderIds.length ? [{ term: { [ASSET_ANCESTORS_FIELD]: folderIds } }] : []),
   ...(mimeTypes.length ? [{ term: { [ASSET_FORMAT_FIELD]: mimeTypes } }] : []),
 ];

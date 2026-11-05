@@ -14,9 +14,7 @@ export const checkoutProject = action({
       },
       context.debug.enabled,
     );
-    const { data } = await client.post(
-      `/Projects('${params.guId}')/checkOut()`,
-    );
+    const { data } = await client.post(`/Projects('${params.guId}')/checkOut()`);
 
     return {
       data,

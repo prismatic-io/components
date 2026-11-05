@@ -10,10 +10,7 @@ export const attachCard = action({
     description: "Attach a card to a customer.",
   },
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { paymentId, customerId, timeout, stripeConnection },
-  ) => {
+  perform: async (context, { paymentId, customerId, timeout, stripeConnection }) => {
     const client = createStripeClient({
       stripeConnection,
       timeout,
@@ -25,10 +22,7 @@ export const attachCard = action({
       }),
     };
   },
-  examplePerform: async (
-    _context,
-    { paymentId, customerId },
-  ): Promise<{ data: unknown }> => {
+  examplePerform: async (_context, { paymentId, customerId }): Promise<{ data: unknown }> => {
     const card = attachCardExamplePayload.data as Record<string, unknown>;
 
     return {

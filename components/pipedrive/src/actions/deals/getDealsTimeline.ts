@@ -26,11 +26,7 @@ export const getDealsTimeline = action({
       totalsConvertCurrency,
     },
   ) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      WebhookVersion.V2,
-    );
+    const client = createClient(connection, context.debug.enabled, WebhookVersion.V2);
     const { data } = await client.get("/deals/timeline", {
       params: {
         start_date: startDate,
@@ -49,8 +45,5 @@ export const getDealsTimeline = action({
   inputs: getDealsTimelineInputs,
   examplePayload: getDealsTimelineExamplePayload,
   examplePerform: async () => getDealsTimelineExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getDealsTimelineOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getDealsTimelineOutputSchema }),
 });

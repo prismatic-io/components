@@ -116,8 +116,7 @@ export const exportCRMDataExamplePayload = {
   data: {
     id: "12345678",
     links: {
-      status:
-        "https://api.hubapi.com/crm/exports/2026-09/export/async/tasks/12345678/status",
+      status: "https://api.hubapi.com/crm/exports/2026-09/export/async/tasks/12345678/status",
     },
   },
 };

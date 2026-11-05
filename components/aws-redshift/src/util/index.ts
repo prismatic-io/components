@@ -26,10 +26,7 @@ export const cleanSqlParameters = (sqlParameters: unknown) =>
 export const toOptionalNumber = (value: unknown) =>
   value ? util.types.toNumber(value) : undefined;
 
-export const connectionKeys = [
-  accessKeySecretPair.key,
-  assumeRoleConnection.key,
-];
+export const connectionKeys = [accessKeySecretPair.key, assumeRoleConnection.key];
 
 export const validateConnection = (connection: Connection) => {
   if (!connectionKeys.includes(connection.key)) {

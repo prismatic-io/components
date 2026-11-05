@@ -11,8 +11,7 @@ const pollScopeType = input({
     { label: "List", value: "list" },
   ],
   clean: util.types.toString,
-  comments:
-    "Whether to poll tasks across an entire Team (Workspace) or scoped to a single List.",
+  comments: "Whether to poll tasks across an entire Team (Workspace) or scoped to a single List.",
 });
 
 const pollScopeId = input({
@@ -22,8 +21,7 @@ const pollScopeId = input({
   example: "9010065123",
   placeholder: "Enter the Team or List ID",
   clean: util.types.toString,
-  comments:
-    "The Team ID or List ID to monitor for changes, depending on the Scope selected above.",
+  comments: "The Team ID or List ID to monitor for changes, depending on the Scope selected above.",
 });
 
 const lookBackDate = input({
@@ -43,8 +41,7 @@ const showNewRecords = input({
   required: false,
   default: "true",
   clean: util.types.toBool,
-  comments:
-    "When true, tasks created since the last poll are returned in the trigger payload.",
+  comments: "When true, tasks created since the last poll are returned in the trigger payload.",
 });
 
 const showUpdatedRecords = input({
@@ -53,8 +50,7 @@ const showUpdatedRecords = input({
   required: false,
   default: "true",
   clean: util.types.toBool,
-  comments:
-    "When true, tasks updated since the last poll are returned in the trigger payload.",
+  comments: "When true, tasks updated since the last poll are returned in the trigger payload.",
 });
 
 export const pollChangesTriggerInputs = {

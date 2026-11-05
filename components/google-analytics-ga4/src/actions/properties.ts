@@ -50,14 +50,8 @@ const listProperties = action({
     );
     return { data };
   },
-  examplePerform: async (
-    _context,
-    { accountId },
-  ): Promise<{ data: unknown }> => {
-    const properties = listPropertiesExamplePayload.data.properties as Record<
-      string,
-      unknown
-    >[];
+  examplePerform: async (_context, { accountId }): Promise<{ data: unknown }> => {
+    const properties = listPropertiesExamplePayload.data.properties as Record<string, unknown>[];
 
     return {
       data: {
@@ -158,16 +152,10 @@ const runReport = action({
       endpointType: "datav1beta",
       debug: context.debug.enabled,
     });
-    const { data } = await client.post(
-      `${params.propertyId}:runReport`,
-      params.requestBody,
-    );
+    const { data } = await client.post(`${params.propertyId}:runReport`, params.requestBody);
     return { data };
   },
-  examplePerform: async (
-    _context,
-    { requestBody },
-  ): Promise<{ data: unknown }> => {
+  examplePerform: async (_context, { requestBody }): Promise<{ data: unknown }> => {
     const { dimensions, metrics } = requestBody as {
       dimensions?: { name: string }[];
       metrics?: { name: string }[];
@@ -188,8 +176,7 @@ const runReport = action({
         metricHeaders,
         rows: example.rows.map((row) => ({
           dimensionValues: dimensionHeaders.map(
-            (_header, index) =>
-              row.dimensionValues[index] ?? row.dimensionValues[0],
+            (_header, index) => row.dimensionValues[index] ?? row.dimensionValues[0],
           ),
           metricValues: metricHeaders.map(
             (_header, index) => row.metricValues[index] ?? row.metricValues[0],

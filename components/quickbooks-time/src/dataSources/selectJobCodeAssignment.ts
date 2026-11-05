@@ -7,8 +7,7 @@ import { connection } from "../inputs";
 export const selectJobCodeAssignment = dataSource({
   display: {
     label: "Select Job Code Assignment",
-    description:
-      "Select a job code assignment from a list of job code assignments.",
+    description: "Select a job code assignment from a list of job code assignments.",
   },
   inputs: { connection },
   perform: async (_context, { connection }) => {
@@ -23,9 +22,7 @@ export const selectJobCodeAssignment = dataSource({
         label: String(item.id || ""),
         key: String(item.id || ""),
       }))
-      .sort((a: Element, b: Element) =>
-        (a.label ?? "").localeCompare(b.label ?? ""),
-      );
+      .sort((a: Element, b: Element) => (a.label ?? "").localeCompare(b.label ?? ""));
 
     return { result };
   },

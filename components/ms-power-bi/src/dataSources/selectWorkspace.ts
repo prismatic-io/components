@@ -18,12 +18,7 @@ export const selectWorkspace = dataSource({
     const parameters = {
       $top: 100,
     };
-    const { value: groups } = await paginateResults<Group>(
-      client,
-      "/groups",
-      true,
-      parameters,
-    );
+    const { value: groups } = await paginateResults<Group>(client, "/groups", true, parameters);
 
     return {
       result: groups

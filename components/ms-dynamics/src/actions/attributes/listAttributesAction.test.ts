@@ -1,14 +1,10 @@
 import { afterEach, describe, expect, test, vi } from "vitest";
 import { createMockConnection, createMockContext } from "../../testHelpers";
 
-const { mockRetrieveAttributes } = vi.hoisted(() => ({
-  mockRetrieveAttributes: vi.fn(),
-}));
+const { mockRetrieveAttributes } = vi.hoisted(() => ({ mockRetrieveAttributes: vi.fn() }));
 
 vi.mock("../../client", () => ({
-  createCrmClient: vi
-    .fn()
-    .mockResolvedValue({ retrieveAttributes: mockRetrieveAttributes }),
+  createCrmClient: vi.fn().mockResolvedValue({ retrieveAttributes: mockRetrieveAttributes }),
 }));
 
 import { listAttributesAction } from "./listAttributesAction";
@@ -72,7 +68,7 @@ describe("listAttributesAction", () => {
         entityId: "id-1",
         attributeType: undefined,
         includeDetails: false,
-      } as any),
+      } as any)
     ).rejects.toThrow("SDK error");
   });
 });

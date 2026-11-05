@@ -13,10 +13,7 @@ export const createLocation = action({
   },
   examplePayload: createLocationExamplePayload,
   inputs: createLocationInputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: locationOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: locationOutputSchema }),
   perform: async (
     context,
     {

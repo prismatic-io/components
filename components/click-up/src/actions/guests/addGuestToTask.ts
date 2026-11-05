@@ -3,10 +3,7 @@ import { createClickUpClient } from "../../client";
 import { addGuestToTaskExamplePayload } from "../../examplePayloads";
 import { addGuestToTaskInputs } from "../../inputs";
 import { addGuestToTaskOutputSchema } from "../../outputSchemas";
-import type {
-  AddGuestToTaskBody,
-  AddGuestToTaskQueryParams,
-} from "../../types";
+import type { AddGuestToTaskBody, AddGuestToTaskQueryParams } from "../../types";
 
 export const addGuestToTask = action({
   display: {
@@ -21,20 +18,9 @@ export const addGuestToTask = action({
   performSafety: "notAllowed",
   perform: async (
     context,
-    {
-      clickUpConnection,
-      taskId,
-      guestId,
-      includeShared,
-      customTaskIds,
-      teamId,
-      permissionLevel,
-    },
+    { clickUpConnection, taskId, guestId, includeShared, customTaskIds, teamId, permissionLevel }
   ) => {
-    const client = createClickUpClient(
-      clickUpConnection,
-      context.debug.enabled,
-    );
+    const client = createClickUpClient(clickUpConnection, context.debug.enabled);
     const body: AddGuestToTaskBody = {
       permission_level: permissionLevel,
     };
@@ -44,11 +30,7 @@ export const addGuestToTask = action({
       team_id: teamId,
     };
 
-    const { data } = await client.post(
-      `/task/${taskId}/guest/${guestId}`,
-      body,
-      { params },
-    );
+    const { data } = await client.post(`/task/${taskId}/guest/${guestId}`, body, { params });
 
     return {
       data,

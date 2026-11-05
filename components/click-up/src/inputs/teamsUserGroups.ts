@@ -1,9 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
-import {
-  cleanCommaSeparatedString,
-  cleanNumberArray,
-  cleanString,
-} from "../util";
+import { cleanCommaSeparatedString, cleanNumberArray, cleanString } from "../util";
 import { connectionInput, getTeamId } from "./common";
 
 const groupIds = input({
@@ -11,8 +7,7 @@ const groupIds = input({
   type: "string",
   placeholder: "Enter Group IDs",
   example: "C9C58BE9-7C73-4002-A6A9-310014852858",
-  comments:
-    "Enter one or more Team IDs (user groups) to retrieve information about specific Teams.",
+  comments: "Enter one or more Team IDs (user groups) to retrieve information about specific Teams.",
   required: false,
   clean: cleanString,
 });
@@ -42,8 +37,7 @@ const teamHandle = input({
   type: "string",
   placeholder: "Enter team handle",
   example: "engineering",
-  comments:
-    "The handle used to @mention the Team (user group) in the Workspace.",
+  comments: "The handle used to @mention the Team (user group) in the Workspace.",
   required: false,
   clean: cleanString,
 });

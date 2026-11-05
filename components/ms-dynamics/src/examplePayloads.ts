@@ -236,10 +236,7 @@ const exampleAttribute = {
     LocalizedLabels: [{ Label: "Account Name", LanguageCode: 1033 }],
   },
   Description: {
-    UserLocalizedLabel: {
-      Label: "Type the company or business name.",
-      LanguageCode: 1033,
-    },
+    UserLocalizedLabel: { Label: "Type the company or business name.", LanguageCode: 1033 },
     LocalizedLabels: [],
   },
   MaxLength: 160,
@@ -260,10 +257,7 @@ export const queryAttributesExamplePayload = {
           LocalizedLabels: [],
         },
         Description: {
-          UserLocalizedLabel: {
-            Label: "Type the main phone number.",
-            LanguageCode: 1033,
-          },
+          UserLocalizedLabel: { Label: "Type the main phone number.", LanguageCode: 1033 },
           LocalizedLabels: [],
         },
         MaxLength: 50,
@@ -289,10 +283,7 @@ export const createAttributeExamplePayload = {
       LocalizedLabels: [{ Label: "Custom Field", LanguageCode: 1033 }],
     },
     Description: {
-      UserLocalizedLabel: {
-        Label: "Custom field added via API.",
-        LanguageCode: 1033,
-      },
+      UserLocalizedLabel: { Label: "Custom field added via API.", LanguageCode: 1033 },
       LocalizedLabels: [],
     },
     MaxLength: 100,
@@ -505,8 +496,7 @@ export const dynamicsWebhookTriggerExamplePayload = {
     },
     pathFragment: "",
     webhookUrls: {
-      "URL Validation / Heartbeat":
-        "https://hooks.example.com/trigger/abc123==",
+      "URL Validation / Heartbeat": "https://hooks.example.com/trigger/abc123==",
       Event: "https://hooks.example.com/trigger/abc123==",
     },
     webhookApiKeys: {

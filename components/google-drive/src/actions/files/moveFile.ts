@@ -26,8 +26,7 @@ export const moveFile = action({
     return { data };
   },
   inputs: moveFileInputs,
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    moveFileExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => moveFileExamplePayload,
   examplePayload: moveFileExamplePayload,
 });
 

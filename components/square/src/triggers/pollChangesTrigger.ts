@@ -3,12 +3,7 @@ import { createAuthorizedClient } from "../client";
 import { TRIGGER_BATCH_SIZE } from "../constants";
 import { pollChangesTriggerExamplePayload } from "../examplePayloads";
 import { pollChangesTriggerInputs } from "../inputs";
-import type {
-  PaymentChange,
-  PaymentChangesObject,
-  PollingCursor,
-  PollingState,
-} from "../types";
+import type { PaymentChange, PaymentChangesObject, PollingCursor, PollingState } from "../types";
 import { pollPaymentsCycle, resolvePaymentChanges } from "../util";
 
 export const pollChangesTrigger = pollingTrigger({
@@ -31,10 +26,7 @@ export const pollChangesTrigger = pollingTrigger({
     payload,
     { squareConnection, lookBackDate, showNewRecords, showUpdatedRecords },
   ) => {
-    const client = await createAuthorizedClient(
-      squareConnection,
-      context.debug.enabled,
-    );
+    const client = await createAuthorizedClient(squareConnection, context.debug.enabled);
     const incoming = payload.paginationState as PollingCursor | undefined;
     const cycle = await pollPaymentsCycle({
       client,
@@ -59,16 +51,9 @@ export const pollChangesTrigger = pollingTrigger({
     }
 
     return {
-      payload: {
-        ...payload,
-        paginationState: cycle.next ?? undefined,
-        body: { data: result },
-      },
+      payload: { ...payload, paginationState: cycle.next ?? undefined, body: { data: result } },
       polledNoChanges:
-        !result.created?.length &&
-        !result.updated?.length &&
-        cycle.next === null &&
-        !incoming,
+        !result.created?.length && !result.updated?.length && cycle.next === null && !incoming,
     };
   },
   examplePayload: pollChangesTriggerExamplePayload,

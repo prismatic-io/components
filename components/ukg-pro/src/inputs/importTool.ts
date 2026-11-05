@@ -47,8 +47,7 @@ export const uniqueFileName = input({
   label: "Unique File Name",
   type: "string",
   required: false,
-  comments:
-    "Optional unique file name for the import transaction. Must end with .xml extension.",
+  comments: "Optional unique file name for the import transaction. Must end with .xml extension.",
   placeholder: "Enter file name (e.g., import-2024-01-15.xml)",
   example: "newhire-batch-2024-01-15.xml",
   clean: cleanString,

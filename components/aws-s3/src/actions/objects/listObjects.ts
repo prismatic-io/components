@@ -31,9 +31,7 @@ export const listObjects = action({
     const command = new ListObjectsV2Command(listObjectsV2Params);
     const response = await s3.send(command);
     return {
-      data: params.includeMetadata
-        ? response
-        : (response.Contents || []).map(({ Key }) => Key),
+      data: params.includeMetadata ? response : (response.Contents || []).map(({ Key }) => Key),
     };
   },
   inputs: listObjectsInputs,

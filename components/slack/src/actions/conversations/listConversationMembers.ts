@@ -13,7 +13,7 @@ export const listConversationMembers = action({
   performSafety: "notAllowed",
   perform: async (
     { debug: { enabled: debug } },
-    { fetchAll, connection, channelName, pagination },
+    { fetchAll, connection, channelName, pagination }
   ) => {
     const { cursor, limit } = pagination;
     debugLogger({ debug, channelName, cursor, limit });
@@ -32,7 +32,7 @@ export const listConversationMembers = action({
         "conversations",
         "members",
         "members",
-        params,
+        params
       );
     }
 

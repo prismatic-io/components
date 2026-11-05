@@ -8,8 +8,7 @@ import { toSortedPicklist } from "./helpers";
 export const selectSalesShipmentLine = dataSource({
   display: {
     label: "Select Sales Shipment Line",
-    description:
-      "A picklist of sales shipment line items in your Business Central organization.",
+    description: "A picklist of sales shipment line items in your Business Central organization.",
   },
   inputs: {
     connection: connectionInput,
@@ -17,9 +16,9 @@ export const selectSalesShipmentLine = dataSource({
   },
   perform: async (context, { connection, companyId }) => {
     const client = getMsBusinessCentralClient(connection, context, false);
-    const { data } = await client.get<
-      MultipleItemsResponse<SalesShipmentLine[]>
-    >(`/companies(${companyId})/salesShipmentLines`);
+    const { data } = await client.get<MultipleItemsResponse<SalesShipmentLine[]>>(
+      `/companies(${companyId})/salesShipmentLines`,
+    );
 
     return {
       result: toSortedPicklist(data.value, (line) => ({
@@ -30,11 +29,6 @@ export const selectSalesShipmentLine = dataSource({
   },
   dataSourceType: "picklist",
   examplePayload: {
-    result: [
-      {
-        label: "SHIP-001 - ATHENS Desk",
-        key: "5d115c9c-44e3-ea11-bb43-000d3a2feca1",
-      },
-    ],
+    result: [{ label: "SHIP-001 - ATHENS Desk", key: "5d115c9c-44e3-ea11-bb43-000d3a2feca1" }],
   },
 });

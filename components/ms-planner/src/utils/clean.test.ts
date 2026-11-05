@@ -26,9 +26,7 @@ describe("cleanOptionalNumber", () => {
   });
 
   test("throws on a value that is not numeric", () => {
-    expect(() => cleanOptionalNumber("abc")).toThrow(
-      "Value 'abc' cannot be coerced to a number.",
-    );
+    expect(() => cleanOptionalNumber("abc")).toThrow("Value 'abc' cannot be coerced to a number.");
   });
 });
 
@@ -58,18 +56,13 @@ describe("cleanStringList", () => {
   });
 
   test("coerces entries to strings and drops the empty ones", () => {
-    expect(cleanStringList(["user-a", "", "user-b"])).toEqual([
-      "user-a",
-      "user-b",
-    ]);
+    expect(cleanStringList(["user-a", "", "user-b"])).toEqual(["user-a", "user-b"]);
   });
 });
 
 describe("cleanCategoryLabels", () => {
   test("converts the key-value list into a category-to-label map", () => {
-    expect(
-      cleanCategoryLabels([{ key: "category1", value: "Blocked" }]),
-    ).toEqual({
+    expect(cleanCategoryLabels([{ key: "category1", value: "Blocked" }])).toEqual({
       category1: "Blocked",
     });
   });
@@ -111,11 +104,9 @@ describe("cleanChecklistItems", () => {
 
 describe("cleanReferences", () => {
   test("maps each row to a url and an alias", () => {
-    expect(
-      cleanReferences([
-        { key: "https://example.com/spec", value: "Product spec" },
-      ]),
-    ).toEqual([{ url: "https://example.com/spec", alias: "Product spec" }]);
+    expect(cleanReferences([{ key: "https://example.com/spec", value: "Product spec" }])).toEqual([
+      { url: "https://example.com/spec", alias: "Product spec" },
+    ]);
   });
 
   test("returns an empty list for an unset input", () => {

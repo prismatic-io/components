@@ -71,8 +71,7 @@ const ownerId = input({
   type: "string",
   required: false,
   clean: cleanNumber,
-  comments:
-    "The ID of the user who will be marked as the owner of this product",
+  comments: "The ID of the user who will be marked as the owner of this product",
   example: "123",
   placeholder: "Enter User ID",
 });

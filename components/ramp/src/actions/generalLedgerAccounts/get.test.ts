@@ -1,11 +1,6 @@
 import { invoke } from "@prismatic-io/spectral/testing";
 import { getGeneralLedgerAccountResponse } from "../../examplePayloads/ledgerAccounts";
-import {
-  apiPath,
-  rampNock,
-  resetNock,
-  testConnection,
-} from "../../testHarness";
+import { apiPath, rampNock, resetNock, testConnection } from "../../testHarness";
 import { getGeneralLedgerAccount } from "./get";
 
 const ACCOUNT_ID = "514";

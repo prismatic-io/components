@@ -7,8 +7,7 @@ import { stopTimeEntryOutputSchema } from "../../outputSchemas";
 export const stopTimeEntry = action({
   display: {
     label: "Stop Time Entry",
-    description:
-      "Stop the timer that is currently running for the authenticated user.",
+    description: "Stop the timer that is currently running for the authenticated user.",
   },
   outputSchema: outputSchema({
     type: "actionOutput",
@@ -17,10 +16,7 @@ export const stopTimeEntry = action({
   examplePayload: stopTimeEntryExamplePayload,
   performSafety: "notAllowed",
   perform: async (context, { clickUpConnection, teamId }) => {
-    const client = createClickUpClient(
-      clickUpConnection,
-      context.debug.enabled,
-    );
+    const client = createClickUpClient(clickUpConnection, context.debug.enabled);
 
     const { data } = await client.post(`/team/${teamId}/time_entries/stop`);
 

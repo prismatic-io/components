@@ -56,11 +56,7 @@ export const searchFields = input({
   required: false,
   comments:
     "Key-value pairs for filtering search results. Keys are field names, values are search criteria.",
-  example: JSON.stringify(
-    { contact_name: "John", email: "john@example.com" },
-    null,
-    2,
-  ),
+  example: JSON.stringify({ contact_name: "John", email: "john@example.com" }, null, 2),
   clean: cleanKeyValList,
 });
 
@@ -69,8 +65,7 @@ export const parentRecordId = input({
   placeholder: "Enter parent record ID",
   type: "string",
   required: false,
-  comments:
-    "The unique identifier of the parent record under which other records are grouped.",
+  comments: "The unique identifier of the parent record under which other records are grouped.",
   clean: util.types.toString,
   example: "5394166000000379001",
 });

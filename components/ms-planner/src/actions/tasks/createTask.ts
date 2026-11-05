@@ -1,19 +1,11 @@
-import type {
-  PlannerTask,
-  PlannerTaskDetails,
-} from "@microsoft/microsoft-graph-types";
+import type { PlannerTask, PlannerTaskDetails } from "@microsoft/microsoft-graph-types";
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { PLANNER_ENDPOINTS } from "../../constants";
 import { createTaskExamplePayload } from "../../examplePayloads";
 import { createTaskOutputSchema } from "../../outputSchemas";
 import type { Etagged } from "../../types";
-import {
-  buildAppliedCategories,
-  buildAssignments,
-  compact,
-  patchWithEtag,
-} from "../../utils";
+import { buildAppliedCategories, buildAssignments, compact, patchWithEtag } from "../../utils";
 import { createTaskInputs } from "../../inputs";
 
 export const createTask = action({
@@ -45,10 +37,7 @@ export const createTask = action({
   ) => {
     const client = createClient(connection, context.debug.enabled);
 
-    const assignments = buildAssignments(
-      assignment?.assignTo,
-      assignment?.unassign,
-    );
+    const assignments = buildAssignments(assignment?.assignTo, assignment?.unassign);
     const appliedCategories = buildAppliedCategories(
       categories?.applyCategories,
       categories?.removeCategories,
@@ -63,15 +52,10 @@ export const createTask = action({
       startDateTime: schedule?.startDateTime,
       dueDateTime: schedule?.dueDateTime,
       assignments: Object.keys(assignments).length ? assignments : undefined,
-      appliedCategories: Object.keys(appliedCategories).length
-        ? appliedCategories
-        : undefined,
+      appliedCategories: Object.keys(appliedCategories).length ? appliedCategories : undefined,
     });
 
-    const { data: task } = await client.post<PlannerTask & Etagged>(
-      PLANNER_ENDPOINTS.TASKS,
-      body,
-    );
+    const { data: task } = await client.post<PlannerTask & Etagged>(PLANNER_ENDPOINTS.TASKS, body);
 
     if (!description) {
       return { data: { task, details: null } };
@@ -87,22 +71,11 @@ export const createTask = action({
   },
   examplePerform: async (
     _context,
-    {
-      planId,
-      bucketId,
-      title,
-      schedule,
-      priority,
-      percentComplete,
-      categories,
-      description,
-    },
+    { planId, bucketId, title, schedule, priority, percentComplete, categories, description },
   ): Promise<{ data: unknown }> => {
     const exampleTask = createTaskExamplePayload.data.task;
 
-    const appliedCategories: Record<string, unknown> = {
-      ...exampleTask.appliedCategories,
-    };
+    const appliedCategories: Record<string, unknown> = { ...exampleTask.appliedCategories };
     for (const category of categories?.applyCategories ?? []) {
       appliedCategories[category] = true;
     }
@@ -128,10 +101,7 @@ export const createTask = action({
     }
 
     return {
-      data: {
-        task,
-        details: { ...createTaskExamplePayload.data.details, description },
-      },
+      data: { task, details: { ...createTaskExamplePayload.data.details, description } },
     };
   },
   examplePayload: createTaskExamplePayload,

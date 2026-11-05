@@ -12,18 +12,11 @@ export const deleteDeal = action({
   },
   performSafety: "notAllowed",
   perform: async (context, { connection, id }) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      WebhookVersion.V2,
-    );
+    const client = createClient(connection, context.debug.enabled, WebhookVersion.V2);
     const { data } = await client.delete(`/deals/${id}`);
     return { data };
   },
   inputs: deleteDealInputs,
   examplePayload: deleteDealExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: deleteDealOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: deleteDealOutputSchema }),
 });

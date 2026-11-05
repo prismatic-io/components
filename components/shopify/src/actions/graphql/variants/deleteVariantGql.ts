@@ -32,8 +32,5 @@ export const deleteVariantGql = action({
   examplePerform: async () => examplePayload,
   examplePayload,
   inputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: deleteVariantGqlOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: deleteVariantGqlOutputSchema }),
 });

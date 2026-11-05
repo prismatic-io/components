@@ -39,10 +39,8 @@ const mockLookups = (assignmentRecords: Array<{ Id: string }>) => {
     .reply(200, (uri) => {
       const q = new URL(uri, INSTANCE_URL).searchParams.get("q") ?? "";
       soql.push(q);
-      if (/FROM PermissionSetAssignment /.test(q))
-        return queryResult(assignmentRecords);
-      if (/FROM PermissionSet /.test(q))
-        return queryResult([{ Id: PERMISSION_SET_ID }]);
+      if (/FROM PermissionSetAssignment /.test(q)) return queryResult(assignmentRecords);
+      if (/FROM PermissionSet /.test(q)) return queryResult([{ Id: PERMISSION_SET_ID }]);
       return queryResult([{ Id: USER_ID }]);
     });
   return { scope, soql };
@@ -68,20 +66,12 @@ describe("removeUserPermissionSet", () => {
 
     const { result } = await invoke(removeUserPermissionSet, inputs);
 
-    const assignmentQuery = soql.find((q) =>
-      /FROM PermissionSetAssignment /.test(q),
-    );
+    const assignmentQuery = soql.find((q) => /FROM PermissionSetAssignment /.test(q));
     expect(assignmentQuery).toContain(`AssigneeId = '${USER_ID}'`);
-    expect(assignmentQuery).toContain(
-      `PermissionSet.Name = '${PERMISSION_NAME}'`,
-    );
+    expect(assignmentQuery).toContain(`PermissionSet.Name = '${PERMISSION_NAME}'`);
     expect(scope.isDone()).toBe(true);
     expect(remove.isDone()).toBe(true);
-    expect(result.data).toStrictEqual({
-      id: ASSIGNMENT_ID,
-      success: true,
-      errors: [],
-    });
+    expect(result.data).toStrictEqual({ id: ASSIGNMENT_ID, success: true, errors: [] });
   });
 
   test("throws when the user does not have the permission set assigned", async () => {

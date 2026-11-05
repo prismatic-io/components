@@ -12,10 +12,7 @@ export const selectFlow = dataSource({
   inputs: selectFlowInputs,
   perform: async (context, { version, filterQuery, connection }) => {
     try {
-      const salesforceClient = await createSalesforceClient(
-        connection,
-        version,
-      );
+      const salesforceClient = await createSalesforceClient(connection, version);
       const flows = await listFlowsFunction(salesforceClient);
 
       if (!flows || !Array.isArray(flows)) {

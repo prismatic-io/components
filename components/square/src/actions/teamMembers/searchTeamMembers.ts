@@ -8,14 +8,8 @@ export const searchTeamMembers = action({
     label: "Search Team Members",
     description: "Searches for team members based on the given filters.",
   },
-  perform: async (
-    context,
-    { searchQuery, squareConnection, pagination = {} },
-  ) => {
-    const client = await createAuthorizedClient(
-      squareConnection,
-      context.debug.enabled,
-    );
+  perform: async (context, { searchQuery, squareConnection, pagination = {} }) => {
+    const client = await createAuthorizedClient(squareConnection, context.debug.enabled);
 
     const requestBody: {
       limit?: number;

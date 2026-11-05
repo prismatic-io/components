@@ -1,7 +1,4 @@
-import {
-  defaultTriggerPayload,
-  invokeTrigger,
-} from "@prismatic-io/spectral/testing";
+import { defaultTriggerPayload, invokeTrigger } from "@prismatic-io/spectral/testing";
 import { webhook } from "./webhook";
 
 describe("webhook (Deprecated)", () => {
@@ -14,9 +11,6 @@ describe("webhook (Deprecated)", () => {
     const { result } = await invokeTrigger(webhook, undefined, payload);
 
     expect(result.payload).toEqual(payload);
-    expect(result.payload.body.data).toEqual({
-      id: "evt_1",
-      type: "charge.succeeded",
-    });
+    expect(result.payload.body.data).toEqual({ id: "evt_1", type: "charge.succeeded" });
   });
 });

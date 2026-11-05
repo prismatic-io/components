@@ -9,10 +9,7 @@ export const retrieveCustomer = action({
     description: "Retrieves details for a single customer.",
   },
   perform: async (context, { customerId, squareConnection }) => {
-    const client = await createAuthorizedClient(
-      squareConnection,
-      context.debug.enabled,
-    );
+    const client = await createAuthorizedClient(squareConnection, context.debug.enabled);
 
     const response = await client.get(`/v2/customers/${customerId}`);
 

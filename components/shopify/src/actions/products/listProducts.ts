@@ -28,11 +28,7 @@ export const listProducts = action({
     };
   },
   inputs: listProductsInputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: listProductsOutputSchema,
-  }),
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    listProductsExamplePayload,
+  outputSchema: outputSchema({ type: "actionOutput", schema: listProductsOutputSchema }),
+  examplePerform: async (): Promise<{ data: unknown }> => listProductsExamplePayload,
   examplePayload: listProductsExamplePayload,
 });

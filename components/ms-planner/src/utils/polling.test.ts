@@ -1,9 +1,5 @@
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
-import {
-  latestCreatedDateTime,
-  newestCreatedDateTime,
-  lookBackDateClean,
-} from "./polling";
+import { latestCreatedDateTime, newestCreatedDateTime, lookBackDateClean } from "./polling";
 
 describe("newestCreatedDateTime", () => {
   test("returns the newest createdDateTime at millisecond precision", () => {
@@ -18,9 +14,7 @@ describe("newestCreatedDateTime", () => {
 
   test("returns undefined when there are no tasks or none is dated", () => {
     expect(newestCreatedDateTime([])).toBeUndefined();
-    expect(
-      newestCreatedDateTime([{ createdDateTime: null }, {}]),
-    ).toBeUndefined();
+    expect(newestCreatedDateTime([{ createdDateTime: null }, {}])).toBeUndefined();
   });
 
   test("ignores undated tasks among dated ones", () => {
@@ -51,20 +45,14 @@ describe("latestCreatedDateTime", () => {
 
   test("truncates Graph's seven-digit fractional seconds to milliseconds", () => {
     expect(
-      latestCreatedDateTime(
-        [{ createdDateTime: "2024-01-09T09:12:03.1539999Z" }],
-        current,
-      ),
+      latestCreatedDateTime([{ createdDateTime: "2024-01-09T09:12:03.1539999Z" }], current),
     ).toBe("2024-01-09T09:12:03.153Z");
   });
 
   test("normalizes an offset timestamp to UTC", () => {
-    expect(
-      latestCreatedDateTime(
-        [{ createdDateTime: "2024-01-09T12:00:00+02:00" }],
-        current,
-      ),
-    ).toBe("2024-01-09T10:00:00.000Z");
+    expect(latestCreatedDateTime([{ createdDateTime: "2024-01-09T12:00:00+02:00" }], current)).toBe(
+      "2024-01-09T10:00:00.000Z",
+    );
   });
 
   test("keeps the current cursor when there are no tasks", () => {
@@ -74,11 +62,7 @@ describe("latestCreatedDateTime", () => {
   test("ignores undated tasks and never moves the cursor backward", () => {
     expect(
       latestCreatedDateTime(
-        [
-          { createdDateTime: null },
-          {},
-          { createdDateTime: "2024-01-01T00:00:00Z" },
-        ],
+        [{ createdDateTime: null }, {}, { createdDateTime: "2024-01-01T00:00:00Z" }],
         current,
       ),
     ).toBe(current);
@@ -111,12 +95,8 @@ describe("lookBackDateClean", () => {
   });
 
   test("rejects a value not in YYYY-MM-DD format", () => {
-    expect(() => lookBackDateClean("01/01/2026")).toThrow(
-      /Look-back Date must be in YYYY-MM-DD/,
-    );
-    expect(() => lookBackDateClean("2026-1-1")).toThrow(
-      /Look-back Date must be in YYYY-MM-DD/,
-    );
+    expect(() => lookBackDateClean("01/01/2026")).toThrow(/Look-back Date must be in YYYY-MM-DD/);
+    expect(() => lookBackDateClean("2026-1-1")).toThrow(/Look-back Date must be in YYYY-MM-DD/);
   });
 
   test("rejects a date that does not exist on the calendar", () => {
@@ -126,11 +106,7 @@ describe("lookBackDateClean", () => {
   });
 
   test("rejects a future date (UTC)", () => {
-    const tomorrow = new Date(Date.now() + 24 * 60 * 60 * 1000)
-      .toISOString()
-      .slice(0, 10);
-    expect(() => lookBackDateClean(tomorrow)).toThrow(
-      /Look-back Date cannot be a future date/,
-    );
+    const tomorrow = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+    expect(() => lookBackDateClean(tomorrow)).toThrow(/Look-back Date cannot be a future date/);
   });
 });

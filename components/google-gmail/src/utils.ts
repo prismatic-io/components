@@ -3,10 +3,7 @@ import { type KeyValuePair, util } from "@prismatic-io/spectral";
 import type { Attachment } from "./interfaces/Attachment";
 import { gmail_v1 } from "@googleapis/gmail";
 import Gmail = gmail_v1.Gmail;
-import {
-  MAX_HISTORY_ITEMS_PER_REQUEST,
-  MAX_MESSAGES_PER_REQUEST,
-} from "./constants";
+import { MAX_HISTORY_ITEMS_PER_REQUEST, MAX_MESSAGES_PER_REQUEST } from "./constants";
 
 export const cleanAttachmentsData = (attachments: unknown): Attachment[] => {
   let attachmentsData = attachments;
@@ -38,15 +35,11 @@ export const cleanAttachmentsData = (attachments: unknown): Attachment[] => {
     const { key, value } = attachment;
 
     if (typeof key !== "string") {
-      throw new Error(
-        `Attachment at index ${index} does not have a valid 'key' property`,
-      );
+      throw new Error(`Attachment at index ${index} does not have a valid 'key' property`);
     }
 
     if (value === undefined) {
-      throw new Error(
-        `Attachment at index ${index} does not have a 'value' property`,
-      );
+      throw new Error(`Attachment at index ${index} does not have a 'value' property`);
     }
 
     let bufferContent: Buffer;
@@ -159,13 +152,7 @@ export const generatePrefixedHash = (
   primaryValue: string,
   secondaryValue?: string,
 ): string => {
-  const base = secondaryValue
-    ? `${primaryValue}${secondaryValue}`
-    : primaryValue;
-  const hash = crypto
-    .createHash("md5")
-    .update(base)
-    .digest("hex")
-    .substring(0, 20);
+  const base = secondaryValue ? `${primaryValue}${secondaryValue}` : primaryValue;
+  const hash = crypto.createHash("md5").update(base).digest("hex").substring(0, 20);
   return `${prefix}_${hash}`;
 };

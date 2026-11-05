@@ -26,8 +26,7 @@ const lastReferenceDate = input({
   type: "string",
   required: false,
   placeholder: "Enter date (ISO 8601)",
-  comments:
-    "The timestamp for when the current user last viewed a record related to this record.",
+  comments: "The timestamp for when the current user last viewed a record related to this record.",
   clean: cleanStringInput,
   example: "2021-09-01T00:00:00.000Z",
 });
@@ -58,8 +57,7 @@ const partyId = input({
   placeholder: "Enter party ID",
   type: "string",
   required: true,
-  comments:
-    "The unique identifier of the individual object related to this customer record.",
+  comments: "The unique identifier of the individual object related to this customer record.",
   clean: util.types.toString,
   example: "0697000000K2g5AAAR",
 });

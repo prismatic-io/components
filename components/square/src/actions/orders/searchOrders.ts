@@ -10,18 +10,9 @@ export const searchOrders = action({
   },
   perform: async (
     context,
-    {
-      squareConnection,
-      locationIds,
-      orderQuery,
-      pagination = {},
-      returnEntries,
-    },
+    { squareConnection, locationIds, orderQuery, pagination = {}, returnEntries },
   ) => {
-    const client = await createAuthorizedClient(
-      squareConnection,
-      context.debug.enabled,
-    );
+    const client = await createAuthorizedClient(squareConnection, context.debug.enabled);
 
     const requestBody = {
       location_ids: locationIds,

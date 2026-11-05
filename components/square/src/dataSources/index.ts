@@ -30,12 +30,10 @@ export const selectLocations = dataSource({
     const response = await client.get("/v2/locations");
 
     return {
-      result: response.data.locations.map(
-        (location: { id: string; name: string }) => ({
-          key: location.id,
-          label: location.name,
-        }),
-      ),
+      result: response.data.locations.map((location: { id: string; name: string }) => ({
+        key: location.id,
+        label: location.name,
+      })),
     };
   },
 });
@@ -53,12 +51,10 @@ export const selectMerchants = dataSource({
     const response = await client.get("/v2/merchants");
 
     return {
-      result: response.data.merchants.map(
-        (merchant: { id: string; name: string }) => ({
-          key: merchant.id,
-          label: merchant.name,
-        }),
-      ),
+      result: response.data.merchants.map((merchant: { id: string; name: string }) => ({
+        key: merchant.id,
+        label: merchant.name,
+      })),
     };
   },
 });
@@ -67,8 +63,7 @@ export const selectBankAccounts = dataSource({
   dataSourceType: "picklist",
   display: {
     label: "Select Bank Accounts",
-    description:
-      "List and select from all of the bank accounts linked to a Square account.",
+    description: "List and select from all of the bank accounts linked to a Square account.",
   },
   inputs: selectBankAccountsInputs,
   perform: async (_context, params) => {
@@ -85,12 +80,10 @@ export const selectBankAccounts = dataSource({
     });
 
     return {
-      result: response.data.bank_accounts.map(
-        (account: { id: string; name: string }) => ({
-          key: account.id,
-          label: account.name,
-        }),
-      ),
+      result: response.data.bank_accounts.map((account: { id: string; name: string }) => ({
+        key: account.id,
+        label: account.name,
+      })),
     };
   },
 });
@@ -99,8 +92,7 @@ export const selectCatalog = dataSource({
   dataSourceType: "picklist",
   display: {
     label: "Select Catalog",
-    description:
-      "List and select from all of the catalog objects of the specified types.",
+    description: "List and select from all of the catalog objects of the specified types.",
   },
   inputs: selectCatalogInputs,
   perform: async (_context, params) => {
@@ -117,12 +109,10 @@ export const selectCatalog = dataSource({
     });
 
     return {
-      result: response.data.objects.map(
-        (object: { id: string; name: string }) => ({
-          key: object.id,
-          label: object.name,
-        }),
-      ),
+      result: response.data.objects.map((object: { id: string; name: string }) => ({
+        key: object.id,
+        label: object.name,
+      })),
     };
   },
 });
@@ -131,8 +121,7 @@ export const selectCustomers = dataSource({
   dataSourceType: "picklist",
   display: {
     label: "Select Customers",
-    description:
-      "List and select from all customer profiles associated with a Square account.",
+    description: "List and select from all customer profiles associated with a Square account.",
   },
   inputs: selectCustomersInputs,
   perform: async (_context, params) => {
@@ -149,12 +138,10 @@ export const selectCustomers = dataSource({
     });
 
     return {
-      result: response.data.customers.map(
-        (customer: { id: string; name: string }) => ({
-          key: customer.id,
-          label: customer.name,
-        }),
-      ),
+      result: response.data.customers.map((customer: { id: string; name: string }) => ({
+        key: customer.id,
+        label: customer.name,
+      })),
     };
   },
 });

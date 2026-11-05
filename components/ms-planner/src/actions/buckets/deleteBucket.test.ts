@@ -8,11 +8,7 @@ const BASE = "https://graph.microsoft.com";
 const URL_PATH = "/v1.0/planner/buckets/hsOf2dhOJkqyYYZEtdzDe2QAIUCR";
 const ETAG = 'W/"JzEtQnVja2V0QEBAQEBAQEBAQEBAQEBAQEBAWCc="';
 
-const connection = createConnection(
-  templatedOauth,
-  {},
-  { access_token: "test-token" },
-);
+const connection = createConnection(templatedOauth, {}, { access_token: "test-token" });
 const params = {
   connection,
   groupId: undefined,
@@ -51,9 +47,7 @@ test("reads the current etag, then deletes the bucket with If-Match", async () =
 });
 
 test("honors a caller-supplied etag without reading the current one", async () => {
-  const readScope = nock(BASE)
-    .get(URL_PATH)
-    .reply(200, { "@odata.etag": ETAG });
+  const readScope = nock(BASE).get(URL_PATH).reply(200, { "@odata.etag": ETAG });
   nock(BASE).delete(URL_PATH).matchHeader("If-Match", ETAG).reply(204);
 
   await invoke(deleteBucket, { ...params, etag: ETAG });
@@ -62,9 +56,7 @@ test("honors a caller-supplied etag without reading the current one", async () =
 });
 
 test("surfaces a rejected delete", async () => {
-  const etagScope = nock(BASE)
-    .get(URL_PATH)
-    .reply(200, { "@odata.etag": ETAG });
+  const etagScope = nock(BASE).get(URL_PATH).reply(200, { "@odata.etag": ETAG });
   const errorScope = nock(BASE)
     .delete(URL_PATH)
     .reply(403, { error: { code: "accessDenied" } });

@@ -1,7 +1,4 @@
-import {
-  createConnection,
-  invokeTrigger,
-} from "@prismatic-io/spectral/dist/testing";
+import { createConnection, invokeTrigger } from "@prismatic-io/spectral/dist/testing";
 import nock from "nock";
 import { jiraOAuthConnection } from "../connections";
 import { webhookEventsExamplePayload } from "../examplePayloads";
@@ -17,11 +14,7 @@ const STATE_KEY = "flowStableId";
 const DAY_MS = 24 * 60 * 60 * 1000;
 
 const oauthConnection = () =>
-  createConnection(
-    jiraOAuthConnection,
-    { version: "3" },
-    { access_token: "oauth-token" },
-  );
+  createConnection(jiraOAuthConnection, { version: "3" }, { access_token: "oauth-token" });
 
 const params = (jiraConnection: ReturnType<typeof basicConnection>) => ({
   jiraConnection,
@@ -33,9 +26,7 @@ const params = (jiraConnection: ReturnType<typeof basicConnection>) => ({
 const mockAccessibleResources = () =>
   nock("https://api.atlassian.com")
     .get("/oauth/token/accessible-resources")
-    .reply(200, [
-      { id: CLOUD_ID, url: "https://example.atlassian.net", name: "example" },
-    ]);
+    .reply(200, [{ id: CLOUD_ID, url: "https://example.atlassian.net", name: "example" }]);
 
 describe("issueEventsTrigger perform", () => {
   test("returns the payload unchanged under basic auth without calling Jira", async () => {
@@ -87,9 +78,7 @@ describe("issueEventsTrigger perform", () => {
     const newExpiration = new Date(Date.now() + 30 * DAY_MS).toISOString();
     const resources = mockAccessibleResources();
     const refresh = nock("https://api.atlassian.com")
-      .put(`/ex/jira/${CLOUD_ID}/rest/api/3/webhook/refresh`, {
-        webhookIds: [7],
-      })
+      .put(`/ex/jira/${CLOUD_ID}/rest/api/3/webhook/refresh`, { webhookIds: [7] })
       .reply(200, { expirationDate: newExpiration });
     const crossFlowState: Record<string, unknown> = {
       [STATE_KEY]: {
@@ -107,10 +96,7 @@ describe("issueEventsTrigger perform", () => {
 
     expect(resources.isDone()).toBe(true);
     expect(refresh.isDone()).toBe(true);
-    expect(crossFlowState[STATE_KEY]).toEqual({
-      webhookId: 7,
-      expirationDate: newExpiration,
-    });
+    expect(crossFlowState[STATE_KEY]).toEqual({ webhookId: 7, expirationDate: newExpiration });
     expect(result).toEqual({ payload: webhookEventsExamplePayload.payload });
   });
 });

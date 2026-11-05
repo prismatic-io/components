@@ -13,8 +13,7 @@ export const selectSubscription = dataSource({
     const client = createStripeClient({
       stripeConnection,
     });
-    const { data } =
-      (await client.subscriptions.list()) as StripeResponse<Subscription>;
+    const { data } = (await client.subscriptions.list()) as StripeResponse<Subscription>;
     return {
       result: data.map(({ id, collection_method, description }) => ({
         key: util.types.toString(id),

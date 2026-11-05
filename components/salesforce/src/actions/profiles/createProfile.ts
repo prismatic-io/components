@@ -27,9 +27,7 @@ export const createProfile = action({
       });
     }
 
-    const userLicenseResult = await client
-      .sobject("UserLicense")
-      .findOne({ Name: userLicense });
+    const userLicenseResult = await client.sobject("UserLicense").findOne({ Name: userLicense });
     if (!userLicenseResult?.Id) {
       throw new Error(`Unable to find UserLicense matching "${userLicense}"`);
     }
@@ -46,8 +44,7 @@ export const createProfile = action({
 
     return { data: response };
   },
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    genericCreateUpdateExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => genericCreateUpdateExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: createRecordOutputSchema,

@@ -32,10 +32,7 @@ describe("listAccounts", () => {
       .get("/v1/accounts")
       .query(true)
       .reply(401, {
-        error: {
-          type: "invalid_request_error",
-          message: "Invalid API Key provided",
-        },
+        error: { type: "invalid_request_error", message: "Invalid API Key provided" },
       });
 
     await expect(

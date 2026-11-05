@@ -13,7 +13,7 @@ export const closeConversation = action({
   performSafety: "notAllowed",
   perform: async (
     { debug: { enabled: debug } },
-    { connection, conversationName },
+    { connection, conversationName }
   ) => {
     debugLogger({ debug, conversationName });
     const client = await createOauthClient({

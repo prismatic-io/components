@@ -30,10 +30,7 @@ export const createFolders = action({
     };
   },
   inputs: createFoldersInputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: createFoldersOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: createFoldersOutputSchema }),
   examplePerform: async () => createFoldersExamplePayload,
   examplePayload: createFoldersExamplePayload,
 });

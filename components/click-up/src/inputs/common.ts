@@ -7,9 +7,7 @@ export const getTeamId = <R extends boolean>(required: R, comments?: string) =>
     type: "string",
     placeholder: "Enter Team ID",
     example: "9010065123",
-    comments: comments
-      ? comments
-      : "The unique identifier for the Team (Workspace).",
+    comments: comments ? comments : "The unique identifier for the Team (Workspace).",
     required,
     clean: cleanStringByRequired(required),
     dataSource: "teams",
@@ -46,17 +44,12 @@ export const getAssignee = <R extends boolean>(required: R, comments: string) =>
     clean: cleanStringByRequired(required),
   });
 
-export const getFolderId = <R extends boolean>(
-  required: R,
-  comments?: string,
-) =>
+export const getFolderId = <R extends boolean>(required: R, comments?: string) =>
   input({
     label: "Folder ID",
     type: "string",
     placeholder: "Enter Folder ID",
-    comments: comments
-      ? comments
-      : "Only include time entries associated with tasks in a specific Folder.",
+    comments: comments ? comments : "Only include time entries associated with tasks in a specific Folder.",
     required,
     clean: cleanStringByRequired(required),
     dataSource: "folders",
@@ -67,52 +60,35 @@ export const getlistId = <R extends boolean>(required: R, comments?: string) =>
     label: "List ID",
     type: "string",
     placeholder: "Enter List ID",
-    comments: comments
-      ? comments
-      : "Only include time entries associated with tasks in a specific List.",
+    comments: comments ? comments : "Only include time entries associated with tasks in a specific List.",
     required,
     clean: cleanStringByRequired(required),
     dataSource: "lists",
   });
 
-export const getTaskId = <R extends boolean>(
-  required: R,
-  comments?: string,
-) => {
+export const getTaskId = <R extends boolean>(required: R, comments?: string) => {
   return input({
     label: "Task ID",
     type: "string",
     placeholder: "Enter Task ID",
-    comments: comments
-      ? comments
-      : "Only include time entries associated with a specific task.",
+    comments: comments ? comments : "Only include time entries associated with a specific task.",
     required,
     clean: cleanStringByRequired(required),
     dataSource: "tasks",
   });
 };
 
-export const getCustomTaskIds = (
-  required: boolean,
-  comments?: string,
-  defaultValue?: boolean,
-) =>
+export const getCustomTaskIds = (required: boolean, comments?: string, defaultValue?: boolean) =>
   input({
     label: "Custom Task ID",
     type: "boolean",
-    comments: comments
-      ? comments
-      : "When true, allows referencing a task by its custom task ID.",
+    comments: comments ? comments : "When true, allows referencing a task by its custom task ID.",
     required,
     default: defaultValue !== undefined ? `${defaultValue}` : "false",
     clean: util.types.toBool,
   });
 
-export const getArchived = (
-  required: boolean,
-  comments: string,
-  defaultValue?: boolean,
-) =>
+export const getArchived = (required: boolean, comments: string, defaultValue?: boolean) =>
   input({
     label: "Archived",
     type: "boolean",
@@ -150,10 +126,7 @@ export const connectionInput = input({
   comments: "The ClickUp connection to use.",
 });
 
-export const getDescription = <R extends boolean>(
-  required: R,
-  comments?: string,
-) =>
+export const getDescription = <R extends boolean>(required: R, comments?: string) =>
   input({
     label: "Description",
     type: "string",
@@ -183,11 +156,7 @@ export const getPriority = (required: boolean, comments: string) =>
     clean: cleanNumber,
   });
 
-export const getDueDateInt = (
-  required: boolean,
-  comments: string,
-  example?: string,
-) =>
+export const getDueDateInt = (required: boolean, comments: string, example?: string) =>
   input({
     label: "Due Date",
     type: "string",
@@ -198,11 +167,7 @@ export const getDueDateInt = (
     clean: cleanNumber,
   });
 
-export const getDueDateTime = (
-  required: boolean,
-  comments: string,
-  defaultValue?: boolean,
-) =>
+export const getDueDateTime = (required: boolean, comments: string, defaultValue?: boolean) =>
   input({
     label: "Due Date Time",
     type: "boolean",
@@ -212,11 +177,7 @@ export const getDueDateTime = (
     clean: util.types.toBool,
   });
 
-export const getNotifyAll = (
-  required: boolean,
-  comments: string,
-  defaultValue: boolean,
-) =>
+export const getNotifyAll = (required: boolean, comments: string, defaultValue: boolean) =>
   input({
     label: "Notify All",
     type: "boolean",

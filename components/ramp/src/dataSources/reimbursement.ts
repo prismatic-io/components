@@ -14,12 +14,7 @@ export const selectReimbursement = dataSource({
   },
   perform: async (_context, { connection }) => {
     const client = createClient(connection);
-    const { data } = await fetchAllData<Reimbursement>(
-      client,
-      "reimbursements",
-      {},
-      true,
-    );
+    const { data } = await fetchAllData<Reimbursement>(client, "reimbursements", {}, true);
 
     const objects = data
       .sort((a, b) => (a.id < b.id ? -1 : 1))
@@ -32,11 +27,6 @@ export const selectReimbursement = dataSource({
   },
   dataSourceType: "picklist",
   examplePayload: {
-    result: [
-      {
-        label: "Office Supplies - $150.00",
-        key: "96bb7007-eec5-430f-8d09-e033cbc000c2",
-      },
-    ],
+    result: [{ label: "Office Supplies - $150.00", key: "96bb7007-eec5-430f-8d09-e033cbc000c2" }],
   },
 });

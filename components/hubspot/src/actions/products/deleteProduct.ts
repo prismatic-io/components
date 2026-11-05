@@ -18,9 +18,7 @@ export const deleteProduct = action({
       debugRequest,
     });
 
-    const { data } = await client.delete(
-      hubspotPaths.objects("products", `/${productId}`),
-    );
+    const { data } = await client.delete(hubspotPaths.objects("products", `/${productId}`));
 
     return { data };
   },

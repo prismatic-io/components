@@ -76,10 +76,7 @@ describe("selectBoardVersion", () => {
   });
 
   test("returns an empty list when the board has no versions", async () => {
-    jiraApi()
-      .get("/rest/agile/1.0/board/84/version")
-      .query(true)
-      .reply(200, { values: [] });
+    jiraApi().get("/rest/agile/1.0/board/84/version").query(true).reply(200, { values: [] });
 
     const { result } = await invokeDataSource(selectBoardVersion, params());
 

@@ -31,9 +31,7 @@ export const pollSiteChanges = pollingTrigger({
   batchConfig: { batchSize: 50 },
   triggerResolver: {
     resolveItems: (_context, { payload }): PollingRecordChange[] =>
-      resolveSitePollingRecordChanges(
-        payload.body.data as PollSiteChangesResult,
-      ),
+      resolveSitePollingRecordChanges(payload.body.data as PollSiteChangesResult),
     getNextPaginationState: (_context, { payload }): SiteDeltaCursor | null =>
       (payload.paginationState as SiteDeltaCursor | undefined) ?? null,
   },
@@ -41,15 +39,11 @@ export const pollSiteChanges = pollingTrigger({
     const { logger, polling, debug } = context;
     const client = await createClient(connection, debug.enabled);
     const state = polling.getState() as PollingState;
-    const rootDeltaFor = (driveId: string) =>
-      `/sites/${siteId}/drives/${driveId}/root/delta`;
+    const rootDeltaFor = (driveId: string) => `/sites/${siteId}/drives/${driveId}/root/delta`;
 
     const drivesEndpoint = `/sites/${siteId}/drives?$select=id,name`;
 
-    const allDrives = (await paginateResults(
-      client,
-      drivesEndpoint,
-    )) as Drive[];
+    const allDrives = (await paginateResults(client, drivesEndpoint)) as Drive[];
 
     if (context.batch?.enabled === true) {
       const incoming = payload.paginationState as SiteDeltaCursor | undefined;
@@ -63,13 +57,8 @@ export const pollSiteChanges = pollingTrigger({
       polling.setState(newPollingState);
 
       return {
-        payload: {
-          ...payload,
-          paginationState: next ?? undefined,
-          body: { data: changes },
-        },
-        polledNoChanges:
-          Object.keys(changes).length === 0 && next === null && !incoming,
+        payload: { ...payload, paginationState: next ?? undefined, body: { data: changes } },
+        polledNoChanges: Object.keys(changes).length === 0 && next === null && !incoming,
       };
     }
 

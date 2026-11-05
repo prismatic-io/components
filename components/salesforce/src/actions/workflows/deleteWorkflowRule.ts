@@ -19,8 +19,7 @@ export const deleteWorkflowRule = action({
     const result = await deleteWorkflowRuleFunction(client, fullName);
     return { data: result };
   },
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    genericCreateUpdateFullNameExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => genericCreateUpdateFullNameExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: deleteMetadataComponentOutputSchema,

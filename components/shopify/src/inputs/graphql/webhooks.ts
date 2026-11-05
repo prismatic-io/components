@@ -1,12 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanStringInput } from "../../util";
-import {
-  callbackUrl,
-  getAlldata,
-  pagination,
-  shopifyConnection,
-  webhookTopic,
-} from "./common";
+import { callbackUrl, getAlldata, pagination, shopifyConnection, webhookTopic } from "./common";
 
 const callbackWebhookUrl = input({
   label: "Callback URL",
@@ -14,8 +8,7 @@ const callbackWebhookUrl = input({
   required: true,
   example: "https://example.com/webhook",
   placeholder: "Enter callback URL",
-  comments:
-    "Provide a string value for the URL the newly created webhook will post to.",
+  comments: "Provide a string value for the URL the newly created webhook will post to.",
   clean: util.types.toString,
 });
 

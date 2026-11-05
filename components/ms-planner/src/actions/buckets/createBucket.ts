@@ -21,20 +21,14 @@ export const createBucket = action({
   perform: async (context, { connection, planId, name }) => {
     const client = createClient(connection, context.debug.enabled);
 
-    const { data } = await client.post<PlannerBucket & Etagged>(
-      PLANNER_ENDPOINTS.BUCKETS,
-      {
-        name,
-        planId,
-        orderHint: DEFAULT_ORDER_HINT,
-      },
-    );
+    const { data } = await client.post<PlannerBucket & Etagged>(PLANNER_ENDPOINTS.BUCKETS, {
+      name,
+      planId,
+      orderHint: DEFAULT_ORDER_HINT,
+    });
     return { data };
   },
-  examplePerform: async (
-    _context,
-    { planId, name },
-  ): Promise<{ data: unknown }> => ({
+  examplePerform: async (_context, { planId, name }): Promise<{ data: unknown }> => ({
     data: { ...createBucketExamplePayload.data, name, planId },
   }),
   examplePayload: createBucketExamplePayload,

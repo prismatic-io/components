@@ -12,18 +12,11 @@ import {
 export const getStatementHandle = action({
   display: {
     label: "Get Statement Handle",
-    description:
-      "Retrieve the current status of a executed statement from Snowflake.",
+    description: "Retrieve the current status of a executed statement from Snowflake.",
   },
   perform: async (
     context: ActionContext,
-    {
-      snowflakeConnectionInput,
-      snowflakeUrl,
-      accountLocator,
-      statementHandleId,
-      partition,
-    },
+    { snowflakeConnectionInput, snowflakeUrl, accountLocator, statementHandleId, partition },
   ) => {
     const snowflakeClient = getClient(
       snowflakeConnectionInput,
@@ -32,14 +25,11 @@ export const getStatementHandle = action({
       context.debug.enabled,
     );
 
-    const { data } = await snowflakeClient.get(
-      `/api/v2/statements/${statementHandleId}`,
-      {
-        params: {
-          partition: partition || undefined,
-        },
+    const { data } = await snowflakeClient.get(`/api/v2/statements/${statementHandleId}`, {
+      params: {
+        partition: partition || undefined,
       },
-    );
+    });
 
     return {
       data,

@@ -12,9 +12,7 @@ export const getGroup = action({
   inputs: getGroupInputs,
   perform: async (context, { connection, groupId }) => {
     const client = await createClient(connection, context.debug.enabled);
-    const { data } = await client.get<Group>(
-      `/groups/${encodeURIComponent(groupId)}`,
-    );
+    const { data } = await client.get<Group>(`/groups/${encodeURIComponent(groupId)}`);
 
     return { data };
   },

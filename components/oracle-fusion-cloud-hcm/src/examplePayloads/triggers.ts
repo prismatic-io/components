@@ -10,11 +10,7 @@ const triggerPayloadWrapper: Omit<TriggerPayload, "body"> = {
   webhookApiKeys: {},
   invokeUrl: "",
   executionId: "RXhhbXBsZUV4ZWN1dGlvblJlc3VsdElk",
-  customer: {
-    id: "testCustomerId",
-    name: "Test Customer",
-    externalId: "testExternalId",
-  },
+  customer: { id: "testCustomerId", name: "Test Customer", externalId: "testExternalId" },
   instance: { id: "testInstanceId", name: "Test Instance" },
   user: {
     id: "testUserId",

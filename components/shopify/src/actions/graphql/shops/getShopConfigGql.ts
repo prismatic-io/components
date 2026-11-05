@@ -28,8 +28,5 @@ export const getShopConfigGql = action({
   },
   examplePayload: getShopConfigExamplePayload.restMap,
   inputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getShopConfigGqlOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getShopConfigGqlOutputSchema }),
 });

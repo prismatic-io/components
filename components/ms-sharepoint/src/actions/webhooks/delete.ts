@@ -11,10 +11,7 @@ export const deleteSubscription = action({
     connection,
     subscriptionId,
   },
-  perform: async (
-    { debug: { enabled: debug } },
-    { connection, subscriptionId },
-  ) => {
+  perform: async ({ debug: { enabled: debug } }, { connection, subscriptionId }) => {
     const client = await createClient(connection, debug);
     const { data } = await client.delete(`/subscriptions/${subscriptionId}`);
     return { data };

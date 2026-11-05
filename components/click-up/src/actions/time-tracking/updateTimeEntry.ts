@@ -2,10 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClickUpClient } from "../../client";
 import { updateTimeEntryExamplePayload } from "../../examplePayloads";
 import { updateTimeEntryInputs } from "../../inputs";
-import type {
-  CreateTimeEntryQueryParams,
-  UpdateTimeEntryBody,
-} from "../../types";
+import type { CreateTimeEntryQueryParams, UpdateTimeEntryBody } from "../../types";
 
 export const updateTimeEntry = action({
   display: {
@@ -30,12 +27,9 @@ export const updateTimeEntry = action({
       tagAction,
       end,
       tagsCode,
-    },
+    }
   ) => {
-    const client = createClickUpClient(
-      clickUpConnection,
-      context.debug.enabled,
-    );
+    const client = createClickUpClient(clickUpConnection, context.debug.enabled);
     const queryParams: CreateTimeEntryQueryParams = {
       custom_task_ids: customTaskIds,
       team_id: customTeamId,
@@ -51,13 +45,9 @@ export const updateTimeEntry = action({
       end,
     };
 
-    const { data } = await client.put(
-      `/team/${teamId}/time_entries/${timerId}`,
-      body,
-      {
-        params: queryParams,
-      },
-    );
+    const { data } = await client.put(`/team/${teamId}/time_entries/${timerId}`, body, {
+      params: queryParams,
+    });
 
     return {
       data,

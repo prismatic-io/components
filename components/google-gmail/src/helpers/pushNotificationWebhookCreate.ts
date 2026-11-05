@@ -1,7 +1,4 @@
-import {
-  createPubSubClient,
-  createClient as createGmailClient,
-} from "../client";
+import { createPubSubClient, createClient as createGmailClient } from "../client";
 import type {
   PushNotificationWebhookCreateContext,
   PushNotificationWebhookCreateParams,
@@ -10,12 +7,7 @@ import { generatePrefixedHash, getBase64FromUrl } from "../utils";
 import { createWatchFn } from "../watchUtils";
 
 export const pushNotificationWebhookCreate = async (
-  {
-    logger,
-    webhookUrls,
-    flow,
-    crossFlowState,
-  }: PushNotificationWebhookCreateContext,
+  { logger, webhookUrls, flow, crossFlowState }: PushNotificationWebhookCreateContext,
   {
     connection,
     projectId,
@@ -62,9 +54,7 @@ export const pushNotificationWebhookCreate = async (
           bindings: [
             {
               role: "roles/pubsub.publisher",
-              members: [
-                "serviceAccount:gmail-api-push@system.gserviceaccount.com",
-              ],
+              members: ["serviceAccount:gmail-api-push@system.gserviceaccount.com"],
             },
           ],
         },
@@ -72,45 +62,29 @@ export const pushNotificationWebhookCreate = async (
     });
     logger.info(`Set IAM policy for topic: ${topicName}`);
   } catch (error: unknown) {
-    if (
-      typeof error === "object" &&
-      error !== null &&
-      "code" in error &&
-      error.code === 409
-    ) {
-      logger.warn(
-        `Skipping creation of topic because ${topicName} already exists.`,
-      );
+    if (typeof error === "object" && error !== null && "code" in error && error.code === 409) {
+      logger.warn(`Skipping creation of topic because ${topicName} already exists.`);
     } else {
       logger.error(error);
       throw error;
     }
   }
 
-  const prefixedSubscriptionId = generatePrefixedHash(
-    subscriptionId,
-    encodedId,
-  );
+  const prefixedSubscriptionId = generatePrefixedHash(subscriptionId, encodedId);
   const pushEndpoint = webhookUrls[integrationFlowName];
   try {
-    const { data: subscriptionData } =
-      await pubSubClient.projects.subscriptions.create({
-        name: `projects/${projectId}/subscriptions/${prefixedSubscriptionId}`,
-        requestBody: {
-          topic: topicName,
-          pushConfig: {
-            pushEndpoint,
-          },
+    const { data: subscriptionData } = await pubSubClient.projects.subscriptions.create({
+      name: `projects/${projectId}/subscriptions/${prefixedSubscriptionId}`,
+      requestBody: {
+        topic: topicName,
+        pushConfig: {
+          pushEndpoint,
         },
-      });
+      },
+    });
     logger.info(`Created subscription: ${subscriptionData.name}`);
   } catch (error) {
-    if (
-      typeof error === "object" &&
-      error !== null &&
-      "code" in error &&
-      error.code === 409
-    ) {
+    if (typeof error === "object" && error !== null && "code" in error && error.code === 409) {
       logger.warn(
         `Skipping creation of subscription because ${prefixedSubscriptionId} already exists.`,
       );
@@ -121,12 +95,7 @@ export const pushNotificationWebhookCreate = async (
   }
 
   try {
-    const watchData = await createWatchFn(
-      gmailClient,
-      userId,
-      topicName,
-      labelIds || [],
-    );
+    const watchData = await createWatchFn(gmailClient, userId, topicName, labelIds || []);
     logger.info(
       `Created Gmail watch for user ${userId}. ` +
         `HistoryId: ${watchData.historyId}, ` +

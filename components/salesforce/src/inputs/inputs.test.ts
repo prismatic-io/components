@@ -1,8 +1,5 @@
 import { dynamicRecordType, recordType } from "./common";
-import {
-  dynamicFieldName,
-  includeOnlyTopLevelRecordTypes,
-} from "./dataSources";
+import { dynamicFieldName, includeOnlyTopLevelRecordTypes } from "./dataSources";
 import { rating } from "./fields";
 import { fileId } from "./files";
 

@@ -7,11 +7,7 @@ import { createPlan } from "./createPlan";
 
 const BASE = "https://graph.microsoft.com";
 const GROUP_ID = "ebf3b108-5234-4e22-b93d-656d7dae5874";
-const connection = createConnection(
-  templatedOauth,
-  {},
-  { access_token: "test-token" },
-);
+const connection = createConnection(templatedOauth, {}, { access_token: "test-token" });
 
 const params = { connection, groupId: GROUP_ID, title: "Q3 Marketing Launch" };
 

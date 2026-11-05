@@ -16,12 +16,7 @@ export const getChangerecord = action({
   },
   perform: async (
     _context,
-    {
-      connectionInput,
-      changeRecordUuid,
-      changerecordSelect,
-      changerecordExpand,
-    },
+    { connectionInput, changeRecordUuid, changerecordSelect, changerecordExpand },
   ) => {
     const headers = {
       Accept: "application/json",
@@ -30,9 +25,7 @@ export const getChangerecord = action({
     try {
       const { data } = await client.get(
         `/sap/opu/odata/sap/API_CHANGE_RECORD/A_ChangeRecord(guid'${changeRecordUuid}')?${
-          changerecordSelect.length
-            ? `$select=${changerecordSelect.join(",")}&`
-            : ""
+          changerecordSelect.length ? `$select=${changerecordSelect.join(",")}&` : ""
         }${changerecordExpand.length ? `$expand=${changerecordExpand.join(",")}&` : ""}`,
       );
       return { data };

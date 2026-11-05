@@ -6,10 +6,7 @@ import { pollChangesTrigger } from "./pollChangesTrigger";
 const { getClient } = vi.hoisted(() => ({ getClient: vi.fn() }));
 vi.mock("../client", () => ({ getMsBusinessCentralClient: () => getClient() }));
 
-const record = (
-  id: string,
-  lastModifiedDateTime: string,
-): BusinessCentralRecord => ({
+const record = (id: string, lastModifiedDateTime: string): BusinessCentralRecord => ({
   id,
   lastModifiedDateTime,
 });
@@ -20,12 +17,8 @@ describe("pollChangesTrigger batching declaration", () => {
   test("declares opt-in batching with a default batch size and no pagination cursor", () => {
     expect(pollChangesTrigger.triggerResolverSupport).toBe("valid");
     expect(pollChangesTrigger.batchConfig).toEqual({ batchSize: 50 });
-    expect(pollChangesTrigger.triggerResolver?.resolveItems).toBeInstanceOf(
-      Function,
-    );
-    expect(
-      pollChangesTrigger.triggerResolver?.getNextPaginationState,
-    ).toBeUndefined();
+    expect(pollChangesTrigger.triggerResolver?.resolveItems).toBeInstanceOf(Function);
+    expect(pollChangesTrigger.triggerResolver?.getNextPaginationState).toBeUndefined();
   });
 
   test("offers the Look-back Date directly below the required inputs", () => {
@@ -42,9 +35,7 @@ describe("pollChangesTrigger batching declaration", () => {
 
 describe("resolveRecordChanges", () => {
   test("tags every record with how it changed", () => {
-    expect(
-      resolveRecordChanges({ created: [first], updated: [second] }),
-    ).toEqual([
+    expect(resolveRecordChanges({ created: [first], updated: [second] })).toEqual([
       { changeType: "created", record: first },
       { changeType: "updated", record: second },
     ]);
@@ -67,9 +58,7 @@ describe("triggerResolver.resolveItems", () => {
   test("flattens the payload shape perform actually returns", () => {
     const items = pollChangesTrigger.triggerResolver?.resolveItems?.(
       {} as never,
-      {
-        payload: { body: { data: { created: [], updated: [first, second] } } },
-      } as never,
+      { payload: { body: { data: { created: [], updated: [first, second] } } } } as never,
     );
     expect(items).toEqual([
       { changeType: "updated", record: first },
@@ -89,15 +78,9 @@ describe("lookBackDateClean", () => {
   });
 
   test("rejects a wrong format, a non-calendar date, and a future date", () => {
-    expect(() => lookBackDateClean("01/01/2026")).toThrow(
-      "Look-back Date must be",
-    );
-    expect(() => lookBackDateClean("2026-02-31")).toThrow(
-      "Look-back Date must be",
-    );
-    expect(() => lookBackDateClean("2999-01-01")).toThrow(
-      "cannot be a future date",
-    );
+    expect(() => lookBackDateClean("01/01/2026")).toThrow("Look-back Date must be");
+    expect(() => lookBackDateClean("2026-02-31")).toThrow("Look-back Date must be");
+    expect(() => lookBackDateClean("2999-01-01")).toThrow("cannot be a future date");
   });
 });
 
@@ -136,8 +119,7 @@ describe("pollChangesTrigger perform and the Look-back Date", () => {
       ...overrides,
     });
 
-  const filterSent = () =>
-    (get.mock.calls[0][1] as { params: { $filter: string } }).params.$filter;
+  const filterSent = () => (get.mock.calls[0][1] as { params: { $filter: string } }).params.$filter;
 
   beforeEach(() => {
     store = {};
@@ -147,21 +129,15 @@ describe("pollChangesTrigger perform and the Look-back Date", () => {
 
   test("the first poll seeds from the Look-back Date", async () => {
     await run({ lookBackDate: "2026-01-01T00:00:00.000Z" });
-    expect(filterSent()).toBe(
-      "lastModifiedDateTime gt 2026-01-01T00:00:00.000Z",
-    );
+    expect(filterSent()).toBe("lastModifiedDateTime gt 2026-01-01T00:00:00.000Z");
   });
 
   test("the first poll without a Look-back Date seeds from now and returns nothing to backfill", async () => {
     const before = Date.now();
     await run();
-    const seeded = Date.parse(
-      filterSent().replace("lastModifiedDateTime gt ", ""),
-    );
+    const seeded = Date.parse(filterSent().replace("lastModifiedDateTime gt ", ""));
     expect(seeded).toBeGreaterThanOrEqual(before);
-    expect(Date.parse(store.lastPolledAt as string)).toBeGreaterThanOrEqual(
-      before,
-    );
+    expect(Date.parse(store.lastPolledAt as string)).toBeGreaterThanOrEqual(before);
     expect(store.backfillActive).toBeUndefined();
   });
 
@@ -170,12 +146,8 @@ describe("pollChangesTrigger perform and the Look-back Date", () => {
       lookBackDate: "2026-01-01T00:00:00.000Z",
       showUpdatedRecords: false,
     });
-    expect(result.payload.body).toEqual({
-      data: { created: [], updated: [first] },
-    });
-    expect((result as { polledNoChanges?: boolean }).polledNoChanges).toBe(
-      false,
-    );
+    expect(result.payload.body).toEqual({ data: { created: [], updated: [first] } });
+    expect((result as { polledNoChanges?: boolean }).polledNoChanges).toBe(false);
   });
 
   test("later polls ignore the Look-back Date and honor the toggle", async () => {
@@ -185,48 +157,28 @@ describe("pollChangesTrigger perform and the Look-back Date", () => {
       lookBackDate: "2026-01-01T00:00:00.000Z",
       showUpdatedRecords: false,
     });
-    expect(filterSent()).toBe(
-      "lastModifiedDateTime gt 2026-06-10T00:00:00.000Z",
-    );
+    expect(filterSent()).toBe("lastModifiedDateTime gt 2026-06-10T00:00:00.000Z");
     expect(result.payload.body).toEqual({ data: { created: [], updated: [] } });
-    expect((result as { polledNoChanges?: boolean }).polledNoChanges).toBe(
-      true,
-    );
-    expect(Date.parse(store.lastPolledAt as string)).toBeGreaterThanOrEqual(
-      before,
-    );
+    expect((result as { polledNoChanges?: boolean }).polledNoChanges).toBe(true);
+    expect(Date.parse(store.lastPolledAt as string)).toBeGreaterThanOrEqual(before);
   });
 
   test("a truncated backfill keeps ignoring the toggle until it drains", async () => {
-    get.mockResolvedValue({
-      data: { value: [first], "@odata.nextLink": "https://bc/next" },
-    });
-    const r1 = await run({
-      lookBackDate: "2026-01-01T00:00:00.000Z",
-      showUpdatedRecords: false,
-    });
-    expect(r1.payload.body).toEqual({
-      data: { created: [], updated: expect.any(Array) },
-    });
+    get.mockResolvedValue({ data: { value: [first], "@odata.nextLink": "https://bc/next" } });
+    const r1 = await run({ lookBackDate: "2026-01-01T00:00:00.000Z", showUpdatedRecords: false });
+    expect(r1.payload.body).toEqual({ data: { created: [], updated: expect.any(Array) } });
     expect(store.backfillActive).toBe(true);
 
     get.mockReset();
     get.mockResolvedValue({ data: { value: [second] } });
-    const r2 = await run({
-      lookBackDate: "2026-01-01T00:00:00.000Z",
-      showUpdatedRecords: false,
-    });
-    expect(r2.payload.body).toEqual({
-      data: { created: [], updated: [second] },
-    });
+    const r2 = await run({ lookBackDate: "2026-01-01T00:00:00.000Z", showUpdatedRecords: false });
+    expect(r2.payload.body).toEqual({ data: { created: [], updated: [second] } });
     expect(store.backfillActive).toBeUndefined();
   });
 
   test("a truncated poll holds its boundary and the unread page link, never the newest timestamp", async () => {
     store = { lastPolledAt: "2026-06-10T00:00:00.000Z" };
-    get.mockResolvedValue({
-      data: { value: [first], "@odata.nextLink": "https://bc/next" },
-    });
+    get.mockResolvedValue({ data: { value: [first], "@odata.nextLink": "https://bc/next" } });
     await run();
     expect(store).toMatchObject({
       lastPolledAt: "2026-06-10T00:00:00.000Z",
@@ -272,18 +224,12 @@ describe("pollChangesTrigger perform and the Look-back Date", () => {
       streamQuery: query,
     };
     const before = Date.now();
-    get
-      .mockRejectedValueOnce(new Error("410"))
-      .mockResolvedValue({ data: { value: [second] } });
+    get.mockRejectedValueOnce(new Error("410")).mockResolvedValue({ data: { value: [second] } });
     const result = await run();
     expect(get.mock.calls[1][1]).toEqual({
       params: { $filter: `lastModifiedDateTime gt ${since}` },
     });
-    expect(result.payload.body).toEqual({
-      data: { created: [], updated: [second] },
-    });
-    expect(Date.parse(store.lastPolledAt as string)).toBeGreaterThanOrEqual(
-      before,
-    );
+    expect(result.payload.body).toEqual({ data: { created: [], updated: [second] } });
+    expect(Date.parse(store.lastPolledAt as string)).toBeGreaterThanOrEqual(before);
   });
 });

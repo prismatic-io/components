@@ -17,11 +17,7 @@ export const resolvePollingCursor = (params: {
   }
 
   if (state?.lastPolledAt) {
-    return {
-      windowStart: state.lastPolledAt,
-      windowEnd: now,
-      isBackfill: false,
-    };
+    return { windowStart: state.lastPolledAt, windowEnd: now, isBackfill: false };
   }
 
   if (lookBackDate) {

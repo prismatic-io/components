@@ -4,11 +4,7 @@ import {
   type ObjectSelection,
   util,
 } from "@prismatic-io/spectral";
-import type {
-  CleanSObject,
-  FilterItem,
-  SalesforceOutboundEnvelope,
-} from "../types";
+import type { CleanSObject, FilterItem, SalesforceOutboundEnvelope } from "../types";
 import { DEFAULT_SF_VERSION, DEFAULT_SORT_CRITERIA } from "../constants";
 
 export const cleanSObject = (raw: Record<string, unknown>): CleanSObject => {
@@ -31,17 +27,12 @@ export const cleanSObject = (raw: Record<string, unknown>): CleanSObject => {
   return result;
 };
 
-export const getNotificationsArray = (
-  envelope: SalesforceOutboundEnvelope,
-): CleanSObject[] => {
+export const getNotificationsArray = (envelope: SalesforceOutboundEnvelope): CleanSObject[] => {
   const notification =
-    envelope?.["soapenv:Envelope"]?.["soapenv:Body"]?.notifications
-      ?.Notification;
+    envelope?.["soapenv:Envelope"]?.["soapenv:Body"]?.notifications?.Notification;
 
   if (!notification) return [];
-  const notifications = Array.isArray(notification)
-    ? notification
-    : [notification];
+  const notifications = Array.isArray(notification) ? notification : [notification];
   return notifications.map((n) => cleanSObject(n));
 };
 
@@ -134,9 +125,7 @@ export const dynamicFieldsClean = (value: unknown): unknown => {
     const data = recordsInputClean(value);
     for (const pair of data) {
       if (!("key" in pair) || !("value" in pair)) {
-        throw new TypeError(
-          "Each item in dynamicValues should be a key-value pair",
-        );
+        throw new TypeError("Each item in dynamicValues should be a key-value pair");
       }
     }
   }
@@ -167,21 +156,16 @@ export const capitalizeSalesforceObject = (value: unknown): string => {
 
 export const cleanValueList = (value: unknown): string[] => {
   if (!value) return [];
-  if (Array.isArray(value))
-    return value.map((v) => util.types.toString(v)).filter(Boolean);
+  if (Array.isArray(value)) return value.map((v) => util.types.toString(v)).filter(Boolean);
   return [];
 };
 
-export const cleanOptionalValueList = (
-  value: unknown,
-): string[] | undefined => {
+export const cleanOptionalValueList = (value: unknown): string[] | undefined => {
   const list = cleanValueList(value);
   return list.length ? list : undefined;
 };
 
-export const cleanOptionalStringList = (
-  value: unknown,
-): string[] | undefined =>
+export const cleanOptionalStringList = (value: unknown): string[] | undefined =>
   Array.isArray(value) ? value.map((v) => util.types.toString(v)) : undefined;
 
 export const cleanPicklistNone = (value: unknown): string | undefined => {
@@ -236,16 +220,12 @@ export const cleanObjectSelection = (value: unknown): ObjectSelection => {
   }
 };
 
-export const cleanSingleItemList = (value: unknown): string[] => [
-  util.types.toString(value),
-];
+export const cleanSingleItemList = (value: unknown): string[] => [util.types.toString(value)];
 
 export const cleanStringArray = (value: unknown): string[] =>
   util.types.toObject(value) as string[];
 
-export const cleanKeyValueListToObject = (
-  value: unknown,
-): Record<string, unknown> =>
+export const cleanKeyValueListToObject = (value: unknown): Record<string, unknown> =>
   util.types.keyValPairListToObject((value || []) as KeyValuePair[]);
 
 export const processFilterCriteria = (criteriaValue: unknown): FilterItem[] => {
@@ -268,9 +248,7 @@ export const processFilterCriteria = (criteriaValue: unknown): FilterItem[] => {
   return data as FilterItem[];
 };
 
-export const validatePermissions = (
-  value: unknown,
-): Record<string, boolean> | undefined => {
+export const validatePermissions = (value: unknown): Record<string, boolean> | undefined => {
   if (value === undefined || value === null) {
     return undefined;
   }
@@ -279,16 +257,12 @@ export const validatePermissions = (
     throw new Error("Invalid permissions value provided.");
   }
 
-  const hasInvalidKeyTypes = Object.keys(value).some(
-    (k) => typeof k !== "string",
-  );
+  const hasInvalidKeyTypes = Object.keys(value).some((k) => typeof k !== "string");
   if (hasInvalidKeyTypes) {
     throw new Error("All permission keys must be strings.");
   }
 
-  const hasInvalidValueTypes = Object.values(value).some(
-    (v) => typeof v !== "boolean",
-  );
+  const hasInvalidValueTypes = Object.values(value).some((v) => typeof v !== "boolean");
   if (hasInvalidValueTypes) {
     throw new Error("All permission values must be booleans.");
   }
@@ -299,22 +273,14 @@ export const validatePermissions = (
 const LOOK_BACK_DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
 
 export const lookBackDateClean = (value: unknown): string => {
-  if (
-    value === undefined ||
-    value === null ||
-    (typeof value === "string" && value.trim() === "")
-  ) {
+  if (value === undefined || value === null || (typeof value === "string" && value.trim() === "")) {
     return "";
   }
 
-  const raw =
-    typeof value === "string" ? value.trim() : util.types.toString(value);
-  const match =
-    typeof value === "string" ? raw.match(LOOK_BACK_DATE_PATTERN) : null;
+  const raw = typeof value === "string" ? value.trim() : util.types.toString(value);
+  const match = typeof value === "string" ? raw.match(LOOK_BACK_DATE_PATTERN) : null;
   if (!match) {
-    throw new Error(
-      `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
-    );
+    throw new Error(`Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`);
   }
 
   const [, yearStr, monthStr, dayStr] = match;
@@ -327,9 +293,7 @@ export const lookBackDateClean = (value: unknown): string => {
     parsed.getUTCMonth() !== month - 1 ||
     parsed.getUTCDate() !== day
   ) {
-    throw new Error(
-      `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
-    );
+    throw new Error(`Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`);
   }
 
   if (parsed.getTime() > Date.now()) {

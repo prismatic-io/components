@@ -143,12 +143,9 @@ export const zohoTemplatedConnection = oauth2Connection({
         type: "template",
         required: true,
         shown: false,
-        templateValue:
-          "{{#zohoRegion}}/oauth/v2/auth?access_type=offline&prompt=consent",
-        example:
-          "https://accounts.zoho.com/oauth/v2/auth?access_type=offline&prompt=consent",
-        comments:
-          "The OAuth 2.0 Authorization URL for the selected Zoho region.",
+        templateValue: "{{#zohoRegion}}/oauth/v2/auth?access_type=offline&prompt=consent",
+        example: "https://accounts.zoho.com/oauth/v2/auth?access_type=offline&prompt=consent",
+        comments: "The OAuth 2.0 Authorization URL for the selected Zoho region.",
       },
       tokenUrl: {
         label: "Token URL",
@@ -169,8 +166,7 @@ export const zohoTemplatedConnection = oauth2Connection({
         shown: false,
         templateValue: "{{#zohoRegion}}/oauth/v2/token/revoke",
         example: "https://accounts.zoho.com/oauth/v2/token/revoke",
-        comments:
-          "The OAuth 2.0 Token Revocation URL for the selected Zoho region.",
+        comments: "The OAuth 2.0 Token Revocation URL for the selected Zoho region.",
       },
     },
     OAuth2Type.AuthorizationCode,

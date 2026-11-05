@@ -8,8 +8,7 @@ import { toSortedPicklist } from "./helpers";
 export const selectGeneralLedgerEntry = dataSource({
   display: {
     label: "Select General Ledger Entry",
-    description:
-      "A picklist of general ledger entries in your Business Central organization.",
+    description: "A picklist of general ledger entries in your Business Central organization.",
   },
   inputs: {
     connection: connectionInput,
@@ -17,9 +16,9 @@ export const selectGeneralLedgerEntry = dataSource({
   },
   perform: async (context, { connection, companyId }) => {
     const client = getMsBusinessCentralClient(connection, context, false);
-    const { data } = await client.get<
-      MultipleItemsResponse<GeneralLedgerEntry[]>
-    >(`/companies(${companyId})/generalLedgerEntries`);
+    const { data } = await client.get<MultipleItemsResponse<GeneralLedgerEntry[]>>(
+      `/companies(${companyId})/generalLedgerEntries`,
+    );
 
     return {
       result: toSortedPicklist(data.value, (entry) => ({
@@ -30,11 +29,6 @@ export const selectGeneralLedgerEntry = dataSource({
   },
   dataSourceType: "picklist",
   examplePayload: {
-    result: [
-      {
-        label: "DOC-001 - Payment",
-        key: "5d115c9c-44e3-ea11-bb43-000d3a2feca1",
-      },
-    ],
+    result: [{ label: "DOC-001 - Payment", key: "5d115c9c-44e3-ea11-bb43-000d3a2feca1" }],
   },
 });

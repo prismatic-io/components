@@ -14,9 +14,7 @@ export const getAssignments = action({
       },
       context.debug.enabled,
     );
-    const { data } = await client.get(
-      `/Projects('${params.guId}')/Assignments`,
-    );
+    const { data } = await client.get(`/Projects('${params.guId}')/Assignments`);
 
     return {
       data,

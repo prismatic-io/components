@@ -29,27 +29,26 @@ export const headObjectExamplePayload: { data: HeadObjectCommandOutput } = {
   },
 };
 
-export const deleteObjectsExamplePayload: { data: DeleteObjectsCommandOutput } =
-  {
-    data: {
-      $metadata: {
-        httpStatusCode: 200,
-        requestId: "FAQAVT",
-        extendedRequestId: "T/nk6UtPuVs11K6ji59C8phr==",
-        cfId: null,
-        attempts: 1,
-        totalRetryDelay: 0,
-      },
-      Deleted: [
-        {
-          Key: "file.csv",
-        },
-        {
-          Key: "audio.mp3",
-        },
-      ],
+export const deleteObjectsExamplePayload: { data: DeleteObjectsCommandOutput } = {
+  data: {
+    $metadata: {
+      httpStatusCode: 200,
+      requestId: "FAQAVT",
+      extendedRequestId: "T/nk6UtPuVs11K6ji59C8phr==",
+      cfId: null,
+      attempts: 1,
+      totalRetryDelay: 0,
     },
-  };
+    Deleted: [
+      {
+        Key: "file.csv",
+      },
+      {
+        Key: "audio.mp3",
+      },
+    ],
+  },
+};
 
 export const getObjectAttributesExamplePayload: {
   data: GetObjectAttributesCommandOutput;
@@ -75,8 +74,7 @@ export const copyObjectExamplePayload: { data: CopyObjectCommandOutput } = {
     $metadata: {
       httpStatusCode: 200,
       requestId: "C4KXHZ9F2QQEM123",
-      extendedRequestId:
-        "8pTnwvKfHXQyoNr3xJ2mZcVbLdE9qASgWx4RfUo6hP1cB0iYkMz5T7uV+123456=",
+      extendedRequestId: "8pTnwvKfHXQyoNr3xJ2mZcVbLdE9qASgWx4RfUo6hP1cB0iYkMz5T7uV+123456=",
       cfId: null,
       attempts: 1,
       totalRetryDelay: 0,
@@ -93,15 +91,13 @@ export const deleteObjectExamplePayload: { data: DeleteObjectCommandOutput } = {
     $metadata: {
       httpStatusCode: 204,
       requestId: "FAQAVT3H2JB1234",
-      extendedRequestId:
-        "0D9BDVoAGoHqu3dIW4WHmaO4kkiWecrbf0yLRMe/JmUfX7N/12345=",
+      extendedRequestId: "0D9BDVoAGoHqu3dIW4WHmaO4kkiWecrbf0yLRMe/JmUfX7N/12345=",
       cfId: null,
       attempts: 1,
       totalRetryDelay: 0,
     },
     DeleteMarker: true,
-    VersionId:
-      "3/L4kqtJlcpXroDTDmJ+rmSpXd3dIbrHY+MTRCxf3vjVBH40Nr8X8gdRQBpUMLUo",
+    VersionId: "3/L4kqtJlcpXroDTDmJ+rmSpXd3dIbrHY+MTRCxf3vjVBH40Nr8X8gdRQBpUMLUo",
     RequestCharged: "requester",
   },
 };
@@ -112,11 +108,7 @@ export const getObjectExamplePayload = {
 };
 
 export const listObjectsExamplePayload: { data: string[] } = {
-  data: [
-    "invoices/2024-01-15.pdf",
-    "images/logo.png",
-    "backups/database-dump.sql",
-  ],
+  data: ["invoices/2024-01-15.pdf", "images/logo.png", "backups/database-dump.sql"],
 };
 
 export const putObjectExamplePayload: { data: PutObjectCommandOutput } = {
@@ -131,8 +123,7 @@ export const putObjectExamplePayload: { data: PutObjectCommandOutput } = {
       totalRetryDelay: 0,
     },
     ETag: '"9a0364b9e99bb480dd25e1f0284c8555"',
-    VersionId:
-      "3sL4kqtJlcpXroDTDmJ+rmSpXd3dIbrHY+MTRCxf3vjVBH40Nr8X8gdRQBpUMLUo",
+    VersionId: "3sL4kqtJlcpXroDTDmJ+rmSpXd3dIbrHY+MTRCxf3vjVBH40Nr8X8gdRQBpUMLUo",
   },
 };
 

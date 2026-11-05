@@ -51,8 +51,7 @@ export const createFile = action({
       data: {
         ...createFileExamplePayload.data,
         name: fileName,
-        mimeType:
-          mime.lookup(fileName) || createFileExamplePayload.data.mimeType,
+        mimeType: mime.lookup(fileName) || createFileExamplePayload.data.mimeType,
         parents: folderId ? [folderId] : createFileExamplePayload.data.parents,
       },
     };

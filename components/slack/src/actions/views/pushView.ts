@@ -13,7 +13,7 @@ export const pushView = action({
   performSafety: "notAllowed",
   perform: async (
     { debug: { enabled: debug } },
-    { connection, trigger_id, view },
+    { connection, trigger_id, view }
   ) => {
     debugLogger({ debug, connection, trigger_id, view });
     const client = await createOauthClient({

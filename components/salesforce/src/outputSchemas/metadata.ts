@@ -1,7 +1,4 @@
-import {
-  filePropertiesListSchema,
-  metadataResultSchema,
-} from "./metadataShared";
+import { filePropertiesListSchema, metadataResultSchema } from "./metadataShared";
 
 export const saveMetadataOutputSchema = {
   type: ["array", "object"],

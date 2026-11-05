@@ -1,14 +1,7 @@
 import { type Connection, util } from "@prismatic-io/spectral";
 import type { HttpClient } from "@prismatic-io/spectral/http";
-import {
-  businessCentralConnection,
-  businessClientCredentials,
-} from "./connections";
-import {
-  LOOK_BACK_DATE_PATTERN,
-  MAX_EXPIRATION_DAYS,
-  POLL_RESOURCE_CONFIG,
-} from "./constants";
+import { businessCentralConnection, businessClientCredentials } from "./connections";
+import { LOOK_BACK_DATE_PATTERN, MAX_EXPIRATION_DAYS, POLL_RESOURCE_CONFIG } from "./constants";
 import type {
   BusinessCentralRecord,
   MultipleItemsResponse,
@@ -24,15 +17,12 @@ const MAX_POLL_PAGES = 100;
 export const cleanStringInput = (value: unknown) =>
   value ? util.types.toString(value) : undefined;
 
-export const cleanBooleanInput = (value: unknown) =>
-  value ? util.types.toBool(value) : undefined;
+export const cleanBooleanInput = (value: unknown) => (value ? util.types.toBool(value) : undefined);
 
 export const cleanNumberInput = (value: unknown) =>
   value ? util.types.toNumber(value) : undefined;
 
-export const validateConnection = (
-  connection: Connection,
-): undefined | never => {
+export const validateConnection = (connection: Connection): undefined | never => {
   if (
     connection.key !== businessClientCredentials.key &&
     connection.key !== businessCentralConnection.key
@@ -66,9 +56,7 @@ export const listSubscriptionsFn = async (
     );
     return {
       ...data,
-      value: instanceSubscriptions.map(
-        swapEtagInObject,
-      ) as Subscription["value"],
+      value: instanceSubscriptions.map(swapEtagInObject) as Subscription["value"],
     };
   }
   return {
@@ -95,19 +83,14 @@ export const deleteAllSubscriptionsFn = async (
   instanceWebhooks: Set<string>,
   subscriptionResource?: string,
 ) => {
-  const subscriptions = await listSubscriptionsFn(
-    client,
-    instanceWebhooks,
-    true,
-  );
+  const subscriptions = await listSubscriptionsFn(client, instanceWebhooks, true);
 
   let subscriptionsToRemove: Subscription["value"];
 
   if (subscriptionResource) {
     subscriptionsToRemove = subscriptions.value.filter(
       ({ notificationUrl, resource }) =>
-        instanceWebhooks.has(notificationUrl) &&
-        subscriptionResource.includes(resource),
+        instanceWebhooks.has(notificationUrl) && subscriptionResource.includes(resource),
     );
   } else {
     subscriptionsToRemove = subscriptions.value.filter(({ notificationUrl }) =>
@@ -136,42 +119,29 @@ export const cleanDate = (rawValue: unknown) => {
   return util.types.toString(value);
 };
 
-export const pollResourceModel = Object.entries(POLL_RESOURCE_CONFIG).map(
-  ([value, { label }]) => ({
-    value,
-    label,
-  }),
-);
+export const pollResourceModel = Object.entries(POLL_RESOURCE_CONFIG).map(([value, { label }]) => ({
+  value,
+  label,
+}));
 
 export const fetchAllPagedSince = async (
   client: HttpClient,
   initialPath: string,
   initialParams: Record<string, unknown>,
   resumeLink?: string,
-): Promise<{
-  records: BusinessCentralRecord[];
-  truncated: boolean;
-  nextLink?: string;
-}> => {
+): Promise<{ records: BusinessCentralRecord[]; truncated: boolean; nextLink?: string }> => {
   const records: BusinessCentralRecord[] = [];
   const { data: firstPage } = resumeLink
-    ? await client.get<MultipleItemsResponse<BusinessCentralRecord[]>>(
-        resumeLink,
-      )
-    : await client.get<MultipleItemsResponse<BusinessCentralRecord[]>>(
-        initialPath,
-        {
-          params: initialParams,
-        },
-      );
+    ? await client.get<MultipleItemsResponse<BusinessCentralRecord[]>>(resumeLink)
+    : await client.get<MultipleItemsResponse<BusinessCentralRecord[]>>(initialPath, {
+        params: initialParams,
+      });
   records.push(...(firstPage.value ?? []));
   let nextLink = firstPage["@odata.nextLink"];
   let pages = 1;
   while (nextLink && pages < MAX_POLL_PAGES) {
     const { data: page } =
-      await client.get<MultipleItemsResponse<BusinessCentralRecord[]>>(
-        nextLink,
-      );
+      await client.get<MultipleItemsResponse<BusinessCentralRecord[]>>(nextLink);
     records.push(...(page.value ?? []));
     nextLink = page["@odata.nextLink"];
     pages++;
@@ -185,9 +155,7 @@ export const resolvePollingStart = (
   now: string,
 ): { since: string; isBackfill: boolean } => ({
   since: state?.lastPolledAt ?? (lookBackDate || now),
-  isBackfill:
-    state?.backfillActive === true ||
-    (!state?.lastPolledAt && Boolean(lookBackDate)),
+  isBackfill: state?.backfillActive === true || (!state?.lastPolledAt && Boolean(lookBackDate)),
 });
 
 export const resolvePollingStream = (
@@ -200,12 +168,7 @@ export const resolvePollingStream = (
     : { streamStartedAt: now };
 
 export const nextPollingState = (
-  round: {
-    lastPolledAt: string;
-    stream: PollingStream;
-    query: string;
-    isBackfill: boolean;
-  },
+  round: { lastPolledAt: string; stream: PollingStream; query: string; isBackfill: boolean },
   nextLink: string | undefined,
 ): PollingState =>
   nextLink
@@ -219,21 +182,14 @@ export const nextPollingState = (
     : { lastPolledAt: round.stream.streamStartedAt };
 
 export const lookBackDateClean = (value: unknown): string => {
-  if (
-    value === undefined ||
-    value === null ||
-    (typeof value === "string" && value.trim() === "")
-  ) {
+  if (value === undefined || value === null || (typeof value === "string" && value.trim() === "")) {
     return "";
   }
 
   const raw = typeof value === "string" ? value.trim() : String(value);
-  const match =
-    typeof value === "string" ? raw.match(LOOK_BACK_DATE_PATTERN) : null;
+  const match = typeof value === "string" ? raw.match(LOOK_BACK_DATE_PATTERN) : null;
   if (!match) {
-    throw new Error(
-      `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
-    );
+    throw new Error(`Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`);
   }
 
   const [, yearStr, monthStr, dayStr] = match;
@@ -246,9 +202,7 @@ export const lookBackDateClean = (value: unknown): string => {
     parsed.getUTCMonth() !== month - 1 ||
     parsed.getUTCDate() !== day
   ) {
-    throw new Error(
-      `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
-    );
+    throw new Error(`Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`);
   }
 
   if (parsed.getTime() > Date.now()) {

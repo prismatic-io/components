@@ -12,10 +12,7 @@ export const createRecord = action({
   },
   inputs: createRecordInputs,
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { version, recordType, dynamicValues, fieldValues, connection },
-  ) => {
+  perform: async (context, { version, recordType, dynamicValues, fieldValues, connection }) => {
     if (context.debug.enabled) {
       context.logger.debug("Payload", {
         recordType,
@@ -32,8 +29,7 @@ export const createRecord = action({
       data: response,
     };
   },
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    genericCreateUpdateExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => genericCreateUpdateExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: createRecordOutputSchema,

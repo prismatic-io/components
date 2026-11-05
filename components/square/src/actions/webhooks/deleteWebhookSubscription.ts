@@ -9,14 +9,9 @@ export const deleteWebhookSubscription = action({
     description: "Deletes a webhook subscription.",
   },
   perform: async (context, { squareConnection, deleteSubscriptionId }) => {
-    const client = await createAuthorizedClient(
-      squareConnection,
-      context.debug.enabled,
-    );
+    const client = await createAuthorizedClient(squareConnection, context.debug.enabled);
 
-    const response = await client.delete(
-      `/v2/webhooks/subscriptions/${deleteSubscriptionId}`,
-    );
+    const response = await client.delete(`/v2/webhooks/subscriptions/${deleteSubscriptionId}`);
 
     return {
       data: response.data,

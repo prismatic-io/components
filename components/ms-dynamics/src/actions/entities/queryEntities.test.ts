@@ -16,9 +16,7 @@ vi.mock("../../util", async (importOriginal) => {
   const actual = (await importOriginal()) as Record<string, unknown>;
   return {
     ...actual,
-    paginateQueryEntities: vi
-      .fn()
-      .mockResolvedValue({ data: queryEntitiesExamplePayload.data }),
+    paginateQueryEntities: vi.fn().mockResolvedValue({ data: queryEntitiesExamplePayload.data }),
   };
 });
 
@@ -31,9 +29,7 @@ describe("queryEntities", () => {
   afterEach(() => vi.clearAllMocks());
 
   test("happy path returns query results", async () => {
-    mockRetrieveMultiple.mockResolvedValueOnce(
-      queryEntitiesExamplePayload.data,
-    );
+    mockRetrieveMultiple.mockResolvedValueOnce(queryEntitiesExamplePayload.data);
 
     const result = await queryEntities.perform(ctx, {
       entityType: "accounts",
@@ -48,7 +44,7 @@ describe("queryEntities", () => {
     } as any);
 
     expect((result as { data: { value: unknown[] } }).data.value).toEqual(
-      queryEntitiesExamplePayload.data.value,
+      queryEntitiesExamplePayload.data.value
     );
   });
 
@@ -66,7 +62,7 @@ describe("queryEntities", () => {
         nextPageId: undefined,
         fetchAll: false,
         connection: conn,
-      } as any),
+      } as any)
     ).rejects.toThrow("SDK error");
   });
 });

@@ -10,10 +10,7 @@ export const getPersonFields = action({
     description: "Gets all person fields.",
   },
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { connection, pagination: { start, limit } = {} },
-  ) => {
+  perform: async (context, { connection, pagination: { start, limit } = {} }) => {
     const client = createClient(connection, context.debug.enabled);
     const { data } = await client.get("/personFields", {
       params: { start, limit },
@@ -22,8 +19,5 @@ export const getPersonFields = action({
   },
   inputs: getPersonFieldsInputs,
   examplePayload: getPersonFieldsExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getPersonFieldsOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getPersonFieldsOutputSchema }),
 });

@@ -39,10 +39,7 @@ afterAll(() => nock.enableNetConnect());
 describe("createFolders", () => {
   test("posts one entry per path and returns the command result", async () => {
     nock(BASE)
-      .post("/adobe/folders/", [
-        { path: "/content/dam/a" },
-        { path: "/content/dam/b" },
-      ])
+      .post("/adobe/folders/", [{ path: "/content/dam/a" }, { path: "/content/dam/b" }])
       .reply(200, createFoldersExamplePayload.data);
     const { result } = await invoke(createFolders, {
       connection,
@@ -53,10 +50,7 @@ describe("createFolders", () => {
 
   test("returns a job when Adobe accepts the request as one", async () => {
     nock(BASE).post("/adobe/folders/").reply(202, job);
-    const { result } = await invoke(createFolders, {
-      connection,
-      folderPaths: ["/content/dam/a"],
-    });
+    const { result } = await invoke(createFolders, { connection, folderPaths: ["/content/dam/a"] });
     expect(result).toEqual(folderJobExamplePayload);
   });
 
@@ -71,9 +65,7 @@ describe("createFolders", () => {
       });
     await expect(
       invoke(createFolders, { connection, folderPaths: ["/content/dam/a"] }),
-    ).rejects.toThrow(
-      "No folders were created. An entity already exists at /content/dam/a",
-    );
+    ).rejects.toThrow("No folders were created. An entity already exists at /content/dam/a");
   });
 
   test("returns a partial success with its failures listed", async () => {
@@ -84,12 +76,7 @@ describe("createFolders", () => {
       data: {
         values: {
           successes: [
-            {
-              type: "FOLDER",
-              folderId: "urn:aaid:aem:b",
-              name: "b",
-              path: "/content/dam/b",
-            },
+            { type: "FOLDER", folderId: "urn:aaid:aem:b", name: "b", path: "/content/dam/b" },
           ],
           failedFolders: [conflict],
         },
@@ -104,9 +91,10 @@ describe("createFolders", () => {
   });
 
   test("Folder Paths clean trims entries and drops blanks", () => {
-    expect(
-      cleanFolderPaths([" /content/dam/a ", "", "/content/dam/b"]),
-    ).toEqual(["/content/dam/a", "/content/dam/b"]);
+    expect(cleanFolderPaths([" /content/dam/a ", "", "/content/dam/b"])).toEqual([
+      "/content/dam/a",
+      "/content/dam/b",
+    ]);
   });
 
   test("surfaces a request-level 403", async () => {
@@ -117,20 +105,14 @@ describe("createFolders", () => {
   });
 
   test("Folder Paths clean rejects an empty list", () => {
-    expect(() => cleanFolderPaths(["  ", ""])).toThrow(
-      "at least one folder path",
-    );
+    expect(() => cleanFolderPaths(["  ", ""])).toThrow("at least one folder path");
   });
 });
 
 describe("deleteFolders", () => {
   test("posts the paths with recursive and force and returns the job", async () => {
     nock(BASE)
-      .post("/adobe/folders/delete", {
-        paths: ["/content/dam/a"],
-        recursive: true,
-        force: false,
-      })
+      .post("/adobe/folders/delete", { paths: ["/content/dam/a"], recursive: true, force: false })
       .reply(202, job);
     const { result } = await invoke(deleteFolders, {
       connection,
@@ -149,12 +131,7 @@ describe("deleteFolders", () => {
         status: 200,
         description: "Errors encountered while deleting folders.",
         data: { deletedFolders: [], failedFolders: [] },
-        errors: [
-          {
-            title: "Not Found",
-            detail: "Folder not found: /content/dam/missing",
-          },
-        ],
+        errors: [{ title: "Not Found", detail: "Folder not found: /content/dam/missing" }],
       });
     await expect(
       invoke(deleteFolders, {
@@ -184,17 +161,14 @@ describe("deleteFolders", () => {
 describe("getFolderJobStatus", () => {
   test("returns the job state", async () => {
     nock(BASE).get(`/adobe/folders/jobs/${job.jobId}/status`).reply(200, job);
-    const { result } = await invoke(getFolderJobStatus, {
-      connection,
-      jobId: job.jobId,
-    });
+    const { result } = await invoke(getFolderJobStatus, { connection, jobId: job.jobId });
     expect(result).toEqual(folderJobExamplePayload);
   });
 
   test("surfaces a 404", async () => {
     nock(BASE).get("/adobe/folders/jobs/missing/status").reply(404, {});
-    await expect(
-      invoke(getFolderJobStatus, { connection, jobId: "missing" }),
-    ).rejects.toThrow("404");
+    await expect(invoke(getFolderJobStatus, { connection, jobId: "missing" })).rejects.toThrow(
+      "404",
+    );
   });
 });

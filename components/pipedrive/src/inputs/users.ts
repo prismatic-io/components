@@ -1,10 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
-import {
-  connectionInput,
-  cursorPagination,
-  offsetPagination,
-  userIdInput,
-} from "./common";
+import { connectionInput, cursorPagination, offsetPagination, userIdInput } from "./common";
 import { cleanNumber } from "../util";
 
 const term = input({
@@ -26,8 +21,7 @@ const searchByEmail = input({
     { label: "1", value: "1" },
   ],
   clean: cleanNumber,
-  comments:
-    "When set to 1, the term is matched against user email addresses only.",
+  comments: "When set to 1, the term is matched against user email addresses only.",
   example: "1",
   placeholder: "Select option",
 });

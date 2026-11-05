@@ -9,24 +9,16 @@ import type { Item } from "../../interfaces";
 export const createItem = action({
   display: {
     label: "Create Item",
-    description:
-      "Creates a new item object in your Business Central Organization.",
+    description: "Creates a new item object in your Business Central Organization.",
   },
   perform: async (context, { companyId, number, displayName, connection }) => {
-    const client = getMsBusinessCentralClient(
-      connection,
-      context,
-      context.debug.enabled,
-    );
+    const client = getMsBusinessCentralClient(connection, context, context.debug.enabled);
     const payload = {
       number,
       displayName,
     };
 
-    const { data } = await client.post<Item>(
-      `/companies(${companyId})/items`,
-      payload,
-    );
+    const { data } = await client.post<Item>(`/companies(${companyId})/items`, payload);
 
     return { data };
   },

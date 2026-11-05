@@ -18,8 +18,5 @@ export const getLeadLabels = action({
   inputs: getLeadLabelsInputs,
   examplePayload: getLeadLabelsExamplePayload,
   examplePerform: async () => getLeadLabelsExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getLeadLabelsOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getLeadLabelsOutputSchema }),
 });

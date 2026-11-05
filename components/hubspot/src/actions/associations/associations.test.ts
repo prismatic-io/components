@@ -8,9 +8,7 @@ import { readAssociations } from "./readAssociations";
 
 vi.mock("../../client");
 
-const mockedGetHubspotClient = getHubspotClient as MockedFunction<
-  typeof getHubspotClient
->;
+const mockedGetHubspotClient = getHubspotClient as MockedFunction<typeof getHubspotClient>;
 
 const context = { debug: { enabled: false } } as never;
 const hubspotConnection = { key: privateAppAccessToken.key, fields: {} };
@@ -46,13 +44,7 @@ describe("listAssociationTypes", () => {
     expect(result).toEqual({
       data: {
         results: [
-          {
-            id: "1",
-            name: "Primary",
-            category: "HUBSPOT_DEFINED",
-            typeId: 1,
-            label: "Primary",
-          },
+          { id: "1", name: "Primary", category: "HUBSPOT_DEFINED", typeId: 1, label: "Primary" },
           {
             id: "7",
             name: "Decision Maker",
@@ -78,11 +70,7 @@ describe("readAssociations", () => {
               {
                 toObjectId: "10",
                 associationTypes: [
-                  {
-                    category: "USER_DEFINED",
-                    typeId: 7,
-                    label: "Decision Maker",
-                  },
+                  { category: "USER_DEFINED", typeId: 7, label: "Decision Maker" },
                 ],
               },
             ],
@@ -96,21 +84,16 @@ describe("readAssociations", () => {
     } as never)) as {
       data: { status: string; results: { to: unknown[] }[] };
     };
-    expect(post).toHaveBeenCalledWith(
-      "/crm/associations/2026-09/contacts/companies/batch/read",
-      {
-        inputs: [{ id: "1" }],
-      },
-    );
+    expect(post).toHaveBeenCalledWith("/crm/associations/2026-09/contacts/companies/batch/read", {
+      inputs: [{ id: "1" }],
+    });
     expect(result.data.status).toBe("COMPLETE");
     expect(result.data.results[0].to).toEqual([
       {
         id: "10",
         type: "Decision Maker",
         toObjectId: "10",
-        associationTypes: [
-          { category: "USER_DEFINED", typeId: 7, label: "Decision Maker" },
-        ],
+        associationTypes: [{ category: "USER_DEFINED", typeId: 7, label: "Decision Maker" }],
       },
     ]);
   });
@@ -141,20 +124,15 @@ describe("createAssociations", () => {
       associateType: "7",
     } as never)) as { data: { results: Record<string, unknown>[] } };
     expect(get).toHaveBeenCalledWith(LABELS_PATH);
-    expect(post).toHaveBeenCalledWith(
-      "/crm/associations/2026-09/contacts/companies/batch/create",
-      {
-        inputs: [
-          {
-            from: { id: "1" },
-            to: { id: "2" },
-            types: [
-              { associationCategory: "USER_DEFINED", associationTypeId: 7 },
-            ],
-          },
-        ],
-      },
-    );
+    expect(post).toHaveBeenCalledWith("/crm/associations/2026-09/contacts/companies/batch/create", {
+      inputs: [
+        {
+          from: { id: "1" },
+          to: { id: "2" },
+          types: [{ associationCategory: "USER_DEFINED", associationTypeId: 7 }],
+        },
+      ],
+    });
     expect(result.data.results[0]).toEqual({
       from: { id: "1" },
       to: { id: "2" },
@@ -165,10 +143,7 @@ describe("createAssociations", () => {
 
   test("a name returned by List Association Types resolves in Create", async () => {
     mockClient({ get: labelsBody });
-    const listed = (await listAssociationTypes.perform(
-      context,
-      base as never,
-    )) as {
+    const listed = (await listAssociationTypes.perform(context, base as never)) as {
       data: { results: { name: string }[] };
     };
     const name = listed.data.results[1].name;
@@ -201,12 +176,7 @@ describe("createAssociations", () => {
 
 describe("archiveAssociations", () => {
   test("resolves the type and posts to dated batch/labels/archive, returning the response", async () => {
-    const envelope = {
-      status: "COMPLETE",
-      startedAt: "s",
-      completedAt: "c",
-      results: [],
-    };
+    const envelope = { status: "COMPLETE", startedAt: "s", completedAt: "c", results: [] };
     const { post } = mockClient({ get: labelsBody, post: envelope });
     const result = await archiveAssociations.perform(context, {
       ...base,
@@ -221,9 +191,7 @@ describe("archiveAssociations", () => {
           {
             from: { id: "1" },
             to: { id: "2" },
-            types: [
-              { associationCategory: "HUBSPOT_DEFINED", associationTypeId: 1 },
-            ],
+            types: [{ associationCategory: "HUBSPOT_DEFINED", associationTypeId: 1 }],
           },
         ],
       },

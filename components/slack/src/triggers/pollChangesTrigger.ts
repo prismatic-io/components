@@ -48,7 +48,7 @@ export const pollChangesTrigger = pollingTrigger({
     const { messages, truncated } = await fetchSlackMessagesSince(
       params.connection,
       params.channelId,
-      oldest,
+      oldest
     );
 
     const created: SlackMessage[] =
@@ -62,13 +62,13 @@ export const pollChangesTrigger = pollingTrigger({
         .filter((t): t is string => typeof t === "string")
         .reduce<string | null>(
           (min, t) => (min === null || t < min ? t : min),
-          null,
+          null
         );
       if (oldestTs !== null) {
         nextCursor = new Date(Number.parseFloat(oldestTs) * 1000).toISOString();
       }
       context.logger.warn(
-        `Polling truncated at the page cap for Slack channel ${params.channelId}. Advancing cursor to ${nextCursor}; next poll will resume from there.`,
+        `Polling truncated at the page cap for Slack channel ${params.channelId}. Advancing cursor to ${nextCursor}; next poll will resume from there.`
       );
     }
     context.polling.setState({
@@ -78,7 +78,7 @@ export const pollChangesTrigger = pollingTrigger({
 
     if (context.debug.enabled) {
       context.logger.debug(
-        `Polled Slack channel ${params.channelId}: ${messages.length} fetched, truncated=${truncated}`,
+        `Polled Slack channel ${params.channelId}: ${messages.length} fetched, truncated=${truncated}`
       );
     }
 

@@ -8,14 +8,8 @@ export const upsertCatalogObject = action({
     label: "Upsert Catalog Object",
     description: "Creates or updates the specified catalog object.",
   },
-  perform: async (
-    context,
-    { squareConnection, idempotencyKey, catalogObject },
-  ) => {
-    const client = await createAuthorizedClient(
-      squareConnection,
-      context.debug.enabled,
-    );
+  perform: async (context, { squareConnection, idempotencyKey, catalogObject }) => {
+    const client = await createAuthorizedClient(squareConnection, context.debug.enabled);
 
     const requestBody = {
       idempotency_key: idempotencyKey,

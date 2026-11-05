@@ -17,8 +17,5 @@ export const deleteCallLog = action({
   },
   inputs: deleteCallLogInputs,
   examplePayload: deleteCallLogExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: deleteCallLogOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: deleteCallLogOutputSchema }),
 });

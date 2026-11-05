@@ -35,12 +35,9 @@ export const createSpace = action({
       enableRemapDependencies,
       enableDependencyWarning,
       enablePortfolios,
-    },
+    }
   ) => {
-    const client = createClickUpClient(
-      clickUpConnection,
-      context.debug.enabled,
-    );
+    const client = createClickUpClient(clickUpConnection, context.debug.enabled);
     const body: Body = {
       name: spaceName,
       multiple_assignees: multipleAssignees,

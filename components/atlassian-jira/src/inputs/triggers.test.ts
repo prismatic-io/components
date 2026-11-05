@@ -1,7 +1,4 @@
-import {
-  pollChangesTriggerInputs as poll,
-  webhookEventsInputs as webhook,
-} from "./triggers";
+import { pollChangesTriggerInputs as poll, webhookEventsInputs as webhook } from "./triggers";
 
 type Row = [string, { clean?: unknown }, unknown, unknown, unknown?];
 

@@ -2,11 +2,7 @@ import { pollingTrigger } from "@prismatic-io/spectral";
 import { pollChangesCustomObjectsTriggerExamplePayload } from "../examplePayloads";
 import { pollChangesCustomObjectsTriggerInputs } from "../inputs";
 import type { PollChangesParams } from "../types";
-import {
-  performPollChanges,
-  pollChangesBatchConfig,
-  pollChangesResolver,
-} from "./pollChanges";
+import { performPollChanges, pollChangesBatchConfig, pollChangesResolver } from "./pollChanges";
 
 export const pollChangesCustomObjectsTrigger = pollingTrigger({
   display: {
@@ -20,12 +16,7 @@ export const pollChangesCustomObjectsTrigger = pollingTrigger({
   batchConfig: pollChangesBatchConfig,
   triggerResolver: pollChangesResolver,
   perform: async (context, payload, params) =>
-    performPollChanges(
-      context as never,
-      payload as never,
-      params as PollChangesParams,
-      {
-        onlyCustomObjects: true,
-      },
-    ),
+    performPollChanges(context as never, payload as never, params as PollChangesParams, {
+      onlyCustomObjects: true,
+    }),
 });

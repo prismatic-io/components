@@ -39,11 +39,7 @@ describe("listIssues", () => {
     jiraApi()
       .get("/rest/api/3/search/jql")
       .query(true)
-      .reply(400, {
-        errorMessages: [
-          "The value '10000' does not exist for the field 'project'.",
-        ],
-      });
+      .reply(400, { errorMessages: ["The value '10000' does not exist for the field 'project'."] });
 
     await expect(run()).rejects.toMatchObject({ response: { status: 400 } });
   });

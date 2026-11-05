@@ -16,24 +16,16 @@ describe("lookBackDateClean", () => {
   it("rejects non-YYYY-MM-DD formats", () => {
     expect(() => lookBackDateClean("01/15/2024")).toThrow("YYYY-MM-DD format");
     expect(() => lookBackDateClean("2024-1-5")).toThrow("YYYY-MM-DD format");
-    expect(() => lookBackDateClean("2024-01-15T10:00:00Z")).toThrow(
-      "YYYY-MM-DD format",
-    );
+    expect(() => lookBackDateClean("2024-01-15T10:00:00Z")).toThrow("YYYY-MM-DD format");
   });
 
   it("rejects invalid calendar dates", () => {
-    expect(() => lookBackDateClean("2024-02-30")).toThrow(
-      "not a valid calendar date",
-    );
-    expect(() => lookBackDateClean("2024-13-01")).toThrow(
-      "not a valid calendar date",
-    );
+    expect(() => lookBackDateClean("2024-02-30")).toThrow("not a valid calendar date");
+    expect(() => lookBackDateClean("2024-13-01")).toThrow("not a valid calendar date");
   });
 
   it("rejects future dates", () => {
     const futureYear = new Date().getFullYear() + 1;
-    expect(() => lookBackDateClean(`${futureYear}-06-01`)).toThrow(
-      "future date",
-    );
+    expect(() => lookBackDateClean(`${futureYear}-06-01`)).toThrow("future date");
   });
 });

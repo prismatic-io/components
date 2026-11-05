@@ -8,8 +8,7 @@ import { chargeOutputSchema } from "../../outputSchemas";
 export const updateCharge = action({
   display: {
     label: "Update Charge",
-    description:
-      "Update a specified charge by setting the values of the parameters passed.",
+    description: "Update a specified charge by setting the values of the parameters passed.",
   },
   performSafety: "notAllowed",
   perform: async (

@@ -1,11 +1,6 @@
 import { action } from "@prismatic-io/spectral";
 import { createProjectsClient } from "../../client";
-import {
-  connection,
-  projectDescription,
-  projectName,
-  projectStartDate,
-} from "../../inputs";
+import { connection, projectDescription, projectName, projectStartDate } from "../../inputs";
 
 export const createProject = action({
   display: {

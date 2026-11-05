@@ -26,8 +26,7 @@ const summary = input({
   placeholder: "Enter issue summary",
   required: true,
   example: "Fix login page responsiveness",
-  comments:
-    "A short one-line title for the issue, shown in lists and search results.",
+  comments: "A short one-line title for the issue, shown in lists and search results.",
   clean: util.types.toString,
 });
 
@@ -140,8 +139,7 @@ const labels = input({
   required: false,
   example: "performance",
   collection: "valuelist",
-  comments:
-    "A list of labels to attach to the issue. Each label must not contain spaces.",
+  comments: "A list of labels to attach to the issue. Each label must not contain spaces.",
   clean: labelsClean,
 });
 
@@ -170,8 +168,7 @@ const versions = input({
 const additionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
-  comments:
-    "Additional optional fields: includes Due Date, Versions, and Fix Versions.",
+  comments: "Additional optional fields: includes Due Date, Versions, and Fix Versions.",
   inputs: { dueDate, versions, fixVersions },
 });
 
@@ -223,10 +220,8 @@ const searchType = input({
     { label: "Number", value: "number" },
     { label: "Summary", value: "summary" },
   ],
-  comments:
-    "The field to match against: Number (issue key or ID) or Summary (text match).",
-  clean: (rawValue) =>
-    toAllowedValue(rawValue, ["number", "summary"], "Search Type"),
+  comments: "The field to match against: Number (issue key or ID) or Summary (text match).",
+  clean: (rawValue) => toAllowedValue(rawValue, ["number", "summary"], "Search Type"),
 });
 
 const file = input({
@@ -243,8 +238,7 @@ const fileName = input({
   placeholder: "Enter file name",
   required: true,
   example: "report.pdf",
-  comments:
-    "The file name, including extension, shown on the attachment in Jira.",
+  comments: "The file name, including extension, shown on the attachment in Jira.",
   clean: util.types.toString,
 });
 

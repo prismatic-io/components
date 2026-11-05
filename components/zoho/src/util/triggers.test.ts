@@ -88,15 +88,11 @@ describe("polledChanges", () => {
   });
 
   test("returns false when the created bucket is non-empty", () => {
-    expect(polledChanges({ created: [crmRecord({})], updated: [] })).toBe(
-      false,
-    );
+    expect(polledChanges({ created: [crmRecord({})], updated: [] })).toBe(false);
   });
 
   test("returns false when the updated bucket is non-empty", () => {
-    expect(polledChanges({ created: [], updated: [crmRecord({})] })).toBe(
-      false,
-    );
+    expect(polledChanges({ created: [], updated: [crmRecord({})] })).toBe(false);
   });
 });
 

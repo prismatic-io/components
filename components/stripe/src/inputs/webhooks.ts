@@ -1,9 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
-import {
-  cleanRequiredStringListInput,
-  cleanStringInput,
-  cleanStringListInput,
-} from "../util";
+import { cleanRequiredStringListInput, cleanStringInput, cleanStringListInput } from "../util";
 import { connectionInput, cursorPagination, fetchAll, timeout } from "./common";
 
 export const webhookUrl = input({

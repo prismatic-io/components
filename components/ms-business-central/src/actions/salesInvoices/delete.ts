@@ -8,18 +8,11 @@ import { salesInvoiceId } from "../../inputs/salesInvoice/updateSalesInvoiceInpu
 export const deleteSalesInvoice = action({
   display: {
     label: "Delete Sales Invoice",
-    description:
-      "Deletes a sales invoice object in your Business Central Organization.",
+    description: "Deletes a sales invoice object in your Business Central Organization.",
   },
   perform: async (context, { companyId, connection, salesInvoiceId }) => {
-    const client = getMsBusinessCentralClient(
-      connection,
-      context,
-      context.debug.enabled,
-    );
-    await client.delete(
-      `/companies(${companyId})/salesInvoices(${salesInvoiceId})`,
-    );
+    const client = getMsBusinessCentralClient(connection, context, context.debug.enabled);
+    await client.delete(`/companies(${companyId})/salesInvoices(${salesInvoiceId})`);
 
     return SUCCESS_PAYLOAD;
   },

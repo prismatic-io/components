@@ -1,18 +1,12 @@
 import { util } from "@prismatic-io/spectral";
 import type { HttpClient } from "@prismatic-io/spectral/http";
 import { LOOK_BACK_DATE_PATTERN, REST_RESOURCE_CONFIG } from "../constants";
-import type {
-  HcmRestChangesObject,
-  HcmRestRecordChange,
-  OracleHcmListResponse,
-} from "../types";
+import type { HcmRestChangesObject, HcmRestRecordChange, OracleHcmListResponse } from "../types";
 
-export const restResourceModel = Object.entries(REST_RESOURCE_CONFIG).map(
-  ([value, { label }]) => ({
-    label,
-    value,
-  }),
-);
+export const restResourceModel = Object.entries(REST_RESOURCE_CONFIG).map(([value, { label }]) => ({
+  label,
+  value,
+}));
 
 export const fetchRecordsSince = async (
   client: HttpClient,
@@ -25,9 +19,7 @@ export const fetchRecordsSince = async (
   let hasMore = true;
 
   while (hasMore) {
-    const { data } = await client.get<
-      OracleHcmListResponse<Record<string, unknown>>
-    >(endpoint, {
+    const { data } = await client.get<OracleHcmListResponse<Record<string, unknown>>>(endpoint, {
       params: {
         q: `LastUpdateDate>="${since}"`,
         offset,

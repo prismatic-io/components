@@ -11,9 +11,7 @@ export const spaces = dataSource({
   },
   perform: async (_context, { connection, teamId }) => {
     const client = createClient(connection);
-    const { data } = await client.get<GetSpacesResponse>(
-      `/team/${teamId}/space`,
-    );
+    const { data } = await client.get<GetSpacesResponse>(`/team/${teamId}/space`);
     const options = data.spaces.map<Element>((space) => {
       return { label: space.name, key: space.id };
     });

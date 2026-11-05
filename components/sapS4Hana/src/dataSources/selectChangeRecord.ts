@@ -22,10 +22,7 @@ export const selectChangeRecord = dataSource({
         "/sap/opu/odata/sap/API_CHANGE_RECORD/A_ChangeRecord?$select=ChangeRecordUUID,ChangeRecord,ChgRecordDescriptionText",
       );
 
-      const results = (data?.d?.results ?? data?.value ?? []) as Record<
-        string,
-        string
-      >[];
+      const results = (data?.d?.results ?? data?.value ?? []) as Record<string, string>[];
 
       const result: Element[] = results
         .map((record) => ({

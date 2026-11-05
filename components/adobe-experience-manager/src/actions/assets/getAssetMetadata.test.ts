@@ -33,11 +33,9 @@ describe("getAssetMetadata", () => {
   });
 
   test("surfaces a 404 for an unknown asset", async () => {
-    nock(BASE)
-      .get("/adobe/assets/missing/metadata")
-      .reply(404, { title: "Not Found" });
-    await expect(
-      invoke(getAssetMetadata, { connection, assetId: "missing" }),
-    ).rejects.toThrow("Request failed with status code 404");
+    nock(BASE).get("/adobe/assets/missing/metadata").reply(404, { title: "Not Found" });
+    await expect(invoke(getAssetMetadata, { connection, assetId: "missing" })).rejects.toThrow(
+      "Request failed with status code 404",
+    );
   });
 });

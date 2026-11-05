@@ -1,10 +1,6 @@
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
 import { hubspotPaths } from "../constants";
-import type {
-  AssociationSpec,
-  AssociationTarget,
-  AssociationTypeDefinition,
-} from "../types";
+import type { AssociationSpec, AssociationTarget, AssociationTypeDefinition } from "../types";
 
 const isRecord = (value: unknown): value is Record<string, unknown> =>
   typeof value === "object" && value !== null;
@@ -29,8 +25,7 @@ export const resolveAssociationSpec = async (
     : wanted &&
       types.find(
         ({ label }) =>
-          typeof label === "string" &&
-          label.trim().toLowerCase() === wanted.toLowerCase(),
+          typeof label === "string" && label.trim().toLowerCase() === wanted.toLowerCase(),
       );
 
   if (!match) {
@@ -39,23 +34,18 @@ export const resolveAssociationSpec = async (
     );
   }
 
-  return {
-    associationCategory: match.category,
-    associationTypeId: match.typeId,
-  };
+  return { associationCategory: match.category, associationTypeId: match.typeId };
 };
 
 export const mapAssociationTypes = (data: unknown): unknown => ({
   ...(isRecord(data) ? data : {}),
-  results: (resultsOf(data) as AssociationTypeDefinition[]).map(
-    ({ category, typeId, label }) => ({
-      id: String(typeId),
-      name: label ?? String(typeId),
-      category,
-      typeId,
-      label: label ?? null,
-    }),
-  ),
+  results: (resultsOf(data) as AssociationTypeDefinition[]).map(({ category, typeId, label }) => ({
+    id: String(typeId),
+    name: label ?? String(typeId),
+    category,
+    typeId,
+    label: label ?? null,
+  })),
 });
 
 export const mapReadAssociations = (data: unknown): unknown => ({
@@ -66,8 +56,7 @@ export const mapReadAssociations = (data: unknown): unknown => ({
     return {
       ...item,
       to: targets.flatMap((target) => {
-        const { toObjectId, associationTypes = [] } =
-          target as AssociationTarget;
+        const { toObjectId, associationTypes = [] } = target as AssociationTarget;
         if (associationTypes.length === 0) {
           return [{ id: toObjectId, toObjectId, associationTypes }];
         }
@@ -82,10 +71,7 @@ export const mapReadAssociations = (data: unknown): unknown => ({
   }),
 });
 
-export const mapCreatedAssociations = (
-  data: unknown,
-  associateType: string,
-): unknown => ({
+export const mapCreatedAssociations = (data: unknown, associateType: string): unknown => ({
   ...(isRecord(data) ? data : {}),
   results: resultsOf(data).map((result) => {
     const pair = isRecord(result) ? result : {};

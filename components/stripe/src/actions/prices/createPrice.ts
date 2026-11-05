@@ -38,9 +38,7 @@ export const createPrice = action({
         active: active,
         nickname: nickname,
         recurring: {
-          interval: recurringInterval as
-            | Stripe.PriceCreateParams.Recurring.Interval
-            | undefined,
+          interval: recurringInterval as Stripe.PriceCreateParams.Recurring.Interval | undefined,
         },
         metadata,
         ...fieldValues,
@@ -49,15 +47,7 @@ export const createPrice = action({
   },
   examplePerform: async (
     _context,
-    {
-      productId,
-      currency,
-      unitPrice,
-      active,
-      nickname,
-      recurringInterval,
-      metadata,
-    },
+    { productId, currency, unitPrice, active, nickname, recurringInterval, metadata },
   ): Promise<{ data: unknown }> => {
     const price = createPriceExamplePayload.data as Record<string, unknown>;
 
@@ -67,15 +57,11 @@ export const createPrice = action({
         product: productId,
         currency: currency ?? price.currency,
         unit_amount: unitPrice ?? price.unit_amount,
-        unit_amount_decimal:
-          unitPrice === undefined ? price.unit_amount_decimal : `${unitPrice}`,
+        unit_amount_decimal: unitPrice === undefined ? price.unit_amount_decimal : `${unitPrice}`,
         active,
         nickname: nickname ?? price.nickname,
         recurring: recurringInterval
-          ? {
-              ...(price.recurring as Record<string, unknown>),
-              interval: recurringInterval,
-            }
+          ? { ...(price.recurring as Record<string, unknown>), interval: recurringInterval }
           : price.recurring,
         metadata,
       },

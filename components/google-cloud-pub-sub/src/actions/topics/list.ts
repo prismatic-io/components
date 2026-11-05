@@ -10,10 +10,7 @@ export const listTopics = action({
     description: "Lists matching topics.",
   },
   inputs: listTopicsInputs,
-  perform: async (
-    _context,
-    { connectionInput, projectId, pagination = {}, fetchAll },
-  ) => {
+  perform: async (_context, { connectionInput, projectId, pagination = {}, fetchAll }) => {
     const client = createClient(connectionInput);
     const data = (await paginateAll(
       (params) => client.projects.topics.list(params),

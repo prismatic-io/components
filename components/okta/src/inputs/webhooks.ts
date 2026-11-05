@@ -63,11 +63,7 @@ export const eventHookItemsCode = input({
   type: "code",
   language: "json",
   comments: "The list of event types to subscribe to in code format.",
-  example: JSON.stringify(
-    ["user.lifecycle.create", "user.lifecycle.activate"],
-    null,
-    2,
-  ),
+  example: JSON.stringify(["user.lifecycle.create", "user.lifecycle.activate"], null, 2),
   required: false,
   clean: cleanObject,
 });

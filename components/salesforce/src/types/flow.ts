@@ -7,10 +7,7 @@ export interface FlowMetadata {
   description?: string;
   processType?: string;
   status?: "Active" | "Draft" | "Obsolete" | "InvalidDraft";
-  runInMode?:
-    | "DefaultMode"
-    | "SystemModeWithoutSharing"
-    | "SystemModeWithSharing";
+  runInMode?: "DefaultMode" | "SystemModeWithoutSharing" | "SystemModeWithSharing";
   [key: string]: unknown;
 }
 

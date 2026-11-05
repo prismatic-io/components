@@ -20,13 +20,7 @@ export const listActiveImports = action({
       debugRequest,
     });
 
-    const data = await getAllPaginatedData(
-      client,
-      hubspotPaths.imports(),
-      true,
-      true,
-      {},
-    );
+    const data = await getAllPaginatedData(client, hubspotPaths.imports(), true, true, {});
 
     return {
       data,
@@ -38,8 +32,5 @@ export const listActiveImports = action({
     data: listActiveImportsExamplePayload.data,
   }),
   examplePayload: listActiveImportsExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: listActiveImportsOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: listActiveImportsOutputSchema }),
 });

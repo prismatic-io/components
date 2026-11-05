@@ -1,12 +1,5 @@
 import { action, input, util } from "@prismatic-io/spectral";
-import {
-  connectionInput,
-  top,
-  skip,
-  search,
-  filter,
-  inlinecount,
-} from "../inputs";
+import { connectionInput, top, skip, search, filter, inlinecount } from "../inputs";
 import { getSapClient } from "../client";
 import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
 
@@ -102,8 +95,7 @@ export const rawRequestOdataExpand = input({
 const rawRequestOdata = action({
   display: {
     label: "Raw Request - OData",
-    description:
-      "Send an OData GET request to SAP S/4HANA with query parameters",
+    description: "Send an OData GET request to SAP S/4HANA with query parameters",
   },
   inputs: {
     connection: connectionInput,
@@ -113,8 +105,7 @@ const rawRequestOdata = action({
       required: true,
       comments:
         "Input the path only. The base URL from your connection is automatically prepended. Example: /sap/opu/odata/sap/API_PURCHASEREQ_PROCESS_SRV/A_PurchaseRequisitionHeader",
-      example:
-        "/sap/opu/odata/sap/API_PURCHASEREQ_PROCESS_SRV/A_PurchaseRequisitionHeader",
+      example: "/sap/opu/odata/sap/API_PURCHASEREQ_PROCESS_SRV/A_PurchaseRequisitionHeader",
       clean: util.types.toString,
     },
     top,
@@ -128,18 +119,7 @@ const rawRequestOdata = action({
   },
   perform: async (
     _context,
-    {
-      connection,
-      url,
-      top,
-      skip,
-      search,
-      filter,
-      inlinecount,
-      orderBy,
-      select,
-      expand,
-    },
+    { connection, url, top, skip, search, filter, inlinecount, orderBy, select, expand },
   ) => {
     const queryParams: string[] = [];
     if (top) queryParams.push(`$top=${top}`);
@@ -151,8 +131,7 @@ const rawRequestOdata = action({
     if (select) queryParams.push(`$select=${select}`);
     if (expand) queryParams.push(`$expand=${expand}`);
 
-    const queryString =
-      queryParams.length > 0 ? `?${queryParams.join("&")}` : "";
+    const queryString = queryParams.length > 0 ? `?${queryParams.join("&")}` : "";
     const finalUrl = `${url}${queryString}`;
 
     const headers: Record<string, string> = {

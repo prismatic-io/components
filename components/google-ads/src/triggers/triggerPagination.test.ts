@@ -244,39 +244,42 @@ describe.each(cases)("$name Tier 2 pagination", (tc) => {
   test.each([
     ["batching on (platform hands the cursor back)", true],
     ["batching off (the cursor resumes from polling state)", false],
-  ])("%s: the drain resumes from the frozen window without re-emitting the boundary row, then commits", async (_label, handCarried) => {
-    mockRound([ROW_1, ROW_2, ROW_3]);
-    const first = await runRound(baseState);
-    const persisted = first.setState.mock.calls[0][0] as Record<
-      string,
-      unknown
-    >;
+  ])(
+    "%s: the drain resumes from the frozen window without re-emitting the boundary row, then commits",
+    async (_label, handCarried) => {
+      mockRound([ROW_1, ROW_2, ROW_3]);
+      const first = await runRound(baseState);
+      const persisted = first.setState.mock.calls[0][0] as Record<
+        string,
+        unknown
+      >;
 
-    vi.setSystemTime(new Date("2026-03-15T12:30:00Z"));
-    mockRound([ROW_3, ROW_4]);
-    const second = await runRound(
-      persisted,
-      handCarried ? paginationStateOf(first.result?.payload) : undefined,
-    );
+      vi.setSystemTime(new Date("2026-03-15T12:30:00Z"));
+      mockRound([ROW_3, ROW_4]);
+      const second = await runRound(
+        persisted,
+        handCarried ? paginationStateOf(first.result?.payload) : undefined,
+      );
 
-    expect(lowerBound(queries[1])).toBe("2026-03-15 11:30:00");
-    expect(upperBound(queries[1])).toBe(WINDOW_END);
-    expect(tc.emittedIds(first.result?.payload.body.data)).toEqual([
-      "1",
-      "2",
-      "3",
-    ]);
-    expect(tc.emittedIds(second.result?.payload.body.data)).toEqual(["4"]);
-    expect(second.setState).toHaveBeenCalledWith({
-      lastChangeTime: WINDOW_END,
-      ...tc.extraState(1),
-      errorCount: 0,
-      consecutiveErrors: 0,
-    });
-    expect(paginationStateOf(second.result?.payload)).toBeUndefined();
-    expect(nextPaginationState(second.result?.payload)).toBeNull();
-    expect(second.result?.polledNoChanges).toBe(false);
-  });
+      expect(lowerBound(queries[1])).toBe("2026-03-15 11:30:00");
+      expect(upperBound(queries[1])).toBe(WINDOW_END);
+      expect(tc.emittedIds(first.result?.payload.body.data)).toEqual([
+        "1",
+        "2",
+        "3",
+      ]);
+      expect(tc.emittedIds(second.result?.payload.body.data)).toEqual(["4"]);
+      expect(second.setState).toHaveBeenCalledWith({
+        lastChangeTime: WINDOW_END,
+        ...tc.extraState(1),
+        errorCount: 0,
+        consecutiveErrors: 0,
+      });
+      expect(paginationStateOf(second.result?.payload)).toBeUndefined();
+      expect(nextPaginationState(second.result?.payload)).toBeNull();
+      expect(second.result?.polledNoChanges).toBe(false);
+    },
+  );
 
   test("an empty first round reports no changes", async () => {
     mockRound([]);

@@ -9,18 +9,11 @@ import type { Item } from "../../interfaces";
 export const getItem = action({
   display: {
     label: "Get Item",
-    description:
-      "Retrieves an item object from your Business Central Organization.",
+    description: "Retrieves an item object from your Business Central Organization.",
   },
   perform: async (context, { companyId, itemId, connection }) => {
-    const client = getMsBusinessCentralClient(
-      connection,
-      context,
-      context.debug.enabled,
-    );
-    const { data } = await client.get<Item>(
-      `/companies(${companyId})/items(${itemId})`,
-    );
+    const client = getMsBusinessCentralClient(connection, context, context.debug.enabled);
+    const { data } = await client.get<Item>(`/companies(${companyId})/items(${itemId})`);
 
     return { data };
   },

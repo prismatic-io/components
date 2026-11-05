@@ -8,8 +8,7 @@ import { toSortedPicklist } from "./helpers";
 export const listSalesInvoices = dataSource({
   display: {
     label: "Select Sales Invoices",
-    description:
-      "A picklist of sales invoices objects in your Business Central organization.",
+    description: "A picklist of sales invoices objects in your Business Central organization.",
   },
   perform: async (context, { connection, companyId }) => {
     const client = getMsBusinessCentralClient(connection, context, false);

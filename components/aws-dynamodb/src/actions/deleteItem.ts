@@ -51,10 +51,7 @@ export const deleteItem = action({
       Key: key,
       ConditionExpression: conditionExpression,
       ExpressionAttributeValues: conditionExpression
-        ? convertDataType(
-            expressionAttributeValues,
-            expressionAttributeValueTypes,
-          )
+        ? convertDataType(expressionAttributeValues, expressionAttributeValueTypes)
         : undefined,
     });
     const result = await client.send(command);

@@ -14,12 +14,7 @@ export const selectFulfillmentOrders = dataSource({
       "Selects a fulfillment order from a list of fulfillment orders for the specified order.",
   },
   perform: async (context, { shopifyConnection, orderId }) => {
-    const client = getShopifyGraphQlClient(
-      shopifyConnection,
-      undefined,
-      false,
-      context.logger,
-    );
+    const client = getShopifyGraphQlClient(shopifyConnection, undefined, false, context.logger);
     const { fulfillmentOrders } = await fetchData<DataSourceRecord>(
       client,
       ["order", "fulfillmentOrders"],

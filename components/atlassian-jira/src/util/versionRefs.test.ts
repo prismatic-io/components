@@ -6,10 +6,7 @@ describe("toVersionRefs", () => {
   });
 
   test("keeps an array of references as is", () => {
-    expect(toVersionRefs('[{ "id": "1" }, { "id": "2" }]')).toEqual([
-      { id: "1" },
-      { id: "2" },
-    ]);
+    expect(toVersionRefs('[{ "id": "1" }, { "id": "2" }]')).toEqual([{ id: "1" }, { id: "2" }]);
   });
 
   test("accepts an already-parsed object or array", () => {

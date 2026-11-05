@@ -1,9 +1,4 @@
-import {
-  customerMapper,
-  paginationMapper,
-  productImageMapper,
-  webhookMapper,
-} from "./mappers";
+import { customerMapper, paginationMapper, productImageMapper, webhookMapper } from "./mappers";
 
 describe("customerMapper", () => {
   const gqlCustomer = {
@@ -119,9 +114,7 @@ describe("customerMapper", () => {
 
   test("preserves admin_graphql_api_id as original GID", () => {
     const result = customerMapper(gqlCustomer);
-    expect(result.admin_graphql_api_id).toBe(
-      "gid://shopify/Customer/8000000000000",
-    );
+    expect(result.admin_graphql_api_id).toBe("gid://shopify/Customer/8000000000000");
   });
 });
 
@@ -131,9 +124,7 @@ describe("paginationMapper", () => {
       hasNextPage: true,
       endCursor: "abc123",
     });
-    expect(result.pagination).toEqual({
-      next: { page_info: "abc123", rel: "next" },
-    });
+    expect(result.pagination).toEqual({ next: { page_info: "abc123", rel: "next" } });
     expect(result.pageInfo).toBe("abc123");
     expect(result.rel).toBe('rel="next"');
   });
@@ -179,11 +170,7 @@ describe("productImageMapper", () => {
         alt: "Alt text",
         createdAt: "2025-01-01T00:00:00Z",
         updatedAt: "2025-01-01T00:00:01Z",
-        image: {
-          width: 800,
-          height: 600,
-          url: "https://cdn.shopify.com/img.jpg",
-        },
+        image: { width: 800, height: 600, url: "https://cdn.shopify.com/img.jpg" },
       },
       999,
       3,

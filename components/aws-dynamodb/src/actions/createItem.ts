@@ -17,8 +17,7 @@ import { createItemExamplePayload } from "../examplePayloads";
 export const createItem = action({
   display: {
     label: "Upsert Item",
-    description:
-      "Creates a new item, or replaces an existing item with a new item",
+    description: "Creates a new item, or replaces an existing item with a new item",
   },
   perform: async (
     context,
@@ -44,10 +43,7 @@ export const createItem = action({
       Item: convertDataType(item, itemTypes),
       ConditionExpression: conditionExpression,
       ExpressionAttributeValues: conditionExpression
-        ? convertDataType(
-            expressionAttributeValues,
-            expressionAttributeValueTypes,
-          )
+        ? convertDataType(expressionAttributeValues, expressionAttributeValueTypes)
         : undefined,
     });
     const data = await client.send(command);

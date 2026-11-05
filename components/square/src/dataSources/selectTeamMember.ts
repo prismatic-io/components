@@ -12,14 +12,9 @@ export const selectTeamMember = dataSource({
   perform: async (_context, { squareConnection }) => {
     const client = await createAuthorizedClient(squareConnection);
 
-    const allTeamMembers = await fetchAllPages(
-      client,
-      "/v2/team-members/search",
-      "team_members",
-      {
-        method: "POST",
-      },
-    );
+    const allTeamMembers = await fetchAllPages(client, "/v2/team-members/search", "team_members", {
+      method: "POST",
+    });
 
     const result = (allTeamMembers.team_members as Record<string, unknown>[])
       .map((member: Record<string, unknown>) => ({

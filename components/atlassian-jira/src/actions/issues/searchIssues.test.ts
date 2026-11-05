@@ -20,30 +20,23 @@ const search = (params: { searchString: string; projectKey?: string }) =>
 const expectJql = (jql: string) =>
   jiraApi()
     .get("/rest/api/3/search/jql")
-    .query(
-      (query) => query.jql === jql && query.fields === DEFAULT_ISSUE_FIELDS,
-    );
+    .query((query) => query.jql === jql && query.fields === DEFAULT_ISSUE_FIELDS);
 
 describe("searchIssues", () => {
   test("escapes quote marks in the search text and joins the project filter with AND", async () => {
-    const scope = expectJql(
-      'summary ~ "say \\"hi\\"" AND project = "PROJ"',
-    ).reply(200, searchIssuesExamplePayload.data);
+    const scope = expectJql('summary ~ "say \\"hi\\"" AND project = "PROJ"').reply(
+      200,
+      searchIssuesExamplePayload.data,
+    );
 
-    const { result } = await search({
-      searchString: 'say "hi"',
-      projectKey: "PROJ",
-    });
+    const { result } = await search({ searchString: 'say "hi"', projectKey: "PROJ" });
 
     expect(scope.isDone()).toBe(true);
     expect(result.data).toEqual(searchIssuesExamplePayload.data);
   });
 
   test("omits the project clause when no project key is given", async () => {
-    const scope = expectJql('summary ~ "login bug"').reply(
-      200,
-      searchIssuesExamplePayload.data,
-    );
+    const scope = expectJql('summary ~ "login bug"').reply(200, searchIssuesExamplePayload.data);
 
     await search({ searchString: "login bug" });
 

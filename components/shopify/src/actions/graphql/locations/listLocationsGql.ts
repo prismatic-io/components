@@ -14,10 +14,7 @@ export const listLocationsGql = action({
     description: "Lists all locations.",
   },
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { shopifyConnection, getAlldata, pagination = {} },
-  ) => {
+  perform: async (context, { shopifyConnection, getAlldata, pagination = {} }) => {
     const client = getShopifyGraphQlClient(
       shopifyConnection,
       undefined,
@@ -41,10 +38,7 @@ export const listLocationsGql = action({
     };
   },
   inputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: listLocationsGqlOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: listLocationsGqlOutputSchema }),
   examplePerform: async () => examplePayload,
   examplePayload,
 });

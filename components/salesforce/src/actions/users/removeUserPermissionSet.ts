@@ -10,15 +10,10 @@ export const removeUserPermissionSet = action({
     description: "Remove a permission set from the specified user.",
   },
   performSafety: "notAllowed",
-  perform: async (
-    _context,
-    { version, userName, permissionName, connection },
-  ) => {
+  perform: async (_context, { version, userName, permissionName, connection }) => {
     const salesforceClient = await createSalesforceClient(connection, version);
 
-    const userResponse = await salesforceClient
-      .sobject("User")
-      .findOne({ UserName: userName });
+    const userResponse = await salesforceClient.sobject("User").findOne({ UserName: userName });
 
     const permissionResponse = await salesforceClient
       .sobject("PermissionSet")
@@ -28,16 +23,11 @@ export const removeUserPermissionSet = action({
       throw new Error(`Unable to find User matching "${userName}"`);
     }
     if (!permissionResponse?.Id) {
-      throw new Error(
-        `Unable to find Permission Set matching "${permissionName}"`,
-      );
+      throw new Error(`Unable to find Permission Set matching "${permissionName}"`);
     }
     const permissionSetAssignmentResponse = await salesforceClient
       .sobject("PermissionSetAssignment")
-      .findOne({
-        AssigneeId: userResponse.Id,
-        "PermissionSet.Name": permissionName,
-      });
+      .findOne({ AssigneeId: userResponse.Id, "PermissionSet.Name": permissionName });
     if (!permissionSetAssignmentResponse?.Id) {
       throw new Error(`User does not have "${permissionName}" assigned.`);
     }
@@ -49,8 +39,7 @@ export const removeUserPermissionSet = action({
       data: response,
     };
   },
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    genericCreateUpdateExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => genericCreateUpdateExamplePayload,
   inputs: removeUserPermissionSetInputs,
   outputSchema: outputSchema({
     type: "actionOutput",

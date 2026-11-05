@@ -50,10 +50,7 @@ export const removeUserFromWorkspaceOutputSchema = {
       type: "object" as const,
       properties: {
         ...workspaceTeamProperties,
-        members: {
-          type: "array",
-          items: { ...invitedUserMemberSchema, required: [] },
-        },
+        members: { type: "array", items: { ...invitedUserMemberSchema, required: [] } },
       },
       required: ["id", "name", "color", "avatar", "members"],
     },

@@ -14,14 +14,7 @@ export const updateEngagement = action({
   performSafety: "notAllowed",
   perform: async (
     context,
-    {
-      timeout,
-      hubspotConnection,
-      engagementObject,
-      properties,
-      engagementId,
-      idProperty,
-    },
+    { timeout, hubspotConnection, engagementObject, properties, engagementId, idProperty },
   ) => {
     const debugRequest = context.debug.enabled;
     const client = getHubspotClient({

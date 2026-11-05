@@ -1,13 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
-import {
-  connection,
-  driveId,
-  fetchAll,
-  fields,
-  folderId,
-  pagination,
-  searchQuery,
-} from "./common";
+import { connection, driveId, fetchAll, fields, folderId, pagination, searchQuery } from "./common";
 
 export const folderName = input({
   label: "Folder Name",

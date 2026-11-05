@@ -50,10 +50,7 @@ describe("updateIssue", () => {
         summary: "Login bug on mobile",
         description: {
           content: [
-            {
-              content: [{ text: "Users cannot log in.", type: "text" }],
-              type: "paragraph",
-            },
+            { content: [{ text: "Users cannot log in.", type: "text" }], type: "paragraph" },
           ],
           type: "doc",
           version: 1,

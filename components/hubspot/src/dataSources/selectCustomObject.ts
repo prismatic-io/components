@@ -19,12 +19,10 @@ export const selectCustomObject = dataSource({
 
     const { data } = await client.get(hubspotPaths.schemas());
 
-    const result = ((data.results || []) as CustomObjectSchema[]).map<Element>(
-      (item) => ({
-        label: item.labels?.singular || item.name || "",
-        key: item.objectTypeId || "",
-      }),
-    );
+    const result = ((data.results || []) as CustomObjectSchema[]).map<Element>((item) => ({
+      label: item.labels?.singular || item.name || "",
+      key: item.objectTypeId || "",
+    }));
     return { result };
   },
   examplePayload: selectCustomObjectExamplePayload,

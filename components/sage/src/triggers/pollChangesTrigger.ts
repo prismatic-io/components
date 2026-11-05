@@ -16,28 +16,19 @@ export const pollChangesTrigger = pollingTrigger({
   batchConfig: { batchSize: DEFAULT_BATCH_SIZE },
   triggerResolver: {
     resolveItems: (_context, { payload }) =>
-      resolvePollingRecordChanges(
-        payload.body.data as SageChangesObject | undefined,
-      ),
+      resolvePollingRecordChanges(payload.body.data as SageChangesObject | undefined),
   },
   perform: async (
     context,
     payload,
-    {
-      connection,
-      resourceType,
-      lookBackDate,
-      showNewRecords,
-      showUpdatedRecords,
-    },
+    { connection, resourceType, lookBackDate, showNewRecords, showUpdatedRecords },
   ) => {
     const now = new Date().toISOString();
     const state = context.polling.getState() as PollingState | undefined;
 
     const isInitialSync = !state?.lastPolledAt && Boolean(lookBackDate);
     const lastPolledAt =
-      state?.lastPolledAt ??
-      (lookBackDate ? new Date(lookBackDate).toISOString() : now);
+      state?.lastPolledAt ?? (lookBackDate ? new Date(lookBackDate).toISOString() : now);
 
     const config = POLL_RESOURCE_CONFIG[resourceType];
 
@@ -65,10 +56,7 @@ export const pollChangesTrigger = pollingTrigger({
     const filteredUpdated = isInitialSync || showUpdatedRecords ? updated : [];
     const totalChanges = filteredCreated.length + filteredUpdated.length;
 
-    context.polling.setState({ lastPolledAt: now } as unknown as Record<
-      string,
-      unknown
-    >);
+    context.polling.setState({ lastPolledAt: now } as unknown as Record<string, unknown>);
 
     if (context.debug.enabled) {
       context.logger.debug(

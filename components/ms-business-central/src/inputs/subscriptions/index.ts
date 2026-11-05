@@ -56,8 +56,7 @@ export const resource = input({
   type: "string",
   required: true,
   comments: "Resource to subscribe to.",
-  example:
-    "/api/v1.0/companies(f64eba74-dacd-4854-a584-1834f68cfc3a)/customers",
+  example: "/api/v1.0/companies(f64eba74-dacd-4854-a584-1834f68cfc3a)/customers",
   placeholder: "Enter resource path",
   clean: util.types.toString,
 });

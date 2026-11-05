@@ -16,11 +16,7 @@ export const listJobs = action({
     const { data } = await fetchWithPagination<Job>(
       client,
       "/configuration/v2/jobs",
-      {
-        company: companyId,
-        page: pagination.page,
-        per_page: pagination.perPage,
-      },
+      { company: companyId, page: pagination.page, per_page: pagination.perPage },
       fetchAll,
     );
 

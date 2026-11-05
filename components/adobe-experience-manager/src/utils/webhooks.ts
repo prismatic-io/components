@@ -9,11 +9,7 @@ import type {
   RegistrationParams,
 } from "../types";
 
-const workspacePath = ({
-  consumerOrgId,
-  projectId,
-  workspaceId,
-}: RegistrationParams): string =>
+const workspacePath = ({ consumerOrgId, projectId, workspaceId }: RegistrationParams): string =>
   `/${encodeURIComponent(consumerOrgId)}/${encodeURIComponent(projectId)}/${encodeURIComponent(workspaceId)}`;
 
 export const webhookStateKey = (context: ActionContext): string =>
@@ -22,16 +18,11 @@ export const webhookStateKey = (context: ActionContext): string =>
 export const getWebhookUrl = (context: ActionContext): string =>
   context.webhookUrls[context.flow.name];
 
-const sameConfig = (
-  state: AemWebhookFlowState,
-  params: RegistrationParams,
-): boolean =>
+const sameConfig = (state: AemWebhookFlowState, params: RegistrationParams): boolean =>
   state.previousWorkspace === workspacePath(params) &&
   state.previousProviderId === params.providerId &&
-  state.previousClientId ===
-    util.types.toString(params.connection.fields.clientId) &&
-  [...state.previousEventTypes].sort().join(",") ===
-    [...params.eventTypes].sort().join(",");
+  state.previousClientId === util.types.toString(params.connection.fields.clientId) &&
+  [...state.previousEventTypes].sort().join(",") === [...params.eventTypes].sort().join(",");
 
 export const deleteRegistrationsForUrl = async (
   client: HttpClient,
@@ -44,9 +35,7 @@ export const deleteRegistrationsForUrl = async (
     (registration) => registration.webhook_url === webhookUrl,
   );
   for (const registration of matches) {
-    await client.delete(
-      `${base}/${encodeURIComponent(registration.registration_id)}`,
-    );
+    await client.delete(`${base}/${encodeURIComponent(registration.registration_id)}`);
   }
   return matches.length;
 };
@@ -62,16 +51,13 @@ export const ensureRegistration = async (
     | undefined;
 
   if (existing?.registrationId && sameConfig(existing, params)) {
-    context.logger.info(
-      "AEM event registration already exists with the same settings; skipping.",
-    );
+    context.logger.info("AEM event registration already exists with the same settings; skipping.");
     return undefined;
   }
 
   const oldParams = existing
     ? (() => {
-        const [, org, project, workspace] =
-          existing.previousWorkspace.split("/");
+        const [, org, project, workspace] = existing.previousWorkspace.split("/");
         return {
           ...params,
           consumerOrgId: decodeURIComponent(org),
@@ -94,10 +80,7 @@ export const ensureRegistration = async (
     `${workspacePath(params)}/registrations`,
     {
       client_id: util.types.toString(params.connection.fields.clientId),
-      name: `AEM events: ${context.flow.name}`.slice(
-        0,
-        IO_EVENTS_REGISTRATION_NAME_MAX_LENGTH,
-      ),
+      name: `AEM events: ${context.flow.name}`.slice(0, IO_EVENTS_REGISTRATION_NAME_MAX_LENGTH),
       description: "Adobe Experience Manager events for an integration flow.",
       delivery_type: "webhook",
       webhook_url: webhookUrl,

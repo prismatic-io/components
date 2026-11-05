@@ -10,10 +10,7 @@ export const deleteEngagement = action({
     description: "Deletes an engagement by its ID.",
   },
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { timeout, hubspotConnection, engagementObject, engagementId },
-  ) => {
+  perform: async (context, { timeout, hubspotConnection, engagementObject, engagementId }) => {
     const debugRequest = context.debug.enabled;
     const client = getHubspotClient({
       hubspotConnection,

@@ -1,11 +1,7 @@
 import type { PlannerPlan } from "@microsoft/microsoft-graph-types";
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import {
-  GRAPH_API_VERSION,
-  GRAPH_BASE_URL,
-  PLANNER_ENDPOINTS,
-} from "../../constants";
+import { GRAPH_API_VERSION, GRAPH_BASE_URL, PLANNER_ENDPOINTS } from "../../constants";
 import { createPlanExamplePayload } from "../../examplePayloads";
 import { createPlanOutputSchema } from "../../outputSchemas";
 import type { Etagged } from "../../types";
@@ -26,19 +22,13 @@ export const createPlan = action({
   perform: async (context, { connection, groupId, title }) => {
     const client = createClient(connection, context.debug.enabled);
 
-    const { data } = await client.post<PlannerPlan & Etagged>(
-      PLANNER_ENDPOINTS.PLANS,
-      {
-        container: { containerId: groupId, type: "group" },
-        title,
-      },
-    );
+    const { data } = await client.post<PlannerPlan & Etagged>(PLANNER_ENDPOINTS.PLANS, {
+      container: { containerId: groupId, type: "group" },
+      title,
+    });
     return { data };
   },
-  examplePerform: async (
-    _context,
-    { groupId, title },
-  ): Promise<{ data: unknown }> => ({
+  examplePerform: async (_context, { groupId, title }): Promise<{ data: unknown }> => ({
     data: {
       ...createPlanExamplePayload.data,
       title,

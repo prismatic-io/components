@@ -1,7 +1,4 @@
-import {
-  CreateTopicCommand,
-  type CreateTopicCommandInput,
-} from "@aws-sdk/client-sns";
+import { CreateTopicCommand, type CreateTopicCommandInput } from "@aws-sdk/client-sns";
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { createSNSClient } from "../../client";
 import { createTopicExamplePayload } from "../../examplePayloads";
@@ -11,8 +8,7 @@ import { createTopicOutputSchema } from "../../outputSchemas";
 export const createTopic = action({
   display: {
     label: "Create SNS Topic for S3 Event Notification",
-    description:
-      "Create an Amazon SNS Topic to be used with S3 Event Notifications",
+    description: "Create an Amazon SNS Topic to be used with S3 Event Notifications",
   },
   performSafety: "notAllowed",
   perform: async (

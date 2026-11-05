@@ -24,8 +24,7 @@ const conditions = input({
   type: "string",
   required: true,
   clean: util.types.toString,
-  comments:
-    "The filter conditions, expressed as a JSON object string. Format: JSON.",
+  comments: "The filter conditions, expressed as a JSON object string. Format: JSON.",
   example: '{"glue":"and","conditions":[]}',
   placeholder: "Enter conditions JSON",
 });

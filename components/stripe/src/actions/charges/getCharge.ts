@@ -7,8 +7,7 @@ import { chargeOutputSchema } from "../../outputSchemas";
 export const getCharge = action({
   display: {
     label: "Get Charge",
-    description:
-      "Retrieve the details of a charge that has previously been created.",
+    description: "Retrieve the details of a charge that has previously been created.",
   },
   performSafety: "safe",
   perform: async (context, params) => {

@@ -1,11 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
-import {
-  idempotencyKey,
-  locationId,
-  pagination,
-  squareConnection,
-  validateJSON,
-} from "./common";
+import { idempotencyKey, locationId, pagination, squareConnection, validateJSON } from "./common";
 
 const orderQuery = input({
   label: "Query",
@@ -52,8 +46,7 @@ const locationIds = input({
   language: "json",
   default: JSON.stringify(["LH2G9VFHJRWKR", "LK3H8WGIKSMLA"], null, 2),
   required: true,
-  comments:
-    "An array of location IDs in JSON format used to filter results to specific locations.",
+  comments: "An array of location IDs in JSON format used to filter results to specific locations.",
   clean: (locationIdsInput) => validateJSON(locationIdsInput),
 });
 

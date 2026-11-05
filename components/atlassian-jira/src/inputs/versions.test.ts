@@ -1,8 +1,4 @@
-import {
-  createVersionInputs as i,
-  getVersionInputs,
-  updateVersionInputs,
-} from "./versions";
+import { createVersionInputs as i, getVersionInputs, updateVersionInputs } from "./versions";
 
 type Row = [string, { clean?: unknown }, unknown, unknown, unknown?];
 
@@ -33,9 +29,7 @@ describe("version input cleans", () => {
   });
 
   test("the optional Version Name override on Update Version drops an empty value", () => {
-    const clean = updateVersionInputs.versionName.clean as (
-      raw: unknown,
-    ) => unknown;
+    const clean = updateVersionInputs.versionName.clean as (raw: unknown) => unknown;
     expect(clean("")).toBeUndefined();
     expect(clean("v1.1")).toBe("v1.1");
   });

@@ -24,8 +24,7 @@ export const oauth2 = oauth2Connection({
       required: true,
       shown: false,
       comments: "The OAuth 2.0 Authorization URL for Microsoft Dynamics 365.",
-      default:
-        "https://login.microsoftonline.com/organizations/oauth2/v2.0/authorize",
+      default: "https://login.microsoftonline.com/organizations/oauth2/v2.0/authorize",
     },
     tokenUrl: {
       label: "Token URL",
@@ -34,8 +33,7 @@ export const oauth2 = oauth2Connection({
       required: true,
       shown: false,
       comments: "The OAuth 2.0 Token URL for Microsoft Dynamics 365.",
-      default:
-        "https://login.microsoftonline.com/organizations/oauth2/v2.0/token",
+      default: "https://login.microsoftonline.com/organizations/oauth2/v2.0/token",
     },
     scopes: {
       label: "Scopes",
@@ -43,8 +41,7 @@ export const oauth2 = oauth2Connection({
       type: "string",
       required: false,
       shown: true,
-      example:
-        "https://REPLACE-ME.crm.dynamics.com/user_impersonation offline_access",
+      example: "https://REPLACE-ME.crm.dynamics.com/user_impersonation offline_access",
       comments:
         "A space-delimited set of one or more scopes to get the user's permission to access.",
     },
@@ -54,8 +51,7 @@ export const oauth2 = oauth2Connection({
       type: "string",
       required: true,
       shown: true,
-      comments:
-        "Generated when registering an application in the Azure portal.",
+      comments: "Generated when registering an application in the Azure portal.",
     },
     clientSecret: {
       label: "Client Secret",
@@ -63,8 +59,7 @@ export const oauth2 = oauth2Connection({
       type: "password",
       required: true,
       shown: true,
-      comments:
-        "Generated when registering an application in the Azure portal.",
+      comments: "Generated when registering an application in the Azure portal.",
     },
   },
 });

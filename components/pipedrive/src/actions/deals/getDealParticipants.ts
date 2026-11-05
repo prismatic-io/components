@@ -10,10 +10,7 @@ export const getDealParticipants = action({
     description: "Lists participants of a deal.",
   },
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { connection, id, pagination: { start, limit, cursor } = {} },
-  ) => {
+  perform: async (context, { connection, id, pagination: { start, limit, cursor } = {} }) => {
     const client = createClient(connection, context.debug.enabled);
     const { data } = await client.get(`/deals/${id}/participants`, {
       params: { start, limit, cursor },
@@ -22,8 +19,5 @@ export const getDealParticipants = action({
   },
   inputs: getDealParticipantsInputs,
   examplePayload: getDealParticipantsExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getDealParticipantsOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getDealParticipantsOutputSchema }),
 });

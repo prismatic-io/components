@@ -48,34 +48,21 @@ export const updateGeneralLedgerAccount = action({
   performSafety: "notAllowed",
   perform: async (
     context,
-    {
-      connection,
-      generalLedgerAccountId,
+    { connection, generalLedgerAccountId, code, name, reactivate, subsidiaries },
+  ) => {
+    const client = createClient(connection, context.debug.enabled);
+
+    const { data } = await client.patch(`/accounting/accounts/${generalLedgerAccountId}`, {
       code,
       name,
       reactivate,
       subsidiaries,
-    },
-  ) => {
-    const client = createClient(connection, context.debug.enabled);
-
-    const { data } = await client.patch(
-      `/accounting/accounts/${generalLedgerAccountId}`,
-      {
-        code,
-        name,
-        reactivate,
-        subsidiaries,
-      },
-    );
+    });
     return {
       data,
     };
   },
-  examplePerform: async (
-    _context,
-    { code, name },
-  ): Promise<{ data: unknown }> => ({
+  examplePerform: async (_context, { code, name }): Promise<{ data: unknown }> => ({
     data: {
       ...updateGeneralLedgerAccountResponse,
       code: code ?? updateGeneralLedgerAccountResponse.code,

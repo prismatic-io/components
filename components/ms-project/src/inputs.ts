@@ -103,8 +103,7 @@ export const assignmentFinishDate = input({
   type: "string",
   required: false,
   example: "2021-11-04T20:29:49.305Z",
-  comments:
-    "Provide a valid date time value for the finish date of the assignment",
+  comments: "Provide a valid date time value for the finish date of the assignment",
 });
 
 export const assignmentStartDate = input({
@@ -112,8 +111,7 @@ export const assignmentStartDate = input({
   type: "string",
   required: false,
   example: "2021-11-04T20:29:49.305Z",
-  comments:
-    "Provide a valid date time value for the start date of the assignment",
+  comments: "Provide a valid date time value for the start date of the assignment",
 });
 
 export const resourceId = input({
@@ -169,7 +167,6 @@ export const pageNumber = input({
   label: "Page Number",
   type: "string",
   required: false,
-  comments:
-    "Provide an integer value for which page to return when paginating results.",
+  comments: "Provide an integer value for which page to return when paginating results.",
   example: "3",
 });

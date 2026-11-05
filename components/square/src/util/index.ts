@@ -104,31 +104,21 @@ export const toOptionalString = (value: unknown): string | undefined =>
 export const toOptionalNumber = (value: unknown): number | undefined =>
   value ? util.types.toNumber(value) : undefined;
 
-export const sortByLabel = (
-  a: { label: string },
-  b: { label: string },
-): number => {
+export const sortByLabel = (a: { label: string }, b: { label: string }): number => {
   if (a.label < b.label) return -1;
   if (a.label > b.label) return 1;
   return 0;
 };
 
 export const lookBackDateClean = (value: unknown): string => {
-  if (
-    value === undefined ||
-    value === null ||
-    (typeof value === "string" && value.trim() === "")
-  ) {
+  if (value === undefined || value === null || (typeof value === "string" && value.trim() === "")) {
     return "";
   }
 
   const raw = typeof value === "string" ? value.trim() : String(value);
-  const match =
-    typeof value === "string" ? raw.match(LOOK_BACK_DATE_PATTERN) : null;
+  const match = typeof value === "string" ? raw.match(LOOK_BACK_DATE_PATTERN) : null;
   if (!match) {
-    throw new Error(
-      `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
-    );
+    throw new Error(`Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`);
   }
 
   const [, yearStr, monthStr, dayStr] = match;
@@ -141,9 +131,7 @@ export const lookBackDateClean = (value: unknown): string => {
     parsed.getUTCMonth() !== month - 1 ||
     parsed.getUTCDate() !== day
   ) {
-    throw new Error(
-      `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
-    );
+    throw new Error(`Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`);
   }
 
   if (parsed.getTime() > Date.now()) {
@@ -160,9 +148,7 @@ const toMillis = (value: string | undefined): number | undefined => {
 };
 
 export const windowStartFor = (watermark: string): string =>
-  new Date(
-    Math.floor(Date.parse(watermark) / 1000) * 1000 - 1000,
-  ).toISOString();
+  new Date(Math.floor(Date.parse(watermark) / 1000) * 1000 - 1000).toISOString();
 
 export const fetchPaymentsWindow = async (
   client: HttpClient,
@@ -201,11 +187,7 @@ export const selectUndelivered = (
     const updatedMs = toMillis(payment.updated_at);
     if (updatedMs === undefined) return true;
     if (updatedMs < watermarkMs) return false;
-    return !(
-      updatedMs === watermarkMs &&
-      payment.id !== undefined &&
-      delivered.has(payment.id)
-    );
+    return !(updatedMs === watermarkMs && payment.id !== undefined && delivered.has(payment.id));
   });
 };
 
@@ -266,10 +248,7 @@ export const pollPaymentsCycle = async (args: {
   const { client, state, incoming, seed, hasLookBackDate, batching } = args;
   const resume = incoming ?? state.cursor;
   const committedAt = state.lastPolledAt ?? seed.toISOString();
-  const committed: PollingBoundary = {
-    watermark: committedAt,
-    ids: state.boundaryIds ?? [],
-  };
+  const committed: PollingBoundary = { watermark: committedAt, ids: state.boundaryIds ?? [] };
   const windowStart = resume?.windowStart ?? windowStartFor(committedAt);
 
   const { payments, afterCursor } = await fetchPaymentsWindow(
@@ -283,12 +262,9 @@ export const pollPaymentsCycle = async (args: {
   const fresh = selectUndelivered(payments, committedAt, committed.ids);
   const { created, updated } = partitionPaymentsByCreation(fresh, committedAt);
   const pending = advanceBoundary(resume?.pending ?? committed, payments);
-  const backfill =
-    state.backfillActive === true || (!state.lastPolledAt && hasLookBackDate);
+  const backfill = state.backfillActive === true || (!state.lastPolledAt && hasLookBackDate);
 
-  const next: PollingCursor | null = afterCursor
-    ? { afterCursor, windowStart, pending }
-    : null;
+  const next: PollingCursor | null = afterCursor ? { afterCursor, windowStart, pending } : null;
   const nextState: PollingState = next
     ? {
         lastPolledAt: committedAt,
@@ -298,26 +274,13 @@ export const pollPaymentsCycle = async (args: {
       }
     : { lastPolledAt: pending.watermark, boundaryIds: pending.ids };
 
-  return {
-    created,
-    updated,
-    state: nextState,
-    next,
-    backfill,
-    read: payments.length,
-  };
+  return { created, updated, state: nextState, next, backfill, read: payments.length };
 };
 
-export const resolvePaymentChanges = (
-  data: PaymentChangesObject | undefined,
-): PaymentChange[] => {
+export const resolvePaymentChanges = (data: PaymentChangesObject | undefined): PaymentChange[] => {
   const changes = data ?? {};
   return [
-    ...(changes.created ?? []).map(
-      (record): PaymentChange => ({ changeType: "created", record }),
-    ),
-    ...(changes.updated ?? []).map(
-      (record): PaymentChange => ({ changeType: "updated", record }),
-    ),
+    ...(changes.created ?? []).map((record): PaymentChange => ({ changeType: "created", record })),
+    ...(changes.updated ?? []).map((record): PaymentChange => ({ changeType: "updated", record })),
   ];
 };

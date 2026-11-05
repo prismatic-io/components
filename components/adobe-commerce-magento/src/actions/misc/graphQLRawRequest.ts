@@ -19,11 +19,7 @@ export const graphQLRawRequest = action({
     });
     const { data } = await client.post("/graphql", query, {
       headers: {
-        Authorization: authorize({
-          method: "POST",
-          url: `${baseUrl}/graphql`,
-          params: [],
-        }),
+        Authorization: authorize({ method: "POST", url: `${baseUrl}/graphql`, params: [] }),
       },
     });
     return { data };

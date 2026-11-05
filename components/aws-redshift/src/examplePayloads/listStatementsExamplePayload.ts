@@ -1,8 +1,6 @@
 import type { ListStatementsCommandOutput } from "@aws-sdk/client-redshift-data";
 
-export const listStatementsExamplePayload: {
-  data: ListStatementsCommandOutput;
-} = {
+export const listStatementsExamplePayload: { data: ListStatementsCommandOutput } = {
   data: {
     $metadata: {
       httpStatusCode: 200,

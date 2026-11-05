@@ -3,11 +3,7 @@ import { createClient } from "../client";
 import { DEFAULT_BATCH_SIZE, REST_RESOURCE_CONFIG } from "../constants";
 import { pollRecordsExamplePayload } from "../examplePayloads/triggers";
 import { pollRecordsInputs } from "../inputs/triggers";
-import type {
-  HcmRestChangesObject,
-  HcmRestRecordChange,
-  PollingState,
-} from "../types";
+import type { HcmRestChangesObject, HcmRestRecordChange, PollingState } from "../types";
 import { fetchRecordsSince, resolveRestPollingRecordChanges } from "../util";
 
 export const pollRecordsTrigger = pollingTrigger({
@@ -23,15 +19,12 @@ export const pollRecordsTrigger = pollingTrigger({
   batchConfig: { batchSize: DEFAULT_BATCH_SIZE },
   triggerResolver: {
     resolveItems: (_context, { payload }): HcmRestRecordChange[] =>
-      resolveRestPollingRecordChanges(
-        payload.body.data as HcmRestChangesObject,
-      ),
+      resolveRestPollingRecordChanges(payload.body.data as HcmRestChangesObject),
   },
   perform: async (context, payload, params) => {
     const now = new Date().toISOString();
     const pollState = context.polling.getState() as PollingState;
-    const lastPolledAt =
-      pollState?.lastPolledAt ?? (params.lookBackDate || now);
+    const lastPolledAt = pollState?.lastPolledAt ?? (params.lookBackDate || now);
 
     const resourceConfig = REST_RESOURCE_CONFIG[params.resourceType];
     if (!resourceConfig) {

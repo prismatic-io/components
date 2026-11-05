@@ -9,8 +9,7 @@ import { mapAssociationTypes } from "../../util";
 export const listAssociationTypes = action({
   display: {
     label: "List Association Types",
-    description:
-      "Retrieve a list of all association types available between two objects.",
+    description: "Retrieve a list of all association types available between two objects.",
   },
   performSafety: "safe",
   perform: async (context, params) => {
@@ -21,19 +20,12 @@ export const listAssociationTypes = action({
       debugRequest,
     });
     const { data } = await client.get(
-      hubspotPaths.associations(
-        params.fromObjectType,
-        params.toObjectType,
-        "/labels",
-      ),
+      hubspotPaths.associations(params.fromObjectType, params.toObjectType, "/labels"),
     );
 
     return { data: mapAssociationTypes(data) };
   },
   inputs: listAssociationTypesInputs,
   examplePayload: listAssociationTypesExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: listAssociationTypesOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: listAssociationTypesOutputSchema }),
 });

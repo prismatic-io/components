@@ -12,15 +12,7 @@ export const updatePrice = action({
   performSafety: "notAllowed",
   perform: async (
     context,
-    {
-      priceId,
-      active,
-      nickname,
-      fieldValues,
-      metadata,
-      timeout,
-      stripeConnection,
-    },
+    { priceId, active, nickname, fieldValues, metadata, timeout, stripeConnection },
   ) => {
     const client = createStripeClient({
       stripeConnection,

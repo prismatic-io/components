@@ -13,12 +13,7 @@ export const selectCustomers = dataSource({
     description: "Selects a customer from a list of all customers.",
   },
   perform: async (context, { shopifyConnection }) => {
-    const client = getShopifyGraphQlClient(
-      shopifyConnection,
-      undefined,
-      false,
-      context.logger,
-    );
+    const client = getShopifyGraphQlClient(shopifyConnection, undefined, false, context.logger);
 
     const { customers } = await fetchData<DataSourceRecord>(
       client,

@@ -1,7 +1,4 @@
-import {
-  createConnection,
-  defaultTriggerPayload,
-} from "@prismatic-io/spectral/testing";
+import { createConnection, defaultTriggerPayload } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { oauth } from "../connections";
 import type { PollingState, QBTimeRecord, QBTimeRecordChanges } from "../types";
@@ -14,23 +11,13 @@ const updated: QBTimeRecord = { id: 2, created: "2026-01-01T10:00:00+00:00" };
 test("New Records is opt-in batchable with a default batch size", () => {
   expect(pollChangesTrigger.triggerResolverSupport).toBe("valid");
   expect(pollChangesTrigger.batchConfig).toEqual({ batchSize: 50 });
-  expect(pollChangesTrigger.triggerResolver?.resolveItems).toBeInstanceOf(
-    Function,
-  );
+  expect(pollChangesTrigger.triggerResolver?.resolveItems).toBeInstanceOf(Function);
 });
 
 test("offers the Look-back Date directly below the required inputs", () => {
-  const inputs = (pollChangesTrigger.inputs ?? {}) as Record<
-    string,
-    { required?: boolean }
-  >;
+  const inputs = (pollChangesTrigger.inputs ?? {}) as Record<string, { required?: boolean }>;
   const keys = Object.keys(inputs);
-  expect(keys).toEqual([
-    "connection",
-    "resourceType",
-    "showNewRecords",
-    "lookBackDate",
-  ]);
+  expect(keys).toEqual(["connection", "resourceType", "showNewRecords", "lookBackDate"]);
   const lookBackIndex = keys.indexOf("lookBackDate");
   for (const key of keys.slice(0, lookBackIndex)) {
     expect(inputs[key].required).toBe(true);
@@ -39,9 +26,7 @@ test("offers the Look-back Date directly below the required inputs", () => {
 });
 
 test("resolveQBTimeRecordChanges tags every record with how it changed", () => {
-  expect(
-    resolveQBTimeRecordChanges({ created: [created], updated: [updated] }),
-  ).toEqual([
+  expect(resolveQBTimeRecordChanges({ created: [created], updated: [updated] })).toEqual([
     { changeType: "created", record: created },
     { changeType: "updated", record: updated },
   ]);
@@ -68,11 +53,9 @@ test("resolveItems flattens the payload shape perform actually returns", () => {
     ...defaultTriggerPayload(),
     body: { data: { created: [created], updated: [] } },
   };
-  expect(
-    pollChangesTrigger.triggerResolver?.resolveItems?.({} as never, {
-      payload,
-    }),
-  ).toEqual([{ changeType: "created", record: created }]);
+  expect(pollChangesTrigger.triggerResolver?.resolveItems?.({} as never, { payload })).toEqual([
+    { changeType: "created", record: created },
+  ]);
 });
 
 test("resolveItems output splits into batches of the declared batchSize", () => {
@@ -81,21 +64,15 @@ test("resolveItems output splits into batches of the declared batchSize", () => 
       items.slice(i * size, (i + 1) * size),
     );
   const batchSize = pollChangesTrigger.batchConfig?.batchSize ?? 0;
-  const records: QBTimeRecord[] = Array.from(
-    { length: batchSize + 1 },
-    (_, i) => ({
-      id: i + 1,
-    }),
-  );
+  const records: QBTimeRecord[] = Array.from({ length: batchSize + 1 }, (_, i) => ({
+    id: i + 1,
+  }));
   const payload = {
     ...defaultTriggerPayload(),
     body: { data: { created: records, updated: [] } },
   };
 
-  const items =
-    pollChangesTrigger.triggerResolver?.resolveItems?.({} as never, {
-      payload,
-    }) ?? [];
+  const items = pollChangesTrigger.triggerResolver?.resolveItems?.({} as never, { payload }) ?? [];
   const batches = chunk(items, batchSize);
 
   expect(items).toHaveLength(batchSize + 1);
@@ -137,18 +114,12 @@ describe("pollChangesTrigger perform", () => {
     }) as unknown as PerformParams;
 
   const envelope = (object: string, records: QBTimeRecord[]) => ({
-    results: {
-      [object]: Object.fromEntries(records.map((r) => [String(r.id), r])),
-    },
+    results: { [object]: Object.fromEntries(records.map((r) => [String(r.id), r])) },
     more: false,
     supplemental_data: {},
   });
 
-  const mockList = (
-    object: string,
-    query: Record<string, string>,
-    records: QBTimeRecord[],
-  ) =>
+  const mockList = (object: string, query: Record<string, string>, records: QBTimeRecord[]) =>
     nock(BASE, { reqheaders: { authorization: "Bearer test-token" } })
       .get(`/${object}`)
       .query({ ...query, page: "1", limit: "200" })
@@ -184,10 +155,7 @@ describe("pollChangesTrigger perform", () => {
 
       const result = await run({});
 
-      expect(result.payload.body.data).toEqual({
-        created: records,
-        updated: [],
-      });
+      expect(result.payload.body.data).toEqual({ created: records, updated: [] });
       expect(result.polledNoChanges).toBe(false);
       expect(store).toEqual({ lastPolledAt: NOW, knownIds: ["101", "102"] });
     });
@@ -196,32 +164,20 @@ describe("pollChangesTrigger perform", () => {
       const records = [{ id: 101 }, { id: 102 }];
       mockList("timesheets", { start_date: "2026-01-01" }, records);
 
-      const result = await run({
-        lookBackDate: LOOK_BACK,
-        showNewRecords: false,
-      });
+      const result = await run({ lookBackDate: LOOK_BACK, showNewRecords: false });
 
-      expect(result.payload.body.data).toEqual({
-        created: records,
-        updated: [],
-      });
+      expect(result.payload.body.data).toEqual({ created: records, updated: [] });
       expect(result.polledNoChanges).toBe(false);
       expect(store).toEqual({ lastPolledAt: NOW, knownIds: ["101", "102"] });
     });
 
     test("a subsequent poll starts from the cursor's date, ignores the Look-back Date, and skips known ids", async () => {
       store = { lastPolledAt: "2026-10-05T08:30:00.000Z", knownIds: ["101"] };
-      mockList("timesheets", { start_date: "2026-10-05" }, [
-        { id: 101 },
-        { id: 103 },
-      ]);
+      mockList("timesheets", { start_date: "2026-10-05" }, [{ id: 101 }, { id: 103 }]);
 
       const result = await run({ lookBackDate: LOOK_BACK });
 
-      expect(result.payload.body.data).toEqual({
-        created: [{ id: 103 }],
-        updated: [],
-      });
+      expect(result.payload.body.data).toEqual({ created: [{ id: 103 }], updated: [] });
       expect(result.polledNoChanges).toBe(false);
       expect(store).toEqual({ lastPolledAt: NOW, knownIds: ["101", "103"] });
     });
@@ -244,29 +200,13 @@ describe("pollChangesTrigger perform", () => {
       const before = { id: 3, created: "2025-12-31T23:59:59+00:00" };
       const missing = { id: 4 };
       const unparseable = { id: 5, created: "not-a-date" };
-      mockList(resourceType, {}, [
-        after,
-        atThreshold,
-        before,
-        missing,
-        unparseable,
-      ]);
+      mockList(resourceType, {}, [after, atThreshold, before, missing, unparseable]);
 
-      const result = await run({
-        resourceType,
-        lookBackDate: LOOK_BACK,
-        showNewRecords: false,
-      });
+      const result = await run({ resourceType, lookBackDate: LOOK_BACK, showNewRecords: false });
 
-      expect(result.payload.body.data).toEqual({
-        created: [after, atThreshold],
-        updated: [],
-      });
+      expect(result.payload.body.data).toEqual({ created: [after, atThreshold], updated: [] });
       expect(result.polledNoChanges).toBe(false);
-      expect(store).toEqual({
-        lastPolledAt: NOW,
-        knownIds: ["1", "2", "3", "4", "5"],
-      });
+      expect(store).toEqual({ lastPolledAt: NOW, knownIds: ["1", "2", "3", "4", "5"] });
     });
 
     test("state left by the response-parsing defect records a baseline instead of emitting every record", async () => {
@@ -288,10 +228,7 @@ describe("pollChangesTrigger perform", () => {
 
       const result = await run({ resourceType, lookBackDate: LOOK_BACK });
 
-      expect(result.payload.body.data).toEqual({
-        created: [after],
-        updated: [],
-      });
+      expect(result.payload.body.data).toEqual({ created: [after], updated: [] });
       expect(store).toEqual({ lastPolledAt: NOW, knownIds: ["1", "2"] });
     });
 
@@ -301,27 +238,18 @@ describe("pollChangesTrigger perform", () => {
 
       const result = await run({ resourceType });
 
-      expect(result.payload.body.data).toEqual({
-        created: [{ id: 1 }],
-        updated: [],
-      });
+      expect(result.payload.body.data).toEqual({ created: [{ id: 1 }], updated: [] });
       expect(result.polledNoChanges).toBe(false);
     });
 
     test("a subsequent poll emits only unknown ids, comparing numeric ids to stored strings", async () => {
-      store = {
-        lastPolledAt: "2026-10-05T08:30:00.000Z",
-        knownIds: ["1", "2"],
-      };
+      store = { lastPolledAt: "2026-10-05T08:30:00.000Z", knownIds: ["1", "2"] };
       const fresh = { id: 3, created: "2020-01-01T00:00:00+00:00" };
       mockList(resourceType, {}, [{ id: 1 }, { id: 2 }, fresh]);
 
       const result = await run({ resourceType, lookBackDate: LOOK_BACK });
 
-      expect(result.payload.body.data).toEqual({
-        created: [fresh],
-        updated: [],
-      });
+      expect(result.payload.body.data).toEqual({ created: [fresh], updated: [] });
       expect(result.polledNoChanges).toBe(false);
       expect(store).toEqual({ lastPolledAt: NOW, knownIds: ["1", "2", "3"] });
     });
@@ -332,10 +260,7 @@ describe("pollChangesTrigger perform", () => {
 
       const suppressed = await run({ resourceType, showNewRecords: false });
 
-      expect(suppressed.payload.body.data).toEqual({
-        created: [],
-        updated: [],
-      });
+      expect(suppressed.payload.body.data).toEqual({ created: [], updated: [] });
       expect(suppressed.polledNoChanges).toBe(true);
       expect(store).toEqual({ lastPolledAt: NOW, knownIds: ["1", "2"] });
 
@@ -347,10 +272,7 @@ describe("pollChangesTrigger perform", () => {
     });
 
     test("a poll that finds only known ids reports no changes", async () => {
-      store = {
-        lastPolledAt: "2026-10-05T08:30:00.000Z",
-        knownIds: ["1", "2"],
-      };
+      store = { lastPolledAt: "2026-10-05T08:30:00.000Z", knownIds: ["1", "2"] };
       mockList(resourceType, {}, [{ id: 1 }, { id: 2 }]);
 
       const result = await run({ resourceType });

@@ -8,7 +8,7 @@ const PAGE_SIZE = 200;
 export const fetchSlackMessagesSince = async (
   connection: Connection,
   channel: string,
-  oldest: string,
+  oldest: string
 ): Promise<{ messages: SlackMessage[]; truncated: boolean }> => {
   const client = await createOauthClient({ slackConnection: connection });
   if (!client) {

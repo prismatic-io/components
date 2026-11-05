@@ -19,9 +19,7 @@ export const deleteContact = action({
       debugRequest,
     });
 
-    const { data } = await client.delete(
-      hubspotPaths.objects("contacts", `/${contactId}`),
-    );
+    const { data } = await client.delete(hubspotPaths.objects("contacts", `/${contactId}`));
 
     return { data };
   },

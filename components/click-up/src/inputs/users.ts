@@ -26,8 +26,7 @@ const username = input({
   type: "string",
   placeholder: "Enter username",
   example: "Jane Smith",
-  comments:
-    "The new display name for the user. Leave empty to keep the current username.",
+  comments: "The new display name for the user. Leave empty to keep the current username.",
   required: false,
   clean: cleanString,
 });

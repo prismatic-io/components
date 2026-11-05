@@ -21,7 +21,6 @@ export const deleteBulkJob = action({
       data,
     };
   },
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    deleteBulkJobExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => deleteBulkJobExamplePayload,
   examplePayload: deleteBulkJobExamplePayload,
 });

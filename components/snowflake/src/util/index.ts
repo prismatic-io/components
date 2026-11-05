@@ -23,9 +23,7 @@ export const pollForResults = async (
   for await (const handlerId of handlerIds) {
     logger.info(`Polling for results, progress: ${i} of ${handlerIds.length}`);
     do {
-      const pollResult = await client.get<QueryStatus>(
-        `/api/v2/statements/${handlerId}`,
-      );
+      const pollResult = await client.get<QueryStatus>(`/api/v2/statements/${handlerId}`);
 
       const { status: pollStatus } = pollResult;
       if (pollStatus === ACCEPTED) {
@@ -85,10 +83,7 @@ export const generateJwtAuthToken = (
 export const cleanFunctionForSnowflakeUserInputs = (value: unknown): string => {
   const DOT_LITERAL_REGEX = /\./g;
 
-  return util.types
-    .toString(value)
-    .toUpperCase()
-    .replace(DOT_LITERAL_REGEX, "-");
+  return util.types.toString(value).toUpperCase().replace(DOT_LITERAL_REGEX, "-");
 };
 
 export const cleanString = (value: unknown): string | undefined => {

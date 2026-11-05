@@ -12,15 +12,12 @@ export const updateGroup = action({
   inputs: updateGroupInputs,
   perform: async (context, { connection, description, name, groupId }) => {
     const client = await createClient(connection, context.debug.enabled);
-    const { data } = await client.put<Group>(
-      `/groups/${encodeURIComponent(groupId)}`,
-      {
-        profile: {
-          name,
-          description,
-        },
+    const { data } = await client.put<Group>(`/groups/${encodeURIComponent(groupId)}`, {
+      profile: {
+        name,
+        description,
       },
-    );
+    });
 
     return { data };
   },

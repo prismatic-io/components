@@ -6,15 +6,8 @@ import {
   getShopifyGraphQlClient,
   getShopifyHostname,
 } from "./client";
-import {
-  adminApiAccessToken,
-  shopifyConnection,
-  shopifyTemplatedConnection,
-} from "./connections";
-import {
-  DEFAULT_SHOPIFY_GRAPHQL_API_VERSION,
-  DEFAULT_SHOPIFY_VERSION,
-} from "./constants";
+import { adminApiAccessToken, shopifyConnection, shopifyTemplatedConnection } from "./connections";
+import { DEFAULT_SHOPIFY_GRAPHQL_API_VERSION, DEFAULT_SHOPIFY_VERSION } from "./constants";
 
 const HOST = "test-store.myshopify.com";
 
@@ -37,44 +30,22 @@ const connectionWithVersion = (apiVersion?: string) =>
 const restVersion = (client: ReturnType<typeof getShopifyClient>) =>
   client.defaults.baseURL?.split("/admin/api/")[1];
 const graphQlVersion = (client: ReturnType<typeof getShopifyGraphQlClient>) =>
-  String(Reflect.get(client, "url"))
-    .split("/admin/api/")[1]
-    .replace("/graphql.json", "");
+  String(Reflect.get(client, "url")).split("/admin/api/")[1].replace("/graphql.json", "");
 
 describe("API version resolution and outdated-version warning", () => {
   const factories = [
     {
       name: "getShopifyClient",
       defaultVersion: DEFAULT_SHOPIFY_VERSION,
-      build: (
-        apiVersion: string | undefined,
-        override: string | undefined,
-        logger: ActionLogger,
-      ) =>
-        restVersion(
-          getShopifyClient(
-            connectionWithVersion(apiVersion),
-            override,
-            false,
-            logger,
-          ),
-        ),
+      build: (apiVersion: string | undefined, override: string | undefined, logger: ActionLogger) =>
+        restVersion(getShopifyClient(connectionWithVersion(apiVersion), override, false, logger)),
     },
     {
       name: "getShopifyGraphQlClient",
       defaultVersion: DEFAULT_SHOPIFY_GRAPHQL_API_VERSION,
-      build: (
-        apiVersion: string | undefined,
-        override: string | undefined,
-        logger: ActionLogger,
-      ) =>
+      build: (apiVersion: string | undefined, override: string | undefined, logger: ActionLogger) =>
         graphQlVersion(
-          getShopifyGraphQlClient(
-            connectionWithVersion(apiVersion),
-            override,
-            false,
-            logger,
-          ),
+          getShopifyGraphQlClient(connectionWithVersion(apiVersion), override, false, logger),
         ),
     },
   ];
@@ -151,15 +122,9 @@ describe("Test getShopifyHostname", () => {
 
   test.each([
     ["some bad value", "some bad value"],
-    [
-      "my-store.myshopify.com.example.com",
-      "my-store.myshopify.com.example.com",
-    ],
+    ["my-store.myshopify.com.example.com", "my-store.myshopify.com.example.com"],
     ["my-store.custom-domain.com", "my-store.custom-domain.com"],
-    [
-      "https://example.com/my-store.myshopify.com",
-      "https://example.com/my-store.myshopify.com",
-    ],
+    ["https://example.com/my-store.myshopify.com", "https://example.com/my-store.myshopify.com"],
     ["-bad-handle.myshopify.com", "-bad-handle.myshopify.com"],
     ["", ""],
   ])("throws for invalid hostname %j", (value, expectedInMessage) => {
@@ -171,9 +136,7 @@ describe("Test getShopifyHostname", () => {
 
 describe("Test getConnectionHostname", () => {
   test("accepts a bare store handle on the Access Token connection", () => {
-    const connection = createConnection(adminApiAccessToken, {
-      host: "my-store",
-    });
+    const connection = createConnection(adminApiAccessToken, { host: "my-store" });
     expect(getConnectionHostname(connection)).toEqual("my-store.myshopify.com");
   });
 
@@ -193,9 +156,7 @@ describe("Test getConnectionHostname", () => {
   });
 
   test("still rejects a bare store handle on the deprecated OAuth 2.0 connection", () => {
-    const connection = createConnection(shopifyConnection, {
-      host: "my-store",
-    });
+    const connection = createConnection(shopifyConnection, { host: "my-store" });
     expect(() => getConnectionHostname(connection)).toThrow(
       'Unable to parse hostname "my-store". It should look like "YOUR-SHOPIFY-DOMAIN.myshopify.com".',
     );

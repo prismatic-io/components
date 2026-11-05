@@ -2,11 +2,7 @@ import { createConnection, invoke } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { afterEach, beforeAll, expect, test } from "vitest";
 import { templatedOauth } from "../../connections";
-import {
-  DEFAULT_ORDER_HINT,
-  ODATA_TYPE,
-  PLANNER_ENDPOINTS,
-} from "../../constants";
+import { DEFAULT_ORDER_HINT, ODATA_TYPE, PLANNER_ENDPOINTS } from "../../constants";
 import { createTaskExamplePayload } from "../../examplePayloads";
 import { createTask } from "./createTask";
 
@@ -16,11 +12,7 @@ const TASK_ID = "01gzSlKkIUSUl6DF_EilrmQAKDhh";
 const TASKS_URL = `/v1.0${PLANNER_ENDPOINTS.TASKS}`;
 const DETAILS_URL = `/v1.0${PLANNER_ENDPOINTS.TASK_DETAILS(TASK_ID)}`;
 
-const connection = createConnection(
-  templatedOauth,
-  {},
-  { access_token: "test-token" },
-);
+const connection = createConnection(templatedOauth, {}, { access_token: "test-token" });
 
 const exampleTask = createTaskExamplePayload.data.task;
 const exampleDetails = createTaskExamplePayload.data.details;
@@ -55,9 +47,7 @@ test("creates the task, then writes the description to its details resource", as
       postedBody = body;
       return [201, exampleTask];
     });
-  nock(BASE)
-    .get(DETAILS_URL)
-    .reply(200, { "@odata.etag": exampleDetails?.["@odata.etag"] });
+  nock(BASE).get(DETAILS_URL).reply(200, { "@odata.etag": exampleDetails?.["@odata.etag"] });
 
   let patchedBody: unknown;
   nock(BASE)
@@ -72,13 +62,8 @@ test("creates the task, then writes the description to its details resource", as
     description: "Confirm every contact before the launch.",
   });
 
-  expect(postedBody).toEqual({
-    planId: PLAN_ID,
-    title: "Update the client list",
-  });
-  expect(patchedBody).toEqual({
-    description: "Confirm every contact before the launch.",
-  });
+  expect(postedBody).toEqual({ planId: PLAN_ID, title: "Update the client list" });
+  expect(patchedBody).toEqual({ description: "Confirm every contact before the launch." });
   expect(result.data).toEqual({ task: exampleTask, details: exampleDetails });
 });
 
@@ -119,10 +104,7 @@ test("sends the open-type maps and preserves a percentComplete of 0", async () =
     percentComplete: 0,
     startDateTime: "2024-01-15T12:00:00Z",
     assignments: {
-      "user-a": {
-        "@odata.type": ODATA_TYPE.assignment,
-        orderHint: DEFAULT_ORDER_HINT,
-      },
+      "user-a": { "@odata.type": ODATA_TYPE.assignment, orderHint: DEFAULT_ORDER_HINT },
       "user-b": null,
     },
     appliedCategories: { category3: true },
@@ -139,10 +121,7 @@ test("throws after the task already exists when the details write is rejected", 
     .reply(400, { error: { code: "invalidRequest" } });
 
   await expect(
-    invoke(createTask, {
-      ...baseParams,
-      description: "Confirm every contact.",
-    }),
+    invoke(createTask, { ...baseParams, description: "Confirm every contact." }),
   ).rejects.toThrow(/status code 400/);
   expect(etagScope.isDone()).toBe(true);
   expect(errorScope.isDone()).toBe(true);

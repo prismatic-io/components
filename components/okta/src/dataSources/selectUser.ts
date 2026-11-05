@@ -15,12 +15,7 @@ export const selectUser = dataSource({
   },
   perform: async (_context, { connection }) => {
     const client = await createClient(connection, false);
-    const data = await paginateRecordsWithLink<User>(
-      client,
-      "/users",
-      true,
-      {},
-    );
+    const data = await paginateRecordsWithLink<User>(client, "/users", true, {});
 
     const result = data.map<Element>((user) => ({
       label: `${user.profile.firstName} ${user.profile.lastName} (${user.profile.email})`,

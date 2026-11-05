@@ -27,21 +27,11 @@ const locationExample: Location = {
   LastUpdateDate: "2024-01-15T08:00:00.000Z",
 };
 
-export const listLocationsExamplePayload: {
-  data: OracleHcmListResponse<Location>;
-} = {
-  data: {
-    items: [locationExample],
-    count: 1,
-    hasMore: false,
-    limit: 25,
-    offset: 0,
-  },
+export const listLocationsExamplePayload: { data: OracleHcmListResponse<Location> } = {
+  data: { items: [locationExample], count: 1, hasMore: false, limit: 25, offset: 0 },
 };
 
-export const getLocationExamplePayload: { data: Location } = {
-  data: locationExample,
-};
+export const getLocationExamplePayload: { data: Location } = { data: locationExample };
 
 export const createLocationExamplePayload: { data: Location } = {
   data: {

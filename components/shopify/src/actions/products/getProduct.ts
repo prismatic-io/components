@@ -21,9 +21,6 @@ export const getProduct = action({
     };
   },
   inputs: getProductInputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getProductOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getProductOutputSchema }),
   examplePayload: getProductExamplePayload.restMap,
 });

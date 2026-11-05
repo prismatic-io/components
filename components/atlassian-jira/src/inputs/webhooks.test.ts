@@ -17,13 +17,7 @@ describe("webhook input cleans", () => {
       '[{"events":["jira:issue_created"]}]',
       [{ events: ["jira:issue_created"] }],
     ],
-    [
-      "webhookUrl",
-      i.webhookUrl,
-      "https://hooks.example.com",
-      "https://hooks.example.com",
-      "",
-    ],
+    ["webhookUrl", i.webhookUrl, "https://hooks.example.com", "https://hooks.example.com", ""],
     ["webhookId", deleteWebhookInputs.webhookId, 7, "7", ""],
   ]);
 });

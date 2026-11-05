@@ -12,15 +12,8 @@ export const getPersonFieldsV2 = action({
     description: "Gets all person fields.",
   },
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { connection, pagination: { limit, cursor } = {}, fetchAll },
-  ) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      WebhookVersion.V2,
-    );
+  perform: async (context, { connection, pagination: { limit, cursor } = {}, fetchAll }) => {
+    const client = createClient(connection, context.debug.enabled, WebhookVersion.V2);
 
     const data = await paginateRecordsWithCursor(
       client,
@@ -35,8 +28,5 @@ export const getPersonFieldsV2 = action({
   },
   inputs: getPersonFieldsV2Inputs,
   examplePayload: getPersonFieldsV2ExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getPersonFieldsV2OutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getPersonFieldsV2OutputSchema }),
 });

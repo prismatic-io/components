@@ -40,15 +40,13 @@ const makeStripe = (initial: FakeEndpoint[] = []) => {
         store.push(created);
         return { ...created };
       }),
-      update: vi.fn(
-        async (id: string, { enabled_events }: Record<string, never>) => {
-          const found = store.find((endpoint) => endpoint.id === id);
-          if (!found) throw new Error(`no such endpoint: ${id}`);
-          found.enabled_events = [...(enabled_events as unknown as string[])];
-          const { secret: _omitted, ...withoutSecret } = found;
-          return { ...withoutSecret };
-        },
-      ),
+      update: vi.fn(async (id: string, { enabled_events }: Record<string, never>) => {
+        const found = store.find((endpoint) => endpoint.id === id);
+        if (!found) throw new Error(`no such endpoint: ${id}`);
+        found.enabled_events = [...(enabled_events as unknown as string[])];
+        const { secret: _omitted, ...withoutSecret } = found;
+        return { ...withoutSecret };
+      }),
       del: vi.fn(async (id: string) => {
         const index = store.findIndex((endpoint) => endpoint.id === id);
         if (index === -1) throw new Error(`no such endpoint: ${id}`);
@@ -96,10 +94,7 @@ describe("onInstanceDeploy", () => {
     await deploy(context, ["charge.succeeded", "charge.failed"]);
 
     expect(stripe.store).toHaveLength(1);
-    expect(stripe.store[0].enabled_events).toEqual([
-      "charge.succeeded",
-      "charge.failed",
-    ]);
+    expect(stripe.store[0].enabled_events).toEqual(["charge.succeeded", "charge.failed"]);
   });
 
   it("creates one endpoint on first deploy and stores its signing secret", async () => {
@@ -128,12 +123,7 @@ describe("onInstanceDeploy", () => {
 
   it("adopts a pre-existing endpoint without inventing a signing secret", async () => {
     const stripe = makeStripe([
-      {
-        id: "we_1",
-        url: FLOW_URL,
-        enabled_events: ["charge.succeeded"],
-        secret: "whsec_external",
-      },
+      { id: "we_1", url: FLOW_URL, enabled_events: ["charge.succeeded"], secret: "whsec_external" },
     ]);
     useStripe(stripe);
     const context = makeContext();
@@ -141,10 +131,7 @@ describe("onInstanceDeploy", () => {
     await deploy(context, ["charge.succeeded", "charge.failed"]);
 
     expect(stripe.store).toHaveLength(1);
-    expect(stripe.store[0].enabled_events).toEqual([
-      "charge.succeeded",
-      "charge.failed",
-    ]);
+    expect(stripe.store[0].enabled_events).toEqual(["charge.succeeded", "charge.failed"]);
     expect(storedWebhook(context)?.secret).toBeUndefined();
   });
 
@@ -166,12 +153,7 @@ describe("onInstanceDeploy", () => {
 describe("onInstanceDelete", () => {
   it("removes the flow's endpoint even when the event set has changed since deploy", async () => {
     const stripe = makeStripe([
-      {
-        id: "we_1",
-        url: FLOW_URL,
-        enabled_events: ["charge.succeeded"],
-        secret: "whsec_1",
-      },
+      { id: "we_1", url: FLOW_URL, enabled_events: ["charge.succeeded"], secret: "whsec_1" },
     ]);
     useStripe(stripe);
 
@@ -182,18 +164,8 @@ describe("onInstanceDelete", () => {
 
   it("leaves endpoints belonging to other flows untouched", async () => {
     const stripe = makeStripe([
-      {
-        id: "we_1",
-        url: FLOW_URL,
-        enabled_events: ["charge.succeeded"],
-        secret: "whsec_1",
-      },
-      {
-        id: "we_2",
-        url: OTHER_FLOW_URL,
-        enabled_events: ["charge.succeeded"],
-        secret: "whsec_2",
-      },
+      { id: "we_1", url: FLOW_URL, enabled_events: ["charge.succeeded"], secret: "whsec_1" },
+      { id: "we_2", url: OTHER_FLOW_URL, enabled_events: ["charge.succeeded"], secret: "whsec_2" },
     ]);
     useStripe(stripe);
 

@@ -813,13 +813,7 @@ const reimbursementSchema = {
     },
     type: {
       type: "string",
-      enum: [
-        "MILEAGE",
-        "OUT_OF_POCKET",
-        "PAYBACK_FULL",
-        "PAYBACK_PARTIAL",
-        "PER_DIEM",
-      ],
+      enum: ["MILEAGE", "OUT_OF_POCKET", "PAYBACK_FULL", "PAYBACK_PARTIAL", "PER_DIEM"],
     },
     updated_at: {
       type: ["string", "null"],

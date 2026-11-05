@@ -16,14 +16,9 @@ export const deleteTimeEntry = action({
   examplePayload: deleteTimeEntryExamplePayload,
   performSafety: "notAllowed",
   perform: async (context, { clickUpConnection, teamId, timerId }) => {
-    const client = createClickUpClient(
-      clickUpConnection,
-      context.debug.enabled,
-    );
+    const client = createClickUpClient(clickUpConnection, context.debug.enabled);
 
-    const { data } = await client.delete(
-      `/team/${teamId}/time_entries/${timerId}`,
-    );
+    const { data } = await client.delete(`/team/${teamId}/time_entries/${timerId}`);
 
     return {
       data,

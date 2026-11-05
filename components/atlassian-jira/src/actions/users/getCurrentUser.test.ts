@@ -12,9 +12,7 @@ const run = () => invoke(getCurrentUser, { jiraConnection: basicConnection() });
 
 describe("getCurrentUser", () => {
   test("reads the authenticated user", async () => {
-    const scope = jiraApi()
-      .get("/rest/api/3/myself")
-      .reply(200, getCurrentUserExamplePayload.data);
+    const scope = jiraApi().get("/rest/api/3/myself").reply(200, getCurrentUserExamplePayload.data);
 
     const { result } = await run();
 

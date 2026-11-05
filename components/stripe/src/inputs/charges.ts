@@ -91,11 +91,7 @@ export const fraudDetails = input({
   clean: cleanObjectInput,
 });
 
-export const getChargeInputs = {
-  timeout,
-  stripeConnection: connectionInput,
-  chargeId,
-};
+export const getChargeInputs = { timeout, stripeConnection: connectionInput, chargeId };
 
 export const listChargesInputs = {
   timeout,
@@ -130,8 +126,7 @@ export const updateChargeInputs = {
   customerId: {
     ...customerId,
     label: "Customer ID",
-    comments:
-      "The ID of an existing customer that will be associated with this request.",
+    comments: "The ID of an existing customer that will be associated with this request.",
     clean: cleanStringInput,
   },
   description: {

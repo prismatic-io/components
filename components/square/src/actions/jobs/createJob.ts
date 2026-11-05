@@ -6,17 +6,10 @@ import { createJobInputs } from "../../inputs";
 export const createJob = action({
   display: {
     label: "Create Job",
-    description:
-      "Creates a job in a seller account with a title and tip eligibility.",
+    description: "Creates a job in a seller account with a title and tip eligibility.",
   },
-  perform: async (
-    context,
-    { squareConnection, idempotencyKey, jobTitle, isTipEligible },
-  ) => {
-    const client = await createAuthorizedClient(
-      squareConnection,
-      context.debug.enabled,
-    );
+  perform: async (context, { squareConnection, idempotencyKey, jobTitle, isTipEligible }) => {
+    const client = await createAuthorizedClient(squareConnection, context.debug.enabled);
 
     const requestBody = {
       idempotency_key: idempotencyKey,

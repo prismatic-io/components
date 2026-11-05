@@ -22,7 +22,7 @@ export const pollEventsTrigger = pollingTrigger({
     resolveItems: (_context, { payload }): EventRecordChange[] =>
       resolvePollingRecordChanges(
         (payload.body.data as { changes?: EventChangesObject } | undefined)
-          ?.changes,
+          ?.changes
       ),
     getNextPaginationState: (_context, { payload }): PollEventsCursor =>
       (payload.paginationState as PollEventsCursor | undefined) ?? null,

@@ -26,21 +26,16 @@ export const listOnboardingCandidateInfo = action({
     },
   ) => {
     const client = await createClient(connection, context.debug.enabled);
-    const data = await paginateData(
-      client,
-      "/OnboardingCandidateInfo",
-      fetchAll,
-      {
-        $count,
-        $filter,
-        $orderby,
-        $search,
-        $select,
-        $skip,
-        $top,
-        ...customQueryParams,
-      },
-    );
+    const data = await paginateData(client, "/OnboardingCandidateInfo", fetchAll, {
+      $count,
+      $filter,
+      $orderby,
+      $search,
+      $select,
+      $skip,
+      $top,
+      ...customQueryParams,
+    });
     return {
       data,
     };

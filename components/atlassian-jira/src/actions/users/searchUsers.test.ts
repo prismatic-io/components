@@ -8,11 +8,7 @@ beforeAll(() => nock.disableNetConnect());
 afterAll(() => nock.enableNetConnect());
 afterEach(() => nock.cleanAll());
 
-const run = () =>
-  invoke(searchUsers, {
-    jiraConnection: basicConnection(),
-    searchString: "Jane",
-  });
+const run = () => invoke(searchUsers, { jiraConnection: basicConnection(), searchString: "Jane" });
 
 describe("searchUsers", () => {
   test("searches users by the text", async () => {

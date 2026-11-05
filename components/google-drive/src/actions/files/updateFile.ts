@@ -53,8 +53,7 @@ export const updateFile = action({
         ...updateFileExamplePayload.data,
         id: params.fileId,
         name: fileName || updateFileExamplePayload.data.name,
-        mimeType:
-          mime.lookup(fileName) || updateFileExamplePayload.data.mimeType,
+        mimeType: mime.lookup(fileName) || updateFileExamplePayload.data.mimeType,
       },
     };
   },

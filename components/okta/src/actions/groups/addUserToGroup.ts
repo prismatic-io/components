@@ -12,9 +12,7 @@ export const addUserToGroup = action({
   perform: async (context, { groupId, userId, connection }) => {
     const client = await createClient(connection, context.debug.enabled);
 
-    await client.put(
-      `/groups/${encodeURIComponent(groupId)}/users/${encodeURIComponent(userId)}`,
-    );
+    await client.put(`/groups/${encodeURIComponent(groupId)}/users/${encodeURIComponent(userId)}`);
 
     return {
       data: {

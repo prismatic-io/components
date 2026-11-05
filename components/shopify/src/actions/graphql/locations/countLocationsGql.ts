@@ -20,17 +20,13 @@ export const countLocationsGql = action({
       context.logger,
     );
 
-    const data: { locationsCount: Count } =
-      await client.request(countLocationsQuery);
+    const data: { locationsCount: Count } = await client.request(countLocationsQuery);
 
     return {
       data: data.locationsCount,
     };
   },
   inputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: countLocationsGqlOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: countLocationsGqlOutputSchema }),
   examplePayload,
 });

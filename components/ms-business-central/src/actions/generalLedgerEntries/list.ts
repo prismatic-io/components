@@ -7,19 +7,11 @@ import { listGeneralLedgerEntriesInputs } from "../../inputs/generalLedgerEntrie
 export const listGeneralLedgerEntries = action({
   display: {
     label: "List General Ledger Entries",
-    description:
-      "Retrieve all general ledger entries in your Business Central organization.",
+    description: "Retrieve all general ledger entries in your Business Central organization.",
   },
   inputs: listGeneralLedgerEntriesInputs,
-  perform: async (
-    context,
-    { companyId, connection, fetchAll, odataQueryParams },
-  ) => {
-    const client = getMsBusinessCentralClient(
-      connection,
-      context,
-      context.debug.enabled,
-    );
+  perform: async (context, { companyId, connection, fetchAll, odataQueryParams }) => {
+    const client = getMsBusinessCentralClient(connection, context, context.debug.enabled);
     const params = {
       $search: odataQueryParams.$search,
       $skip: odataQueryParams.$skip,

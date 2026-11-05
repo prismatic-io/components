@@ -77,20 +77,17 @@ export const attendeesInput = input({
   ],
   comments:
     "The event attendees as key-value pairs. Specify the email address as the key and the attendee type (required, optional, or resource) as the value.",
-  example:
-    '{"john.doe@example.com": "required", "jane.smith@example.com": "optional"}',
+  example: '{"john.doe@example.com": "required", "jane.smith@example.com": "optional"}',
   placeholder: "Enter attendee email addresses",
   clean: (rawValue) => {
     if (!Array.isArray(rawValue)) {
       throw new Error("Unexpected format of attendees collection.");
     }
 
-    const payload = (rawValue as KeyValuePair<unknown>[]).map<Attendee>(
-      ({ key, value }) => ({
-        emailAddress: { address: util.types.toString(key) },
-        type: util.types.toString(value) as AttendeeType,
-      }),
-    );
+    const payload = (rawValue as KeyValuePair<unknown>[]).map<Attendee>(({ key, value }) => ({
+      emailAddress: { address: util.types.toString(key) },
+      type: util.types.toString(value) as AttendeeType,
+    }));
     return payload;
   },
 });

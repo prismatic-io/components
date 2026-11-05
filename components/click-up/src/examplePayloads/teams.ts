@@ -5,8 +5,7 @@ export const getAuthorizedTeamsExamplePayload = {
         id: "9012345",
         name: "Acme Corp Workspace",
         color: "#536cfe",
-        avatar:
-          "https://attachments.clickup.com/team_avatars/9012345_a1b2c.png",
+        avatar: "https://attachments.clickup.com/team_avatars/9012345_a1b2c.png",
         members: [
           {
             user: {
@@ -14,8 +13,7 @@ export const getAuthorizedTeamsExamplePayload = {
               username: "John Doe",
               email: "john.doe@example.com",
               color: "#7b68ee",
-              profilePicture:
-                "https://attachments.clickup.com/profilePictures/81942673_abc.jpg",
+              profilePicture: "https://attachments.clickup.com/profilePictures/81942673_abc.jpg",
               initials: "JD",
               role: 1,
               custom_role: null,
@@ -29,8 +27,7 @@ export const getAuthorizedTeamsExamplePayload = {
               color: "#e91e63",
               email: "jane.smith@example.com",
               initials: "JS",
-              profilePicture:
-                "https://attachments.clickup.com/profilePictures/81942670_def.jpg",
+              profilePicture: "https://attachments.clickup.com/profilePictures/81942670_def.jpg",
             },
           },
         ],

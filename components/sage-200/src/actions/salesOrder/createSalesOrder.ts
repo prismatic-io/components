@@ -49,8 +49,7 @@ export const createSalesOrder = action({
       is_to_sequence_lines: isToSequenceLines,
       override_on_hold: overrideOnHold,
       recalculate_prices: recalculatePrices,
-      apply_available_document_discount_percent:
-        applyAvailableDocumentDiscountPercent,
+      apply_available_document_discount_percent: applyAvailableDocumentDiscountPercent,
       customer_delivery_address_id: customerDeliveryAddressId,
       suppress_warnings: suppressWarnings,
       customer_type: customerType,

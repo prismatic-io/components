@@ -8,14 +8,10 @@ import { sendMeasurementProtocolEventsOutputSchema } from "../outputSchemas";
 export const sendMeasurementProtocolEvents = action({
   display: {
     label: "Send Measurement Protocol Events",
-    description:
-      "Sends Measurement Protocol Events to the Google Analytics GA4 account.",
+    description: "Sends Measurement Protocol Events to the Google Analytics GA4 account.",
   },
   performSafety: "notAllowed",
-  perform: async (
-    _context,
-    { firebaseAppId, events, appInstanceId, apiSecret },
-  ) => {
+  perform: async (_context, { firebaseAppId, events, appInstanceId, apiSecret }) => {
     const params = {
       firebase_app_id: firebaseAppId,
       api_secret: apiSecret,

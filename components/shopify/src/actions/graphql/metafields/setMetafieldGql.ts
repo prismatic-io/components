@@ -13,10 +13,7 @@ export const setMetafieldGql = action({
       "Sets a resource metafield. Note: This action currently utilizes an unstable version of the Shopify Admin GraphQL API and is subject to change.",
   },
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { shopifyConnection, key, value, ownerId, type, namespace },
-  ) => {
+  perform: async (context, { shopifyConnection, key, value, ownerId, type, namespace }) => {
     const client = getShopifyGraphQlClient(
       shopifyConnection,
       "unstable",
@@ -42,8 +39,5 @@ export const setMetafieldGql = action({
   examplePerform: async () => examplePayload,
   examplePayload,
   inputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: setMetafieldGqlOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: setMetafieldGqlOutputSchema }),
 });

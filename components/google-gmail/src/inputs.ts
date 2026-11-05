@@ -40,8 +40,7 @@ export const topicNameInput = input({
   placeholder: "Enter Pub/Sub topic name",
   clean: util.types.toString,
   example: "projects/my-project-123456/topics/gmail-notifications",
-  comments:
-    "The full Pub/Sub topic name in the format: projects/{project-id}/topics/{topic-id}",
+  comments: "The full Pub/Sub topic name in the format: projects/{project-id}/topics/{topic-id}",
 });
 
 export const labelIdsInput = input({
@@ -54,8 +53,7 @@ export const labelIdsInput = input({
   example: '["INBOX", "IMPORTANT"]',
   dataSource: "selectLabel",
   required: true,
-  clean: (value: unknown) =>
-    (value as unknown[]).map((val: unknown) => util.types.toString(val)),
+  clean: (value: unknown) => (value as unknown[]).map((val: unknown) => util.types.toString(val)),
 });
 
 export const fetchAll = input({
@@ -93,8 +91,7 @@ export const pageToken = input({
   placeholder: "Enter page token from previous response",
   clean: (val) => util.types.toString(val) || undefined,
   required: false,
-  comments:
-    "Page token from the previous response when looping through paginated results.",
+  comments: "Page token from the previous response when looping through paginated results.",
   example: "09876543210abcdefg",
 });
 
@@ -118,9 +115,7 @@ export const labelIds = input({
   comments: "Filter messages by Gmail label IDs.",
   example: '["INBOX", "UNREAD"]',
   clean: (values) =>
-    ((values as unknown[]) || []).map((value: unknown) =>
-      util.types.toString(value),
-    ),
+    ((values as unknown[]) || []).map((value: unknown) => util.types.toString(value)),
 });
 
 export const from = input({
@@ -233,8 +228,7 @@ export const getWatchStatusInputs = {
     type: "string",
     required: true,
     placeholder: "Enter watch expiration timestamp",
-    comments:
-      "The expiration timestamp (in milliseconds) from a previous Gmail watch response.",
+    comments: "The expiration timestamp (in milliseconds) from a previous Gmail watch response.",
     example: "1704153600000",
     clean: util.types.toString,
   }),

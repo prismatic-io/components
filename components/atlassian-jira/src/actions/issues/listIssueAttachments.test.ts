@@ -9,25 +9,17 @@ afterAll(() => nock.enableNetConnect());
 afterEach(() => nock.cleanAll());
 
 const run = () =>
-  invoke(listIssueAttachments, {
-    issueId: "10201",
-    jiraConnection: basicConnection(),
-  });
+  invoke(listIssueAttachments, { issueId: "10201", jiraConnection: basicConnection() });
 
 describe("listIssueAttachments", () => {
   test("reduces the issue's attachments to id and mimeType", async () => {
-    const scope = jiraApi()
-      .get("/rest/api/3/issue/10201")
-      .reply(200, getIssueExamplePayload.data);
+    const scope = jiraApi().get("/rest/api/3/issue/10201").reply(200, getIssueExamplePayload.data);
 
     const { result } = await run();
 
     expect(scope.isDone()).toBe(true);
     expect(result.data).toEqual(
-      getIssueExamplePayload.data.fields.attachment.map(({ id, mimeType }) => ({
-        id,
-        mimeType,
-      })),
+      getIssueExamplePayload.data.fields.attachment.map(({ id, mimeType }) => ({ id, mimeType })),
     );
   });
 
@@ -35,9 +27,7 @@ describe("listIssueAttachments", () => {
     jiraApi()
       .get("/rest/api/3/issue/10201")
       .reply(404, {
-        errorMessages: [
-          "Issue does not exist or you do not have permission to see it.",
-        ],
+        errorMessages: ["Issue does not exist or you do not have permission to see it."],
       });
 
     await expect(run()).rejects.toMatchObject({ response: { status: 404 } });

@@ -51,11 +51,7 @@ const eventsPage = (data: unknown[], hasMore: boolean) => ({
 });
 
 interface PollResult {
-  payload: {
-    body: {
-      data: { created: Array<{ id: string }>; updated: Array<{ id: string }> };
-    };
-  };
+  payload: { body: { data: { created: Array<{ id: string }>; updated: Array<{ id: string }> } } };
   polledNoChanges: boolean;
 }
 
@@ -82,9 +78,7 @@ describe("pollChangesTrigger cursor advancement", () => {
       .get("/v1/events")
       .query(true)
       .reply(200, eventsPage([createdEvent], false));
-    const polling = pollingContext({
-      lastPolledAt: "2024-01-01T00:00:00.000Z",
-    });
+    const polling = pollingContext({ lastPolledAt: "2024-01-01T00:00:00.000Z" });
 
     await poll(polling);
 
@@ -101,15 +95,11 @@ describe("pollChangesTrigger cursor advancement", () => {
       .query(true)
       .times(100)
       .reply(200, eventsPage([createdEvent], true));
-    const polling = pollingContext({
-      lastPolledAt: "2024-01-01T00:00:00.000Z",
-    });
+    const polling = pollingContext({ lastPolledAt: "2024-01-01T00:00:00.000Z" });
 
     const { loggerMock } = await poll(polling);
 
-    expect(polling.read()).toEqual({
-      lastPolledAt: "2024-01-01T00:00:00.000Z",
-    });
+    expect(polling.read()).toEqual({ lastPolledAt: "2024-01-01T00:00:00.000Z" });
     expect(loggerMock.warn).toHaveBeenCalledWith(
       expect.stringContaining("Holding the cursor at 2024-01-01T00:00:00.000Z"),
     );
@@ -121,18 +111,14 @@ describe("pollChangesTrigger cursor advancement", () => {
       .query(true)
       .times(200)
       .reply(200, eventsPage([createdEvent], true));
-    const polling = pollingContext({
-      lastPolledAt: "2024-01-01T00:00:00.000Z",
-    });
+    const polling = pollingContext({ lastPolledAt: "2024-01-01T00:00:00.000Z" });
 
     const first = await poll(polling);
     const second = await poll(polling);
 
     expect(buckets(first.result).created[0].id).toBe("evt_created_1");
     expect(buckets(second.result).created[0].id).toBe("evt_created_1");
-    expect(polling.read()).toEqual({
-      lastPolledAt: "2024-01-01T00:00:00.000Z",
-    });
+    expect(polling.read()).toEqual({ lastPolledAt: "2024-01-01T00:00:00.000Z" });
   });
 });
 
@@ -198,10 +184,7 @@ describe("pollChangesTrigger polledNoChanges", () => {
       .reply(200, eventsPage([createdEvent, updatedEvent], false));
     const polling = pollingContext();
 
-    const { result } = await poll(polling, {
-      showNewRecords: false,
-      showUpdatedRecords: false,
-    });
+    const { result } = await poll(polling, { showNewRecords: false, showUpdatedRecords: false });
 
     expect(result.polledNoChanges).toBe(true);
   });

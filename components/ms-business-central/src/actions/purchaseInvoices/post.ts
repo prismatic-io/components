@@ -11,11 +11,7 @@ export const postPurchaseInvoice = action({
   },
   inputs: postPurchaseInvoiceInputs,
   perform: async (context, { purchaseInvoiceId, connection, companyId }) => {
-    const client = getMsBusinessCentralClient(
-      connection,
-      context,
-      context.debug.enabled,
-    );
+    const client = getMsBusinessCentralClient(connection, context, context.debug.enabled);
 
     const { data } = await client.post(
       `/companies(${companyId})/purchaseInvoices(${purchaseInvoiceId})/Microsoft.NAV.post`,

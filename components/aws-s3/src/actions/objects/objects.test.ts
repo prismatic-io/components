@@ -77,15 +77,8 @@ const serviceError = (name: string, httpStatusCode: number) =>
     message: `${name} error`,
   });
 
-const expectServiceError = async (
-  promise: Promise<unknown>,
-  name: string,
-  status: number,
-) => {
-  await expect(promise).rejects.toMatchObject({
-    name,
-    $metadata: { httpStatusCode: status },
-  });
+const expectServiceError = async (promise: Promise<unknown>, name: string, status: number) => {
+  await expect(promise).rejects.toMatchObject({ name, $metadata: { httpStatusCode: status } });
 };
 
 describe("object actions", () => {
@@ -134,20 +127,13 @@ describe("object actions", () => {
 
       const command = sendMock.mock.calls[0][0];
       expect(command).toBeInstanceOf(DeleteObjectCommand);
-      expect(command.input).toEqual({
-        Bucket: "example-bucket",
-        Key: "example/object.txt",
-      });
+      expect(command.input).toEqual({ Bucket: "example-bucket", Key: "example/object.txt" });
       expect(result).toEqual(deleteObjectExamplePayload);
     });
 
     test("propagates an SDK service error", async () => {
       sendMock.mockRejectedValue(serviceError("AccessDenied", 403));
-      await expectServiceError(
-        invoke(deleteObject, objectInputs),
-        "AccessDenied",
-        403,
-      );
+      await expectServiceError(invoke(deleteObject, objectInputs), "AccessDenied", 403);
     });
   });
 
@@ -174,19 +160,13 @@ describe("object actions", () => {
 
     test("propagates an SDK service error", async () => {
       sendMock.mockRejectedValue(serviceError("MalformedXML", 400));
-      await expectServiceError(
-        invoke(deleteObjects, inputs),
-        "MalformedXML",
-        400,
-      );
+      await expectServiceError(invoke(deleteObjects, inputs), "MalformedXML", 400);
     });
   });
 
   describe("generatePresignedUrl", () => {
     test("signs a GetObjectCommand for download and returns the URL", async () => {
-      getSignedUrlMock.mockResolvedValue(
-        generatePresignedUrlExamplePayload.data,
-      );
+      getSignedUrlMock.mockResolvedValue(generatePresignedUrlExamplePayload.data);
 
       const { result } = await invoke(generatePresignedUrl, {
         ...objectInputs,
@@ -196,18 +176,13 @@ describe("object actions", () => {
 
       const [, command, options] = getSignedUrlMock.mock.calls[0];
       expect(command).toBeInstanceOf(GetObjectCommand);
-      expect(command.input).toEqual({
-        Bucket: "example-bucket",
-        Key: "example/object.txt",
-      });
+      expect(command.input).toEqual({ Bucket: "example-bucket", Key: "example/object.txt" });
       expect(options).toEqual({ expiresIn: 3600 });
       expect(result).toEqual(generatePresignedUrlExamplePayload);
     });
 
     test("signs a PutObjectCommand for any non-download action type", async () => {
-      getSignedUrlMock.mockResolvedValue(
-        generatePresignedUrlExamplePayload.data,
-      );
+      getSignedUrlMock.mockResolvedValue(generatePresignedUrlExamplePayload.data);
 
       await invoke(generatePresignedUrl, {
         ...objectInputs,
@@ -217,17 +192,12 @@ describe("object actions", () => {
 
       const [, command, options] = getSignedUrlMock.mock.calls[0];
       expect(command).toBeInstanceOf(PutObjectCommand);
-      expect(command.input).toEqual({
-        Bucket: "example-bucket",
-        Key: "example/object.txt",
-      });
+      expect(command.input).toEqual({ Bucket: "example-bucket", Key: "example/object.txt" });
       expect(options).toEqual({ expiresIn: 60 });
     });
 
     test("propagates a signing failure", async () => {
-      getSignedUrlMock.mockRejectedValue(
-        serviceError("CredentialsProviderError", 400),
-      );
+      getSignedUrlMock.mockRejectedValue(serviceError("CredentialsProviderError", 400));
       await expectServiceError(
         invoke(generatePresignedUrl, {
           ...objectInputs,
@@ -265,11 +235,7 @@ describe("object actions", () => {
 
     test("propagates an SDK service error", async () => {
       sendMock.mockRejectedValue(serviceError("NoSuchKey", 404));
-      await expectServiceError(
-        invoke(getObjectAttributes, inputs),
-        "NoSuchKey",
-        404,
-      );
+      await expectServiceError(invoke(getObjectAttributes, inputs), "NoSuchKey", 404);
     });
   });
 
@@ -305,21 +271,14 @@ describe("object actions", () => {
     test("returns the raw response when includeMetadata is true", async () => {
       sendMock.mockResolvedValue(listResponse);
 
-      const { result } = await invoke(listObjects, {
-        ...inputs,
-        includeMetadata: true,
-      });
+      const { result } = await invoke(listObjects, { ...inputs, includeMetadata: true });
 
       expect(result).toEqual({ data: listResponse });
     });
 
     test("propagates an SDK service error", async () => {
       sendMock.mockRejectedValue(serviceError("NoSuchBucket", 404));
-      await expectServiceError(
-        invoke(listObjects, inputs),
-        "NoSuchBucket",
-        404,
-      );
+      await expectServiceError(invoke(listObjects, inputs), "NoSuchBucket", 404);
     });
   });
 
@@ -352,11 +311,7 @@ describe("object actions", () => {
 
     test("propagates an SDK service error", async () => {
       sendMock.mockRejectedValue(serviceError("EntityTooLarge", 400));
-      await expectServiceError(
-        invoke(putObject, inputs),
-        "EntityTooLarge",
-        400,
-      );
+      await expectServiceError(invoke(putObject, inputs), "EntityTooLarge", 400);
     });
   });
 });

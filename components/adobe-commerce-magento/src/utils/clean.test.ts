@@ -1,9 +1,4 @@
-import {
-  asJsonObject,
-  cleanNumber,
-  cleanString,
-  lookBackDateClean,
-} from "./clean";
+import { asJsonObject, cleanNumber, cleanString, lookBackDateClean } from "./clean";
 
 describe("cleanString", () => {
   test.each<[string, unknown, string]>([
@@ -57,10 +52,7 @@ describe("asJsonObject", () => {
   test("preserves nested values by reference, copying only the top level", () => {
     const nested = { weight: 2 };
 
-    const result = asJsonObject(
-      { sku: "ABC-123", extension: nested },
-      "Product",
-    );
+    const result = asJsonObject({ sku: "ABC-123", extension: nested }, "Product");
 
     expect(result.extension).toBe(nested);
   });
@@ -72,9 +64,7 @@ describe("asJsonObject", () => {
     ["a number", 42],
     ["undefined", undefined],
   ])("%s throws naming the input", (_label, raw) => {
-    expect(() => asJsonObject(raw, "Product")).toThrow(
-      "Product must be valid JSON.",
-    );
+    expect(() => asJsonObject(raw, "Product")).toThrow("Product must be valid JSON.");
   });
 });
 
@@ -93,9 +83,7 @@ describe("lookBackDateClean", () => {
   });
 
   test("trims surrounding whitespace before matching", () => {
-    expect(lookBackDateClean("  2020-01-01  ")).toBe(
-      "2020-01-01T00:00:00.000Z",
-    );
+    expect(lookBackDateClean("  2020-01-01  ")).toBe("2020-01-01T00:00:00.000Z");
   });
 
   test.each<[string, unknown]>([
@@ -106,14 +94,10 @@ describe("lookBackDateClean", () => {
     ["an ISO instant rather than a date", "2020-01-01T00:00:00.000Z"],
     ["a non-string value", 20200101],
   ])("%s is rejected as malformed", (_label, raw) => {
-    expect(() => lookBackDateClean(raw)).toThrow(
-      /must be a date in YYYY-MM-DD format/,
-    );
+    expect(() => lookBackDateClean(raw)).toThrow(/must be a date in YYYY-MM-DD format/);
   });
 
   test("rejects a future date with its own message", () => {
-    expect(() => lookBackDateClean("2099-01-01")).toThrow(
-      /cannot be a future date/,
-    );
+    expect(() => lookBackDateClean("2099-01-01")).toThrow(/cannot be a future date/);
   });
 });

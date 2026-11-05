@@ -15,9 +15,6 @@ export const getShopConfig = action({
     return { data };
   },
   examplePayload: getShopConfigExamplePayload.restMap,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getShopConfigOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getShopConfigOutputSchema }),
   inputs,
 });

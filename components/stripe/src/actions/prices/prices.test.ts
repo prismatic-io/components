@@ -23,9 +23,7 @@ afterEach(() => nock.cleanAll());
 
 describe("createPrice", () => {
   it("creates the price and returns it", async () => {
-    const scope = nock(BASE)
-      .post("/v1/prices")
-      .reply(200, createPriceExamplePayload.data);
+    const scope = nock(BASE).post("/v1/prices").reply(200, createPriceExamplePayload.data);
 
     const { result } = await invoke(
       createPrice,
@@ -49,9 +47,7 @@ describe("createPrice", () => {
   it("surfaces a Stripe error response", async () => {
     nock(BASE)
       .post("/v1/prices")
-      .reply(400, {
-        error: { type: "invalid_request_error", message: "No such product" },
-      });
+      .reply(400, { error: { type: "invalid_request_error", message: "No such product" } });
 
     await expect(
       invoke(
@@ -72,9 +68,7 @@ describe("createPrice", () => {
 
 describe("getPrice", () => {
   it("returns the price for the supplied ID", async () => {
-    const scope = nock(BASE)
-      .get(`/v1/prices/${PRICE_ID}`)
-      .reply(200, getPriceExamplePayload.data);
+    const scope = nock(BASE).get(`/v1/prices/${PRICE_ID}`).reply(200, getPriceExamplePayload.data);
 
     const { result } = await invoke(
       getPrice,
@@ -88,15 +82,10 @@ describe("getPrice", () => {
   it("surfaces a Stripe error response", async () => {
     nock(BASE)
       .get("/v1/prices/price_missing")
-      .reply(404, {
-        error: { type: "invalid_request_error", message: "No such price" },
-      });
+      .reply(404, { error: { type: "invalid_request_error", message: "No such price" } });
 
     await expect(
-      invoke(
-        getPrice,
-        params({ priceId: "price_missing", stripeConnection: conn }),
-      ),
+      invoke(getPrice, params({ priceId: "price_missing", stripeConnection: conn })),
     ).rejects.toThrow("No such price");
   });
 });
@@ -121,9 +110,7 @@ describe("listPrices", () => {
     nock(BASE)
       .get("/v1/prices")
       .query(true)
-      .reply(400, {
-        error: { type: "invalid_request_error", message: "Invalid limit" },
-      });
+      .reply(400, { error: { type: "invalid_request_error", message: "Invalid limit" } });
 
     await expect(
       invoke(listPrices, params({ pagination: {}, stripeConnection: conn })),
@@ -156,9 +143,7 @@ describe("updatePrice", () => {
   it("surfaces a Stripe error response", async () => {
     nock(BASE)
       .post("/v1/prices/price_missing")
-      .reply(404, {
-        error: { type: "invalid_request_error", message: "No such price" },
-      });
+      .reply(404, { error: { type: "invalid_request_error", message: "No such price" } });
 
     await expect(
       invoke(

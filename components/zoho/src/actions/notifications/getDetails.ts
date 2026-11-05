@@ -7,19 +7,11 @@ import { fetchAllPages } from "../../util/pagination";
 export const crmGetNotificationDetails = action({
   display: {
     label: "CRM - Get Notification Details",
-    description:
-      "Retrieve the details of notifications enabled for a specific channel.",
+    description: "Retrieve the details of notifications enabled for a specific channel.",
   },
   inputs: notificationGetDetailsInputs,
-  perform: async (
-    context,
-    { connection, channelId, module, page, per_page, fetchAll },
-  ) => {
-    const crmClient = createClient(
-      connection,
-      ClientType.CRM,
-      context.debug.enabled,
-    );
+  perform: async (context, { connection, channelId, module, page, per_page, fetchAll }) => {
+    const crmClient = createClient(connection, ClientType.CRM, context.debug.enabled);
 
     const data = await fetchAllPages(
       crmClient,

@@ -22,9 +22,7 @@ export const selectTimeSheet = dataSource({
         label: String(item.id || ""),
         key: String(item.id || ""),
       }))
-      .sort((a: Element, b: Element) =>
-        (a.label ?? "").localeCompare(b.label ?? ""),
-      );
+      .sort((a: Element, b: Element) => (a.label ?? "").localeCompare(b.label ?? ""));
 
     return { result };
   },

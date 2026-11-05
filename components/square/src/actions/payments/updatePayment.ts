@@ -9,10 +9,7 @@ export const updatePayment = action({
     description: "Updates a payment with the APPROVED status.",
   },
   perform: async (context, { squareConnection, paymentId, payment }) => {
-    const client = await createAuthorizedClient(
-      squareConnection,
-      context.debug.enabled,
-    );
+    const client = await createAuthorizedClient(squareConnection, context.debug.enabled);
 
     const response = await client.put(`/v2/payments/${paymentId}`, payment);
 

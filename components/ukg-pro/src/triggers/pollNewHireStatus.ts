@@ -8,17 +8,12 @@ import type {
   NewHireStatusPollingState,
   NewHireStatusRecordChange,
 } from "../types";
-import {
-  fetchAllPages,
-  getTenantIdentifier,
-  resolveNewHireStatusChanges,
-} from "../util";
+import { fetchAllPages, getTenantIdentifier, resolveNewHireStatusChanges } from "../util";
 
 export const pollNewHireStatus = pollingTrigger({
   display: {
     label: "New Hire Status",
-    description:
-      "Checks for new and updated new hire onboarding records on a configured schedule.",
+    description: "Checks for new and updated new hire onboarding records on a configured schedule.",
   },
   inputs: pollNewHireStatusInputs,
   triggerResolverSupport: "valid",
@@ -58,10 +53,7 @@ export const pollNewHireStatus = pollingTrigger({
       const currentStatus = hire.onboardingStatus;
       const currentProgress = 0;
 
-      currentStatusMap[hireId] = {
-        status: currentStatus,
-        progress: currentProgress,
-      };
+      currentStatusMap[hireId] = { status: currentStatus, progress: currentProgress };
 
       const previous = lastStatusMap[hireId];
 

@@ -30,8 +30,7 @@ export const createFieldsFromMetadata = action({
     const result = await executeSFAction(context, command);
     return { data: result };
   },
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    genericCreateUpdateFullNameExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => genericCreateUpdateFullNameExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: saveMetadataOutputSchema,

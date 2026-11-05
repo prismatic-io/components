@@ -6,24 +6,16 @@ import { getAttachmentExamplePayload } from "../../examplePayloads";
 export const getAttachment = action({
   display: {
     label: "Get Attachment",
-    description:
-      "Get a file attachment from an account, opportunity, or contact.",
+    description: "Get a file attachment from an account, opportunity, or contact.",
   },
   inputs: getAttachmentInputs,
   performSafety: "safe",
   perform: async (context, { connection, version, fileId }) => {
-    const httpClient = await createSalesforceHttpClient(
-      version,
-      connection,
-      context.debug.enabled,
-    );
+    const httpClient = await createSalesforceHttpClient(version, connection, context.debug.enabled);
 
-    const { data, headers } = await httpClient.get(
-      `/sobjects/Attachment/${fileId}/Body`,
-      {
-        responseType: "arraybuffer",
-      },
-    );
+    const { data, headers } = await httpClient.get(`/sobjects/Attachment/${fileId}/Body`, {
+      responseType: "arraybuffer",
+    });
 
     const contentType = headers["content-type"];
 

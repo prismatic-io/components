@@ -15,11 +15,7 @@ const crmGetRecord = action({
     fields,
   },
   perform: async (context, { connection, recordType, recordId, fields }) => {
-    const crmClient = createClient(
-      connection,
-      ClientType.CRM,
-      context.debug.enabled,
-    );
+    const crmClient = createClient(connection, ClientType.CRM, context.debug.enabled);
 
     const url = `/${recordType}/${recordId}`;
     const params = Object.fromEntries(

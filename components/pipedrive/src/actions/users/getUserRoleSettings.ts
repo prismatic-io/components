@@ -18,8 +18,5 @@ export const getUserRoleSettings = action({
   inputs: getUserRoleSettingsInputs,
   examplePayload: getUserRoleSettingsExamplePayload,
   examplePerform: async () => getUserRoleSettingsExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getUserRoleSettingsOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getUserRoleSettingsOutputSchema }),
 });

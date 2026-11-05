@@ -10,10 +10,7 @@ export const getMailThreads = action({
     description: "Gets mail threads.",
   },
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { connection, folder, pagination: { start, limit } = {} },
-  ) => {
+  perform: async (context, { connection, folder, pagination: { start, limit } = {} }) => {
     const client = createClient(connection, context.debug.enabled);
     const { data } = await client.get("/mailbox/mailThreads", {
       params: { folder, start, limit },
@@ -22,8 +19,5 @@ export const getMailThreads = action({
   },
   inputs: getMailThreadsInputs,
   examplePayload: getMailThreadsExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getMailThreadsOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getMailThreadsOutputSchema }),
 });

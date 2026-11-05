@@ -34,22 +34,19 @@ export const updateCompany = action({
       debugRequest: context.debug.enabled,
     });
 
-    const { data } = await client.patch(
-      hubspotPaths.objects("companies", `/${companyId}`),
-      {
-        properties: {
-          city: city,
-          domain: updateDomain,
-          industry: industry,
-          name: updateCompanyName,
-          phone: companyPhone,
-          state: state,
-          description: description,
-          ...fieldValues,
-          ...dynamicValues,
-        },
+    const { data } = await client.patch(hubspotPaths.objects("companies", `/${companyId}`), {
+      properties: {
+        city: city,
+        domain: updateDomain,
+        industry: industry,
+        name: updateCompanyName,
+        phone: companyPhone,
+        state: state,
+        description: description,
+        ...fieldValues,
+        ...dynamicValues,
       },
-    );
+    });
 
     return { data };
   },

@@ -6,11 +6,7 @@ import { rawRequestExamplePayload } from "../../examplePayloads";
 import { rawRequest } from "./rawRequest";
 
 const BASE = "https://graph.microsoft.com";
-const connection = createConnection(
-  templatedOauth,
-  {},
-  { access_token: "test-token" },
-);
+const connection = createConnection(templatedOauth, {}, { access_token: "test-token" });
 
 beforeAll(() => {
   nock.disableNetConnect();

@@ -15,21 +15,11 @@ import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
 export const listPurchaseRequisitions = action({
   display: {
     label: "List Purchase Requisitions",
-    description:
-      "Gets the header details of all the purchase requisitions in the system.",
+    description: "Gets the header details of all the purchase requisitions in the system.",
   },
   perform: async (
     _,
-    {
-      top,
-      expand,
-      skip,
-      filter,
-      inlinecount,
-      orderBy,
-      select,
-      connectionInput,
-    },
+    { top, expand, skip, filter, inlinecount, orderBy, select, connectionInput },
   ) => {
     const headers = {
       Accept: "application/json",

@@ -28,8 +28,5 @@ export const getVariantGql = action({
   },
   examplePayload,
   inputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getVariantGqlOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getVariantGqlOutputSchema }),
 });

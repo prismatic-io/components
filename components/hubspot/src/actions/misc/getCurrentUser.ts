@@ -1,10 +1,7 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { getHubspotClient } from "../../client";
 import { hubspotOAuth, privateAppAccessToken } from "../../connections";
-import {
-  hubspotPaths,
-  TOKEN_WITHOUT_BEARER_PREFIX_INDEX_START,
-} from "../../constants";
+import { hubspotPaths, TOKEN_WITHOUT_BEARER_PREFIX_INDEX_START } from "../../constants";
 import { getCurrentUserExamplePayload } from "../../examplePayloads";
 import { getCurrentUserInputs } from "../../inputs";
 import { getCurrentUserOutputSchema } from "../../outputSchemas";
@@ -63,10 +60,7 @@ export const getCurrentUser = action({
   },
   inputs: getCurrentUserInputs,
   examplePayload: getCurrentUserExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getCurrentUserOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getCurrentUserOutputSchema }),
 });
 
 export default getCurrentUser;

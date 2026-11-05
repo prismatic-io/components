@@ -37,8 +37,5 @@ export const deleteMetafieldGql = action({
   examplePerform: async () => examplePayload,
   examplePayload,
   inputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: deleteMetafieldGqlOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: deleteMetafieldGqlOutputSchema }),
 });

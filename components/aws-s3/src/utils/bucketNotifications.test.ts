@@ -26,9 +26,7 @@ describe.each(arrayCleans)("%s", (_name, clean, label) => {
   });
 
   test("throws when the JSON is not an array", () => {
-    expect(() => clean('{"Id":"config-1"}')).toThrow(
-      `${label} must be an array`,
-    );
+    expect(() => clean('{"Id":"config-1"}')).toThrow(`${label} must be an array`);
   });
 
   test("throws a SyntaxError for malformed JSON", () => {
@@ -41,9 +39,7 @@ describe.each(arrayCleans)("%s", (_name, clean, label) => {
   });
 
   test("throws when an already-parsed value is not an array", () => {
-    expect(() => clean({ Id: "config-1" })).toThrow(
-      `${label} must be an array`,
-    );
+    expect(() => clean({ Id: "config-1" })).toThrow(`${label} must be an array`);
   });
 
   test("returns undefined when no value is provided", () => {

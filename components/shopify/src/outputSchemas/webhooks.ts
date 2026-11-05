@@ -8,15 +8,9 @@ const restWebhookSchema = {
     updated_at: { type: "string" as const },
     format: { type: "string" as const },
     fields: { type: "array" as const, items: { type: "string" as const } },
-    metafield_namespaces: {
-      type: "array" as const,
-      items: { type: "string" as const },
-    },
+    metafield_namespaces: { type: "array" as const, items: { type: "string" as const } },
     api_version: { type: "string" as const },
-    private_metafield_namespaces: {
-      type: "array" as const,
-      items: { type: "string" as const },
-    },
+    private_metafield_namespaces: { type: "array" as const, items: { type: "string" as const } },
   },
 };
 
@@ -51,5 +45,4 @@ export const createWebhookGqlOutputSchema = createWebhookOutputSchema;
 
 export const deleteWebhookGqlOutputSchema = deleteWebhookOutputSchema;
 
-export const deleteInstanceWebhooksGqlOutputSchema =
-  deleteInstanceWebhooksOutputSchema;
+export const deleteInstanceWebhooksGqlOutputSchema = deleteInstanceWebhooksOutputSchema;

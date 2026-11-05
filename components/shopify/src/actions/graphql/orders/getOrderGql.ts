@@ -29,9 +29,6 @@ export const getOrderGql = action({
     };
   },
   inputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getOrderGqlOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getOrderGqlOutputSchema }),
   examplePayload,
 });

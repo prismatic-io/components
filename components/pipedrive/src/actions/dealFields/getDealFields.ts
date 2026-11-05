@@ -10,10 +10,7 @@ export const getDealFields = action({
     description: "Gets all deal fields.",
   },
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { connection, pagination: { start, limit } = {} },
-  ) => {
+  perform: async (context, { connection, pagination: { start, limit } = {} }) => {
     const client = createClient(connection, context.debug.enabled);
     const { data } = await client.get("/dealFields", {
       params: { start, limit },
@@ -22,8 +19,5 @@ export const getDealFields = action({
   },
   inputs: getDealFieldsInputs,
   examplePayload: getDealFieldsExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getDealFieldsOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getDealFieldsOutputSchema }),
 });

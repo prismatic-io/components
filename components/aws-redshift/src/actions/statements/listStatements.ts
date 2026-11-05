@@ -16,20 +16,9 @@ export const listStatements = action({
   inputs: listStatementsInputs,
   perform: async (
     context,
-    {
-      awsConnection,
-      awsRegion,
-      status,
-      fetchAll,
-      filters = {},
-      pagination = {},
-    },
+    { awsConnection, awsRegion, status, fetchAll, filters = {}, pagination = {} },
   ) => {
-    const client = await createRedshiftClient(
-      awsConnection,
-      awsRegion,
-      context.debug.enabled,
-    );
+    const client = await createRedshiftClient(awsConnection, awsRegion, context.debug.enabled);
 
     if (fetchAll) {
       const { allStatements, lastResponse } = await getAllStatements({

@@ -7,24 +7,16 @@ import { fetchWithPagination } from "../../util";
 export const getAllEmploymentDetailsByCompany = action({
   display: {
     label: "Get All Employment Details by Company",
-    description:
-      "Retrieve employment details for all employees within a specific company.",
+    description: "Retrieve employment details for all employees within a specific company.",
   },
   inputs: getAllEmploymentDetailsByCompanyInputs,
-  perform: async (
-    context,
-    { connection, companyId, filterParameters, fetchAll, pagination },
-  ) => {
+  perform: async (context, { connection, companyId, filterParameters, fetchAll, pagination }) => {
     const client = createBasicAuthClient(connection, context.debug.enabled);
 
     const { data } = await fetchWithPagination<EmploymentDetails>(
       client,
       `/personnel/v1/companies/${companyId}/employment-details`,
-      {
-        ...filterParameters,
-        page: pagination.page,
-        per_page: pagination.perPage,
-      },
+      { ...filterParameters, page: pagination.page, per_page: pagination.perPage },
       fetchAll,
     );
 

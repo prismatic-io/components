@@ -12,11 +12,7 @@ export const getSalesShipmentLines = action({
     description: "Gets a sales shipment line object",
   },
   perform: async (context, { companyId, salesShipmentLineId, connection }) => {
-    const client = getMsBusinessCentralClient(
-      connection,
-      context,
-      context.debug.enabled,
-    );
+    const client = getMsBusinessCentralClient(connection, context, context.debug.enabled);
 
     const { data } = await client.get<SalesShipmentLine>(
       `/companies(${companyId})/salesShipmentLines(${salesShipmentLineId})`,

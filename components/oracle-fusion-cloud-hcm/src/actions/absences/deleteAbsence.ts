@@ -11,10 +11,7 @@ export const deleteAbsence = action({
   },
   examplePayload: deleteAbsenceExamplePayload,
   inputs: deleteAbsenceInputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: deleteResultOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: deleteResultOutputSchema }),
   perform: async (context, { connection, absenceEntryId }) => {
     const client = createClient(connection, context.debug.enabled);
     await client.delete(`/absences/${absenceEntryId}`);

@@ -4,9 +4,7 @@ import { createMockConnection, createMockContext } from "../../testHelpers";
 const { mockDeleteRecord } = vi.hoisted(() => ({ mockDeleteRecord: vi.fn() }));
 
 vi.mock("../../client", () => ({
-  createCrmClient: vi
-    .fn()
-    .mockResolvedValue({ deleteRecord: mockDeleteRecord }),
+  createCrmClient: vi.fn().mockResolvedValue({ deleteRecord: mockDeleteRecord }),
 }));
 
 import { deleteEntity } from "./deleteEntity";
@@ -34,7 +32,7 @@ describe("deleteEntity", () => {
         entityType: "accounts",
         entityId: "bad-id",
         connection: conn,
-      } as any),
+      } as any)
     ).rejects.toThrow("Entity not found");
   });
 });

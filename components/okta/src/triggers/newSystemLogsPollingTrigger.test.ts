@@ -16,10 +16,7 @@ const BASE = "https://example.okta.com/api/v1/logs";
 const linkTo = (after: string) =>
   `${BASE}?after=${after}&limit=${POLL_PAGE_SIZE}&sortOrder=ASCENDING`;
 const headers = (after: string) => ({
-  link: [
-    `<${BASE}?limit=1>; rel="self"`,
-    `<${linkTo(after)}>; rel="next"`,
-  ].join(", "),
+  link: [`<${BASE}?limit=1>; rel="self"`, `<${linkTo(after)}>; rel="next"`].join(", "),
 });
 const event = (id: string): SystemLogEvent => ({
   uuid: id,
@@ -32,10 +29,7 @@ const page = (events: SystemLogEvent[], after: string) => ({
 });
 
 type Out = {
-  payload: {
-    paginationState?: Record<string, unknown>;
-    body: { data: SystemLogEvent[] };
-  };
+  payload: { paginationState?: Record<string, unknown>; body: { data: SystemLogEvent[] } };
   polledNoChanges: boolean;
 };
 type RunOptions = {
@@ -46,10 +40,7 @@ type RunOptions = {
 };
 const run = async (state: Record<string, unknown>, opts: RunOptions = {}) => {
   const { context, store } = makeContext(state, opts.batching);
-  const payload = {
-    body: { data: undefined },
-    paginationState: opts.incoming,
-  } as never;
+  const payload = { body: { data: undefined }, paginationState: opts.incoming } as never;
   const out = (await trigger.perform(context, payload, {
     connection,
     lookBackDate: opts.lookBackDate ?? "",
@@ -70,17 +61,11 @@ describe("batching declaration", () => {
     expect(trigger.triggerResolverSupport).toBe("valid");
     expect(trigger.batchConfig).toEqual({ batchSize: 50 });
     expect(trigger.triggerResolver?.resolveItems).toBeInstanceOf(Function);
-    expect(trigger.triggerResolver?.getNextPaginationState).toBeInstanceOf(
-      Function,
-    );
+    expect(trigger.triggerResolver?.getNextPaginationState).toBeInstanceOf(Function);
   });
 
   test("offers the Look-back Date directly below the required connection", () => {
-    expect(Object.keys(trigger.inputs ?? {})).toEqual([
-      "connection",
-      "lookBackDate",
-      "filter",
-    ]);
+    expect(Object.keys(trigger.inputs ?? {})).toEqual(["connection", "lookBackDate", "filter"]);
   });
 
   test("describes itself with the initial sync pattern", () => {
@@ -100,19 +85,16 @@ describe("resolvers", () => {
       ),
     ).toEqual([{ changeType: "created", record: e }]);
     expect(
-      trigger.triggerResolver?.resolveItems?.(
-        {} as never,
-        { payload: { body: {} } } as never,
-      ),
+      trigger.triggerResolver?.resolveItems?.({} as never, { payload: { body: {} } } as never),
     ).toEqual([]);
   });
 
   test("getNextPaginationState echoes the cursor perform decided", () => {
     const cursor = { next: linkTo("a") };
     const resolve = trigger.triggerResolver?.getNextPaginationState;
-    expect(
-      resolve?.({} as never, { payload: { paginationState: cursor } } as never),
-    ).toEqual(cursor);
+    expect(resolve?.({} as never, { payload: { paginationState: cursor } } as never)).toEqual(
+      cursor,
+    );
     expect(resolve?.({} as never, { payload: {} } as never)).toBeNull();
   });
 });
@@ -138,17 +120,12 @@ describe("perform", () => {
   test("a batched first request asks for the small page", async () => {
     get.mockResolvedValueOnce(page([], "a"));
     await run({}, { batching: true });
-    expect(get.mock.calls[0][1].params).toMatchObject({
-      limit: POLL_PAGE_SIZE,
-    });
+    expect(get.mock.calls[0][1].params).toMatchObject({ limit: POLL_PAGE_SIZE });
   });
 
   test("first poll seeds since from the Look-back Date and passes the filter", async () => {
     get.mockResolvedValueOnce(page([], "a"));
-    await run(
-      {},
-      { lookBackDate: "2026-09-01T00:00:00.000Z", filter: 'eventType eq "x"' },
-    );
+    await run({}, { lookBackDate: "2026-09-01T00:00:00.000Z", filter: 'eventType eq "x"' });
     expect(get.mock.calls[0][1].params).toMatchObject({
       since: "2026-09-01T00:00:00.000Z",
       filter: 'eventType eq "x"',
@@ -214,9 +191,7 @@ describe("perform", () => {
 
   test("a legacy lastUpdated state resumes from it, then stores the next link without it", async () => {
     const legacy = "2026-10-10T08:00:00.000Z";
-    get
-      .mockResolvedValueOnce(page([event("1")], "a"))
-      .mockResolvedValueOnce(page([], "b"));
+    get.mockResolvedValueOnce(page([event("1")], "a")).mockResolvedValueOnce(page([], "b"));
     const { store } = await run({ lastUpdated: legacy });
     expect(get.mock.calls[0][0]).toBe("/logs");
     expect(get.mock.calls[0][1].params.since).toBe(legacy);
@@ -227,10 +202,7 @@ describe("perform", () => {
   test("a legacy lastUpdated state wins over the Look-back Date, which only seeds a never-polled instance", async () => {
     const legacy = "2026-10-10T08:00:00.000Z";
     get.mockResolvedValueOnce(page([], "a"));
-    await run(
-      { lastUpdated: legacy },
-      { lookBackDate: "2026-09-01T00:00:00.000Z" },
-    );
+    await run({ lastUpdated: legacy }, { lookBackDate: "2026-09-01T00:00:00.000Z" });
     expect(get.mock.calls[0][1].params.since).toBe(legacy);
   });
 
@@ -258,10 +230,7 @@ describe("perform", () => {
       { seeded: true, next: linkTo("a"), filter: "old" },
       { filter: "new", lookBackDate: "2026-09-01T00:00:00.000Z" },
     );
-    expect(get.mock.calls[0][1].params).toMatchObject({
-      since: NOW.toISOString(),
-      filter: "new",
-    });
+    expect(get.mock.calls[0][1].params).toMatchObject({ since: NOW.toISOString(), filter: "new" });
     expect(store.state).toMatchObject({ seeded: true });
   });
 

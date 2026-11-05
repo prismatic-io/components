@@ -87,8 +87,7 @@ const pipelineDealsFilterId = input({
   label: "Filter ID",
   type: "string",
   clean: cleanNumber,
-  comments:
-    "If supplied, only deals matching the given filter will be returned.",
+  comments: "If supplied, only deals matching the given filter will be returned.",
   example: "123",
   placeholder: "Enter Filter ID",
 });

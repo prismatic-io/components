@@ -2,18 +2,12 @@ import { util } from "@prismatic-io/spectral";
 import type { HttpClient } from "@prismatic-io/spectral/http";
 import { XMLParser } from "fast-xml-parser";
 import { ATOM_FEED_CONFIG } from "../constants";
-import type {
-  AtomFeedEntry,
-  HcmAtomChangesObject,
-  HcmAtomRecordChange,
-} from "../types";
+import type { AtomFeedEntry, HcmAtomChangesObject, HcmAtomRecordChange } from "../types";
 
-export const atomFeedModel = Object.entries(ATOM_FEED_CONFIG).map(
-  ([value, { label }]) => ({
-    label,
-    value,
-  }),
-);
+export const atomFeedModel = Object.entries(ATOM_FEED_CONFIG).map(([value, { label }]) => ({
+  label,
+  value,
+}));
 
 const xmlParser = new XMLParser({
   ignoreAttributes: false,
@@ -21,20 +15,13 @@ const xmlParser = new XMLParser({
   isArray: (name) => name === "entry" || name === "Attribute",
 });
 
-const parseAtomEntry = (
-  entry: Record<string, unknown>,
-  feedName: string,
-): AtomFeedEntry => {
+const parseAtomEntry = (entry: Record<string, unknown>, feedName: string): AtomFeedEntry => {
   const contentWrapper = entry.content as Record<string, unknown> | undefined;
-  const innerKey = Object.keys(contentWrapper ?? {}).find(
-    (k) => !k.startsWith("@_"),
-  );
+  const innerKey = Object.keys(contentWrapper ?? {}).find((k) => !k.startsWith("@_"));
   const innerContent =
-    (innerKey ? (contentWrapper?.[innerKey] as Record<string, unknown>) : {}) ??
-    {};
+    (innerKey ? (contentWrapper?.[innerKey] as Record<string, unknown>) : {}) ?? {};
 
-  const rawAttrs = (innerContent.ChangedAttributes as Record<string, unknown>)
-    ?.Attribute;
+  const rawAttrs = (innerContent.ChangedAttributes as Record<string, unknown>)?.Attribute;
   const changedAttributes: string[] = Array.isArray(rawAttrs)
     ? rawAttrs.map((a) => util.types.toString(a))
     : rawAttrs
@@ -73,8 +60,7 @@ export const fetchAtomEntries = async (
 
     const parsed = xmlParser.parse(util.types.toString(rawXml));
     const feed: Record<string, unknown> = parsed?.feed ?? {};
-    const rawEntries: Record<string, unknown>[] =
-      (feed.entry as Record<string, unknown>[]) ?? [];
+    const rawEntries: Record<string, unknown>[] = (feed.entry as Record<string, unknown>[]) ?? [];
 
     pageEntries = rawEntries.map((entry) => parseAtomEntry(entry, feedName));
     allEntries.push(...pageEntries);

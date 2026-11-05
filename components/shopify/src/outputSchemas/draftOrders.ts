@@ -87,10 +87,7 @@ const gqlDraftOrderSchema = {
     billingAddress: gqlAddressSchema,
     invoiceUrl: { type: ["string", "null"] },
     appliedDiscount: { type: ["object", "null"] },
-    order: {
-      type: ["object", "null"],
-      properties: { id: { type: "string" as const } },
-    },
+    order: { type: ["object", "null"], properties: { id: { type: "string" as const } } },
     shippingLine: { type: ["object", "null"] },
     taxLines: { type: "array" as const, items: { type: "object" } },
     tags: { type: "array" as const, items: { type: "string" as const } },

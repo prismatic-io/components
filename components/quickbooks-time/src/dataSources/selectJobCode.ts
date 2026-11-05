@@ -15,19 +15,14 @@ export const selectJobCode = dataSource({
     const { data } = await client.get("/jobcodes");
 
     const jobcodesObj = data?.results?.jobcodes ?? {};
-    const jobcodes = Object.values(jobcodesObj) as {
-      name?: string;
-      id?: number;
-    }[];
+    const jobcodes = Object.values(jobcodesObj) as { name?: string; id?: number }[];
 
     const result: Element[] = jobcodes
       .map((item) => ({
         label: item.name || String(item.id || ""),
         key: String(item.id || ""),
       }))
-      .sort((a: Element, b: Element) =>
-        (a.label ?? "").localeCompare(b.label ?? ""),
-      );
+      .sort((a: Element, b: Element) => (a.label ?? "").localeCompare(b.label ?? ""));
 
     return { result };
   },

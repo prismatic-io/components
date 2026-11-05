@@ -5,89 +5,81 @@ import type {
 } from "@prismatic-io/spectral";
 import { getEventHistoryExamplePayload } from "./actions";
 
-export const managedPushNotificationEventsExamplePayload: TriggerBranchingResult<TriggerPayload> =
-  {
-    response: {
-      statusCode: 200,
-      contentType: "text/plain",
+export const managedPushNotificationEventsExamplePayload: TriggerBranchingResult<TriggerPayload> = {
+  response: {
+    statusCode: 200,
+    contentType: "text/plain",
+  },
+  branch: "Notification",
+  payload: {
+    flow: {
+      id: "SW5zdGFuY2VGbG93Q29uZmlnOjEyMzQ1Njc4OTA==",
+      name: "Gmail Notifications Flow",
+      stableId: "gmail-notifications-flow",
     },
-    branch: "Notification",
-    payload: {
-      flow: {
-        id: "SW5zdGFuY2VGbG93Q29uZmlnOjEyMzQ1Njc4OTA==",
-        name: "Gmail Notifications Flow",
-        stableId: "gmail-notifications-flow",
-      },
-      startedAt: "2024-11-06T15:30:45.123Z",
-      integration: {
-        id: "SW50ZWdyYXRpb246OTg3NjU0MzIxMA==",
-        name: "Gmail Integration",
-        externalVersion: "1.0.0",
-        versionSequenceId:
-          "SW50ZWdyYXRpb25WZXJzaW9uU2VxdWVuY2U6MTIzNDU2Nzg5MA==",
-      },
-      headers: {
-        Accept: "application/json",
-        "Accept-Encoding": "gzip, deflate, br",
-        "Content-Type": "application/json",
-        From: "noreply@google.com",
-        Host: "hooks.example.com",
-        "User-Agent":
-          "APIs-Google; (+https://developers.google.com/webmasters/APIs-Google.html)",
-        "X-Amz-Cf-Id":
-          "xYzAbCdEfGhIjKlMnOpQrStUvW1234567890-Example-CloudFront-ID==",
-        "X-Amzn-Trace-Id": "Root=1-65abc123-1234567890abcdef12345678",
-      },
-      queryParameters: {},
-      rawBody: { data: {}, contentType: "application/json" },
-      body: {
-        data: {
-          message: {
-            data: "eyJlbWFpbEFkZHJlc3MiOiJ1c2VyQGV4YW1wbGUuY29tIiwiaGlzdG9yeUlkIjoiMTIzNDU2Nzg5MCJ9",
-            decodedData: {
-              emailAddress: "user@example.com",
-              historyId: "1234567890",
-            },
-            messageId: "1234567890123456",
-            message_id: "1234567890123456",
-            publishTime: "2024-11-06T15:30:45.123Z",
-            publish_time: "2024-11-06T15:30:45.123Z",
+    startedAt: "2024-11-06T15:30:45.123Z",
+    integration: {
+      id: "SW50ZWdyYXRpb246OTg3NjU0MzIxMA==",
+      name: "Gmail Integration",
+      externalVersion: "1.0.0",
+      versionSequenceId: "SW50ZWdyYXRpb25WZXJzaW9uU2VxdWVuY2U6MTIzNDU2Nzg5MA==",
+    },
+    headers: {
+      Accept: "application/json",
+      "Accept-Encoding": "gzip, deflate, br",
+      "Content-Type": "application/json",
+      From: "noreply@google.com",
+      Host: "hooks.example.com",
+      "User-Agent": "APIs-Google; (+https://developers.google.com/webmasters/APIs-Google.html)",
+      "X-Amz-Cf-Id": "xYzAbCdEfGhIjKlMnOpQrStUvW1234567890-Example-CloudFront-ID==",
+      "X-Amzn-Trace-Id": "Root=1-65abc123-1234567890abcdef12345678",
+    },
+    queryParameters: {},
+    rawBody: { data: {}, contentType: "application/json" },
+    body: {
+      data: {
+        message: {
+          data: "eyJlbWFpbEFkZHJlc3MiOiJ1c2VyQGV4YW1wbGUuY29tIiwiaGlzdG9yeUlkIjoiMTIzNDU2Nzg5MCJ9",
+          decodedData: {
+            emailAddress: "user@example.com",
+            historyId: "1234567890",
           },
-          subscription:
-            "projects/example-project-123456/subscriptions/gmail-notifications-sub",
+          messageId: "1234567890123456",
+          message_id: "1234567890123456",
+          publishTime: "2024-11-06T15:30:45.123Z",
+          publish_time: "2024-11-06T15:30:45.123Z",
         },
-        contentType: "application/json",
+        subscription: "projects/example-project-123456/subscriptions/gmail-notifications-sub",
       },
-      pathFragment: "",
-      webhookUrls: {
-        "Gmail Notifications Flow":
-          "https://hooks.example.com/trigger/aBcDeFgHiJkLmNoPqRsTuVwXyZ",
-      },
-      webhookApiKeys: {
-        "Gmail Notifications Flow": [
-          "example_aBcDeFgHiJkLmNoPqRsTuVwXyZ1234567890",
-        ],
-      },
-      invokeUrl: "https://hooks.example.com/trigger/aBcDeFgHiJkLmNoPqRsTuVwXyZ",
-      executionId: "SW5zdGFuY2VFeGVjdXRpb25SZXN1bHQ6OTg3NjU0MzIxMA==",
-      customer: {
-        id: "Q3VzdG9tZXI6MTIzNDU2Nzg5MA==",
-        name: "Acme Corporation",
-        externalId: "acme-corp-ext-12345",
-      },
-      instance: {
-        id: "SW5zdGFuY2U6OTg3NjU0MzIxMA==",
-        name: "Gmail Integration - Acme Corp",
-      },
-      user: {
-        id: "VXNlcjo5ODc2NTQzMjEw",
-        email: "admin@example.com",
-        name: "Admin User",
-        externalId: "admin-user-ext-67890",
-      },
-      globalDebug: false,
+      contentType: "application/json",
     },
-  };
+    pathFragment: "",
+    webhookUrls: {
+      "Gmail Notifications Flow": "https://hooks.example.com/trigger/aBcDeFgHiJkLmNoPqRsTuVwXyZ",
+    },
+    webhookApiKeys: {
+      "Gmail Notifications Flow": ["example_aBcDeFgHiJkLmNoPqRsTuVwXyZ1234567890"],
+    },
+    invokeUrl: "https://hooks.example.com/trigger/aBcDeFgHiJkLmNoPqRsTuVwXyZ",
+    executionId: "SW5zdGFuY2VFeGVjdXRpb25SZXN1bHQ6OTg3NjU0MzIxMA==",
+    customer: {
+      id: "Q3VzdG9tZXI6MTIzNDU2Nzg5MA==",
+      name: "Acme Corporation",
+      externalId: "acme-corp-ext-12345",
+    },
+    instance: {
+      id: "SW5zdGFuY2U6OTg3NjU0MzIxMA==",
+      name: "Gmail Integration - Acme Corp",
+    },
+    user: {
+      id: "VXNlcjo5ODc2NTQzMjEw",
+      email: "admin@example.com",
+      name: "Admin User",
+      externalId: "admin-user-ext-67890",
+    },
+    globalDebug: false,
+  },
+};
 
 export const pushNotificationWebhookExamplePayload: TriggerBaseResult<TriggerPayload> =
   managedPushNotificationEventsExamplePayload;
@@ -188,8 +180,7 @@ export const pollChangesTriggerExamplePayload = {
                       text: "Example User <example@email.com>",
                     },
                     date: "2025-11-13T00:24:30.000Z",
-                    "x-gm-features":
-                      "ExampleFeatures123ABCD456EFGH789ijklMNOPqrstUVWXyz0123456789",
+                    "x-gm-features": "ExampleFeatures123ABCD456EFGH789ijklMNOPqrstUVWXyz0123456789",
                     "message-id":
                       "<ExampleMessageID123456789ABCDEFGH+ijklMNOPqrstUVWX@mail.gmail.com>",
                     subject: "test",
@@ -231,8 +222,7 @@ export const pollChangesTriggerExamplePayload = {
     },
     invokeUrl:
       "https://hooks.example.io/trigger/SW5zdGFuY2VGbG93Q29uZmlnOmFiY2RlZjEyLTM0NTYtNzg5MC1hYmNkLWVmMTIzNDU2Nzg5MA==",
-    executionId:
-      "SW5zdGFuY2VFeGVjdXRpb25SZXN1bHQ6YWJjZGVmMTItMzQ1Ni03ODkwLWFiY2QtZWYxMjM0NTY3ODkw",
+    executionId: "SW5zdGFuY2VFeGVjdXRpb25SZXN1bHQ6YWJjZGVmMTItMzQ1Ni03ODkwLWFiY2QtZWYxMjM0NTY3ODkw",
     customer: {
       id: "testCustomerId",
       name: "Test Customer",

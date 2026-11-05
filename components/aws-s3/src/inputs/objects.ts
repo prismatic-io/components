@@ -1,12 +1,7 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { awsRegion, dynamicAccessAllInputs } from "aws-utils";
 import { OBJECT_ATTRIBUTES } from "../constants";
-import {
-  cleanString,
-  getObjectAttributes,
-  getObjectIdentifiers,
-  toOptionalInt,
-} from "../utils";
+import { cleanString, getObjectAttributes, getObjectIdentifiers, toOptionalInt } from "../utils";
 import {
   accessKeyInput,
   acl,
@@ -35,8 +30,7 @@ const sourceKey = input({
   placeholder: "Enter source object key",
   type: "string",
   required: true,
-  comments:
-    "The source object's key (file path) to copy from. Do not include a leading /.",
+  comments: "The source object's key (file path) to copy from. Do not include a leading /.",
   example: "backups/2024/database-backup.sql",
   clean: util.types.toString,
 });
@@ -46,8 +40,7 @@ const destinationKey = input({
   placeholder: "Enter destination object key",
   type: "string",
   required: true,
-  comments:
-    "The destination object's key (file path) to copy to. Do not include a leading /.",
+  comments: "The destination object's key (file path) to copy to. Do not include a leading /.",
   example: "archive/2024/database-backup.sql",
   clean: util.types.toString,
 });
@@ -90,8 +83,7 @@ const maxKeys = input({
   label: "Max Keys",
   type: "string",
   required: false,
-  comments:
-    "Maximum number of objects to return (1-1000). Defaults to 1000 if not specified.",
+  comments: "Maximum number of objects to return (1-1000). Defaults to 1000 if not specified.",
   example: "1000",
   placeholder: "Enter max keys (1-1000)",
   clean: toOptionalInt,
@@ -101,8 +93,7 @@ const continuationToken = input({
   label: "Continuation Token",
   type: "string",
   required: false,
-  comments:
-    "Pagination token returned by a previous request to retrieve the next page of results.",
+  comments: "Pagination token returned by a previous request to retrieve the next page of results.",
   example: "lslTXFcbLQKkb0vP9Kgh5hy0Y0OnC7Z9ZPHPwPmMnxSk3eiDRMkct7D8E",
   placeholder: "Enter continuation token",
   clean: cleanString,
@@ -118,8 +109,7 @@ const pagination = structuredObjectInput({
 const actionType = input({
   label: "Action Type",
   type: "string",
-  comments:
-    "Specifies whether the presigned URL will allow download or upload operations.",
+  comments: "Specifies whether the presigned URL will allow download or upload operations.",
   clean: util.types.toString,
   required: true,
   default: "download",

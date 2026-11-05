@@ -11,11 +11,7 @@ const BUCKET_ID = "hsOf2dhOJkqyYYZEtdzDe2QAIUCR";
 const BUCKET_URL = `/v1.0/planner/buckets/${BUCKET_ID}`;
 const ETAG = 'W/"JzEtQnVja2V0QEBAQEBAQEBAQEBAQEBAQEBAWCc="';
 
-const connection = createConnection(
-  templatedOauth,
-  {},
-  { access_token: "test-token" },
-);
+const connection = createConnection(templatedOauth, {}, { access_token: "test-token" });
 const params = {
   connection,
   groupId: undefined,
@@ -51,9 +47,7 @@ test("renames the bucket with the current etag as If-Match", async () => {
 });
 
 test("surfaces a rejected update", async () => {
-  const etagScope = nock(BASE)
-    .get(BUCKET_URL)
-    .reply(200, { "@odata.etag": ETAG });
+  const etagScope = nock(BASE).get(BUCKET_URL).reply(200, { "@odata.etag": ETAG });
   const errorScope = nock(BASE)
     .patch(BUCKET_URL)
     .reply(400, { error: { code: "invalidRequest" } });

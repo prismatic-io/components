@@ -36,12 +36,7 @@ export interface FolderListingResponse {
 
 export interface AemJob {
   jobId: string;
-  state:
-    | "QUEUED"
-    | "PROCESSING"
-    | "COMPLETED"
-    | "COMPLETED_WITH_ERRORS"
-    | "FAILED";
+  state: "QUEUED" | "PROCESSING" | "COMPLETED" | "COMPLETED_WITH_ERRORS" | "FAILED";
   status?: string;
 }
 
@@ -56,10 +51,7 @@ export interface FolderCommandResult {
   operation: string;
   status: number;
   data: {
-    values?: {
-      successes?: FolderItem[];
-      failedFolders?: FolderCommandProblem[];
-    };
+    values?: { successes?: FolderItem[]; failedFolders?: FolderCommandProblem[] };
     deletedFolders?: unknown[];
     failedFolders?: FolderCommandProblem[];
   };

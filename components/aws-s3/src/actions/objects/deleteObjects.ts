@@ -1,7 +1,4 @@
-import {
-  DeleteObjectsCommand,
-  type ObjectIdentifier,
-} from "@aws-sdk/client-s3";
+import { DeleteObjectsCommand, type ObjectIdentifier } from "@aws-sdk/client-s3";
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { createS3Client } from "../../client";
 import { deleteObjectsExamplePayload } from "../../examplePayloads";

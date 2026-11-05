@@ -51,11 +51,7 @@ export const rawRequest = action({
         ? toFormData(formData, fileData, fileDataFileNames)
         : data;
 
-    const { cookie } = await getCookies(
-      connection,
-      context,
-      context.debug.enabled,
-    );
+    const { cookie } = await getCookies(connection, context, context.debug.enabled);
     const { baseUrl, proxy } = getBaseUrlAndProxy(connection);
     const client = axios.create({
       baseURL: baseUrl,

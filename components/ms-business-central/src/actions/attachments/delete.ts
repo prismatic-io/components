@@ -11,14 +11,8 @@ export const deleteAttachment = action({
     description: "Delete an attachment object in Business Central.",
   },
   perform: async (context, { attachmentId, companyId, connection }) => {
-    const client = getMsBusinessCentralClient(
-      connection,
-      context,
-      context.debug.enabled,
-    );
-    await client.delete(
-      `/companies(${companyId})/attachments(${attachmentId})`,
-    );
+    const client = getMsBusinessCentralClient(connection, context, context.debug.enabled);
+    await client.delete(`/companies(${companyId})/attachments(${attachmentId})`);
 
     return SUCCESS_PAYLOAD;
   },

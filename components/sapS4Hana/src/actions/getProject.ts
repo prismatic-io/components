@@ -1,22 +1,14 @@
 import { action, util } from "@prismatic-io/spectral";
 import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
 import { getSapClient } from "../client";
-import {
-  connectionInput,
-  projectId,
-  projectSelect,
-  projectExpand,
-} from "../inputs";
+import { connectionInput, projectId, projectSelect, projectExpand } from "../inputs";
 
 export const getProject = action({
   display: {
     label: "Get Project",
     description: "Returns details about a customer or internal project.",
   },
-  perform: async (
-    _context,
-    { connectionInput, projectId, projectSelect, projectExpand },
-  ) => {
+  perform: async (_context, { connectionInput, projectId, projectSelect, projectExpand }) => {
     const headers = {
       Accept: "application/json",
     };

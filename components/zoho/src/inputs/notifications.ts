@@ -1,8 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
-import {
-  NOTIFICATION_CONDITION_EXAMPLE,
-  NOTIFICATION_EVENTS_EXAMPLE,
-} from "../constants";
+import { NOTIFICATION_CONDITION_EXAMPLE, NOTIFICATION_EVENTS_EXAMPLE } from "../constants";
 import { toOptionalObject, toOptionalString } from "../util/general";
 import { connectionInput, fetchAll, page, per_page } from "./common";
 
@@ -57,8 +54,7 @@ export const channelExpiry = input({
   example: "2024-12-31T23:59:59Z",
   type: "string",
   required: false,
-  comments:
-    "ISO datetime for expiry. Maximum 1 week from now. Default is 1 hour.",
+  comments: "ISO datetime for expiry. Maximum 1 week from now. Default is 1 hour.",
   clean: toOptionalString,
 });
 
@@ -66,8 +62,7 @@ export const returnAffectedFieldValues = input({
   label: "Return Affected Field Values",
   type: "boolean",
   required: false,
-  comments:
-    "When true, includes updated field values in the notification callback.",
+  comments: "When true, includes updated field values in the notification callback.",
   clean: util.types.toBool,
 });
 
@@ -76,8 +71,7 @@ export const notifyOnRelatedAction = input({
   type: "boolean",
   required: false,
   default: "true",
-  comments:
-    "When true, triggers notifications when associated record actions occur.",
+  comments: "When true, triggers notifications when associated record actions occur.",
   clean: util.types.toBool,
 });
 
@@ -87,8 +81,7 @@ export const notificationCondition = input({
   type: "code",
   language: "json",
   required: false,
-  comments:
-    "Filter notifications by specific field changes. Provide field API names to watch.",
+  comments: "Filter notifications by specific field changes. Provide field API names to watch.",
   clean: toOptionalObject,
   example: JSON.stringify(NOTIFICATION_CONDITION_EXAMPLE, null, 2),
 });

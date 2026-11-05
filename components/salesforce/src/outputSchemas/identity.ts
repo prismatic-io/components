@@ -17,10 +17,7 @@ export const getCurrentUserOutputSchema = {
     timezone: { type: "string" },
     photos: {
       type: "object",
-      properties: {
-        picture: { type: "string" },
-        thumbnail: { type: "string" },
-      },
+      properties: { picture: { type: "string" }, thumbnail: { type: "string" } },
     },
     addr_street: nstr,
     addr_city: nstr,

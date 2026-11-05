@@ -13,7 +13,7 @@ export const setConversationTopic = action({
   performSafety: "notAllowed",
   perform: async (
     { debug: { enabled: debug } },
-    { connection, channelName, topic },
+    { connection, channelName, topic }
   ) => {
     debugLogger({ debug, channelName, topic });
     const client = await createOauthClient({

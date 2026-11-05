@@ -8,14 +8,10 @@ import { searchChargesOutputSchema } from "../../outputSchemas";
 export const searchCharges = action({
   display: {
     label: "Search Charges",
-    description:
-      "Search for charges previously created using Stripe's Search Query Language.",
+    description: "Search for charges previously created using Stripe's Search Query Language.",
   },
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { stripeConnection, timeout, query, pagination },
-  ) => {
+  perform: async (context, { stripeConnection, timeout, query, pagination }) => {
     const client = createStripeClient({
       stripeConnection: stripeConnection,
       timeout,

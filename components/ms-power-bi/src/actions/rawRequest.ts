@@ -1,8 +1,5 @@
 import { action } from "@prismatic-io/spectral";
-import {
-  inputs as httpClientInputs,
-  sendRawRequest,
-} from "@prismatic-io/spectral/http";
+import { inputs as httpClientInputs, sendRawRequest } from "@prismatic-io/spectral/http";
 import { connection } from "../inputs";
 
 const { debugRequest: _, ...rawRequestInputs } = httpClientInputs;
@@ -30,7 +27,7 @@ const rawRequest = action({
       {
         Authorization: `Bearer ${connection.token?.access_token}`,
         "Content-Type": "application/json",
-      },
+      }
     );
     return { data };
   },

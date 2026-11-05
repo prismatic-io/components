@@ -19,25 +19,22 @@ export const searchDeals = action({
       debugRequest,
     });
 
-    const { data } = await client.post(
-      hubspotPaths.objects("deals", "/search"),
-      {
-        filterGroups: [
-          {
-            filters: [
-              {
-                propertyName: params.propertyName,
-                operator: params.operator,
-                value: params.value,
-              },
-            ],
-          },
-        ],
-        properties: DEAL_SEARCH_PROPS,
-        limit: params.pagination.limit,
-        after: params.pagination.after,
-      },
-    );
+    const { data } = await client.post(hubspotPaths.objects("deals", "/search"), {
+      filterGroups: [
+        {
+          filters: [
+            {
+              propertyName: params.propertyName,
+              operator: params.operator,
+              value: params.value,
+            },
+          ],
+        },
+      ],
+      properties: DEAL_SEARCH_PROPS,
+      limit: params.pagination.limit,
+      after: params.pagination.after,
+    });
 
     return { data };
   },
@@ -46,8 +43,5 @@ export const searchDeals = action({
     data: searchDealsExamplePayload.data,
   }),
   examplePayload: searchDealsExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: searchResponseSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: searchResponseSchema }),
 });

@@ -24,9 +24,6 @@ export const getOrder = action({
     };
   },
   inputs: getOrderInputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getOrderOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getOrderOutputSchema }),
   examplePayload: getOrderExamplePayload,
 });

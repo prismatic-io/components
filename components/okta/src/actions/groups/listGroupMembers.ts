@@ -10,10 +10,7 @@ export const listGroupMembers = action({
     description: "Retrieves all users who are members of the specified group.",
   },
   inputs: listGroupUsersInputs,
-  perform: async (
-    context,
-    { connection, groupId, fetchAll, pagination = {} },
-  ) => {
+  perform: async (context, { connection, groupId, fetchAll, pagination = {} }) => {
     const client = await createClient(connection, context.debug.enabled);
 
     const data = await paginateRecordsWithLink(

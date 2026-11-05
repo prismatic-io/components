@@ -67,8 +67,7 @@ const onlyDirectChildren = input({
   type: "boolean",
   required: false,
   default: "false",
-  comments:
-    "When true, only returns content fragments directly under Path, not in its subfolders.",
+  comments: "When true, only returns content fragments directly under Path, not in its subfolders.",
   clean: util.types.toBool,
 });
 
@@ -77,8 +76,7 @@ const projection = input({
   type: "string",
   required: false,
   model: CONTENT_FRAGMENT_PROJECTIONS,
-  comments:
-    "How much of each content fragment to return. Leave empty for the API default.",
+  comments: "How much of each content fragment to return. Leave empty for the API default.",
   clean: cleanString,
 });
 
@@ -87,8 +85,7 @@ const includeMetadata = input({
   type: "boolean",
   required: false,
   default: "false",
-  comments:
-    "When true, includes each content fragment's metadata in the response.",
+  comments: "When true, includes each content fragment's metadata in the response.",
   clean: util.types.toBool,
 });
 
@@ -97,8 +94,7 @@ const references = input({
   type: "string",
   required: false,
   model: CONTENT_FRAGMENT_REFERENCES,
-  comments:
-    "Which referenced content to include. Leave empty to omit references.",
+  comments: "Which referenced content to include. Leave empty to omit references.",
   clean: cleanString,
 });
 
@@ -122,8 +118,7 @@ export const modelIds = input({
   default: [],
   dataSource: "selectContentFragmentModel",
   comments: "Only return content fragments based on one of these model IDs.",
-  example:
-    "L2NvbmYvd2tuZC1zaGFyZWQvc2V0dGluZ3MvZGFtL2NmbS9tb2RlbHMvYWR2ZW50dXJl",
+  example: "L2NvbmYvd2tuZC1zaGFyZWQvc2V0dGluZ3MvZGFtL2NmbS9tb2RlbHMvYWR2ZW50dXJl",
   clean: cleanStringList,
 });
 
@@ -132,8 +127,7 @@ const modifiedAfter = input({
   placeholder: "Enter date-time (ISO 8601)",
   type: "string",
   required: false,
-  comments:
-    "Only return content fragments modified after this ISO 8601 date-time.",
+  comments: "Only return content fragments modified after this ISO 8601 date-time.",
   example: "2026-01-01T00:00:00Z",
   clean: cleanOptionalDateTime,
 });
@@ -143,8 +137,7 @@ const modifiedBefore = input({
   placeholder: "Enter date-time (ISO 8601)",
   type: "string",
   required: false,
-  comments:
-    "Only return content fragments modified before this ISO 8601 date-time.",
+  comments: "Only return content fragments modified before this ISO 8601 date-time.",
   example: "2026-02-01T00:00:00Z",
   clean: cleanOptionalDateTime,
 });
@@ -154,8 +147,7 @@ const publishedAfter = input({
   placeholder: "Enter date-time (ISO 8601)",
   type: "string",
   required: false,
-  comments:
-    "Only return content fragments published after this ISO 8601 date-time.",
+  comments: "Only return content fragments published after this ISO 8601 date-time.",
   example: "2026-01-01T00:00:00Z",
   clean: cleanOptionalDateTime,
 });
@@ -165,8 +157,7 @@ const publishedBefore = input({
   placeholder: "Enter date-time (ISO 8601)",
   type: "string",
   required: false,
-  comments:
-    "Only return content fragments published before this ISO 8601 date-time.",
+  comments: "Only return content fragments published before this ISO 8601 date-time.",
   example: "2026-02-01T00:00:00Z",
   clean: cleanOptionalDateTime,
 });
@@ -186,8 +177,7 @@ const sortOn = input({
   type: "string",
   required: false,
   model: CONTENT_FRAGMENT_SORT_FIELDS,
-  comments:
-    "The field to sort results by. Leave empty for the API default order.",
+  comments: "The field to sort results by. Leave empty for the API default order.",
   clean: cleanString,
 });
 

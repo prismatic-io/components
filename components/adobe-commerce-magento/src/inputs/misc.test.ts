@@ -1,9 +1,7 @@
 import { query, store } from "./misc";
 
 describe("misc inputs: happy-path normalization", () => {
-  test.each<
-    [string, ((value: unknown) => unknown) | undefined, unknown, unknown]
-  >([
+  test.each<[string, ((value: unknown) => unknown) | undefined, unknown, unknown]>([
     [
       "query",
       query.clean,

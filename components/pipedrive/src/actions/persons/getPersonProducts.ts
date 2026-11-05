@@ -10,10 +10,7 @@ export const getPersonProducts = action({
     description: "Lists products associated with a person.",
   },
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { connection, id, pagination: { start, limit } = {} },
-  ) => {
+  perform: async (context, { connection, id, pagination: { start, limit } = {} }) => {
     const client = createClient(connection, context.debug.enabled);
     const { data } = await client.get(`/persons/${id}/products`, {
       params: { start, limit },
@@ -22,8 +19,5 @@ export const getPersonProducts = action({
   },
   inputs: getPersonProductsInputs,
   examplePayload: getPersonProductsExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getPersonProductsOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getPersonProductsOutputSchema }),
 });

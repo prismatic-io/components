@@ -36,9 +36,7 @@ export const listSites = dataSource({
     const { data } = await client.get<GetSitesResponse>("/sites", {
       params: { search: "" },
     });
-    const sites: Element[] = (data.value || []).map((site) =>
-      mapToElement(site),
-    );
+    const sites: Element[] = (data.value || []).map((site) => mapToElement(site));
     let nextLink = data?.["@odata.nextLink"];
 
     while (nextLink) {

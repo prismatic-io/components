@@ -13,10 +13,7 @@ export const getCalendarEvent = action({
   perform: async (context, params) => {
     const client = createClient(params.connection, context.debug.enabled);
     const { data } = await client.get(
-      computeEndpointBasedOnConnection(
-        params.connection,
-        `/me/events/${params.eventId}`,
-      ),
+      computeEndpointBasedOnConnection(params.connection, `/me/events/${params.eventId}`),
     );
     return { data };
   },

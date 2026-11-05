@@ -8,27 +8,14 @@ import { fillNotificationsBody } from "../../util/general";
 export const crmUpdateNotification = action({
   display: {
     label: "CRM - Update Notification",
-    description:
-      "Update specific information of a notification enabled for a channel.",
+    description: "Update specific information of a notification enabled for a channel.",
   },
   inputs: notificationUpdateInputs,
   perform: async (
     context,
-    {
-      connection,
-      channelId,
-      events,
-      notifyUrl,
-      token,
-      channelExpiry,
-      notificationCondition,
-    },
+    { connection, channelId, events, notifyUrl, token, channelExpiry, notificationCondition },
   ) => {
-    const crmClient = createClient(
-      connection,
-      ClientType.CRM,
-      context.debug.enabled,
-    );
+    const crmClient = createClient(connection, ClientType.CRM, context.debug.enabled);
 
     const watchConfig: WatchConfig = {
       channel_id: channelId,

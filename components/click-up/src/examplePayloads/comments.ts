@@ -5,16 +5,14 @@ const commentObject = {
       text: "Great progress on the homepage design. Let's review the color palette in the next standup.",
     },
   ],
-  comment_text:
-    "Great progress on the homepage design. Let's review the color palette in the next standup.",
+  comment_text: "Great progress on the homepage design. Let's review the color palette in the next standup.",
   user: {
     id: 81942673,
     username: "John Doe",
     email: "john.doe@example.com",
     color: "#7b68ee",
     initials: "JD",
-    profilePicture:
-      "https://attachments.clickup.com/profilePictures/81942673_abc.jpg",
+    profilePicture: "https://attachments.clickup.com/profilePictures/81942673_abc.jpg",
   },
   resolved: false,
   assignee: {
@@ -23,8 +21,7 @@ const commentObject = {
     email: "john.doe@example.com",
     color: "#7b68ee",
     initials: "JD",
-    profilePicture:
-      "https://attachments.clickup.com/profilePictures/81942673_abc.jpg",
+    profilePicture: "https://attachments.clickup.com/profilePictures/81942673_abc.jpg",
   },
   assigned_by: {
     id: 81942670,
@@ -32,8 +29,7 @@ const commentObject = {
     email: "jane.smith@example.com",
     color: "#e91e63",
     initials: "JS",
-    profilePicture:
-      "https://attachments.clickup.com/profilePictures/81942670_def.jpg",
+    profilePicture: "https://attachments.clickup.com/profilePictures/81942670_def.jpg",
   },
   reactions: [],
   date: "1704153600000",

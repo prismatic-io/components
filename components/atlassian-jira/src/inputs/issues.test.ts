@@ -21,18 +21,8 @@ const { dueDate, versions, fixVersions } = i.additionalFields.inputs;
 describe("issue input cleans", () => {
   run([
     ["summary", i.summary, "Login fails", "Login fails", ""],
-    [
-      "assignee",
-      i.assignee,
-      "5b10a2844c20165700ede21g",
-      "5b10a2844c20165700ede21g",
-    ],
-    [
-      "reporter",
-      i.reporter,
-      "5b10a2844c20165700ede21g",
-      "5b10a2844c20165700ede21g",
-    ],
+    ["assignee", i.assignee, "5b10a2844c20165700ede21g", "5b10a2844c20165700ede21g"],
+    ["reporter", i.reporter, "5b10a2844c20165700ede21g", "5b10a2844c20165700ede21g"],
     ["issueType", i.issueType, "Bug", "Bug", ""],
     ["issueTypeId", i.issueTypeId, 10001, "10001", ""],
     ["ADFdescription", i.ADFdescription, '{"type":"doc"}', { type: "doc" }],
@@ -40,13 +30,7 @@ describe("issue input cleans", () => {
     ["labels", i.labels, ["bug"], ["bug"]],
     ["dueDate", dueDate, "2026-12-31", "2026-12-31"],
     ["versions", versions, '[{"id":"10000"}]', [{ id: "10000" }], undefined],
-    [
-      "fixVersions",
-      fixVersions,
-      '{"id":"10001"}',
-      [{ id: "10001" }],
-      undefined,
-    ],
+    ["fixVersions", fixVersions, '{"id":"10001"}', [{ id: "10001" }], undefined],
     [
       "issueId (Download Issue Attachments)",
       downloadAttachmentInputs.issueId,
@@ -54,13 +38,7 @@ describe("issue input cleans", () => {
       "10201",
       undefined,
     ],
-    [
-      "summary (Update Issue)",
-      updateIssueInputs.summary,
-      "Login fails",
-      "Login fails",
-      undefined,
-    ],
+    ["summary (Update Issue)", updateIssueInputs.summary, "Login fails", "Login fails", undefined],
     ["transitionId", transitionIssueInputs.transitionId, 31, "31", ""],
     [
       "attachmentIds",
@@ -76,12 +54,6 @@ describe("issue input cleans", () => {
       "hello",
       { data: Buffer.from("hello"), contentType: "text/plain" },
     ],
-    [
-      "fileName",
-      addIssueAttachmentInputs.fileName,
-      "report.pdf",
-      "report.pdf",
-      "",
-    ],
+    ["fileName", addIssueAttachmentInputs.fileName, "report.pdf", "report.pdf", ""],
   ]);
 });

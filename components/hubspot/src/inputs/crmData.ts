@@ -66,8 +66,7 @@ const createContactListFromImport = input({
 const importOptions = structuredObjectInput({
   label: "Import Options",
   required: false,
-  comments:
-    "Record operation mode, marketable status, and list creation settings.",
+  comments: "Record operation mode, marketable status, and list creation settings.",
   inputs: {
     importOperations,
     marketableContactImport,
@@ -131,8 +130,7 @@ const schemaType = input({
   label: "Schema Type",
   type: "string",
   required: true,
-  comments:
-    "The export schema to use: VIEW for filtered exports, or LIST for list-based exports.",
+  comments: "The export schema to use: VIEW for filtered exports, or LIST for list-based exports.",
   default: "VIEW",
   model: [
     { label: "PublicExportViewRequest", value: "VIEW" },
@@ -203,8 +201,7 @@ const language = input({
     { label: "Portuguese", value: "PT" },
     { label: "Swedish", value: "SV" },
   ],
-  comments:
-    "The language code for header labels and system-generated text in the export.",
+  comments: "The language code for header labels and system-generated text in the export.",
   clean: util.types.toString,
 });
 

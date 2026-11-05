@@ -11,8 +11,7 @@ export default component({
   documentationUrl: "https://prismatic.io/docs/components/pipedrive/",
   display: {
     label: "Pipedrive",
-    description:
-      "Manage leads, companies, activities, and more on the Pipedrive platform.",
+    description: "Manage leads, companies, activities, and more on the Pipedrive platform.",
     category: "Application Connectors",
     iconPath: "icon.png",
   },

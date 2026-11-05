@@ -13,7 +13,7 @@ export const searchFiles = action({
   performSafety: "notAllowed",
   perform: async (
     { debug: { enabled: debug } },
-    { connection, query, sort, sort_dir, pagination, highlight, team_id },
+    { connection, query, sort, sort_dir, pagination, highlight, team_id }
   ) => {
     const { count, page } = pagination;
     debugLogger({

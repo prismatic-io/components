@@ -8,8 +8,7 @@ import type { UpdateListBody } from "../../types";
 export const updateList = action({
   display: {
     label: "Update List",
-    description:
-      "Update a list's name, info description, due date/time, priority, assignee, and color.",
+    description: "Update a list's name, info description, due date/time, priority, assignee, and color.",
   },
   outputSchema: outputSchema({
     type: "actionOutput",
@@ -19,23 +18,9 @@ export const updateList = action({
   performSafety: "notAllowed",
   perform: async (
     context,
-    {
-      clickUpConnection,
-      listId,
-      name,
-      content,
-      dueDate,
-      dueDateTime,
-      priority,
-      assignee,
-      status,
-      unsetStatus,
-    },
+    { clickUpConnection, listId, name, content, dueDate, dueDateTime, priority, assignee, status, unsetStatus }
   ) => {
-    const client = createClickUpClient(
-      clickUpConnection,
-      context.debug.enabled,
-    );
+    const client = createClickUpClient(clickUpConnection, context.debug.enabled);
     const body: UpdateListBody = {
       name,
       content,

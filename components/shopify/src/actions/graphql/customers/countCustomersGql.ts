@@ -29,9 +29,6 @@ export const countCustomersGql = action({
     };
   },
   inputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: countCustomersGqlOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: countCustomersGqlOutputSchema }),
   examplePayload,
 });

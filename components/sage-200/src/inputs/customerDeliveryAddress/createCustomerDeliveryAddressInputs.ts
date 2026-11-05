@@ -4,8 +4,7 @@ import sharedInputs from "./sharedInputs";
 
 const customerId = input({
   label: "Customer Id",
-  comments:
-    "Unique Id of the customer account the customer delivery address is associated with.",
+  comments: "Unique Id of the customer account the customer delivery address is associated with.",
   type: "string",
   required: true,
   example: "27912",

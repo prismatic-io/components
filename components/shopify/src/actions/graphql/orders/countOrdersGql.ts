@@ -23,9 +23,6 @@ export const countOrdersGql = action({
     return { data: data.ordersCount };
   },
   inputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: countOrdersGqlOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: countOrdersGqlOutputSchema }),
   examplePayload,
 });

@@ -10,10 +10,7 @@ export const restRawRequest = action({
   },
   performSafety: "notAllowed",
   perform: async (context, { connection, ...rawRequestInputs }) => {
-    const { environmentUrl, authorize } = await getConfig(
-      connection,
-      context.debug.enabled,
-    );
+    const { environmentUrl, authorize } = await getConfig(connection, context.debug.enabled);
     const { data } = await sendRawRequest(
       environmentUrl,
       { ...rawRequestInputs, debugRequest: context.debug.enabled },

@@ -301,12 +301,7 @@ export const paymentMethodOutputSchema = {
                       properties: {
                         type: {
                           type: "string",
-                          enum: [
-                            "apple_pay",
-                            "google_pay",
-                            "samsung_pay",
-                            "unknown",
-                          ],
+                          enum: ["apple_pay", "google_pay", "samsung_pay", "unknown"],
                         },
                       },
                       required: ["type"],

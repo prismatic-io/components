@@ -46,9 +46,7 @@ export const convertDataType = (
   itemTypes: KeyValuePair<unknown>[],
 ) => {
   if (items.length !== itemTypes.length) {
-    throw new Error(
-      "The number of items and item types must be the same. Check your inputs.",
-    );
+    throw new Error("The number of items and item types must be the same. Check your inputs.");
   }
   if (items.length === 0) {
     return undefined;
@@ -87,35 +85,28 @@ export const getItemKeySearch = async ({
     Table?.KeySchema?.filter((key) => key.KeyType === "HASH")[0].AttributeName,
   );
   const hashKeyType = util.types.toString(
-    Table?.AttributeDefinitions?.filter(
-      (attribute) => attribute.AttributeName === hashKey,
-    )[0].AttributeType,
+    Table?.AttributeDefinitions?.filter((attribute) => attribute.AttributeName === hashKey)[0]
+      .AttributeType,
   );
 
   keys[hashKey] = coerceValue(hashKey, hashKeyValue, hashKeyType);
 
   const rangeKey = util.types.toString(
-    Table?.KeySchema?.filter((key) => key.KeyType === "RANGE")?.[0]
-      ?.AttributeName,
+    Table?.KeySchema?.filter((key) => key.KeyType === "RANGE")?.[0]?.AttributeName,
   );
 
   if (rangeKey && !rangeKeyValue) {
-    throw new Error(
-      "Your table has a range key, but you did not provide a range key value",
-    );
+    throw new Error("Your table has a range key, but you did not provide a range key value");
   }
 
   if (!rangeKey && rangeKeyValue) {
-    throw new Error(
-      "Your table does not have a range key, but you provided one",
-    );
+    throw new Error("Your table does not have a range key, but you provided one");
   }
 
   if (rangeKey) {
     const rangeKeyType = util.types.toString(
-      Table?.AttributeDefinitions?.filter(
-        (attribute) => attribute.AttributeName === rangeKey,
-      )[0].AttributeType,
+      Table?.AttributeDefinitions?.filter((attribute) => attribute.AttributeName === rangeKey)[0]
+        .AttributeType,
     );
     keys[rangeKey] = coerceValue(rangeKey, rangeKeyValue, rangeKeyType);
   }
@@ -123,34 +114,23 @@ export const getItemKeySearch = async ({
   return keys;
 };
 
-export const cleanObject = (value: unknown) =>
-  value ? util.types.toObject(value) : undefined;
+export const cleanObject = (value: unknown) => (value ? util.types.toObject(value) : undefined);
 
 export const cleanKeyValueListInput = (value: unknown) =>
   value
-    ? util.types.keyValPairListToObject(
-        value as KeyValuePair[],
-        util.types.toObject,
-      )
+    ? util.types.keyValPairListToObject(value as KeyValuePair[], util.types.toObject)
     : undefined;
 
 // biome-ignore lint/style/useConst: previously disabled for eslint
 let transformDynamoDBValue: (value: DynamoDBValue) => unknown;
 // biome-ignore lint/style/useConst: previously disabled for eslint
-let transformDynamoDBObject: (
-  item: Record<string, DynamoDBValue>,
-) => Record<string, unknown>;
+let transformDynamoDBObject: (item: Record<string, DynamoDBValue>) => Record<string, unknown>;
 
-transformDynamoDBObject = (
-  item: Record<string, DynamoDBValue>,
-): Record<string, unknown> => {
-  return Object.entries(item).reduce<Record<string, unknown>>(
-    (acc, [key, value]) => {
-      acc[key] = transformDynamoDBValue(value);
-      return acc;
-    },
-    {},
-  );
+transformDynamoDBObject = (item: Record<string, DynamoDBValue>): Record<string, unknown> => {
+  return Object.entries(item).reduce<Record<string, unknown>>((acc, [key, value]) => {
+    acc[key] = transformDynamoDBValue(value);
+    return acc;
+  }, {});
 };
 
 transformDynamoDBValue = (value: DynamoDBValue): unknown => {

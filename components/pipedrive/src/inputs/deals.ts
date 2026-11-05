@@ -70,8 +70,7 @@ const addDealAdditionalFieldsValue = input({
   type: "string",
   required: false,
   clean: cleanString,
-  comments:
-    "The monetary amount associated with the deal, in the specified currency.",
+  comments: "The monetary amount associated with the deal, in the specified currency.",
   example: "5000",
   placeholder: "Enter deal value",
 });
@@ -81,8 +80,7 @@ const addDealAdditionalFieldsCurrency = input({
   type: "string",
   required: false,
   clean: cleanString,
-  comments:
-    "The three-letter ISO 4217 currency code for the deal value (e.g. USD, EUR).",
+  comments: "The three-letter ISO 4217 currency code for the deal value (e.g. USD, EUR).",
   example: "USD",
   placeholder: "Enter currency code",
 });
@@ -126,8 +124,7 @@ const addDealLostReason = input({
   type: "string",
   required: false,
   clean: cleanString,
-  comments:
-    "The optional message about why the deal was lost (to be used when status = lost)",
+  comments: "The optional message about why the deal was lost (to be used when status = lost)",
   example: "Budget constraints",
   placeholder: "Enter reason for losing deal",
 });
@@ -166,8 +163,7 @@ export const addDealInputs = {
   stageId: dealStageId,
   additionalFields: structuredObjectInput({
     label: "Additional Fields",
-    comments:
-      "Optional deal attributes: value, currency, status, dates, probability, visibility.",
+    comments: "Optional deal attributes: value, currency, status, dates, probability, visibility.",
     inputs: {
       value: addDealAdditionalFieldsValue,
       currency: addDealAdditionalFieldsCurrency,
@@ -196,8 +192,7 @@ const updateDealValue = input({
   type: "string",
   required: false,
   clean: cleanString,
-  comments:
-    "The monetary amount associated with the deal, in the specified currency.",
+  comments: "The monetary amount associated with the deal, in the specified currency.",
   example: "5000",
   placeholder: "Enter deal value",
 });
@@ -207,8 +202,7 @@ const updateDealCurrency = input({
   type: "string",
   required: false,
   clean: cleanString,
-  comments:
-    "The three-letter ISO 4217 currency code for the deal value (e.g. USD, EUR).",
+  comments: "The three-letter ISO 4217 currency code for the deal value (e.g. USD, EUR).",
   example: "USD",
   placeholder: "Enter currency code",
 });
@@ -252,8 +246,7 @@ const updateDealLostReason = input({
   type: "string",
   required: false,
   clean: cleanString,
-  comments:
-    "The optional message about why the deal was lost (to be used when status = lost)",
+  comments: "The optional message about why the deal was lost (to be used when status = lost)",
   example: "Budget constraints",
   placeholder: "Enter reason for losing deal",
 });
@@ -321,8 +314,7 @@ const searchDealsExactMatch = input({
   label: "Exact Match",
   type: "boolean",
   clean: util.types.toBool,
-  comments:
-    "When true, only full exact matches against the given term are returned",
+  comments: "When true, only full exact matches against the given term are returned",
 });
 
 const searchDealsPersonId = input({
@@ -360,8 +352,7 @@ const searchDealsIncludeFields = input({
   type: "string",
   model: [{ label: "Deal Cc Email", value: "deal.cc_email" }],
   clean: cleanString,
-  comments:
-    "Supports including optional fields in the results which are not provided by default",
+  comments: "Supports including optional fields in the results which are not provided by default",
 });
 
 export const searchDealsInputs = {
@@ -392,8 +383,7 @@ const getDealsSummaryFilterId = input({
   label: "Filter ID",
   type: "string",
   clean: cleanNumber,
-  comments:
-    "The unique identifier of the filter to apply. When set, user_id is not considered.",
+  comments: "The unique identifier of the filter to apply. When set, user_id is not considered.",
   example: "123",
   placeholder: "Enter Filter ID",
 });
@@ -453,8 +443,7 @@ const getDealsTimelineAmount = input({
   type: "string",
   required: true,
   clean: util.types.toNumber,
-  comments:
-    'The number of given intervals, starting from "start_date", to fetch',
+  comments: 'The number of given intervals, starting from "start_date", to fetch',
   example: "12",
   placeholder: "Enter number of intervals",
 });
@@ -482,8 +471,7 @@ const getDealsTimelinePipelineId = input({
   label: "Pipeline ID",
   type: "string",
   clean: cleanNumber,
-  comments:
-    "If supplied, only deals matching the given pipeline will be returned.",
+  comments: "If supplied, only deals matching the given pipeline will be returned.",
   example: "123",
   placeholder: "Enter Pipeline ID",
 });
@@ -492,8 +480,7 @@ const getDealsTimelineFilterId = input({
   label: "Filter ID",
   type: "string",
   clean: cleanNumber,
-  comments:
-    "If supplied, only deals matching the given filter will be returned.",
+  comments: "If supplied, only deals matching the given filter will be returned.",
   example: "123",
   placeholder: "Enter Filter ID",
 });
@@ -712,10 +699,7 @@ const addDealProductIsEnabled = input({
 export const addDealProductInputs = {
   connection: connectionInput,
   id: dealIdInput,
-  productId: {
-    ...productIdInput,
-    comments: "The ID of the product to add to the deal",
-  },
+  productId: { ...productIdInput, comments: "The ID of the product to add to the deal" },
   itemPrice: addDealProductItemPrice,
   quantity: addDealProductQuantity,
   discount: addDealProductDiscount,
@@ -731,8 +715,7 @@ const updateDealProductAttachmentId = input({
   type: "string",
   required: true,
   clean: util.types.toString,
-  comments:
-    "The ID of the deal-product (the ID of the product attached to the deal).",
+  comments: "The ID of the deal-product (the ID of the product attached to the deal).",
   example: "123",
   placeholder: "Enter Product Attachment ID",
 });

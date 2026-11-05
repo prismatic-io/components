@@ -1,8 +1,4 @@
-import {
-  connection,
-  oauth2Connection,
-  OAuth2Type,
-} from "@prismatic-io/spectral";
+import { connection, oauth2Connection, OAuth2Type } from "@prismatic-io/spectral";
 
 export const gmailOauth = oauth2Connection({
   key: "oauth2",
@@ -22,10 +18,8 @@ export const gmailOauth = oauth2Connection({
       required: true,
       shown: false,
       comments: "OAuth 2.0 authorization URL for Gmail authentication.",
-      default:
-        "https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&prompt=consent",
-      example:
-        "https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&prompt=consent",
+      default: "https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&prompt=consent",
+      example: "https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&prompt=consent",
     },
     tokenUrl: {
       label: "Token URL",
@@ -44,8 +38,7 @@ export const gmailOauth = oauth2Connection({
       required: true,
       comments:
         'Space-separated list of OAuth permission scopes. See <a href="https://developers.google.com/gmail/api/auth/scopes">Gmail API Scopes documentation</a> for available scopes.',
-      default:
-        "https://mail.google.com/ https://www.googleapis.com/auth/pubsub",
+      default: "https://mail.google.com/ https://www.googleapis.com/auth/pubsub",
       example:
         "https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/gmail.send",
     },
@@ -56,8 +49,7 @@ export const gmailOauth = oauth2Connection({
       required: true,
       comments:
         "The Client ID from the Google Cloud Console. Navigate to APIs & Services > Credentials to find this value.",
-      example:
-        "123456789012-abc123def456ghi789jkl012mno345pqr.apps.googleusercontent.com",
+      example: "123456789012-abc123def456ghi789jkl012mno345pqr.apps.googleusercontent.com",
     },
     clientSecret: {
       label: "Client Secret",
@@ -101,8 +93,7 @@ export const gmailServiceAccountAuth = connection({
       required: true,
       comments:
         'Space-separated list of OAuth permission scopes. See <a href="https://developers.google.com/gmail/api/auth/scopes">Gmail API Scopes documentation</a> for available scopes.',
-      default:
-        "https://mail.google.com/ https://www.googleapis.com/auth/pubsub",
+      default: "https://mail.google.com/ https://www.googleapis.com/auth/pubsub",
       example:
         "https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/gmail.send",
     },

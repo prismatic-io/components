@@ -35,24 +35,20 @@ describe("normalizeStoreUrl", () => {
     ["no scheme", "store.example.com"],
     ["surrounding whitespace", "  https://store.example.com  "],
   ])("reduces %s to the origin", (_label, input) => {
-    expect(normalizeStoreUrl(connection, input)).toBe(
-      "https://store.example.com",
-    );
+    expect(normalizeStoreUrl(connection, input)).toBe("https://store.example.com");
   });
 
   test("preserves a non-default port", () => {
-    expect(
-      normalizeStoreUrl(connection, "https://store.example.com:8443"),
-    ).toBe("https://store.example.com:8443");
+    expect(normalizeStoreUrl(connection, "https://store.example.com:8443")).toBe(
+      "https://store.example.com:8443",
+    );
   });
 
   test.each([
     ["http", "http://store.example.com"],
     ["ftp", "ftp://store.example.com"],
   ])("upgrades an explicit %s scheme to https", (_label, input) => {
-    expect(normalizeStoreUrl(connection, input)).toBe(
-      "https://store.example.com",
-    );
+    expect(normalizeStoreUrl(connection, input)).toBe("https://store.example.com");
   });
 
   test.each([
@@ -65,21 +61,9 @@ describe("normalizeStoreUrl", () => {
 
 describe("resolveRequestUrl", () => {
   test.each([
-    [
-      "a leading slash on the path",
-      "https://store.example.com/rest/default/V1",
-      "/orders",
-    ],
-    [
-      "no leading slash on the path",
-      "https://store.example.com/rest/default/V1",
-      "orders",
-    ],
-    [
-      "a trailing slash on the base",
-      "https://store.example.com/rest/default/V1/",
-      "/orders",
-    ],
+    ["a leading slash on the path", "https://store.example.com/rest/default/V1", "/orders"],
+    ["no leading slash on the path", "https://store.example.com/rest/default/V1", "orders"],
+    ["a trailing slash on the base", "https://store.example.com/rest/default/V1/", "/orders"],
   ])("joins %s into one URL", (_label, baseUrl, url) => {
     expect(resolveRequestUrl(baseUrl, url)).toBe(
       "https://store.example.com/rest/default/V1/orders",
@@ -87,12 +71,9 @@ describe("resolveRequestUrl", () => {
   });
 
   test("passes an absolute URL through untouched", () => {
-    expect(
-      resolveRequestUrl(
-        "https://store.example.com",
-        "https://other.example.com/x",
-      ),
-    ).toBe("https://other.example.com/x");
+    expect(resolveRequestUrl("https://store.example.com", "https://other.example.com/x")).toBe(
+      "https://other.example.com/x",
+    );
   });
 
   test("tolerates an absent path", () => {
@@ -108,9 +89,7 @@ describe("toSignatureParams", () => {
   });
 
   test("stringifies scalar values", () => {
-    expect(
-      toSignatureParams({ "searchCriteria[pageSize]": 10, fetchAll: false }),
-    ).toEqual([
+    expect(toSignatureParams({ "searchCriteria[pageSize]": 10, fetchAll: false })).toEqual([
       ["searchCriteria[pageSize]", "10"],
       ["fetchAll", "false"],
     ]);
@@ -133,9 +112,7 @@ describe("toSignatureParams", () => {
 
 describe("toRawRequestParams", () => {
   test("converts key/value entries into pairs", () => {
-    expect(toRawRequestParams([{ key: "limit", value: "10" }])).toEqual([
-      ["limit", "10"],
-    ]);
+    expect(toRawRequestParams([{ key: "limit", value: "10" }])).toEqual([["limit", "10"]]);
   });
 
   test("treats a missing value as empty", () => {
@@ -153,9 +130,7 @@ describe("toRawRequestParams", () => {
 
 describe("getClient with the store connection", () => {
   test("signs the request with OAuth 1.0a instead of presenting a bearer token", async () => {
-    const scope = nock(STORE_HOST, {
-      reqheaders: { authorization: isOauth1Header },
-    })
+    const scope = nock(STORE_HOST, { reqheaders: { authorization: isOauth1Header } })
       .get("/rest/default/V1/orders")
       .reply(200, { items: [] });
 
@@ -202,9 +177,7 @@ describe("getClient with the store connection", () => {
 
   test("covers the query parameters in the signature", async () => {
     const headers: string[] = [];
-    const capture = function (this: {
-      req: { getHeader: (name: string) => unknown };
-    }) {
+    const capture = function (this: { req: { getHeader: (name: string) => unknown } }) {
       headers.push(this.req.getHeader("authorization") as string);
       return { items: [] };
     };
@@ -217,28 +190,18 @@ describe("getClient with the store connection", () => {
       .reply(200, capture);
 
     const client = await getClient(storeConnection(), false);
-    await client.get("/orders", {
-      params: { "searchCriteria[pageSize]": "10" },
-    });
-    await client.get("/orders", {
-      params: { "searchCriteria[pageSize]": "20" },
-    });
+    await client.get("/orders", { params: { "searchCriteria[pageSize]": "10" } });
+    await client.get("/orders", { params: { "searchCriteria[pageSize]": "20" } });
 
     expect(scope.isDone()).toBe(true);
-    const signature = (header: string) =>
-      /oauth_signature="([^"]+)"/.exec(header)?.[1];
+    const signature = (header: string) => /oauth_signature="([^"]+)"/.exec(header)?.[1];
     expect(signature(headers[0])).not.toBe(signature(headers[1]));
   });
 
   test("uses a non-default store code in the path", async () => {
-    const scope = nock(STORE_HOST)
-      .get("/rest/es_mx/V1/orders")
-      .reply(200, { items: [] });
+    const scope = nock(STORE_HOST).get("/rest/es_mx/V1/orders").reply(200, { items: [] });
 
-    const client = await getClient(
-      storeConnection({ storeCode: "es_mx" }),
-      false,
-    );
+    const client = await getClient(storeConnection({ storeCode: "es_mx" }), false);
     await client.get("/orders");
 
     expect(scope.isDone()).toBe(true);
@@ -249,9 +212,7 @@ describe("getClient with the store connection", () => {
     ["a whitespace-only store code", "   "],
     ["an absent store code", undefined],
   ])("falls back to the default store code on %s", async (_label, storeCode) => {
-    const scope = nock(STORE_HOST)
-      .get("/rest/default/V1/orders")
-      .reply(200, { items: [] });
+    const scope = nock(STORE_HOST).get("/rest/default/V1/orders").reply(200, { items: [] });
 
     const client = await getClient(storeConnection({ storeCode }), false);
     await client.get("/orders");
@@ -260,14 +221,9 @@ describe("getClient with the store connection", () => {
   });
 
   test("normalizes a store URL entered with a trailing slash", async () => {
-    const scope = nock(STORE_HOST)
-      .get("/rest/default/V1/orders")
-      .reply(200, { items: [] });
+    const scope = nock(STORE_HOST).get("/rest/default/V1/orders").reply(200, { items: [] });
 
-    const client = await getClient(
-      storeConnection({ storeUrl: `${STORE_HOST}/` }),
-      false,
-    );
+    const client = await getClient(storeConnection({ storeUrl: `${STORE_HOST}/` }), false);
     await client.get("/orders");
 
     expect(scope.isDone()).toBe(true);
@@ -279,16 +235,11 @@ describe("getClient with the store connection", () => {
     ["Access Token", "accessToken"],
     ["Access Token Secret", "accessTokenSecret"],
   ])("reports a missing %s by name", async (label, field) => {
-    await expect(
-      getClient(storeConnection({ [field]: "" }), false),
-    ).rejects.toThrow(label);
+    await expect(getClient(storeConnection({ [field]: "" }), false)).rejects.toThrow(label);
   });
 
   test("names every missing credential at once", async () => {
-    const connection = storeConnection({
-      consumerSecret: "",
-      accessTokenSecret: "",
-    });
+    const connection = storeConnection({ consumerSecret: "", accessTokenSecret: "" });
 
     await expect(getConfig(connection, false)).rejects.toThrow(
       "Consumer Secret, Access Token Secret are required",
@@ -299,11 +250,7 @@ describe("getClient with the store connection", () => {
 describe("the signature a store request carries", () => {
   const capture = (into: ObservedRequest[]) =>
     function (this: {
-      req: {
-        method: string;
-        path: string;
-        getHeader: (name: string) => unknown;
-      };
+      req: { method: string; path: string; getHeader: (name: string) => unknown };
     }) {
       into.push({
         method: this.req.method,
@@ -315,9 +262,7 @@ describe("the signature a store request carries", () => {
 
   test("verifies against an independent recomputation", async () => {
     const observed: ObservedRequest[] = [];
-    const scope = nock(STORE_HOST)
-      .get("/rest/default/V1/orders")
-      .reply(200, capture(observed));
+    const scope = nock(STORE_HOST).get("/rest/default/V1/orders").reply(200, capture(observed));
 
     const client = await getClient(storeConnection(), false);
     await client.get("/orders");
@@ -335,10 +280,7 @@ describe("the signature a store request carries", () => {
 
     const client = await getClient(storeConnection(), false);
     await client.get("/orders", {
-      params: {
-        "searchCriteria[pageSize]": 10,
-        "searchCriteria[currentPage]": 2,
-      },
+      params: { "searchCriteria[pageSize]": 10, "searchCriteria[currentPage]": 2 },
     });
 
     expect(scope.isDone()).toBe(true);
@@ -347,14 +289,9 @@ describe("the signature a store request carries", () => {
 
   test("verifies under a non-default store code", async () => {
     const observed: ObservedRequest[] = [];
-    const scope = nock(STORE_HOST)
-      .get("/rest/es_mx/V1/orders")
-      .reply(200, capture(observed));
+    const scope = nock(STORE_HOST).get("/rest/es_mx/V1/orders").reply(200, capture(observed));
 
-    const client = await getClient(
-      storeConnection({ storeCode: "es_mx" }),
-      false,
-    );
+    const client = await getClient(storeConnection({ storeCode: "es_mx" }), false);
     await client.get("/orders");
 
     expect(scope.isDone()).toBe(true);
@@ -363,39 +300,28 @@ describe("the signature a store request carries", () => {
 
   test("rejects a signature altered by a single character", async () => {
     const observed: ObservedRequest[] = [];
-    nock(STORE_HOST)
-      .get("/rest/default/V1/orders")
-      .reply(200, capture(observed));
+    nock(STORE_HOST).get("/rest/default/V1/orders").reply(200, capture(observed));
 
     const client = await getClient(storeConnection(), false);
     await client.get("/orders");
 
     const tampered = observed[0].authorization.replace(
       /oauth_signature="(.)/,
-      (_match, first: string) =>
-        `oauth_signature="${first === "A" ? "B" : "A"}`,
+      (_match, first: string) => `oauth_signature="${first === "A" ? "B" : "A"}`,
     );
 
     expect(tampered).not.toBe(observed[0].authorization);
-    expect(
-      verifyOauth1Signature({ ...observed[0], authorization: tampered }),
-    ).toBe(false);
+    expect(verifyOauth1Signature({ ...observed[0], authorization: tampered })).toBe(false);
   });
 
   test("rejects a request whose query parameter was altered in transit", async () => {
     const observed: ObservedRequest[] = [];
-    nock(STORE_HOST)
-      .get("/rest/default/V1/orders")
-      .query(true)
-      .reply(200, capture(observed));
+    nock(STORE_HOST).get("/rest/default/V1/orders").query(true).reply(200, capture(observed));
 
     const client = await getClient(storeConnection(), false);
     await client.get("/orders", { params: { "searchCriteria[pageSize]": 10 } });
 
-    const altered = observed[0].url.replace(
-      "pageSize%5D=10",
-      "pageSize%5D=1000",
-    );
+    const altered = observed[0].url.replace("pageSize%5D=10", "pageSize%5D=1000");
 
     expect(altered).not.toBe(observed[0].url);
     expect(verifyOauth1Signature({ ...observed[0], url: altered })).toBe(false);
@@ -421,9 +347,7 @@ describe("getClient with the deprecated Marketplace connection", () => {
   });
 
   test("reports a failed session token exchange", async () => {
-    nock(MARKETPLACE_HOST)
-      .post("/rest/v1/app/session/token")
-      .reply(401, { message: "denied" });
+    nock(MARKETPLACE_HOST).post("/rest/v1/app/session/token").reply(401, { message: "denied" });
 
     await expect(getClient(marketplaceConnection(), false)).rejects.toThrow(
       "Unable to obtain a session token.",

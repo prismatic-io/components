@@ -18,8 +18,5 @@ export const getUserConnections = action({
   inputs: getUserConnectionsInputs,
   examplePayload: getUserConnectionsExamplePayload,
   examplePerform: async () => getUserConnectionsExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getUserConnectionsOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getUserConnectionsOutputSchema }),
 });

@@ -1,7 +1,6 @@
 export const moveFileExamplePayload = {
   data: {
-    "@odata.context":
-      "https://graph.microsoft.com/v1.0/$metadata#drives('drive-id')/items/$entity",
+    "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#drives('drive-id')/items/$entity",
     "@microsoft.graph.downloadUrl":
       "https://example.sharepoint.com/sites/ExampleSite/_layouts/15/download.aspx?UniqueId=example-unique-id&Translate=false&tempauth=example-tempauth-token&ApiVersion=2.0",
     createdDateTime: "2025-06-12T23:24:20Z",
@@ -36,8 +35,7 @@ export const moveFileExamplePayload = {
       siteId: "00000000-0000-0000-0000-000000000000",
     },
     file: {
-      mimeType:
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
       hashes: {
         quickXorHash: "exampleBase64Hash==",
       },

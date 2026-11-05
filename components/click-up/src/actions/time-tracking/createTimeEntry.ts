@@ -2,10 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClickUpClient } from "../../client";
 import { createTimeEntryExamplePayload } from "../../examplePayloads";
 import { createTimeEntryInputs } from "../../inputs";
-import type {
-  CreateTimeEntryBody,
-  CreateTimeEntryQueryParams,
-} from "../../types";
+import type { CreateTimeEntryBody, CreateTimeEntryQueryParams } from "../../types";
 
 export const createTimeEntry = action({
   display: {
@@ -28,12 +25,9 @@ export const createTimeEntry = action({
       assigneeTimeEntry,
       taskId,
       tagsCode,
-    },
+    }
   ) => {
-    const client = createClickUpClient(
-      clickUpConnection,
-      context.debug.enabled,
-    );
+    const client = createClickUpClient(clickUpConnection, context.debug.enabled);
     const queryParams: CreateTimeEntryQueryParams = {
       custom_task_ids: customTaskIds,
       team_id: customTeamId,

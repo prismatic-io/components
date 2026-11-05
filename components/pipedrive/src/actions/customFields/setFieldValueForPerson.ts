@@ -15,11 +15,7 @@ export const setFieldValueForPerson = action({
     if (!customFieldKey) {
       throw new Error("Invalid or missing customFieldKey");
     }
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      WebhookVersion.V2,
-    );
+    const client = createClient(connection, context.debug.enabled, WebhookVersion.V2);
     const payload = {
       [customFieldKey]: value,
     };
@@ -28,8 +24,5 @@ export const setFieldValueForPerson = action({
   },
   inputs: setFieldValueForPersonInputs,
   examplePayload: setFieldValueForPersonExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: setFieldValueForPersonOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: setFieldValueForPersonOutputSchema }),
 });

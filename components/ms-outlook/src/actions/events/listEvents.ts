@@ -17,9 +17,7 @@ export const listEvents = action({
 
     const url = computeEndpointBasedOnConnection(
       params.connection,
-      params.calendarId
-        ? `/me/calendars/${params.calendarId}/events`
-        : "/me/events",
+      params.calendarId ? `/me/calendars/${params.calendarId}/events` : "/me/events",
     );
 
     const queryParams: ODataQueryParams = {};

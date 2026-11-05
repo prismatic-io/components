@@ -1,16 +1,9 @@
-import {
-  createConnection,
-  invokeDataSource,
-} from "@prismatic-io/spectral/dist/testing";
+import { createConnection, invokeDataSource } from "@prismatic-io/spectral/dist/testing";
 import nock from "nock";
 import { connection as connectionDefinition } from "../connections";
 import { selectFiles } from "./selectFiles";
 
-const connection = createConnection(
-  connectionDefinition,
-  {},
-  { access_token: "test-token" },
-);
+const connection = createConnection(connectionDefinition, {}, { access_token: "test-token" });
 const DRIVE = "https://www.googleapis.com";
 
 const params = {
@@ -29,28 +22,16 @@ describe("selectFiles", () => {
       .query(true)
       .reply(200, {
         files: [
-          {
-            id: "1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms",
-            name: "Q3 Revenue Report.xlsx",
-          },
-          {
-            id: "1a2b3c4d5e6f7g8h9i0jKlMnOpQrStUvWxYz1234",
-            name: "Team Onboarding.pdf",
-          },
+          { id: "1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms", name: "Q3 Revenue Report.xlsx" },
+          { id: "1a2b3c4d5e6f7g8h9i0jKlMnOpQrStUvWxYz1234", name: "Team Onboarding.pdf" },
         ],
       });
 
     const { result } = await invokeDataSource(selectFiles, params);
 
     expect(result).toEqual([
-      {
-        key: "1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms",
-        label: "Q3 Revenue Report.xlsx",
-      },
-      {
-        key: "1a2b3c4d5e6f7g8h9i0jKlMnOpQrStUvWxYz1234",
-        label: "Team Onboarding.pdf",
-      },
+      { key: "1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms", label: "Q3 Revenue Report.xlsx" },
+      { key: "1a2b3c4d5e6f7g8h9i0jKlMnOpQrStUvWxYz1234", label: "Team Onboarding.pdf" },
     ]);
     for (const element of result) {
       expect(element).toHaveProperty("key");

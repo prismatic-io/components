@@ -11,10 +11,7 @@ export const deleteWebhookGql = action({
     description: "Deletes a webhook by ID.",
   },
   inputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: deleteWebhookGqlOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: deleteWebhookGqlOutputSchema }),
   performSafety: "notAllowed",
   perform: async (context, { shopifyConnection, webhookId }) => {
     const client = getShopifyGraphQlClient(

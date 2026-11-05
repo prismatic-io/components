@@ -19,8 +19,7 @@ export const deleteFlow = action({
     const result = await deleteFlowFunction(client, fullName);
     return { data: processMetadataResult(result) };
   },
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    deleteFlowExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => deleteFlowExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: deleteMetadataComponentOutputSchema,

@@ -1,10 +1,10 @@
 [
-  {
-    "label": "API Docs",
-    "href": "https://docs.cloud.google.com/storage/docs/apis"
-  },
-  {
-    "label": "API Changelog",
-    "href": "https://docs.cloud.google.com/storage/docs/release-notes"
-  }
+	{
+		"label": "API Docs",
+		"href": "https://docs.cloud.google.com/storage/docs/apis"
+	},
+	{
+		"label": "API Changelog",
+		"href": "https://docs.cloud.google.com/storage/docs/release-notes"
+	}
 ]

@@ -16,9 +16,7 @@ export const selectBooksRecord = dataSource({
   perform: async (_context, { connection, recordType, parentRecordId }) => {
     const client = createClient(connection, ClientType.BOOKS, false);
 
-    const url = parentRecordId
-      ? `/${recordType}?parent_id=${parentRecordId}`
-      : `/${recordType}`;
+    const url = parentRecordId ? `/${recordType}?parent_id=${parentRecordId}` : `/${recordType}`;
 
     const response = await fetchAllPages(
       client,

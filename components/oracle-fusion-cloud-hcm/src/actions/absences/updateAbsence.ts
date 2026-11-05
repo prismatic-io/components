@@ -12,20 +12,14 @@ export const updateAbsence = action({
   },
   examplePayload: updateAbsenceExamplePayload,
   inputs: updateAbsenceInputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: absenceOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: absenceOutputSchema }),
   perform: async (
     context,
     { connection, absenceEntryId, absenceDetails, additionalFields, ...fields },
   ) => {
     const client = createClient(connection, context.debug.enabled);
     const body = { ...fields, ...absenceDetails, ...additionalFields };
-    const { data } = await client.patch<Absence>(
-      `/absences/${absenceEntryId}`,
-      body,
-    );
+    const { data } = await client.patch<Absence>(`/absences/${absenceEntryId}`, body);
     return { data };
   },
 });

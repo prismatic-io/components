@@ -12,9 +12,7 @@ export const getSingleLocation = action({
   perform: async (context, { connection, locationId }) => {
     const client = createBasicAuthClient(connection, context.debug.enabled);
 
-    const { data } = await client.get(
-      `/configuration/v1/locations/${locationId}`,
-    );
+    const { data } = await client.get(`/configuration/v1/locations/${locationId}`);
 
     return { data };
   },

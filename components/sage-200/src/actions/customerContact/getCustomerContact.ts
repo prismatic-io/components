@@ -9,14 +9,9 @@ export const getCustomerContact = action({
     label: "Get Customer Contact",
     description: "Retrieve a customer contact by ID",
   },
-  perform: async (
-    context,
-    { connection, customerContactId, site, company },
-  ) => {
+  perform: async (context, { connection, customerContactId, site, company }) => {
     const client = getClient(connection, context.debug.enabled, site, company);
-    const { data } = await client.get(
-      `/customer_contacts/${customerContactId}`,
-    );
+    const { data } = await client.get(`/customer_contacts/${customerContactId}`);
     return {
       data,
     };

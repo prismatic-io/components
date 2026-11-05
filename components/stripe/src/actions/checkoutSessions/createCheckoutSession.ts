@@ -46,10 +46,7 @@ export const createCheckoutSession = action({
       data: session,
     };
   },
-  examplePerform: async (
-    _context,
-    { mode, customerId },
-  ): Promise<{ data: unknown }> => ({
+  examplePerform: async (_context, { mode, customerId }): Promise<{ data: unknown }> => ({
     data: {
       ...createCheckoutSessionExamplePayload.data,
       mode,

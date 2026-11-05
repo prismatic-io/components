@@ -36,8 +36,7 @@ const includePathPrefixes = input({
   collection: "valuelist",
   required: false,
   default: [],
-  comments:
-    "Only return pages whose URL path starts with one of these prefixes.",
+  comments: "Only return pages whose URL path starts with one of these prefixes.",
   example: "/en/adventures",
   clean: cleanStringList,
 });

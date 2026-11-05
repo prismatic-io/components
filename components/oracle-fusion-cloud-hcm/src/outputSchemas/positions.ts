@@ -8,14 +8,8 @@ export const positionOutputSchema = {
     DepartmentId: { type: "integer" },
     JobId: { type: "integer" },
     LocationId: { type: ["integer", "null"] },
-    PositionType: {
-      type: ["string", "null"],
-      enum: ["SINGLE", "pooled", null],
-    },
-    HiringStatus: {
-      type: ["string", "null"],
-      enum: ["PROPOSED", "frozen", "approved", null],
-    },
+    PositionType: { type: ["string", "null"], enum: ["SINGLE", "pooled", null] },
+    HiringStatus: { type: ["string", "null"], enum: ["PROPOSED", "frozen", "approved", null] },
     ActiveStatus: { type: ["string", "null"] },
     EffectiveStartDate: { type: "string" },
     EffectiveEndDate: { type: "string" },

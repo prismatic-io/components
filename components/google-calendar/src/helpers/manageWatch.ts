@@ -17,7 +17,7 @@ export const manageWatch = async ({
         channelId: previousWatch.channelId,
         resourceId: previousWatch.resourceId,
       },
-      logger,
+      logger
     );
   }
   const expiration = Date.now() + 7 * 24 * 60 * 60 * 1000;
@@ -45,7 +45,7 @@ export const manageWatch = async ({
     };
   } catch (error) {
     logger.error(
-      "Failed to create Calendar watch. Does the calendar still exist?",
+      "Failed to create Calendar watch. Does the calendar still exist?"
     );
     throw error;
   }

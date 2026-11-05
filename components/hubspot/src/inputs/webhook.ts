@@ -28,8 +28,7 @@ const propertyWebhookName = input({
 const active = input({
   type: "boolean",
   label: "Active",
-  comments:
-    "When true, the subscription is active. When false, the subscription is paused.",
+  comments: "When true, the subscription is active. When false, the subscription is paused.",
   required: true,
   default: "false",
   clean: util.types.toBool,

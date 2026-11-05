@@ -16,9 +16,7 @@ export const getBalanceTransaction = action({
       timeout: params.timeout,
     });
     return {
-      data: await client.balanceTransactions.retrieve(
-        params.balanceTransactionId,
-      ),
+      data: await client.balanceTransactions.retrieve(params.balanceTransactionId),
     };
   },
   inputs: getBalanceTransactionInputs,

@@ -1,10 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
-import {
-  connectionInput,
-  getCustomTaskIds,
-  getTaskId,
-  getTeamId,
-} from "./common";
+import { connectionInput, getCustomTaskIds, getTaskId, getTeamId } from "./common";
 
 const getFile = (required: boolean) =>
   input({
@@ -33,8 +28,5 @@ export const createTaskAttachmentInputs = {
   file: getFile(true),
   fileName: getFileName(true),
   customTaskIds: getCustomTaskIds(false),
-  teamId: getTeamId(
-    false,
-    "Only used when the custom_task_ids parameter is set to true.",
-  ),
+  teamId: getTeamId(false, "Only used when the custom_task_ids parameter is set to true."),
 };

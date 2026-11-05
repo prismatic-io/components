@@ -10,10 +10,7 @@ export const getDealMailMessages = action({
     description: "Lists mail messages associated with a deal.",
   },
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { connection, id, pagination: { start, limit, cursor } = {} },
-  ) => {
+  perform: async (context, { connection, id, pagination: { start, limit, cursor } = {} }) => {
     const client = createClient(connection, context.debug.enabled);
     const { data } = await client.get(`/deals/${id}/mailMessages`, {
       params: { start, limit, cursor },
@@ -22,8 +19,5 @@ export const getDealMailMessages = action({
   },
   inputs: getDealMailMessagesInputs,
   examplePayload: getDealMailMessagesExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getDealMailMessagesOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getDealMailMessagesOutputSchema }),
 });

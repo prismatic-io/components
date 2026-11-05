@@ -8,8 +8,7 @@ import { hubspotPaths } from "../../constants";
 export const validateConnection = action({
   display: {
     label: "Validate Connection",
-    description:
-      "Returns a boolean value that specifies whether the provided Connection is valid.",
+    description: "Returns a boolean value that specifies whether the provided Connection is valid.",
   },
   inputs: validateConnectionInputs,
   performSafety: "safe",
@@ -32,10 +31,7 @@ export const validateConnection = action({
     }
   },
   examplePayload: validateConnectionExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: validateConnectionOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: validateConnectionOutputSchema }),
 });
 
 export default validateConnection;

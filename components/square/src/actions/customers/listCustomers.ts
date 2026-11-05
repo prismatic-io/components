@@ -9,14 +9,8 @@ export const listCustomers = action({
     label: "List Customers",
     description: "Lists customer profiles associated with a Square account.",
   },
-  perform: async (
-    context,
-    { fetchAll, pagination = {}, sorting = {}, squareConnection },
-  ) => {
-    const client = await createAuthorizedClient(
-      squareConnection,
-      context.debug.enabled,
-    );
+  perform: async (context, { fetchAll, pagination = {}, sorting = {}, squareConnection }) => {
+    const client = await createAuthorizedClient(squareConnection, context.debug.enabled);
 
     const data = await fetchAllPages(
       client,
@@ -25,18 +19,11 @@ export const listCustomers = action({
       {
         initialCursor: pagination.cursor,
         additionalParams: {
-          limit:
-            pagination.limit !== undefined
-              ? util.types.toInt(pagination.limit)
-              : undefined,
+          limit: pagination.limit !== undefined ? util.types.toInt(pagination.limit) : undefined,
           sort_field:
-            sorting.sortField !== undefined
-              ? util.types.toString(sorting.sortField)
-              : undefined,
+            sorting.sortField !== undefined ? util.types.toString(sorting.sortField) : undefined,
           sort_order:
-            sorting.sortOrder !== undefined
-              ? util.types.toString(sorting.sortOrder)
-              : undefined,
+            sorting.sortOrder !== undefined ? util.types.toString(sorting.sortOrder) : undefined,
         },
       },
       fetchAll,

@@ -26,9 +26,7 @@ interface PollingStore {
   context: Partial<ActionContext>;
 }
 
-const createPollingStore = (
-  seedState: Record<string, unknown> = {},
-): PollingStore => {
+const createPollingStore = (seedState: Record<string, unknown> = {}): PollingStore => {
   let state: Record<string, unknown> = seedState;
   const writes: Record<string, unknown>[] = [];
   return {
@@ -78,19 +76,14 @@ const poll = async (
     lookBackDate: string;
   }> = {},
 ): Promise<PollResult> => {
-  const { result } = await invokeTrigger(
-    triggerUnderTest,
-    store.context,
-    undefined,
-    {
-      connection: {},
-      resourceType: "contacts",
-      showNewRecords: true,
-      showUpdatedRecords: true,
-      lookBackDate: undefined,
-      ...overrides,
-    } as Record<string, unknown>,
-  );
+  const { result } = await invokeTrigger(triggerUnderTest, store.context, undefined, {
+    connection: {},
+    resourceType: "contacts",
+    showNewRecords: true,
+    showUpdatedRecords: true,
+    lookBackDate: undefined,
+    ...overrides,
+  } as Record<string, unknown>);
   return result as unknown as PollResult;
 };
 
@@ -175,10 +168,7 @@ describe("pollChangesTrigger", () => {
       { id: "c1", created_at: "2026-05-15T00:00:00Z" },
     ] as SageRecord[]);
 
-    const result = await poll(store, {
-      showNewRecords: false,
-      showUpdatedRecords: false,
-    });
+    const result = await poll(store, { showNewRecords: false, showUpdatedRecords: false });
     expect(result.polledNoChanges).toBe(true);
   });
 
@@ -189,10 +179,7 @@ describe("pollChangesTrigger", () => {
       { id: "c1", created_at: "2026-05-15T00:00:00Z" },
     ] as SageRecord[]);
 
-    const result = await poll(store, {
-      showNewRecords: false,
-      showUpdatedRecords: false,
-    });
+    const result = await poll(store, { showNewRecords: false, showUpdatedRecords: false });
     expect(result.polledNoChanges).toBe(true);
     expect(store.currentState()).toEqual({ lastPolledAt: POLL_ONE_AT });
   });

@@ -8,8 +8,7 @@ beforeAll(() => nock.disableNetConnect());
 afterAll(() => nock.enableNetConnect());
 afterEach(() => nock.cleanAll());
 
-const get = () =>
-  invoke(getProject, { jiraConnection: basicConnection(), projectId: "10000" });
+const get = () => invoke(getProject, { jiraConnection: basicConnection(), projectId: "10000" });
 
 describe("getProject", () => {
   test("reads the project addressed by its id in the path", async () => {

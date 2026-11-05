@@ -25,8 +25,7 @@ export const completeUploadBulkJob = action({
       data,
     };
   },
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    getBulkJobExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => getBulkJobExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: completeUploadBulkJobOutputSchema,

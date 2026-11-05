@@ -1,10 +1,7 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
 import { awsRegion, connectionInput } from "../inputs";
 import { createDynamoClient } from "../auth";
-import {
-  ListTablesCommand,
-  type ListTablesCommandOutput,
-} from "@aws-sdk/client-dynamodb";
+import { ListTablesCommand, type ListTablesCommandOutput } from "@aws-sdk/client-dynamodb";
 
 export const selectTable = dataSource({
   display: {

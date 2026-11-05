@@ -72,8 +72,7 @@ const dealStage = input({
   type: "string",
   required: true,
   placeholder: "Enter deal stage",
-  comments:
-    "The stage of the deal. Deal stages categorize deals and track their progress.",
+  comments: "The stage of the deal. Deal stages categorize deals and track their progress.",
   example: "presentationscheduled",
   clean: util.types.toString,
 });
@@ -83,8 +82,7 @@ const updateDealStage = input({
   type: "string",
   required: false,
   placeholder: "Enter deal stage",
-  comments:
-    "The stage of the deal. Deal stages categorize deals and track their progress.",
+  comments: "The stage of the deal. Deal stages categorize deals and track their progress.",
   example: "presentationscheduled",
   clean: toOptionalString,
 });

@@ -1,10 +1,6 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
 import { createAemClient } from "../client";
-import {
-  MAX_DATA_SOURCE_ITEMS,
-  MAX_PAGE_LIMIT,
-  SITES_API_PATH,
-} from "../constants";
+import { MAX_DATA_SOURCE_ITEMS, MAX_PAGE_LIMIT, SITES_API_PATH } from "../constants";
 import { selectContentFragmentExamplePayload } from "../examplePayloads";
 import { selectContentFragmentInputs } from "../inputs";
 import type { ContentFragment } from "../types";
@@ -13,8 +9,7 @@ import { compareElementLabels, fetchCursorPages } from "../utils";
 export const selectContentFragment = dataSource({
   display: {
     label: "Select Content Fragment",
-    description:
-      "Select a content fragment from the list of content fragments.",
+    description: "Select a content fragment from the list of content fragments.",
   },
   inputs: selectContentFragmentInputs,
   examplePayload: selectContentFragmentExamplePayload,
@@ -35,9 +30,7 @@ export const selectContentFragment = dataSource({
     const result = fragments
       .slice(0, MAX_DATA_SOURCE_ITEMS)
       .map<Element>((fragment) => ({
-        label: fragment.title
-          ? `${fragment.title} (${fragment.path})`
-          : fragment.path,
+        label: fragment.title ? `${fragment.title} (${fragment.path})` : fragment.path,
         key: fragment.id,
       }))
       .sort(compareElementLabels);

@@ -11,10 +11,7 @@ export const rawRequest = action({
   },
   inputs,
   performSafety: "notAllowed",
-  perform: async (
-    _context,
-    { connection, apiVersion, returnHeaders, ...httpClientInputs },
-  ) => {
+  perform: async (_context, { connection, apiVersion, returnHeaders, ...httpClientInputs }) => {
     const shopifyHostname = getConnectionHostname(connection);
     const { data, headers } = await sendRawRequest(
       `https://${shopifyHostname}/admin/api/${apiVersion}`,
@@ -22,8 +19,7 @@ export const rawRequest = action({
       {
         "Content-type": "application/json",
         "X-Shopify-Access-Token": util.types.toString(
-          connection.token?.access_token ||
-            connection.fields.adminApiAccessToken,
+          connection.token?.access_token || connection.fields.adminApiAccessToken,
         ),
       },
     );

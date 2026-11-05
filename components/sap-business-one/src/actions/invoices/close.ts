@@ -13,15 +13,9 @@ export const closeInvoice = action({
     connection,
   },
   perform: async (context, { connection, invoiceDocumentEntry }) => {
-    const client = await createClient(
-      connection,
-      context,
-      context.debug.enabled,
-    );
+    const client = await createClient(connection, context, context.debug.enabled);
 
-    const { data } = await client.post(
-      `/Invoices(${invoiceDocumentEntry})/Close`,
-    );
+    const { data } = await client.post(`/Invoices(${invoiceDocumentEntry})/Close`);
     return {
       data,
     };

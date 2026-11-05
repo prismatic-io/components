@@ -18,8 +18,7 @@ const types = input({
   placeholder: "Enter catalog object types (comma-separated)",
   comments:
     "An optional case-insensitive, comma-separated list of object types to retrieve. Valid values are defined in the CatalogObjectType enum, for example, ITEM, ITEM_VARIATION, CATEGORY, DISCOUNT, TAX, MODIFIER, MODIFIER_LIST, IMAGE.",
-  default:
-    "ITEM, ITEM_VARIATION, CATEGORY, DISCOUNT, TAX, MODIFIER, MODIFIER_LIST, IMAGE",
+  default: "ITEM, ITEM_VARIATION, CATEGORY, DISCOUNT, TAX, MODIFIER, MODIFIER_LIST, IMAGE",
   example: "ITEM, CATEGORY, TAX",
   clean: toOptionalString,
 });
@@ -50,13 +49,8 @@ const categoryIds = input({
   label: "Category IDs",
   type: "code",
   language: "json",
-  default: JSON.stringify(
-    ["W62UWFY35CWMYGVWK6TWJDNI", "X73VXGZ46DXNZHXWL7UXKENJ"],
-    null,
-    2,
-  ),
-  comments:
-    "An array of category IDs in JSON format used to filter items by category.",
+  default: JSON.stringify(["W62UWFY35CWMYGVWK6TWJDNI", "X73VXGZ46DXNZHXWL7UXKENJ"], null, 2),
+  comments: "An array of category IDs in JSON format used to filter items by category.",
   required: false,
   clean: (input) => validateJSON(input),
 });
@@ -66,8 +60,7 @@ const stockLevels = input({
   type: "code",
   language: "json",
   default: JSON.stringify(["OUT", "LOW"], null, 2),
-  comments:
-    "An array of stock levels in JSON format used to filter items. Options: OUT, LOW.",
+  comments: "An array of stock levels in JSON format used to filter items. Options: OUT, LOW.",
   required: false,
   clean: (input) => validateJSON(input),
 });
@@ -77,8 +70,7 @@ const enabledLocationIds = input({
   type: "code",
   language: "json",
   default: JSON.stringify(["LH2G9VFHJRWKR", "LK3H8WGIKSMLA"], null, 2),
-  comments:
-    "An array of location IDs in JSON format used to filter items by enabled locations.",
+  comments: "An array of location IDs in JSON format used to filter items by enabled locations.",
   required: false,
   clean: (input) => validateJSON(input),
 });
@@ -174,11 +166,7 @@ const objectIds = input({
   type: "code",
   language: "json",
   default: JSON.stringify(
-    [
-      "W62UWFY35CWMYGVWK6TWJDNI",
-      "X73VXGZ46DXNZHXWL7UXKENJ",
-      "Y84WHHA57EYOAIYWM8VYLOFK",
-    ],
+    ["W62UWFY35CWMYGVWK6TWJDNI", "X73VXGZ46DXNZHXWL7UXKENJ", "Y84WHHA57EYOAIYWM8VYLOFK"],
     null,
     2,
   ),

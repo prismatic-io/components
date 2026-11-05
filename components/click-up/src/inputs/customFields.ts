@@ -1,12 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanString, toTimestampIfDate } from "../util";
-import {
-  connectionInput,
-  getCustomTaskIds,
-  getlistId,
-  getTaskId,
-  getTeamId,
-} from "./common";
+import { connectionInput, getCustomTaskIds, getlistId, getTaskId, getTeamId } from "./common";
 
 const fieldId = input({
   label: "Field ID",
@@ -39,10 +33,7 @@ const valueType = input({
 
 export const getAccessibleCustomFieldsInputs = {
   connection: connectionInput,
-  listId: getlistId(
-    true,
-    "The unique identifier for the List whose Custom Fields are returned.",
-  ),
+  listId: getlistId(true, "The unique identifier for the List whose Custom Fields are returned."),
 };
 
 export const removeCustomFieldValueInputs = {
@@ -52,12 +43,9 @@ export const removeCustomFieldValueInputs = {
   customTaskIds: getCustomTaskIds(
     false,
     "When true, the Task ID is treated as a custom task ID. Requires Team ID.",
-    true,
+    true
   ),
-  teamId: getTeamId(
-    false,
-    "Only used when the custom_task_ids parameter is set to true",
-  ),
+  teamId: getTeamId(false, "Only used when the custom_task_ids parameter is set to true"),
 };
 
 export const setCustomFieldValueInputs = {

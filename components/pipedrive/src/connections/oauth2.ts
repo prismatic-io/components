@@ -52,8 +52,7 @@ export const oauth2 = oauth2Connection({
       required: true,
       shown: true,
       label: "Client Secret",
-      comments:
-        "The Client Secret from the Pipedrive OAuth app. Keep this value secure.",
+      comments: "The Client Secret from the Pipedrive OAuth app. Keep this value secure.",
       placeholder: "Enter Client Secret",
     },
   },

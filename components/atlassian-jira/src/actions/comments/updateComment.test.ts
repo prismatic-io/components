@@ -33,12 +33,7 @@ describe("updateComment", () => {
     expect(scope.isDone()).toBe(true);
     expect(sent).toEqual({
       body: {
-        content: [
-          {
-            content: [{ text: "Updated text.", type: "text" }],
-            type: "paragraph",
-          },
-        ],
+        content: [{ content: [{ text: "Updated text.", type: "text" }], type: "paragraph" }],
         type: "doc",
         version: 1,
       },
@@ -49,9 +44,7 @@ describe("updateComment", () => {
   test("rejects when Jira answers with an error", async () => {
     jiraApi()
       .put("/rest/api/3/issue/10201/comment/10050")
-      .reply(403, {
-        errorMessages: ["You do not have permission to edit this comment"],
-      });
+      .reply(403, { errorMessages: ["You do not have permission to edit this comment"] });
 
     await expect(run()).rejects.toMatchObject({ response: { status: 403 } });
   });

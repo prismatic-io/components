@@ -9,10 +9,7 @@ export const createEntity = action({
     description: "Creates a new Microsoft Dynamics 365 CRM entity record.",
   },
   examplePayload: createEntityExamplePayload,
-  perform: async (
-    context,
-    { entityType, fieldValues, dynamicValues, connection },
-  ) => {
+  perform: async (context, { entityType, fieldValues, dynamicValues, connection }) => {
     const client = await createCrmClient(connection, context.debug.enabled);
     const payloadValues = { ...dynamicValues, ...fieldValues };
     const result = await client.create({

@@ -4,26 +4,19 @@ import { DEFAULT_BATCH_SIZE } from "../constants";
 import { pollNewBucketsTriggerExamplePayload } from "../examplePayloads";
 import { pollNewBucketsTriggerInputs } from "../inputs";
 import type { PolledBucket, PolledBucketChange } from "../types";
-import {
-  listBucketsCreatedSince,
-  readLastPolledAt,
-  resolvePolledBucketChanges,
-} from "../utils";
+import { listBucketsCreatedSince, readLastPolledAt, resolvePolledBucketChanges } from "../utils";
 
 export const pollNewBucketsTrigger = pollingTrigger({
   display: {
     label: "New Buckets",
-    description:
-      "Checks for new buckets in Amazon S3 on a configured schedule.",
+    description: "Checks for new buckets in Amazon S3 on a configured schedule.",
   },
   inputs: pollNewBucketsTriggerInputs,
   triggerResolverSupport: "valid",
   batchConfig: { batchSize: DEFAULT_BATCH_SIZE },
   triggerResolver: {
     resolveItems: (_context, { payload }): PolledBucketChange[] =>
-      resolvePolledBucketChanges(
-        payload.body.data as PolledBucket[] | undefined,
-      ),
+      resolvePolledBucketChanges(payload.body.data as PolledBucket[] | undefined),
   },
   perform: async (
     context,

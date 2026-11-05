@@ -11,10 +11,7 @@ export const listProjects = action({
   },
   performSafety: "notAllowed",
   perform: async (context, params) => {
-    const client = await createV3Client(
-      params.jiraConnection,
-      context.debug.enabled,
-    );
+    const client = await createV3Client(params.jiraConnection, context.debug.enabled);
     const {
       data: { values },
     } = await client.get("/project/search", {

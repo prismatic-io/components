@@ -11,9 +11,7 @@ export const updateOnboardingCandidateInfo = action({
   inputs: updateOnboardingCandidateInfoInputs,
   perform: async (context, { connection, applicantId }) => {
     const client = await createClient(connection, context.debug.enabled);
-    const { data } = await client.put(
-      `/OnboardingCandidateInfo('${applicantId}')`,
-    );
+    const { data } = await client.put(`/OnboardingCandidateInfo('${applicantId}')`);
     return {
       data,
     };

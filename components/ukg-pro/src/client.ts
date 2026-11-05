@@ -1,20 +1,10 @@
 import type { Connection } from "@prismatic-io/spectral";
 import { util } from "@prismatic-io/spectral";
-import {
-  createClient as createHttpClient,
-  type HttpClient,
-} from "@prismatic-io/spectral/http";
+import { createClient as createHttpClient, type HttpClient } from "@prismatic-io/spectral/http";
 import { ukgProBasicAuth } from "./connections";
-import {
-  getAuthHeaders,
-  getBaseUrl,
-  validateConnection,
-} from "./util/connection";
+import { getAuthHeaders, getBaseUrl, validateConnection } from "./util/connection";
 
-export const createClient = async (
-  connection: Connection,
-  debug = false,
-): Promise<HttpClient> => {
+export const createClient = async (connection: Connection, debug = false): Promise<HttpClient> => {
   validateConnection(connection);
   const baseUrl = getBaseUrl(connection);
   const headers = await getAuthHeaders(connection);
@@ -30,10 +20,7 @@ export const createClient = async (
   });
 };
 
-export const createBasicAuthClient = (
-  connection: Connection,
-  debug = false,
-): HttpClient => {
+export const createBasicAuthClient = (connection: Connection, debug = false): HttpClient => {
   if (connection.key !== ukgProBasicAuth.key) {
     throw new Error(
       `Expected ${ukgProBasicAuth.key} connection, got ${connection.key}. Use Basic Auth connection for Personnel and Configuration APIs.`,

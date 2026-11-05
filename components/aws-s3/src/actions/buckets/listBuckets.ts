@@ -13,13 +13,7 @@ export const listBuckets = action({
   performSafety: "safe",
   perform: async (
     context,
-    {
-      awsRegion,
-      accessKey,
-      dynamicAccessKeyId,
-      dynamicSecretAccessKey,
-      dynamicSessionToken,
-    },
+    { awsRegion, accessKey, dynamicAccessKeyId, dynamicSecretAccessKey, dynamicSessionToken },
   ) => {
     const s3 = await createS3Client({
       awsConnection: accessKey,

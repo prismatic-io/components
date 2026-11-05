@@ -130,11 +130,7 @@ export const listProductsExamplePayload = {
               attribute_id: "141",
               label: "Size",
               position: 0,
-              values: [
-                { value_index: 168 },
-                { value_index: 169 },
-                { value_index: 170 },
-              ],
+              values: [{ value_index: 168 }, { value_index: 169 }, { value_index: 170 }],
               product_id: 2078,
             },
           ],
@@ -307,9 +303,7 @@ export const listProductsExamplePayload = {
     search_criteria: {
       filter_groups: [
         {
-          filters: [
-            { field: "sku", value: "MS-Champ%", condition_type: "like" },
-          ],
+          filters: [{ field: "sku", value: "MS-Champ%", condition_type: "like" }],
         },
       ],
       sort_orders: [{ field: "entity_id", direction: "ASC" }],
@@ -372,9 +366,7 @@ export const listProductAttributesExamplePayload = {
     search_criteria: {
       filter_groups: [
         {
-          filters: [
-            { field: "attribute_code", value: "size", condition_type: "eq" },
-          ],
+          filters: [{ field: "attribute_code", value: "size", condition_type: "eq" }],
         },
       ],
       sort_orders: [{ field: "attribute_id", direction: "ASC" }],
@@ -409,37 +401,12 @@ export const listProductOptionTypesExamplePayload = {
     { label: "Field", code: "field", group: "Text", extension_attributes: {} },
     { label: "Area", code: "area", group: "Text", extension_attributes: {} },
     { label: "File", code: "file", group: "File", extension_attributes: {} },
-    {
-      label: "Drop-down",
-      code: "drop_down",
-      group: "Select",
-      extension_attributes: {},
-    },
-    {
-      label: "Radio Buttons",
-      code: "radio",
-      group: "Select",
-      extension_attributes: {},
-    },
-    {
-      label: "Checkbox",
-      code: "checkbox",
-      group: "Select",
-      extension_attributes: {},
-    },
-    {
-      label: "Multiple Select",
-      code: "multiple",
-      group: "Select",
-      extension_attributes: {},
-    },
+    { label: "Drop-down", code: "drop_down", group: "Select", extension_attributes: {} },
+    { label: "Radio Buttons", code: "radio", group: "Select", extension_attributes: {} },
+    { label: "Checkbox", code: "checkbox", group: "Select", extension_attributes: {} },
+    { label: "Multiple Select", code: "multiple", group: "Select", extension_attributes: {} },
     { label: "Date", code: "date", group: "Date", extension_attributes: {} },
-    {
-      label: "Date & Time",
-      code: "date_time",
-      group: "Date",
-      extension_attributes: {},
-    },
+    { label: "Date & Time", code: "date_time", group: "Date", extension_attributes: {} },
     { label: "Time", code: "time", group: "Date", extension_attributes: {} },
   ],
 };
@@ -448,18 +415,10 @@ export const listProductTypesExamplePayload = {
   data: [
     { name: "simple", label: "Simple Product", extension_attributes: {} },
     { name: "virtual", label: "Virtual Product", extension_attributes: {} },
-    {
-      name: "configurable",
-      label: "Configurable Product",
-      extension_attributes: {},
-    },
+    { name: "configurable", label: "Configurable Product", extension_attributes: {} },
     { name: "grouped", label: "Grouped Product", extension_attributes: {} },
     { name: "bundle", label: "Bundle Product", extension_attributes: {} },
-    {
-      name: "downloadable",
-      label: "Downloadable Product",
-      extension_attributes: {},
-    },
+    { name: "downloadable", label: "Downloadable Product", extension_attributes: {} },
   ],
 };
 
@@ -701,9 +660,7 @@ export const listOrdersExamplePayload = {
     search_criteria: {
       filter_groups: [
         {
-          filters: [
-            { field: "status", value: "pending", condition_type: "eq" },
-          ],
+          filters: [{ field: "status", value: "pending", condition_type: "eq" }],
         },
       ],
       sort_orders: [{ field: "increment_id", direction: "ASC" }],
@@ -793,9 +750,7 @@ export const searchCustomersExamplePayload = {
     search_criteria: {
       filter_groups: [
         {
-          filters: [
-            { field: "email", value: "jdoe@example.com", condition_type: "eq" },
-          ],
+          filters: [{ field: "email", value: "jdoe@example.com", condition_type: "eq" }],
         },
       ],
       sort_orders: [{ field: "created_at", direction: "DESC" }],
@@ -953,23 +908,17 @@ export const selectTransactionExamplePayload = {
 };
 
 export const productTypesExamplePayload = {
-  result: toSortedElements(
-    listProductTypesExamplePayload.data,
-    ({ name, label }) => ({
-      label,
-      key: name,
-    }),
-  ),
+  result: toSortedElements(listProductTypesExamplePayload.data, ({ name, label }) => ({
+    label,
+    key: name,
+  })),
 };
 
 export const productOptionTypesExamplePayload = {
-  result: toSortedElements(
-    listProductOptionTypesExamplePayload.data,
-    ({ code, label }) => ({
-      label,
-      key: code,
-    }),
-  ),
+  result: toSortedElements(listProductOptionTypesExamplePayload.data, ({ code, label }) => ({
+    label,
+    key: code,
+  })),
 };
 
 export const productAttributeTypesExamplePayload = {

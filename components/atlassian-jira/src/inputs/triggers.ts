@@ -71,8 +71,7 @@ const showNewIssues = input({
   required: false,
   default: "true",
   example: "true",
-  comments:
-    "When true, includes issues created since the last poll in the trigger output.",
+  comments: "When true, includes issues created since the last poll in the trigger output.",
   clean: util.types.toBool,
 });
 
@@ -82,8 +81,7 @@ const showUpdatedIssues = input({
   required: false,
   default: "true",
   example: "true",
-  comments:
-    "When true, includes issues updated since the last poll in the trigger output.",
+  comments: "When true, includes issues updated since the last poll in the trigger output.",
   clean: util.types.toBool,
 });
 

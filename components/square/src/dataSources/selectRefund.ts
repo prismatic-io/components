@@ -18,12 +18,8 @@ export const selectRefund = dataSource({
 
     const result = (allRefunds.refunds as Record<string, unknown>[])
       .map((refund: Record<string, unknown>) => {
-        const amountMoney = refund.amount_money as
-          | Record<string, unknown>
-          | undefined;
-        const amount = amountMoney
-          ? `$${((amountMoney.amount as number) / 100).toFixed(2)}`
-          : "";
+        const amountMoney = refund.amount_money as Record<string, unknown> | undefined;
+        const amount = amountMoney ? `$${((amountMoney.amount as number) / 100).toFixed(2)}` : "";
         const label = `${(refund.id as string).substring(0, 12)}... (${amount}) - ${refund.status as string}`;
 
         return {

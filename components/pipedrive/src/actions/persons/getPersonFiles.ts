@@ -12,13 +12,7 @@ export const getPersonFiles = action({
   performSafety: "notAllowed",
   perform: async (
     context,
-    {
-      connection,
-      id,
-      pagination: { start, limit } = {},
-      includeDeletedFiles,
-      sort,
-    },
+    { connection, id, pagination: { start, limit } = {}, includeDeletedFiles, sort },
   ) => {
     const client = createClient(connection, context.debug.enabled);
     const { data } = await client.get(`/persons/${id}/files`, {
@@ -33,8 +27,5 @@ export const getPersonFiles = action({
   },
   inputs: getPersonFilesInputs,
   examplePayload: getPersonFilesExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getPersonFilesOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getPersonFilesOutputSchema }),
 });

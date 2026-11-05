@@ -14,10 +14,7 @@ export const listInventoryLevelsGql = action({
     description: "Lists all inventory levels at a specified location.",
   },
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { shopifyConnection, locationId, getAlldata, pagination = {} },
-  ) => {
+  perform: async (context, { shopifyConnection, locationId, getAlldata, pagination = {} }) => {
     const client = getShopifyGraphQlClient(
       shopifyConnection,
       undefined,
@@ -43,10 +40,7 @@ export const listInventoryLevelsGql = action({
     };
   },
   inputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: listInventoryLevelsGqlOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: listInventoryLevelsGqlOutputSchema }),
   examplePerform: async () => examplePayload,
   examplePayload,
 });

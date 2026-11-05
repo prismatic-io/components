@@ -10,11 +10,7 @@ import {
   getCompletedNewHiresExamplePayload,
   getInProgressNewHiresExamplePayload,
 } from "../examplePayloads";
-import type {
-  InProgressNewHire,
-  NewHireStatusChange,
-  NewHireStatusPollingState,
-} from "../types";
+import type { InProgressNewHire, NewHireStatusChange, NewHireStatusPollingState } from "../types";
 import { resolveNewHireStatusChanges } from "../util";
 import { pollNewHireStatus } from "./pollNewHireStatus";
 
@@ -32,16 +28,11 @@ const connection = createConnection(ukgProBasicAuth, {
   tenantIdentifier: TENANT,
 });
 
-const inProgress =
-  getInProgressNewHiresExamplePayload.data as unknown as InProgressNewHire[];
-const completed =
-  getCompletedNewHiresExamplePayload.data as unknown as InProgressNewHire[];
+const inProgress = getInProgressNewHiresExamplePayload.data as unknown as InProgressNewHire[];
+const completed = getCompletedNewHiresExamplePayload.data as unknown as InProgressNewHire[];
 const allHires = [...inProgress, ...completed];
 
-const added = (
-  hire: InProgressNewHire,
-  detectedAt: string,
-): NewHireStatusChange => ({
+const added = (hire: InProgressNewHire, detectedAt: string): NewHireStatusChange => ({
   newHireId: hire.id,
   firstName: hire.contactInformation.name.first,
   lastName: hire.contactInformation.name.last,
@@ -53,8 +44,7 @@ const added = (
 
 const chunk = <T>(items: T[], size: number): T[][] => {
   const batches: T[][] = [];
-  for (let i = 0; i < items.length; i += size)
-    batches.push(items.slice(i, i + size));
+  for (let i = 0; i < items.length; i += size) batches.push(items.slice(i, i + size));
   return batches;
 };
 
@@ -62,9 +52,7 @@ describe("pollNewHireStatus batching declaration", () => {
   test("declares opt-in Tier 1 batching with a default batch size", () => {
     expect(pollNewHireStatus.triggerResolverSupport).toBe("valid");
     expect(pollNewHireStatus.batchConfig).toEqual({ batchSize: 50 });
-    expect(pollNewHireStatus.triggerResolver?.resolveItems).toBeInstanceOf(
-      Function,
-    );
+    expect(pollNewHireStatus.triggerResolver?.resolveItems).toBeInstanceOf(Function);
   });
 
   test("offers only the connection input", () => {
@@ -105,14 +93,9 @@ describe("triggerResolver.resolveItems", () => {
         { payload: { body: { data } } } as never,
       ) ?? [];
 
-    expect(items).toEqual(
-      data.map((record) => ({ changeType: "NewHireAdded", record })),
-    );
+    expect(items).toEqual(data.map((record) => ({ changeType: "NewHireAdded", record })));
 
-    const batches = chunk(
-      items as unknown[],
-      pollNewHireStatus.batchConfig?.batchSize ?? 1,
-    );
+    const batches = chunk(items as unknown[], pollNewHireStatus.batchConfig?.batchSize ?? 1);
     expect(batches.flat()).toHaveLength(allHires.length);
   });
 });
@@ -177,9 +160,7 @@ describe("pollNewHireStatus polling state", () => {
     });
 
     expect(nock.isDone()).toBe(true);
-    expect(result?.payload.body.data).toEqual(
-      allHires.map((hire) => added(hire, NOW)),
-    );
+    expect(result?.payload.body.data).toEqual(allHires.map((hire) => added(hire, NOW)));
     expect(result?.payload.body).toMatchObject({
       inProgressCount: inProgress.length,
       completedCount: completed.length,
@@ -187,10 +168,7 @@ describe("pollNewHireStatus polling state", () => {
     expect(result?.polledNoChanges).toBe(false);
     expect(store).toEqual({
       lastStatusMap: Object.fromEntries(
-        allHires.map((hire) => [
-          hire.id,
-          { status: hire.onboardingStatus, progress: 0 },
-        ]),
+        allHires.map((hire) => [hire.id, { status: hire.onboardingStatus, progress: 0 }]),
       ),
       lastPollTime: NOW,
     });
@@ -241,9 +219,6 @@ describe("pollNewHireStatus polling state", () => {
       },
     ]);
     expect(result?.polledNoChanges).toBe(false);
-    expect(store.lastStatusMap?.[target.id]).toEqual({
-      status: "Completed",
-      progress: 0,
-    });
+    expect(store.lastStatusMap?.[target.id]).toEqual({ status: "Completed", progress: 0 });
   });
 });

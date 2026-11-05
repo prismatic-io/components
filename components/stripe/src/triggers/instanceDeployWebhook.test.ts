@@ -21,19 +21,14 @@ const eventBody = JSON.stringify({
 });
 
 const signatureFor = (body: string, secret = SIGNING_SECRET) =>
-  new Stripe("sk_test_123", {
-    apiVersion: "2025-04-30.basil",
-  }).webhooks.generateTestHeaderString({
+  new Stripe("sk_test_123", { apiVersion: "2025-04-30.basil" }).webhooks.generateTestHeaderString({
     payload: body,
     secret,
   });
 
 const signedPayload = (body: string, signature: string) => ({
   ...defaultTriggerPayload(),
-  headers: {
-    "content-type": "application/json",
-    "Stripe-Signature": signature,
-  },
+  headers: { "content-type": "application/json", "Stripe-Signature": signature },
   rawBody: { data: body, contentType: "application/json" },
   body: { data: JSON.parse(body), contentType: "application/json" },
 });
@@ -54,10 +49,7 @@ describe("instanceDeployWebhook perform", () => {
   });
 
   it("throws when the signature was produced with a different secret", async () => {
-    const payload = signedPayload(
-      eventBody,
-      signatureFor(eventBody, "whsec_someone_elses"),
-    );
+    const payload = signedPayload(eventBody, signatureFor(eventBody, "whsec_someone_elses"));
 
     await expect(
       invokeTrigger(

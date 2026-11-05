@@ -7,12 +7,7 @@ import {
   LIST_ORDERS_DATASOURCE_REFERENCE,
   LIST_PRODUCTS_DATASOURCE_REFERENCE,
 } from "../constants";
-import {
-  cleanCodeInput,
-  cleanKeyValueListInput,
-  cleanStringInput,
-  toArray,
-} from "../util";
+import { cleanCodeInput, cleanKeyValueListInput, cleanStringInput, toArray } from "../util";
 import shopifyEvents from "../webhook_events.json";
 
 export const connectionInput = input({
@@ -26,8 +21,7 @@ export const returnHeaders = input({
   label: "Return Headers",
   type: "boolean",
   required: false,
-  comments:
-    "When true, response headers will be included in the output object.",
+  comments: "When true, response headers will be included in the output object.",
   clean: util.types.toBool,
 });
 
@@ -191,8 +185,7 @@ export const secretKey = input({
   label: "Secret Key",
   type: "password",
   required: true,
-  comments:
-    "The Shopify app's client secret, viewable from the Partner Dashboard.",
+  comments: "The Shopify app's client secret, viewable from the Partner Dashboard.",
   placeholder: "Enter secret key",
   clean: util.types.toString,
 });

@@ -13,12 +13,7 @@ export const selectCollections = dataSource({
     description: "Selects a collection from a list of all collections.",
   },
   perform: async (context, { shopifyConnection }) => {
-    const client = getShopifyGraphQlClient(
-      shopifyConnection,
-      undefined,
-      false,
-      context.logger,
-    );
+    const client = getShopifyGraphQlClient(shopifyConnection, undefined, false, context.logger);
 
     const { collections } = await fetchData<DataSourceRecord>(
       client,

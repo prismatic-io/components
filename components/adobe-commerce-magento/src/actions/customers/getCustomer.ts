@@ -12,9 +12,7 @@ export const getCustomer = action({
   performSafety: "safe",
   perform: async (context, { connection, customerId }) => {
     const client = await getClient(connection, context.debug.enabled);
-    const { data } = await client.get(
-      `${ENDPOINTS.customers}/${encodeURIComponent(customerId)}`,
-    );
+    const { data } = await client.get(`${ENDPOINTS.customers}/${encodeURIComponent(customerId)}`);
     return { data };
   },
   inputs: getCustomerInputs,

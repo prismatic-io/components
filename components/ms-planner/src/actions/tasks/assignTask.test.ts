@@ -2,11 +2,7 @@ import { createConnection, invoke } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { afterEach, beforeAll, expect, test } from "vitest";
 import { templatedOauth } from "../../connections";
-import {
-  DEFAULT_ORDER_HINT,
-  ODATA_TYPE,
-  PLANNER_ENDPOINTS,
-} from "../../constants";
+import { DEFAULT_ORDER_HINT, ODATA_TYPE, PLANNER_ENDPOINTS } from "../../constants";
 import { assignTaskExamplePayload } from "../../examplePayloads";
 import { assignTask } from "./assignTask";
 
@@ -15,11 +11,7 @@ const TASK_ID = "01gzSlKkIUSUl6DF_EilrmQAKDhh";
 const TASK_URL = `/v1.0${PLANNER_ENDPOINTS.TASK(TASK_ID)}`;
 const ETAG = 'W/"JzEtVGFzayAgQEBAQEBAQEBAQEBAQEBAWCc="';
 
-const connection = createConnection(
-  templatedOauth,
-  {},
-  { access_token: "test-token" },
-);
+const connection = createConnection(templatedOauth, {}, { access_token: "test-token" });
 
 const baseParams = {
   connection,
@@ -56,10 +48,7 @@ test("patches the assignments open type with the users to add and remove", async
 
   expect(patchedBody).toEqual({
     assignments: {
-      "user-a": {
-        "@odata.type": ODATA_TYPE.assignment,
-        orderHint: DEFAULT_ORDER_HINT,
-      },
+      "user-a": { "@odata.type": ODATA_TYPE.assignment, orderHint: DEFAULT_ORDER_HINT },
       "user-b": null,
     },
   });
@@ -67,9 +56,7 @@ test("patches the assignments open type with the users to add and remove", async
 });
 
 test("honors a caller-supplied etag without reading the current one", async () => {
-  const readScope = nock(BASE)
-    .get(TASK_URL)
-    .reply(200, { "@odata.etag": ETAG });
+  const readScope = nock(BASE).get(TASK_URL).reply(200, { "@odata.etag": ETAG });
   nock(BASE)
     .patch(TASK_URL)
     .matchHeader("If-Match", ETAG)
@@ -85,16 +72,11 @@ test("honors a caller-supplied etag without reading the current one", async () =
 });
 
 test("throws before any HTTP call when both assignment lists are empty", async () => {
-  const readScope = nock(BASE)
-    .get(TASK_URL)
-    .reply(200, { "@odata.etag": ETAG });
+  const readScope = nock(BASE).get(TASK_URL).reply(200, { "@odata.etag": ETAG });
   const writeScope = nock(BASE).patch(TASK_URL).reply(200, {});
 
   await expect(
-    invoke(assignTask, {
-      ...baseParams,
-      assignment: { assignTo: [], unassign: [] },
-    }),
+    invoke(assignTask, { ...baseParams, assignment: { assignTo: [], unassign: [] } }),
   ).rejects.toThrow(/at least one user to assign or unassign/);
 
   expect(readScope.isDone()).toBe(false);

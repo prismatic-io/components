@@ -9,8 +9,7 @@ import { generatePresignedUrlOutputSchema } from "../../outputSchemas";
 export const generatePresignedUrl = action({
   display: {
     label: "Generate Presigned URL",
-    description:
-      "Generate a presigned URL that can be used to upload or download an object in S3",
+    description: "Generate a presigned URL that can be used to upload or download an object in S3",
   },
   inputs: generatePresignedUrlInputs,
   outputSchema: outputSchema({

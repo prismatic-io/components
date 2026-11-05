@@ -14,9 +14,7 @@ export const checkInDraftProject = action({
       },
       context.debug.enabled,
     );
-    const { data } = await client.post(
-      `/Projects('${params.guId}')/Draft/checkIn()`,
-    );
+    const { data } = await client.post(`/Projects('${params.guId}')/Draft/checkIn()`);
 
     return {
       data,

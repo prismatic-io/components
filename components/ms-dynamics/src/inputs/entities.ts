@@ -29,10 +29,8 @@ const fieldValues = input({
   type: "string",
   collection: "keyvaluelist",
   required: false,
-  comments:
-    "The names of the fields and their values to use when creating/updating a record.",
-  clean: (rawValue) =>
-    util.types.keyValPairListToObject(rawValue as KeyValuePair<unknown>[]),
+  comments: "The names of the fields and their values to use when creating/updating a record.",
+  clean: (rawValue) => util.types.keyValPairListToObject(rawValue as KeyValuePair<unknown>[]),
 });
 
 const recordsPerPage = input({
@@ -82,8 +80,7 @@ export const includeOnlyTopLevel = input({
   type: "boolean",
   default: "false",
   required: false,
-  comments:
-    "When true, includes only top-level entities and excludes child entities.",
+  comments: "When true, includes only top-level entities and excludes child entities.",
   clean: util.types.toBool,
 });
 
@@ -132,32 +129,28 @@ type BatchedActions = (CreateAction | UpdateAction | DeleteAction)[];
 function parseBatchedActions(actions: unknown): BatchedActions {
   const parsedActions = util.types.toObject(actions);
   if (!Array.isArray(parsedActions)) {
-    throw new Error(
-      "Batch Actions must be specified as a JSON or JavaScript array.",
-    );
+    throw new Error("Batch Actions must be specified as a JSON or JavaScript array.");
   }
   for (const action of parsedActions) {
     if (!action.collection) {
       throw new Error(
-        `This action is missing a collection (contacts, leads, etc): ${JSON.stringify(action)}`,
+        `This action is missing a collection (contacts, leads, etc): ${JSON.stringify(action)}`
       );
     }
     if (!["create", "update", "delete"].includes(action.action)) {
       throw new Error(
         `This action is missing an action type, or the action type doesn't match "create", "update", or "delete": ${JSON.stringify(
-          action,
-        )}`,
+          action
+        )}`
       );
     }
     if (["update", "delete"].includes(action.action) && !action.key) {
       throw new Error(
-        `This update or delete action is missing an entity key: ${JSON.stringify(action)}`,
+        `This update or delete action is missing an entity key: ${JSON.stringify(action)}`
       );
     }
     if (["create", "update"].includes(action.action) && !action.data) {
-      throw new Error(
-        `This create or update action is missing data: ${JSON.stringify(action)}`,
-      );
+      throw new Error(`This create or update action is missing data: ${JSON.stringify(action)}`);
     }
   }
   return util.types.toObject(actions) as BatchedActions;

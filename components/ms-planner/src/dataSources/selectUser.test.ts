@@ -1,7 +1,4 @@
-import {
-  createConnection,
-  invokeDataSource,
-} from "@prismatic-io/spectral/testing";
+import { createConnection, invokeDataSource } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { afterEach, beforeAll, expect, test } from "vitest";
 import { templatedOauth } from "../connections";
@@ -11,25 +8,13 @@ import { selectUser } from "./selectUser";
 
 const BASE = "https://graph.microsoft.com";
 
-const connection = createConnection(
-  templatedOauth,
-  {},
-  { access_token: "test-token" },
-);
+const connection = createConnection(templatedOauth, {}, { access_token: "test-token" });
 
 const [exampleUser] = selectUserExamplePayload.result;
 const users = {
   value: [
-    {
-      id: exampleUser.key,
-      displayName: exampleUser.label,
-      mail: "jane@example.com",
-    },
-    {
-      id: "8f2e1b6c-0a3d-4f11-93b1-6a7c2d9e4f80",
-      displayName: null,
-      mail: "ops@example.com",
-    },
+    { id: exampleUser.key, displayName: exampleUser.label, mail: "jane@example.com" },
+    { id: "8f2e1b6c-0a3d-4f11-93b1-6a7c2d9e4f80", displayName: null, mail: "ops@example.com" },
   ],
 };
 
@@ -44,10 +29,7 @@ afterEach(() => {
 test("keys each user by object ID and falls back to mail when displayName is absent", async () => {
   nock(BASE)
     .get("/v1.0/users")
-    .query({
-      $select: "id,displayName,mail",
-      $top: String(DIRECTORY_PAGE_SIZE),
-    })
+    .query({ $select: "id,displayName,mail", $top: String(DIRECTORY_PAGE_SIZE) })
     .reply(200, users);
 
   const { result } = await invokeDataSource(selectUser, { connection });

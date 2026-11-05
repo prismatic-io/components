@@ -15,9 +15,7 @@ vi.mock("aws-utils", async () => {
 vi.mock("../../client", () => ({
   createS3Client: vi.fn(async () => ({
     send: vi.fn(),
-    config: {
-      credentials: { accessKeyId: "fakeKey", secretAccessKey: "fakeSecret" },
-    },
+    config: { credentials: { accessKeyId: "fakeKey", secretAccessKey: "fakeSecret" } },
   })),
 }));
 
@@ -32,10 +30,7 @@ vi.mock("@aws-sdk/client-sts", async (importOriginal) => {
   return { ...original, STSClient };
 });
 
-import {
-  GetCallerIdentityCommand,
-  STSServiceException,
-} from "@aws-sdk/client-sts";
+import { GetCallerIdentityCommand, STSServiceException } from "@aws-sdk/client-sts";
 import { createConnection, invoke } from "@prismatic-io/spectral/testing";
 import { accessKeySecretPair } from "../../connections";
 import { getCurrentAccountExamplePayload } from "../../examplePayloads";

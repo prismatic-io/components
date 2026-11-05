@@ -38,9 +38,7 @@ export const createProduct = action({
         active,
         description: description,
         images: productImages,
-        ...(productType && {
-          type: productType as Stripe.ProductCreateParams.Type,
-        }),
+        ...(productType && { type: productType as Stripe.ProductCreateParams.Type }),
         ...fieldValues,
         shippable,
         url: productUrl,

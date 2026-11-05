@@ -24,20 +24,12 @@ describe("getEntitiesMetaData", () => {
   test("happy path returns entity/attribute metadata", async () => {
     mockRetrieveEntities.mockResolvedValueOnce({
       value: [
-        {
-          MetadataId: "id-1",
-          SchemaName: "Account",
-          IsCustomEntity: false,
-          IsChildEntity: false,
-        },
+        { MetadataId: "id-1", SchemaName: "Account", IsCustomEntity: false, IsChildEntity: false },
       ],
     });
     mockRetrieveAttributes.mockResolvedValueOnce({
       value: [
-        {
-          LogicalName: "name",
-          DisplayName: { UserLocalizedLabel: { Label: "Account Name" } },
-        },
+        { LogicalName: "name", DisplayName: { UserLocalizedLabel: { Label: "Account Name" } } },
       ],
     });
 
@@ -64,7 +56,7 @@ describe("getEntitiesMetaData", () => {
         recordTypeFilter: [],
         includeAllCustomRecordTypes: true,
         includeOnlyTopLevelRecordTypes: false,
-      } as any),
+      } as any)
     ).rejects.toThrow("SDK error");
   });
 });

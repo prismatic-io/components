@@ -21,17 +21,7 @@ export const listRecords = action({
   },
   perform: async (
     _,
-    {
-      top,
-      expand,
-      skip,
-      filter,
-      inlinecount,
-      orderBy,
-      select,
-      connectionInput,
-      recordType,
-    },
+    { top, expand, skip, filter, inlinecount, orderBy, select, connectionInput, recordType },
   ) => {
     const headers = {
       Accept: "application/json",

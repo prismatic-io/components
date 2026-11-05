@@ -1,9 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
-import {
-  capitalizeSalesforceObject,
-  cleanStringInput,
-  sanitizePrefix,
-} from "../util";
+import { capitalizeSalesforceObject, cleanStringInput, sanitizePrefix } from "../util";
 import { connectionInput, description, version } from "./common";
 import { dynamicFieldsInput, endpointUrlInput, fieldsInput } from "./workflows";
 
@@ -57,8 +53,7 @@ const flowMetadataInput = input({
   type: "code",
   required: false,
   language: "json",
-  comments:
-    "Additional Flow metadata in JSON format. This will be merged with other inputs.",
+  comments: "Additional Flow metadata in JSON format. This will be merged with other inputs.",
   example: JSON.stringify(
     {
       label: "A new flow",
@@ -174,10 +169,7 @@ export const flowOutboundMessageTriggerInputs = {
   triggerOn: triggerOnInput,
   fields: fieldsInput,
   flowMetadata: flowMetadataInput,
-  filterFormula: {
-    ...filterFormulaInput,
-    example: "ISCHANGED(Email) && NOT(ISBLANK(Email))",
-  },
+  filterFormula: { ...filterFormulaInput, example: "ISCHANGED(Email) && NOT(ISBLANK(Email))" },
   connection: connectionInput,
 };
 
@@ -190,18 +182,14 @@ export const subscribeToRecordChangesInputs = {
   fields: fieldsInput,
   dynamicFields: dynamicFieldsInput,
   flowMetadata: flowMetadataInput,
-  filterFormula: {
-    ...filterFormulaInput,
-    example: "ISCHANGED(Email) && NOT(ISBLANK(Email))",
-  },
+  filterFormula: { ...filterFormulaInput, example: "ISCHANGED(Email) && NOT(ISBLANK(Email))" },
   connection: connectionInput,
 };
 
 export const deleteInstancedFlowsAndOutboundMessagesInputs = {
   endpointUrl: {
     ...endpointUrlInput,
-    comments:
-      "The endpoint URL to delete the instanced flows and outbound messages for.",
+    comments: "The endpoint URL to delete the instanced flows and outbound messages for.",
   },
   version,
   connection: connectionInput,

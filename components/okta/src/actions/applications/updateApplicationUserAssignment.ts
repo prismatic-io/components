@@ -10,15 +10,10 @@ export const updateApplicationUserAssignment = action({
       "Updates the app-specific profile and credentials for a user's application assignment.",
   },
   inputs: updateApplicationUserAssignmentsInputs,
-  perform: async (
-    context,
-    { connection, applicationId, userId, profile, username, password },
-  ) => {
+  perform: async (context, { connection, applicationId, userId, profile, username, password }) => {
     const client = await createClient(connection, context.debug.enabled);
     if (profile && (username || password)) {
-      throw new Error(
-        "Either profile or username/password must be provided but not both.",
-      );
+      throw new Error("Either profile or username/password must be provided but not both.");
     }
     const { data } = await client.post(
       `/apps/${encodeURIComponent(applicationId)}/users/${encodeURIComponent(userId)}`,

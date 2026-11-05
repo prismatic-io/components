@@ -6,17 +6,9 @@ import { getPlanExamplePayload } from "../../examplePayloads";
 import { getPlan } from "./getPlan";
 
 const BASE = "https://graph.microsoft.com";
-const connection = createConnection(
-  templatedOauth,
-  {},
-  { access_token: "test-token" },
-);
+const connection = createConnection(templatedOauth, {}, { access_token: "test-token" });
 
-const params = {
-  connection,
-  groupId: undefined,
-  planId: "xqQg5FS2LkCp935s-FIFm2QAFkHM",
-};
+const params = { connection, groupId: undefined, planId: "xqQg5FS2LkCp935s-FIFm2QAFkHM" };
 
 beforeAll(() => {
   nock.disableNetConnect();

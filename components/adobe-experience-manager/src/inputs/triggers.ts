@@ -54,8 +54,7 @@ const consumerOrgId = input({
   placeholder: "Enter consumer organization ID",
   type: "string",
   required: true,
-  comments:
-    "The Adobe Developer Console consumer organization ID that owns the project.",
+  comments: "The Adobe Developer Console consumer organization ID that owns the project.",
   example: "123456",
   clean: cleanRequiredString,
 });
@@ -65,8 +64,7 @@ const projectId = input({
   placeholder: "Enter project ID",
   type: "string",
   required: true,
-  comments:
-    "The ID of the Adobe Developer Console project with AEM Events enabled.",
+  comments: "The ID of the Adobe Developer Console project with AEM Events enabled.",
   example: "4566206088344794931",
   clean: cleanRequiredString,
 });
@@ -76,8 +74,7 @@ const workspaceId = input({
   placeholder: "Enter workspace ID",
   type: "string",
   required: true,
-  comments:
-    "The ID of the Adobe Developer Console workspace within the project.",
+  comments: "The ID of the Adobe Developer Console workspace within the project.",
   example: "4566206088344853970",
   clean: cleanRequiredString,
 });

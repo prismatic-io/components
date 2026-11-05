@@ -102,10 +102,7 @@ export {
   updateProductGqlOutputSchema,
 } from "./products";
 
-export {
-  getShopConfigGqlOutputSchema,
-  getShopConfigOutputSchema,
-} from "./shops";
+export { getShopConfigGqlOutputSchema, getShopConfigOutputSchema } from "./shops";
 
 export {
   countVariantsGqlOutputSchema,

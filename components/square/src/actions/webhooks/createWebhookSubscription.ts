@@ -8,14 +8,8 @@ export const createWebhookSubscription = action({
     label: "Create Webhook Subscription",
     description: "Creates a webhook subscription.",
   },
-  perform: async (
-    context,
-    { squareConnection, idempotencyKey, webhookSubscription },
-  ) => {
-    const client = await createAuthorizedClient(
-      squareConnection,
-      context.debug.enabled,
-    );
+  perform: async (context, { squareConnection, idempotencyKey, webhookSubscription }) => {
+    const client = await createAuthorizedClient(squareConnection, context.debug.enabled);
 
     const response = await client.post("/v2/webhooks/subscriptions", {
       idempotency_key: idempotencyKey,

@@ -15,8 +15,7 @@ const templateId = input({
   label: "Template ID",
   type: "string",
   required: true,
-  comments:
-    "The unique identifier for the job requisition template to base the requisition on.",
+  comments: "The unique identifier for the job requisition template to base the requisition on.",
   placeholder: "Enter a template ID",
   example: "1234-5678",
   clean: util.types.toString,
@@ -42,8 +41,7 @@ export const createJobRequisitionInputs = {
   additionalInputs: {
     ...additionalInputs,
     required: false,
-    comments:
-      "The required fields for the selected template, as a JSON object.",
+    comments: "The required fields for the selected template, as a JSON object.",
     example: JSON.stringify(
       {
         country: "US",

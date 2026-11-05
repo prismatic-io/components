@@ -6,15 +6,9 @@ export const API_URLS: Record<string, string> = {
   standard: "https://api.columbus.sage.com/uk/sage200/accounts/v1",
 };
 
-export const POLL_RESOURCE_CONFIG: Record<
-  string,
-  { endpoint: string; label: string }
-> = {
+export const POLL_RESOURCE_CONFIG: Record<string, { endpoint: string; label: string }> = {
   customers: { endpoint: "/customers", label: "Customers" },
-  customerContacts: {
-    endpoint: "/customer_contacts",
-    label: "Customer Contacts",
-  },
+  customerContacts: { endpoint: "/customer_contacts", label: "Customer Contacts" },
   customerDeliveryAddresses: {
     endpoint: "/customer_delivery_addresses",
     label: "Customer Delivery Addresses",

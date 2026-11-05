@@ -11,10 +11,7 @@ export const updateAttribute = action({
   inputs: updateAttributeInputs,
   examplePayload: updateAttributeExamplePayload,
   perform: async (context, params) => {
-    const client = await createCrmClient(
-      params.connection,
-      context.debug.enabled,
-    );
+    const client = await createCrmClient(params.connection, context.debug.enabled);
 
     const result = await client.updateAttribute({
       entityKey: params.entityId,

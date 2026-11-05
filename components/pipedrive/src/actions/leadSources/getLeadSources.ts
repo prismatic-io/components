@@ -18,8 +18,5 @@ export const getLeadSources = action({
   inputs: getLeadSourcesInputs,
   examplePayload: getLeadSourcesExamplePayload,
   examplePerform: async () => getLeadSourcesExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getLeadSourcesOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getLeadSourcesOutputSchema }),
 });

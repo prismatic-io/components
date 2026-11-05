@@ -19,10 +19,7 @@ export const listVendors = action({
     schema: listVendorsOutputSchema,
   }),
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { connection, customQueryParams, fetchAll, pagination },
-  ) => {
+  perform: async (context, { connection, customQueryParams, fetchAll, pagination }) => {
     const client = createClient(connection, context.debug.enabled);
 
     const data = await fetchAllData<Vendor>(
@@ -39,10 +36,7 @@ export const listVendors = action({
       data,
     };
   },
-  examplePerform: async (
-    _context,
-    { fetchAll },
-  ): Promise<{ data: unknown }> => ({
+  examplePerform: async (_context, { fetchAll }): Promise<{ data: unknown }> => ({
     data: {
       ...listVendorsResponse,
       page: fetchAll ? null : listVendorsResponse.page,

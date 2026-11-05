@@ -12,20 +12,11 @@ export const deleteDealProduct = action({
   },
   performSafety: "notAllowed",
   perform: async (context, { connection, id, productAttachmentId }) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      WebhookVersion.V2,
-    );
-    const { data } = await client.delete(
-      `/deals/${id}/products/${productAttachmentId}`,
-    );
+    const client = createClient(connection, context.debug.enabled, WebhookVersion.V2);
+    const { data } = await client.delete(`/deals/${id}/products/${productAttachmentId}`);
     return { data };
   },
   inputs: deleteDealProductInputs,
   examplePayload: deleteDealProductExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: deleteDealProductOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: deleteDealProductOutputSchema }),
 });

@@ -16,18 +16,11 @@ export const editUserOnWorkspace = action({
   }),
   examplePayload: editUserOnWorkspaceExamplePayload,
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { teamId, clickUpConnection, admin, customRoleId, userId, username },
-  ) => {
-    const client = createClickUpClient(
-      clickUpConnection,
-      context.debug.enabled,
-    );
+  perform: async (context, { teamId, clickUpConnection, admin, customRoleId, userId, username }) => {
+    const client = createClickUpClient(clickUpConnection, context.debug.enabled);
     const currentUsername = username
       ? undefined
-      : (await client.get<GetUserResponse>(`/team/${teamId}/user/${userId}`))
-          .data.member.user.username;
+      : (await client.get<GetUserResponse>(`/team/${teamId}/user/${userId}`)).data.member.user.username;
     const body = {
       username: username ?? currentUsername,
       admin,

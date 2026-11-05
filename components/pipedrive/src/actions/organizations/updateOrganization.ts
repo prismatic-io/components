@@ -12,11 +12,7 @@ export const updateOrganization = action({
   },
   performSafety: "notAllowed",
   perform: async (context, { connection, id, name, ownerId, visibleTo }) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      WebhookVersion.V2,
-    );
+    const client = createClient(connection, context.debug.enabled, WebhookVersion.V2);
     const { data } = await client.patch(`/organizations/${id}`, {
       name,
       owner_id: ownerId,
@@ -26,8 +22,5 @@ export const updateOrganization = action({
   },
   inputs: updateOrganizationInputs,
   examplePayload: updateOrganizationExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: singleOrganizationV2OutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: singleOrganizationV2OutputSchema }),
 });

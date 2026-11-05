@@ -15,10 +15,7 @@ vi.mock("../client", () => ({
 
 import { ListObjectsV2Command } from "@aws-sdk/client-s3";
 import type { ActionContext } from "@prismatic-io/spectral";
-import {
-  createConnection,
-  invokeTrigger,
-} from "@prismatic-io/spectral/testing";
+import { createConnection, invokeTrigger } from "@prismatic-io/spectral/testing";
 import { accessKeySecretPair } from "../connections";
 import { pollChangesFilesTriggerExamplePayload } from "../examplePayloads";
 import type { FileListingCursor, PollingState } from "../types";
@@ -62,9 +59,7 @@ type PollResult = {
   polledNoChanges: boolean;
 };
 
-const poll = async (
-  context: Partial<ActionContext>,
-): Promise<{ result: PollResult }> => {
+const poll = async (context: Partial<ActionContext>): Promise<{ result: PollResult }> => {
   const { result } = await invokeTrigger(
     pollChangesFilesTrigger as never,
     context,
@@ -85,8 +80,7 @@ describe("pollChangesFilesTrigger", () => {
   });
 
   test("emits only objects modified after the cursor, then advances the cursor", async () => {
-    const [newerKey, olderKey] =
-      pollChangesFilesTriggerExamplePayload.payload.body.data;
+    const [newerKey, olderKey] = pollChangesFilesTriggerExamplePayload.payload.body.data;
     sendMock.mockResolvedValue({
       Contents: [
         { Key: olderKey, LastModified: new Date("2024-01-14T23:59:59.000Z") },
@@ -114,10 +108,7 @@ describe("pollChangesFilesTrigger", () => {
   test("does not re-emit objects already returned by the previous poll", async () => {
     sendMock.mockResolvedValue({
       Contents: [
-        {
-          Key: "invoices/2024-01-15.pdf",
-          LastModified: new Date("2024-01-15T00:30:00.000Z"),
-        },
+        { Key: "invoices/2024-01-15.pdf", LastModified: new Date("2024-01-15T00:30:00.000Z") },
       ],
       IsTruncated: false,
     });
@@ -137,21 +128,11 @@ describe("pollChangesFilesTrigger", () => {
   test("lists every page, resuming after the last key of each truncated page", async () => {
     sendMock
       .mockResolvedValueOnce({
-        Contents: [
-          {
-            Key: "page-1.txt",
-            LastModified: new Date("2024-01-15T00:10:00.000Z"),
-          },
-        ],
+        Contents: [{ Key: "page-1.txt", LastModified: new Date("2024-01-15T00:10:00.000Z") }],
         IsTruncated: true,
       })
       .mockResolvedValueOnce({
-        Contents: [
-          {
-            Key: "page-2.txt",
-            LastModified: new Date("2024-01-15T00:20:00.000Z"),
-          },
-        ],
+        Contents: [{ Key: "page-2.txt", LastModified: new Date("2024-01-15T00:20:00.000Z") }],
         IsTruncated: false,
       });
     const { context } = createPollingContext({ lastPolledAt: T0 });
@@ -171,12 +152,7 @@ describe("pollChangesFilesTrigger", () => {
 
   test("seeds the initial sync from Look-back Date on the first poll", async () => {
     sendMock.mockResolvedValue({
-      Contents: [
-        {
-          Key: "backfilled.txt",
-          LastModified: new Date("2024-01-10T00:00:00.000Z"),
-        },
-      ],
+      Contents: [{ Key: "backfilled.txt", LastModified: new Date("2024-01-10T00:00:00.000Z") }],
       IsTruncated: false,
     });
     const { context, getStore } = createPollingContext({});
@@ -189,9 +165,7 @@ describe("pollChangesFilesTrigger", () => {
       { ...params, lookBackDate: "2024-01-01T00:00:00.000Z" } as never,
     );
 
-    expect((result as unknown as PollResult).payload.body.data).toEqual([
-      "backfilled.txt",
-    ]);
+    expect((result as unknown as PollResult).payload.body.data).toEqual(["backfilled.txt"]);
     expect(getStore()).toEqual({ lastPolledAt: T1 });
   });
 
@@ -223,9 +197,7 @@ describe("pollChangesFilesTrigger", () => {
       { ...params, lookBackDate } as never,
     );
 
-    expect((result as unknown as PollResult).payload.body.data).toEqual([
-      "midnight.txt",
-    ]);
+    expect((result as unknown as PollResult).payload.body.data).toEqual(["midnight.txt"]);
   });
 
   test("defers a file stamped in the window's closing second to the next poll instead of losing it", async () => {
@@ -251,9 +223,7 @@ describe("pollChangesFilesTrigger", () => {
 
   test("never rewinds a millisecond-precision position stored before windows were floored", async () => {
     const legacy = "2024-01-15T01:00:00.100Z";
-    const { context, getStore } = createPollingContext({
-      lastPolledAt: legacy,
-    });
+    const { context, getStore } = createPollingContext({ lastPolledAt: legacy });
 
     vi.setSystemTime(new Date("2024-01-15T01:00:00.900Z"));
     const { result } = await poll(context);
@@ -265,9 +235,7 @@ describe("pollChangesFilesTrigger", () => {
 
   test("ignores an in-flight cursor left by a batched drain and lists from the start", async () => {
     sendMock.mockResolvedValue({
-      Contents: [
-        { Key: "a.txt", LastModified: new Date("2024-01-15T00:30:00.000Z") },
-      ],
+      Contents: [{ Key: "a.txt", LastModified: new Date("2024-01-15T00:30:00.000Z") }],
       IsTruncated: false,
     });
     const { context, getStore } = createPollingContext({
@@ -288,9 +256,7 @@ describe("pollChangesFilesTrigger", () => {
 describe("pollChangesFilesTrigger trigger pagination (batching enabled)", () => {
   const batch = { enabled: true as const, batchSize: 50 };
 
-  type BatchedResult = PollResult & {
-    payload: { paginationState?: FileListingCursor };
-  };
+  type BatchedResult = PollResult & { payload: { paginationState?: FileListingCursor } };
 
   const pollBatched = async (
     context: Partial<ActionContext>,
@@ -338,9 +304,7 @@ describe("pollChangesFilesTrigger trigger pagination (batching enabled)", () => 
 
   test("a round with nothing matching still keeps draining while pages remain", async () => {
     sendMock.mockResolvedValueOnce({
-      Contents: [
-        { Key: "old.txt", LastModified: new Date("2024-01-01T00:00:00.000Z") },
-      ],
+      Contents: [{ Key: "old.txt", LastModified: new Date("2024-01-01T00:00:00.000Z") }],
       IsTruncated: true,
     });
     const { context } = createPollingContext({ lastPolledAt: T0 });
@@ -366,10 +330,7 @@ describe("pollChangesFilesTrigger trigger pagination (batching enabled)", () => 
       IsTruncated: false,
     });
     const cursor = { windowStart: T0, windowEnd: T1, startAfter: "b.txt" };
-    const { context, getStore } = createPollingContext({
-      lastPolledAt: T0,
-      cursor,
-    });
+    const { context, getStore } = createPollingContext({ lastPolledAt: T0, cursor });
 
     vi.setSystemTime(new Date(T2));
     const result = await pollBatched(context, cursor);
@@ -388,10 +349,7 @@ describe("pollChangesFilesTrigger trigger pagination (batching enabled)", () => 
   test("a recurrence that finds no platform cursor resumes the drain from the one mirrored in state", async () => {
     sendMock.mockResolvedValueOnce({ Contents: [], IsTruncated: false });
     const cursor = { windowStart: T0, windowEnd: T1, startAfter: "b.txt" };
-    const { context, getStore } = createPollingContext({
-      lastPolledAt: T0,
-      cursor,
-    });
+    const { context, getStore } = createPollingContext({ lastPolledAt: T0, cursor });
 
     vi.setSystemTime(new Date(T2));
     const result = await pollBatched(context);
@@ -403,12 +361,7 @@ describe("pollChangesFilesTrigger trigger pagination (batching enabled)", () => 
 
   test("an initial sync that has not finished keeps no lastPolledAt, so it restarts rather than skips", async () => {
     sendMock.mockResolvedValueOnce({
-      Contents: [
-        {
-          Key: "backfilled.txt",
-          LastModified: new Date("2024-01-10T00:00:00.000Z"),
-        },
-      ],
+      Contents: [{ Key: "backfilled.txt", LastModified: new Date("2024-01-10T00:00:00.000Z") }],
       IsTruncated: true,
     });
     const { context, getStore } = createPollingContext({});
@@ -454,11 +407,8 @@ describe("pollChangesFilesTrigger trigger pagination (batching enabled)", () => 
 
   test("getNextPaginationState returns the round's cursor, or null on the last page", () => {
     const cursor = { windowStart: T0, windowEnd: T1, startAfter: "b.txt" };
-    const next =
-      pollChangesFilesTrigger.triggerResolver?.getNextPaginationState;
-    expect(
-      next?.({} as never, { payload: { paginationState: cursor } } as never),
-    ).toEqual(cursor);
+    const next = pollChangesFilesTrigger.triggerResolver?.getNextPaginationState;
+    expect(next?.({} as never, { payload: { paginationState: cursor } } as never)).toEqual(cursor);
     expect(next?.({} as never, { payload: {} } as never)).toBeNull();
   });
 });
@@ -467,9 +417,7 @@ describe("pollChangesFilesTrigger batching", () => {
   test("declares batching with a default batch size", () => {
     expect(pollChangesFilesTrigger.triggerResolverSupport).toBe("valid");
     expect(pollChangesFilesTrigger.batchConfig).toEqual({ batchSize: 50 });
-    expect(
-      pollChangesFilesTrigger.triggerResolver?.resolveItems,
-    ).toBeInstanceOf(Function);
+    expect(pollChangesFilesTrigger.triggerResolver?.resolveItems).toBeInstanceOf(Function);
   });
 
   test("resolveItems flattens the payload into tagged file changes", () => {

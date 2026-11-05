@@ -16,10 +16,7 @@ export const getSpace = action({
   examplePayload: getSpaceExamplePayload,
   performSafety: "safe",
   perform: async (context, { clickUpConnection, spaceId }) => {
-    const client = createClickUpClient(
-      clickUpConnection,
-      context.debug.enabled,
-    );
+    const client = createClickUpClient(clickUpConnection, context.debug.enabled);
 
     const { data } = await client.get(`/space/${spaceId}`);
 

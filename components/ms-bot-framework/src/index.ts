@@ -10,8 +10,7 @@ export default component({
   documentationUrl: "https://prismatic.io/docs/components/ms-bot-framework/",
   display: {
     label: "Microsoft Bot Framework",
-    description:
-      "Manage conversations, messages, and activities in Microsoft Bot Framework.",
+    description: "Manage conversations, messages, and activities in Microsoft Bot Framework.",
     iconPath: "icon.png",
     category: "Application Connectors",
   },

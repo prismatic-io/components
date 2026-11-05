@@ -6,9 +6,9 @@ export const toStringList = (array: unknown[]) => {
 };
 
 export const getProps = (baseProps: unknown[], additionalProps: unknown[]) => {
-  const properties = toStringList([
-    ...new Set([...baseProps, ...(additionalProps || [])]),
-  ]).join(",");
+  const properties = toStringList([...new Set([...baseProps, ...(additionalProps || [])])]).join(
+    ",",
+  );
 
   return {
     properties,
@@ -26,7 +26,5 @@ export const addUrlSearchParamsFromStringArray = (
   return searchParams;
 };
 
-export const getArrayOfObjectsWithKey = (
-  array: string[],
-  key: string,
-): Record<string, string>[] => array.map((item) => ({ [key]: item }));
+export const getArrayOfObjectsWithKey = (array: string[], key: string): Record<string, string>[] =>
+  array.map((item) => ({ [key]: item }));

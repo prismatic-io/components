@@ -18,8 +18,7 @@ export const newestCreatedDateTime = (
   for (const { createdDateTime } of tasks) {
     if (!createdDateTime) continue;
     const created = Date.parse(createdDateTime);
-    if (!Number.isNaN(created) && (newest === undefined || created > newest))
-      newest = created;
+    if (!Number.isNaN(created) && (newest === undefined || created > newest)) newest = created;
   }
   return newest === undefined ? undefined : new Date(newest).toISOString();
 };
@@ -30,9 +29,7 @@ export const latestCreatedDateTime = (
 ): string => {
   const newest = newestCreatedDateTime(tasks);
   const currentDate = new Date(current);
-  return newest && new Date(newest) > currentDate
-    ? newest
-    : currentDate.toISOString();
+  return newest && new Date(newest) > currentDate ? newest : currentDate.toISOString();
 };
 
 export const lookBackDateClean = (value: unknown): string => {

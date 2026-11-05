@@ -13,7 +13,7 @@ export const setConversationPurpose = action({
   performSafety: "notAllowed",
   perform: async (
     { debug: { enabled: debug } },
-    { connection, channelName, purpose },
+    { connection, channelName, purpose }
   ) => {
     debugLogger({ debug, channelName, purpose });
     const client = await createOauthClient({
@@ -28,7 +28,7 @@ export const setConversationPurpose = action({
   },
   examplePerform: async (
     _context,
-    { purpose },
+    { purpose }
   ): Promise<{ data: unknown }> => ({
     data: {
       ...setConversationPurposeResponse,

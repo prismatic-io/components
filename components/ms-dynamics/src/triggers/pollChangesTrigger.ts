@@ -4,11 +4,7 @@ import { createCrmClient } from "../client";
 import { BATCH_SIZE } from "../constants";
 import { pollChangesTriggerExamplePayload } from "../examplePayloads";
 import { pollChangesInputs } from "../inputs";
-import type {
-  DynamicsChangesObject,
-  DynamicsRecord,
-  PollingState,
-} from "../types";
+import type { DynamicsChangesObject, DynamicsRecord, PollingState } from "../types";
 import { paginateQueryEntities, resolvePollingRecordChanges } from "../util";
 
 export const pollChangesTrigger = pollingTrigger({
@@ -24,8 +20,7 @@ export const pollChangesTrigger = pollingTrigger({
     const pollState = context.polling.getState() as PollingState;
     const isBackfill = !pollState?.lastPolledAt && Boolean(params.lookBackDate);
     const lastPolledAt =
-      pollState?.lastPolledAt ??
-      (params.lookBackDate ? `${params.lookBackDate}T00:00:00Z` : now);
+      pollState?.lastPolledAt ?? (params.lookBackDate ? `${params.lookBackDate}T00:00:00Z` : now);
 
     const modifiedFilter = `modifiedon gt ${lastPolledAt}`;
     const filter = params.filterExpression
@@ -38,18 +33,14 @@ export const pollChangesTrigger = pollingTrigger({
       orderBy: ["modifiedon asc"],
     };
 
-    const client = await createCrmClient(
-      params.connection,
-      context.debug.enabled,
-    );
+    const client = await createCrmClient(params.connection, context.debug.enabled);
     const retrieveFn = async (pageId?: string) => {
       const result = await client.retrieveMultiple(request, pageId);
       return result as unknown as Record<string, unknown>;
     };
 
     const { data } = await paginateQueryEntities(retrieveFn, true);
-    const records = ((data as Record<string, unknown>)?.value ??
-      []) as DynamicsRecord[];
+    const records = ((data as Record<string, unknown>)?.value ?? []) as DynamicsRecord[];
 
     const lastPolledAtDate = new Date(lastPolledAt);
     const created: DynamicsRecord[] = [];
@@ -57,21 +48,14 @@ export const pollChangesTrigger = pollingTrigger({
 
     for (const record of records) {
       const createdAtDate =
-        typeof record.createdon === "string"
-          ? new Date(record.createdon)
-          : null;
+        typeof record.createdon === "string" ? new Date(record.createdon) : null;
       const modifiedAtDate =
-        typeof record.modifiedon === "string"
-          ? new Date(record.modifiedon)
-          : null;
+        typeof record.modifiedon === "string" ? new Date(record.modifiedon) : null;
       const isNew = createdAtDate !== null && createdAtDate > lastPolledAtDate;
-      const isUpdated =
-        !isNew &&
-        (modifiedAtDate === null || modifiedAtDate > lastPolledAtDate);
+      const isUpdated = !isNew && (modifiedAtDate === null || modifiedAtDate > lastPolledAtDate);
 
       if (isNew && (isBackfill || params.showNewRecords)) created.push(record);
-      else if (isUpdated && (isBackfill || params.showUpdatedRecords))
-        updated.push(record);
+      else if (isUpdated && (isBackfill || params.showUpdatedRecords)) updated.push(record);
     }
 
     const totalMatched = created.length + updated.length;
@@ -86,7 +70,7 @@ export const pollChangesTrigger = pollingTrigger({
 
     if (context.debug.enabled) {
       context.logger.debug(
-        `Polled ${params.entityType}: ${records.length} fetched, ${created.length} created, ${updated.length} updated`,
+        `Polled ${params.entityType}: ${records.length} fetched, ${created.length} created, ${updated.length} updated`
       );
     }
 
@@ -99,9 +83,7 @@ export const pollChangesTrigger = pollingTrigger({
   batchConfig: { batchSize: BATCH_SIZE },
   triggerResolver: {
     resolveItems: (_context, result) => {
-      const data = result.payload.body.data as
-        | DynamicsChangesObject
-        | undefined;
+      const data = result.payload.body.data as DynamicsChangesObject | undefined;
       return resolvePollingRecordChanges(data);
     },
   },

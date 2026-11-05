@@ -10,10 +10,7 @@ export const listCards = action({
     description: "Return a list of cards for a customer.",
   },
   performSafety: "safe",
-  perform: async (
-    context,
-    { customerId, timeout, pagination, stripeConnection },
-  ) => {
+  perform: async (context, { customerId, timeout, pagination, stripeConnection }) => {
     const client = createStripeClient({
       stripeConnection,
       timeout,

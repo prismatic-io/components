@@ -31,8 +31,7 @@ export const createBulkQueryJob = action({
       data,
     };
   },
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    createBulkQueryJobExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => createBulkQueryJobExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: createBulkQueryJobOutputSchema,

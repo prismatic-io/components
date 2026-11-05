@@ -13,14 +13,7 @@ export const findRecord = action({
   performSafety: "notAllowed",
   perform: async (
     context,
-    {
-      version,
-      recordType,
-      dynamicValues,
-      fieldValues,
-      fieldValueTypes,
-      connection,
-    },
+    { version, recordType, dynamicValues, fieldValues, fieldValueTypes, connection },
   ) => {
     if (context.debug.enabled) {
       context.logger.debug("Payload", {
@@ -42,7 +35,6 @@ export const findRecord = action({
       data: response,
     };
   },
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    getRecordExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => getRecordExamplePayload,
   examplePayload: getRecordExamplePayload,
 });

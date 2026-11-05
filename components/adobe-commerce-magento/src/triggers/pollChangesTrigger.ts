@@ -8,10 +8,7 @@ import type {
   MagentoRecordChange,
   PollingState,
 } from "../types";
-import {
-  fetchMagentoRecordsSince,
-  resolvePollingRecordChanges,
-} from "../utils";
+import { fetchMagentoRecordsSince, resolvePollingRecordChanges } from "../utils";
 
 export const pollChangesTrigger = pollingTrigger({
   display: {
@@ -31,8 +28,7 @@ export const pollChangesTrigger = pollingTrigger({
     const now = new Date().toISOString();
     const pollState = context.polling.getState() as PollingState;
     const isInitialSync = !pollState?.lastPolledAt;
-    const lastPolledAt =
-      pollState?.lastPolledAt ?? (params.lookBackDate || now);
+    const lastPolledAt = pollState?.lastPolledAt ?? (params.lookBackDate || now);
 
     const { records, truncated } = await fetchMagentoRecordsSince(
       params.connection,
@@ -48,12 +44,9 @@ export const pollChangesTrigger = pollingTrigger({
     for (const record of records) {
       const createValue = record.created_at;
       const createdAtDate =
-        typeof createValue === "string"
-          ? new Date(createValue.replace(" ", "T") + "Z")
-          : null;
+        typeof createValue === "string" ? new Date(createValue.replace(" ", "T") + "Z") : null;
       const isNew = createdAtDate !== null && createdAtDate > lastPolledAtDate;
-      if (isNew && (isInitialSync || params.showNewRecords !== false))
-        created.push(record);
+      if (isNew && (isInitialSync || params.showNewRecords !== false)) created.push(record);
       else if (!isNew && (isInitialSync || params.showUpdatedRecords !== false))
         updated.push(record);
     }
@@ -63,9 +56,7 @@ export const pollChangesTrigger = pollingTrigger({
       const newestFetchedUpdatedAt = records[records.length - 1]?.updated_at;
       nextCursor =
         typeof newestFetchedUpdatedAt === "string"
-          ? new Date(
-              newestFetchedUpdatedAt.replace(" ", "T") + "Z",
-            ).toISOString()
+          ? new Date(newestFetchedUpdatedAt.replace(" ", "T") + "Z").toISOString()
           : lastPolledAt;
       context.logger.warn(
         `Polling truncated at the page cap for Magento ${params.pollResourceType}. Advancing cursor to ${nextCursor}; next poll will resume from there.`,

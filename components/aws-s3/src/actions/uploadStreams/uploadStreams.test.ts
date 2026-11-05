@@ -45,8 +45,7 @@ const connection = createConnection(accessKeySecretPair, {
   secretAccessKey: "fakeSecret",
 });
 
-const UUID_PATTERN =
-  /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
+const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
 
 const serviceError = (name: string, httpStatusCode: number) =>
   new S3ServiceException({
@@ -80,9 +79,7 @@ describe("upload stream actions", () => {
       uploadDoneMock.mockReturnValue(finisher);
       const executionState: Record<string, unknown> = {};
 
-      const { result } = await invoke(createUploadStream, inputs, {
-        executionState,
-      });
+      const { result } = await invoke(createUploadStream, inputs, { executionState });
 
       expect(result.data).toMatch(UUID_PATTERN);
       const [options] = uploadConstructorMock.mock.calls[0];
@@ -93,24 +90,17 @@ describe("upload stream actions", () => {
         Body: expect.any(PassThrough),
         Tagging: "env=prod",
       });
-      const state = executionState[
-        result.data as string
-      ] as UploadStreamExecutionState;
+      const state = executionState[result.data as string] as UploadStreamExecutionState;
       expect(state.fileStream).toBe(options.params.Body);
       expect(state.uploadFinisher).toBe(finisher);
     });
 
     test("propagates a client creation failure without starting an upload", async () => {
-      vi.mocked(createS3Client).mockRejectedValueOnce(
-        serviceError("InvalidAccessKeyId", 403),
-      );
+      vi.mocked(createS3Client).mockRejectedValueOnce(serviceError("InvalidAccessKeyId", 403));
 
       await expect(
         invoke(createUploadStream, inputs, { executionState: {} }),
-      ).rejects.toMatchObject({
-        name: "InvalidAccessKeyId",
-        $metadata: { httpStatusCode: 403 },
-      });
+      ).rejects.toMatchObject({ name: "InvalidAccessKeyId", $metadata: { httpStatusCode: 403 } });
       expect(uploadConstructorMock).not.toHaveBeenCalled();
     });
   });
@@ -119,20 +109,14 @@ describe("upload stream actions", () => {
     test("writes the file contents to the stored stream", async () => {
       const fileStream = new PassThrough();
       const executionState = {
-        "upload-1": {
-          fileStream,
-          uploadFinisher: Promise.resolve({ $metadata: {} }),
-        },
+        "upload-1": { fileStream, uploadFinisher: Promise.resolve({ $metadata: {} }) },
       };
 
       const { result } = await invoke(
         writeUploadStream,
         {
           uploadId: "upload-1",
-          fileContents: {
-            data: Buffer.from("chunk-1"),
-            contentType: "application/octet-stream",
-          },
+          fileContents: { data: Buffer.from("chunk-1"), contentType: "application/octet-stream" },
         },
         { executionState },
       );
@@ -147,10 +131,7 @@ describe("upload stream actions", () => {
           writeUploadStream,
           {
             uploadId: "missing",
-            fileContents: {
-              data: Buffer.from("x"),
-              contentType: "application/octet-stream",
-            },
+            fileContents: { data: Buffer.from("x"), contentType: "application/octet-stream" },
           },
           { executionState: {} },
         ),
@@ -162,10 +143,7 @@ describe("upload stream actions", () => {
     test("ends the stream, awaits the upload and returns null", async () => {
       const fileStream = new PassThrough();
       const executionState = {
-        "upload-1": {
-          fileStream,
-          uploadFinisher: Promise.resolve({ $metadata: {} }),
-        },
+        "upload-1": { fileStream, uploadFinisher: Promise.resolve({ $metadata: {} }) },
       };
 
       const { result } = await invoke(
@@ -179,29 +157,18 @@ describe("upload stream actions", () => {
     });
 
     test("propagates an SDK service error from the upload", async () => {
-      const uploadFinisher = Promise.reject(
-        serviceError("EntityTooSmall", 400),
-      );
+      const uploadFinisher = Promise.reject(serviceError("EntityTooSmall", 400));
       uploadFinisher.catch(() => undefined);
-      const executionState = {
-        "upload-1": { fileStream: new PassThrough(), uploadFinisher },
-      };
+      const executionState = { "upload-1": { fileStream: new PassThrough(), uploadFinisher } };
 
       await expect(
         invoke(closeUploadStream, { uploadId: "upload-1" }, { executionState }),
-      ).rejects.toMatchObject({
-        name: "EntityTooSmall",
-        $metadata: { httpStatusCode: 400 },
-      });
+      ).rejects.toMatchObject({ name: "EntityTooSmall", $metadata: { httpStatusCode: 400 } });
     });
 
     test("throws a descriptive error when the upload stream ID is unknown", async () => {
       await expect(
-        invoke(
-          closeUploadStream,
-          { uploadId: "missing" },
-          { executionState: {} },
-        ),
+        invoke(closeUploadStream, { uploadId: "missing" }, { executionState: {} }),
       ).rejects.toThrow('Upload stream "missing" was not found');
     });
   });

@@ -59,8 +59,5 @@ export const createCustomObject = action({
     data: createCustomObjectExamplePayload.data,
   }),
   examplePayload: createCustomObjectExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: customObjectSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: customObjectSchema }),
 });

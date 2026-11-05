@@ -7,14 +7,7 @@ export const importSchema = {
     importRequestJson: { type: "object" as const },
     importSource: {
       type: "string",
-      enum: [
-        "API",
-        "CRM_UI",
-        "IMPORT",
-        "MOBILE_ANDROID",
-        "MOBILE_IOS",
-        "SALESFORCE",
-      ],
+      enum: ["API", "CRM_UI", "IMPORT", "MOBILE_ANDROID", "MOBILE_IOS", "SALESFORCE"],
     },
     importTemplate: {
       type: "object" as const,
@@ -53,15 +46,7 @@ export const importSchema = {
     optOutImport: { type: "boolean" },
     state: {
       type: "string",
-      enum: [
-        "CANCELED",
-        "DEFERRED",
-        "DONE",
-        "FAILED",
-        "PROCESSING",
-        "REVERTED",
-        "STARTED",
-      ],
+      enum: ["CANCELED", "DEFERRED", "DONE", "FAILED", "PROCESSING", "REVERTED", "STARTED"],
     },
     updatedAt: { type: "string", format: "date-time" },
   },

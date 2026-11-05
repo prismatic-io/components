@@ -7,10 +7,7 @@ interface CreateClientProps {
   timeout?: number;
 }
 
-export const createStripeClient = ({
-  stripeConnection,
-  timeout,
-}: CreateClientProps) => {
+export const createStripeClient = ({ stripeConnection, timeout }: CreateClientProps) => {
   const stripeKey = getStripeKey(stripeConnection);
   return new Stripe(stripeKey, {
     typescript: true,

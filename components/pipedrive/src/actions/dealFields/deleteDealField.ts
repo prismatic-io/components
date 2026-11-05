@@ -17,8 +17,5 @@ export const deleteDealField = action({
   },
   inputs: deleteDealFieldInputs,
   examplePayload: deleteDealFieldExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: deleteDealFieldOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: deleteDealFieldOutputSchema }),
 });

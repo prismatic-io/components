@@ -8,16 +8,12 @@ import type { Job } from "../../types";
 export const getJob = action({
   display: {
     label: "Get Job",
-    description:
-      "Retrieve a single job definition by Job ID from Oracle Fusion Cloud HCM.",
+    description: "Retrieve a single job definition by Job ID from Oracle Fusion Cloud HCM.",
   },
   examplePayload: getJobExamplePayload,
   inputs: getJobInputs,
   outputSchema: outputSchema({ type: "actionOutput", schema: jobOutputSchema }),
-  perform: async (
-    context,
-    { connection, jobId, effectiveDate, includeMetadataLinks },
-  ) => {
+  perform: async (context, { connection, jobId, effectiveDate, includeMetadataLinks }) => {
     const client = createClient(connection, context.debug.enabled);
     const { data } = await client.get<Job>(`/jobs/${jobId}`, {
       params: {

@@ -13,20 +13,9 @@ export const getPersonDeals = action({
   performSafety: "notAllowed",
   perform: async (
     context,
-    {
-      connection,
-      id,
-      pagination: { limit, cursor } = {},
-      status,
-      sortBy,
-      sortDirection,
-    },
+    { connection, id, pagination: { limit, cursor } = {}, status, sortBy, sortDirection },
   ) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      WebhookVersion.V2,
-    );
+    const client = createClient(connection, context.debug.enabled, WebhookVersion.V2);
     const { data } = await client.get("/deals", {
       params: {
         limit,
@@ -41,8 +30,5 @@ export const getPersonDeals = action({
   },
   inputs: getPersonDealsInputs,
   examplePayload: getPersonDealsExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getPersonDealsOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getPersonDealsOutputSchema }),
 });

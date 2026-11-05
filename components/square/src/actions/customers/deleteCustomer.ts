@@ -9,10 +9,7 @@ export const deleteCustomer = action({
     description: "Deletes a customer profile from a business.",
   },
   perform: async (context, { customerId, squareConnection }) => {
-    const client = await createAuthorizedClient(
-      squareConnection,
-      context.debug.enabled,
-    );
+    const client = await createAuthorizedClient(squareConnection, context.debug.enabled);
     const version = getVersionFromConnection(squareConnection);
 
     const response = await client.request({

@@ -5,11 +5,7 @@ import nock from "nock";
 import { createActivityClient, createClient } from "./client";
 import { connection as connectionDefinition } from "./connections";
 
-const connection = createConnection(
-  connectionDefinition,
-  {},
-  { access_token: "test-token" },
-);
+const connection = createConnection(connectionDefinition, {}, { access_token: "test-token" });
 
 const DRIVE = "https://www.googleapis.com";
 const ACTIVITY = "https://driveactivity.googleapis.com";
@@ -18,9 +14,7 @@ describe("createClient", () => {
   afterEach(() => nock.cleanAll());
 
   test("targets the Drive v3 API and forwards the connection's access token", async () => {
-    const scope = nock(DRIVE, {
-      reqheaders: { authorization: "Bearer test-token" },
-    })
+    const scope = nock(DRIVE, { reqheaders: { authorization: "Bearer test-token" } })
       .get("/drive/v3/about")
       .query(true)
       .reply(200, { user: { displayName: "Jane Doe" } });
@@ -39,11 +33,7 @@ describe("createClient", () => {
   });
 
   test("throws a TypeError when the connection carries no token object", () => {
-    const untokened = {
-      key: "oauth2",
-      configVarKey: "",
-      fields: {},
-    } as unknown as Connection;
+    const untokened = { key: "oauth2", configVarKey: "", fields: {} } as unknown as Connection;
 
     expect(() => createClient(untokened)).toThrow(TypeError);
   });
@@ -53,9 +43,7 @@ describe("createActivityClient", () => {
   afterEach(() => nock.cleanAll());
 
   test("targets the Drive Activity v2 API and forwards the connection's access token", async () => {
-    const scope = nock(ACTIVITY, {
-      reqheaders: { authorization: "Bearer test-token" },
-    })
+    const scope = nock(ACTIVITY, { reqheaders: { authorization: "Bearer test-token" } })
       .post("/v2/activity:query")
       .reply(200, { activities: [] });
 

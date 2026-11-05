@@ -19,10 +19,7 @@ import {
   searchCustomers,
   updateCustomer,
 } from "./actions/customers";
-import {
-  batchChangeInventory,
-  batchRetrieveInventoryCounts,
-} from "./actions/inventory";
+import { batchChangeInventory, batchRetrieveInventoryCounts } from "./actions/inventory";
 import {
   cancelInvoice,
   deleteInvoice,
@@ -33,11 +30,7 @@ import {
   updateInvoice,
 } from "./actions/invoices";
 import * as jobs from "./actions/jobs";
-import {
-  listLocations,
-  retrieveLocation,
-  updateLocation,
-} from "./actions/locations";
+import { listLocations, retrieveLocation, updateLocation } from "./actions/locations";
 import { rawRequest } from "./actions/misc";
 import {
   batchRetrieveOrders,
@@ -82,8 +75,7 @@ export default component({
   public: true,
   display: {
     label: "Square",
-    description:
-      "Manage payments, customers, orders, invoices, and team members in Square.",
+    description: "Manage payments, customers, orders, invoices, and team members in Square.",
     iconPath: "icon.png",
     category: "Application Connectors",
   },

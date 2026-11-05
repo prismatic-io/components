@@ -16,9 +16,7 @@ export const listSitemapUrls = action({
     context,
     { sitemapUrl, modifiedAfter, includePathPrefixes, excludePathPrefixes },
   ) => {
-    const source = createSitemapPageSource(
-      createPublicClient(context.debug.enabled),
-    );
+    const source = createSitemapPageSource(createPublicClient(context.debug.enabled));
     const data = await source.listPages({
       sitemapUrl,
       modifiedAfter,
@@ -28,10 +26,7 @@ export const listSitemapUrls = action({
     return { data };
   },
   inputs: listSitemapUrlsInputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: listSitemapUrlsOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: listSitemapUrlsOutputSchema }),
   examplePerform: async () => listSitemapUrlsExamplePayload,
   examplePayload: listSitemapUrlsExamplePayload,
 });

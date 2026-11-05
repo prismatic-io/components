@@ -35,8 +35,9 @@ export const createCustomerGql = action({
       context.logger,
     );
 
-    const data: { customerCreate: { customer: Customer } } =
-      await client.request(createCustomerQuery, {
+    const data: { customerCreate: { customer: Customer } } = await client.request(
+      createCustomerQuery,
+      {
         input: {
           email,
           phone,
@@ -49,7 +50,8 @@ export const createCustomerGql = action({
           metafields,
           ...additionalFields,
         },
-      });
+      },
+    );
 
     return {
       data: {

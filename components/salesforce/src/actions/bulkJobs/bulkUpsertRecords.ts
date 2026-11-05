@@ -14,10 +14,7 @@ export const bulkUpsertRecords = action({
   },
   inputs: bulkUpsertRecordsInputs,
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { version, recordType, externalIdFieldName, connection, file },
-  ) => {
+  perform: async (context, { version, recordType, externalIdFieldName, connection, file }) => {
     const salesforceClient = await createSalesforceClient(connection, version);
     if (context.debug.enabled) {
       context.logger.debug("Payload", {
@@ -39,8 +36,7 @@ export const bulkUpsertRecords = action({
       data: response,
     };
   },
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    bulkUpsertRecordsExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => bulkUpsertRecordsExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: bulkLoadRecordsOutputSchema,

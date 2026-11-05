@@ -3,11 +3,7 @@ import { createConnection, invoke } from "@prismatic-io/spectral/dist/testing";
 import { connection as connectionDefinition } from "../../connections";
 import { listFiles } from "./listFiles";
 
-const connection = createConnection(
-  connectionDefinition,
-  {},
-  { access_token: "test-token" },
-);
+const connection = createConnection(connectionDefinition, {}, { access_token: "test-token" });
 const DRIVE = "https://www.googleapis.com";
 
 const baseParams = {
@@ -36,10 +32,7 @@ describe("listFiles", () => {
         ],
       });
 
-    const { result } = await invoke(listFiles, {
-      ...baseParams,
-      fetchAll: false,
-    });
+    const { result } = await invoke(listFiles, { ...baseParams, fetchAll: false });
 
     expect(result.data).toEqual({
       kind: "drive#fileList",
@@ -65,15 +58,9 @@ describe("listFiles", () => {
     nock(DRIVE)
       .get("/drive/v3/files")
       .query(true)
-      .reply(200, {
-        kind: "drive#fileList",
-        files: [{ id: "2", name: "Two" }],
-      });
+      .reply(200, { kind: "drive#fileList", files: [{ id: "2", name: "Two" }] });
 
-    const { result } = await invoke(listFiles, {
-      ...baseParams,
-      fetchAll: true,
-    });
+    const { result } = await invoke(listFiles, { ...baseParams, fetchAll: true });
 
     expect(result.data).toEqual({
       files: [
@@ -89,8 +76,6 @@ describe("listFiles", () => {
       .query(true)
       .reply(500, { error: { message: "Server error" } });
 
-    await expect(
-      invoke(listFiles, { ...baseParams, fetchAll: false }),
-    ).rejects.toThrow();
+    await expect(invoke(listFiles, { ...baseParams, fetchAll: false })).rejects.toThrow();
   });
 });

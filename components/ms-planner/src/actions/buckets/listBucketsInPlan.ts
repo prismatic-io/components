@@ -30,10 +30,7 @@ export const listBucketsInPlan = action({
   examplePerform: async (_context, { planId }): Promise<{ data: unknown }> => ({
     data: {
       ...listBucketsInPlanExamplePayload.data,
-      value: listBucketsInPlanExamplePayload.data.value.map((bucket) => ({
-        ...bucket,
-        planId,
-      })),
+      value: listBucketsInPlanExamplePayload.data.value.map((bucket) => ({ ...bucket, planId })),
     },
   }),
   examplePayload: listBucketsInPlanExamplePayload,

@@ -341,8 +341,7 @@ export const userId = input({
   label: "User ID",
   type: "string",
   clean: cleanNumber,
-  comments:
-    "If supplied, only persons owned by the specified user are returned.",
+  comments: "If supplied, only persons owned by the specified user are returned.",
   required: false,
   example: "123",
   placeholder: "Enter User ID",
@@ -376,8 +375,7 @@ export const dealStatus = input({
     { label: "Deleted", value: "deleted" },
   ],
   clean: cleanString,
-  comments:
-    "Filter the response to only include deals matching the selected status.",
+  comments: "Filter the response to only include deals matching the selected status.",
   example: "open",
   placeholder: "Select deal status",
 });
@@ -390,8 +388,7 @@ export const ownedByYou = input({
     { label: "1", value: "1" },
   ],
   clean: cleanNumber,
-  comments:
-    "When set to 1, only deals owned by the authenticated user are returned.",
+  comments: "When set to 1, only deals owned by the authenticated user are returned.",
   example: "1",
   placeholder: "Select option",
 });
@@ -455,8 +452,7 @@ export const httpAuthUser = input({
   label: "HTTP Auth User",
   type: "string",
   required: false,
-  comments:
-    "The username used for HTTP Basic Auth when Pipedrive calls the subscription URL.",
+  comments: "The username used for HTTP Basic Auth when Pipedrive calls the subscription URL.",
   example: "admin",
   placeholder: "Enter username",
   clean: cleanString,
@@ -466,8 +462,7 @@ export const httpAuthPassword = input({
   label: "HTTP Auth Password",
   type: "password",
   required: false,
-  comments:
-    "The password used for HTTP Basic Auth when Pipedrive calls the subscription URL.",
+  comments: "The password used for HTTP Basic Auth when Pipedrive calls the subscription URL.",
   placeholder: "Enter password",
   clean: cleanString,
 });

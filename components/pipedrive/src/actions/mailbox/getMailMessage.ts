@@ -20,8 +20,5 @@ export const getMailMessage = action({
   inputs: getMailMessageInputs,
   examplePayload: getMailMessageExamplePayload,
   examplePerform: async () => getMailMessageExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getMailMessageOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getMailMessageOutputSchema }),
 });

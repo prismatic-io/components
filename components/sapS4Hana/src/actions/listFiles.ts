@@ -21,13 +21,9 @@ export const listFilesSelect = input({
 export const listFiles = action({
   display: {
     label: "List Files",
-    description:
-      "Retrieves list of prepared files, based on specific filter conditions.",
+    description: "Retrieves list of prepared files, based on specific filter conditions.",
   },
-  perform: async (
-    _context,
-    { connectionInput, filter, inlinecount, select },
-  ) => {
+  perform: async (_context, { connectionInput, filter, inlinecount, select }) => {
     const selectArray = select ? select.split(",") : [];
 
     const headers = {

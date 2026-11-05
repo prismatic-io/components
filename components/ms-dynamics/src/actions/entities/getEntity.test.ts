@@ -37,7 +37,7 @@ describe("getEntity", () => {
         fieldNames: undefined,
         expandPropertyNames: undefined,
         connection: conn,
-      } as any),
+      } as any)
     ).rejects.toThrow("Not Found");
   });
 });

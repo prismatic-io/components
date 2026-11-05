@@ -23,11 +23,7 @@ export const getPipelineDeals = action({
       sortDirection,
     },
   ) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      WebhookVersion.V2,
-    );
+    const client = createClient(connection, context.debug.enabled, WebhookVersion.V2);
     const { data } = await client.get("/deals", {
       params: {
         filter_id: filterId,
@@ -43,8 +39,5 @@ export const getPipelineDeals = action({
   },
   inputs: getPipelineDealsInputs,
   examplePayload: getPipelineDealsExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getPipelineDealsOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getPipelineDealsOutputSchema }),
 });

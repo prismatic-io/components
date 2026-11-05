@@ -9,9 +9,7 @@ export const paginateResults = async <T>(
   params: Record<string, unknown> = {},
 ): Promise<OracleHcmListResponse<T>> => {
   if (!fetchAll) {
-    const { data } = await client.get<OracleHcmListResponse<T>>(endpoint, {
-      params,
-    });
+    const { data } = await client.get<OracleHcmListResponse<T>>(endpoint, { params });
     return data;
   }
 

@@ -6,8 +6,7 @@ import { defaultPaginationInputs, connection } from "../../inputs/general";
 export const listItems = action({
   display: {
     label: "List Items",
-    description:
-      "Retrieve a collection of Items with all or some selected properties.",
+    description: "Retrieve a collection of Items with all or some selected properties.",
   },
   inputs: {
     connection,
@@ -15,22 +14,9 @@ export const listItems = action({
   },
   perform: async (
     context,
-    {
-      connection,
-      customQueryParams,
-      $filter,
-      $orderby,
-      $select,
-      $skip,
-      $top,
-      fetchAll,
-    },
+    { connection, customQueryParams, $filter, $orderby, $select, $skip, $top, fetchAll },
   ) => {
-    const client = await createClient(
-      connection,
-      context,
-      context.debug.enabled,
-    );
+    const client = await createClient(connection, context, context.debug.enabled);
 
     const data = await fetchAllData(
       client,

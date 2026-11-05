@@ -13,22 +13,15 @@ export const addIssueAttachment = action({
   inputs: addIssueAttachmentInputs,
   performSafety: "notAllowed",
   perform: async (context, params) => {
-    const client = await createV3Client(
-      params.jiraConnection,
-      context.debug.enabled,
-    );
+    const client = await createV3Client(params.jiraConnection, context.debug.enabled);
     const formData = new FormData();
     formData.append("file", params.file.data, { filename: params.fileName });
-    const { data } = await client.post(
-      `/issue/${params.issueId}/attachments`,
-      formData,
-      {
-        headers: {
-          "X-Atlassian-Token": "no-check",
-          ...formData.getHeaders(),
-        },
+    const { data } = await client.post(`/issue/${params.issueId}/attachments`, formData, {
+      headers: {
+        "X-Atlassian-Token": "no-check",
+        ...formData.getHeaders(),
       },
-    );
+    });
     return { data };
   },
   examplePerform: async () => addIssueAttachmentExamplePayload,

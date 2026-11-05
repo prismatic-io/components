@@ -1,11 +1,7 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
 
 import { pollChangesTriggerInputs } from "../inputs";
-import {
-  DEFAULT_MAX_RECORDS,
-  DEFAULT_SF_VERSION,
-  MAX_BATCHED_PAGE_SIZE,
-} from "../constants";
+import { DEFAULT_MAX_RECORDS, DEFAULT_SF_VERSION, MAX_BATCHED_PAGE_SIZE } from "../constants";
 import type {
   DeletedRecord,
   PollingCursor,
@@ -78,8 +74,7 @@ export const pollChangesTrigger = pollingTrigger({
         };
 
     const windowIsEmpty =
-      formatSOQLDateTime(cursor.watermark) >=
-      formatSOQLDateTime(cursor.windowEnd);
+      formatSOQLDateTime(cursor.watermark) >= formatSOQLDateTime(cursor.windowEnd);
     const { emit, nextCursor } = windowIsEmpty
       ? { emit: [], nextCursor: null }
       : await fetchPollingWindow(sfClient, {
@@ -125,9 +120,7 @@ export const pollChangesTrigger = pollingTrigger({
     const isPlatformDrivenRound = Boolean(payload.paginationState);
 
     context.polling.setState({
-      lastPolledAt: nextCursor
-        ? (state.lastPolledAt ?? cursor.watermark)
-        : cursor.windowEnd,
+      lastPolledAt: nextCursor ? (state.lastPolledAt ?? cursor.watermark) : cursor.windowEnd,
       ...(nextCursor ? { cursor: nextCursor } : {}),
       lastDeletedAt,
     } satisfies PollingState);
@@ -138,8 +131,7 @@ export const pollChangesTrigger = pollingTrigger({
         paginationState: nextCursor ?? undefined,
         body: { data: changesObject },
       },
-      polledNoChanges:
-        changes === 0 && nextCursor === null && !isPlatformDrivenRound,
+      polledNoChanges: changes === 0 && nextCursor === null && !isPlatformDrivenRound,
     };
   },
   examplePayload: pollChangesTriggerExamplePayload,

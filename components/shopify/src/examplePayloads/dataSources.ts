@@ -3,9 +3,7 @@ export const selectCollectionsExamplePayload = {
 };
 
 export const selectCustomersExamplePayload = {
-  result: [
-    { label: "example@example.com - 8000000000000", key: "8000000000000" },
-  ],
+  result: [{ label: "example@example.com - 8000000000000", key: "8000000000000" }],
 };
 
 export const selectDraftOrdersExamplePayload = {
@@ -34,9 +32,7 @@ export const selectInventoryItemsExamplePayload = {
 };
 
 export const selectLocationsExamplePayload = {
-  result: [
-    { label: "123 Example St Suite 100 - 12345678901", key: "12345678901" },
-  ],
+  result: [{ label: "123 Example St Suite 100 - 12345678901", key: "12345678901" }],
 };
 
 export const selectOrdersExamplePayload = {

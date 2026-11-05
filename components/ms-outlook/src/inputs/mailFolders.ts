@@ -7,8 +7,7 @@ export const parentFolderIdInput = input({
   type: "string",
   required: false,
   dataSource: "selectMailFolder",
-  comments:
-    "The unique identifier of the parent folder (optional for nested folders).",
+  comments: "The unique identifier of the parent folder (optional for nested folders).",
   example: "AAMkAGI2TGuLAAA=",
   placeholder: "Enter Parent Folder ID",
   clean: cleanStringInput,

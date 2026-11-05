@@ -2,14 +2,10 @@ import { afterEach, describe, expect, test, vi } from "vitest";
 import { createAttributeExamplePayload } from "../../examplePayloads";
 import { createMockConnection, createMockContext } from "../../testHelpers";
 
-const { mockCreateAttribute } = vi.hoisted(() => ({
-  mockCreateAttribute: vi.fn(),
-}));
+const { mockCreateAttribute } = vi.hoisted(() => ({ mockCreateAttribute: vi.fn() }));
 
 vi.mock("../../client", () => ({
-  createCrmClient: vi
-    .fn()
-    .mockResolvedValue({ createAttribute: mockCreateAttribute }),
+  createCrmClient: vi.fn().mockResolvedValue({ createAttribute: mockCreateAttribute }),
 }));
 
 import { createAttribute } from "./createAttribute";
@@ -21,9 +17,7 @@ describe("createAttribute", () => {
   afterEach(() => vi.clearAllMocks());
 
   test("happy path returns created attribute", async () => {
-    mockCreateAttribute.mockResolvedValueOnce(
-      createAttributeExamplePayload.data,
-    );
+    mockCreateAttribute.mockResolvedValueOnce(createAttributeExamplePayload.data);
     const result = await createAttribute.perform(ctx, {
       connection: conn,
       entityId: "id-1",
@@ -39,7 +33,7 @@ describe("createAttribute", () => {
         connection: conn,
         entityId: "id-1",
         attributeBody: {},
-      } as any),
+      } as any)
     ).rejects.toThrow("Invalid attribute");
   });
 });

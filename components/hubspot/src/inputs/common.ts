@@ -21,8 +21,7 @@ export const fetchAll = input({
   type: "boolean",
   required: false,
   default: "false",
-  comments:
-    "When true, automatically fetches all pages of results using pagination.",
+  comments: "When true, automatically fetches all pages of results using pagination.",
   clean: util.types.toBool,
 });
 
@@ -78,8 +77,7 @@ export const description = input({
   type: "string",
   required: false,
   placeholder: "Enter description",
-  comments:
-    "An optional text description providing additional detail about the record.",
+  comments: "An optional text description providing additional detail about the record.",
   example: "This is an example description.",
   clean: toOptionalString,
 });
@@ -89,8 +87,7 @@ export const hubspotOwnerId = input({
   type: "string",
   required: false,
   placeholder: "Enter owner ID",
-  comments:
-    "The HubSpot user ID of the record owner, used to assign responsibility.",
+  comments: "The HubSpot user ID of the record owner, used to assign responsibility.",
   example: "910901",
   clean: toOptionalString,
 });
@@ -99,8 +96,7 @@ export const idProperty = input({
   label: "ID Property",
   type: "string",
   required: false,
-  comments:
-    "The name of a property whose values are unique for this object type.",
+  comments: "The name of a property whose values are unique for this object type.",
   dataSource: "selectProperty",
   clean: toOptionalString,
 });
@@ -123,8 +119,7 @@ export const associationsList = input({
   collection: "valuelist",
   example: "Contacts",
   required: false,
-  comments:
-    "For each item, provide an object type to retrieve the associated Ids for.",
+  comments: "For each item, provide an object type to retrieve the associated Ids for.",
   clean: toCommaSeparatedList,
 });
 
@@ -152,8 +147,7 @@ export const fieldValues = input({
   type: "string",
   collection: "keyvaluelist",
   required: false,
-  comments:
-    "The names of the fields and their values to use when creating/updating a record.",
+  comments: "The names of the fields and their values to use when creating/updating a record.",
   example: "name:My Example Account,phone:5551234567",
   clean: toKeyValueObject,
 });

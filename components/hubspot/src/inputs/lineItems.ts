@@ -11,13 +11,7 @@ import {
   pagination,
   timeout,
 } from "./common";
-import {
-  price,
-  productId,
-  recurringBillingPeriod,
-  updatePrice,
-  updateProductId,
-} from "./products";
+import { price, productId, recurringBillingPeriod, updatePrice, updateProductId } from "./products";
 
 const lineItemId = input({
   label: "Line Item ID",
@@ -35,8 +29,7 @@ const lineItemName = input({
   type: "string",
   required: true,
   placeholder: "Enter name",
-  comments:
-    "A descriptive name for the line item, displayed on quotes and invoices.",
+  comments: "A descriptive name for the line item, displayed on quotes and invoices.",
   example: "My Line Item",
   clean: util.types.toString,
 });

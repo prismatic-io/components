@@ -19,21 +19,15 @@ export const getCollectionGql = action({
       context.debug.enabled,
       context.logger,
     );
-    const data: { collection: Collection } = await client.request(
-      getCollectionQuery,
-      {
-        id: collectionId,
-      },
-    );
+    const data: { collection: Collection } = await client.request(getCollectionQuery, {
+      id: collectionId,
+    });
 
     return {
       data,
     };
   },
   inputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getCollectionGqlOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getCollectionGqlOutputSchema }),
   examplePayload,
 });

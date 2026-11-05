@@ -22,8 +22,5 @@ export const getPersonUpdates = action({
   },
   inputs: getPersonUpdatesInputs,
   examplePayload: getPersonUpdatesExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getPersonUpdatesOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getPersonUpdatesOutputSchema }),
 });

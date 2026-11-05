@@ -23,10 +23,7 @@ export const getAboutOutputSchema = {
       type: "object",
       additionalProperties: { type: "array", items: { type: "string" } },
     },
-    maxImportSizes: {
-      type: "object",
-      additionalProperties: { type: "string" },
-    },
+    maxImportSizes: { type: "object", additionalProperties: { type: "string" } },
     maxUploadSize: { type: "string" },
     appInstalled: { type: "boolean" },
     folderColorPalette: { type: "array", items: { type: "string" } },

@@ -1,10 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { LIST_DRAFT_ORDERS_DATASOURCE_REFERENCE } from "../../constants";
-import {
-  cleanArrayCodeInput,
-  cleanDraftOrderId,
-  cleanStringInput,
-} from "../../util";
+import { cleanArrayCodeInput, cleanDraftOrderId, cleanStringInput } from "../../util";
 import {
   additionalFields,
   customerIdGql,
@@ -74,8 +70,7 @@ const useCustomerAddress = input({
   type: "boolean",
   required: true,
   default: "true",
-  comments:
-    "This flag determines if the order will use the customers default address.",
+  comments: "This flag determines if the order will use the customers default address.",
   clean: util.types.toBool,
 });
 

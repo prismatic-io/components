@@ -28,10 +28,7 @@ export const createFolder = action({
   },
   inputs: createFolderInputs,
 
-  examplePerform: async (
-    _context,
-    { folderName },
-  ): Promise<{ data: unknown }> => ({
+  examplePerform: async (_context, { folderName }): Promise<{ data: unknown }> => ({
     data: {
       ...createFolderExamplePayload.data,
       name: folderName,

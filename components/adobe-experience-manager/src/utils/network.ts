@@ -1,8 +1,4 @@
-import {
-  lookup as dnsLookup,
-  type LookupAddress,
-  type LookupOptions,
-} from "node:dns";
+import { lookup as dnsLookup, type LookupAddress, type LookupOptions } from "node:dns";
 import { Agent as HttpsAgent } from "node:https";
 import { BlockList, isIP, type LookupFunction } from "node:net";
 import { util } from "@prismatic-io/spectral";
@@ -40,9 +36,7 @@ export const assertPublicUrl = (url: string): void => {
   }
   const host = parsed.hostname.replace(/^\[|\]$/g, "");
   if (isBlockedAddress(host)) {
-    throw new Error(
-      `Refusing to fetch a non-public address: ${parsed.hostname}`,
-    );
+    throw new Error(`Refusing to fetch a non-public address: ${parsed.hostname}`);
   }
 };
 
@@ -57,17 +51,13 @@ const guardedLookup: LookupFunction = (
     const blocked = resolved.find((entry) => isBlockedAddress(entry.address));
     if (blocked || !resolved.length) {
       return callback(
-        new Error(
-          `Refusing to fetch ${hostname}: it resolves to a non-public address.`,
-        ),
+        new Error(`Refusing to fetch ${hostname}: it resolves to a non-public address.`),
         "",
         0,
       );
     }
     if (options.all) {
-      return (
-        callback as unknown as (err: null, list: LookupAddress[]) => void
-      )(null, resolved);
+      return (callback as unknown as (err: null, list: LookupAddress[]) => void)(null, resolved);
     }
     return callback(null, resolved[0].address, resolved[0].family);
   });
@@ -84,15 +74,10 @@ const toIpv6Groups = (address: string): number[] => {
     ipv4Groups.push((a << 8) | b, (c << 8) | d);
     text = `${text.slice(0, dotted.index)}0:0`;
   }
-  const [head, tail] = text.includes("::")
-    ? text.split("::")
-    : [text, undefined];
+  const [head, tail] = text.includes("::") ? text.split("::") : [text, undefined];
   const headGroups = head ? head.split(":") : [];
   const tailGroups = tail ? tail.split(":") : [];
-  const fill =
-    tail === undefined
-      ? []
-      : Array(8 - headGroups.length - tailGroups.length).fill("0");
+  const fill = tail === undefined ? [] : Array(8 - headGroups.length - tailGroups.length).fill("0");
   const groups = [...headGroups, ...fill, ...tailGroups].map((group) =>
     util.types.toNumber(`0x${group}`),
   );
@@ -102,8 +87,7 @@ const toIpv6Groups = (address: string): number[] => {
 const embeddedIpv4 = (groups: number[]): string | undefined => {
   const toIpv4 = (high: number, low: number) =>
     [high >> 8, high & 0xff, low >> 8, low & 0xff].join(".");
-  const zeros = (from: number, to: number) =>
-    groups.slice(from, to).every((group) => group === 0);
+  const zeros = (from: number, to: number) => groups.slice(from, to).every((group) => group === 0);
   if (groups[0] === 0x2002) return toIpv4(groups[1], groups[2]);
   if (groups[0] === 0x64 && groups[1] === 0xff9b && zeros(2, 6)) {
     return toIpv4(groups[6], groups[7]);

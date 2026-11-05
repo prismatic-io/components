@@ -4,14 +4,8 @@ const inventoryLevelSchema = {
   type: "object" as const,
   properties: {
     id: { type: "string" as const },
-    item: {
-      type: "object" as const,
-      properties: { id: { type: "string" as const } },
-    },
-    location: {
-      type: "object" as const,
-      properties: { id: { type: "string" as const } },
-    },
+    item: { type: "object" as const, properties: { id: { type: "string" as const } } },
+    location: { type: "object" as const, properties: { id: { type: "string" as const } } },
     quantities: {
       type: "array" as const,
       items: {

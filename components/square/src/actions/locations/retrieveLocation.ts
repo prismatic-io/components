@@ -9,10 +9,7 @@ export const retrieveLocation = action({
     description: "Retrieves details of a specific location.",
   },
   perform: async (context, { squareConnection, locationId }) => {
-    const client = await createAuthorizedClient(
-      squareConnection,
-      context.debug.enabled,
-    );
+    const client = await createAuthorizedClient(squareConnection, context.debug.enabled);
 
     const response = await client.get(`/v2/locations/${locationId}`);
 

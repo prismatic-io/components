@@ -19,10 +19,7 @@ export const listCustomAccountingField = action({
     schema: listCustomAccountingFieldOutputSchema,
   }),
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { connection, customQueryParams, fetchAll, pagination },
-  ) => {
+  perform: async (context, { connection, customQueryParams, fetchAll, pagination }) => {
     const client = createClient(connection, context.debug.enabled);
 
     const data = await fetchAllData<CustomAccountingField>(
@@ -39,10 +36,7 @@ export const listCustomAccountingField = action({
       data,
     };
   },
-  examplePerform: async (
-    _context,
-    { fetchAll },
-  ): Promise<{ data: unknown }> => ({
+  examplePerform: async (_context, { fetchAll }): Promise<{ data: unknown }> => ({
     data: {
       ...listCustomAccountingFieldsResponse,
       page: fetchAll ? null : listCustomAccountingFieldsResponse.page,

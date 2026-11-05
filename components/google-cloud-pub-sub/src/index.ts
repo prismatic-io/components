@@ -8,12 +8,10 @@ import triggers from "./triggers";
 export default component({
   key: "google-cloud-pub-sub",
   public: true,
-  documentationUrl:
-    "https://prismatic.io/docs/components/google-cloud-pub-sub/",
+  documentationUrl: "https://prismatic.io/docs/components/google-cloud-pub-sub/",
   display: {
     label: "Google Cloud Pub/Sub",
-    description:
-      "Manage topics, subscriptions, and messages in Google Cloud Pub/Sub.",
+    description: "Manage topics, subscriptions, and messages in Google Cloud Pub/Sub.",
     iconPath: "icon.png",
     category: "Application Connectors",
   },

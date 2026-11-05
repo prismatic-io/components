@@ -18,8 +18,5 @@ export const getPermissionSet = action({
   inputs: getPermissionSetInputs,
   examplePayload: getPermissionSetExamplePayload,
   examplePerform: async () => getPermissionSetExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getPermissionSetOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getPermissionSetOutputSchema }),
 });

@@ -38,10 +38,7 @@ export const createWebhookGql = action({
     };
   },
   inputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: createWebhookGqlOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: createWebhookGqlOutputSchema }),
   examplePerform: async () => createWebhookGqlExamplePayload.restMap,
   examplePayload: createWebhookGqlExamplePayload.restMap,
 });

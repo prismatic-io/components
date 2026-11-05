@@ -16,9 +16,7 @@ export const listMessages = action({
     const client = createClient(params.connection, context.debug.enabled);
     const url = computeEndpointBasedOnConnection(
       params.connection,
-      params.folderId
-        ? `/me/mailFolders/${params.folderId}/messages`
-        : "/me/messages",
+      params.folderId ? `/me/mailFolders/${params.folderId}/messages` : "/me/messages",
     );
 
     const queryParams: ODataQueryParams = {};

@@ -43,12 +43,7 @@ describe("downloadAssetRendition", () => {
   test("surfaces a 404 for an unknown rendition", async () => {
     nock(BASE).get(path).reply(404);
     await expect(
-      invoke(downloadAssetRendition, {
-        connection,
-        assetId,
-        renditionName,
-        seoName: "city.jpeg",
-      }),
+      invoke(downloadAssetRendition, { connection, assetId, renditionName, seoName: "city.jpeg" }),
     ).rejects.toThrow("Request failed with status code 404");
   });
 });

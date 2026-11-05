@@ -13,11 +13,7 @@ export const deleteWebhook = action({
   performSafety: "notAllowed",
   perform: async (context, params) => {
     const useBasicAuth = isBasicAuth(params.jiraConnection);
-    const client = await createV3Client(
-      params.jiraConnection,
-      context.debug.enabled,
-      useBasicAuth,
-    );
+    const client = await createV3Client(params.jiraConnection, context.debug.enabled, useBasicAuth);
 
     if (useBasicAuth) {
       const { data } = await client.delete(`/webhook/${params.webhookId}`);

@@ -13,9 +13,7 @@ export const listUserFactors = action({
   inputs: listUserFactorsInputs,
   perform: async (context, { connection, userId }) => {
     const client = await createClient(connection, context.debug.enabled);
-    const { data } = await client.get<Factor[]>(
-      `/users/${encodeURIComponent(userId)}/factors`,
-    );
+    const { data } = await client.get<Factor[]>(`/users/${encodeURIComponent(userId)}/factors`);
 
     return { data };
   },

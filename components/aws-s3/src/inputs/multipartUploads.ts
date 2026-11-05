@@ -1,14 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { awsRegion, dynamicAccessAllInputs } from "aws-utils";
 import { toBufferFromData, toPartList, toPositiveInt } from "../utils";
-import {
-  accessKeyInput,
-  acl,
-  bucket,
-  expirationSeconds,
-  objectKey,
-  tagging,
-} from "./common";
+import { accessKeyInput, acl, bucket, expirationSeconds, objectKey, tagging } from "./common";
 
 const urlsToGenerate = input({
   label: "URLs to Generate",
@@ -28,8 +21,7 @@ const uploadId = input({
   comments:
     "The unique identifier for the multipart upload, returned by 'Create Multipart Upload' action.",
   clean: util.types.toString,
-  example:
-    "xadcOB_7YPBOJuoFiQ9cz4P3Pe6FIZwO4f7wN93uHsNBEw97pl5eNwzExg0LAT2dUN91cOmrEQHDsP3WA60CEg",
+  example: "xadcOB_7YPBOJuoFiQ9cz4P3Pe6FIZwO4f7wN93uHsNBEw97pl5eNwzExg0LAT2dUN91cOmrEQHDsP3WA60CEg",
   placeholder: "Enter multipart upload ID",
 });
 
@@ -47,8 +39,7 @@ const partNumber = input({
   label: "Part Number",
   type: "string",
   required: true,
-  comments:
-    "The part number for this chunk in the multipart upload sequence (1-10,000).",
+  comments: "The part number for this chunk in the multipart upload sequence (1-10,000).",
   placeholder: "Enter part number (1-10,000)",
   example: "1",
   clean: util.types.toInt,

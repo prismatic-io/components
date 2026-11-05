@@ -9,10 +9,7 @@ export const createPayment = action({
     description: "Creates a payment using the provided source.",
   },
   perform: async (context, { squareConnection, paymentData }) => {
-    const client = await createAuthorizedClient(
-      squareConnection,
-      context.debug.enabled,
-    );
+    const client = await createAuthorizedClient(squareConnection, context.debug.enabled);
 
     const response = await client.post("/v2/payments", paymentData);
 

@@ -13,7 +13,7 @@ export const postMessage = action({
   performSafety: "notAllowed",
   perform: async (
     { debug: { enabled: debug } },
-    { connection, message, channelName, username, messageId },
+    { connection, message, channelName, username, messageId }
   ) => {
     debugLogger({
       connection,
@@ -37,7 +37,7 @@ export const postMessage = action({
   },
   examplePerform: async (
     _context,
-    { channelName, message, username, messageId },
+    { channelName, message, username, messageId }
   ): Promise<{ data: unknown }> => ({
     data: {
       ...sendMessageExamplePayload,

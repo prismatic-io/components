@@ -19,9 +19,6 @@ export const getCustomer = action({
     return { data };
   },
   inputs: getCustomerInputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getCustomerOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getCustomerOutputSchema }),
   examplePayload: getCustomerExamplePayload.restMap,
 });

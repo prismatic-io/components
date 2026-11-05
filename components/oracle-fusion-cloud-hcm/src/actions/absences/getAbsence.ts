@@ -13,14 +13,8 @@ export const getAbsence = action({
   },
   examplePayload: getAbsenceExamplePayload,
   inputs: getAbsenceInputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: absenceOutputSchema,
-  }),
-  perform: async (
-    context,
-    { connection, absenceEntryId, includeMetadataLinks },
-  ) => {
+  outputSchema: outputSchema({ type: "actionOutput", schema: absenceOutputSchema }),
+  perform: async (context, { connection, absenceEntryId, includeMetadataLinks }) => {
     const client = createClient(connection, context.debug.enabled);
     const { data } = await client.get<Absence>(`/absences/${absenceEntryId}`, {
       params: { onlyData: includeMetadataLinks },

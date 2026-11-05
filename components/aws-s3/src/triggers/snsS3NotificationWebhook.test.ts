@@ -14,41 +14,21 @@ import type { SnsMessage } from "../types";
 import { buildSnsStringToSign } from "../utils";
 import { snsS3NotificationWebhook } from "./snsS3NotificationWebhook";
 
-const CERT_URL =
-  "https://sns.us-west-2.amazonaws.com/SimpleNotificationService-example.pem";
+const CERT_URL = "https://sns.us-west-2.amazonaws.com/SimpleNotificationService-example.pem";
 const SUBSCRIBE_URL =
   "https://sns.us-west-2.amazonaws.com/?Action=ConfirmSubscription&TopicArn=arn:aws:sns:us-west-2:123456789012:MyTopic&Token=example-token";
 
-const { publicKey, privateKey } = generateKeyPairSync("rsa", {
-  modulusLength: 2048,
-});
-const publicKeyPem = publicKey
-  .export({ type: "spki", format: "pem" })
-  .toString();
+const { publicKey, privateKey } = generateKeyPairSync("rsa", { modulusLength: 2048 });
+const publicKeyPem = publicKey.export({ type: "spki", format: "pem" }).toString();
 
-const signed = (
-  message: Omit<
-    SnsMessage,
-    "Signature" | "SignatureVersion" | "SigningCertURL"
-  >,
-) => {
-  const unsigned = {
-    ...message,
-    SignatureVersion: "2",
-    SigningCertURL: CERT_URL,
-    Signature: "",
-  };
-  const signature = sign(
-    "sha256",
-    Buffer.from(buildSnsStringToSign(unsigned)),
-    privateKey,
-  );
+const signed = (message: Omit<SnsMessage, "Signature" | "SignatureVersion" | "SigningCertURL">) => {
+  const unsigned = { ...message, SignatureVersion: "2", SigningCertURL: CERT_URL, Signature: "" };
+  const signature = sign("sha256", Buffer.from(buildSnsStringToSign(unsigned)), privateKey);
   return { ...unsigned, Signature: signature.toString("base64") };
 };
 
 const notification = signed(
-  snsS3NotificationWebhookExamplePayload.payload.body
-    .data as unknown as SnsMessage,
+  snsS3NotificationWebhookExamplePayload.payload.body.data as unknown as SnsMessage,
 );
 
 const confirmation = signed({
@@ -73,40 +53,27 @@ describe("snsS3NotificationWebhook", () => {
     getMock.mockReset();
     getMock.mockResolvedValue({ status: 200, data: "" });
     createClientMock.mockImplementation(({ baseUrl }: { baseUrl: string }) =>
-      baseUrl === CERT_URL
-        ? { get: async () => ({ data: publicKeyPem }) }
-        : { get: getMock },
+      baseUrl === CERT_URL ? { get: async () => ({ data: publicKeyPem }) } : { get: getMock },
     );
   });
 
   test("Notification: verifies the signature and routes the parsed body to the Notification branch", async () => {
     const payload = payloadWithBody(JSON.stringify(notification));
 
-    const { result } = await invokeTrigger(
-      snsS3NotificationWebhook,
-      {},
-      payload,
-    );
+    const { result } = await invokeTrigger(snsS3NotificationWebhook, {}, payload);
 
     expect(result).toEqual({
       branch: "Notification",
       payload: { ...payload, body: { data: notification } },
     });
-    expect(createClientMock).toHaveBeenCalledWith({
-      baseUrl: CERT_URL,
-      responseType: "text",
-    });
+    expect(createClientMock).toHaveBeenCalledWith({ baseUrl: CERT_URL, responseType: "text" });
     expect(getMock).not.toHaveBeenCalled();
   });
 
   test("SubscriptionConfirmation: verifies the signature, GETs the SubscribeURL and routes to the Subscribe branch", async () => {
     const payload = payloadWithBody(JSON.stringify(confirmation));
 
-    const { result } = await invokeTrigger(
-      snsS3NotificationWebhook,
-      {},
-      payload,
-    );
+    const { result } = await invokeTrigger(snsS3NotificationWebhook, {}, payload);
 
     expect(createClientMock).toHaveBeenCalledWith({ baseUrl: SUBSCRIBE_URL });
     expect(getMock).toHaveBeenCalledWith("");
@@ -117,15 +84,12 @@ describe("snsS3NotificationWebhook", () => {
   });
 
   test("rejects a forged SubscriptionConfirmation without calling its SubscribeURL", async () => {
-    const forged = {
-      ...confirmation,
-      SubscribeURL: "https://sns.us-west-2.amazonaws.com/?forged",
-    };
+    const forged = { ...confirmation, SubscribeURL: "https://sns.us-west-2.amazonaws.com/?forged" };
     const payload = payloadWithBody(JSON.stringify(forged));
 
-    await expect(
-      invokeTrigger(snsS3NotificationWebhook, {}, payload),
-    ).rejects.toThrow("Amazon SNS message signature is invalid");
+    await expect(invokeTrigger(snsS3NotificationWebhook, {}, payload)).rejects.toThrow(
+      "Amazon SNS message signature is invalid",
+    );
     expect(getMock).not.toHaveBeenCalled();
   });
 
@@ -136,9 +100,7 @@ describe("snsS3NotificationWebhook", () => {
     });
     const payload = payloadWithBody(JSON.stringify(foreign));
 
-    await expect(
-      invokeTrigger(snsS3NotificationWebhook, {}, payload),
-    ).rejects.toThrow(
+    await expect(invokeTrigger(snsS3NotificationWebhook, {}, payload)).rejects.toThrow(
       "SubscribeURL must be an HTTPS URL on an Amazon SNS domain",
     );
     expect(getMock).not.toHaveBeenCalled();
@@ -148,19 +110,15 @@ describe("snsS3NotificationWebhook", () => {
     const { Signature: _signature, ...unsigned } = notification;
     const payload = payloadWithBody(JSON.stringify(unsigned));
 
-    await expect(
-      invokeTrigger(snsS3NotificationWebhook, {}, payload),
-    ).rejects.toThrow("Amazon SNS message signature is invalid");
+    await expect(invokeTrigger(snsS3NotificationWebhook, {}, payload)).rejects.toThrow(
+      "Amazon SNS message signature is invalid",
+    );
   });
 
   test("rejects an unknown message type before any outbound call", async () => {
-    const payload = payloadWithBody(
-      JSON.stringify({ ...notification, Type: "Other" }),
-    );
+    const payload = payloadWithBody(JSON.stringify({ ...notification, Type: "Other" }));
 
-    await expect(
-      invokeTrigger(snsS3NotificationWebhook, {}, payload),
-    ).rejects.toThrow(
+    await expect(invokeTrigger(snsS3NotificationWebhook, {}, payload)).rejects.toThrow(
       'Message type was not "Notification" or "SubscriptionConfirmation", but "Other" instead.',
     );
     expect(createClientMock).not.toHaveBeenCalled();
@@ -170,14 +128,9 @@ describe("snsS3NotificationWebhook", () => {
     test("accepts a Notification whose TopicArn matches the configured value", async () => {
       const payload = payloadWithBody(JSON.stringify(notification));
 
-      const { result } = await invokeTrigger(
-        snsS3NotificationWebhook,
-        {},
-        payload,
-        {
-          expectedTopicArn: notification.TopicArn,
-        },
-      );
+      const { result } = await invokeTrigger(snsS3NotificationWebhook, {}, payload, {
+        expectedTopicArn: notification.TopicArn,
+      });
 
       expect(result).toEqual({
         branch: "Notification",
@@ -198,14 +151,9 @@ describe("snsS3NotificationWebhook", () => {
     test("accepts any signed topic when the input is unset", async () => {
       const payload = payloadWithBody(JSON.stringify(notification));
 
-      const { result } = await invokeTrigger(
-        snsS3NotificationWebhook,
-        {},
-        payload,
-        {
-          expectedTopicArn: "",
-        },
-      );
+      const { result } = await invokeTrigger(snsS3NotificationWebhook, {}, payload, {
+        expectedTopicArn: "",
+      });
 
       expect(result).toEqual({
         branch: "Notification",

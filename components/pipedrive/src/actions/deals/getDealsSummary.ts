@@ -11,15 +11,8 @@ export const getDealsSummary = action({
     description: "Gets a summary of deals.",
   },
   performSafety: "safe",
-  perform: async (
-    context,
-    { connection, status, filterId, userId, stageId },
-  ) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      WebhookVersion.V2,
-    );
+  perform: async (context, { connection, status, filterId, userId, stageId }) => {
+    const client = createClient(connection, context.debug.enabled, WebhookVersion.V2);
     const { data } = await client.get("/deals/summary", {
       params: {
         status,
@@ -33,8 +26,5 @@ export const getDealsSummary = action({
   inputs: getDealsSummaryInputs,
   examplePayload: getDealsSummaryExamplePayload,
   examplePerform: async () => getDealsSummaryExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getDealsSummaryOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getDealsSummaryOutputSchema }),
 });

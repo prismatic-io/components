@@ -14,11 +14,7 @@ const crmRemoveRecord = action({
     recordId: { ...recordId, dataSource: "selectCrmRecord" },
   },
   perform: async (context, { connection, recordType, recordId }) => {
-    const crmClient = createClient(
-      connection,
-      ClientType.CRM,
-      context.debug.enabled,
-    );
+    const crmClient = createClient(connection, ClientType.CRM, context.debug.enabled);
 
     const url = `/${recordType}/${recordId}`;
 

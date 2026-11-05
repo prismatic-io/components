@@ -76,8 +76,7 @@ export const fields = input({
   label: "Fields",
   type: "string",
   required: false,
-  comments:
-    "Retrieve only certain fields, specified by a comma-separated list of fields names.",
+  comments: "Retrieve only certain fields, specified by a comma-separated list of fields names.",
   example: "id,currency",
   placeholder: "Enter field names",
   clean: cleanStringInput,
@@ -125,8 +124,7 @@ export const commaSeparatedIds = input({
   label: "Order IDs",
   type: "string",
   required: false,
-  comments:
-    "Retrieve only orders specified by a comma-separated list of order IDs.",
+  comments: "Retrieve only orders specified by a comma-separated list of order IDs.",
   example: "450789469,39072856",
   placeholder: "Enter comma-separated IDs",
   clean: cleanStringInput,

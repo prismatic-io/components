@@ -21,16 +21,11 @@ export const pollEmployeeChanges = pollingTrigger({
     resolveItems: (_context, { payload }): EmployeeChangeRecordChange[] =>
       resolveEmployeeChangeRecords(payload.body.data as EmployeeChange[]),
   },
-  perform: async (
-    context,
-    payload,
-    { connection, companyId, lookBackDate },
-  ) => {
+  perform: async (context, payload, { connection, companyId, lookBackDate }) => {
     const now = new Date().toISOString();
     const pollState = context.polling.getState() as EmployeeChangesPollingState;
     const lastPollTime =
-      pollState.lastPollTime ||
-      (lookBackDate ? `${lookBackDate}T00:00:00.000Z` : now);
+      pollState.lastPollTime || (lookBackDate ? `${lookBackDate}T00:00:00.000Z` : now);
 
     context.logger.debug(`Last polled at: ${lastPollTime}`);
     if (context.debug.enabled) {
@@ -48,13 +43,9 @@ export const pollEmployeeChanges = pollingTrigger({
       params.company = util.types.toString(companyId);
     }
 
-    const changes = await fetchAllPages<EmployeeChange>(
-      client,
-      "/personnel/v1/employee-changes",
-      {
-        params,
-      },
-    );
+    const changes = await fetchAllPages<EmployeeChange>(client, "/personnel/v1/employee-changes", {
+      params,
+    });
 
     context.polling.setState({ lastPollTime: now });
 

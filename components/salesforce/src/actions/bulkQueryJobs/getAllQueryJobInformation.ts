@@ -12,14 +12,7 @@ export const getAllQueryJobInformation = action({
   performSafety: "notAllowed",
   perform: async (
     context,
-    {
-      version,
-      connection,
-      isPkChunkingEnabled,
-      jobType,
-      queryLocator,
-      concurrencyMode,
-    },
+    { version, connection, isPkChunkingEnabled, jobType, queryLocator, concurrencyMode },
   ) => {
     const salesforceClient = await createSalesforceHttpClient(
       version,
@@ -38,7 +31,6 @@ export const getAllQueryJobInformation = action({
       data,
     };
   },
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    getAllQueryJobInformationExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => getAllQueryJobInformationExamplePayload,
   examplePayload: getAllQueryJobInformationExamplePayload,
 });

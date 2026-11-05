@@ -51,8 +51,7 @@ const customAccountingFieldOptionSchema = {
   required: ["accounting_connection_id", "entity_remote_ids", "provider_name"],
 };
 
-export const getCustomAccountingFieldOptionOutputSchema =
-  customAccountingFieldOptionSchema;
+export const getCustomAccountingFieldOptionOutputSchema = customAccountingFieldOptionSchema;
 
 export const listCustomAccountingFieldOptionsOutputSchema = {
   type: "object" as const,
@@ -66,8 +65,7 @@ export const listCustomAccountingFieldOptionsOutputSchema = {
   required: ["data", "page"],
 };
 
-export const updateCustomAccountingFieldOptionOutputSchema =
-  customAccountingFieldOptionSchema;
+export const updateCustomAccountingFieldOptionOutputSchema = customAccountingFieldOptionSchema;
 
 export const uploadCustomAccountingFieldOptionOutputSchema = {
   type: "object" as const,
@@ -91,5 +89,4 @@ export const uploadCustomAccountingFieldOptionOutputSchema = {
   required: ["accounting_connection_id"],
 };
 
-export const deleteCustomAccountingFieldOptionOutputSchema =
-  deleteResponseSchema;
+export const deleteCustomAccountingFieldOptionOutputSchema = deleteResponseSchema;

@@ -10,21 +10,15 @@ export const selectCustomerContact = dataSource({
   perform: async (_context, { connection, site, company }) => {
     const client = getClient(connection, false, site, company);
     const { data } =
-      await client.get<{ id: number; name: string; default_email: string }[]>(
-        "/customer_contacts",
-      );
+      await client.get<{ id: number; name: string; default_email: string }[]>("/customer_contacts");
 
     const objects = data.map<Element>((contact) => ({
       key: util.types.toString(contact.id),
-      label: contact.default_email
-        ? `${contact.name} (${contact.default_email})`
-        : contact.name,
+      label: contact.default_email ? `${contact.name} (${contact.default_email})` : contact.name,
     }));
 
     return {
-      result: objects.sort((a, b) =>
-        (a.label ?? "").localeCompare(b.label ?? ""),
-      ),
+      result: objects.sort((a, b) => (a.label ?? "").localeCompare(b.label ?? "")),
     };
   },
   dataSourceType: "picklist",

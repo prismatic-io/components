@@ -8,8 +8,7 @@ import { headObjectOutputSchema } from "../../outputSchemas";
 export const headObject = action({
   display: {
     label: "Head Object",
-    description:
-      "Retrieve metadata from an object without returning the object itself",
+    description: "Retrieve metadata from an object without returning the object itself",
   },
   performSafety: "safe",
   perform: async (

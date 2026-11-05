@@ -1,11 +1,7 @@
 import type { TriggerPayload, TriggerResult } from "@prismatic-io/spectral";
 import type { PollingTriggerPerformFunction } from "@prismatic-io/spectral/dist/types/PollingTriggerDefinition";
 import { getHubspotClient } from "../client";
-import {
-  BATCHED_WINDOW_LIMIT,
-  MAX_SEARCH_RESULTS,
-  POLL_REQUEST_TIMEOUT_MS,
-} from "../constants";
+import { BATCHED_WINDOW_LIMIT, MAX_SEARCH_RESULTS, POLL_REQUEST_TIMEOUT_MS } from "../constants";
 import type {
   PollingChangesObject,
   PollingRecordChange,
@@ -46,11 +42,7 @@ export const performPollChanges = async (
     logger: context.logger,
   });
 
-  const endpoint = resolveEndpoint(
-    params.searchEndpoint,
-    params.objectType,
-    onlyCustomObjects,
-  );
+  const endpoint = resolveEndpoint(params.searchEndpoint, params.objectType, onlyCustomObjects);
   const dateProp = cursor.isBackfill
     ? resolveCreatedProperty(params.searchEndpoint, onlyCustomObjects)
     : resolveLastModifiedProperty(params.searchEndpoint, onlyCustomObjects);
@@ -67,9 +59,7 @@ export const performPollChanges = async (
     headers: { "Content-Type": "application/json" },
   });
 
-  const windowLimit = context.batch?.enabled
-    ? BATCHED_WINDOW_LIMIT
-    : MAX_SEARCH_RESULTS;
+  const windowLimit = context.batch?.enabled ? BATCHED_WINDOW_LIMIT : MAX_SEARCH_RESULTS;
 
   const window = await fetchPollingWindow(
     client,
@@ -108,9 +98,7 @@ export const performPollChanges = async (
   );
 
   context.polling.setState({
-    lastPolledAt: nextCursor
-      ? (state.lastPolledAt ?? cursor.watermark)
-      : cursor.windowEnd,
+    lastPolledAt: nextCursor ? (state.lastPolledAt ?? cursor.watermark) : cursor.windowEnd,
     ...(nextCursor ? { cursor: nextCursor } : {}),
   } satisfies SearchRecordsPollingState);
 
@@ -124,10 +112,7 @@ export const performPollChanges = async (
   } as unknown as TriggerResult<boolean, TriggerPayload>;
 };
 
-export const pollChangesBatchConfig = {
-  batchSize: 50,
-  concurrentBatchLimit: 1,
-};
+export const pollChangesBatchConfig = { batchSize: 50, concurrentBatchLimit: 1 };
 
 export const pollChangesResolver = {
   resolveItems: (
@@ -138,6 +123,5 @@ export const pollChangesResolver = {
   getNextPaginationState: (
     _context: unknown,
     { payload }: { payload: { paginationState?: unknown } },
-  ): PollingCursor | null =>
-    (payload.paginationState as PollingCursor | undefined) ?? null,
+  ): PollingCursor | null => (payload.paginationState as PollingCursor | undefined) ?? null,
 };

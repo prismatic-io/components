@@ -13,19 +13,9 @@ export const getStages = action({
   performSafety: "safe",
   perform: async (
     context,
-    {
-      connection,
-      pipelineId,
-      sortBy,
-      sortDirection,
-      pagination: { limit, cursor } = {},
-    },
+    { connection, pipelineId, sortBy, sortDirection, pagination: { limit, cursor } = {} },
   ) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      WebhookVersion.V2,
-    );
+    const client = createClient(connection, context.debug.enabled, WebhookVersion.V2);
     const { data } = await client.get("/stages", {
       params: {
         pipeline_id: pipelineId,
@@ -40,8 +30,5 @@ export const getStages = action({
   inputs: getStagesInputs,
   examplePayload: getStagesExamplePayload,
   examplePerform: async () => getStagesExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getStagesOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getStagesOutputSchema }),
 });

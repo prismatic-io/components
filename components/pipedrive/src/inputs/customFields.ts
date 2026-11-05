@@ -6,8 +6,7 @@ const fieldId = input({
   type: "string",
   required: true,
   clean: util.types.toString,
-  comments:
-    "The unique identifier of the person field to retrieve details for.",
+  comments: "The unique identifier of the person field to retrieve details for.",
   example: "123",
   placeholder: "Enter Field ID",
 });
@@ -17,8 +16,7 @@ const personIdString = input({
   type: "string",
   required: true,
   clean: util.types.toString,
-  comments:
-    "The unique identifier of the person whose field value is being updated.",
+  comments: "The unique identifier of the person whose field value is being updated.",
   example: "123",
   placeholder: "Enter Person ID",
 });

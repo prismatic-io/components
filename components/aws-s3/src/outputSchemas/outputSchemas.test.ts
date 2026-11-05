@@ -37,11 +37,7 @@ const typeOf = (value: unknown): string => {
   return typeof value;
 };
 
-const mismatches = (
-  schema: Schema,
-  value: unknown,
-  path = "data",
-): string[] => {
+const mismatches = (schema: Schema, value: unknown, path = "data"): string[] => {
   const actual = typeOf(value);
   const allowed = schema.type === undefined ? [] : [schema.type].flat();
   if (allowed.length > 0 && !allowed.includes(actual)) {
@@ -60,9 +56,7 @@ const mismatches = (
       .map((key) => `${path}.${key}: required but missing`);
     const nested = Object.entries(schema.properties ?? {})
       .filter(([key]) => record[key] !== undefined)
-      .flatMap(([key, child]) =>
-        mismatches(child, record[key], `${path}.${key}`),
-      );
+      .flatMap(([key, child]) => mismatches(child, record[key], `${path}.${key}`));
     return [...missing, ...nested];
   }
   return [];
@@ -73,21 +67,13 @@ const schemaOf = (definition: { outputSchema?: unknown }): Schema | undefined =>
 
 describe("perform-synthesized output schemas", () => {
   it.each([
-    [
-      "generatePresignedUrl",
-      generatePresignedUrl,
-      generatePresignedUrlExamplePayload,
-    ],
+    ["generatePresignedUrl", generatePresignedUrl, generatePresignedUrlExamplePayload],
     [
       "generatePresignedForMultiparUploads",
       generatePresignedForMultiparUploads,
       generatePresignedForMultiparUploadsExamplePayload,
     ],
-    [
-      "createUploadStream",
-      createUploadStream,
-      createUploadStreamExamplePayload,
-    ],
+    ["createUploadStream", createUploadStream, createUploadStreamExamplePayload],
     ["writeUploadStream", writeUploadStream, writeUploadStreamExamplePayload],
     ["closeUploadStream", closeUploadStream, closeUploadStreamExamplePayload],
     ["getBucketLocation", getBucketLocation, getBucketLocationExamplePayload],
@@ -112,11 +98,7 @@ describe("perform-synthesized output schemas", () => {
   it("the mismatch check rejects a payload of the wrong shape", () => {
     const schema: Schema = {
       type: "array",
-      items: {
-        type: "object",
-        properties: { url: { type: "string" } },
-        required: ["partNumber"],
-      },
+      items: { type: "object", properties: { url: { type: "string" } }, required: ["partNumber"] },
     };
 
     expect(mismatches(schema, [{ url: 1 }])).toEqual([

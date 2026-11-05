@@ -1,10 +1,4 @@
-import {
-  cleanBoolean,
-  cleanCode,
-  cleanKeyValueList,
-  cleanNumber,
-  cleanString,
-} from "./util";
+import { cleanBoolean, cleanCode, cleanKeyValueList, cleanNumber, cleanString } from "./util";
 
 const falsyValues: [string, unknown][] = [
   ["undefined", undefined],
@@ -45,9 +39,7 @@ describe("cleanNumber", () => {
   });
 
   test("throws when the value cannot be coerced to a number", () => {
-    expect(() => cleanNumber("abc")).toThrow(
-      "Value 'abc' cannot be coerced to a number.",
-    );
+    expect(() => cleanNumber("abc")).toThrow("Value 'abc' cannot be coerced to a number.");
   });
 });
 

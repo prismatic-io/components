@@ -40,16 +40,10 @@ export const getProductFieldInputs = {
 
 export const getProductFieldV2Inputs = {
   connection: connectionInput,
-  fieldCode: {
-    ...fieldCodeInput,
-    comments: "The field code of the product field.",
-  },
+  fieldCode: { ...fieldCodeInput, comments: "The field code of the product field." },
 };
 
 export const deleteProductFieldV2Inputs = {
   connection: connectionInput,
-  fieldCode: {
-    ...fieldCodeInput,
-    comments: "The field code of the product field.",
-  },
+  fieldCode: { ...fieldCodeInput, comments: "The field code of the product field." },
 };

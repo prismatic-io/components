@@ -64,10 +64,7 @@ describe("bucket actions", () => {
     test("sends DeleteBucketCommand and returns the response", async () => {
       sendMock.mockResolvedValue(deleteBucketExamplePayload.data);
 
-      const { result } = await invoke(deleteBucket, {
-        ...baseInputs,
-        bucket: "example-bucket",
-      });
+      const { result } = await invoke(deleteBucket, { ...baseInputs, bucket: "example-bucket" });
 
       const command = sendMock.mock.calls[0][0];
       expect(command).toBeInstanceOf(DeleteBucketCommand);
@@ -80,10 +77,7 @@ describe("bucket actions", () => {
 
       await expect(
         invoke(deleteBucket, { ...baseInputs, bucket: "example-bucket" }),
-      ).rejects.toMatchObject({
-        name: "BucketNotEmpty",
-        $metadata: { httpStatusCode: 409 },
-      });
+      ).rejects.toMatchObject({ name: "BucketNotEmpty", $metadata: { httpStatusCode: 409 } });
     });
   });
 
@@ -113,10 +107,7 @@ describe("bucket actions", () => {
 
       await expect(
         invoke(getBucketLocation, { ...baseInputs, bucket: "missing-bucket" }),
-      ).rejects.toMatchObject({
-        name: "NoSuchBucket",
-        $metadata: { httpStatusCode: 404 },
-      });
+      ).rejects.toMatchObject({ name: "NoSuchBucket", $metadata: { httpStatusCode: 404 } });
     });
   });
 
@@ -124,10 +115,7 @@ describe("bucket actions", () => {
     test("sends HeadBucketCommand and returns the response", async () => {
       sendMock.mockResolvedValue(headBucketExamplePayload.data);
 
-      const { result } = await invoke(headBucket, {
-        ...baseInputs,
-        bucket: "example-bucket",
-      });
+      const { result } = await invoke(headBucket, { ...baseInputs, bucket: "example-bucket" });
 
       const command = sendMock.mock.calls[0][0];
       expect(command).toBeInstanceOf(HeadBucketCommand);
@@ -140,10 +128,7 @@ describe("bucket actions", () => {
 
       await expect(
         invoke(headBucket, { ...baseInputs, bucket: "example-bucket" }),
-      ).rejects.toMatchObject({
-        name: "Forbidden",
-        $metadata: { httpStatusCode: 403 },
-      });
+      ).rejects.toMatchObject({ name: "Forbidden", $metadata: { httpStatusCode: 403 } });
     });
   });
 
@@ -161,18 +146,13 @@ describe("bucket actions", () => {
 
     test("returns the buckets from every page", async () => {
       sendMock
-        .mockResolvedValueOnce({
-          Buckets: [{ Name: "bucket-1" }],
-          ContinuationToken: "tok-1",
-        })
+        .mockResolvedValueOnce({ Buckets: [{ Name: "bucket-1" }], ContinuationToken: "tok-1" })
         .mockResolvedValueOnce({ Buckets: [{ Name: "bucket-2" }] });
 
       const { result } = await invoke(listBuckets, baseInputs);
 
       expect(sendMock).toHaveBeenCalledTimes(2);
-      expect(result).toEqual({
-        data: [{ Name: "bucket-1" }, { Name: "bucket-2" }],
-      });
+      expect(result).toEqual({ data: [{ Name: "bucket-1" }, { Name: "bucket-2" }] });
     });
 
     test("propagates an SDK service error", async () => {

@@ -170,21 +170,13 @@ export const listContactsInputs = {
 export const createContactInputs = {
   contactFirstName,
   contactlastName,
-  contactCompany: {
-    ...contactCompany,
-    required: false,
-    clean: toOptionalString,
-  },
+  contactCompany: { ...contactCompany, required: false, clean: toOptionalString },
   contactInfo: structuredObjectInput({
     label: "Contact Information",
     required: false,
     comments: "Optional contact channel fields: email, phone, and website.",
     inputs: {
-      contactEmail: {
-        ...contactEmail,
-        required: false,
-        clean: toOptionalString,
-      },
+      contactEmail: { ...contactEmail, required: false, clean: toOptionalString },
       phone: { ...phone, required: false, clean: toOptionalString },
       website: { ...website, required: false, clean: toOptionalString },
     },

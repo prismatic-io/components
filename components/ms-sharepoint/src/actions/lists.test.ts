@@ -3,9 +3,7 @@ import component from "..";
 import { createConnection } from "@prismatic-io/spectral/testing";
 import { createHarness } from "@prismatic-io/spectral/testing";
 
-const describeIntegrationTest = process.env.PRISMATIC_CONNECTION_VALUE
-  ? describe
-  : describe.skip;
+const describeIntegrationTest = process.env.PRISMATIC_CONNECTION_VALUE ? describe : describe.skip;
 
 const harness = createHarness(component);
 const connection = createConnection(oauth, {});

@@ -12,20 +12,11 @@ export const deleteProductFollower = action({
   },
   performSafety: "notAllowed",
   perform: async (context, { connection, id, followerId }) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      WebhookVersion.V2,
-    );
-    const { data } = await client.delete(
-      `/products/${id}/followers/${followerId}`,
-    );
+    const client = createClient(connection, context.debug.enabled, WebhookVersion.V2);
+    const { data } = await client.delete(`/products/${id}/followers/${followerId}`);
     return { data };
   },
   inputs: deleteProductFollowerInputs,
   examplePayload: deleteProductFollowerExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: deleteProductFollowerOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: deleteProductFollowerOutputSchema }),
 });

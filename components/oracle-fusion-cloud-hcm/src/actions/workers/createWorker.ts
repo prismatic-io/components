@@ -13,10 +13,7 @@ export const createWorker = action({
   },
   examplePayload: createWorkerExamplePayload,
   inputs: createWorkerInputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: workerRecordOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: workerRecordOutputSchema }),
   perform: async (
     context,
     {
@@ -49,9 +46,7 @@ export const createWorker = action({
       );
     }
 
-    const names = [
-      { NameType, LastName, LegislationCode, FirstName, MiddleNames, Title },
-    ];
+    const names = [{ NameType, LastName, LegislationCode, FirstName, MiddleNames, Title }];
     const body = {
       PersonNumber,
       ApplicantNumber,

@@ -53,9 +53,7 @@ export const buildChecklist = (
   }
 
   for (const item of update) {
-    const entry: PlannerChecklistEntry = {
-      "@odata.type": ODATA_TYPE.checklistItem,
-    };
+    const entry: PlannerChecklistEntry = { "@odata.type": ODATA_TYPE.checklistItem };
     if (item.title !== undefined) entry.title = item.title;
     if (item.isChecked !== undefined) entry.isChecked = item.isChecked;
     checklist[item.id] = entry;
@@ -91,12 +89,8 @@ export const buildReferences = (
   return references;
 };
 
-export const compact = <T extends Record<string, unknown>>(
-  body: T,
-): Partial<T> =>
-  Object.fromEntries(
-    Object.entries(body).filter(([, value]) => value !== undefined),
-  ) as Partial<T>;
+export const compact = <T extends Record<string, unknown>>(body: T): Partial<T> =>
+  Object.fromEntries(Object.entries(body).filter(([, value]) => value !== undefined)) as Partial<T>;
 
 export const encodeReferenceKey = (url: string): string =>
   url

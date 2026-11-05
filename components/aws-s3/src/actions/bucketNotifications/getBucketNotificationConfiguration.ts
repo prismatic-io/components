@@ -31,12 +31,7 @@ export const getBucketNotificationConfiguration = action({
       logger: context.logger,
       debug: context.debug.enabled,
     });
-    const data = await getBucketNotificationConfigurationFn(
-      s3,
-      bucket,
-      undefined,
-      false,
-    );
+    const data = await getBucketNotificationConfigurationFn(s3, bucket, undefined, false);
     return {
       data,
     };

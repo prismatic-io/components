@@ -14,7 +14,7 @@ export const postWebhookBlockMessage = action({
   performSafety: "notAllowed",
   perform: async (
     { debug: { enabled: debug } },
-    { connection, message, blocks },
+    { connection, message, blocks }
   ) => {
     debugLogger({ message, blocks, debug });
     const webhook = createWebhookClient(connection);

@@ -18,8 +18,5 @@ export const deleteWebhook = action({
   },
   inputs: deleteWebhookInputs,
   examplePayload: deleteWebhookExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: deleteWebhookOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: deleteWebhookOutputSchema }),
 });

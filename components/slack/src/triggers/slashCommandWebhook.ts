@@ -10,7 +10,7 @@ export const slashCommandWebhook = trigger({
   },
   perform: async (context, payload, params) => {
     const deserializedPayload = Object.fromEntries(
-      new URLSearchParams(payload.rawBody.data.toString()),
+      new URLSearchParams(payload.rawBody.data.toString())
     );
 
     const response = {

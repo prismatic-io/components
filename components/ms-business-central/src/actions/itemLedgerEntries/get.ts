@@ -12,11 +12,7 @@ export const getItemLedgerEntry = action({
   },
   inputs: getItemLedgerEntryInputs,
   perform: async (context, { connection, itemLedgerEntryId, companyId }) => {
-    const client = getMsBusinessCentralClient(
-      connection,
-      context,
-      context.debug.enabled,
-    );
+    const client = getMsBusinessCentralClient(connection, context, context.debug.enabled);
     const { data } = await client.get<ItemLedgerEntry>(
       `/companies(${companyId})/itemLedgerEntries(${itemLedgerEntryId})`,
     );

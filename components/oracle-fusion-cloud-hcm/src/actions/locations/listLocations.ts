@@ -9,31 +9,22 @@ import { paginateResults } from "../../util/pagination";
 export const listLocations = action({
   display: {
     label: "List Locations",
-    description:
-      "Retrieve a paginated list of work locations from Oracle Fusion Cloud HCM.",
+    description: "Retrieve a paginated list of work locations from Oracle Fusion Cloud HCM.",
   },
   examplePayload: listLocationsExamplePayload,
   inputs: listLocationsInputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: listLocationsOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: listLocationsOutputSchema }),
   perform: async (
     context,
     { connection, fetchAll, pagination, effectiveDate, includeMetadataLinks },
   ) => {
     const client = createClient(connection, context.debug.enabled);
-    const data = await paginateResults<Location>(
-      client,
-      "/locationsV2",
-      fetchAll,
-      {
-        offset: pagination.offset,
-        limit: pagination.limit,
-        effectiveDate,
-        onlyData: includeMetadataLinks,
-      },
-    );
+    const data = await paginateResults<Location>(client, "/locationsV2", fetchAll, {
+      offset: pagination.offset,
+      limit: pagination.limit,
+      effectiveDate,
+      onlyData: includeMetadataLinks,
+    });
     return { data };
   },
 });

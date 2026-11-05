@@ -9,16 +9,7 @@ const generalLedgerAccountSchema = {
     },
     classification: {
       type: ["string", "null"],
-      enum: [
-        "ANY",
-        "ASSET",
-        "CREDCARD",
-        "EQUITY",
-        "EXPENSE",
-        "LIABILITY",
-        "REVENUE",
-        "UNKNOWN",
-      ],
+      enum: ["ANY", "ASSET", "CREDCARD", "EQUITY", "EXPENSE", "LIABILITY", "REVENUE", "UNKNOWN"],
     },
     code: {
       type: "string",
@@ -98,7 +89,6 @@ export const listGeneralLedgerAccountsOutputSchema = {
   required: ["data", "page"],
 };
 
-export const updateGeneralLedgerAccountOutputSchema =
-  generalLedgerAccountSchema;
+export const updateGeneralLedgerAccountOutputSchema = generalLedgerAccountSchema;
 
 export const deleteGeneralLedgerAccountOutputSchema = deleteResponseSchema;

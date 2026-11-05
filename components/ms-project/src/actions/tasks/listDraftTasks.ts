@@ -15,12 +15,9 @@ export const listDraftTasks = action({
       },
       context.debug.enabled,
     );
-    const { data } = await client.get(
-      `/Projects('${params.guId}')/Draft/Tasks`,
-      {
-        params: toPaginationParams(params.pageSize, params.pageNumber),
-      },
-    );
+    const { data } = await client.get(`/Projects('${params.guId}')/Draft/Tasks`, {
+      params: toPaginationParams(params.pageSize, params.pageNumber),
+    });
 
     return {
       data,

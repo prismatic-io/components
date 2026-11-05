@@ -14,7 +14,7 @@ const mockCreateClient = createClient as MockedFunction<typeof createClient>;
 
 const conn = (
   token: Record<string, unknown>,
-  tokenUrl = "https://slack.com/api/oauth.v2.access",
+  tokenUrl = "https://slack.com/api/oauth.v2.access"
 ): Connection =>
   ({
     key: "oauth2",
@@ -26,19 +26,19 @@ const conn = (
 describe("getApiBaseUrl", () => {
   it("derives the commercial host", () => {
     expect(getApiBaseUrl({ slackConnection: conn({}) })).toBe(
-      "https://slack.com/api",
+      "https://slack.com/api"
     );
   });
   it("derives the gov host", () => {
     expect(
       getApiBaseUrl({
         slackConnection: conn({}, "https://slack-gov.com/api/oauth.v2.access"),
-      }),
+      })
     ).toBe("https://slack-gov.com/api");
   });
   it("falls back when the token url is missing", () => {
     expect(getApiBaseUrl({ slackConnection: conn({}, "") })).toBe(
-      "https://slack.com/api",
+      "https://slack.com/api"
     );
   });
 });
@@ -46,7 +46,7 @@ describe("getApiBaseUrl", () => {
 describe("assertTeamIdForOrgToken", () => {
   it("does not throw on a workspace install with no team id", () => {
     expect(() =>
-      assertTeamIdForOrgToken(conn({ team: { id: "T1" } }), "", "users.list"),
+      assertTeamIdForOrgToken(conn({ team: { id: "T1" } }), "", "users.list")
     ).not.toThrow();
   });
   it("does not throw on a workspace install inside a grid org", () => {
@@ -54,8 +54,8 @@ describe("assertTeamIdForOrgToken", () => {
       assertTeamIdForOrgToken(
         conn({ enterprise: { id: "E1" }, is_enterprise_install: false }),
         undefined,
-        "users.list",
-      ),
+        "users.list"
+      )
     ).not.toThrow();
   });
   it("does not throw on an org install when a team id is supplied", () => {
@@ -63,8 +63,8 @@ describe("assertTeamIdForOrgToken", () => {
       assertTeamIdForOrgToken(
         conn({ is_enterprise_install: true, enterprise: { id: "E1" } }),
         "T1",
-        "users.list",
-      ),
+        "users.list"
+      )
     ).not.toThrow();
   });
   it("throws on an org install with no team id", () => {
@@ -72,8 +72,8 @@ describe("assertTeamIdForOrgToken", () => {
       assertTeamIdForOrgToken(
         conn({ is_enterprise_install: true, enterprise: { id: "E1" } }),
         "",
-        "users.list",
-      ),
+        "users.list"
+      )
     ).toThrow(/organization level \(enterprise E1\)[\s\S]*users\.list/);
   });
 });
@@ -89,7 +89,7 @@ describe("accountIsActiveFn", () => {
 
     const result = await accountIsActiveFn(
       "xoxb-test",
-      conn({}, "https://slack.com/api/oauth.v2.access"),
+      conn({}, "https://slack.com/api/oauth.v2.access")
     );
 
     expect(result).toBe(true);
@@ -104,7 +104,7 @@ describe("accountIsActiveFn", () => {
 
     const result = await accountIsActiveFn(
       "xoxb-gov-test",
-      conn({}, "https://slack-gov.com/api/oauth.v2.access"),
+      conn({}, "https://slack-gov.com/api/oauth.v2.access")
     );
 
     expect(result).toBe(true);

@@ -1,10 +1,6 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { BOOLEAN_INPUT_MODEL } from "../../constants";
-import {
-  cleanBooleanInput,
-  cleanNumberInput,
-  cleanStringInput,
-} from "../../utils";
+import { cleanBooleanInput, cleanNumberInput, cleanStringInput } from "../../utils";
 import { companyId } from "../accounts/getAccountsInputs";
 import { connectionInput, fetchAll, odataQueryParams } from "../general";
 
@@ -250,8 +246,7 @@ export const createPurchaseInvoiceInputs = {
   connection: connectionInput,
   companyId: {
     ...companyId,
-    comments:
-      "The ID of the company you want to create the purchase invoice in.",
+    comments: "The ID of the company you want to create the purchase invoice in.",
   },
   vendorNumber,
   vendorId,

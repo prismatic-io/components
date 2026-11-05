@@ -6,11 +6,7 @@ import { listPlansForUserExamplePayload } from "../../examplePayloads";
 import { listPlansForUser } from "./listPlansForUser";
 
 const BASE = "https://graph.microsoft.com";
-const connection = createConnection(
-  templatedOauth,
-  {},
-  { access_token: "test-token" },
-);
+const connection = createConnection(templatedOauth, {}, { access_token: "test-token" });
 
 const params = { connection };
 
@@ -23,16 +19,11 @@ afterEach(() => {
 });
 
 test("returns every plan the paged walk collected", async () => {
-  nock(BASE)
-    .get("/v1.0/me/planner/plans")
-    .reply(200, listPlansForUserExamplePayload.data);
+  nock(BASE).get("/v1.0/me/planner/plans").reply(200, listPlansForUserExamplePayload.data);
 
   const { result } = await invoke(listPlansForUser, params);
 
-  expect(result.data).toEqual({
-    ...listPlansForUserExamplePayload.data,
-    truncated: false,
-  });
+  expect(result.data).toEqual({ ...listPlansForUserExamplePayload.data, truncated: false });
 });
 
 test("surfaces a failed list request", async () => {
@@ -40,8 +31,6 @@ test("surfaces a failed list request", async () => {
     .get("/v1.0/me/planner/plans")
     .reply(403, { error: { code: "accessDenied" } });
 
-  await expect(invoke(listPlansForUser, params)).rejects.toThrow(
-    /status code 403/,
-  );
+  await expect(invoke(listPlansForUser, params)).rejects.toThrow(/status code 403/);
   expect(errorScope.isDone()).toBe(true);
 });

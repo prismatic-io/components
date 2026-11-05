@@ -21,8 +21,7 @@ export const deactivateFlow = action({
 
     return { data: processMetadataResult(result) };
   },
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    deactivateFlowExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => deactivateFlowExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: saveFlowOutputSchema,

@@ -30,11 +30,7 @@ describe("downloadAsset", () => {
       .reply(200, downloadAssetExamplePayload.data, {
         "Content-Type": downloadAssetExamplePayload.contentType,
       });
-    const { result } = await invoke(downloadAsset, {
-      connection,
-      assetId,
-      seoName: "city.jpeg",
-    });
+    const { result } = await invoke(downloadAsset, { connection, assetId, seoName: "city.jpeg" });
     expect(Buffer.isBuffer(result.data)).toBe(true);
     expect(result).toEqual(downloadAssetExamplePayload);
   });
@@ -43,11 +39,7 @@ describe("downloadAsset", () => {
     nock(BASE)
       .get(`/adobe/assets/${encodeURIComponent(assetId)}/original/as/file.bin`)
       .reply(200, () => Buffer.from([1, 2, 3]), {});
-    const { result } = await invoke(downloadAsset, {
-      connection,
-      assetId,
-      seoName: "file.bin",
-    });
+    const { result } = await invoke(downloadAsset, { connection, assetId, seoName: "file.bin" });
     expect(result.data).toEqual(Buffer.from([1, 2, 3]));
     expect(result.contentType).toBe("application/octet-stream");
   });

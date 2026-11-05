@@ -5,10 +5,7 @@ export const ATOM_FEED_CONFIG: Record<string, { label: string }> = {
   Termination: { label: "Termination" },
 };
 
-export const REST_RESOURCE_CONFIG: Record<
-  string,
-  { label: string; endpoint: string }
-> = {
+export const REST_RESOURCE_CONFIG: Record<string, { label: string; endpoint: string }> = {
   Workers: { label: "Workers", endpoint: "/publicWorkers" },
   Departments: { label: "Departments", endpoint: "/organizations" },
   Jobs: { label: "Jobs", endpoint: "/jobs" },

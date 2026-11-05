@@ -10,9 +10,7 @@ describe("escapeDriveQueryValue", () => {
 
   test("escapes a single quote so it cannot close the literal", () => {
     const value = `quinn${QUOTE}s paper`;
-    expect(escapeDriveQueryValue(value)).toBe(
-      `quinn${BACKSLASH}${QUOTE}s paper`,
-    );
+    expect(escapeDriveQueryValue(value)).toBe(`quinn${BACKSLASH}${QUOTE}s paper`);
   });
 
   test("escapes a backslash before the quote it would otherwise consume", () => {
@@ -30,9 +28,7 @@ describe("escapeDriveQueryValue", () => {
   test("neutralizes an attempt to break out of the literal", () => {
     const hostile = `${QUOTE} or name contains ${QUOTE}`;
     const escaped = escapeDriveQueryValue(hostile);
-    expect(escaped).toBe(
-      `${BACKSLASH}${QUOTE} or name contains ${BACKSLASH}${QUOTE}`,
-    );
+    expect(escaped).toBe(`${BACKSLASH}${QUOTE} or name contains ${BACKSLASH}${QUOTE}`);
     expect(escaped.includes(`${BACKSLASH}${QUOTE}`)).toBe(true);
     expect(escaped.split(QUOTE).length - 1).toBe(2);
   });

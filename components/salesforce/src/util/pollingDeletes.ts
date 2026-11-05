@@ -25,10 +25,7 @@ export const fetchDeletedRecords = async (
     .sobject(recordType)
     .deleted(start.toISOString(), new Date(now).toISOString());
 
-  if (
-    result.earliestDateAvailable &&
-    new Date(result.earliestDateAvailable) > start
-  ) {
+  if (result.earliestDateAvailable && new Date(result.earliestDateAvailable) > start) {
     logger.warn(
       `Deletions for ${recordType} before ${result.earliestDateAvailable} are no longer available from Salesforce and cannot be retrieved. Records deleted in that period will not appear.`,
     );

@@ -28,12 +28,9 @@ export const editGuestOnWorkspace = action({
       canCreateViews,
       customRoleId,
       guestId,
-    },
+    }
   ) => {
-    const client = createClickUpClient(
-      clickUpConnection,
-      context.debug.enabled,
-    );
+    const client = createClickUpClient(clickUpConnection, context.debug.enabled);
     const body: EditGuestOnWorkspaceBody = {
       username,
       can_edit_tags: canEditTags,

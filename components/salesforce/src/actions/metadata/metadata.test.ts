@@ -19,12 +19,7 @@ const soapResponse = (method: string): string =>
   `<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="http://soap.sforce.com/2006/04/metadata"><soapenv:Body><${method}Response><result><fullName>TestObject1__c</fullName><success>true</success></result></${method}Response></soapenv:Body></soapenv:Envelope>`;
 
 const debugContext = (enabled: boolean) => {
-  const logger = {
-    debug: jest.fn(),
-    info: jest.fn(),
-    warn: jest.fn(),
-    error: jest.fn(),
-  };
+  const logger = { debug: jest.fn(), info: jest.fn(), warn: jest.fn(), error: jest.fn() };
   return { logger, context: { logger, debug: { enabled } } as never };
 };
 
@@ -49,10 +44,7 @@ describe.each([
     },
   },
 ])("$name", ({ action, method, params }) => {
-  test.each([
-    false,
-    true,
-  ])("calls the Metadata API with debug enabled = %s", async (enabled) => {
+  test.each([false, true])("calls the Metadata API with debug enabled = %s", async (enabled) => {
     const scope = nock(INSTANCE_URL)
       .post(SOAP_PATH, (body: string) => body.includes(`<${method}`))
       .reply(200, soapResponse(method), { "Content-Type": "text/xml" });

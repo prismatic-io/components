@@ -1,8 +1,4 @@
-import type {
-  Engagement,
-  PollingChangesObject,
-  PollingRecordChange,
-} from "../types";
+import type { Engagement, PollingChangesObject, PollingRecordChange } from "../types";
 
 export const resolvePollingRecordChanges = (
   data: Partial<PollingChangesObject> | undefined,
@@ -18,9 +14,7 @@ export const resolvePollingRecordChanges = (
   ];
 };
 
-export const getEngagementObjectLabel = (
-  properties: Engagement["properties"],
-): string => {
+export const getEngagementObjectLabel = (properties: Engagement["properties"]): string => {
   const engagementObjectProperties = [
     "hs_task_subject",
     "hs_postal_mail_body",

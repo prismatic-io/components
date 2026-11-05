@@ -15,16 +15,10 @@ vi.mock("../client", () => ({
 }));
 
 import { ListBucketsCommand } from "@aws-sdk/client-s3";
-import {
-  createConnection,
-  invokeDataSource,
-} from "@prismatic-io/spectral/testing";
+import { createConnection, invokeDataSource } from "@prismatic-io/spectral/testing";
 import { accessKeySecretPair } from "../connections";
 import { LIST_BUCKETS_MAX_BUCKETS } from "../constants";
-import {
-  listBucketsExamplePayload,
-  selectBucketExamplePayload,
-} from "../examplePayloads";
+import { listBucketsExamplePayload, selectBucketExamplePayload } from "../examplePayloads";
 import { selectBucket } from "./selectBucket";
 
 const connection = createConnection(accessKeySecretPair, {
@@ -53,10 +47,7 @@ describe("selectBucket", () => {
     expect(command).toBeInstanceOf(ListBucketsCommand);
     expect(command.input).toEqual({ MaxBuckets: LIST_BUCKETS_MAX_BUCKETS });
     expect(result).toEqual(
-      listBucketsExamplePayload.data.map(({ Name }) => ({
-        label: Name,
-        key: Name,
-      })),
+      listBucketsExamplePayload.data.map(({ Name }) => ({ label: Name, key: Name })),
     );
   });
 
@@ -87,10 +78,7 @@ describe("selectBucket", () => {
 
   test("lists buckets from every page", async () => {
     sendMock
-      .mockResolvedValueOnce({
-        Buckets: [{ Name: "bucket-1" }],
-        ContinuationToken: "tok-1",
-      })
+      .mockResolvedValueOnce({ Buckets: [{ Name: "bucket-1" }], ContinuationToken: "tok-1" })
       .mockResolvedValueOnce({ Buckets: [{ Name: "bucket-2" }] });
 
     const { result } = await invokeDataSource(selectBucket, params);

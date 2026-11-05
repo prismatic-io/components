@@ -6,12 +6,12 @@ import { stopWatchWithErrorHandling } from "./stopWatch";
 
 export const calendarChangeEventsDelete = async (
   context: ActionContext,
-  { connection }: CalendarChangeEventsInputs,
+  { connection }: CalendarChangeEventsInputs
 ) => {
   const integrationFlowName = context.flow.name;
 
   context.logger.info(
-    `Started Calendar Change Events Trigger delete for ${integrationFlowName}`,
+    `Started Calendar Change Events Trigger delete for ${integrationFlowName}`
   );
 
   const address = context.webhookUrls[integrationFlowName];
@@ -32,11 +32,11 @@ export const calendarChangeEventsDelete = async (
         channelId: previousWatch.channelId,
         resourceId: previousWatch.resourceId,
       },
-      context.logger,
+      context.logger
     );
   } else {
     context.logger.info(
-      "No previous Calendar watch found in state, nothing to stop",
+      "No previous Calendar watch found in state, nothing to stop"
     );
   }
 
@@ -45,6 +45,6 @@ export const calendarChangeEventsDelete = async (
   delete context.crossFlowState[lastListExecutedAtStateKey];
 
   context.logger.info(
-    `Finished Calendar Change Events Trigger delete for ${integrationFlowName}`,
+    `Finished Calendar Change Events Trigger delete for ${integrationFlowName}`
   );
 };

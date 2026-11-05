@@ -2,15 +2,9 @@ export const dateTimeSchema = { type: "string", format: "date-time" };
 
 export const requestChargedSchema = { type: "string", enum: ["requester"] };
 
-export const checksumTypeSchema = {
-  type: "string",
-  enum: ["COMPOSITE", "FULL_OBJECT"],
-};
+export const checksumTypeSchema = { type: "string", enum: ["COMPOSITE", "FULL_OBJECT"] };
 
-export const retentionModeSchema = {
-  type: "string",
-  enum: ["GOVERNANCE", "COMPLIANCE"],
-};
+export const retentionModeSchema = { type: "string", enum: ["GOVERNANCE", "COMPLIANCE"] };
 
 export const checksumValueProperties = {
   ChecksumCRC32: { type: "string" },

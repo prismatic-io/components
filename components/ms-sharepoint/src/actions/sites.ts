@@ -19,9 +19,7 @@ const listFollowedSites = action({
     const endpoint = "/me/followedSites";
 
     if (params.fetchAll) {
-      const results = await paginateResults(client, endpoint, {
-        returnFullData: true,
-      });
+      const results = await paginateResults(client, endpoint, { returnFullData: true });
       return { data: results };
     }
 
@@ -111,8 +109,7 @@ const listSites = action({
 const getRootSite = action({
   display: {
     label: "Get Root Site",
-    description:
-      "Returns the information and metadata of the root SharePoint site in your tenant",
+    description: "Returns the information and metadata of the root SharePoint site in your tenant",
   },
   perform: async ({ debug: { enabled: debug } }, params) => {
     const client = await createClient(params.connection, debug);
@@ -138,8 +135,7 @@ const getRootSite = action({
 const getSite = action({
   display: {
     label: "Get Site",
-    description:
-      "Returns the information and metadata of the given SharePoint site",
+    description: "Returns the information and metadata of the given SharePoint site",
   },
   perform: async ({ debug: { enabled: debug } }, params) => {
     const client = await createClient(params.connection, debug);

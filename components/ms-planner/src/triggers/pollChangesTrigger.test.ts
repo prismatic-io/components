@@ -7,22 +7,10 @@ import {
   loggerMock,
 } from "@prismatic-io/spectral/testing";
 import nock from "nock";
-import {
-  afterEach,
-  beforeAll,
-  beforeEach,
-  describe,
-  expect,
-  test,
-  vi,
-} from "vitest";
+import { afterEach, beforeAll, beforeEach, describe, expect, test, vi } from "vitest";
 import { templatedOauth } from "../connections";
 import { MAX_PAGES, PLANNER_ENDPOINTS } from "../constants";
-import type {
-  Etagged,
-  PlannerChangesObject,
-  PlannerTaskChange,
-} from "../types";
+import type { Etagged, PlannerChangesObject, PlannerTaskChange } from "../types";
 import { resolvePlannerTaskChanges } from "../utils";
 import { pollChangesTrigger } from "./pollChangesTrigger";
 
@@ -38,17 +26,8 @@ const task: PlannerTask & Etagged = {
   createdDateTime: "2024-01-09T09:12:03.1533333Z",
 };
 
-const connection = createConnection(
-  templatedOauth,
-  {},
-  { access_token: "test-token" },
-);
-const params = {
-  connection,
-  groupId: undefined,
-  planId: PLAN_ID,
-  lookBackDate: "",
-};
+const connection = createConnection(templatedOauth, {}, { access_token: "test-token" });
+const params = { connection, groupId: undefined, planId: PLAN_ID, lookBackDate: "" };
 const TASK_CURSOR = "2024-01-09T09:12:03.153Z";
 
 const pollingContext = (store: { state: Record<string, unknown> }) => {
@@ -101,15 +80,11 @@ describe("New Tasks batching declaration", () => {
   test("is opt-in batchable with a default batch size", () => {
     expect(pollChangesTrigger.triggerResolverSupport).toBe("valid");
     expect(pollChangesTrigger.batchConfig).toEqual({ batchSize: 50 });
-    expect(pollChangesTrigger.triggerResolver?.resolveItems).toBeInstanceOf(
-      Function,
-    );
+    expect(pollChangesTrigger.triggerResolver?.resolveItems).toBeInstanceOf(Function);
   });
 
   test("resolvePlannerTaskChanges tags every task with how it changed", () => {
-    const expected: PlannerTaskChange[] = [
-      { changeType: "created", record: task },
-    ];
+    const expected: PlannerTaskChange[] = [{ changeType: "created", record: task }];
     expect(resolvePlannerTaskChanges({ created: [task] })).toEqual(expected);
   });
 
@@ -120,15 +95,10 @@ describe("New Tasks batching declaration", () => {
   });
 
   test("resolveItems flattens the payload shape perform actually returns", () => {
-    const payload = {
-      ...defaultTriggerPayload(),
-      body: { data: { created: [task] } },
-    };
-    expect(
-      pollChangesTrigger.triggerResolver?.resolveItems?.({} as never, {
-        payload,
-      }),
-    ).toEqual([{ changeType: "created", record: task }]);
+    const payload = { ...defaultTriggerPayload(), body: { data: { created: [task] } } };
+    expect(pollChangesTrigger.triggerResolver?.resolveItems?.({} as never, { payload })).toEqual([
+      { changeType: "created", record: task },
+    ]);
   });
 });
 
@@ -158,11 +128,7 @@ describe("New Tasks perform", () => {
     vi.setSystemTime(new Date("2024-01-22T14:00:00.000Z"));
     const store = { state: {} as Record<string, unknown> };
     const { context } = pollingContext(store);
-    const aheadOfWorker = {
-      ...task,
-      id: "ahead",
-      createdDateTime: "2024-01-22T14:00:05Z",
-    };
+    const aheadOfWorker = { ...task, id: "ahead", createdDateTime: "2024-01-22T14:00:05Z" };
 
     nock(BASE)
       .get(TASKS_URL)
@@ -177,10 +143,7 @@ describe("New Tasks perform", () => {
   test("emits the tasks created since the stored cursor and advances it to the latest createdDateTime", async () => {
     vi.setSystemTime(new Date("2024-01-22T14:00:00.000Z"));
     const store = {
-      state: { lastPolledAt: "2024-01-09T09:00:00.000Z" } as Record<
-        string,
-        unknown
-      >,
+      state: { lastPolledAt: "2024-01-09T09:00:00.000Z" } as Record<string, unknown>,
     };
     const { context } = pollingContext(store);
 
@@ -198,10 +161,7 @@ describe("New Tasks perform", () => {
   test("keeps the cursor unchanged on an empty poll and still persists it", async () => {
     vi.setSystemTime(new Date("2024-01-22T14:00:00.000Z"));
     const store = {
-      state: { lastPolledAt: "2024-01-09T09:00:00.000Z" } as Record<
-        string,
-        unknown
-      >,
+      state: { lastPolledAt: "2024-01-09T09:00:00.000Z" } as Record<string, unknown>,
     };
     const { context } = pollingContext(store);
 
@@ -231,24 +191,14 @@ describe("New Tasks perform", () => {
     vi.setSystemTime(new Date("2024-01-22T14:00:00.000Z"));
     const store = { state: {} as Record<string, unknown> };
     const { context } = pollingContext(store);
-    const atMidnight = {
-      ...task,
-      id: "midnight",
-      createdDateTime: "2024-01-09T00:00:00Z",
-    };
-    const before = {
-      ...task,
-      id: "before",
-      createdDateTime: "2024-01-08T23:59:59.999Z",
-    };
+    const atMidnight = { ...task, id: "midnight", createdDateTime: "2024-01-09T00:00:00Z" };
+    const before = { ...task, id: "before", createdDateTime: "2024-01-08T23:59:59.999Z" };
 
     nock(BASE)
       .get(TASKS_URL)
       .reply(200, { value: [before, atMidnight, task] });
 
-    const { result } = await invokePoll(context, undefined, {
-      lookBackDate: "2024-01-09",
-    });
+    const { result } = await invokePoll(context, undefined, { lookBackDate: "2024-01-09" });
 
     expect(result.payload.body.data).toEqual({ created: [atMidnight, task] });
     expect(store.state).toEqual({ lastPolledAt: TASK_CURSOR });
@@ -256,10 +206,7 @@ describe("New Tasks perform", () => {
 
   test("emits a task created while the previous walk was in progress exactly once", async () => {
     const store = {
-      state: { lastPolledAt: "2024-01-09T09:00:00.000Z" } as Record<
-        string,
-        unknown
-      >,
+      state: { lastPolledAt: "2024-01-09T09:00:00.000Z" } as Record<string, unknown>,
     };
     const { context } = pollingContext(store);
 
@@ -282,10 +229,7 @@ describe("New Tasks perform", () => {
 
   test("does not re-emit a task the previous poll already returned", async () => {
     const store = {
-      state: { lastPolledAt: "2024-01-09T09:00:00.000Z" } as Record<
-        string,
-        unknown
-      >,
+      state: { lastPolledAt: "2024-01-09T09:00:00.000Z" } as Record<string, unknown>,
     };
     const { context } = pollingContext(store);
 
@@ -294,9 +238,7 @@ describe("New Tasks perform", () => {
       .get(TASKS_URL)
       .reply(200, { value: [task] });
     const first = await invokePoll(context, undefined);
-    expect(
-      (first.result.payload.body.data as PlannerChangesObject).created,
-    ).toHaveLength(1);
+    expect((first.result.payload.body.data as PlannerChangesObject).created).toHaveLength(1);
 
     vi.setSystemTime(new Date("2024-01-09T11:00:00.000Z"));
     nock(BASE)
@@ -312,10 +254,7 @@ describe("New Tasks perform", () => {
   test("preserves the rest of the trigger payload alongside body.data", async () => {
     vi.setSystemTime(new Date("2024-01-22T14:00:00.000Z"));
     const store = {
-      state: { lastPolledAt: "2024-01-09T09:00:00.000Z" } as Record<
-        string,
-        unknown
-      >,
+      state: { lastPolledAt: "2024-01-09T09:00:00.000Z" } as Record<string, unknown>,
     };
     const { context } = pollingContext(store);
     const payload = { ...defaultTriggerPayload(), pathFragment: "/keep-me" };
@@ -353,9 +292,7 @@ describe("New Tasks perform", () => {
       });
 
     await expect(invokePoll(context, undefined)).rejects.toThrow(
-      new RegExp(
-        `Plan ${PLAN_ID} .*${MAX_PAGES}-page limit.*no filter or ordering`,
-      ),
+      new RegExp(`Plan ${PLAN_ID} .*${MAX_PAGES}-page limit.*no filter or ordering`),
     );
     expect(pages).toBe(MAX_PAGES);
     expect(store.state).toEqual({ lastPolledAt: held });

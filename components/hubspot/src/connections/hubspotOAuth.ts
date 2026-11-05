@@ -17,8 +17,7 @@ export const hubspotOAuth = oauth2Connection({
       shown: true,
       comments:
         "The OAuth 2.0 Authorization URL for HubSpot. Optional scopes can be appended to the URL.",
-      example:
-        "https://app.hubspot.com/oauth/authorize?optional_scope=crm.lists.read content",
+      example: "https://app.hubspot.com/oauth/authorize?optional_scope=crm.lists.read content",
       default: "https://app.hubspot.com/oauth/authorize",
     },
     tokenUrl: {
@@ -56,8 +55,7 @@ export const hubspotOAuth = oauth2Connection({
       type: "password",
       required: true,
       shown: true,
-      comments:
-        "The Client Secret from the HubSpot app. Keep this value secure.",
+      comments: "The Client Secret from the HubSpot app. Keep this value secure.",
     },
     appId: {
       label: "App ID",
@@ -65,8 +63,7 @@ export const hubspotOAuth = oauth2Connection({
       type: "string",
       required: false,
       shown: true,
-      comments:
-        "The App ID from the HubSpot Developer Console. Required for Webhooks.",
+      comments: "The App ID from the HubSpot Developer Console. Required for Webhooks.",
       example: "123456",
     },
     developerApiKey: {
@@ -75,8 +72,7 @@ export const hubspotOAuth = oauth2Connection({
       type: "password",
       required: false,
       shown: true,
-      comments:
-        "The Developer API Key from the HubSpot Developer Console. Required for Webhooks.",
+      comments: "The Developer API Key from the HubSpot Developer Console. Required for Webhooks.",
     },
   },
 });

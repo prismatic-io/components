@@ -21,26 +21,14 @@ const clientWith = (data: unknown = labels) => {
 describe("resolveAssociationSpec", () => {
   test("numeric string matches typeId and reads the dated labels path", async () => {
     const { client, get } = clientWith();
-    const spec = await resolveAssociationSpec(
-      client,
-      "contacts",
-      "companies",
-      "7",
-    );
-    expect(get).toHaveBeenCalledWith(
-      "/crm/associations/2026-09/contacts/companies/labels",
-    );
-    expect(spec).toEqual({
-      associationCategory: "USER_DEFINED",
-      associationTypeId: 7,
-    });
+    const spec = await resolveAssociationSpec(client, "contacts", "companies", "7");
+    expect(get).toHaveBeenCalledWith("/crm/associations/2026-09/contacts/companies/labels");
+    expect(spec).toEqual({ associationCategory: "USER_DEFINED", associationTypeId: 7 });
   });
 
   test("numeric string with surrounding whitespace still matches typeId", async () => {
     const { client } = clientWith();
-    expect(
-      await resolveAssociationSpec(client, "contacts", "companies", " 279 "),
-    ).toEqual({
+    expect(await resolveAssociationSpec(client, "contacts", "companies", " 279 ")).toEqual({
       associationCategory: "HUBSPOT_DEFINED",
       associationTypeId: 279,
     });
@@ -49,12 +37,7 @@ describe("resolveAssociationSpec", () => {
   test("label matches case-insensitively after trimming", async () => {
     const { client } = clientWith();
     expect(
-      await resolveAssociationSpec(
-        client,
-        "contacts",
-        "companies",
-        "  decision MAKER ",
-      ),
+      await resolveAssociationSpec(client, "contacts", "companies", "  decision MAKER "),
     ).toEqual({ associationCategory: "USER_DEFINED", associationTypeId: 7 });
   });
 
@@ -74,12 +57,7 @@ describe("resolveAssociationSpec", () => {
   test("a miss throws naming the value and the object types", async () => {
     const { client } = clientWith();
     await expect(
-      resolveAssociationSpec(
-        client,
-        "contacts",
-        "companies",
-        "contact_to_company",
-      ),
+      resolveAssociationSpec(client, "contacts", "companies", "contact_to_company"),
     ).rejects.toThrow(
       /"contact_to_company"[\s\S]*contacts[\s\S]*companies[\s\S]*numeric association type ID[\s\S]*List Association Types/,
     );
@@ -87,9 +65,9 @@ describe("resolveAssociationSpec", () => {
 
   test("an empty value throws instead of matching an unlabeled type", async () => {
     const { client } = clientWith();
-    await expect(
-      resolveAssociationSpec(client, "contacts", "companies", "  "),
-    ).rejects.toThrow(/numeric association type ID/);
+    await expect(resolveAssociationSpec(client, "contacts", "companies", "  ")).rejects.toThrow(
+      /numeric association type ID/,
+    );
   });
 });
 
@@ -97,20 +75,8 @@ describe("mapAssociationTypes", () => {
   test("adds id and name for every entry and keeps the dated keys", () => {
     expect(mapAssociationTypes(labels)).toEqual({
       results: [
-        {
-          id: "1",
-          name: "Primary",
-          category: "HUBSPOT_DEFINED",
-          typeId: 1,
-          label: "Primary",
-        },
-        {
-          id: "279",
-          name: "279",
-          category: "HUBSPOT_DEFINED",
-          typeId: 279,
-          label: null,
-        },
+        { id: "1", name: "Primary", category: "HUBSPOT_DEFINED", typeId: 1, label: "Primary" },
+        { id: "279", name: "279", category: "HUBSPOT_DEFINED", typeId: 279, label: null },
         {
           id: "7",
           name: "Decision Maker",
@@ -140,10 +106,7 @@ describe("mapReadAssociations", () => {
               { category: "HUBSPOT_DEFINED", typeId: 1 },
             ],
           },
-          {
-            toObjectId: "11",
-            associationTypes: [{ category: "HUBSPOT_DEFINED", typeId: 279 }],
-          },
+          { toObjectId: "11", associationTypes: [{ category: "HUBSPOT_DEFINED", typeId: 279 }] },
           { toObjectId: "12", associationTypes: [] },
         ],
       },
@@ -160,9 +123,7 @@ describe("mapReadAssociations", () => {
         id: "10",
         type: "Decision Maker",
         toObjectId: "10",
-        associationTypes: [
-          { category: "USER_DEFINED", typeId: 7, label: "Decision Maker" },
-        ],
+        associationTypes: [{ category: "USER_DEFINED", typeId: 7, label: "Decision Maker" }],
       },
       {
         id: "10",
@@ -198,9 +159,7 @@ describe("mapCreatedAssociations", () => {
       status: "COMPLETE",
       startedAt: "s",
       completedAt: "c",
-      results: [
-        { from: { id: "1" }, to: { id: "2" }, type: "decision maker", ...pair },
-      ],
+      results: [{ from: { id: "1" }, to: { id: "2" }, type: "decision maker", ...pair }],
     });
   });
 });

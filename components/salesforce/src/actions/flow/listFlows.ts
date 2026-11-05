@@ -17,8 +17,7 @@ export const listFlows = action({
     const result = await listFlowsFunction(client);
     return { data: result };
   },
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    listFlowsExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => listFlowsExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: listMetadataOutputSchema,

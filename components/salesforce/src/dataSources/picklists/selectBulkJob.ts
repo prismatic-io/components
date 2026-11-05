@@ -11,21 +11,16 @@ export const selectBulkJob = dataSource({
   },
   inputs: selectBulkJobInputs,
   perform: async (_context, { version, filterQuery, connection }) => {
-    const salesforceClient = await createSalesforceHttpClient(
-      version,
-      connection,
-    );
+    const salesforceClient = await createSalesforceHttpClient(version, connection);
     const { data } = await salesforceClient.get("/jobs/ingest", {
       params: {
         isPkChunkingEnabled: false,
       },
     });
-    const objects: ElementWithLabel[] = data.records.map(
-      (record: Record<string, unknown>) => ({
-        label: `${record.object} / ${record.operation}, ${record.jobType} - ${record.state}`,
-        key: record.id,
-      }),
-    );
+    const objects: ElementWithLabel[] = data.records.map((record: Record<string, unknown>) => ({
+      label: `${record.object} / ${record.operation}, ${record.jobType} - ${record.state}`,
+      key: record.id,
+    }));
     return {
       result: filterAndSort(objects, filterQuery),
     };

@@ -27,9 +27,7 @@ interface PollingStore {
   context: Partial<ActionContext>;
 }
 
-const createPollingStore = (
-  seedState: Record<string, unknown> = {},
-): PollingStore => {
+const createPollingStore = (seedState: Record<string, unknown> = {}): PollingStore => {
   let state: Record<string, unknown> = seedState;
   const writes: Record<string, unknown>[] = [];
   return {
@@ -66,21 +64,13 @@ interface PollResult {
   polledNoChanges: boolean;
 }
 
-const poll = async (
-  store: PollingStore,
-  lookBackDate?: string,
-): Promise<PollResult> => {
-  const { result } = await invokeTrigger(
-    triggerUnderTest,
-    store.context,
-    undefined,
-    {
-      connection: {},
-      feedName: "NewHire",
-      pageSize: 100,
-      lookBackDate: lookBackDate ?? undefined,
-    } as Record<string, unknown>,
-  );
+const poll = async (store: PollingStore, lookBackDate?: string): Promise<PollResult> => {
+  const { result } = await invokeTrigger(triggerUnderTest, store.context, undefined, {
+    connection: {},
+    feedName: "NewHire",
+    pageSize: 100,
+    lookBackDate: lookBackDate ?? undefined,
+  } as Record<string, unknown>);
   return result as unknown as PollResult;
 };
 
@@ -151,9 +141,13 @@ describe("pollChangesTrigger (Atom feed)", () => {
     const result = await poll(store);
     expect(result.polledNoChanges).toBe(false);
     expect(result.payload.body.data.entries).toHaveLength(5);
-    expect(
-      result.payload.body.data.entries.map((e: AtomFeedEntry) => e.id),
-    ).toEqual(["page-0", "page-1", "page-2", "page-3", "page-4"]);
+    expect(result.payload.body.data.entries.map((e: AtomFeedEntry) => e.id)).toEqual([
+      "page-0",
+      "page-1",
+      "page-2",
+      "page-3",
+      "page-4",
+    ]);
     expect(store.currentState()).toEqual({ lastPolledAt: POLL_ONE_AT });
   });
 });

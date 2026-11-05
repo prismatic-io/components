@@ -20,9 +20,7 @@ export const cancelImport = action({
       headers: { "Content-Type": "application/json" },
     });
 
-    const { data } = await client.post(
-      hubspotPaths.imports(`/${importId}/cancel`),
-    );
+    const { data } = await client.post(hubspotPaths.imports(`/${importId}/cancel`));
 
     return { data };
   },
@@ -31,8 +29,5 @@ export const cancelImport = action({
     data: cancelImportExamplePayload.data,
   }),
   examplePayload: cancelImportExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: cancelImportOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: cancelImportOutputSchema }),
 });

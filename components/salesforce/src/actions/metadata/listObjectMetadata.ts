@@ -14,14 +14,11 @@ export const listObjectMetadata = action({
   performSafety: "notAllowed",
   perform: async (context, { connection, version, metadataType }) => {
     const salesforceClient = await createSalesforceClient(connection, version);
-    const command = salesforceClient.metadata.list([
-      { type: metadataType, folder: null },
-    ]);
+    const command = salesforceClient.metadata.list([{ type: metadataType, folder: null }]);
     const result = await executeSFAction(context, command);
     return { data: result };
   },
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    listObjectMetadataExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => listObjectMetadataExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: listMetadataOutputSchema,

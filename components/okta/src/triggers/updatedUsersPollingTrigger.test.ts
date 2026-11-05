@@ -5,8 +5,7 @@ import { connection, emptyPayload, makeContext } from "../testHelpers";
 import { updatedUsersPollingTrigger as trigger } from "./updatedUsersPollingTrigger";
 
 const NOW = new Date("2026-10-12T12:00:00.000Z");
-const user = (id: string) =>
-  ({ id, created: "2026-01-01T00:00:00.000Z" }) as User;
+const user = (id: string) => ({ id, created: "2026-01-01T00:00:00.000Z" }) as User;
 const mockUsers = (data: User[], advanceMs = 0) =>
   vi.spyOn(listUsers, "perform").mockImplementation(async () => {
     vi.setSystemTime(new Date(Date.now() + advanceMs));
@@ -40,10 +39,7 @@ describe("batching declaration", () => {
   });
 
   test("offers the Look-back Date directly below the required connection", () => {
-    expect(Object.keys(trigger.inputs ?? {})).toEqual([
-      "connection",
-      "lookBackDate",
-    ]);
+    expect(Object.keys(trigger.inputs ?? {})).toEqual(["connection", "lookBackDate"]);
   });
 
   test("describes itself with the initial sync pattern", () => {
@@ -66,10 +62,7 @@ describe("resolveItems", () => {
 
   test("returns [] for an absent envelope", () => {
     expect(
-      trigger.triggerResolver?.resolveItems?.(
-        {} as never,
-        { payload: { body: {} } } as never,
-      ),
+      trigger.triggerResolver?.resolveItems?.({} as never, { payload: { body: {} } } as never),
     ).toEqual([]);
   });
 });
@@ -99,10 +92,7 @@ describe("perform", () => {
   test("later polls filter on the stored cursor", async () => {
     const cursor = "2026-10-10T00:00:00.000Z";
     const spy = mockUsers([]);
-    const { out } = await run(
-      { lastUpdated: cursor },
-      "2026-01-01T00:00:00.000Z",
-    );
+    const { out } = await run({ lastUpdated: cursor }, "2026-01-01T00:00:00.000Z");
     expect(spy.mock.calls[0][1]).toMatchObject({
       filters: { filter: `lastUpdated gt "${cursor}"` },
     });

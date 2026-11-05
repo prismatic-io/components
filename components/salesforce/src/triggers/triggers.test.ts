@@ -1,20 +1,8 @@
-import {
-  defaultTriggerPayload,
-  invokeTrigger,
-} from "@prismatic-io/spectral/dist/testing";
+import { defaultTriggerPayload, invokeTrigger } from "@prismatic-io/spectral/dist/testing";
 import { WEBHOOK_SFDC_RESPONSE } from "../constants";
-import type {
-  DeletedRecord,
-  PollingCursor,
-  PollingTriggerObject,
-} from "../types";
+import type { DeletedRecord, PollingCursor, PollingTriggerObject } from "../types";
 import { getPollingChanges, resolvePollingRecordChanges } from "../util";
-import {
-  flowOutboundMessageTrigger,
-  pollChangesTrigger,
-  webhook,
-  workflowTrigger,
-} from ".";
+import { flowOutboundMessageTrigger, pollChangesTrigger, webhook, workflowTrigger } from ".";
 
 describe("test salesforce webhook trigger", () => {
   test("verify the return value of salesforce webhook trigger", async () => {
@@ -47,9 +35,7 @@ describe("test salesforce webhook trigger", () => {
   });
 });
 
-const outboundEnvelope = (
-  notifications: string,
-) => `<?xml version="1.0" encoding="UTF-8"?>
+const outboundEnvelope = (notifications: string) => `<?xml version="1.0" encoding="UTF-8"?>
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
  <soapenv:Body>
   <notifications xmlns="http://soap.sforce.com/2005/09/outbound">
@@ -137,10 +123,8 @@ describe("XML webhook triggers keep the fast-xml-parser 3.x payload shape", () =
             OrganizationId: "00D5g000004XyZaEAK",
             ActionId: "04k5g000000AbCdAAK",
             SessionId: { "@_xsi:nil": "true" },
-            EnterpriseUrl:
-              "https://example.my.salesforce.com/services/Soap/c/63.0/00D5g000004XyZa",
-            PartnerUrl:
-              "https://example.my.salesforce.com/services/Soap/u/63.0/00D5g000004XyZa",
+            EnterpriseUrl: "https://example.my.salesforce.com/services/Soap/c/63.0/00D5g000004XyZa",
+            PartnerUrl: "https://example.my.salesforce.com/services/Soap/u/63.0/00D5g000004XyZa",
             Notification: {
               Id: "04l5g00000AbCdEAA",
               sObject: {
@@ -160,25 +144,14 @@ describe("XML webhook triggers keep the fast-xml-parser 3.x payload shape", () =
     const body = await invokeWithXml(
       flowOutboundMessageTrigger,
       outboundEnvelope(
-        accountNotification("AbCdEAA", "Acme") +
-          accountNotification("FgHiJAA", "Globex"),
+        accountNotification("AbCdEAA", "Acme") + accountNotification("FgHiJAA", "Globex"),
       ),
     );
     expect(body).toStrictEqual({
       contentType: "application/json; charset=utf-8",
       data: [
-        {
-          type: "Account",
-          Id: "0015g00000AbCdEAA",
-          ...accountFields,
-          Name: "Acme",
-        },
-        {
-          type: "Account",
-          Id: "0015g00000FgHiJAA",
-          ...accountFields,
-          Name: "Globex",
-        },
+        { type: "Account", Id: "0015g00000AbCdEAA", ...accountFields, Name: "Acme" },
+        { type: "Account", Id: "0015g00000FgHiJAA", ...accountFields, Name: "Globex" },
       ],
     });
   });
@@ -189,12 +162,7 @@ describe("XML webhook triggers keep the fast-xml-parser 3.x payload shape", () =
       outboundEnvelope(accountNotification("AbCdEAA", "Acme")),
     );
     expect(body?.data).toStrictEqual([
-      {
-        type: "Account",
-        Id: "0015g00000AbCdEAA",
-        ...accountFields,
-        Name: "Acme",
-      },
+      { type: "Account", Id: "0015g00000AbCdEAA", ...accountFields, Name: "Acme" },
     ]);
   });
 
@@ -247,29 +215,14 @@ describe("XML webhook triggers acknowledge Salesforce with the SOAP response", (
 describe("test salesforce pollChangesTrigger batching", () => {
   test("is opt-in batchable, dispatching one batch of 50 at a time", () => {
     expect(pollChangesTrigger.triggerResolverSupport).toBe("valid");
-    expect(pollChangesTrigger.batchConfig).toEqual({
-      batchSize: 50,
-      concurrentBatchLimit: 1,
-    });
-    expect(pollChangesTrigger.triggerResolver?.resolveItems).toBeInstanceOf(
-      Function,
-    );
+    expect(pollChangesTrigger.batchConfig).toEqual({ batchSize: 50, concurrentBatchLimit: 1 });
+    expect(pollChangesTrigger.triggerResolver?.resolveItems).toBeInstanceOf(Function);
   });
 
   test("resolvePollingRecordChanges flattens created, updated, and deleted into tagged items", () => {
-    const created = {
-      CreatedDate: "2026-01-02",
-      LastModifiedDate: "2026-01-02",
-    };
-    const updated = {
-      CreatedDate: "2026-01-01",
-      LastModifiedDate: "2026-01-03",
-    };
-    const deleted = {
-      id: "001",
-      deletedDate: "2026-01-04",
-      IsDeleted: true as const,
-    };
+    const created = { CreatedDate: "2026-01-02", LastModifiedDate: "2026-01-02" };
+    const updated = { CreatedDate: "2026-01-01", LastModifiedDate: "2026-01-03" };
+    const deleted = { id: "001", deletedDate: "2026-01-04", IsDeleted: true as const };
     expect(
       resolvePollingRecordChanges({
         createdRecords: [created],
@@ -303,11 +256,7 @@ describe("test salesforce pollChangesTrigger batching", () => {
 
   test("resolvePollingRecordChanges returns [] when there are no changes", () => {
     expect(
-      resolvePollingRecordChanges({
-        createdRecords: [],
-        updatedRecords: [],
-        deletedRecords: [],
-      }),
+      resolvePollingRecordChanges({ createdRecords: [], updatedRecords: [], deletedRecords: [] }),
     ).toEqual([]);
     expect(resolvePollingRecordChanges(undefined)).toEqual([]);
   });
@@ -440,16 +389,11 @@ describe("pollChangesTrigger pagination wiring", () => {
   });
 
   test("getNextPaginationState returns null to end the drain", () => {
-    expect(
-      resolver?.getNextPaginationState?.({} as never, { payload: {} } as never),
-    ).toBeNull();
+    expect(resolver?.getNextPaginationState?.({} as never, { payload: {} } as never)).toBeNull();
   });
 
   test("getNextPaginationState is synchronous", () => {
-    const result = resolver?.getNextPaginationState?.(
-      {} as never,
-      { payload: {} } as never,
-    );
+    const result = resolver?.getNextPaginationState?.({} as never, { payload: {} } as never);
     expect(result).not.toBeInstanceOf(Promise);
   });
 
@@ -457,15 +401,7 @@ describe("pollChangesTrigger pagination wiring", () => {
     const result = resolver?.resolveItems?.(
       {} as never,
       {
-        payload: {
-          body: {
-            data: {
-              createdRecords: [],
-              updatedRecords: [],
-              deletedRecords: [],
-            },
-          },
-        },
+        payload: { body: { data: { createdRecords: [], updatedRecords: [], deletedRecords: [] } } },
       } as never,
     );
     expect(result).not.toBeInstanceOf(Promise);

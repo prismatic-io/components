@@ -55,9 +55,7 @@ export interface WatermarkPosition {
   boundaryIds: string[];
 }
 
-export interface PollingCursor
-  extends WatermarkPosition,
-    Record<string, unknown> {
+export interface PollingCursor extends WatermarkPosition, Record<string, unknown> {
   classifySince: string;
   folderId?: string;
 }

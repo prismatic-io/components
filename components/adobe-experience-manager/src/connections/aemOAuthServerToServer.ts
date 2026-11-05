@@ -1,8 +1,5 @@
 import { OAuth2Type, oauth2Connection } from "@prismatic-io/spectral";
-import {
-  DEFAULT_TOKEN_URL,
-  SERVER_TO_SERVER_CONNECTION_KEY,
-} from "../constants";
+import { DEFAULT_TOKEN_URL, SERVER_TO_SERVER_CONNECTION_KEY } from "../constants";
 
 export const aemOAuthServerToServer = oauth2Connection({
   key: SERVER_TO_SERVER_CONNECTION_KEY,
@@ -58,8 +55,7 @@ export const aemOAuthServerToServer = oauth2Connection({
       type: "string",
       required: true,
       shown: true,
-      comments:
-        "The Adobe IMS token endpoint. Change only when Adobe directs a different region.",
+      comments: "The Adobe IMS token endpoint. Change only when Adobe directs a different region.",
       example: DEFAULT_TOKEN_URL,
       default: DEFAULT_TOKEN_URL,
     },

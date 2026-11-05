@@ -19,10 +19,7 @@ export const detachCard = action({
       data: await client.paymentMethods.detach(util.types.toString(paymentId)),
     };
   },
-  examplePerform: async (
-    _context,
-    { paymentId },
-  ): Promise<{ data: unknown }> => {
+  examplePerform: async (_context, { paymentId }): Promise<{ data: unknown }> => {
     const card = detachCardExamplePayload.data as Record<string, unknown>;
 
     return {

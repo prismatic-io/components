@@ -2,14 +2,10 @@ import { afterEach, describe, expect, test, vi } from "vitest";
 import { queryAttributesExamplePayload } from "../../examplePayloads";
 import { createMockConnection, createMockContext } from "../../testHelpers";
 
-const { mockRetrieveAttributes } = vi.hoisted(() => ({
-  mockRetrieveAttributes: vi.fn(),
-}));
+const { mockRetrieveAttributes } = vi.hoisted(() => ({ mockRetrieveAttributes: vi.fn() }));
 
 vi.mock("../../client", () => ({
-  createCrmClient: vi
-    .fn()
-    .mockResolvedValue({ retrieveAttributes: mockRetrieveAttributes }),
+  createCrmClient: vi.fn().mockResolvedValue({ retrieveAttributes: mockRetrieveAttributes }),
 }));
 
 import { queryAttributes } from "./queryAttributes";
@@ -21,9 +17,7 @@ describe("queryAttributes", () => {
   afterEach(() => vi.clearAllMocks());
 
   test("happy path returns attributes", async () => {
-    mockRetrieveAttributes.mockResolvedValueOnce(
-      queryAttributesExamplePayload.data,
-    );
+    mockRetrieveAttributes.mockResolvedValueOnce(queryAttributesExamplePayload.data);
     const result = await queryAttributes.perform(ctx, {
       connection: conn,
       entityId: "id-1",
@@ -45,7 +39,7 @@ describe("queryAttributes", () => {
         fieldNames: undefined,
         filterExpression: undefined,
         expandPropertyNames: undefined,
-      } as any),
+      } as any)
     ).rejects.toThrow("SDK error");
   });
 });

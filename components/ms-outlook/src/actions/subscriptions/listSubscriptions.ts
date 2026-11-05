@@ -13,12 +13,7 @@ export const listSubscriptions = action({
   inputs: listSubscriptionsInputs,
   perform: async (context, params) => {
     const client = createClient(params.connection, context.debug.enabled);
-    const data = await fetchAllData<Subscription>(
-      client,
-      "/subscriptions",
-      params.fetchAll,
-      {},
-    );
+    const data = await fetchAllData<Subscription>(client, "/subscriptions", params.fetchAll, {});
 
     if (params.showInstanceWebhooks) {
       const instanceWebhooks = new Set(Object.values(context.webhookUrls));

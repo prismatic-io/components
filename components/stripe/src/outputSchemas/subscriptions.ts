@@ -90,11 +90,7 @@ export const subscriptionOutputSchema = {
         },
         reason: {
           type: ["string", "null"],
-          enum: [
-            "cancellation_requested",
-            "payment_disputed",
-            "payment_failed",
-          ],
+          enum: ["cancellation_requested", "payment_disputed", "payment_failed"],
         },
       },
     },
@@ -169,14 +165,7 @@ export const subscriptionOutputSchema = {
           },
           jurisdiction_level: {
             type: ["string", "null"],
-            enum: [
-              "city",
-              "country",
-              "county",
-              "district",
-              "multiple",
-              "state",
-            ],
+            enum: ["city", "country", "county", "district", "multiple", "state"],
           },
           livemode: {
             type: "boolean",
@@ -571,14 +560,7 @@ export const subscriptionOutputSchema = {
                     },
                     jurisdiction_level: {
                       type: ["string", "null"],
-                      enum: [
-                        "city",
-                        "country",
-                        "county",
-                        "district",
-                        "multiple",
-                        "state",
-                      ],
+                      enum: ["city", "country", "county", "district", "multiple", "state"],
                     },
                     livemode: {
                       type: "boolean",
@@ -830,12 +812,7 @@ export const subscriptionOutputSchema = {
                       type: "array",
                       items: {
                         type: "string",
-                        enum: [
-                          "balances",
-                          "ownership",
-                          "payment_method",
-                          "transactions",
-                        ],
+                        enum: ["balances", "ownership", "payment_method", "transactions"],
                       },
                     },
                     prefetch: {
@@ -1228,14 +1205,7 @@ export const subscriptionOutputSchema = {
                     },
                     jurisdiction_level: {
                       type: ["string", "null"],
-                      enum: [
-                        "city",
-                        "country",
-                        "county",
-                        "district",
-                        "multiple",
-                        "state",
-                      ],
+                      enum: ["city", "country", "county", "district", "multiple", "state"],
                     },
                     livemode: {
                       type: "boolean",

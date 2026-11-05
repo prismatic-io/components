@@ -12,14 +12,14 @@ export const rawRequest = action({
   performSafety: "notAllowed",
   perform: async (
     { debug: { enabled: debug } },
-    { connection, ...rawRequestParams },
+    { connection, ...rawRequestParams }
   ) => {
     const client = await createOauthClient({ slackConnection: connection });
     const token = client.token;
     const { data } = await sendRawRequest(
       getApiBaseUrl({ slackConnection: connection }),
       { ...rawRequestParams, debugRequest: debug },
-      { Authorization: `Bearer ${token}` },
+      { Authorization: `Bearer ${token}` }
     );
 
     return { data };

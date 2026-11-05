@@ -1,16 +1,10 @@
 import { type Connection, util } from "@prismatic-io/spectral";
-import {
-  createClient as createHttpClient,
-  type HttpClient,
-} from "@prismatic-io/spectral/http";
+import { createClient as createHttpClient, type HttpClient } from "@prismatic-io/spectral/http";
 import { validateConnection } from "./util";
 
 export const BASE_URL = "https://graph.microsoft.com";
 
-export const createClient = (
-  connection: Connection,
-  debug: boolean,
-): HttpClient => {
+export const createClient = (connection: Connection, debug: boolean): HttpClient => {
   validateConnection(connection);
 
   const baseUrl = `${util.types.toString(connection.fields.baseUrl) || BASE_URL}/v1.0`;

@@ -15,12 +15,9 @@ export const listDraftProjectResources = action({
       },
       context.debug.enabled,
     );
-    const { data } = await client.get(
-      `/Projects('${params.guId}')/Draft/ProjectResources')`,
-      {
-        params: toPaginationParams(params.pageSize, params.pageNumber),
-      },
-    );
+    const { data } = await client.get(`/Projects('${params.guId}')/Draft/ProjectResources')`, {
+      params: toPaginationParams(params.pageSize, params.pageNumber),
+    });
 
     return {
       data,

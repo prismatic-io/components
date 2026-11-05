@@ -10,17 +10,11 @@ import { fetchData, getNumericId } from "../util";
 export const selectInventoryItems = dataSource({
   display: {
     label: "Select Inventory Item",
-    description:
-      "Selects an inventory item from a list of all inventory items.",
+    description: "Selects an inventory item from a list of all inventory items.",
   },
   inputs: selectInventoryItemsInputs,
   perform: async (context, { shopifyConnection }) => {
-    const client = getShopifyGraphQlClient(
-      shopifyConnection,
-      undefined,
-      false,
-      context.logger,
-    );
+    const client = getShopifyGraphQlClient(shopifyConnection, undefined, false, context.logger);
 
     const { inventoryItems } = (await fetchData<InventoryItemNode>(
       client,

@@ -3,9 +3,7 @@ import { createHarness } from "@prismatic-io/spectral/testing";
 
 const harness = createHarness(outlookComponent);
 
-const describeIntegrationTest = process.env.PRISMATIC_CONNECTION_VALUE
-  ? describe
-  : describe.skip;
+const describeIntegrationTest = process.env.PRISMATIC_CONNECTION_VALUE ? describe : describe.skip;
 
 describeIntegrationTest("Test sending an email", () => {
   let connection: { key: string; [key: string]: unknown };

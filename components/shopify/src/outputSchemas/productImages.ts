@@ -52,14 +52,8 @@ export const createProductImageGqlOutputSchema = {
 export const deleteProductImageGqlOutputSchema = {
   type: "object" as const,
   properties: {
-    deletedMediaIds: {
-      type: "array" as const,
-      items: { type: "string" as const },
-    },
-    deletedProductImageIds: {
-      type: "array" as const,
-      items: { type: "string" as const },
-    },
+    deletedMediaIds: { type: "array" as const, items: { type: "string" as const } },
+    deletedProductImageIds: { type: "array" as const, items: { type: "string" as const } },
     mediaUserErrors: userErrorsArraySchema,
   },
 };

@@ -5,9 +5,7 @@ import { getCurrentUser } from "./getCurrentUser";
 
 vi.mock("../../client");
 
-const mockedGetHubspotClient = getHubspotClient as MockedFunction<
-  typeof getHubspotClient
->;
+const mockedGetHubspotClient = getHubspotClient as MockedFunction<typeof getHubspotClient>;
 
 const details = {
   portalId: 123,
@@ -38,9 +36,7 @@ describe("getCurrentUser", () => {
 
   test("OAuth: introspects against the dated path and merges user_id and user", async () => {
     const get = vi.fn().mockResolvedValue({ data: details });
-    const post = vi
-      .fn()
-      .mockResolvedValue({ data: { user_id: 7, user: "a@b.co" } });
+    const post = vi.fn().mockResolvedValue({ data: { user_id: 7, user: "a@b.co" } });
     mockedGetHubspotClient.mockReturnValue({
       get,
       post,

@@ -9,10 +9,7 @@ export const getInvoice = action({
     description: "Retrieves an invoice by its ID.",
   },
   perform: async (context, { squareConnection, invoiceId }) => {
-    const client = await createAuthorizedClient(
-      squareConnection,
-      context.debug.enabled,
-    );
+    const client = await createAuthorizedClient(squareConnection, context.debug.enabled);
 
     const response = await client.get(`/v2/invoices/${invoiceId}`);
 

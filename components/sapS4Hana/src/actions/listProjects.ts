@@ -121,13 +121,9 @@ export const listProjectsExpand = input({
 export const listProjects = action({
   display: {
     label: "List Projects",
-    description:
-      "Returns details about all customer and internal projects in the system.",
+    description: "Returns details about all customer and internal projects in the system.",
   },
-  perform: async (
-    _context,
-    { connectionInput, filter, inlinecount, orderBy, select, expand },
-  ) => {
+  perform: async (_context, { connectionInput, filter, inlinecount, orderBy, select, expand }) => {
     const headers = {
       Accept: "application/json",
     };

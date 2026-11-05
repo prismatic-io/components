@@ -2,12 +2,7 @@ import { pollingTrigger } from "@prismatic-io/spectral";
 import { DEFAULT_BATCH_SIZE } from "../constants";
 import { pollChangesTriggerExamplePayload } from "../examplePayloads/triggers";
 import { pollChangesInputs } from "../inputs";
-import type {
-  PollingState,
-  StripeChangesObject,
-  StripeEvent,
-  StripeRecordChange,
-} from "../types";
+import type { PollingState, StripeChangesObject, StripeEvent, StripeRecordChange } from "../types";
 import { fetchEventsSince, resolvePollingRecordChanges } from "../util";
 
 export const pollChangesTrigger = pollingTrigger({
@@ -40,11 +35,9 @@ export const pollChangesTrigger = pollingTrigger({
     const created: StripeEvent[] = [];
     const updated: StripeEvent[] = [];
     for (const event of events) {
-      const isNew =
-        typeof event.type === "string" && event.type.endsWith(".created");
+      const isNew = typeof event.type === "string" && event.type.endsWith(".created");
       if (isNew && params.showNewRecords !== false) created.push(event);
-      else if (!isNew && params.showUpdatedRecords !== false)
-        updated.push(event);
+      else if (!isNew && params.showUpdatedRecords !== false) updated.push(event);
     }
 
     const nextCursor = truncated ? lastPolledAt : now;

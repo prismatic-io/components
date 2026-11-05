@@ -50,8 +50,7 @@ const availabilityViewIntervalInput = input({
   example: "60",
   default: "30",
   placeholder: "Enter interval in minutes",
-  comments:
-    "The duration of each time slot used to check availability, in minutes.",
+  comments: "The duration of each time slot used to check availability, in minutes.",
   clean: util.types.toNumber,
 });
 

@@ -19,22 +19,21 @@ export const deleteDraftOrderGql = action({
       context.logger,
     );
 
-    const data: { draftOrderDelete: Record<string, unknown> } =
-      await client.request(deleteDraftOrderQuery, {
+    const data: { draftOrderDelete: Record<string, unknown> } = await client.request(
+      deleteDraftOrderQuery,
+      {
         input: {
           id: draftOrderId,
         },
-      });
+      },
+    );
 
     return {
       data: data.draftOrderDelete,
     };
   },
   inputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: deleteDraftOrderGqlOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: deleteDraftOrderGqlOutputSchema }),
   examplePerform: async () => examplePayload,
   examplePayload,
 });

@@ -1,12 +1,7 @@
 #import "../../fragments/ProductImageDetails.gql"
 query ListProductImages($productId: ID!, $first: Int!, $cursor: String) {
   product(id: $productId) {
-    media(
-      first: $first
-      query: "media_type:IMAGE"
-      sortKey: POSITION
-      after: $cursor
-    ) {
+    media(first: $first, query: "media_type:IMAGE", sortKey: POSITION, after: $cursor) {
       nodes {
         id
         alt

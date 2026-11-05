@@ -1,11 +1,6 @@
 import { invoke } from "@prismatic-io/spectral/testing";
 import { getBusinessEntitiesResponse } from "../../examplePayloads/businessEntities";
-import {
-  apiPath,
-  rampNock,
-  resetNock,
-  testConnection,
-} from "../../testHarness";
+import { apiPath, rampNock, resetNock, testConnection } from "../../testHarness";
 import { getBusinessEntity } from "./get";
 
 const ENTITY_ID = "55da4b86-5b47-4b6b-a274-a669a6cb14be";

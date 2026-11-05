@@ -13,15 +13,7 @@ export const queryDriveActivity = action({
   performSafety: "notAllowed",
   perform: async (
     _context,
-    {
-      connection,
-      pageToken,
-      ancestorName,
-      consolidationStrategy,
-      filter,
-      itemName,
-      fetchAll,
-    },
+    { connection, pageToken, ancestorName, consolidationStrategy, filter, itemName, fetchAll },
   ) => {
     const drive = createActivityClient(connection);
     const data = await getQueryDriveActivity(
@@ -39,7 +31,6 @@ export const queryDriveActivity = action({
     type: "actionOutput",
     schema: queryDriveActivityOutputSchema,
   }),
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    queryDriveActivityExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => queryDriveActivityExamplePayload,
   examplePayload: queryDriveActivityExamplePayload,
 });

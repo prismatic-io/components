@@ -10,10 +10,7 @@ export const selectProductGroup = dataSource({
   },
   perform: async (_context, { connection, site, company }) => {
     const client = getClient(connection, false, site, company);
-    const { data } =
-      await client.get<{ description: string; id: number }[]>(
-        "/product_groups",
-      );
+    const { data } = await client.get<{ description: string; id: number }[]>("/product_groups");
 
     const objects = data.map<Element>((productGroup) => ({
       key: util.types.toString(productGroup.id),

@@ -29,9 +29,7 @@ describe("getAllPaginatedData", () => {
 
     expect(results).toEqual([{ id: "1" }, { id: "2" }]);
     expect(get).toHaveBeenCalledTimes(2);
-    expect(get).toHaveBeenNthCalledWith(1, URL, {
-      params: { limit: 100, archived: false },
-    });
+    expect(get).toHaveBeenNthCalledWith(1, URL, { params: { limit: 100, archived: false } });
     expect(get).toHaveBeenNthCalledWith(2, URL, {
       params: { limit: 100, archived: false, after: "cursor-1" },
     });
@@ -47,11 +45,7 @@ describe("getAllPaginatedData", () => {
 
     await getAllPaginatedData(client, URL, true, true, config);
 
-    expect(get.mock.calls.map(([, c]) => c.params.after)).toEqual([
-      "start",
-      "b",
-      "c",
-    ]);
+    expect(get.mock.calls.map(([, c]) => c.params.after)).toEqual(["start", "b", "c"]);
     expect(config).toEqual({ params: { after: "start" } });
   });
 
@@ -68,10 +62,7 @@ describe("getAllPaginatedData", () => {
     await getAllPaginatedData(client, URL, true, true, { params });
 
     const secondParams = get.mock.calls[1][1].params as URLSearchParams;
-    expect(secondParams.getAll("properties")).toEqual([
-      "hs_timestamp",
-      "hs_call_title",
-    ]);
+    expect(secondParams.getAll("properties")).toEqual(["hs_timestamp", "hs_call_title"]);
     expect(secondParams.get("after")).toBe("b");
     expect(params.has("after")).toBe(false);
   });
@@ -92,9 +83,7 @@ describe("getAllPaginatedData", () => {
     const paging = { next: { after: "b" } };
     const { get, client } = clientWith({ results: [1], paging });
 
-    const result = await getAllPaginatedData(client, URL, false, false, {
-      params: {},
-    });
+    const result = await getAllPaginatedData(client, URL, false, false, { params: {} });
 
     expect(get).toHaveBeenCalledTimes(1);
     expect(result).toEqual({ results: [1], paging });

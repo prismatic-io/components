@@ -2,10 +2,7 @@ import type { HttpClient } from "@prismatic-io/spectral/http";
 import { DEFAULT_PAGE_SIZE, MAX_PAGES } from "../constants";
 import type { FetchAllPagesOptions, PaginatedResponse } from "../types/utils";
 
-const extractItems = <T>(
-  response: PaginatedResponse<T> | T[],
-  itemsKey?: string,
-): T[] => {
+const extractItems = <T>(response: PaginatedResponse<T> | T[], itemsKey?: string): T[] => {
   if (Array.isArray(response)) {
     return response;
   }
@@ -45,9 +42,7 @@ export const fetchAllPages = async <T>(
       per_page: pageSize,
     };
 
-    const { data } = await client.get<PaginatedResponse<T>>(endpoint, {
-      params: requestParams,
-    });
+    const { data } = await client.get<PaginatedResponse<T>>(endpoint, { params: requestParams });
 
     const items = extractItems(data, itemsKey);
     allItems.push(...items);
@@ -67,10 +62,7 @@ export const fetchWithPagination = async <T>(
   itemsKey?: string,
 ): Promise<{ data: T[] | PaginatedResponse<T> }> => {
   if (fetchAll) {
-    const allItems = await fetchAllPages<T>(client, endpoint, {
-      params,
-      itemsKey,
-    });
+    const allItems = await fetchAllPages<T>(client, endpoint, { params, itemsKey });
     return { data: allItems };
   }
 

@@ -3,12 +3,10 @@ import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
 import { getSapClient } from "../client";
 import { connectionInput, top, skip, filter, inlinecount } from "../inputs";
 
-const orderByOptions = ["TimeSheetDataFields", "TimeSheetDataFields desc"].map(
-  (option) => ({
-    label: option,
-    value: option,
-  }),
-);
+const orderByOptions = ["TimeSheetDataFields", "TimeSheetDataFields desc"].map((option) => ({
+  label: option,
+  value: option,
+}));
 
 const selectOptions = [
   "TimeSheetDataFields",

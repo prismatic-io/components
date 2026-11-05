@@ -11,9 +11,7 @@ export const deleteSubscription = action({
   inputs: deleteSubscriptionInputs,
   perform: async (context, params) => {
     const client = createClient(params.connection, context.debug.enabled);
-    const { data } = await client.delete(
-      `/subscriptions/${params.subscriptionId}`,
-    );
+    const { data } = await client.delete(`/subscriptions/${params.subscriptionId}`);
     return { data };
   },
   examplePayload: deleteSubscriptionExamplePayload,

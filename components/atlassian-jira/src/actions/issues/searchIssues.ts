@@ -13,10 +13,7 @@ export const searchIssues = action({
   },
   performSafety: "notAllowed",
   perform: async (context, params) => {
-    const client = await createV3Client(
-      params.jiraConnection,
-      context.debug.enabled,
-    );
+    const client = await createV3Client(params.jiraConnection, context.debug.enabled);
 
     let jql = `summary ~ ${quoteJqlString(params.searchString)}`;
     if (params.projectKey) {

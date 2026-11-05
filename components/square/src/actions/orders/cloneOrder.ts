@@ -6,14 +6,10 @@ import { cloneOrderInputs } from "../../inputs";
 export const cloneOrder = action({
   display: {
     label: "Clone Order",
-    description:
-      "Creates a new order, in the DRAFT state, by duplicating an existing order.",
+    description: "Creates a new order, in the DRAFT state, by duplicating an existing order.",
   },
   perform: async (context, { squareConnection, orderId, idempotencyKey }) => {
-    const client = await createAuthorizedClient(
-      squareConnection,
-      context.debug.enabled,
-    );
+    const client = await createAuthorizedClient(squareConnection, context.debug.enabled);
     const version = getVersionFromConnection(squareConnection);
 
     const requestBody = {

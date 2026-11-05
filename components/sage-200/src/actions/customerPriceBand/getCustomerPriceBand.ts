@@ -9,14 +9,9 @@ export const getCustomerPriceBand = action({
     label: "Get Customer Price Band",
     description: "Retrieve a customer price band by ID",
   },
-  perform: async (
-    context,
-    { connection, site, company, customerPriceBandId },
-  ) => {
+  perform: async (context, { connection, site, company, customerPriceBandId }) => {
     const client = getClient(connection, context.debug.enabled, site, company);
-    const { data } = await client.get(
-      `/customer_price_bands/${customerPriceBandId}`,
-    );
+    const { data } = await client.get(`/customer_price_bands/${customerPriceBandId}`);
     return {
       data,
     };

@@ -14,13 +14,9 @@ export const rawRequest = action({
   perform: async (context, { connection, ...httpClientInputs }) => {
     const stripeKey = getStripeKey(connection);
     try {
-      const { data } = await sendRawRequest(
-        "https://api.stripe.com/v1",
-        httpClientInputs,
-        {
-          Authorization: `Bearer ${stripeKey}`,
-        },
-      );
+      const { data } = await sendRawRequest("https://api.stripe.com/v1", httpClientInputs, {
+        Authorization: `Bearer ${stripeKey}`,
+      });
       return { data };
     } catch (error) {
       const handled = handleErrors(error);

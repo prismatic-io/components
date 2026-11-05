@@ -4,18 +4,13 @@ import { search } from "./search";
 
 vi.mock("../../client");
 
-const mockedGetHubspotClient = getHubspotClient as MockedFunction<
-  typeof getHubspotClient
->;
+const mockedGetHubspotClient = getHubspotClient as MockedFunction<typeof getHubspotClient>;
 
 const context = { debug: { enabled: false } } as never;
 
 const params = (overrides: Record<string, unknown> = {}) =>
   ({
-    hubspotConnection: {
-      key: "privateAppAccessToken",
-      fields: { accessToken: "t" },
-    },
+    hubspotConnection: { key: "privateAppAccessToken", fields: { accessToken: "t" } },
     timeout: undefined,
     searchEndpoint: "/crm/v3/objects/contacts/search",
     searchProperties: { query: "ada" },
@@ -58,17 +53,12 @@ describe("search", () => {
       objectType: "p123_equipment",
     });
 
-    expect(post.mock.calls[0][0]).toBe(
-      "/crm/objects/2026-09/p123_equipment/search",
-    );
+    expect(post.mock.calls[0][0]).toBe("/crm/objects/2026-09/p123_equipment/search");
   });
 
   test("requires an object type for the placeholder", async () => {
     await expect(
-      run({
-        searchEndpoint: "/crm/v3/objects/{objectType}/search",
-        objectType: undefined,
-      }),
+      run({ searchEndpoint: "/crm/v3/objects/{objectType}/search", objectType: undefined }),
     ).rejects.toThrow("Object Type input is required");
   });
 
@@ -76,9 +66,9 @@ describe("search", () => {
     const post = vi.fn();
     mockedGetHubspotClient.mockReturnValue({ post } as never);
 
-    await expect(
-      search.perform(context, params({ searchEndpoint: "/nope" })),
-    ).rejects.toThrow(/Unrecognized search endpoint/);
+    await expect(search.perform(context, params({ searchEndpoint: "/nope" }))).rejects.toThrow(
+      /Unrecognized search endpoint/,
+    );
     expect(post).not.toHaveBeenCalled();
   });
 
@@ -92,13 +82,7 @@ describe("search", () => {
       "/crm/objects/2026-09/contacts/search",
       "/crm/objects/2026-09/contacts/search",
     ]);
-    expect(post.mock.calls[1][1]).toEqual({
-      limit: 200,
-      after: "b",
-      query: "ada",
-    });
-    expect(
-      (result as { data: { results: unknown[] } }).data.results,
-    ).toHaveLength(2);
+    expect(post.mock.calls[1][1]).toEqual({ limit: 200, after: "b", query: "ada" });
+    expect((result as { data: { results: unknown[] } }).data.results).toHaveLength(2);
   });
 });

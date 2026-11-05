@@ -14,9 +14,7 @@ export const listAssetsInFolderTree = action({
   performSafety: "notAllowed",
   perform: async (context, { connection, path }) => {
     const client = createAemClient(connection, context.debug.enabled);
-    const { assets, truncated } = await walkFolderTree(client, path, {
-      collectAssets: true,
-    });
+    const { assets, truncated } = await walkFolderTree(client, path, { collectAssets: true });
     if (truncated) {
       throw new Error(
         `The folder tree under ${path} has more than ${MAX_FOLDER_WALK} folders. Choose a narrower folder path.`,
@@ -25,10 +23,7 @@ export const listAssetsInFolderTree = action({
     return { data: assets };
   },
   inputs: listAssetsInFolderTreeInputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: listAssetsInFolderTreeOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: listAssetsInFolderTreeOutputSchema }),
   examplePerform: async () => listAssetsInFolderTreeExamplePayload,
   examplePayload: listAssetsInFolderTreeExamplePayload,
 });

@@ -45,10 +45,7 @@ export const invoiceOutputSchema = {
       properties: {
         disabled_reason: {
           type: ["string", "null"],
-          enum: [
-            "finalization_requires_location_inputs",
-            "finalization_system_error",
-          ],
+          enum: ["finalization_requires_location_inputs", "finalization_system_error"],
         },
         enabled: {
           type: "boolean",
@@ -393,14 +390,7 @@ export const invoiceOutputSchema = {
           },
           jurisdiction_level: {
             type: ["string", "null"],
-            enum: [
-              "city",
-              "country",
-              "county",
-              "district",
-              "multiple",
-              "state",
-            ],
+            enum: ["city", "country", "county", "district", "multiple", "state"],
           },
           livemode: {
             type: "boolean",
@@ -721,18 +711,10 @@ export const invoiceOutputSchema = {
                           type: "string",
                         },
                       },
-                      required: [
-                        "expires_at",
-                        "image_url_png",
-                        "image_url_svg",
-                      ],
+                      required: ["expires_at", "image_url_png", "image_url_svg"],
                     },
                   },
-                  required: [
-                    "hosted_instructions_url",
-                    "mobile_auth_url",
-                    "qr_code",
-                  ],
+                  required: ["hosted_instructions_url", "mobile_auth_url", "qr_code"],
                 },
                 display_bank_transfer_instructions: {
                   type: "object" as const,
@@ -1126,14 +1108,7 @@ export const invoiceOutputSchema = {
                           },
                           type: {
                             type: "string",
-                            enum: [
-                              "aba",
-                              "iban",
-                              "sort_code",
-                              "spei",
-                              "swift",
-                              "zengin",
-                            ],
+                            enum: ["aba", "iban", "sort_code", "spei", "swift", "zengin"],
                           },
                           zengin: {
                             type: "object" as const,
@@ -1206,10 +1181,7 @@ export const invoiceOutputSchema = {
                                 type: ["string", "null"],
                               },
                             },
-                            required: [
-                              "account_holder_address",
-                              "bank_address",
-                            ],
+                            required: ["account_holder_address", "bank_address"],
                           },
                         },
                         required: ["type"],
@@ -1387,12 +1359,7 @@ export const invoiceOutputSchema = {
                       type: "string",
                     },
                   },
-                  required: [
-                    "data",
-                    "hosted_instructions_url",
-                    "image_url_png",
-                    "image_url_svg",
-                  ],
+                  required: ["data", "hosted_instructions_url", "image_url_png", "image_url_svg"],
                 },
                 redirect_to_url: {
                   type: "object" as const,
@@ -2388,13 +2355,7 @@ export const invoiceOutputSchema = {
                           },
                         },
                       },
-                      required: [
-                        "amount",
-                        "amount_type",
-                        "interval",
-                        "reference",
-                        "start_date",
-                      ],
+                      required: ["amount", "amount_type", "interval", "reference", "start_date"],
                     },
                     network: {
                       type: ["string", "null"],
@@ -2604,15 +2565,7 @@ export const invoiceOutputSchema = {
                           type: "array",
                           items: {
                             type: "string",
-                            enum: [
-                              "aba",
-                              "iban",
-                              "sepa",
-                              "sort_code",
-                              "spei",
-                              "swift",
-                              "zengin",
-                            ],
+                            enum: ["aba", "iban", "sepa", "sort_code", "spei", "swift", "zengin"],
                           },
                         },
                         type: {
@@ -4442,12 +4395,7 @@ export const invoiceOutputSchema = {
                           type: "array",
                           items: {
                             type: "string",
-                            enum: [
-                              "balances",
-                              "ownership",
-                              "payment_method",
-                              "transactions",
-                            ],
+                            enum: ["balances", "ownership", "payment_method", "transactions"],
                           },
                         },
                         prefetch: {
@@ -5070,12 +5018,7 @@ export const invoiceOutputSchema = {
                               properties: {
                                 account_type: {
                                   type: "string",
-                                  enum: [
-                                    "checking",
-                                    "credit",
-                                    "prepaid",
-                                    "unknown",
-                                  ],
+                                  enum: ["checking", "credit", "prepaid", "unknown"],
                                 },
                                 application_cryptogram: {
                                   type: ["string", "null"],
@@ -5108,12 +5051,7 @@ export const invoiceOutputSchema = {
                               properties: {
                                 type: {
                                   type: "string",
-                                  enum: [
-                                    "apple_pay",
-                                    "google_pay",
-                                    "samsung_pay",
-                                    "unknown",
-                                  ],
+                                  enum: ["apple_pay", "google_pay", "samsung_pay", "unknown"],
                                 },
                               },
                               required: ["type"],
@@ -5406,12 +5344,7 @@ export const invoiceOutputSchema = {
                   properties: {
                     type: {
                       type: "string",
-                      enum: [
-                        "apple_pay",
-                        "google_pay",
-                        "samsung_pay",
-                        "unknown",
-                      ],
+                      enum: ["apple_pay", "google_pay", "samsung_pay", "unknown"],
                     },
                   },
                   required: ["type"],
@@ -6032,14 +5965,7 @@ export const invoiceOutputSchema = {
               type: "object" as const,
             },
           },
-          required: [
-            "billing_details",
-            "created",
-            "id",
-            "livemode",
-            "object",
-            "type",
-          ],
+          required: ["billing_details", "created", "id", "livemode", "object", "type"],
         },
         payment_method_type: {
           type: "string",
@@ -6139,18 +6065,10 @@ export const invoiceOutputSchema = {
                           type: "string",
                         },
                       },
-                      required: [
-                        "expires_at",
-                        "image_url_png",
-                        "image_url_svg",
-                      ],
+                      required: ["expires_at", "image_url_png", "image_url_svg"],
                     },
                   },
-                  required: [
-                    "hosted_instructions_url",
-                    "mobile_auth_url",
-                    "qr_code",
-                  ],
+                  required: ["hosted_instructions_url", "mobile_auth_url", "qr_code"],
                 },
                 redirect_to_url: {
                   type: "object" as const,
@@ -6431,12 +6349,7 @@ export const invoiceOutputSchema = {
                           type: "array",
                           items: {
                             type: "string",
-                            enum: [
-                              "balances",
-                              "ownership",
-                              "payment_method",
-                              "transactions",
-                            ],
+                            enum: ["balances", "ownership", "payment_method", "transactions"],
                           },
                         },
                         prefetch: {
@@ -7719,12 +7632,7 @@ export const invoiceOutputSchema = {
         },
         type: {
           type: "string",
-          enum: [
-            "api_error",
-            "card_error",
-            "idempotency_error",
-            "invalid_request_error",
-          ],
+          enum: ["api_error", "card_error", "idempotency_error", "invalid_request_error"],
         },
       },
       required: ["type"],
@@ -7994,12 +7902,7 @@ export const invoiceOutputSchema = {
                       enum: ["tax_rate_details"],
                     },
                   },
-                  required: [
-                    "amount",
-                    "tax_behavior",
-                    "taxability_reason",
-                    "type",
-                  ],
+                  required: ["amount", "tax_behavior", "taxability_reason", "type"],
                 },
               },
             },
@@ -8199,12 +8102,7 @@ export const invoiceOutputSchema = {
                       type: "array",
                       items: {
                         type: "string",
-                        enum: [
-                          "balances",
-                          "ownership",
-                          "payment_method",
-                          "transactions",
-                        ],
+                        enum: ["balances", "ownership", "payment_method", "transactions"],
                       },
                     },
                     prefetch: {
@@ -8478,14 +8376,7 @@ export const invoiceOutputSchema = {
                   },
                   jurisdiction_level: {
                     type: ["string", "null"],
-                    enum: [
-                      "city",
-                      "country",
-                      "county",
-                      "district",
-                      "multiple",
-                      "state",
-                    ],
+                    enum: ["city", "country", "county", "district", "multiple", "state"],
                   },
                   livemode: {
                     type: "boolean",

@@ -23,8 +23,7 @@ export const WEBHOOK_RESOURCE_CONFIG: Record<string, WebhookResourceConfig> = {
 
 export const POLLING_ENDPOINTS = {
   MESSAGES: "/me/messages",
-  MAIL_FOLDER_MESSAGES: (folderId: string): string =>
-    `/me/mailFolders/${folderId}/messages`,
+  MAIL_FOLDER_MESSAGES: (folderId: string): string => `/me/mailFolders/${folderId}/messages`,
 };
 
 export const MESSAGES_DEFAULT_ORDERBY = "lastModifiedDateTime";

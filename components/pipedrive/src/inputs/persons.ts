@@ -61,8 +61,7 @@ const addPersonContactInfo = structuredObjectInput({
       label: "Email",
       type: "string",
       required: false,
-      comments:
-        "Comma-separated email addresses to associate with this person.",
+      comments: "Comma-separated email addresses to associate with this person.",
       example: "john.doe@example.com,jane.doe@example.com",
       placeholder: "Enter email addresses (comma-separated)",
       clean: cleanString,
@@ -185,8 +184,7 @@ const exactMatch = input({
   label: "Exact Match",
   type: "boolean",
   clean: util.types.toBool,
-  comments:
-    "When true, only full exact matches against the given term are returned",
+  comments: "When true, only full exact matches against the given term are returned",
 });
 
 const searchOrganizationId = input({
@@ -203,8 +201,7 @@ const includeFields = input({
   type: "string",
   model: [{ label: "Person Picture", value: "person.picture" }],
   clean: cleanString,
-  comments:
-    "Supports including optional fields in the results which are not provided by default",
+  comments: "Supports including optional fields in the results which are not provided by default",
 });
 
 const mergeWithId = input({

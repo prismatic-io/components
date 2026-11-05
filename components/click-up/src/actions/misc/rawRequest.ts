@@ -20,7 +20,7 @@ export const rawRequest = action({
       { ...httpClientInputs, debugRequest: context.debug.enabled },
       {
         Authorization: `Bearer ${getBearerToken(connection)}`,
-      },
+      }
     );
     return { data };
   },

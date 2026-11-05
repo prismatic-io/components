@@ -6,8 +6,7 @@ export const searchItemsExamplePayload = {
         id: "0125EXAMPLERANDOMFOLDERID1234567890",
         lastModifiedDateTime: "2025-06-12T23:48:54Z",
         name: "renamedFolder",
-        webUrl:
-          "https://example.sharepoint.com/sites/ExampleSite/Shared%20Documents/renamedFolder",
+        webUrl: "https://example.sharepoint.com/sites/ExampleSite/Shared%20Documents/renamedFolder",
         size: 0,
         createdBy: {
           user: {

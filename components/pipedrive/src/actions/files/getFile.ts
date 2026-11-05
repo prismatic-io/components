@@ -18,8 +18,5 @@ export const getFile = action({
   inputs: getFileInputs,
   examplePayload: getFileExamplePayload,
   examplePerform: async () => getFileExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getFileOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getFileOutputSchema }),
 });

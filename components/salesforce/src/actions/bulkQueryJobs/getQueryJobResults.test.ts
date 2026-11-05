@@ -23,10 +23,7 @@ afterAll(() => nock.enableNetConnect());
 describe("getQueryJobResults", () => {
   test("requests the results as text/csv", async () => {
     const scope = nock(INSTANCE_URL, {
-      reqheaders: {
-        accept: "text/csv",
-        authorization: `Bearer ${ACCESS_TOKEN}`,
-      },
+      reqheaders: { accept: "text/csv", authorization: `Bearer ${ACCESS_TOKEN}` },
     })
       .get(`${BASE_PATH}/jobs/query/${JOB_ID}/results`)
       .query({ maxRecords: "100" })

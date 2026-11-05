@@ -18,8 +18,7 @@ export const operator = input({
   label: "Operator",
   type: "string",
   required: true,
-  comments:
-    "The comparison operator applied to the property value in the search filter.",
+  comments: "The comparison operator applied to the property value in the search filter.",
   model: [
     { label: "Equal To", value: "EQ" },
     { label: "Less Than", value: "LT" },

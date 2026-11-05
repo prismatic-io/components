@@ -63,30 +63,21 @@ const department = input({
 const mailingAddress = structuredObjectInput({
   label: "Mailing Address",
   required: false,
-  comments:
-    "Street, city, state, postal code, and country for the mailing address.",
+  comments: "Street, city, state, postal code, and country for the mailing address.",
   inputs: { street, city, state, postalCode, country },
 });
 
 const billingAddress = structuredObjectInput({
   label: "Other Address",
   required: false,
-  comments:
-    "Street, city, state, postal code, and country for the secondary address.",
-  inputs: {
-    billingStreet,
-    billingCity,
-    billingState,
-    billingPostalCode,
-    billingCountry,
-  },
+  comments: "Street, city, state, postal code, and country for the secondary address.",
+  inputs: { billingStreet, billingCity, billingState, billingPostalCode, billingCountry },
 });
 
 const nameAndContact = structuredObjectInput({
   label: "Name & Contact Information",
   required: false,
-  comments:
-    "First and last name, phone, fax, and mobile contact channels, and birthdate.",
+  comments: "First and last name, phone, fax, and mobile contact channels, and birthdate.",
   inputs: { firstName, lastName, phone, mobile, fax, birthdate },
 });
 

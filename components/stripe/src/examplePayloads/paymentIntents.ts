@@ -14,8 +14,7 @@ export const getPaymentIntentExamplePayload = {
     canceled_at: null,
     cancellation_reason: null,
     capture_method: "automatic",
-    client_secret:
-      "pi_3MmlLrLkdIwHu7ix01zsk9pV_secret_DfFyfyVOLOaYMnE5DuFGYTrXf",
+    client_secret: "pi_3MmlLrLkdIwHu7ix01zsk9pV_secret_DfFyfyVOLOaYMnE5DuFGYTrXf",
     confirmation_method: "automatic",
     created: 1716397800,
     currency: "usd",

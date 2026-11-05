@@ -15,17 +15,11 @@ vi.mock("../client", () => ({
 
 import { ListBucketsCommand } from "@aws-sdk/client-s3";
 import type { ActionContext } from "@prismatic-io/spectral";
-import {
-  createConnection,
-  invokeTrigger,
-} from "@prismatic-io/spectral/testing";
+import { createConnection, invokeTrigger } from "@prismatic-io/spectral/testing";
 import { createS3Client } from "../client";
 import { accessKeySecretPair } from "../connections";
 import { LIST_BUCKETS_MAX_BUCKETS } from "../constants";
-import {
-  listBucketsExamplePayload,
-  pollNewBucketsTriggerExamplePayload,
-} from "../examplePayloads";
+import { listBucketsExamplePayload, pollNewBucketsTriggerExamplePayload } from "../examplePayloads";
 import type { PolledBucket, PollingState } from "../types";
 import { pollNewBucketsTrigger } from "./pollNewBucketsTrigger";
 
@@ -66,9 +60,7 @@ type PollResult = {
   polledNoChanges: boolean;
 };
 
-const poll = async (
-  context: Partial<ActionContext>,
-): Promise<{ result: PollResult }> => {
+const poll = async (context: Partial<ActionContext>): Promise<{ result: PollResult }> => {
   const { result } = await invokeTrigger(
     pollNewBucketsTrigger as never,
     context,
@@ -92,10 +84,7 @@ describe("pollNewBucketsTrigger", () => {
     sendMock.mockResolvedValue({
       Buckets: [
         ...listBucketsExamplePayload.data,
-        {
-          Name: "old-bucket",
-          CreationDate: new Date("2024-03-01T00:00:00.000Z"),
-        },
+        { Name: "old-bucket", CreationDate: new Date("2024-03-01T00:00:00.000Z") },
       ],
     });
     const { context, getStore } = createPollingContext({ lastPolledAt: T0 });
@@ -106,9 +95,7 @@ describe("pollNewBucketsTrigger", () => {
     const command = sendMock.mock.calls[0][0];
     expect(command).toBeInstanceOf(ListBucketsCommand);
     expect(command.input).toEqual({ MaxBuckets: LIST_BUCKETS_MAX_BUCKETS });
-    expect(result.payload.body.data).toEqual(
-      pollNewBucketsTriggerExamplePayload.payload.body.data,
-    );
+    expect(result.payload.body.data).toEqual(pollNewBucketsTriggerExamplePayload.payload.body.data);
     expect(result.polledNoChanges).toBe(false);
     expect(getStore()).toEqual({ lastPolledAt: T1 });
   });
@@ -135,21 +122,13 @@ describe("pollNewBucketsTrigger", () => {
     await poll(context);
 
     expect(createS3Client).toHaveBeenCalledWith(
-      expect.objectContaining({
-        logger: expect.anything(),
-        debug: expect.any(Boolean),
-      }),
+      expect.objectContaining({ logger: expect.anything(), debug: expect.any(Boolean) }),
     );
   });
 
   test("seeds the initial sync from Look-back Date on the first poll", async () => {
     sendMock.mockResolvedValue({
-      Buckets: [
-        {
-          Name: "backfilled-bucket",
-          CreationDate: new Date("2024-03-05T00:00:00.000Z"),
-        },
-      ],
+      Buckets: [{ Name: "backfilled-bucket", CreationDate: new Date("2024-03-05T00:00:00.000Z") }],
     });
     const { context, getStore } = createPollingContext({});
 
@@ -182,9 +161,7 @@ describe("pollNewBucketsTrigger", () => {
   test("includes a bucket stamped exactly at the Look-back Date on the initial sync (inclusive)", async () => {
     const lookBackDate = "2024-03-01T00:00:00.000Z";
     sendMock.mockResolvedValue({
-      Buckets: [
-        { Name: "midnight-bucket", CreationDate: new Date(lookBackDate) },
-      ],
+      Buckets: [{ Name: "midnight-bucket", CreationDate: new Date(lookBackDate) }],
     });
     const { context } = createPollingContext({});
 
@@ -219,16 +196,11 @@ describe("pollNewBucketsTrigger batching", () => {
   test("declares batching with a default batch size", () => {
     expect(pollNewBucketsTrigger.triggerResolverSupport).toBe("valid");
     expect(pollNewBucketsTrigger.batchConfig).toEqual({ batchSize: 50 });
-    expect(pollNewBucketsTrigger.triggerResolver?.resolveItems).toBeInstanceOf(
-      Function,
-    );
+    expect(pollNewBucketsTrigger.triggerResolver?.resolveItems).toBeInstanceOf(Function);
   });
 
   test("resolveItems flattens the payload into tagged bucket changes", () => {
-    const bucket: PolledBucket = {
-      Name: "bucket-1",
-      CreationDate: "2024-03-08T23:30:22.000Z",
-    };
+    const bucket: PolledBucket = { Name: "bucket-1", CreationDate: "2024-03-08T23:30:22.000Z" };
     const items = pollNewBucketsTrigger.triggerResolver?.resolveItems?.(
       {} as never,
       { payload: { body: { data: [bucket] } } } as never,

@@ -8,34 +8,18 @@ const AEM_HOST = "author-p12345-e123456.adobeaemcloud.com";
 
 describe("connections", () => {
   test("offers Server-to-Server and Web App connections", () => {
-    expect(connections.map((c) => c.key)).toEqual([
-      "aemOAuthServerToServer",
-      "aemOAuthWebApp",
-    ]);
-    expect(aemOAuthServerToServer.oauth2Type).toBe(
-      OAuth2Type.ClientCredentials,
-    );
+    expect(connections.map((c) => c.key)).toEqual(["aemOAuthServerToServer", "aemOAuthWebApp"]);
+    expect(aemOAuthServerToServer.oauth2Type).toBe(OAuth2Type.ClientCredentials);
     expect(aemOAuthWebApp.oauth2Type).toBe(OAuth2Type.AuthorizationCode);
   });
 
   test("the Web App connection asks for the AEM host and the authorization-code inputs", () => {
     const inputs = aemOAuthWebApp.inputs;
     expect(Object.keys(inputs).sort()).toEqual(
-      [
-        "aemHost",
-        "authorizeUrl",
-        "clientId",
-        "clientSecret",
-        "scopes",
-        "tokenUrl",
-      ].sort(),
+      ["aemHost", "authorizeUrl", "clientId", "clientSecret", "scopes", "tokenUrl"].sort(),
     );
-    expect(inputs.authorizeUrl.default).toBe(
-      "https://ims-na1.adobelogin.com/ims/authorize/v2",
-    );
-    expect(inputs.tokenUrl.default).toBe(
-      "https://ims-na1.adobelogin.com/ims/token/v3",
-    );
+    expect(inputs.authorizeUrl.default).toBe("https://ims-na1.adobelogin.com/ims/authorize/v2");
+    expect(inputs.tokenUrl.default).toBe("https://ims-na1.adobelogin.com/ims/token/v3");
     expect(String(inputs.scopes.default).split(",")).toEqual([
       "openid",
       "AdobeID",
@@ -63,16 +47,11 @@ describe("a Web App connection", () => {
       { access_token: "user-access-token" },
     );
     nock(`https://${AEM_HOST}`, {
-      reqheaders: {
-        authorization: "Bearer user-access-token",
-        "x-api-key": "web-app-client-id",
-      },
+      reqheaders: { authorization: "Bearer user-access-token", "x-api-key": "web-app-client-id" },
     })
       .get("/adobe/sites/cf/models")
       .reply(200, { items: [] });
-    const { data } = await createAemClient(connection).get(
-      "/adobe/sites/cf/models",
-    );
+    const { data } = await createAemClient(connection).get("/adobe/sites/cf/models");
     expect(data).toEqual({ items: [] });
   });
 });

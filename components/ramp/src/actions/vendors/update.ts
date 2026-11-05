@@ -1,14 +1,7 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { getVendorResponse as updateVendorResponse } from "../../examplePayloads/vendors";
-import {
-  code,
-  connection,
-  name,
-  reactivate,
-  subsidiaries,
-  vendorId,
-} from "../../inputs";
+import { code, connection, name, reactivate, subsidiaries, vendorId } from "../../inputs";
 import { updateVendorOutputSchema } from "../../outputSchemas";
 
 export const updateVendor = action({
@@ -32,10 +25,7 @@ export const updateVendor = action({
     schema: updateVendorOutputSchema,
   }),
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { connection, vendorId, code, name, reactivate, subsidiaries },
-  ) => {
+  perform: async (context, { connection, vendorId, code, name, reactivate, subsidiaries }) => {
     const client = createClient(connection, context.debug.enabled);
 
     const { data } = await client.patch(`/accounting/vendors/${vendorId}`, {
@@ -48,10 +38,7 @@ export const updateVendor = action({
       data,
     };
   },
-  examplePerform: async (
-    _context,
-    { code, name },
-  ): Promise<{ data: unknown }> => ({
+  examplePerform: async (_context, { code, name }): Promise<{ data: unknown }> => ({
     data: {
       ...updateVendorResponse,
       code: code ?? updateVendorResponse.code,

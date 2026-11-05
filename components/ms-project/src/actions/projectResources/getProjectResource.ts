@@ -5,8 +5,7 @@ import { connection, guId, resourceId } from "../../inputs";
 export const getProjectResources = action({
   display: {
     label: "Get Project Resource",
-    description:
-      "Get the information and metadata of an existing Project Resource by Id",
+    description: "Get the information and metadata of an existing Project Resource by Id",
   },
   perform: async (context, params) => {
     const client = createProjectsClient(

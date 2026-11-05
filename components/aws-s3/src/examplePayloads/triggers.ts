@@ -9,11 +9,7 @@ const exampleTriggerPayloadBase: Omit<TriggerPayload, "headers" | "body"> = {
   webhookApiKeys: {},
   invokeUrl: "",
   executionId: "RXhhbXBsZUV4ZWN1dGlvblJlc3VsdElk",
-  customer: {
-    id: "testCustomerId",
-    name: "Test Customer",
-    externalId: "testExternalId",
-  },
+  customer: { id: "testCustomerId", name: "Test Customer", externalId: "testExternalId" },
   instance: { id: "testInstanceId", name: "Test Instance" },
   user: {
     id: "testUserId",
@@ -66,8 +62,7 @@ export const snsS3NotificationWebhookExamplePayload: {
               requestParameters: { sourceIPAddress: "172.16.0.1" },
               responseElements: {
                 "x-amz-request-id": "C3D13FE58DE4C810",
-                "x-amz-id-2":
-                  "FMyUVURIY8/IgAtTv8xRjskZQpcIZ9KG4V5Wp6S7S/JRWeUWerMUE5JgHvANOjpD",
+                "x-amz-id-2": "FMyUVURIY8/IgAtTv8xRjskZQpcIZ9KG4V5Wp6S7S/JRWeUWerMUE5JgHvANOjpD",
               },
               s3: {
                 s3SchemaVersion: "1.0",
@@ -119,9 +114,7 @@ export const pollNewBucketsTriggerExamplePayload: {
   payload: {
     ...exampleTriggerPayloadBase,
     headers: {},
-    body: {
-      data: [{ Name: "bucket-1", CreationDate: "2024-03-08T23:30:22.000Z" }],
-    },
+    body: { data: [{ Name: "bucket-1", CreationDate: "2024-03-08T23:30:22.000Z" }] },
   },
   polledNoChanges: false,
 };

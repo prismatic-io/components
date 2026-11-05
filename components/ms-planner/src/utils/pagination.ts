@@ -13,20 +13,14 @@ export const fetchAllPlanner = async <T>(
   let pages = 0;
 
   do {
-    const { data } = await client.get<GraphCollectionResponse<T>>(
-      nextLink || endpoint,
-    );
+    const { data } = await client.get<GraphCollectionResponse<T>>(nextLink || endpoint);
     context ??= data["@odata.context"];
     results.push(...(data.value ?? []));
     nextLink = data["@odata.nextLink"];
     pages += 1;
   } while (nextLink && pages < MAX_PAGES);
 
-  return {
-    "@odata.context": context,
-    value: results,
-    truncated: Boolean(nextLink),
-  };
+  return { "@odata.context": context, value: results, truncated: Boolean(nextLink) };
 };
 
 export const fetchAllDirectory = async <T>(
@@ -53,9 +47,7 @@ export const fetchAllDirectory = async <T>(
   return { "@odata.context": context, value: results };
 };
 
-export const fetchTasksCreatedSince = async <
-  T extends { createdDateTime?: string | null },
->(
+export const fetchTasksCreatedSince = async <T extends { createdDateTime?: string | null }>(
   client: HttpClient,
   endpoint: string,
   since?: string,

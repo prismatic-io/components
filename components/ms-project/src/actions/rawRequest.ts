@@ -1,8 +1,5 @@
 import { action, util } from "@prismatic-io/spectral";
-import {
-  inputs as httpClientInputs,
-  sendRawRequest,
-} from "@prismatic-io/spectral/http";
+import { inputs as httpClientInputs, sendRawRequest } from "@prismatic-io/spectral/http";
 import { URL } from "node:url";
 import { validateConnection } from "../client";
 import { connection } from "../inputs";
@@ -21,17 +18,13 @@ const rawRequest = action({
       ...rawRequestInputs.url,
       comments:
         "Input the path only (/ProjectServer/Projects(guid'9840c3b6-ac3d-ec11-bea0-00155d788e0a')), The base URL is already included ({pwaSite}/sites/pwa/_api). For example, to connect to {pwaSite}/sites/pwa/_api/ProjectServer/Projects(guid'9840c3b6-ac3d-ec11-bea0-00155d788e0a'), only /ProjectServer/Projects(guid'9840c3b6-ac3d-ec11-bea0-00155d788e0a') is entered in this field.",
-      example:
-        "/ProjectServer/Projects(guid'9840c3b6-ac3d-ec11-bea0-00155d788e0a')",
+      example: "/ProjectServer/Projects(guid'9840c3b6-ac3d-ec11-bea0-00155d788e0a')",
     },
   },
   perform: async (context, { connection, ...rawRequestInputs }) => {
     validateConnection(connection);
 
-    const url = new URL(
-      "/sites/pwa/_api",
-      util.types.toString(connection.fields.pwaSite),
-    );
+    const url = new URL("/sites/pwa/_api", util.types.toString(connection.fields.pwaSite));
 
     const { data } = await sendRawRequest(
       url.toString(),

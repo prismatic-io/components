@@ -27,10 +27,7 @@ export const createBatchContacts = action({
       inputs: batchInputs,
     };
 
-    const { data } = await client.post(
-      hubspotPaths.objects("contacts", "/batch/create"),
-      payload,
-    );
+    const { data } = await client.post(hubspotPaths.objects("contacts", "/batch/create"), payload);
 
     return {
       data,
@@ -41,8 +38,5 @@ export const createBatchContacts = action({
     data: createBatchContactsExamplePayload.data,
   }),
   examplePayload: createBatchContactsExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: batchResponseSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: batchResponseSchema }),
 });

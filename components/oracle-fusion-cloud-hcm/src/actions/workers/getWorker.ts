@@ -13,14 +13,8 @@ export const getWorker = action({
   },
   examplePayload: getWorkerExamplePayload,
   inputs: getWorkerInputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: workerRecordOutputSchema,
-  }),
-  perform: async (
-    context,
-    { connection, personId, expand, includeMetadataLinks },
-  ) => {
+  outputSchema: outputSchema({ type: "actionOutput", schema: workerRecordOutputSchema }),
+  perform: async (context, { connection, personId, expand, includeMetadataLinks }) => {
     const client = createClient(connection, context.debug.enabled);
     const { data } = await client.get<WorkerRecord>(`/workers/${personId}`, {
       params: {

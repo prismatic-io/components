@@ -1,12 +1,6 @@
 import { invoke } from "@prismatic-io/spectral/testing";
 import { listLocationsResponse } from "../../examplePayloads/locations";
-import {
-  apiPath,
-  listActionParams,
-  rampNock,
-  resetNock,
-  terminatePaging,
-} from "../../testHarness";
+import { apiPath, listActionParams, rampNock, resetNock, terminatePaging } from "../../testHarness";
 import { listLocations } from "./list";
 
 const PATH = apiPath("locations");
@@ -28,15 +22,9 @@ describe("listLocations", () => {
       .query({ page_size: "50" })
       .reply(200, terminatePaging(listLocationsResponse));
 
-    const { result } = await invoke(
-      listLocations,
-      listActionParams({ fetchAll: true }),
-    );
+    const { result } = await invoke(listLocations, listActionParams({ fetchAll: true }));
 
-    expect(result.data).toEqual({
-      data: listLocationsResponse.data,
-      page: null,
-    });
+    expect(result.data).toEqual({ data: listLocationsResponse.data, page: null });
   });
 
   test("surfaces an API failure", async () => {

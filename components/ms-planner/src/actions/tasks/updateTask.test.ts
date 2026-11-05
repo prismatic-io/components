@@ -12,11 +12,7 @@ const TASK_ID = "01gzSlKkIUSUl6DF_EilrmQAKDhh";
 const TASK_URL = `/v1.0/planner/tasks/${TASK_ID}`;
 const ETAG = 'W/"JzEtVGFzayAgQEBAQEBAQEBAQEBAQEBAWCc="';
 
-const connection = createConnection(
-  templatedOauth,
-  {},
-  { access_token: "test-token" },
-);
+const connection = createConnection(templatedOauth, {}, { access_token: "test-token" });
 
 const params = {
   connection,
@@ -58,9 +54,7 @@ test("sends only the fields the caller actually set", async () => {
     title: "Update the client list before launch",
   });
 
-  expect(patchedBody).toEqual({
-    title: "Update the client list before launch",
-  });
+  expect(patchedBody).toEqual({ title: "Update the client list before launch" });
   expect(result.data).toEqual(updateTaskExamplePayload.data);
 });
 
@@ -88,26 +82,19 @@ test("builds the assignment and category open types and preserves a percentCompl
     conversationThreadId: "thread-1",
     dueDateTime: "2024-01-22T12:00:00Z",
     assignments: {
-      "user-a": {
-        "@odata.type": ODATA_TYPE.assignment,
-        orderHint: DEFAULT_ORDER_HINT,
-      },
+      "user-a": { "@odata.type": ODATA_TYPE.assignment, orderHint: DEFAULT_ORDER_HINT },
     },
     appliedCategories: { category3: false },
   });
 });
 
 test("surfaces a rejected update", async () => {
-  const etagScope = nock(BASE)
-    .get(TASK_URL)
-    .reply(200, { "@odata.etag": ETAG });
+  const etagScope = nock(BASE).get(TASK_URL).reply(200, { "@odata.etag": ETAG });
   const errorScope = nock(BASE)
     .patch(TASK_URL)
     .reply(400, { error: { code: "invalidRequest" } });
 
-  await expect(invoke(updateTask, { ...params, title: "x" })).rejects.toThrow(
-    /status code 400/,
-  );
+  await expect(invoke(updateTask, { ...params, title: "x" })).rejects.toThrow(/status code 400/);
   expect(etagScope.isDone()).toBe(true);
   expect(errorScope.isDone()).toBe(true);
 });

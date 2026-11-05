@@ -25,9 +25,7 @@ export const searchContentFragments = action({
       filter: {
         path: params.path,
         onlyDirectChildren: params.onlyDirectChildren || undefined,
-        status: params.statuses.length
-          ? (params.statuses as ContentFragmentStatus[])
-          : undefined,
+        status: params.statuses.length ? (params.statuses as ContentFragmentStatus[]) : undefined,
         modelIds: params.modelIds.length ? params.modelIds : undefined,
         tags: params.tags.length ? params.tags : undefined,
         locale: params.locales.length ? params.locales : undefined,
@@ -39,9 +37,7 @@ export const searchContentFragments = action({
           params.dateRangeFilters?.publishedAfter,
           params.dateRangeFilters?.publishedBefore,
         ),
-        fullText: params.filters?.fullText
-          ? { text: params.filters.fullText }
-          : undefined,
+        fullText: params.filters?.fullText ? { text: params.filters.fullText } : undefined,
       },
       sort: params.filters?.sortOn
         ? [
@@ -65,10 +61,7 @@ export const searchContentFragments = action({
     return { data };
   },
   inputs: searchContentFragmentsInputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: searchContentFragmentsOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: searchContentFragmentsOutputSchema }),
   examplePerform: async () => searchContentFragmentsExamplePayload,
   examplePayload: searchContentFragmentsExamplePayload,
 });

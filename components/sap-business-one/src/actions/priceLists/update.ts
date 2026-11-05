@@ -13,15 +13,8 @@ export const updatePriceList = action({
     ...updatePriceListsInputs,
     connection,
   },
-  perform: async (
-    context,
-    { connection, bodyFields, PriceListNo, PriceListName },
-  ) => {
-    const client = await createClient(
-      connection,
-      context,
-      context.debug.enabled,
-    );
+  perform: async (context, { connection, bodyFields, PriceListNo, PriceListName }) => {
+    const client = await createClient(connection, context, context.debug.enabled);
 
     await client.patch(`/PriceLists(${PriceListNo})`, {
       PriceListName,

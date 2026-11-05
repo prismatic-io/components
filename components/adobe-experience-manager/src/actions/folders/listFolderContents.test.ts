@@ -50,37 +50,18 @@ describe("listFolderContents", () => {
     const { self, children, cursor } = listFolderContentsExamplePayload.data;
     nock(BASE)
       .get("/adobe/folders/")
-      .query({
-        path: params.path,
-        types: "FOLDER,ASSET",
-        orderBy: "name",
-        limit: "50",
-      })
+      .query({ path: params.path, types: "FOLDER,ASSET", orderBy: "name", limit: "50" })
       .reply(200, listFolderContentsExamplePayload.data)
       .get("/adobe/folders/")
-      .query({
-        path: params.path,
-        types: "FOLDER,ASSET",
-        orderBy: "name",
-        limit: "50",
-        cursor,
-      })
+      .query({ path: params.path, types: "FOLDER,ASSET", orderBy: "name", limit: "50", cursor })
       .reply(200, { self, children: [children[1]] });
-    const { result } = await invoke(listFolderContents, {
-      ...params,
-      fetchAll: true,
-    });
-    expect(result).toEqual({
-      data: { self, children: [...children, children[1]] },
-    });
+    const { result } = await invoke(listFolderContents, { ...params, fetchAll: true });
+    expect(result).toEqual({ data: { self, children: [...children, children[1]] } });
     expect(nock.isDone()).toBe(true);
   });
 
   test("surfaces a 404 for an unknown folder", async () => {
-    nock(BASE)
-      .get("/adobe/folders/")
-      .query(true)
-      .reply(404, { title: "Not Found" });
+    nock(BASE).get("/adobe/folders/").query(true).reply(404, { title: "Not Found" });
     await expect(invoke(listFolderContents, params)).rejects.toThrow(
       "Request failed with status code 404",
     );

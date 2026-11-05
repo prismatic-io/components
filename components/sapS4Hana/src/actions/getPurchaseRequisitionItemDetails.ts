@@ -16,8 +16,7 @@ import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
 export const getPurchaseRequisitionItemDetails = action({
   display: {
     label: "Get Purchase Requisition Item Details",
-    description:
-      "Gets the item details of all the items in a purchase requisition",
+    description: "Gets the item details of all the items in a purchase requisition",
   },
   perform: async (
     _,

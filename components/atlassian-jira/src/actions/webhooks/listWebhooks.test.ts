@@ -8,16 +8,12 @@ beforeAll(() => nock.disableNetConnect());
 afterAll(() => nock.enableNetConnect());
 afterEach(() => nock.cleanAll());
 
-const list = () =>
-  invoke(listWebhooks, { jiraConnection: basicConnection(), fetchAll: true });
+const list = () => invoke(listWebhooks, { jiraConnection: basicConnection(), fetchAll: true });
 
 describe("listWebhooks under basic auth", () => {
   test("reads the legacy webhook list once and returns the bare array, even with Fetch All on", async () => {
     const webhooks = listWebhooksExamplePayload.data.values;
-    const scope = jiraApi()
-      .get("/rest/webhooks/1.0/webhook")
-      .once()
-      .reply(200, webhooks);
+    const scope = jiraApi().get("/rest/webhooks/1.0/webhook").once().reply(200, webhooks);
 
     const { result } = await list();
 

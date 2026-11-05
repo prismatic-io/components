@@ -14,10 +14,7 @@ export const selectCompany = dataSource({
   dataSourceType: "picklist",
   perform: async (_context, { connection }) => {
     const client = createBasicAuthClient(connection);
-    const companies = await fetchAllPages<Company>(
-      client,
-      "/configuration/v1/company-details",
-    );
+    const companies = await fetchAllPages<Company>(client, "/configuration/v1/company-details");
     const result = toPicklistResult(companies, {
       getLabel: (company) => `${company.companyName} (${company.companyId})`,
       getKey: (company) => company.companyId,

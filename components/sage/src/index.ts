@@ -18,11 +18,7 @@ import {
   listContactTypes,
   updateContact,
 } from "./actions/contacts";
-import {
-  listAddressTypes,
-  listCountries,
-  listCurrencies,
-} from "./actions/generic";
+import { listAddressTypes, listCountries, listCurrencies } from "./actions/generic";
 import {
   createPurchaseInvoice,
   deletePurchaseInvoice,

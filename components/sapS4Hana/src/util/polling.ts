@@ -1,10 +1,5 @@
 import type { getSapClient } from "../client";
-import type {
-  PollingChangesObject,
-  PollingRecordChange,
-  PollingState,
-  SapRecord,
-} from "../types";
+import type { PollingChangesObject, PollingRecordChange, PollingState, SapRecord } from "../types";
 
 export const toSapDateTime = (isoString: string): string => {
   const d = new Date(isoString);

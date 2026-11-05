@@ -5,9 +5,7 @@ import { createTaskAttachmentExamplePayload } from "../../examplePayloads";
 import { createTaskAttachment } from "./createTaskAttachment";
 
 const API = "https://api.clickup.com";
-const connection = createConnection(clickUpApiKeyConnection, {
-  apiKey: "test-key",
-});
+const connection = createConnection(clickUpApiKeyConnection, { apiKey: "test-key" });
 
 interface Captured {
   body?: unknown;
@@ -15,12 +13,7 @@ interface Captured {
   headers?: Record<string, unknown>;
 }
 
-const mockClickUp = (
-  method: string,
-  path: string,
-  status: number,
-  reply: unknown,
-): Captured => {
+const mockClickUp = (method: string, path: string, status: number, reply: unknown): Captured => {
   const captured: Captured = {};
   nock(API)
     .intercept(`/api/v2${path}`, method, (body) => {
@@ -38,19 +31,11 @@ const mockClickUp = (
   return captured;
 };
 
-type ActionUnderTest = {
-  inputs: Record<string, { type?: string }>;
-  perform: unknown;
-};
+type ActionUnderTest = { inputs: Record<string, { type?: string }>; perform: unknown };
 
 const run = (action: ActionUnderTest, params: Record<string, unknown>) => {
-  const connectionKey = Object.keys(action.inputs).find(
-    (key) => action.inputs[key].type === "connection",
-  ) as string;
-  return invoke(
-    action as any,
-    { [connectionKey]: connection, ...params } as any,
-  );
+  const connectionKey = Object.keys(action.inputs).find((key) => action.inputs[key].type === "connection") as string;
+  return invoke(action as any, { [connectionKey]: connection, ...params } as any);
 };
 
 beforeAll(() => nock.disableNetConnect());
@@ -71,21 +56,12 @@ describe("createTaskAttachment", () => {
   };
 
   test("happy path uploads the file as multipart form data and returns the response", async () => {
-    const req = mockClickUp(
-      "POST",
-      "/task/9hx/attachment",
-      200,
-      createTaskAttachmentExamplePayload.data,
-    );
+    const req = mockClickUp("POST", "/task/9hx/attachment", 200, createTaskAttachmentExamplePayload.data);
     const { result } = await run(createTaskAttachment, params);
     expect(result).toEqual(createTaskAttachmentExamplePayload);
     expect(req.query).toEqual({ custom_task_ids: "false" });
-    expect(String(req.headers?.["content-type"])).toMatch(
-      /^multipart\/form-data; boundary=/,
-    );
-    expect(String(req.body)).toContain(
-      'name="attachment"; filename="notes.txt"',
-    );
+    expect(String(req.headers?.["content-type"])).toMatch(/^multipart\/form-data; boundary=/);
+    expect(String(req.body)).toContain('name="attachment"; filename="notes.txt"');
     expect(String(req.body)).toContain("hello world");
   });
 });

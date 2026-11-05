@@ -104,8 +104,7 @@ export const odataParams = {
   $skipToken: input({
     label: "Skip Token",
     type: "string",
-    comments:
-      "Retrieves the next page of results from result sets that span multiple pages.",
+    comments: "Retrieves the next page of results from result sets that span multiple pages.",
     required: false,
     placeholder: "Enter skip token",
     example: "X%274453707402000100000017...",
@@ -116,8 +115,7 @@ export const odataParams = {
 export const odataQueryParams = structuredObjectInput({
   label: "OData Query Parameters",
   required: false,
-  comments:
-    "OData system query options for filtering, sorting, selecting, and expanding results.",
+  comments: "OData system query options for filtering, sorting, selecting, and expanding results.",
   inputs: {
     $filter: odataParams.$filter,
     $select: odataParams.$select,

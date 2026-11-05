@@ -5,8 +5,7 @@ import { selectDisputeInputs } from "../inputs";
 export const selectDispute = dataSource({
   display: {
     label: "Select Dispute",
-    description:
-      "Select a dispute from a list of disputes in the connected Stripe account.",
+    description: "Select a dispute from a list of disputes in the connected Stripe account.",
   },
   dataSourceType: "picklist",
   inputs: selectDisputeInputs,

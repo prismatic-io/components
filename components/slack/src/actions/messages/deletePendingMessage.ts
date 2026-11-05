@@ -14,7 +14,7 @@ export const deletePendingMessage = action({
   performSafety: "notAllowed",
   perform: async (
     { debug: { enabled: debug } },
-    { connection, messageId, channelId },
+    { connection, messageId, channelId }
   ) => {
     debugLogger({ messageId, channelId, debug });
     const client = await createOauthClient({

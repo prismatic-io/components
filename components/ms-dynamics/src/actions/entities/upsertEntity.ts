@@ -9,10 +9,7 @@ export const upsertEntity = action({
     description: "Upserts a Microsoft Dynamics 365 CRM entity record.",
   },
   examplePayload: upsertEntityExamplePayload,
-  perform: async (
-    context,
-    { entityType, entityId, dynamicValues, fieldValues, connection },
-  ) => {
+  perform: async (context, { entityType, entityId, dynamicValues, fieldValues, connection }) => {
     const client = await createCrmClient(connection, context.debug.enabled);
 
     const payloadValues = { ...dynamicValues, ...fieldValues };

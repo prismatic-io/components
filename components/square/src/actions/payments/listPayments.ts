@@ -7,8 +7,7 @@ import { fetchAllPages } from "../../util";
 export const listPayments = action({
   display: {
     label: "List Payments",
-    description:
-      "Retrieves a list of payments taken by the account making the request.",
+    description: "Retrieves a list of payments taken by the account making the request.",
   },
   perform: async (
     context,
@@ -25,10 +24,7 @@ export const listPayments = action({
       cardBrand,
     },
   ) => {
-    const client = await createAuthorizedClient(
-      squareConnection,
-      context.debug.enabled,
-    );
+    const client = await createAuthorizedClient(squareConnection, context.debug.enabled);
 
     const data = await fetchAllPages(
       client,

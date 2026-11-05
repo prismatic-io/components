@@ -10,13 +10,7 @@ export const generatePrefixedHash = (
   primaryValue: string,
   secondaryValue?: string,
 ): string => {
-  const base = secondaryValue
-    ? `${primaryValue}${secondaryValue}`
-    : primaryValue;
-  const hash = crypto
-    .createHash("md5")
-    .update(base)
-    .digest("hex")
-    .substring(0, 20);
+  const base = secondaryValue ? `${primaryValue}${secondaryValue}` : primaryValue;
+  const hash = crypto.createHash("md5").update(base).digest("hex").substring(0, 20);
   return `${prefix}_${hash}`;
 };

@@ -12,11 +12,7 @@ const TASK_ID = "01gzSlKkIUSUl6DF_EilrmQAKDhh";
 const TASK_URL = `/v1.0/planner/tasks/${TASK_ID}`;
 const ETAG = 'W/"JzEtVGFzayAgQEBAQEBAQEBAQEBAQEBAWCc="';
 
-const connection = createConnection(
-  templatedOauth,
-  {},
-  { access_token: "test-token" },
-);
+const connection = createConnection(templatedOauth, {}, { access_token: "test-token" });
 const params = {
   connection,
   groupId: undefined,
@@ -52,9 +48,7 @@ test("completes the task by sending percentComplete 100 and nothing else", async
 });
 
 test("surfaces a rejected update", async () => {
-  const etagScope = nock(BASE)
-    .get(TASK_URL)
-    .reply(200, { "@odata.etag": ETAG });
+  const etagScope = nock(BASE).get(TASK_URL).reply(200, { "@odata.etag": ETAG });
   const errorScope = nock(BASE)
     .patch(TASK_URL)
     .reply(400, { error: { code: "invalidRequest" } });

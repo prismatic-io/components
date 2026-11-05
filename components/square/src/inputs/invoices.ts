@@ -1,11 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
-import {
-  fetchAll,
-  idempotencyKey,
-  locationId,
-  pagination,
-  squareConnection,
-} from "./common";
+import { fetchAll, idempotencyKey, locationId, pagination, squareConnection } from "./common";
 
 const invoiceQuery = input({
   label: "Query",
@@ -63,9 +57,7 @@ const updateInvoiceInput = input({
         ],
       },
       idempotency_key: "4ee82288-0910-499e-ab4c-5d0071dad1be",
-      fields_to_clear: [
-        "payment_requests[2da7964f-f3d2-4f43-81e8-5aa220bf3355].reminders",
-      ],
+      fields_to_clear: ["payment_requests[2da7964f-f3d2-4f43-81e8-5aa220bf3355].reminders"],
     },
     null,
     2,

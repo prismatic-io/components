@@ -1,11 +1,4 @@
-import {
-  connectionInput,
-  expand,
-  maxResults,
-  pagination,
-  projectId,
-  searchString,
-} from "./common";
+import { connectionInput, expand, maxResults, pagination, projectId, searchString } from "./common";
 
 export const getStatusListInputs = {
   jiraConnection: connectionInput,

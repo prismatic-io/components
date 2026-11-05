@@ -32,11 +32,7 @@ export const addDeal = action({
       } = {},
     },
   ) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      WebhookVersion.V2,
-    );
+    const client = createClient(connection, context.debug.enabled, WebhookVersion.V2);
     const { data } = await client.post("/deals", {
       title,
       value,
@@ -56,8 +52,5 @@ export const addDeal = action({
   },
   inputs: addDealInputs,
   examplePayload: addDealExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: addDealOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: addDealOutputSchema }),
 });

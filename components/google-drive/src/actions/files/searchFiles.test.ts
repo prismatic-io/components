@@ -3,11 +3,7 @@ import { createConnection, invoke } from "@prismatic-io/spectral/dist/testing";
 import { connection as connectionDefinition } from "../../connections";
 import { searchFiles } from "./searchFiles";
 
-const connection = createConnection(
-  connectionDefinition,
-  {},
-  { access_token: "test-token" },
-);
+const connection = createConnection(connectionDefinition, {}, { access_token: "test-token" });
 const DRIVE = "https://www.googleapis.com";
 
 const baseParams = {
@@ -78,10 +74,7 @@ describe("searchFiles", () => {
   });
 
   test("throws a TypeError, not the custom error, when the API response omits `files` entirely", async () => {
-    nock(DRIVE)
-      .get("/drive/v3/files")
-      .query(true)
-      .reply(200, { kind: "drive#fileList" });
+    nock(DRIVE).get("/drive/v3/files").query(true).reply(200, { kind: "drive#fileList" });
 
     await expect(
       invoke(searchFiles, {

@@ -3,12 +3,7 @@ import { getShopifyGraphQlClient } from "../client";
 import { MAX_LIMIT } from "../constants";
 import { eventTopicWebhookGqlExamplePayload } from "../examplePayloads";
 import { eventTopicWebhookGqlInputs } from "../inputs";
-import {
-  createWebhook,
-  deleteWebhookById,
-  listWebhooks,
-  webhookPerformFn,
-} from "../util";
+import { createWebhook, deleteWebhookById, listWebhooks, webhookPerformFn } from "../util";
 
 export const eventTopicWebhookGql = trigger({
   display: {
@@ -25,12 +20,7 @@ export const eventTopicWebhookGql = trigger({
     create: async (context, { shopifyConnection, webhookTopics }) => {
       const endpoint = context.webhookUrls[context.flow.name];
 
-      const client = getShopifyGraphQlClient(
-        shopifyConnection,
-        undefined,
-        false,
-        context.logger,
-      );
+      const client = getShopifyGraphQlClient(shopifyConnection, undefined, false, context.logger);
 
       const promises = webhookTopics.map((webhookTopic) =>
         createWebhook(client, {
@@ -46,12 +36,7 @@ export const eventTopicWebhookGql = trigger({
     },
     delete: async (context, { shopifyConnection }) => {
       const endpoint = context.webhookUrls[context.flow.name];
-      const client = getShopifyGraphQlClient(
-        shopifyConnection,
-        undefined,
-        false,
-        context.logger,
-      );
+      const client = getShopifyGraphQlClient(shopifyConnection, undefined, false, context.logger);
 
       const { webhookSubscriptions } = await listWebhooks(
         client,
@@ -62,9 +47,7 @@ export const eventTopicWebhookGql = trigger({
         undefined,
         endpoint,
       );
-      const promises = webhookSubscriptions.map((webhook) =>
-        deleteWebhookById(client, webhook.id),
-      );
+      const promises = webhookSubscriptions.map((webhook) => deleteWebhookById(client, webhook.id));
       await Promise.all(promises);
     },
   },

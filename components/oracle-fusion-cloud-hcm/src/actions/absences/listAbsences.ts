@@ -9,15 +9,11 @@ import { paginateResults } from "../../util/pagination";
 export const listAbsences = action({
   display: {
     label: "List Absences",
-    description:
-      "Retrieve a paginated list of absence entries from Oracle Fusion Cloud HCM.",
+    description: "Retrieve a paginated list of absence entries from Oracle Fusion Cloud HCM.",
   },
   examplePayload: listAbsencesExamplePayload,
   inputs: listAbsencesInputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: listAbsencesOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: listAbsencesOutputSchema }),
   perform: async (
     context,
     { connection, personId, fetchAll, pagination, includeMetadataLinks },

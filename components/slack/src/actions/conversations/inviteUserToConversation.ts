@@ -13,7 +13,7 @@ export const inviteUserToConversation = action({
   performSafety: "notAllowed",
   perform: async (
     { debug: { enabled: debug } },
-    { connection, channelName, userId },
+    { connection, channelName, userId }
   ) => {
     debugLogger({ debug, channelName, userId });
     const client = await createOauthClient({

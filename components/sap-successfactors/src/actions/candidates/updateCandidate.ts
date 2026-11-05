@@ -11,15 +11,7 @@ export const updateCandidate = action({
   inputs: updateCandidateInputs,
   perform: async (
     context,
-    {
-      connection,
-      additionalInputs,
-      candidateId,
-      country,
-      firstName,
-      lastName,
-      primaryEmail,
-    },
+    { connection, additionalInputs, candidateId, country, firstName, lastName, primaryEmail },
   ) => {
     const client = await createClient(connection, context.debug.enabled);
     await client.put(`/Candidate('${candidateId}')`, {

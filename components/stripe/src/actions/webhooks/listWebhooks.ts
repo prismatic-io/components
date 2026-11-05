@@ -11,10 +11,7 @@ export const listWebhooks = action({
     description: "Return a list of all webhook endpoints.",
   },
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { stripeConnection, timeout, pagination, fetchAll },
-  ) => {
+  perform: async (context, { stripeConnection, timeout, pagination, fetchAll }) => {
     const client = createStripeClient({
       stripeConnection,
       timeout,

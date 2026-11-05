@@ -23,18 +23,15 @@ export const createDraftTask = action({
       context.debug.enabled,
     );
 
-    const { data } = await client.post(
-      `/Projects('${params.guId}')/Draft/Tasks/add()`,
-      {
-        parameters: {
-          Name: params.taskName || undefined,
-          Notes: params.notes || undefined,
-          Start: params.taskStartDate || undefined,
-          ParentId: params.parentId || undefined,
-          Finish: params.taskFinishDate || undefined,
-        },
+    const { data } = await client.post(`/Projects('${params.guId}')/Draft/Tasks/add()`, {
+      parameters: {
+        Name: params.taskName || undefined,
+        Notes: params.notes || undefined,
+        Start: params.taskStartDate || undefined,
+        ParentId: params.parentId || undefined,
+        Finish: params.taskFinishDate || undefined,
       },
-    );
+    });
 
     return {
       data,

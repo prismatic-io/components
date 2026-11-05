@@ -23,13 +23,7 @@ export const updatePushConfig = action({
   },
   perform: async (
     _context,
-    {
-      connectionInput,
-      projectId,
-      subscription,
-      pushConfiguration,
-      subscriptionNameOrFullFormat,
-    },
+    { connectionInput, projectId, subscription, pushConfiguration, subscriptionNameOrFullFormat },
   ) => {
     const client = createClient(connectionInput);
     const subscriptionName = subscriptionNameOrFullFormat

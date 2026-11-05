@@ -7,22 +7,14 @@ import { generatePrefixedHash, getBase64FromUrl } from "../utils";
 
 export const pushNotificationWebhookDelete = async (
   { logger, webhookUrls, flow }: PushNotificationWebhookDeleteContext,
-  {
-    connection,
-    projectId,
-    topicId,
-    subscriptionId,
-  }: PushNotificationWebhookDeleteParams,
+  { connection, projectId, topicId, subscriptionId }: PushNotificationWebhookDeleteParams,
 ) => {
   const pubSubClient = await createPubSubClient(connection);
 
   const integrationFlowName = flow.name;
   const encodedId = getBase64FromUrl(webhookUrls[integrationFlowName]);
   const prefixedTopicId = generatePrefixedHash(topicId, encodedId);
-  const prefixedSubscriptionId = generatePrefixedHash(
-    subscriptionId,
-    encodedId,
-  );
+  const prefixedSubscriptionId = generatePrefixedHash(subscriptionId, encodedId);
 
   const subscriptionName = `projects/${projectId}/subscriptions/${prefixedSubscriptionId}`;
   try {
@@ -31,15 +23,8 @@ export const pushNotificationWebhookDelete = async (
     });
     logger.info(`Deleted subscription: ${subscriptionName}`);
   } catch (error: unknown) {
-    if (
-      typeof error === "object" &&
-      error !== null &&
-      "code" in error &&
-      error.code === 404
-    ) {
-      logger.warn(
-        `Subscription ${subscriptionName} was already deleted or does not exist`,
-      );
+    if (typeof error === "object" && error !== null && "code" in error && error.code === 404) {
+      logger.warn(`Subscription ${subscriptionName} was already deleted or does not exist`);
     } else {
       logger.error(`Failed to delete subscription: ${error}`);
     }
@@ -52,12 +37,7 @@ export const pushNotificationWebhookDelete = async (
     });
     logger.info(`Deleted topic: ${topicName}`);
   } catch (error: unknown) {
-    if (
-      typeof error === "object" &&
-      error !== null &&
-      "code" in error &&
-      error.code === 404
-    ) {
+    if (typeof error === "object" && error !== null && "code" in error && error.code === 404) {
       logger.warn(`Topic ${topicName} was already deleted or does not exist`);
     } else {
       logger.error(`Failed to delete topic: ${error}`);

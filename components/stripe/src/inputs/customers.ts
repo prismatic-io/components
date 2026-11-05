@@ -1,9 +1,5 @@
 import { input, structuredObjectInput } from "@prismatic-io/spectral";
-import {
-  cleanAmountInput,
-  cleanMetadataInput,
-  cleanStringInput,
-} from "../util";
+import { cleanAmountInput, cleanMetadataInput, cleanStringInput } from "../util";
 import {
   connectionInput,
   customerId,
@@ -15,8 +11,7 @@ import {
 export const customerName = input({
   label: "Full Name",
   type: "string",
-  comments:
-    "The customer's full name, displayed in the Stripe Dashboard and on receipts.",
+  comments: "The customer's full name, displayed in the Stripe Dashboard and on receipts.",
   example: "John Doe",
   placeholder: "Enter customer name",
   required: false,
@@ -69,8 +64,7 @@ export const customerCity = input({
 export const customerCountry = input({
   label: "Country",
   type: "string",
-  comments:
-    "The two-letter ISO 3166-1 alpha-2 country code for the customer's billing address.",
+  comments: "The two-letter ISO 3166-1 alpha-2 country code for the customer's billing address.",
   example: "US",
   placeholder: "Enter country code",
   required: false,
@@ -182,17 +176,9 @@ export const createCustomerInputs = {
   stripeConnection: connectionInput,
 };
 
-export const deleteCustomerInputs = {
-  customerId,
-  timeout,
-  stripeConnection: connectionInput,
-};
+export const deleteCustomerInputs = { customerId, timeout, stripeConnection: connectionInput };
 
-export const getCustomerInputs = {
-  customerId,
-  timeout,
-  stripeConnection: connectionInput,
-};
+export const getCustomerInputs = { customerId, timeout, stripeConnection: connectionInput };
 
 export const listCustomersInputs = {
   timeout,

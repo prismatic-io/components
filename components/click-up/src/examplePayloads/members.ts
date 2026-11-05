@@ -4,8 +4,7 @@ const memberObject = {
   email: "john.doe@example.com",
   color: "#7b68ee",
   initials: "JD",
-  profilePicture:
-    "https://attachments.clickup.com/profilePictures/81942673_abc.jpg",
+  profilePicture: "https://attachments.clickup.com/profilePictures/81942673_abc.jpg",
   role: 1,
   profileInfo: {
     display_profile: null,

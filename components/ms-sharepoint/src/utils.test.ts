@@ -3,8 +3,7 @@ import type { HttpClient } from "@prismatic-io/spectral/http";
 import type { DriveItem } from "./interfaces";
 import { getFilesFromDriveFN, paginateResults } from "./utils";
 
-const createMockClient = (getMock: Mock) =>
-  ({ get: getMock }) as unknown as HttpClient;
+const createMockClient = (getMock: Mock) => ({ get: getMock }) as unknown as HttpClient;
 
 const driveItem = (id: string, isFolder = false): DriveItem =>
   ({
@@ -29,10 +28,7 @@ describe("paginateResults", () => {
         },
       });
 
-      const result = await paginateResults(
-        createMockClient(getMock),
-        "/sites/abc/drives",
-      );
+      const result = await paginateResults(createMockClient(getMock), "/sites/abc/drives");
 
       expect(result).toEqual([{ id: "1" }, { id: "2" }]);
     });
@@ -42,21 +38,15 @@ describe("paginateResults", () => {
         .mockResolvedValueOnce({
           data: {
             value: [{ id: "1" }],
-            "@odata.nextLink":
-              "https://graph.microsoft.com/v1.0/next?token=abc",
+            "@odata.nextLink": "https://graph.microsoft.com/v1.0/next?token=abc",
           },
         })
         .mockResolvedValueOnce({ data: { value: [{ id: "2" }] } });
 
-      const result = await paginateResults(
-        createMockClient(getMock),
-        "/sites/abc/lists",
-      );
+      const result = await paginateResults(createMockClient(getMock), "/sites/abc/lists");
 
       expect(getMock).toHaveBeenCalledTimes(2);
-      expect(getMock.mock.calls[1][0]).toBe(
-        "https://graph.microsoft.com/v1.0/next?token=abc",
-      );
+      expect(getMock.mock.calls[1][0]).toBe("https://graph.microsoft.com/v1.0/next?token=abc");
       expect(result).toEqual([{ id: "1" }, { id: "2" }]);
     });
   });
@@ -70,13 +60,9 @@ describe("paginateResults", () => {
         },
       });
 
-      const result = await paginateResults(
-        createMockClient(getMock),
-        "/sites/abc/lists",
-        {
-          returnFullData: true,
-        },
-      );
+      const result = await paginateResults(createMockClient(getMock), "/sites/abc/lists", {
+        returnFullData: true,
+      });
 
       expect(result).toEqual({
         "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#lists",
@@ -88,28 +74,21 @@ describe("paginateResults", () => {
       getMock
         .mockResolvedValueOnce({
           data: {
-            "@odata.context":
-              "https://graph.microsoft.com/v1.0/$metadata#sites",
+            "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#sites",
             value: [{ id: "1" }],
-            "@odata.nextLink":
-              "https://graph.microsoft.com/v1.0/next?token=abc",
+            "@odata.nextLink": "https://graph.microsoft.com/v1.0/next?token=abc",
           },
         })
         .mockResolvedValueOnce({
           data: {
-            "@odata.context":
-              "https://graph.microsoft.com/v1.0/$metadata#sites",
+            "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#sites",
             value: [{ id: "2" }, { id: "3" }],
           },
         });
 
-      const result = (await paginateResults(
-        createMockClient(getMock),
-        "/sites",
-        {
-          returnFullData: true,
-        },
-      )) as Record<string, unknown>;
+      const result = (await paginateResults(createMockClient(getMock), "/sites", {
+        returnFullData: true,
+      })) as Record<string, unknown>;
 
       expect(result.value).toEqual([{ id: "1" }, { id: "2" }, { id: "3" }]);
       expect(result["@odata.nextLink"]).toBeUndefined();
@@ -120,31 +99,23 @@ describe("paginateResults", () => {
         .mockResolvedValueOnce({
           data: {
             value: [{ id: "1" }],
-            "@odata.nextLink":
-              "https://graph.microsoft.com/v1.0/delta?token=abc",
+            "@odata.nextLink": "https://graph.microsoft.com/v1.0/delta?token=abc",
           },
         })
         .mockResolvedValueOnce({
           data: {
             value: [{ id: "2" }],
-            "@odata.deltaLink":
-              "https://graph.microsoft.com/v1.0/delta?token=final",
+            "@odata.deltaLink": "https://graph.microsoft.com/v1.0/delta?token=final",
           },
         });
 
-      const result = (await paginateResults(
-        createMockClient(getMock),
-        "/drives/abc/root/delta",
-        {
-          returnFullData: true,
-          useTop: false,
-          excludeParents: true,
-        },
-      )) as Record<string, unknown>;
+      const result = (await paginateResults(createMockClient(getMock), "/drives/abc/root/delta", {
+        returnFullData: true,
+        useTop: false,
+        excludeParents: true,
+      })) as Record<string, unknown>;
 
-      expect(result["@odata.deltaLink"]).toBe(
-        "https://graph.microsoft.com/v1.0/delta?token=final",
-      );
+      expect(result["@odata.deltaLink"]).toBe("https://graph.microsoft.com/v1.0/delta?token=final");
       expect(result.value).toEqual([{ id: "1" }, { id: "2" }]);
     });
   });
@@ -155,8 +126,7 @@ describe("paginateResults", () => {
         .mockResolvedValueOnce({
           data: {
             value: [{ id: "1" }],
-            "@odata.nextLink":
-              "https://graph.microsoft.com/v1.0/next?token=abc",
+            "@odata.nextLink": "https://graph.microsoft.com/v1.0/next?token=abc",
           },
         })
         .mockResolvedValueOnce({ data: { value: [{ id: "2" }] } });
@@ -170,13 +140,9 @@ describe("paginateResults", () => {
     it("omits $top entirely when disabled, since delta token endpoints reject it", async () => {
       getMock.mockResolvedValueOnce({ data: { value: [] } });
 
-      await paginateResults(
-        createMockClient(getMock),
-        "/drives/abc/root/delta",
-        {
-          useTop: false,
-        },
-      );
+      await paginateResults(createMockClient(getMock), "/drives/abc/root/delta", {
+        useTop: false,
+      });
 
       expect(getMock.mock.calls[0][1].params).toBeUndefined();
     });
@@ -186,17 +152,11 @@ describe("paginateResults", () => {
     it("sends the Prefer header when enabled", async () => {
       getMock.mockResolvedValueOnce({ data: { value: [] } });
 
-      await paginateResults(
-        createMockClient(getMock),
-        "/drives/abc/root/delta",
-        {
-          excludeParents: true,
-        },
-      );
-
-      expect(getMock.mock.calls[0][1].headers).toEqual({
-        Prefer: "deltaExcludeParent",
+      await paginateResults(createMockClient(getMock), "/drives/abc/root/delta", {
+        excludeParents: true,
       });
+
+      expect(getMock.mock.calls[0][1].headers).toEqual({ Prefer: "deltaExcludeParent" });
     });
 
     it("leaves the Prefer header unset by default", async () => {
@@ -234,20 +194,15 @@ describe("getFilesFromDriveFN", () => {
   it("returns the enveloped shape with the drive root's context", async () => {
     getMock.mockResolvedValueOnce({
       data: {
-        "@odata.context":
-          "https://graph.microsoft.com/v1.0/$metadata#root/children",
+        "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#root/children",
         value: [driveItem("file-1")],
       },
     });
 
-    const result = await getFilesFromDriveFN(
-      createMockClient(getMock),
-      "drive-abc",
-    );
+    const result = await getFilesFromDriveFN(createMockClient(getMock), "drive-abc");
 
     expect(result).toEqual({
-      "@odata.context":
-        "https://graph.microsoft.com/v1.0/$metadata#root/children",
+      "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#root/children",
       value: [driveItem("file-1")],
     });
   });
@@ -256,28 +211,21 @@ describe("getFilesFromDriveFN", () => {
     getMock
       .mockResolvedValueOnce({
         data: {
-          "@odata.context":
-            "https://graph.microsoft.com/v1.0/$metadata#root/children",
+          "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#root/children",
           value: [driveItem("file-1"), driveItem("folder-1", true)],
         },
       })
       .mockResolvedValueOnce({
         data: {
-          "@odata.context":
-            "https://graph.microsoft.com/v1.0/$metadata#items/folder-1/children",
+          "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#items/folder-1/children",
           value: [driveItem("file-2")],
         },
       });
 
-    const result = await getFilesFromDriveFN(
-      createMockClient(getMock),
-      "drive-abc",
-    );
+    const result = await getFilesFromDriveFN(createMockClient(getMock), "drive-abc");
 
     expect(getMock.mock.calls[0][0]).toBe("/drives/drive-abc/root/children");
-    expect(getMock.mock.calls[1][0]).toBe(
-      "/drives/drive-abc/items/folder-1/children",
-    );
+    expect(getMock.mock.calls[1][0]).toBe("/drives/drive-abc/items/folder-1/children");
     expect(result["@odata.context"]).toBe(
       "https://graph.microsoft.com/v1.0/$metadata#root/children",
     );
@@ -285,11 +233,9 @@ describe("getFilesFromDriveFN", () => {
   });
 
   it("omits the context when no root request is made", async () => {
-    const result = await getFilesFromDriveFN(
-      createMockClient(getMock),
-      "drive-abc",
-      [driveItem("file-1")],
-    );
+    const result = await getFilesFromDriveFN(createMockClient(getMock), "drive-abc", [
+      driveItem("file-1"),
+    ]);
 
     expect(getMock).not.toHaveBeenCalled();
     expect(result).toEqual({ value: [driveItem("file-1")] });

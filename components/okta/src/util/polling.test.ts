@@ -34,9 +34,7 @@ describe("resolveSystemLogChanges", () => {
   };
 
   test("tags every event as created", () => {
-    expect(resolveSystemLogChanges([event])).toEqual([
-      { changeType: "created", record: event },
-    ]);
+    expect(resolveSystemLogChanges([event])).toEqual([{ changeType: "created", record: event }]);
   });
 
   test("tolerates an absent or empty array", () => {
@@ -47,8 +45,7 @@ describe("resolveSystemLogChanges", () => {
 
 describe("getNextLinkUrl", () => {
   const self = '<https://example.okta.com/api/v1/logs?limit=50>; rel="self"';
-  const next =
-    '<https://example.okta.com/api/v1/logs?after=abc,def&limit=50>; rel="next"';
+  const next = '<https://example.okta.com/api/v1/logs?after=abc,def&limit=50>; rel="next"';
 
   test("reads rel=next from a joined header, URLs containing commas included", () => {
     expect(getNextLinkUrl(`${self}, ${next}`)).toBe(
@@ -72,9 +69,6 @@ describe("systemLogsWindowBounds", () => {
   });
 
   test("an unbatched recurrence keeps the full-size page and the page budget", () => {
-    expect(systemLogsWindowBounds(false)).toEqual({
-      pageSize: 1000,
-      maxPages: 20,
-    });
+    expect(systemLogsWindowBounds(false)).toEqual({ pageSize: 1000, maxPages: 20 });
   });
 });

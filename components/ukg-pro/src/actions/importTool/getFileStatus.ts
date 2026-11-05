@@ -12,9 +12,7 @@ export const getFileStatus = action({
   perform: async (context, { connection, fileId }) => {
     const client = createBasicAuthClient(connection, context.debug.enabled);
 
-    const { data } = await client.get(
-      `/personnel/v1/import-tool/file-status/${fileId}`,
-    );
+    const { data } = await client.get(`/personnel/v1/import-tool/file-status/${fileId}`);
 
     return { data };
   },

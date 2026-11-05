@@ -1,14 +1,10 @@
 import { afterEach, describe, expect, test, vi } from "vitest";
 import { createMockConnection } from "../testHelpers";
 
-const { mockRetrieveAttributes } = vi.hoisted(() => ({
-  mockRetrieveAttributes: vi.fn(),
-}));
+const { mockRetrieveAttributes } = vi.hoisted(() => ({ mockRetrieveAttributes: vi.fn() }));
 
 vi.mock("../client", () => ({
-  createCrmClient: vi
-    .fn()
-    .mockResolvedValue({ retrieveAttributes: mockRetrieveAttributes }),
+  createCrmClient: vi.fn().mockResolvedValue({ retrieveAttributes: mockRetrieveAttributes }),
 }));
 
 import { selectAttribute } from "./selectAttribute";

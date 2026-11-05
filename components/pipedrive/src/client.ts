@@ -6,9 +6,7 @@ import {
 import { getBaseUrl, validateConnection } from "./util";
 import { WebhookVersion } from "./constants";
 
-export const toAuthorizationHeaders = (
-  connection: Connection,
-): { Authorization: string } => {
+export const toAuthorizationHeaders = (connection: Connection): { Authorization: string } => {
   const accessToken = util.types.toString(connection.token?.access_token);
   if (accessToken) {
     return { Authorization: `Bearer ${accessToken}` };

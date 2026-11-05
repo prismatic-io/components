@@ -38,8 +38,5 @@ export const addLead = action({
   },
   inputs: addLeadInputs,
   examplePayload: addLeadExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: addLeadOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: addLeadOutputSchema }),
 });

@@ -9,15 +9,11 @@ import { paginateResults } from "../../util/pagination";
 export const listGrades = action({
   display: {
     label: "List Grades",
-    description:
-      "Retrieve a paginated list of compensation grades from Oracle Fusion Cloud HCM.",
+    description: "Retrieve a paginated list of compensation grades from Oracle Fusion Cloud HCM.",
   },
   examplePayload: listGradesExamplePayload,
   inputs: listGradesInputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: listGradesOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: listGradesOutputSchema }),
   perform: async (
     context,
     { connection, fetchAll, pagination, effectiveDate, includeMetadataLinks },

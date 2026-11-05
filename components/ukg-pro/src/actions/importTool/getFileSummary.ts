@@ -12,9 +12,7 @@ export const getFileSummary = action({
   perform: async (context, { connection, fileId }) => {
     const client = createBasicAuthClient(connection, context.debug.enabled);
 
-    const { data } = await client.get(
-      `/personnel/v1/import-tool/file-summary/${fileId}`,
-    );
+    const { data } = await client.get(`/personnel/v1/import-tool/file-summary/${fileId}`);
 
     return { data };
   },

@@ -6,10 +6,7 @@ const fulfillmentServiceSchema = {
     id: { type: "string" as const },
     serviceName: { type: "string" as const },
     handle: { type: "string" as const },
-    location: {
-      type: "object" as const,
-      properties: { id: { type: "string" as const } },
-    },
+    location: { type: "object" as const, properties: { id: { type: "string" as const } } },
     callbackUrl: { type: ["string", "null"] },
     trackingSupport: { type: "boolean" as const },
     inventoryManagement: { type: "boolean" as const },
@@ -43,12 +40,8 @@ export const getFulfillmentServiceGqlOutputSchema = {
 export const listFulfillmentServicesGqlOutputSchema = {
   type: "object" as const,
   properties: {
-    fulfillmentServices: {
-      type: "array" as const,
-      items: fulfillmentServiceSchema,
-    },
+    fulfillmentServices: { type: "array" as const, items: fulfillmentServiceSchema },
   },
 };
 
-export const updateFulfillmentServiceGqlOutputSchema =
-  createFulfillmentServiceGqlOutputSchema;
+export const updateFulfillmentServiceGqlOutputSchema = createFulfillmentServiceGqlOutputSchema;

@@ -13,8 +13,7 @@ export const selectInvoice = dataSource({
     const client = createStripeClient({
       stripeConnection,
     });
-    const { data } =
-      (await client.invoices.list()) as unknown as StripeResponse<Invoice>;
+    const { data } = (await client.invoices.list()) as unknown as StripeResponse<Invoice>;
 
     return {
       result: data.map(({ id, description, currency }) => ({

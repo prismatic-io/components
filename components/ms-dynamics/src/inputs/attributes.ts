@@ -14,8 +14,7 @@ const attributeType = input({
   placeholder: "Enter attribute type",
   type: "string",
   required: true,
-  comments:
-    "The CRM attribute type to filter by, e.g., 'Money', 'String', 'Picklist'.",
+  comments: "The CRM attribute type to filter by, e.g., 'Money', 'String', 'Picklist'.",
   example: "String",
   clean: util.types.toString,
 });

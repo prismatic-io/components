@@ -3,9 +3,7 @@ import { clientCredentials as oauth } from "../connections";
 
 import component from "..";
 
-const describeIntegrationTest = process.env.PRISMATIC_CONNECTION_VALUE
-  ? describe
-  : describe.skip;
+const describeIntegrationTest = process.env.PRISMATIC_CONNECTION_VALUE ? describe : describe.skip;
 
 describeIntegrationTest("conversations", () => {
   const harness = testing.createHarness(component);
@@ -16,8 +14,7 @@ describeIntegrationTest("conversations", () => {
       connection,
       serviceUrl: "https://smba.trafficmanager.net/teams/",
       apiVersion: "3",
-      conversationId:
-        "19:Tc7ktfj4VF7CZ9grVlyNeUh-kt1GkTldtNQm_U_dgSE1@thread.tacv2",
+      conversationId: "19:Tc7ktfj4VF7CZ9grVlyNeUh-kt1GkTldtNQm_U_dgSE1@thread.tacv2",
     });
     console.log(JSON.stringify(result));
     expect(result).toBeDefined();

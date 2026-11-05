@@ -5,8 +5,6 @@ import type {
 } from "@aws-sdk/client-s3";
 
 export interface UploadStreamExecutionState {
-  uploadFinisher: Promise<
-    CompleteMultipartUploadCommandOutput | AbortMultipartUploadCommandOutput
-  >;
+  uploadFinisher: Promise<CompleteMultipartUploadCommandOutput | AbortMultipartUploadCommandOutput>;
   fileStream: PassThrough;
 }

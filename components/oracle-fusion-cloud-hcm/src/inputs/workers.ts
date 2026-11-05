@@ -15,8 +15,7 @@ const NameType = input({
   type: "string",
   required: false,
   default: "GLOBAL",
-  comments:
-    "The type of name (e.g. GLOBAL). Required by Oracle when creating a worker name.",
+  comments: "The type of name (e.g. GLOBAL). Required by Oracle when creating a worker name.",
   placeholder: "Enter name type",
   example: "GLOBAL",
   clean: cleanString,
@@ -26,8 +25,7 @@ const LastName = input({
   label: "Last Name",
   type: "string",
   required: false,
-  comments:
-    "The worker's last name. Required by Oracle when creating a worker.",
+  comments: "The worker's last name. Required by Oracle when creating a worker.",
   placeholder: "Enter last name",
   example: "Smith",
   clean: cleanString,
@@ -78,8 +76,7 @@ const PersonNumber = input({
   label: "Person Number",
   type: "string",
   required: false,
-  comments:
-    "The business key for the worker. Leave blank to let Oracle auto-generate it.",
+  comments: "The business key for the worker. Leave blank to let Oracle auto-generate it.",
   placeholder: "Enter person number",
   example: "100000012345678",
   clean: cleanString,
@@ -259,8 +256,7 @@ const EmailType = input({
   label: "Email Type",
   type: "string",
   required: false,
-  comments:
-    "The type of email (e.g. W1 for work). Required by Oracle when adding an email.",
+  comments: "The type of email (e.g. W1 for work). Required by Oracle when adding an email.",
   placeholder: "Enter email type",
   example: "W1",
   clean: cleanString,
@@ -301,8 +297,7 @@ const PhoneType = input({
   label: "Phone Type",
   type: "string",
   required: false,
-  comments:
-    "The type of phone (e.g. W1 for work). Required by Oracle when adding a phone.",
+  comments: "The type of phone (e.g. W1 for work). Required by Oracle when adding a phone.",
   placeholder: "Enter phone type",
   example: "W1",
   clean: cleanString,
@@ -377,8 +372,7 @@ const NationalIdentifierNumber = input({
   label: "National Identifier Number",
   type: "string",
   required: false,
-  comments:
-    "The national identifier number. Required by Oracle when adding a national identifier.",
+  comments: "The national identifier number. Required by Oracle when adding a national identifier.",
   placeholder: "Enter national identifier number",
   example: "555-55-5555",
   clean: cleanString,
@@ -411,8 +405,7 @@ const LegalEntityId = input({
   label: "Legal Entity ID",
   type: "string",
   required: false,
-  comments:
-    "The legal entity (employer) the worker belongs to. Required to create a worker.",
+  comments: "The legal entity (employer) the worker belongs to. Required to create a worker.",
   placeholder: "Enter legal entity ID",
   example: "300100000000001",
   clean: cleanString,
@@ -422,8 +415,7 @@ const StartDate = input({
   label: "Start Date",
   type: "string",
   required: false,
-  comments:
-    "The worker's start date, in YYYY-MM-DD format. Required to create a worker.",
+  comments: "The worker's start date, in YYYY-MM-DD format. Required to create a worker.",
   placeholder: "Enter start date (YYYY-MM-DD)",
   example: "2024-01-01",
   clean: cleanString,
@@ -515,8 +507,7 @@ const createWorkRelationships = structuredObjectInput({
   label: "Work Relationships",
   collection: "valuelist",
   required: false,
-  comments:
-    "The worker's work relationship(s) with a legal employer. Add a row per relationship.",
+  comments: "The worker's work relationship(s) with a legal employer. Add a row per relationship.",
   inputs: {
     ...workRelationshipChildren,
     LegalEntityId: { ...LegalEntityId, required: true },
@@ -529,8 +520,7 @@ const updateWorkRelationships = structuredObjectInput({
   label: "Work Relationships",
   collection: "valuelist",
   required: false,
-  comments:
-    "The worker's work relationship(s) with a legal employer. Add a row per relationship.",
+  comments: "The worker's work relationship(s) with a legal employer. Add a row per relationship.",
   inputs: workRelationshipChildren,
 });
 

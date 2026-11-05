@@ -13,16 +13,11 @@ export const updateEvent = action({
   inputs: updateEventInputs,
   perform: async (context, params) => {
     const client = createClient(params.connection, context.debug.enabled);
-    const url = computeEndpointBasedOnConnection(
-      params.connection,
-      `/me/events/${params.eventId}`,
-    );
+    const url = computeEndpointBasedOnConnection(params.connection, `/me/events/${params.eventId}`);
 
     const attendees: Attendee[] = [
       ...params.attendees,
-      ...(params.attendeesData && Array.isArray(params.attendeesData)
-        ? params.attendeesData
-        : []),
+      ...(params.attendeesData && Array.isArray(params.attendeesData) ? params.attendeesData : []),
     ];
 
     const payload: Event = {};

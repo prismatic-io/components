@@ -1,12 +1,7 @@
 import { action, util } from "@prismatic-io/spectral";
 import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
 import { getSapClient } from "../client";
-import {
-  requestBodyCode,
-  connectionInput,
-  recordId,
-  recordType,
-} from "../inputs";
+import { requestBodyCode, connectionInput, recordId, recordType } from "../inputs";
 import { UPDATE_PURCHASE_REQUISITION_DEFAULT_VALUE } from "../constants";
 
 export const updateRecord = action({
@@ -14,10 +9,7 @@ export const updateRecord = action({
     label: "Update Record",
     description: "Updates an existing record in SAP S/4HANA.",
   },
-  perform: async (
-    _context,
-    { requestBodyCode, connectionInput, recordType, recordId },
-  ) => {
+  perform: async (_context, { requestBodyCode, connectionInput, recordType, recordId }) => {
     const headers = {
       Accept: "*/*",
       "Content-Type": "application/json",

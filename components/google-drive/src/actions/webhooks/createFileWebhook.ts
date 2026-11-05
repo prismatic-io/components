@@ -9,8 +9,7 @@ import { createFileWebhookExamplePayload } from "../../examplePayloads";
 export const createFileWebhook = action({
   display: {
     label: "Create Webhook for File or Folder",
-    description:
-      "Create a webhook to receive notifications of changes for a file or folder",
+    description: "Create a webhook to receive notifications of changes for a file or folder",
   },
   inputs: createFileWebhookInputs,
   outputSchema: outputSchema({
@@ -32,10 +31,7 @@ export const createFileWebhook = action({
     });
     return { data };
   },
-  examplePerform: async (
-    _context,
-    { endpoint, expiration },
-  ): Promise<{ data: unknown }> => ({
+  examplePerform: async (_context, { endpoint, expiration }): Promise<{ data: unknown }> => ({
     data: {
       ...createFileWebhookExamplePayload.data,
       address: endpoint,

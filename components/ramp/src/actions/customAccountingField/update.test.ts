@@ -1,11 +1,6 @@
 import { invoke } from "@prismatic-io/spectral/testing";
 import { getCustomAccountingFieldResponse } from "../../examplePayloads/customAccountingFields";
-import {
-  apiPath,
-  rampNock,
-  resetNock,
-  testConnection,
-} from "../../testHarness";
+import { apiPath, rampNock, resetNock, testConnection } from "../../testHarness";
 import { updateCustomAccountingField } from "./update";
 
 const FIELD_ID = "Department";
@@ -26,10 +21,7 @@ describe("updateCustomAccountingField", () => {
       isSplittable: false,
     });
 
-    expect(result.data).toEqual({
-      ...getCustomAccountingFieldResponse,
-      name: "Cost Center",
-    });
+    expect(result.data).toEqual({ ...getCustomAccountingFieldResponse, name: "Cost Center" });
   });
 
   test("surfaces an API failure", async () => {

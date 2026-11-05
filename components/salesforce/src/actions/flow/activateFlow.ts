@@ -19,8 +19,7 @@ export const activateFlow = action({
     const result = await activateFlowFunction(client, fullName);
     return { data: processMetadataResult(result) };
   },
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    activateFlowExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => activateFlowExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: saveFlowOutputSchema,

@@ -8,14 +8,8 @@ export const updateLocation = action({
     label: "Update Location",
     description: "Updates a location associated with a Square account.",
   },
-  perform: async (
-    context,
-    { locationId, locationUpdate, squareConnection },
-  ) => {
-    const client = await createAuthorizedClient(
-      squareConnection,
-      context.debug.enabled,
-    );
+  perform: async (context, { locationId, locationUpdate, squareConnection }) => {
+    const client = await createAuthorizedClient(squareConnection, context.debug.enabled);
 
     const params: Record<string, unknown> = {};
 

@@ -15,9 +15,7 @@ export const listDraftAssignments = action({
       context.debug.enabled,
     );
 
-    const { data } = await client.get(
-      `/Projects('${params.guId}')/Draft/Assignments`,
-    );
+    const { data } = await client.get(`/Projects('${params.guId}')/Draft/Assignments`);
 
     return {
       data,

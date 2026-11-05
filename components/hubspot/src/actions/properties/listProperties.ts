@@ -24,10 +24,7 @@ export const listProperties = action({
   },
   inputs: listPropertiesInputs,
   examplePayload: listPropertiesExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: listPropertiesOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: listPropertiesOutputSchema }),
 });
 
 export default listProperties;

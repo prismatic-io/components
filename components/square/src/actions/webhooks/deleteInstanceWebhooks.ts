@@ -9,10 +9,7 @@ export const deleteInstanceWebhooks = action({
     description: "Deletes all webhooks that point to a flow in this instance.",
   },
   perform: async (context, { squareConnection }) => {
-    const client = await createAuthorizedClient(
-      squareConnection,
-      context.debug.enabled,
-    );
+    const client = await createAuthorizedClient(squareConnection, context.debug.enabled);
 
     const listResponse = await client.get("/v2/webhooks/subscriptions");
     const allSubscriptions = listResponse.data;

@@ -3,11 +3,7 @@ import { createClickUpClient } from "../../client";
 import { updateTaskExamplePayload } from "../../examplePayloads";
 import { updateTaskInputs } from "../../inputs";
 import { updateTaskOutputSchema } from "../../outputSchemas";
-import type {
-  Assignees,
-  UpdateTaskBody,
-  UpdateTaskQueryParams,
-} from "../../types";
+import type { Assignees, UpdateTaskBody, UpdateTaskQueryParams } from "../../types";
 
 export const updateTask = action({
   display: {
@@ -37,7 +33,7 @@ export const updateTask = action({
       removeAssignees,
       archived,
       markdownDescription,
-    },
+    }
   ) => {
     const assignees: Assignees = {
       add: addAssignees?.length ? addAssignees : [],

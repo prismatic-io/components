@@ -45,8 +45,7 @@ export const updatePaymentIntent = action({
         setup_future_usage:
           additionalFields.setupFutureUsage as Stripe.PaymentIntentCreateParams.SetupFutureUsage,
       }),
-      shipping:
-        additionalFields.shipping as Stripe.PaymentIntentUpdateParams.Shipping,
+      shipping: additionalFields.shipping as Stripe.PaymentIntentUpdateParams.Shipping,
       ...(additionalFields.statementDescriptor && {
         statement_descriptor: additionalFields.statementDescriptor,
       }),
@@ -65,9 +64,7 @@ export const updatePaymentIntent = action({
         payment_method_types: paymentMethodTypes,
       }),
       transfer_data: transferOptions.transferData,
-      ...(transferOptions.transferGroup && {
-        transfer_group: transferOptions.transferGroup,
-      }),
+      ...(transferOptions.transferGroup && { transfer_group: transferOptions.transferGroup }),
     };
     return {
       data: await client.paymentIntents.update(paymentIntentId, params),
@@ -89,10 +86,7 @@ export const updatePaymentIntent = action({
       paymentIntentId,
     },
   ): Promise<{ data: unknown }> => {
-    const intent = updatePaymentIntentExamplePayload.data as Record<
-      string,
-      unknown
-    >;
+    const intent = updatePaymentIntentExamplePayload.data as Record<string, unknown>;
 
     return {
       data: {

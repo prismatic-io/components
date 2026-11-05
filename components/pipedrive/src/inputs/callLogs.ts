@@ -86,8 +86,7 @@ const startTime = input({
   type: "string",
   required: true,
   clean: cleanString,
-  comments:
-    "The date and time when the call started, in UTC. Format: ISO 8601.",
+  comments: "The date and time when the call started, in UTC. Format: ISO 8601.",
   example: "2024-01-15T10:30:00Z",
   placeholder: "Enter start time (ISO 8601)",
 });

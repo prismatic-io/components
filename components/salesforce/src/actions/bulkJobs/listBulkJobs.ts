@@ -10,10 +10,7 @@ export const listBulkJobs = action({
   },
   inputs: listBulkJobsInputs,
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { version, connection, isPkChunkingEnabled, jobType, queryLocator },
-  ) => {
+  perform: async (context, { version, connection, isPkChunkingEnabled, jobType, queryLocator }) => {
     const salesforceClient = await createSalesforceHttpClient(
       version,
       connection,
@@ -30,7 +27,6 @@ export const listBulkJobs = action({
       data,
     };
   },
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    listBulkQueryJobsExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => listBulkQueryJobsExamplePayload,
   examplePayload: listBulkQueryJobsExamplePayload,
 });

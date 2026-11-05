@@ -3,8 +3,7 @@ const userObject = {
   username: "John Doe",
   email: "john.doe@example.com",
   color: "#7b68ee",
-  profilePicture:
-    "https://attachments.clickup.com/profilePictures/81942673_abc.jpg",
+  profilePicture: "https://attachments.clickup.com/profilePictures/81942673_abc.jpg",
   initials: "JD",
   role: 3,
   custom_role: {
@@ -22,8 +21,7 @@ const invitedByObject = {
   color: "#e91e63",
   email: "jane.smith@example.com",
   initials: "JS",
-  profilePicture:
-    "https://attachments.clickup.com/profilePictures/81942670_def.jpg",
+  profilePicture: "https://attachments.clickup.com/profilePictures/81942670_def.jpg",
 };
 
 const memberObject = {

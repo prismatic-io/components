@@ -52,18 +52,9 @@ export const createCustomer = action({
   },
   examplePerform: async (
     _context,
-    {
-      contactInfo,
-      address,
-      customerBalance,
-      customerDescription,
-      customerMetadata,
-    },
+    { contactInfo, address, customerBalance, customerDescription, customerMetadata },
   ): Promise<{ data: unknown }> => {
-    const customer = createCustomerExamplePayload.data as Record<
-      string,
-      unknown
-    >;
+    const customer = createCustomerExamplePayload.data as Record<string, unknown>;
 
     return {
       data: {

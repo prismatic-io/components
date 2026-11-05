@@ -11,10 +11,7 @@ export const getFulfillmentOrder = action({
     description: "Retrieves a specific fulfillment order by ID.",
   },
   inputs: getFulfillmentOrderInputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getFulfillmentOrderOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getFulfillmentOrderOutputSchema }),
   performSafety: "safe",
   perform: async (context, params) => {
     const { data } = await getFulfillmentOrderGql.perform(context, {

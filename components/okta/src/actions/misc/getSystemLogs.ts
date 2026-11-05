@@ -11,10 +11,7 @@ export const getSystemLogs = action({
       "Retrieves system log events for security monitoring and compliance auditing, up to a maximum of 10000 records per request.",
   },
   inputs: getSystemLogInputs,
-  perform: async (
-    context,
-    { connection, filters = {}, sortOrder, fetchAll, pagination = {} },
-  ) => {
+  perform: async (context, { connection, filters = {}, sortOrder, fetchAll, pagination = {} }) => {
     const client = await createClient(connection, context.debug.enabled);
     const data = await paginateRecordsWithLink(client, "/logs", fetchAll, {
       after: pagination.after,

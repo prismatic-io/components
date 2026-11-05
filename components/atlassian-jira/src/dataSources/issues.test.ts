@@ -9,13 +9,8 @@ import {
 import { basicConnection, jiraApi } from "../testHelpers";
 import issues from "./issues";
 
-const {
-  selectIssueType,
-  selectIssueTypes,
-  issueFields,
-  selectIssue,
-  selectIssueTypeFromProject,
-} = issues;
+const { selectIssueType, selectIssueTypes, issueFields, selectIssue, selectIssueTypeFromProject } =
+  issues;
 
 beforeAll(() => nock.disableNetConnect());
 afterAll(() => nock.enableNetConnect());
@@ -24,10 +19,7 @@ afterEach(() => nock.cleanAll());
 const [task, bug, story] = listIssueTypesExamplePayload.data;
 
 const mockIssueTypes = (projectId: string, body: unknown[]) =>
-  jiraApi()
-    .get("/rest/api/3/issuetype/project")
-    .query({ projectId })
-    .reply(200, body);
+  jiraApi().get("/rest/api/3/issuetype/project").query({ projectId }).reply(200, body);
 
 describe("selectIssueType", () => {
   test("returns name-sorted key/label elements for one project", async () => {
@@ -197,9 +189,7 @@ describe("issueFields", () => {
       onlyCustomFields: true,
     });
 
-    expect(result).toEqual([
-      { label: "Story Points", key: "customfield_10000" },
-    ]);
+    expect(result).toEqual([{ label: "Story Points", key: "customfield_10000" }]);
   });
 
   test("returns an empty list when Jira reports no fields", async () => {
@@ -232,10 +222,7 @@ describe("selectIssue", () => {
   });
 
   test("returns an empty list when the project has no issues", async () => {
-    jiraApi()
-      .get("/rest/api/3/search/jql")
-      .query(true)
-      .reply(200, { isLast: true, issues: [] });
+    jiraApi().get("/rest/api/3/search/jql").query(true).reply(200, { isLast: true, issues: [] });
 
     const { result } = await invokeDataSource(selectIssue, {
       jiraConnection: basicConnection(),

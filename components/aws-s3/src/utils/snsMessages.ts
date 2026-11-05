@@ -5,14 +5,7 @@ import type { SnsCertificateFetcher, SnsMessage } from "../types";
 const SNS_HOSTNAME = /^sns\.[a-z0-9-]+\.amazonaws\.com(\.cn)?$/;
 
 const SIGNED_FIELDS: Record<string, (keyof SnsMessage)[]> = {
-  Notification: [
-    "Message",
-    "MessageId",
-    "Subject",
-    "Timestamp",
-    "TopicArn",
-    "Type",
-  ],
+  Notification: ["Message", "MessageId", "Subject", "Timestamp", "TopicArn", "Type"],
   SubscriptionConfirmation: [
     "Message",
     "MessageId",
@@ -33,10 +26,7 @@ const SIGNED_FIELDS: Record<string, (keyof SnsMessage)[]> = {
   ],
 };
 
-const SIGNATURE_ALGORITHMS: Record<string, string> = {
-  "1": "sha1",
-  "2": "sha256",
-};
+const SIGNATURE_ALGORITHMS: Record<string, string> = { "1": "sha1", "2": "sha256" };
 
 export const assertSnsUrl = (value: unknown, field: string): URL => {
   let url: URL | undefined;
@@ -52,10 +42,7 @@ export const assertSnsUrl = (value: unknown, field: string): URL => {
 };
 
 const downloadCertificate = async (certificateUrl: string): Promise<string> => {
-  const { data } = await createClient({
-    baseUrl: certificateUrl,
-    responseType: "text",
-  }).get("");
+  const { data } = await createClient({ baseUrl: certificateUrl, responseType: "text" }).get("");
   return data;
 };
 
@@ -65,9 +52,7 @@ export const verifySnsMessageSignature = async (
 ): Promise<void> => {
   const algorithm = SIGNATURE_ALGORITHMS[message.SignatureVersion];
   if (!algorithm) {
-    throw new Error(
-      `Unsupported Amazon SNS SignatureVersion "${message.SignatureVersion}".`,
-    );
+    throw new Error(`Unsupported Amazon SNS SignatureVersion "${message.SignatureVersion}".`);
   }
   const certificateUrl = assertSnsUrl(message.SigningCertURL, "SigningCertURL");
   const certificate = await fetchCertificate(certificateUrl.href);
@@ -82,9 +67,7 @@ export const verifySnsMessageSignature = async (
       Buffer.from(message.Signature, "base64"),
     );
   if (!isValid) {
-    throw new Error(
-      "Amazon SNS message signature is invalid; the message was rejected.",
-    );
+    throw new Error("Amazon SNS message signature is invalid; the message was rejected.");
   }
 };
 

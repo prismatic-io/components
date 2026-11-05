@@ -1,7 +1,4 @@
-import {
-  createConnection,
-  defaultTriggerPayload,
-} from "@prismatic-io/spectral/dist/testing";
+import { createConnection, defaultTriggerPayload } from "@prismatic-io/spectral/dist/testing";
 import nock from "nock";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import { zohoTemplatedConnection } from "../../connections";
@@ -10,22 +7,14 @@ import { toZohoTimestamp } from "../../util/general";
 import { bookContactsPollingTrigger } from "./booksContacts";
 
 const conn = {
-  ...createConnection(
-    zohoTemplatedConnection,
-    {},
-    { access_token: "test-token" },
-  ),
+  ...createConnection(zohoTemplatedConnection, {}, { access_token: "test-token" }),
   context: { "accounts-server": "https://accounts.zoho.com" },
 };
 
 const BASE = "https://www.zohoapis.com";
 const T0 = "2026-03-01T10:00:00.000Z";
 
-const contact = (
-  id: string,
-  created: string,
-  modified: string,
-): BookRecord => ({
+const contact = (id: string, created: string, modified: string): BookRecord => ({
   created_time: created,
   last_modified_time: modified,
   contact_id: id,
@@ -68,12 +57,8 @@ describe("bookContactsPollingTrigger declaration", () => {
   test("is opt-in batchable with a default batch size and no pagination cursor", () => {
     expect(bookContactsPollingTrigger.triggerResolverSupport).toBe("valid");
     expect(bookContactsPollingTrigger.batchConfig).toEqual({ batchSize: 50 });
-    expect(
-      bookContactsPollingTrigger.triggerResolver?.resolveItems,
-    ).toBeInstanceOf(Function);
-    expect(
-      bookContactsPollingTrigger.triggerResolver?.getNextPaginationState,
-    ).toBeUndefined();
+    expect(bookContactsPollingTrigger.triggerResolver?.resolveItems).toBeInstanceOf(Function);
+    expect(bookContactsPollingTrigger.triggerResolver?.getNextPaginationState).toBeUndefined();
   });
 
   test("places Look-back Date directly below the connection", () => {
@@ -85,14 +70,9 @@ describe("bookContactsPollingTrigger declaration", () => {
 
   test("resolveItems flattens the payload shape perform returns", () => {
     const updated = contact("1", "2020-01-01T00:00:00Z", T0);
-    const payload = {
-      ...defaultTriggerPayload(),
-      body: { data: { updated: [updated] } },
-    };
+    const payload = { ...defaultTriggerPayload(), body: { data: { updated: [updated] } } };
     expect(
-      bookContactsPollingTrigger.triggerResolver?.resolveItems?.({} as never, {
-        payload,
-      }),
+      bookContactsPollingTrigger.triggerResolver?.resolveItems?.({} as never, { payload }),
     ).toEqual([{ changeType: "updated", record: updated }]);
   });
 });
@@ -112,16 +92,8 @@ describe("bookContactsPollingTrigger polling", () => {
   test("first poll with a Look-back Date seeds last_modified_time and the classification", async () => {
     const lb = "2026-01-01T00:00:00.000Z";
     const fresh = contact("n", "2026-02-01T00:00:00Z", "2026-02-01T00:00:00Z");
-    const changed = contact(
-      "o",
-      "2025-06-01T00:00:00Z",
-      "2026-02-02T00:00:00Z",
-    );
-    const untouched = contact(
-      "u",
-      "2025-06-01T00:00:00Z",
-      "2025-06-02T00:00:00Z",
-    );
+    const changed = contact("o", "2025-06-01T00:00:00Z", "2026-02-02T00:00:00Z");
+    const untouched = contact("u", "2025-06-01T00:00:00Z", "2025-06-02T00:00:00Z");
     const scope = nock(BASE)
       .get("/books/v3/contacts")
       .query(sinceQuery(lb))
@@ -131,10 +103,7 @@ describe("bookContactsPollingTrigger polling", () => {
       });
     const r = await run(lb);
     expect(scope.isDone()).toBe(true);
-    expect(r.payload.body.data).toEqual({
-      created: [fresh],
-      updated: [changed],
-    });
+    expect(r.payload.body.data).toEqual({ created: [fresh], updated: [changed] });
     expect(store).toEqual({ lastPolledAt: T0 });
   });
 

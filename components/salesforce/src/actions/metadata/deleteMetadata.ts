@@ -12,10 +12,7 @@ export const deleteMetadata = action({
   },
   inputs: deleteMetadataInputs,
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { connection, version, fullNames, metadataType },
-  ) => {
+  perform: async (context, { connection, version, fullNames, metadataType }) => {
     const salesforceClient = await createSalesforceClient(connection, version);
 
     if (context.debug.enabled) {
@@ -29,8 +26,7 @@ export const deleteMetadata = action({
 
     return { data: result };
   },
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    deleteMetadataExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => deleteMetadataExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: deleteMetadataOutputSchema,

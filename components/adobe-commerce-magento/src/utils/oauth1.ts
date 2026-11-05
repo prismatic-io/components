@@ -19,10 +19,7 @@ export const buildSignatureBaseString = (
   params: Array<[string, string]>,
 ): string => {
   const normalizedParams = params
-    .map(([name, value]): [string, string] => [
-      percentEncode(name),
-      percentEncode(value),
-    ])
+    .map(([name, value]): [string, string] => [percentEncode(name), percentEncode(value)])
     .sort(([nameA, valueA], [nameB, valueB]) => {
       if (nameA !== nameB) {
         return nameA < nameB ? -1 : 1;
@@ -59,22 +56,13 @@ export const buildAuthorizationHeader = ({
     ["oauth_version", OAUTH1_VERSION],
   ];
 
-  const baseString = buildSignatureBaseString(method, url, [
-    ...oauthParams,
-    ...params,
-  ]);
+  const baseString = buildSignatureBaseString(method, url, [...oauthParams, ...params]);
   const signingKey = `${percentEncode(credentials.consumerSecret)}&${percentEncode(
     credentials.accessTokenSecret,
   )}`;
-  const signature = crypto
-    .createHmac("sha256", signingKey)
-    .update(baseString)
-    .digest("base64");
+  const signature = crypto.createHmac("sha256", signingKey).update(baseString).digest("base64");
 
-  const headerParams: Array<[string, string]> = [
-    ...oauthParams,
-    ["oauth_signature", signature],
-  ];
+  const headerParams: Array<[string, string]> = [...oauthParams, ["oauth_signature", signature]];
 
   return `OAuth ${headerParams
     .map(([name, value]) => `${percentEncode(name)}="${percentEncode(value)}"`)

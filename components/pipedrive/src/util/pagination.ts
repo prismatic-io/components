@@ -1,8 +1,5 @@
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
-import type {
-  GenericCursorPaginationData,
-  GenericPaginationData,
-} from "../types";
+import type { GenericCursorPaginationData, GenericPaginationData } from "../types";
 import { PAGINATION_LIMIT } from "../constants";
 
 const fetchData = async <T>(
@@ -74,9 +71,11 @@ export const paginateRecordsWithCursor = async <T>(
   fetchAll = false,
 ): Promise<GenericCursorPaginationData<T>> => {
   if (!fetchAll) {
-    const { additional_data, data } = await fetchData<
-      GenericCursorPaginationData<T>
-    >(client, path, params);
+    const { additional_data, data } = await fetchData<GenericCursorPaginationData<T>>(
+      client,
+      path,
+      params,
+    );
     return {
       data,
       additional_data,
@@ -85,13 +84,15 @@ export const paginateRecordsWithCursor = async <T>(
   const records: T[] = [];
   let next_page: string | undefined;
   do {
-    const { data, additional_data } = await fetchData<
-      GenericCursorPaginationData<T>
-    >(client, path, {
-      ...params,
-      limit: PAGINATION_LIMIT,
-      cursor: next_page,
-    });
+    const { data, additional_data } = await fetchData<GenericCursorPaginationData<T>>(
+      client,
+      path,
+      {
+        ...params,
+        limit: PAGINATION_LIMIT,
+        cursor: next_page,
+      },
+    );
     if (!data) {
       break;
     }

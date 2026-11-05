@@ -28,9 +28,7 @@ export const toPicklistStrings = (value: unknown): string[] =>
   util.types.isPicklist(value) ? (value as string[]) : [];
 
 export const toPicklistLowerCase = (value: unknown): string[] =>
-  util.types.isPicklist(value)
-    ? (value as string[]).map((name) => name.trim().toLowerCase())
-    : [];
+  util.types.isPicklist(value) ? (value as string[]).map((name) => name.trim().toLowerCase()) : [];
 
 export const toDynamicValues = (value: unknown): Record<string, unknown> =>
   value
@@ -46,9 +44,7 @@ export const lookBackDateClean = (value: unknown): string | undefined => {
 
   const match = raw.match(LOOK_BACK_DATE_PATTERN);
   if (!match) {
-    throw new Error(
-      `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
-    );
+    throw new Error(`Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`);
   }
 
   const [, yearStr, monthStr, dayStr] = match;
@@ -61,9 +57,7 @@ export const lookBackDateClean = (value: unknown): string | undefined => {
     parsed.getUTCMonth() !== month - 1 ||
     parsed.getUTCDate() !== day
   ) {
-    throw new Error(
-      `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
-    );
+    throw new Error(`Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`);
   }
 
   if (parsed.getTime() > Date.now()) {
@@ -73,9 +67,7 @@ export const lookBackDateClean = (value: unknown): string | undefined => {
   return raw;
 };
 
-export const toFilteredStringList = (
-  rawValue: unknown,
-): string[] | undefined => {
+export const toFilteredStringList = (rawValue: unknown): string[] | undefined => {
   if (!Array.isArray(rawValue) || rawValue.filter(Boolean).length === 0) {
     return undefined;
   }

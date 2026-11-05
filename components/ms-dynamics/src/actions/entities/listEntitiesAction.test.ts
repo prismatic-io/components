@@ -1,14 +1,10 @@
 import { afterEach, describe, expect, test, vi } from "vitest";
 import { createMockConnection, createMockContext } from "../../testHelpers";
 
-const { mockRetrieveEntities } = vi.hoisted(() => ({
-  mockRetrieveEntities: vi.fn(),
-}));
+const { mockRetrieveEntities } = vi.hoisted(() => ({ mockRetrieveEntities: vi.fn() }));
 
 vi.mock("../../client", () => ({
-  createCrmClient: vi
-    .fn()
-    .mockResolvedValue({ retrieveEntities: mockRetrieveEntities }),
+  createCrmClient: vi.fn().mockResolvedValue({ retrieveEntities: mockRetrieveEntities }),
 }));
 
 import { listEntitiesAction } from "./listEntitiesAction";
@@ -63,7 +59,7 @@ describe("listEntitiesAction", () => {
         includeCustom: true,
         includeOnlyTopLevel: false,
         includeDetails: false,
-      } as any),
+      } as any)
     ).rejects.toThrow("SDK error");
   });
 });

@@ -1,8 +1,5 @@
 import { type Connection, ConnectionError, util } from "@prismatic-io/spectral";
-import {
-  createClient as createHttpClient,
-  type HttpClient,
-} from "@prismatic-io/spectral/http";
+import { createClient as createHttpClient, type HttpClient } from "@prismatic-io/spectral/http";
 import { aemOAuthServerToServer, aemOAuthWebApp } from "./connections";
 import {
   AEM_HOST_SUFFIX,
@@ -54,14 +51,8 @@ export const getAemHost = (connection: Connection): string => {
 };
 
 const getAuthHeaders = (connection: Connection): Record<string, string> => {
-  if (
-    connection.key !== aemOAuthServerToServer.key &&
-    connection.key !== aemOAuthWebApp.key
-  ) {
-    throw new ConnectionError(
-      connection,
-      `Unexpected connection type: ${connection.key}`,
-    );
+  if (connection.key !== aemOAuthServerToServer.key && connection.key !== aemOAuthWebApp.key) {
+    throw new ConnectionError(connection, `Unexpected connection type: ${connection.key}`);
   }
   return {
     Authorization: `Bearer ${util.types.toString(connection.token?.access_token)}`,
@@ -82,36 +73,22 @@ const HTML_SUCCESS_MESSAGE =
 const HTML_PAGE_PATTERN = /^\s*(<!doctype html|<html)/i;
 
 const addSetupHint = (client: HttpClient, connection: Connection): void => {
-  const hint =
-    connection.key === aemOAuthWebApp.key ? WEB_APP_SETUP_HINT : SETUP_HINT;
+  const hint = connection.key === aemOAuthWebApp.key ? WEB_APP_SETUP_HINT : SETUP_HINT;
   client.interceptors.response.use(
     undefined,
-    (error: {
-      response?: { status?: number; data?: unknown };
-      message: string;
-    }) => {
-      if (
-        typeof error.response?.data === "string" &&
-        HTML_PAGE_PATTERN.test(error.response.data)
-      ) {
+    (error: { response?: { status?: number; data?: unknown }; message: string }) => {
+      if (typeof error.response?.data === "string" && HTML_PAGE_PATTERN.test(error.response.data)) {
         error.response.data = "(HTML error page omitted)";
-        const unavailable = UNAVAILABLE_STATUS_CODES.includes(
-          error.response.status ?? 0,
-        );
+        const unavailable = UNAVAILABLE_STATUS_CODES.includes(error.response.status ?? 0);
         error.message = `${error.message}. ${unavailable ? UNAVAILABLE_HINT : HTML_PAGE_HINT}`;
       }
       if (error.response?.status === 403) {
-        const body = error.response.data as
-          | { error_code?: string; detail?: string }
-          | undefined;
-        const detail =
-          typeof body?.detail === "string" ? body.detail : undefined;
+        const body = error.response.data as { error_code?: string; detail?: string } | undefined;
+        const detail = typeof body?.detail === "string" ? body.detail : undefined;
         const cause =
           body?.error_code === GATEWAY_INVALID_API_KEY
             ? GATEWAY_HINT
-            : connection.key === aemOAuthWebApp.key &&
-                detail &&
-                MISSING_SCOPES_DETAIL.test(detail)
+            : connection.key === aemOAuthWebApp.key && detail && MISSING_SCOPES_DETAIL.test(detail)
               ? WEB_APP_SCOPES_HINT
               : hint;
         error.message = `${cause}${detail ? ` Adobe: ${detail}` : ""} ${error.message}`;
@@ -124,10 +101,7 @@ const addSetupHint = (client: HttpClient, connection: Connection): void => {
 export const getAemBaseUrl = (connection: Connection): string =>
   `https://${getAemHost(connection)}`;
 
-export const createAemClient = (
-  connection: Connection,
-  debug = false,
-): HttpClient => {
+export const createAemClient = (connection: Connection, debug = false): HttpClient => {
   const client = createHttpClient({
     baseUrl: getAemBaseUrl(connection),
     headers: getAuthHeaders(connection),
@@ -136,10 +110,7 @@ export const createAemClient = (
     responseType: "json",
   });
   client.interceptors.response.use((response) => {
-    if (
-      typeof response.data === "string" &&
-      HTML_PAGE_PATTERN.test(response.data)
-    ) {
+    if (typeof response.data === "string" && HTML_PAGE_PATTERN.test(response.data)) {
       throw new Error(HTML_SUCCESS_MESSAGE);
     }
     return response;
@@ -148,10 +119,7 @@ export const createAemClient = (
   return client;
 };
 
-export const createAemDownloadClient = (
-  connection: Connection,
-  debug = false,
-): HttpClient => {
+export const createAemDownloadClient = (connection: Connection, debug = false): HttpClient => {
   const client = createHttpClient({
     baseUrl: getAemBaseUrl(connection),
     headers: getAuthHeaders(connection),
@@ -166,10 +134,7 @@ export const createAemDownloadClient = (
 export const isIoEventsConnection = (connection: Connection): boolean =>
   connection.key === aemOAuthServerToServer.key;
 
-export const createIoEventsClient = (
-  connection: Connection,
-  debug = false,
-): HttpClient => {
+export const createIoEventsClient = (connection: Connection, debug = false): HttpClient => {
   if (!isIoEventsConnection(connection)) {
     throw new ConnectionError(
       connection,

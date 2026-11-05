@@ -18,8 +18,5 @@ export const getNoteFields = action({
   inputs: getNoteFieldsInputs,
   examplePayload: getNoteFieldsExamplePayload,
   examplePerform: async () => getNoteFieldsExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getNoteFieldsOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getNoteFieldsOutputSchema }),
 });

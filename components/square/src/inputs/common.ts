@@ -20,8 +20,7 @@ export const cursor = input({
   placeholder: "Enter cursor from previous response",
   type: "string",
   required: false,
-  comments:
-    "The pagination cursor returned by a previous call to this endpoint.",
+  comments: "The pagination cursor returned by a previous call to this endpoint.",
   clean: toOptionalString,
 });
 
@@ -115,8 +114,7 @@ export const idempotencyKey = input({
   required: false,
   placeholder: "Enter idempotency key",
   example: "a7c8e4b1-3f5d-4e2a-9c1b-7d3e5f8a2c6b",
-  comments:
-    "A unique string that identifies this request to ensure idempotent operations.",
+  comments: "A unique string that identifies this request to ensure idempotent operations.",
   clean: toOptionalString,
 });
 
@@ -125,8 +123,7 @@ export const beginTime = input({
   type: "text",
   placeholder: "Enter start time (RFC 3339 format)",
   example: "2024-01-01T00:00:00Z",
-  comments:
-    "The timestamp marking the start of the time range. Format: RFC 3339.",
+  comments: "The timestamp marking the start of the time range. Format: RFC 3339.",
   required: true,
   clean: util.types.toString,
 });
@@ -136,8 +133,7 @@ export const fetchAll = input({
   type: "boolean",
   required: false,
   default: "false",
-  comments:
-    "When true, automatically fetches all pages of results using cursor pagination.",
+  comments: "When true, automatically fetches all pages of results using cursor pagination.",
   clean: util.types.toBool,
 });
 

@@ -16,10 +16,7 @@ export const getTaskMembers = action({
   examplePayload: getTaskMembersExamplePayload,
   performSafety: "safe",
   perform: async (context, { clickUpConnection, taskId }) => {
-    const client = createClickUpClient(
-      clickUpConnection,
-      context.debug.enabled,
-    );
+    const client = createClickUpClient(clickUpConnection, context.debug.enabled);
 
     const { data } = await client.get(`/task/${taskId}/member`);
 

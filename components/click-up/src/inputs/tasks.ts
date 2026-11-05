@@ -45,17 +45,13 @@ const customFieldsCode = input({
       ],
     },
     null,
-    2,
+    2
   ),
   required: false,
   clean: util.types.toString,
 });
 
-const getStartDateInt = (
-  required: boolean,
-  comments: string,
-  example?: string,
-) =>
+const getStartDateInt = (required: boolean, comments: string, example?: string) =>
   input({
     label: "Start Date",
     type: "string",
@@ -66,11 +62,7 @@ const getStartDateInt = (
     clean: cleanNumber,
   });
 
-const getStartDateTime = (
-  required: boolean,
-  comments: string,
-  defaultValue?: boolean,
-) =>
+const getStartDateTime = (required: boolean, comments: string, defaultValue?: boolean) =>
   input({
     label: "Start Date Time",
     type: "boolean",
@@ -121,11 +113,7 @@ const getLinksTo = (required: boolean, comments: string) =>
     clean: util.types.toString,
   });
 
-const getTimeEstimate = (
-  required: boolean,
-  comments: string,
-  example?: string,
-) =>
+const getTimeEstimate = (required: boolean, comments: string, example?: string) =>
   input({
     label: "Time Estimate",
     type: "string",
@@ -136,11 +124,7 @@ const getTimeEstimate = (
     clean: cleanNumber,
   });
 
-const getCheckRequiredCustomFields = (
-  required: boolean,
-  comments: string,
-  defaultValue?: boolean,
-) =>
+const getCheckRequiredCustomFields = (required: boolean, comments: string, defaultValue?: boolean) =>
   input({
     label: "Check Required Custom Fields",
     type: "boolean",
@@ -199,8 +183,7 @@ const orderBy = input({
   type: "string",
   placeholder: "Enter order by field",
   required: false,
-  comments:
-    "Order by a particular field. By default, tasks are ordered by created.",
+  comments: "Order by a particular field. By default, tasks are ordered by created.",
   example: "created",
   clean: cleanString,
 });
@@ -219,8 +202,7 @@ const includeClosed = input({
   type: "boolean",
   required: false,
   default: "false",
-  comments:
-    "When true, includes closed tasks in the results. By default, they are excluded.",
+  comments: "When true, includes closed tasks in the results. By default, they are excluded.",
   clean: util.types.toBool,
 });
 
@@ -335,67 +317,49 @@ const page = input({
   clean: util.types.toNumber,
 });
 
-const dueDate = getDueDateInt(
-  false,
-  "The task due date as a Unix timestamp in milliseconds.",
-  "1508369194377",
-);
+const dueDate = getDueDateInt(false, "The task due date as a Unix timestamp in milliseconds.", "1508369194377");
 
 const dueDateTime = getDueDateTime(
   false,
   "When true, the Due Date includes a time of day rather than only a date.",
-  false,
+  false
 );
 
-const timeEstimate = getTimeEstimate(
-  false,
-  "The time estimate for the task, in milliseconds.",
-  "8640000",
-);
+const timeEstimate = getTimeEstimate(false, "The time estimate for the task, in milliseconds.", "8640000");
 
-const startDate = getStartDateInt(
-  false,
-  "The task start date as a Unix timestamp in milliseconds.",
-  "1567780450202",
-);
+const startDate = getStartDateInt(false, "The task start date as a Unix timestamp in milliseconds.", "1567780450202");
 
 const startDateTime = getStartDateTime(
   false,
   "When true, the Start Date includes a time of day rather than only a date.",
-  false,
+  false
 );
 
 const notifyAll = getNotifyAll(
   false,
   "When true, sends notifications to everyone, including the creator of the task.",
-  true,
+  true
 );
 
 const checkRequiredCustomFields = getCheckRequiredCustomFields(
   false,
   "When true, enforces required Custom Fields when creating the task. By default, they are ignored.",
-  false,
+  false
 );
 
-const archivedFilter = getArchived(
-  false,
-  "When true, returns archived tasks.",
-  false,
-);
+const archivedFilter = getArchived(false, "When true, returns archived tasks.", false);
 
 const schedule = structuredObjectInput({
   label: "Schedule",
   required: false,
-  comments:
-    "Start and due dates, whether each includes a time of day, and time estimate.",
+  comments: "Start and due dates, whether each includes a time of day, and time estimate.",
   inputs: { startDate, startDateTime, dueDate, dueDateTime, timeEstimate },
 });
 
 const additionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
-  comments:
-    "Additional optional fields: includes Markdown Description, Notify All, and Check Required Custom Fields.",
+  comments: "Additional optional fields: includes Markdown Description, Notify All, and Check Required Custom Fields.",
   inputs: { markdownDescription, notifyAll, checkRequiredCustomFields },
 });
 
@@ -420,13 +384,7 @@ const filters = structuredObjectInput({
   label: "Filters",
   required: false,
   comments: "Optional query controls to sort and refine the results.",
-  inputs: {
-    orderBy,
-    reverse,
-    archived: archivedFilter,
-    includeClosed,
-    customFieldsCode,
-  },
+  inputs: { orderBy, reverse, archived: archivedFilter, includeClosed, customFieldsCode },
 });
 
 export const createTaskInputs = {
@@ -435,35 +393,20 @@ export const createTaskInputs = {
   name: getTaskName(true, "The name of the task."),
   customTaskIds: getCustomTaskIds(
     false,
-    "When true, task IDs in this request are treated as custom task IDs. Requires Team ID.",
+    "When true, task IDs in this request are treated as custom task IDs. Requires Team ID."
   ),
-  teamId: getTeamId(
-    false,
-    "Only used when the custom_task_ids parameter is set to true.",
-  ),
+  teamId: getTeamId(false, "Only used when the custom_task_ids parameter is set to true."),
   description: getDescription(false, "The description of the task."),
-  assignees: getAssignees(
-    false,
-    "User IDs of the people to assign to the task.",
-  ),
+  assignees: getAssignees(false, "User IDs of the people to assign to the task."),
   tags: getTags(false, "Tag names to apply to the task."),
-  status: getStatus(
-    false,
-    "The name of the status to apply to the task, as configured in the List.",
-  ),
-  priority: getPriority(
-    false,
-    "The task priority: 1 (Urgent), 2 (High), 3 (Normal), or 4 (Low).",
-  ),
+  status: getStatus(false, "The name of the status to apply to the task, as configured in the List."),
+  priority: getPriority(false, "The task priority: 1 (Urgent), 2 (High), 3 (Normal), or 4 (Low)."),
   schedule,
   parent: getParent(
     false,
-    "An existing task ID to create this task as a subtask of. The parent task cannot itself be a subtask and must be in the List specified by List ID.",
+    "An existing task ID to create this task as a subtask of. The parent task cannot itself be a subtask and must be in the List specified by List ID."
   ),
-  linksTo: getLinksTo(
-    false,
-    "A task ID to create a linked dependency with the new task.",
-  ),
+  linksTo: getLinksTo(false, "A task ID to create a linked dependency with the new task."),
   additionalFields,
   customFields,
 };
@@ -472,37 +415,22 @@ export const deleteTaskInputs = {
   connection: connectionInput,
   taskId: getTaskId(true, "The unique identifier for the task."),
   customTaskIds: getCustomTaskIds(false),
-  teamId: getTeamId(
-    false,
-    "Only used when the custom_task_ids parameter is set to true.",
-  ),
+  teamId: getTeamId(false, "Only used when the custom_task_ids parameter is set to true."),
 };
 
 export const getTaskInputs = {
   connection: connectionInput,
   taskId: getTaskId(true, "The unique identifier for the task."),
-  teamId: getTeamId(
-    true,
-    "Only used when the custom_task_ids parameter is set to true.",
-  ),
+  teamId: getTeamId(true, "Only used when the custom_task_ids parameter is set to true."),
   customTaskIds: getCustomTaskIds(false),
-  subTasks: getSubTasks(
-    false,
-    "When true, includes subtasks in the results. By default, subtasks are excluded.",
-  ),
+  subTasks: getSubTasks(false, "When true, includes subtasks in the results. By default, subtasks are excluded."),
 };
 
 export const listTasksInputs = {
   connection: connectionInput,
-  listId: getlistId(
-    true,
-    "The unique identifier for the List whose tasks are returned.",
-  ),
+  listId: getlistId(true, "The unique identifier for the List whose tasks are returned."),
   page,
-  subTasks: getSubTasks(
-    true,
-    "When true, includes subtasks in the results. By default, subtasks are excluded.",
-  ),
+  subTasks: getSubTasks(true, "When true, includes subtasks in the results. By default, subtasks are excluded."),
   filters,
   assignees: getAssignees(false, "User IDs to filter tasks by assignee."),
   tags: getTags(false, "Filter by tags. Add a tag to filter."),
@@ -514,36 +442,17 @@ export const updateTaskInputs = {
   taskId: getTaskId(true, "The unique identifier for the task."),
   customTaskIds: getCustomTaskIds(
     false,
-    "When true, task IDs in this request are treated as custom task IDs. Requires Team ID.",
+    "When true, task IDs in this request are treated as custom task IDs. Requires Team ID."
   ),
-  teamId: getTeamId(
-    false,
-    "Only used when the custom_task_ids parameter is set to true.",
-  ),
+  teamId: getTeamId(false, "Only used when the custom_task_ids parameter is set to true."),
   name: getTaskName(false, "The name of the task."),
   description: getDescription(false, "The description of the task."),
   markdownDescription,
-  status: getStatus(
-    false,
-    "The name of the status to apply to the task, as configured in the List.",
-  ),
-  priority: getPriority(
-    false,
-    "The task priority: 1 (Urgent), 2 (High), 3 (Normal), or 4 (Low).",
-  ),
+  status: getStatus(false, "The name of the status to apply to the task, as configured in the List."),
+  priority: getPriority(false, "The task priority: 1 (Urgent), 2 (High), 3 (Normal), or 4 (Low)."),
   schedule,
   parent: getParent(false, "A task ID to move this subtask under."),
-  addAssignees: getAddAssignees(
-    false,
-    "User IDs to add as assignees on the task.",
-  ),
-  removeAssignees: getRemoveAssignees(
-    false,
-    "User IDs to remove as assignees from the task.",
-  ),
-  archived: getArchived(
-    false,
-    "When true, archives the task. When false, the task is unarchived.",
-    false,
-  ),
+  addAssignees: getAddAssignees(false, "User IDs to add as assignees on the task."),
+  removeAssignees: getRemoveAssignees(false, "User IDs to remove as assignees from the task."),
+  archived: getArchived(false, "When true, archives the task. When false, the task is unarchived.", false),
 };

@@ -28,9 +28,6 @@ export const getLocationsGql = action({
     };
   },
   inputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getLocationsGqlOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getLocationsGqlOutputSchema }),
   examplePayload,
 });

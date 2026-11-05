@@ -10,10 +10,7 @@ export const deleteCatalogObject = action({
       "Deletes a single catalog object based on the provided ID and returns the set of successfully deleted IDs in the response.",
   },
   perform: async (context, { squareConnection, objectId }) => {
-    const client = await createAuthorizedClient(
-      squareConnection,
-      context.debug.enabled,
-    );
+    const client = await createAuthorizedClient(squareConnection, context.debug.enabled);
 
     const response = await client.delete(`/v2/catalog/object/${objectId}`);
 

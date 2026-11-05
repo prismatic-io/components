@@ -6,10 +6,7 @@ interface Row {
   name: string;
 }
 
-const toElement = (row: Row): Element => ({
-  key: String(row.id),
-  label: row.name,
-});
+const toElement = (row: Row): Element => ({ key: String(row.id), label: row.name });
 
 describe("toSortedElements", () => {
   test("orders the projected elements by label", () => {
@@ -33,21 +30,18 @@ describe("toSortedElements", () => {
       { id: 7, name: "Duplicate" },
     ];
 
-    expect(
-      toSortedElements(rows, toElement).map((element) => element.key),
-    ).toEqual(["9", "4", "7"]);
+    expect(toSortedElements(rows, toElement).map((element) => element.key)).toEqual([
+      "9",
+      "4",
+      "7",
+    ]);
   });
 
   test("sorts a row whose label is absent ahead of the rest", () => {
     const rows = [{ id: 2, name: "Bravo" }, { id: 1 }] as Row[];
-    const lenient = (row: Row): Element => ({
-      key: String(row.id),
-      label: row.name,
-    });
+    const lenient = (row: Row): Element => ({ key: String(row.id), label: row.name });
 
-    expect(
-      toSortedElements(rows, lenient).map((element) => element.key),
-    ).toEqual(["1", "2"]);
+    expect(toSortedElements(rows, lenient).map((element) => element.key)).toEqual(["1", "2"]);
   });
 
   test.each<[string, Row[] | undefined]>([

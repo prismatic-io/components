@@ -20,8 +20,7 @@ export const deleteOpportunity = action({
       data: response,
     };
   },
-  examplePerform: async (): Promise<{ data: unknown }> =>
-    genericCreateUpdateExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => genericCreateUpdateExamplePayload,
   inputs: deleteOpportunityInputs,
   outputSchema: outputSchema({
     type: "actionOutput",

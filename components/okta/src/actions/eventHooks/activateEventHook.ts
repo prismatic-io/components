@@ -12,9 +12,7 @@ export const activateEventHook = action({
   perform: async (context, { connection, eventHookId }) => {
     const client = await createClient(connection, context.debug.enabled);
 
-    const { data } = await client.post(
-      `/eventHooks/${eventHookId}/lifecycle/activate`,
-    );
+    const { data } = await client.post(`/eventHooks/${eventHookId}/lifecycle/activate`);
 
     return {
       data,

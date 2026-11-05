@@ -19,8 +19,5 @@ export const addDealParticipant = action({
   },
   inputs: addDealParticipantInputs,
   examplePayload: addDealParticipantExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: addDealParticipantOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: addDealParticipantOutputSchema }),
 });

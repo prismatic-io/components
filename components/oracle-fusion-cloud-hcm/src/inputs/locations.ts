@@ -14,8 +14,7 @@ const locationId = input({
   type: "string",
   required: true,
   dataSource: "selectLocation",
-  comments:
-    "The unique numeric identifier for the Oracle HCM location (LocationId).",
+  comments: "The unique numeric identifier for the Oracle HCM location (LocationId).",
   placeholder: "Enter location ID",
   example: "300100012345678",
   clean: cleanId,
@@ -55,8 +54,7 @@ const EffectiveEndDate = input({
   label: "Effective End Date",
   type: "string",
   required: false,
-  comments:
-    "The date the location stops being effective, in YYYY-MM-DD format.",
+  comments: "The date the location stops being effective, in YYYY-MM-DD format.",
   placeholder: "Enter effective end date (YYYY-MM-DD)",
   example: "4712-12-31",
   clean: cleanString,
@@ -106,8 +104,7 @@ const Country = input({
   label: "Country",
   type: "string",
   required: false,
-  comments:
-    "The country code of the address. Required by Oracle when adding an address.",
+  comments: "The country code of the address. Required by Oracle when adding an address.",
   placeholder: "Enter country code",
   example: "US",
   clean: cleanString,
@@ -117,8 +114,7 @@ const AddressUsageType = input({
   label: "Address Usage Type",
   type: "string",
   required: false,
-  comments:
-    "The usage type of the address (e.g. MAIN). Required by Oracle when adding an address.",
+  comments: "The usage type of the address (e.g. MAIN). Required by Oracle when adding an address.",
   placeholder: "Enter address usage type",
   example: "MAIN",
   clean: cleanString,

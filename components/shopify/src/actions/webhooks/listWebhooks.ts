@@ -11,10 +11,7 @@ export const listWebhooks = action({
     description: "Lists all webhooks or webhooks for the current instance.",
   },
   inputs: listWebhooksInputs,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: listWebhooksOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: listWebhooksOutputSchema }),
   performSafety: "notAllowed",
   perform: async (context, params) => {
     const { data } = await listWebhooksGql.perform(context, {

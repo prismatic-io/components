@@ -40,9 +40,7 @@ export const getFile = action({
         );
       }
 
-      const hasExportType = availableExportTypes.some(
-        (type) => type === desiredExportType,
-      );
+      const hasExportType = availableExportTypes.some((type) => type === desiredExportType);
       if (!hasExportType) {
         throw new Error(
           `Cannot export file with '${desiredExportType}'. Available export types: '${availableExportTypes.join(

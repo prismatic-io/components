@@ -46,11 +46,7 @@ const crmGetRecords = action({
       ifModifiedSince,
     }: CrmGetRecordsPerformInput,
   ) => {
-    const crmClient = createClient(
-      connection,
-      ClientType.CRM,
-      context.debug.enabled,
-    );
+    const crmClient = createClient(connection, ClientType.CRM, context.debug.enabled);
 
     const url = `/${recordType}`;
     const params = Object.fromEntries(
@@ -70,9 +66,7 @@ const crmGetRecords = action({
       params,
       "data",
       fetchAll ?? false,
-      ifModifiedSince
-        ? { modifiedSince: ifModifiedSince, clientType: ClientType.CRM }
-        : {},
+      ifModifiedSince ? { modifiedSince: ifModifiedSince, clientType: ClientType.CRM } : {},
     );
 
     return {

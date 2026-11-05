@@ -11,10 +11,7 @@ export const listCheckoutSessionLineItems = action({
     description: "Return a list of line items for a Stripe Checkout session.",
   },
   performSafety: "safe",
-  perform: async (
-    context,
-    { sessionId, pagination, stripeConnection, timeout },
-  ) => {
+  perform: async (context, { sessionId, pagination, stripeConnection, timeout }) => {
     const client = createStripeClient({
       stripeConnection,
       timeout,

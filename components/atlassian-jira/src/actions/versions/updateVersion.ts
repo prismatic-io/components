@@ -11,10 +11,7 @@ export const updateVersion = action({
   },
   performSafety: "notAllowed",
   perform: async (context, params) => {
-    const client = await createV3Client(
-      params.jiraConnection,
-      context.debug.enabled,
-    );
+    const client = await createV3Client(params.jiraConnection, context.debug.enabled);
     const { data } = await client.put(`/version/${params.versionId}`, {
       description: params.description,
       name: params.versionName,

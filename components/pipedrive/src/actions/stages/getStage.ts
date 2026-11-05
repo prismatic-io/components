@@ -12,19 +12,12 @@ export const getStage = action({
   },
   performSafety: "safe",
   perform: async (context, { connection, id }) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      WebhookVersion.V2,
-    );
+    const client = createClient(connection, context.debug.enabled, WebhookVersion.V2);
     const { data } = await client.get(`/stages/${id}`);
     return { data };
   },
   inputs: getStageInputs,
   examplePayload: getStageExamplePayload,
   examplePerform: async () => getStageExamplePayload,
-  outputSchema: outputSchema({
-    type: "actionOutput",
-    schema: getStageOutputSchema,
-  }),
+  outputSchema: outputSchema({ type: "actionOutput", schema: getStageOutputSchema }),
 });

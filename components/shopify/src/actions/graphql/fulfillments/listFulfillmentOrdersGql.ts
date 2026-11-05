@@ -5,11 +5,7 @@ import { listFulfillmentOrdersExamplePayload } from "../../../examplePayloads";
 import { listFulfillmentOrdersInputs as inputs } from "../../../inputsGql";
 import { listFulfillmentOrdersGqlOutputSchema } from "../../../outputSchemas";
 import type { FulfillmentOrder, PageInfo } from "../../../types";
-import {
-  fetchData,
-  fulfillmentOrderMapper,
-  paginationMapper,
-} from "../../../util";
+import { fetchData, fulfillmentOrderMapper, paginationMapper } from "../../../util";
 import listFulfillmentOrdersQuery from "../queries/fulfillments/ListFulfillmentOrders.gql";
 
 export const listFulfillmentOrdersGql = action({
@@ -23,10 +19,7 @@ export const listFulfillmentOrdersGql = action({
     schema: listFulfillmentOrdersGqlOutputSchema,
   }),
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { shopifyConnection, orderId, getAlldata, pagination = {} },
-  ) => {
+  perform: async (context, { shopifyConnection, orderId, getAlldata, pagination = {} }) => {
     const client = getShopifyGraphQlClient(
       shopifyConnection,
       undefined,
@@ -51,9 +44,7 @@ export const listFulfillmentOrdersGql = action({
     return {
       data: {
         data: {
-          fulfillment_orders: data.fulfillmentOrders.map(
-            fulfillmentOrderMapper,
-          ),
+          fulfillment_orders: data.fulfillmentOrders.map(fulfillmentOrderMapper),
         },
         ...paginationMapper(data.pageInfo),
       },

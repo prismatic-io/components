@@ -11,10 +11,7 @@ export const getBoard = action({
   },
   performSafety: "safe",
   perform: async (context, params) => {
-    const client = await createClient(
-      params.jiraConnection,
-      context.debug.enabled,
-    );
+    const client = await createClient(params.jiraConnection, context.debug.enabled);
     const { data } = await client.get(`/board/${params.boardId}`);
     return { data };
   },

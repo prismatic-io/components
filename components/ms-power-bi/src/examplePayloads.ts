@@ -11,8 +11,7 @@ export const createDatasetExamplePayload = {
     isOnPremGatewayRequired: false,
     description: "Sales and marketing metrics dataset",
     createdDate: "2024-01-15T10:30:00Z",
-    webUrl:
-      "https://app.powerbi.com/groups/me/datasets/cfafbeb1-8037-4d0c-896e-a46fb27ff229",
+    webUrl: "https://app.powerbi.com/groups/me/datasets/cfafbeb1-8037-4d0c-896e-a46fb27ff229",
     targetStorageMode: "Push",
   },
 };
@@ -32,8 +31,7 @@ export const listDatasetsExamplePayload = {
         isOnPremGatewayRequired: false,
         description: "Sales and marketing metrics dataset",
         createdDate: "2024-01-15T10:30:00Z",
-        webUrl:
-          "https://app.powerbi.com/groups/me/datasets/cfafbeb1-8037-4d0c-896e-a46fb27ff229",
+        webUrl: "https://app.powerbi.com/groups/me/datasets/cfafbeb1-8037-4d0c-896e-a46fb27ff229",
         targetStorageMode: "Push",
       },
       {
@@ -47,8 +45,7 @@ export const listDatasetsExamplePayload = {
         isOnPremGatewayRequired: true,
         description: "Financial reporting dataset",
         createdDate: "2024-02-20T14:45:00Z",
-        webUrl:
-          "https://app.powerbi.com/groups/me/datasets/d92e3c1b-5f41-4e2d-9a8c-b7f2e1c3d4a5",
+        webUrl: "https://app.powerbi.com/groups/me/datasets/d92e3c1b-5f41-4e2d-9a8c-b7f2e1c3d4a5",
         targetStorageMode: "DirectQuery",
       },
     ],
@@ -283,10 +280,8 @@ export const listReportsExamplePayload = {
         datasetId: "cfafbeb1-8037-4d0c-896e-a46fb27ff229",
         id: "e1f2a3b4-c5d6-7890-efab-cd1234567890",
         name: "Sales Performance Report",
-        webUrl:
-          "https://app.powerbi.com/groups/me/reports/e1f2a3b4-c5d6-7890-efab-cd1234567890",
-        embedUrl:
-          "https://app.powerbi.com/reportEmbed?reportId=e1f2a3b4-c5d6-7890-efab-cd1234567890",
+        webUrl: "https://app.powerbi.com/groups/me/reports/e1f2a3b4-c5d6-7890-efab-cd1234567890",
+        embedUrl: "https://app.powerbi.com/reportEmbed?reportId=e1f2a3b4-c5d6-7890-efab-cd1234567890",
         appId: null,
         description: "Monthly sales performance metrics and KPIs",
         isOwnedByMe: true,
@@ -299,10 +294,8 @@ export const listReportsExamplePayload = {
         datasetId: "d92e3c1b-5f41-4e2d-9a8c-b7f2e1c3d4a5",
         id: "f2a3b4c5-d6e7-8901-fabc-de2345678901",
         name: "Financial Summary",
-        webUrl:
-          "https://app.powerbi.com/groups/me/reports/f2a3b4c5-d6e7-8901-fabc-de2345678901",
-        embedUrl:
-          "https://app.powerbi.com/reportEmbed?reportId=f2a3b4c5-d6e7-8901-fabc-de2345678901",
+        webUrl: "https://app.powerbi.com/groups/me/reports/f2a3b4c5-d6e7-8901-fabc-de2345678901",
+        embedUrl: "https://app.powerbi.com/reportEmbed?reportId=f2a3b4c5-d6e7-8901-fabc-de2345678901",
         appId: "12345678-90ab-cdef-1234-567890abcdef",
         description: "Quarterly financial reporting",
         isOwnedByMe: false,
@@ -315,10 +308,8 @@ export const listReportsExamplePayload = {
         datasetId: "cfafbeb1-8037-4d0c-896e-a46fb27ff229",
         id: "a4b5c6d7-e8f9-0123-bcde-f34567890123",
         name: "Inventory Report",
-        webUrl:
-          "https://app.powerbi.com/groups/me/reports/a4b5c6d7-e8f9-0123-bcde-f34567890123",
-        embedUrl:
-          "https://app.powerbi.com/reportEmbed?reportId=a4b5c6d7-e8f9-0123-bcde-f34567890123",
+        webUrl: "https://app.powerbi.com/groups/me/reports/a4b5c6d7-e8f9-0123-bcde-f34567890123",
+        embedUrl: "https://app.powerbi.com/reportEmbed?reportId=a4b5c6d7-e8f9-0123-bcde-f34567890123",
         appId: null,
         description: null,
         isOwnedByMe: true,

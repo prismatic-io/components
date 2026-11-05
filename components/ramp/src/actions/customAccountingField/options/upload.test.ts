@@ -1,11 +1,6 @@
 import { invoke } from "@prismatic-io/spectral/testing";
 import { getCustomAccountingFieldOptionResponse } from "../../../examplePayloads/customAccountingFieldOption";
-import {
-  apiPath,
-  rampNock,
-  resetNock,
-  testConnection,
-} from "../../../testHarness";
+import { apiPath, rampNock, resetNock, testConnection } from "../../../testHarness";
 import { uploadCustomAccountingFieldOption } from "./upload";
 
 const PATH = apiPath("/accounting/field-options");

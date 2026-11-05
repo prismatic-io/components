@@ -5,8 +5,7 @@ import { selectChargeInputs } from "../inputs";
 export const selectCharge = dataSource({
   display: {
     label: "Select Charge",
-    description:
-      "Select a charge from a list of charges in the connected Stripe account.",
+    description: "Select a charge from a list of charges in the connected Stripe account.",
   },
   dataSourceType: "picklist",
   inputs: selectChargeInputs,
@@ -29,11 +28,6 @@ export const selectCharge = dataSource({
     };
   },
   examplePayload: {
-    result: [
-      {
-        label: "Payment for order #1234 - 5000 USD",
-        key: "ch_1JaOXaDtJQgcyrdSRnsI9KW5",
-      },
-    ],
+    result: [{ label: "Payment for order #1234 - 5000 USD", key: "ch_1JaOXaDtJQgcyrdSRnsI9KW5" }],
   },
 });

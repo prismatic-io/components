@@ -15,14 +15,8 @@ export const inviteUserToWorkspace = action({
   }),
   examplePayload: inviteUserToWorkspaceExamplePayload,
   performSafety: "notAllowed",
-  perform: async (
-    context,
-    { teamId, clickUpConnection, email, admin, customRoleId },
-  ) => {
-    const client = createClickUpClient(
-      clickUpConnection,
-      context.debug.enabled,
-    );
+  perform: async (context, { teamId, clickUpConnection, email, admin, customRoleId }) => {
+    const client = createClickUpClient(clickUpConnection, context.debug.enabled);
     const body = {
       email,
       admin,

@@ -13,15 +13,8 @@ export const updateRecord = action({
     ...updateRecordInputs,
     connection,
   },
-  perform: async (
-    context,
-    { connection, bodyFields, recordId, recordType },
-  ) => {
-    const client = await createClient(
-      connection,
-      context,
-      context.debug.enabled,
-    );
+  perform: async (context, { connection, bodyFields, recordId, recordType }) => {
+    const client = await createClient(connection, context, context.debug.enabled);
 
     await client.patch(`/${recordType}(${recordId})`, {
       ...bodyFields,

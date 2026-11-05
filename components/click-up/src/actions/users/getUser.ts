@@ -16,10 +16,7 @@ export const getUser = action({
   examplePayload: getUserExamplePayload,
   performSafety: "safe",
   perform: async (context, { teamId, userId, clickUpConnection }) => {
-    const client = createClickUpClient(
-      clickUpConnection,
-      context.debug.enabled,
-    );
+    const client = createClickUpClient(clickUpConnection, context.debug.enabled);
 
     const { data } = await client.get(`/team/${teamId}/user/${userId}`);
     return { data };
