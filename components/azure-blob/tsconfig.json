@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es6",
     "lib": ["esnext"],
-    "types": ["node", "jest"],
+    "types": ["node", "vitest/globals"],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -10,7 +10,7 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "ignoreDeprecations": "6.0",
     "resolveJsonModule": true,
     "isolatedModules": true,
@@ -18,5 +18,5 @@
     "strictNullChecks": false,
     "noImplicitAny": false
   },
-  "include": ["src"]
+  "include": ["src", ".spectral/*"]
 }

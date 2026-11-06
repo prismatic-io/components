@@ -1,7 +1,11 @@
 {
-	"$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
-	"organizeImports": {
-		"enabled": true
+	"$schema": "https://biomejs.dev/schemas/2.6.5/schema.json",
+	"assist": {
+		"actions": {
+			"source": {
+				"organizeImports": "on"
+			}
+		}
 	},
 	"linter": {
 		"enabled": true,
@@ -18,7 +22,6 @@
 		"lineWidth": 100
 	},
 	"files": {
-		"include": ["**"],
-		"ignore": ["**/dist"]
+		"includes": ["**", "!**/dist", "!**/*.md", "!**/*.yml", "!**/*.yaml"]
 	}
 }

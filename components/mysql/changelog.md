@@ -1,5 +1,11 @@
 ## Changelog
 
+### 2026-11-06
+
+Updated spectral to 10.38.5, switched the build from webpack to tsdown and updated dependencies:
+- mysql2 3.24.5
+- tsdown 0.22.3
+
 ### 2026-05-22
 
 Various modernizations and documentation updates

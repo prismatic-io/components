@@ -1,5 +1,5 @@
 import type { File } from "@google-cloud/storage";
-import { util, action } from "@prismatic-io/spectral";
+import { action, util } from "@prismatic-io/spectral";
 import { googleStorageClient } from "../client";
 import { moveFileExamplePayload } from "../examplePayloads";
 import {

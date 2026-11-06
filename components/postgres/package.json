@@ -5,29 +5,24 @@
   "scripts": {
     "lint": "biome lint --write .",
     "format": "biome format --write .",
-    "build": "npm run format && npm run lint && webpack",
+    "build": "npm run format && npm run lint && tsdown",
+    "typecheck": "tsc --noEmit",
     "publish": "npm run build && prism components:publish",
     "test:create:posts": "tsx ./testing/create-posts.ts",
     "test": "vitest run"
   },
   "dependencies": {
-    "@prismatic-io/spectral": "10.26.1",
+    "@prismatic-io/spectral": "10.38.5",
     "lodash.merge": "4.6.2",
     "pg-promise": "12.7.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.5.9",
-    "@types/jest": "30.0.0",
+    "@biomejs/biome": "2.6.5",
     "@types/lodash.merge": "4.6.9",
-    "@types/node": "^22.19.11",
-    "copy-webpack-plugin": "14.0.0",
-    "jest": "30.4.2",
-    "ts-jest": "29.4.11",
-    "ts-loader": "9.6.2",
+    "@types/node": "^26.6.4",
+    "tsdown": "0.22.3",
     "tsx": "^4.23.12",
-    "typescript": "5.9.3",
-    "vitest": "^4.1.11",
-    "webpack": "5.108.2",
-    "webpack-cli": "7.1.0"
+    "typescript": "6.0.3",
+    "vitest": "4.1.9"
   }
 }

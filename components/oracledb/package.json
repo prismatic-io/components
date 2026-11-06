@@ -5,7 +5,8 @@
   "scripts": {
     "lint": "biome lint --write .",
     "format": "biome format --write .",
-    "build": "npm run format && npm run lint && webpack",
+    "build": "npm run format && npm run lint && tsdown",
+    "typecheck": "tsc --noEmit",
     "publish": "npm run build && prism components:publish",
     "generate:manifest": "npm run build && npx @prismatic-io/spectral component-manifest",
     "generate:manifest:dev": "npm run build && npx @prismatic-io/spectral component-manifest --skip-signature-verify",
@@ -15,7 +16,7 @@
     "@azure/app-configuration": "^1.9.0",
     "@azure/identity": "^4.8.0",
     "@azure/keyvault-secrets": "^4.9.0",
-    "@prismatic-io/spectral": "10.21.0",
+    "@prismatic-io/spectral": "10.38.5",
     "lodash.merge": "^4.6.2",
     "oci-common": "^2.107.1",
     "oci-objectstorage": "^2.107.1",
@@ -23,17 +24,12 @@
     "oracledb": "^6.8.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.5.1",
-    "@types/jest": "30.0.0",
+    "@biomejs/biome": "2.6.5",
     "@types/lodash.merge": "^4.6.9",
-    "@types/node": "22.10.7",
+    "@types/node": "^26.6.4",
     "@types/oracledb": "^6.6.0",
-    "copy-webpack-plugin": "14.0.0",
-    "jest": "30.4.2",
-    "ts-jest": "29.4.11",
-    "ts-loader": "9.6.2",
-    "typescript": "5.9.3",
-    "webpack": "5.108.2",
-    "webpack-cli": "7.1.0"
+    "tsdown": "0.22.3",
+    "typescript": "6.0.3",
+    "vitest": "4.1.9"
   }
 }

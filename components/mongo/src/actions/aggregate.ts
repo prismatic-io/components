@@ -23,7 +23,7 @@ export const aggregate = action({
 
     try {
       // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-      // @ts-ignore
+      // @ts-expect-error
       const cursor = client.aggregate(pipeline, aggregationOptions);
       for await (const doc of cursor) {
         results.push(doc);

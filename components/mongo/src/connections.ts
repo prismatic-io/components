@@ -6,7 +6,6 @@ export const mongoConnection = connection({
     label: "Mongo Connection",
     description: "Authenticate requests to a MongoDB server.",
   },
-  comments: "Authenticate requests to a MongoDB server.",
   inputs: {
     connectionString: {
       label: "Cluster Connection String",

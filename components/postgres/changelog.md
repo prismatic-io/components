@@ -1,5 +1,10 @@
 ## Changelog
 
+### 2026-11-06
+
+Updated spectral to 10.38.5 and switched the build from webpack to tsdown:
+- tsdown 0.22.3
+
 ### 2026-09-03
 
 - Added opt-in batching to the **New and Updated Records** trigger, dispatching each changed record individually or in configured batches so a large backlog drains within one recurrence; enabling it changes the shape a downstream step receives

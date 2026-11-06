@@ -1,4 +1,4 @@
-import { util, action } from "@prismatic-io/spectral";
+import { action, util } from "@prismatic-io/spectral";
 import { googleStorageClient } from "../client";
 import { bucketName, connectionInput, fileName } from "../inputs";
 

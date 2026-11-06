@@ -1,4 +1,4 @@
-import { util, input } from "@prismatic-io/spectral";
+import { input, util } from "@prismatic-io/spectral";
 import { inputs as httpClientInputs } from "@prismatic-io/spectral/dist/clients/http";
 import { completeMultipartUploadExampleInput } from "./exampleInputs";
 import { cleanUploads, toOptionalNumber, toOptionalString } from "./util";

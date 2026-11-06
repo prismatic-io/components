@@ -1,5 +1,5 @@
 import type { StorageOptions } from "@google-cloud/storage";
-import { util, type Connection, ConnectionError } from "@prismatic-io/spectral";
+import { type Connection, ConnectionError, util } from "@prismatic-io/spectral";
 import { GoogleAuth, OAuth2Client } from "google-auth-library";
 import { js2xml, xml2json } from "xml-js";
 import { googleOAuthConnection, googlePrivateKeyConnection } from "./connections";

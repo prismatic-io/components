@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.3.14/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.6.5/schema.json",
   "assist": { "actions": { "source": { "organizeImports": "on" } } },
   "linter": {
     "enabled": true,
@@ -21,5 +21,7 @@
     }
   },
   "formatter": { "enabled": true, "indentStyle": "space", "indentWidth": 2 },
-  "files": { "includes": ["**", "!**/dist"] }
+  "files": {
+    "includes": ["**", "!**/dist", "!**/*.md", "!**/*.yml", "!**/*.yaml"]
+  }
 }
