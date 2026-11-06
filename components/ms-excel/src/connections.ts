@@ -30,7 +30,6 @@ export const msExcelOauth = oauth2Connection({
     label: "OAuth 2.0",
   },
   oauth2Type: OAuth2Type.AuthorizationCode,
-  comments: "OAuth 2.0 Connectivity for Microsoft Excel",
   inputs: {
     authorizeUrl: {
       label: "Authorize URL",

@@ -2,7 +2,7 @@
 
 ### 2026-11-05
 
-Updated to the latest spectral
+Updated spectral to 10.39.0
 
 ### 2026-11-04
 

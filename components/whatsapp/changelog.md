@@ -2,7 +2,7 @@
 
 ### 2026-11-05
 
-Updated to the latest spectral
+Updated spectral to 10.39.0
 
 ### 2026-11-04
 
@@ -10,7 +10,8 @@ Published the component as an npm package, so code-native integrations can insta
 
 ### 2026-11-02
 
-Updated spectral to 10.34.1 and switched the build from webpack to tsdown
+Updated spectral to 10.34.1 and switched the build from webpack to tsdown:
+- tsdown 0.22.3
 
 ### 2026-06-29
 

@@ -1,8 +1,13 @@
 ## Changelog
 
+### 2026-11-06
+
+Updated dependencies:
+- spectral 10.38.5 in the shared ms-utils package
+
 ### 2026-11-05
 
-Updated to the latest spectral
+Updated spectral to 10.39.0
 
 ### 2026-11-03
 

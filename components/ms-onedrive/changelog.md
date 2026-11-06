@@ -1,5 +1,10 @@
 ## Changelog
 
+### 2026-11-06
+
+Updated spectral to 10.38.5 and switched the build from webpack to tsdown:
+- tsdown 0.22.3
+
 ### 2026-07-27
 
 Updated the **Fetch All** option on list actions so results are returned in the same `{ value: [ ... ] }` shape as a single page call; previously enabling Fetch All returned a bare array, so integrations that read the `value` property received no items

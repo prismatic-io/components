@@ -103,8 +103,8 @@
   },
   "azure-service-bus": {
     "name": "@prismatic-io/components-azureservicebus",
-    "version": "0.2.0",
-    "build": "1b72489cecd33886ea9aacdad80170533fcbaf848979406d2774d5f837733cd3",
+    "version": "0.2.1",
+    "build": "076c2fc0af429060ed46c64d31374b46452456882e04cb90ecb39e62b880465d",
     "spectral": "^10.39.0"
   },
   "bamboohr": {
@@ -325,8 +325,8 @@
   },
   "ms-business-central": {
     "name": "@prismatic-io/components-ms-business-central",
-    "version": "0.2.0",
-    "build": "d4cc693098cc1ce54866df69b87014f5da0d0a0ef655a9a083ab82521a51597e",
+    "version": "0.2.1",
+    "build": "c2f24821081745fd533d3404007ee4929638b66fabceb54b20f375223088d19b",
     "spectral": "^10.39.0"
   },
   "ms-intune": {
@@ -337,14 +337,14 @@
   },
   "ms-outlook": {
     "name": "@prismatic-io/components-ms-outlook",
-    "version": "0.2.0",
-    "build": "ece59ac28b22f78e60191817565cef6626eb57448e041cb0b8cc25e67fdcd702",
+    "version": "0.2.1",
+    "build": "115040f970d24d8188eb8115ca077579c10daa82812116d7b40b2b7444984a44",
     "spectral": "^10.39.0"
   },
   "ms-planner": {
     "name": "@prismatic-io/components-ms-planner",
-    "version": "0.2.0",
-    "build": "cd817d21711fb06340d34db3230c110c0f5bc329f76235dca9a3a2800635ed95",
+    "version": "0.2.1",
+    "build": "f807f61ce21eec27ab5cd50f6e6e50bc983fa9c3694055dfb380eb1cf25c1ef1",
     "spectral": "^10.39.0"
   },
   "ms-power-bi": {
@@ -361,8 +361,8 @@
   },
   "ms-sharepoint": {
     "name": "@prismatic-io/components-ms-sharepoint",
-    "version": "0.2.0",
-    "build": "6c27191b08a1c9563677e4b4ceb74ac00e31bae25ee9d06933a7d759cc212272",
+    "version": "0.2.1",
+    "build": "56edcdefdc101eff47d7cc77089768ce481ac4509e83a91db41b7800b47c141c",
     "spectral": "^10.39.0"
   },
   "netsuite": {

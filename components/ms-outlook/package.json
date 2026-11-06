@@ -1,6 +1,6 @@
 {
   "name": "@prismatic-io/components-ms-outlook",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "main": "./npm-dist/index.cjs",
   "types": "./npm-dist/index.d.cts",
   "exports": {

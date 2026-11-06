@@ -1,4 +1,4 @@
-import { type Connection, util } from "@prismatic-io/spectral/dist/";
+import { type Connection, util } from "@prismatic-io/spectral";
 import {
   createClient,
   type HttpClient,
