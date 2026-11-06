@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-11-06
+
+Bump `@slack/webhook` and `@slack/bolt` to the latest versions.
+
 ### 2026-11-05
 
 Updated spectral to 10.39.0
@@ -11,6 +15,7 @@ Published the component as an npm package, so code-native integrations can insta
 ### 2026-11-02
 
 Updated spectral to 10.34.1 and switched the build from webpack to tsdown:
+
 - tsdown 0.22.3
 
 ### 2026-10-29
@@ -59,6 +64,7 @@ Removed the **Debug Request** input from all action inputs. Debug logging is now
 ### 2026-02-02
 
 Improved channel fetching for **List Conversations** action and **Select Channel** data source:
+
 - Refactored to fetch channels by type (public, private, IM, multi-party IM) separately for more reliable results
 - Improved pagination handling when fetching large channel lists with mixed types
 

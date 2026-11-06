@@ -1,8 +1,3 @@
-//#region node_modules/axios/index.d.ts
-type UppercaseMethod = 'GET' | 'DELETE' | 'HEAD' | 'OPTIONS' | 'POST' | 'PUT' | 'PATCH' | 'PURGE' | 'LINK' | 'UNLINK' | 'QUERY';
-type Method = (UppercaseMethod | Lowercase<UppercaseMethod>) & {};
-type ResponseType = 'arraybuffer' | 'blob' | 'document' | 'json' | 'text' | 'stream' | 'formdata';
-//#endregion
 //#region node_modules/@slack/web-api/dist/types/response/UsersInfoResponse.d.ts
 type UsersInfoResponse = WebAPICallResult & {
   error?: string;
@@ -10,10 +5,13 @@ type UsersInfoResponse = WebAPICallResult & {
   ok?: boolean;
   provided?: string;
   user?: User$1;
+  warning?: string;
 };
 interface User$1 {
   color?: string;
   deleted?: boolean;
+  enterprise_id?: string;
+  enterprise_name?: string;
   enterprise_user?: EnterpriseUser;
   has_2fa?: boolean;
   id?: string;
@@ -34,6 +32,7 @@ interface User$1 {
   profile?: Profile$1;
   real_name?: string;
   team_id?: string;
+  teams?: string[];
   tz?: string;
   tz_label?: string;
   tz_offset?: number;
@@ -58,6 +57,7 @@ interface Profile$1 {
   display_name_normalized?: string;
   email?: string;
   first_name?: string;
+  guest_expiration_ts?: number;
   guest_invited_by?: string;
   huddle_state?: string;
   huddle_state_expiration_ts?: number;
@@ -76,6 +76,7 @@ interface Profile$1 {
   real_name?: string;
   real_name_normalized?: string;
   skype?: string;
+  start_date?: string;
   status_emoji?: string;
   status_emoji_display_info?: StatusEmojiDisplayInfo$1[];
   status_emoji_url?: string;
@@ -100,6 +101,7 @@ type UsersLookupByEmailResponse = WebAPICallResult & {
   provided?: string;
   response_metadata?: ResponseMetadata;
   user?: User;
+  warning?: string;
 };
 interface ResponseMetadata {
   messages?: string[];
@@ -122,6 +124,7 @@ interface User {
   profile?: Profile;
   real_name?: string;
   team_id?: string;
+  two_factor_type?: string;
   tz?: string;
   tz_label?: string;
   tz_offset?: number;
@@ -134,6 +137,7 @@ interface Profile {
   display_name_normalized?: string;
   email?: string;
   first_name?: string;
+  guest_expiration_ts?: number;
   guest_invited_by?: string;
   huddle_state?: string;
   huddle_state_expiration_ts?: number;
@@ -152,6 +156,7 @@ interface Profile {
   real_name?: string;
   real_name_normalized?: string;
   skype?: string;
+  start_date?: string;
   status_emoji?: string;
   status_emoji_display_info?: StatusEmojiDisplayInfo[];
   status_emoji_url?: string;
@@ -171,7 +176,6 @@ interface StatusEmojiDisplayInfo {
 //#region node_modules/@slack/web-api/dist/WebClient.d.ts
 interface WebAPICallResult {
   ok: boolean;
-  error?: string;
   response_metadata?: {
     warnings?: string[];
     next_cursor?: string;
@@ -181,6 +185,11 @@ interface WebAPICallResult {
     messages?: string[];
   };
 }
+//#endregion
+//#region node_modules/axios/index.d.ts
+type UppercaseMethod = 'GET' | 'DELETE' | 'HEAD' | 'OPTIONS' | 'POST' | 'PUT' | 'PATCH' | 'PURGE' | 'LINK' | 'UNLINK' | 'QUERY';
+type Method = (UppercaseMethod | Lowercase<UppercaseMethod>) & {};
+type ResponseType = 'arraybuffer' | 'blob' | 'document' | 'json' | 'text' | 'stream' | 'formdata';
 //#endregion
 //#region src/types/index.d.ts
 type Sort = "relevant" | "name" | "member_count" | "created";

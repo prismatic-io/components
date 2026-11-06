@@ -1,6 +1,6 @@
 {
   "name": "@prismatic-io/components-slack",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "main": "./npm-dist/index.cjs",
   "types": "./npm-dist/index.d.cts",
   "exports": {
@@ -39,15 +39,18 @@
     "@prismatic-io/spectral": "^10.39.0"
   },
   "dependencies": {
-    "@slack/bolt": "4.2.0",
-    "@slack/webhook": "6.1.0"
+    "@slack/bolt": "5.1.0",
+    "@slack/webhook": "8.0.2"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.1",
     "@types/node": "^26.6.4",
     "tsdown": "0.22.3",
     "typescript": "6.0.3",
-    "vitest": "4.1.9",
+    "vitest": "5.1.0",
     "@prismatic-io/spectral": "^10.39.0"
+  },
+  "overrides": {
+    "undici": "7.30.2"
   }
 }

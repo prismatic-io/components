@@ -511,8 +511,8 @@
   },
   "slack": {
     "name": "@prismatic-io/components-slack",
-    "version": "0.2.0",
-    "build": "1cbf47fa021a571f868c27abe9a9962c299ec4512cbe9987bb67607aed1cb96a",
+    "version": "0.3.0",
+    "build": "72829a3cc7b7330df34def8287f3b479305d07ed59a8c4071d7a38523e88e313",
     "spectral": "^10.39.0"
   },
   "square": {
