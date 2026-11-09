@@ -7,7 +7,7 @@ import { getSiteInputs } from "../../inputs";
 export const getSite = action({
   display: {
     label: "Get Site",
-    description: "Get the information and metadata of a given Site",
+    description: "Gets the information and metadata of a given site.",
   },
   perform: async (context, { connection, siteId }) => {
     const client = getOneDriveClient(connection, context.debug.enabled);

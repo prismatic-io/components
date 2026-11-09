@@ -7,7 +7,7 @@ import { listSharedInputs } from "../../inputs";
 export const listShared = action({
   display: {
     label: "List Shared",
-    description: "List shared items in SharePoint or OneDrive",
+    description: "Lists shared items in SharePoint or OneDrive.",
   },
   inputs: listSharedInputs,
   perform: async (context, { connection }) => {

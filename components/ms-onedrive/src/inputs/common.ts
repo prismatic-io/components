@@ -12,7 +12,7 @@ export const fetchAll = input({
   type: "boolean",
   clean: util.types.toBool,
   comments:
-    "When enabled, automatically fetches all pages of results by following @odata.nextLink. Page Limit and Page Token inputs are ignored when this is enabled.",
+    "When true, automatically fetches all pages of results by following @odata.nextLink. Page Limit and Page Token inputs are ignored when this is enabled.",
   required: false,
   default: "false",
 });

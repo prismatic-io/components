@@ -8,7 +8,7 @@ export const renewSubscription = action({
   display: {
     label: "Renew Subscription",
     description:
-      "Extend the expiration date of an existing OneDrive subscription",
+      "Extends the expiration date of an existing OneDrive subscription.",
   },
   inputs: renewSubscriptionInputs,
   perform: async (

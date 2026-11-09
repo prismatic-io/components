@@ -1,13 +1,13 @@
 import { action } from "@prismatic-io/spectral";
 import { getOneDriveClient } from "../../client";
 import { handleErrors } from "../../errors";
-import { findUserExamplePayload } from "../../examplePayloads";
+import { searchUserExamplePayload } from "../../examplePayloads";
 import { searchUserInputs } from "../../inputs";
 
 export const searchUser = action({
   display: {
     label: "Search Users",
-    description: "Find the information and metadata of an existing user",
+    description: "Finds the information and metadata of an existing user.",
   },
   perform: async (context, { connection, userId }) => {
     const client = getOneDriveClient(connection, context.debug.enabled);
@@ -17,5 +17,5 @@ export const searchUser = action({
     };
   },
   inputs: searchUserInputs,
-  examplePayload: findUserExamplePayload,
+  examplePayload: searchUserExamplePayload,
 });

@@ -5,7 +5,7 @@ import { listFilesInDirectoryInputs } from "../inputs";
 export const listFilesInDirectory = dataSource({
   display: {
     label: "Files in Directory",
-    description: "A picklist of files in a given directory",
+    description: "Lists files in a given directory.",
   },
   inputs: listFilesInDirectoryInputs,
   perform: async (_context, { connection, dir }) => {
@@ -28,7 +28,7 @@ export const listFilesInDirectory = dataSource({
         .filter((record) => !record?.folder)
         .map((record) => {
           return {
-            key: `${record?.["@microsoft.graph.downloadUrl"]}`,
+            key: `${record?.id}`,
             label: record.name,
           };
         }) as Element[],

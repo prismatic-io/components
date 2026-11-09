@@ -5,8 +5,8 @@ import { deleteSubscriptionInputs } from "../../inputs";
 
 export const deleteSubscription = action({
   display: {
-    label: "Delete a Subscription",
-    description: "Delete a Subscription by ID",
+    label: "Delete Subscription",
+    description: "Deletes a subscription by ID.",
   },
   inputs: deleteSubscriptionInputs,
   perform: async (context, { oneDriveConnection, subscriptionId }) => {

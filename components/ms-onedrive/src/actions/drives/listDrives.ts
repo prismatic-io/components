@@ -7,7 +7,7 @@ import { listDrivesInputs } from "../../inputs";
 export const listDrives = action({
   display: {
     label: "List My Drives",
-    description: "Returns a list of all drives available to the current user",
+    description: "Returns a list of all drives available to the current user.",
   },
   perform: async (context, { connection, fetchAll, pageLimit, pageToken }) => {
     const client = getOneDriveClient(connection, context.debug.enabled);

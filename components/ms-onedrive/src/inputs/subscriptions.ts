@@ -59,8 +59,8 @@ export const clientState = input({
   clean: util.types.toString,
 });
 
-export const subscriptionId = input({
-  label: "Subscription Id",
+const subscriptionId = input({
+  label: "Subscription ID",
   type: "string",
   required: true,
   comments: "The unique identifier of the subscription.",

@@ -7,7 +7,7 @@ import { updateFileInputs } from "../../inputs";
 export const updateFile = action({
   display: {
     label: "Update File",
-    description: "Update the information and metadata of a given file",
+    description: "Updates the information and metadata of a given file.",
   },
   inputs: updateFileInputs,
   perform: async (context, { connection, dir, values, fileName, path }) => {

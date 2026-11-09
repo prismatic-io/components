@@ -7,7 +7,7 @@ import { listDrivesByGroupInputs } from "../../inputs";
 export const listDrivesByGroup = action({
   display: {
     label: "List Drives By Group",
-    description: "Returns a list of all drives available to the given group",
+    description: "Returns a list of all drives available to the given group.",
   },
   perform: async (
     context,

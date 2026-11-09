@@ -7,7 +7,7 @@ import { searchDriveInputs } from "../../inputs";
 export const searchDrive = action({
   display: {
     label: "Search Drive",
-    description: "Search the current drive for a string of text",
+    description: "Searches the current drive for a string of text.",
   },
   perform: async (context, { connection, search }) => {
     const client = getOneDriveClient(connection, context.debug.enabled);

@@ -7,7 +7,7 @@ import { listSitesInputs } from "../../inputs";
 export const listSites = action({
   display: {
     label: "List Sites",
-    description: "Returns a list of all sites available to the current user",
+    description: "Returns a list of all sites available to the current user.",
   },
   perform: async (context, { connection, fetchAll, pageLimit, pageToken }) => {
     const client = getOneDriveClient(connection, context.debug.enabled);

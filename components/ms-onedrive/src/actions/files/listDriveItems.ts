@@ -7,7 +7,7 @@ import { listDriveItemsInputs } from "../../inputs";
 export const listDriveItems = action({
   display: {
     label: "List Items In Directory",
-    description: "Returns a list of all items in the given directory",
+    description: "Returns a list of all items in the given directory.",
   },
   inputs: listDriveItemsInputs,
   perform: async (

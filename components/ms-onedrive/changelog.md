@@ -1,5 +1,12 @@
 ## Changelog
 
+### 2026-11-09
+
+Updated file handling ahead of Microsoft's pre-authenticated URL deprecation and standardized the subscription action labels:
+- Updated the **Download File** action to use the official Microsoft Graph `/content` endpoint instead of the deprecated `@microsoft.graph.downloadUrl` property
+- Updated the **Files in Directory** data source to return item IDs instead of download URLs as the selected value
+- Updated the **Create a Subscription** and **Delete a Subscription** action labels to **Create Subscription** and **Delete Subscription**; action keys are unchanged, so existing steps keep working
+
 ### 2026-11-06
 
 Updated spectral to 10.38.5 and switched the build from webpack to tsdown:

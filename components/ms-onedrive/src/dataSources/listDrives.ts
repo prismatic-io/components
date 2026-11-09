@@ -5,7 +5,7 @@ import { listDrivesDataSourceInputs } from "../inputs";
 export const listDrives = dataSource({
   display: {
     label: "List Drives from Source",
-    description: "A picklist of drives for an account",
+    description: "Lists available drives for an account.",
   },
   inputs: listDrivesDataSourceInputs,
   perform: async (_context, { oneDriveConnection }) => {

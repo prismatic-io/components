@@ -6,8 +6,9 @@ import { createSubscriptionInputs } from "../../inputs";
 
 export const createSubscription = action({
   display: {
-    label: "Create a Subscription",
-    description: "Create a Subscription to notify you of changes to a resource",
+    label: "Create Subscription",
+    description:
+      "Creates a subscription to receive notifications about changes to a resource.",
   },
   inputs: createSubscriptionInputs,
   perform: async (

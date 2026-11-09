@@ -7,7 +7,7 @@ import { listDrivesByUserInputs } from "../../inputs";
 export const listDrivesByUser = action({
   display: {
     label: "List Drives By User",
-    description: "Returns a list of all drives available to the given user",
+    description: "Returns a list of all drives available to the given user.",
   },
   perform: async (
     context,

@@ -24,8 +24,8 @@ export const dir = input({
   clean: cleanString,
 });
 
-export const itemId = input({
-  label: "Item Id",
+const itemId = input({
+  label: "Item ID",
   type: "string",
   required: true,
   example: "01NKDM7HMOJTVYMDOSXFDK2QJDXCDI3WUK",
@@ -35,7 +35,7 @@ export const itemId = input({
   clean: cleanString,
 });
 
-export const path = input({
+const path = input({
   label: "Path",
   type: "string",
   required: true,
@@ -46,7 +46,7 @@ export const path = input({
   clean: cleanString,
 });
 
-export const fileName = input({
+const fileName = input({
   label: "File Name",
   type: "string",
   required: true,

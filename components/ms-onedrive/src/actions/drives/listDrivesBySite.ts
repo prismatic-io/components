@@ -7,7 +7,7 @@ import { listDrivesBySiteInputs } from "../../inputs";
 export const listDrivesBySite = action({
   display: {
     label: "List Drives By Site",
-    description: "Returns a list of all drives available to the given site",
+    description: "Returns a list of all drives available to the given site.",
   },
   perform: async (
     context,

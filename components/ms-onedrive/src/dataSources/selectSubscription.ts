@@ -6,7 +6,7 @@ import type { GraphListResponse, Subscription } from "../types";
 export const selectSubscription = dataSource({
   display: {
     label: "Select Subscription",
-    description: "A picklist of subscriptions available to the current user.",
+    description: "Lists subscriptions available to the current user.",
   },
   inputs: selectSubscriptionInputs,
   perform: async (_context, { connection }) => {

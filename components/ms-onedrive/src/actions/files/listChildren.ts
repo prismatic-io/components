@@ -7,7 +7,7 @@ import { listChildrenInputs } from "../../inputs";
 export const listChildren = action({
   display: {
     label: "List Children",
-    description: "Returns all child elements on a given drive item",
+    description: "Returns all child elements on a given drive item.",
   },
   inputs: listChildrenInputs,
   perform: async (

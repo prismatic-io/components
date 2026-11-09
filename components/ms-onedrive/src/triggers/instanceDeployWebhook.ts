@@ -6,6 +6,7 @@ import {
 } from "ms-utils";
 import { getOneDriveClient } from "../client";
 import { TriggerBranches } from "../enums";
+import { webhookNotificationExamplePayload } from "../examplePayloads";
 import { instanceDeployWebhookInputs } from "../inputs";
 import type { WebhookNotificationPayload } from "../types";
 
@@ -23,6 +24,7 @@ export const instanceDeployWebhook = trigger({
     TriggerBranches.Notification,
     TriggerBranches.URLValidation,
   ],
+  examplePayload: webhookNotificationExamplePayload,
   perform: async (context, payload, params) => {
     const rawValidationToken = payload.queryParameters?.validationToken;
     const validationToken = util.types.toString(rawValidationToken);

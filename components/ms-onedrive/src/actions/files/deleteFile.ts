@@ -7,7 +7,7 @@ import { deleteFileInputs } from "../../inputs";
 export const deleteFile = action({
   display: {
     label: "Delete File",
-    description: "Delete the information and metadata of a file by path",
+    description: "Deletes a file by path.",
   },
   perform: async (context, { connection, driveId, itemId }) => {
     const client = getOneDriveClient(connection, context.debug.enabled);

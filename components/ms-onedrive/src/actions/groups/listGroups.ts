@@ -7,7 +7,7 @@ import { listGroupsInputs } from "../../inputs";
 export const listGroups = action({
   display: {
     label: "List Groups",
-    description: "Returns a list of all groups the user has access to",
+    description: "Returns a list of all groups the user has access to.",
   },
   perform: async (context, { connection, fetchAll, pageLimit, pageToken }) => {
     const client = getOneDriveClient(connection, context.debug.enabled);

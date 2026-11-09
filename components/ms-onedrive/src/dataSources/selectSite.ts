@@ -5,7 +5,7 @@ import { selectSiteInputs } from "../inputs";
 export const selectSite = dataSource({
   display: {
     label: "Select Site",
-    description: "A picklist of sites available to the current user",
+    description: "Lists sites available to the current user.",
   },
   inputs: selectSiteInputs,
   perform: async (_context, { connection }) => {

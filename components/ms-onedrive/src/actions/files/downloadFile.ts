@@ -1,13 +1,13 @@
 import { action } from "@prismatic-io/spectral";
 import { getOneDriveClient } from "../../client";
 import { handleErrors } from "../../errors";
+import { downloadFileExamplePayload } from "../../examplePayloads";
 import { downloadFileInputs } from "../../inputs";
-import type { DriveItemDownload } from "../../types";
 
 export const downloadFile = action({
   display: {
     label: "Download File",
-    description: "Download a file from the current user's drive",
+    description: "Downloads a file from the current user's drive.",
   },
   inputs: downloadFileInputs,
   perform: async (context, { connection, fileLocation, timeout }) => {
@@ -17,22 +17,24 @@ export const downloadFile = action({
       timeout,
     );
 
-    const fileItem = await handleErrors(
-      client.get<DriveItemDownload>(`/me/drive/root:${fileLocation}`),
+    const metadata = await handleErrors(
+      client.get<{ file: { mimeType: string } }>(
+        `/me/drive/root:${fileLocation}`,
+      ),
     );
 
-    const {
-      "@microsoft.graph.downloadUrl": downloadUrl,
-      file: { mimeType: contentType },
-    } = fileItem;
-
-    const data = await handleErrors(
-      client.get<Buffer>(downloadUrl, { responseType: "arraybuffer" }),
+    const data = Buffer.from(
+      await handleErrors(
+        client.get(`/me/drive/root:${fileLocation}:/content`, {
+          responseType: "arraybuffer",
+        }),
+      ),
     );
 
     return {
       data,
-      contentType,
+      contentType: metadata.file.mimeType,
     };
   },
+  examplePayload: downloadFileExamplePayload,
 });

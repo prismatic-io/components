@@ -6,7 +6,7 @@ import { listChangesInputs } from "../../inputs";
 export const listChanges = action({
   display: {
     label: "List Changes",
-    description: "Track changes in a driveItem and its children over time.",
+    description: "Tracks changes in a driveItem and its children over time.",
   },
   inputs: listChangesInputs,
   perform: async (

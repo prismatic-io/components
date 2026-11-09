@@ -8,7 +8,7 @@ export const getItem = action({
   display: {
     label: "Get Item by Path",
     description:
-      "Get the information and metadata of an item with your path in Sharepoint",
+      "Gets the information and metadata of an item by path in SharePoint.",
   },
   inputs: getItemInputs,
   perform: async (context, { connection, dir }) => {

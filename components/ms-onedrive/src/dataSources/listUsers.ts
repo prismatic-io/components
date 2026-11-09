@@ -5,7 +5,7 @@ import { listUsersInputs } from "../inputs";
 export const listUsers = dataSource({
   display: {
     label: "List Users from Source",
-    description: "A picklist of users for an account",
+    description: "Lists available users for an account.",
   },
   inputs: listUsersInputs,
   perform: async (_context, { connection }) => {

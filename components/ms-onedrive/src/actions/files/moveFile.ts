@@ -7,7 +7,7 @@ import { moveFileInputs } from "../../inputs";
 export const moveFile = action({
   display: {
     label: "Move File",
-    description: "Move the given file to a new location",
+    description: "Moves the given file to a new location.",
   },
   inputs: moveFileInputs,
   perform: async (context, { connection, dir, path, fileName }) => {

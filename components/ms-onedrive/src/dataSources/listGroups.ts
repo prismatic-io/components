@@ -5,7 +5,7 @@ import { listGroupsDataSourceInputs } from "../inputs";
 export const listGroups = dataSource({
   display: {
     label: "List Groups from Source",
-    description: "A picklist of groups for an account",
+    description: "Lists available groups for an account.",
   },
   inputs: listGroupsDataSourceInputs,
   perform: async (_context, { connection }) => {

@@ -8,7 +8,7 @@ import { uploadFileInputs } from "../../inputs";
 export const uploadFile = action({
   display: {
     label: "Upload File",
-    description: "Upload a file to the user's connected drive",
+    description: "Uploads a file to the connected drive.",
   },
   inputs: uploadFileInputs,
   perform: async (context, { connection, fileName, fileData, timeout }) => {

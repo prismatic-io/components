@@ -8,7 +8,7 @@ import { getAuthHeaders, validateConnection } from "../../util";
 export const rawRequest = action({
   display: {
     label: "Raw Request",
-    description: "Send raw HTTP request to Microsoft Onedrive",
+    description: "Sends a raw HTTP request to Microsoft OneDrive.",
   },
   inputs: rawRequestInputs,
   perform: async (context, { connection, ...rawRequestInputs }) => {

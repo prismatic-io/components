@@ -7,7 +7,7 @@ import type { GraphListResponse, Subscription } from "../../types";
 export const listSubscriptions = action({
   display: {
     label: "List Subscriptions",
-    description: "List all available Subscriptions",
+    description: "Lists all available subscriptions.",
   },
   inputs: listSubscriptionsInputs,
   perform: async (

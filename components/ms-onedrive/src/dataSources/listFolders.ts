@@ -5,7 +5,7 @@ import { listFoldersInputs } from "../inputs";
 export const listFolders = dataSource({
   display: {
     label: "List Folders from Source",
-    description: "A picklist of folders in a given directory",
+    description: "Lists folders in a given directory.",
   },
   inputs: listFoldersInputs,
   perform: async (_context, { oneDriveConnection, dir }) => {

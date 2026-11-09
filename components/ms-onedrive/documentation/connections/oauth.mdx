@@ -1,25 +1,33 @@
 <Vimeo video="907604023" />
 
-Once you have an instance of Microsoft OneDrive licensed to your account, you will need to create and configure a new "App Registration" within your [Azure Active Directory tenant](https://portal.azure.com/#home).
-When creating the application you will be prompted to select the 'Supported account types'. Under this section, be sure to select 'Accounts in any organizational directory (Any Azure AD directory - Multitenant)'.
+#### Prerequisites
 
-You will need to go to "Platforms" and add the "Web" platform. In that section you should add the OAuth 2.0 callback URL - <OauthCallbackUrl /> - as a **Redirect URI**.
+- A Microsoft OneDrive license
+- Access to the [Azure Active Directory tenant](https://portal.azure.com/#home)
 
-Next, go to "Certificates & Secrets" for the app and add a new **Client Secret**. Note this value as you will need to supply it to the connection.
+#### Setup Steps
 
-You will also need the **Application (client) ID** from the "Overview" page.
+Create and configure a new "App Registration" within the [Azure Active Directory tenant](https://portal.azure.com/#home).
+When creating the application, select 'Accounts in any organizational directory (Any Azure AD directory - Multitenant)' under 'Supported account types'.
 
-The last step of configuring the "App Registration" is assigning "App Permissions". Click "Add Permission", click on the square labeled "Microsoft Graph", and then "Delegated permissions". You should select all permissions that are required for your desired integration.
-- Additionally, ensure the `offline_access` scope is included in your app registration. It is essential to maintain your OAuth connection and receive refresh tokens. Without it, users will need to re-authenticate every hour.
+Go to "Platforms" and add the "Web" platform. In that section, add the OAuth 2.0 callback URL - <OauthCallbackUrl /> - as a **Redirect URI**.
 
-Now, configure the OAuth 2.0 connection.
+Next, go to "Certificates & Secrets" for the app and add a new **Client Secret**. Note this value as it is needed for the connection.
+
+The **Application (client) ID** from the "Overview" page is also required.
+
+The last step of configuring the "App Registration" is assigning "App Permissions". Click "Add Permission", click on the square labeled "Microsoft Graph", and then "Delegated permissions". Select all permissions that are required for the desired integration.
+- Additionally, ensure the `offline_access` scope is included in the app registration. It is essential to maintain the OAuth connection and receive refresh tokens. Without it, users need to re-authenticate every hour.
+
+#### Configure the Connection
+
 Add an MS OneDrive OAuth 2.0 connection config variable:
 
 - Use the **Application (client) ID** value for the **Client ID** field.
 - Use the **Client Secret** for the same named field.
-- If you didn't select Multitenant when creating the Azure application, you will need to replace the **Authorize URL** and **Token URL** with ones specific to your tenant.
+- If Multitenant was not selected when creating the Azure application, replace the **Authorize URL** and **Token URL** with ones specific to the tenant.
 
-Save your integration and you should be able to authenticate a user through MS OneDrive with OAuth 2.0.
+Save the integration to authenticate through MS OneDrive with OAuth 2.0.
 
 #### App Verification and Admin Consent
 
@@ -46,13 +54,13 @@ Apps requesting **application permissions** (permissions that act without a sign
 
 A tenant administrator can grant consent using either method:
 
-**Method 1 — Admin Consent URL:**
+**Method 1: Admin Consent URL:**
 
 Navigate to the following URL, replacing `{tenant}` with the Directory tenant ID and `{client_id}` with the Application client ID:
 
     https://login.microsoftonline.com/{tenant}/adminconsent?client_id={client_id}
 
-**Method 2 — Microsoft Entra Admin Center:**
+**Method 2: Microsoft Entra Admin Center:**
 
 1. Navigate to [Microsoft Entra Admin Center](https://entra.microsoft.com/) → **Enterprise applications**
 2. Select the app registration
@@ -61,5 +69,3 @@ Navigate to the following URL, replacing `{tenant}` with the Directory tenant ID
 :::note[Delegated vs. Application Permissions]
 Delegated permissions (user-level) typically do not require admin consent unless they are classified as high privilege. Application permissions always require admin consent. Review the [Microsoft Graph permissions reference](https://learn.microsoft.com/en-us/graph/permissions-reference) to identify which permissions require consent.
 :::
-
-<Vimeo video="907604023" />

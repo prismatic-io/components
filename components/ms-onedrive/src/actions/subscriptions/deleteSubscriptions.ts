@@ -1,13 +1,13 @@
 import { action } from "@prismatic-io/spectral";
 import { getOneDriveClient } from "../../client";
-import { deleteAllSubscriptionsExamplePayload } from "../../examplePayloads";
+import { deleteSubscriptionsExamplePayload } from "../../examplePayloads";
 import { deleteSubscriptionsInputs } from "../../inputs";
 import type { GraphListResponse, Subscription } from "../../types";
 
 export const deleteSubscriptions = action({
   display: {
-    label: "Delete all Instanced Subscriptions",
-    description: "Delete all existing subscriptions for this instance",
+    label: "Delete All Instanced Subscriptions",
+    description: "Deletes all existing subscriptions for this instance.",
   },
   inputs: deleteSubscriptionsInputs,
   perform: async (context, { oneDriveConnection }) => {
@@ -34,5 +34,5 @@ export const deleteSubscriptions = action({
 
     return { data: { subscriptionsRemoved: subscriptionsToRemove } };
   },
-  examplePayload: deleteAllSubscriptionsExamplePayload,
+  examplePayload: deleteSubscriptionsExamplePayload,
 });

@@ -8,7 +8,7 @@ export const listSharedFiles = action({
   display: {
     label: "List Files Shared With Me (Deprecation Notice)",
     description:
-      'Returns all files shared with your account. Deprecated: the underlying Microsoft Graph endpoint is degraded and scheduled for removal around November 2026, and may return incomplete results. Use the "List Shared" action instead.',
+      'Returns all files shared with the current account. Deprecated: the underlying Microsoft Graph endpoint is degraded and scheduled for removal around November 2026, and may return incomplete results. Use the "List Shared" action instead.',
   },
   perform: async (context, { connection, fetchAll, pageLimit, pageToken }) => {
     const client = getOneDriveClient(connection, context.debug.enabled);

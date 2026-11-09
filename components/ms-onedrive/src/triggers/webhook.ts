@@ -1,4 +1,5 @@
 import { type HttpResponse, trigger, util } from "@prismatic-io/spectral";
+import { webhookNotificationExamplePayload } from "../examplePayloads";
 
 export const webhook = trigger({
   display: {
@@ -27,4 +28,5 @@ export const webhook = trigger({
       branch: validationToken ? "URL Validation" : "Notification",
     });
   },
+  examplePayload: webhookNotificationExamplePayload,
 });
