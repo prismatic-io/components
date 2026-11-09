@@ -1,6 +1,6 @@
 {
   "name": "@prismatic-io/components-ms-sharepoint",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "main": "./npm-dist/index.cjs",
   "types": "./npm-dist/index.d.cts",
   "exports": {
@@ -36,7 +36,7 @@
     "publish:platform": "npm run build && prism components:publish"
   },
   "peerDependencies": {
-    "@prismatic-io/spectral": "^10.39.0"
+    "@prismatic-io/spectral": "^10.39.1"
   },
   "dependencies": {
     "@azure/msal-node": "^3.7.3"
@@ -47,7 +47,7 @@
     "tsdown": "0.22.3",
     "typescript": "6.0.3",
     "vitest": "4.1.9",
-    "@prismatic-io/spectral": "^10.39.0",
+    "@prismatic-io/spectral": "^10.39.1",
     "ms-utils": "file:../../packages/ms-utils"
   }
 }

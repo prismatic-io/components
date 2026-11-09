@@ -2,6 +2,10 @@
 
 ### 2026-11-09
 
+Updated spectral to 10.39.1
+
+### 2026-11-09
+
 Removed the pin of `undici` to 7.30.2, because the build tools now support the latest version.
 
 ### 2026-11-06

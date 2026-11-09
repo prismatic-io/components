@@ -1,6 +1,6 @@
 {
   "name": "@prismatic-io/components-box",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "main": "./npm-dist/index.cjs",
   "types": "./npm-dist/index.d.cts",
   "exports": {
@@ -36,7 +36,7 @@
     "publish:platform": "npm run build && prism components:publish"
   },
   "peerDependencies": {
-    "@prismatic-io/spectral": "^10.39.0"
+    "@prismatic-io/spectral": "^10.39.1"
   },
   "dependencies": {
     "box-node-sdk": "10.12.0"
@@ -47,6 +47,6 @@
     "tsdown": "0.22.3",
     "typescript": "6.0.3",
     "vitest": "4.1.9",
-    "@prismatic-io/spectral": "^10.39.0"
+    "@prismatic-io/spectral": "^10.39.1"
   }
 }

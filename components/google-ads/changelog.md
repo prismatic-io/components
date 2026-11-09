@@ -2,6 +2,10 @@
 
 ### 2026-11-09
 
+Updated spectral to 10.39.1
+
+### 2026-11-09
+
 Added Local Services lead, Customer Match, and change status capabilities and a **Service Account** connection, moved the default to Google Ads API v26, and fixed several trigger and action issues:
 
 - Added the **List Local Services Leads**, **List Lead Conversations**, **Provide Lead Feedback**, and **Append Lead Conversation** actions for working with Local Services leads, and marked **Get Detailed Lead Reports** as deprecated, since Google has deprecated the Detailed Lead Reports API

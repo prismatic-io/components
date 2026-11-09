@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-11-09
+
+Updated spectral to 10.39.1
+
 ### 2026-11-06
 
 Updated dependencies:
