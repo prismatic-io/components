@@ -1,6 +1,6 @@
 {
   "name": "@prismatic-io/components-slack",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "main": "./npm-dist/index.cjs",
   "types": "./npm-dist/index.d.cts",
   "exports": {
@@ -49,8 +49,5 @@
     "typescript": "6.0.3",
     "vitest": "5.1.0",
     "@prismatic-io/spectral": "^10.39.0"
-  },
-  "overrides": {
-    "undici": "7.30.2"
   }
 }
