@@ -58,13 +58,14 @@ describe("listAccessibleSubAccounts data source", () => {
       })
       .reply(200, { results: [] });
 
-    await invokeDataSource(listAccessibleSubAccounts, {
+    const { result } = await invokeDataSource(listAccessibleSubAccounts, {
       connection,
       customerId: CUSTOMER_ID,
       customerClientLevel: undefined,
     });
 
     expect(scope.isDone()).toBe(true);
+    expect(result).toEqual([]);
     expect(query).not.toContain("undefined");
     expect(query).toMatch(/customer_client\.level <= 1$/);
   });

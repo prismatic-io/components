@@ -1,6 +1,6 @@
 {
   "name": "@prismatic-io/components-google-ads",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "main": "./npm-dist/index.cjs",
   "types": "./npm-dist/index.d.cts",
   "exports": {
@@ -44,7 +44,7 @@
   "devDependencies": {
     "@biomejs/biome": "2.5.10",
     "@types/lodash": "4.17.25",
-    "@types/node": "^26.6.3",
+    "@types/node": "^26.6.6",
     "nock": "13.5.6",
     "tsdown": "0.22.3",
     "typescript": "6.0.3",

@@ -1,5 +1,9 @@
 import { input, util } from "@prismatic-io/spectral";
-import { CHANGE_TYPES_MODEL, DEFAULT_ALERT_THRESHOLD } from "../constants";
+import {
+  CHANGE_STATUS_RESOURCE_TYPES_MODEL,
+  CHANGE_TYPES_MODEL,
+  DEFAULT_ALERT_THRESHOLD,
+} from "../constants";
 import {
   lookBackDateClean,
   toOptionalCustomerId,
@@ -51,9 +55,9 @@ const alertThreshold = input({
   label: "Alert Threshold (%)",
   type: "string",
   required: false,
-  default: DEFAULT_ALERT_THRESHOLD.toString(),
+  default: util.types.toString(DEFAULT_ALERT_THRESHOLD),
   comments: "Budget spend percentage at which to trigger an alert.",
-  example: DEFAULT_ALERT_THRESHOLD.toString(),
+  example: util.types.toString(DEFAULT_ALERT_THRESHOLD),
   placeholder: "Enter alert threshold percentage",
   clean: toOptionalInt,
 });
@@ -122,4 +126,32 @@ export const changeHistoryTriggerInputs = {
   },
   resourceTypes,
   includeUserInfo,
+};
+
+const changeStatusResourceTypes = input({
+  label: "Resource Types",
+  type: "string",
+  collection: "valuelist",
+  required: false,
+  model: CHANGE_STATUS_RESOURCE_TYPES_MODEL,
+  comments:
+    "Types of resources to report changes for. Leave empty to report changes to all resource types.",
+  placeholder: "Enter resource types",
+  clean: toStringList,
+});
+
+export const changeStatusTriggerInputs = {
+  connection: connectionInput,
+  customerId: customerIdInput,
+  lookBackDate: {
+    ...lookBackDate,
+    comments:
+      "The date the initial sync starts from, in YYYY-MM-DD format. Cannot be a future date. Leave empty to start from the first recurrence with no backfill. When set, the initial sync's change_status query starts from this date (clamped to Google's 90-day change_status window) instead of one hour before the first run.",
+  },
+  managerCustomerId: {
+    ...managerCustomerIdInput,
+    required: false,
+    clean: toOptionalCustomerId,
+  },
+  resourceTypes: changeStatusResourceTypes,
 };

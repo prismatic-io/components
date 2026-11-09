@@ -31,6 +31,7 @@ const params = {
   fetchAll: false,
   pageTokenInput: "",
   managerCustomerId: "",
+  linkedCustomerId: undefined,
   returnTotalResultsCount: false,
 };
 

@@ -1,5 +1,10 @@
 import { input, util } from "@prismatic-io/spectral";
-import { cleanCustomerId, cleanString, toOptionalInt } from "../util";
+import {
+  cleanCustomerId,
+  cleanString,
+  toOptionalCustomerId,
+  toOptionalInt,
+} from "../util";
 
 export const connectionInput = input({
   label: "Connection",
@@ -103,4 +108,39 @@ export const customerClientLevel = input({
   placeholder: "Enter level",
   default: "1",
   clean: cleanString,
+});
+
+export const encodingInput = input({
+  label: "Hash Encoding",
+  type: "string",
+  required: false,
+  example: "HEX",
+  model: [
+    { label: "HEX", value: "HEX" },
+    { label: "BASE64", value: "BASE64" },
+  ],
+  comments:
+    "The encoding format to select for hashed user data fields (such as email or phone). Required when `userData` fields are included in events.",
+  clean: cleanString,
+});
+
+export const partialFailure = input({
+  label: "Partial Failure",
+  type: "boolean",
+  required: true,
+  clean: util.types.toBool,
+  default: "false",
+  comments:
+    "When true, successful operations will be carried out and invalid operations will return errors. When false, all operations will be carried out in one transaction if and only if they are all valid. This should always be set to true. See [Partial failure documentation](https://developers.google.com/google-ads/api/docs/best-practices/partial-failures).",
+});
+
+export const linkedCustomerIdInput = input({
+  label: "Linked Customer ID",
+  placeholder: "Enter linked customer ID",
+  type: "string",
+  required: false,
+  example: "111-222-4444",
+  comments:
+    "For partners acting on an advertiser's account through an account link: the advertiser's Google Ads customer ID, sent as the linked-customer-id header alongside the partner's Manager Customer ID. Accepts hyphenated or number forms. See [Google Ads REST authorization](https://developers.google.com/google-ads/api/rest/auth).",
+  clean: toOptionalCustomerId,
 });

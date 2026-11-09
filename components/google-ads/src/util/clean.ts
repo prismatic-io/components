@@ -1,5 +1,6 @@
 import { util } from "@prismatic-io/spectral";
-import { LOOK_BACK_DATE_PATTERN } from "../constants";
+import { LOOK_BACK_DATE_PATTERN, SURVEY_ANSWER_MODEL } from "../constants";
+import type { SurveyAnswer } from "../types";
 
 export const cleanString = (value: unknown): string | undefined => {
   const str = util.types.toString(value);
@@ -69,4 +70,14 @@ export const lookBackDateClean = (value: unknown): string => {
   }
 
   return raw;
+};
+
+export const toSurveyAnswer = (value: unknown): SurveyAnswer => {
+  const answer = util.types.toString(value);
+  if (!SURVEY_ANSWER_MODEL.some((option) => option.value === answer)) {
+    throw new Error(
+      `Survey Answer must be one of ${SURVEY_ANSWER_MODEL.map((option) => option.value).join(", ")}; got "${answer}".`,
+    );
+  }
+  return answer as SurveyAnswer;
 };

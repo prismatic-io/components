@@ -9,7 +9,7 @@ The optional **Look-back Date** input seeds a one-time historical backfill: on t
 #### How It Works
 
 1. Run on the configured schedule (e.g., every 15 minutes)
-2. Query the change_event resource for campaign and campaign budget modifications since the last poll using [Google Ads Query Language](https://developers.google.com/google-ads/api/docs/query/overview)
+2. Query the change_event resource for campaign and campaign budget modifications since the last poll using [Google Ads Query Language](https://developers.google.com/google-ads/api/docs/query/overview). The window ends five minutes before the run: Google can take up to three minutes to report a change, so stopping short of the current time lets the next run pick up a late change instead of skipping it
 3. Read the old and new values directly from each change_event row's before-and-after fields
 4. Categorize changes as "created", "status", "budget", "bidding", or "deleted"
 5. Once the window is exhausted, store its end as the position for the next recurrence

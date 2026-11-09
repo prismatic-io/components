@@ -15,7 +15,7 @@ const managerLinkId = input({
   required: true,
   example: "1234567890",
   comments:
-    "The unique identifier of the manager link. See [Customer manager link documentation](https://developers.google.com/google-ads/api/reference/rpc/v25/CustomerManagerLink).",
+    "The unique identifier of the manager link. See [Customer manager link documentation](https://developers.google.com/google-ads/api/reference/rpc/v26/CustomerManagerLink).",
   clean: util.types.toString,
 });
 

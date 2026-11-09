@@ -1,12 +1,14 @@
 import type { ActionLogger } from "@prismatic-io/spectral";
 import {
   BATCHED_CHANGE_EVENT_ROW_LIMIT,
+  CHANGE_EVENT_MAX_WINDOW_DAYS,
   CHANGE_EVENT_ROW_LIMIT,
 } from "../../constants";
 import type {
   ChangeEventCursor,
   ChangeEventIdentity,
   ChangeEventPollingState,
+  ChangeRowIdentity,
 } from "../../types";
 import { clampToChangeEventWindow } from "./dateUtils";
 
@@ -18,6 +20,13 @@ const nextGAQLSecond = (dateTime: string): string =>
     .toISOString()
     .slice(0, 19)
     .replace("T", " ");
+
+export const changeEventRowIdentity = (
+  row: ChangeEventIdentity,
+): ChangeRowIdentity => ({
+  resourceName: row.changeEvent?.resourceName,
+  changeDateTime: row.changeEvent?.changeDateTime,
+});
 
 const isChangeEventCursor = (value: unknown): value is ChangeEventCursor => {
   const cursor = value as ChangeEventCursor | undefined;
@@ -38,8 +47,15 @@ export const resolveChangeEventCursor = (options: {
   state: Pick<ChangeEventPollingState, "lastChangeTime" | "inFlightCursor">;
   nowTime: string;
   timeZone: string;
+  windowDays?: number;
 }): ChangeEventCursor => {
-  const { incoming, state, nowTime, timeZone } = options;
+  const {
+    incoming,
+    state,
+    nowTime,
+    timeZone,
+    windowDays = CHANGE_EVENT_MAX_WINDOW_DAYS,
+  } = options;
   const resumed = [incoming, state.inFlightCursor].find(isChangeEventCursor);
   const cursor = resumed ?? {
     sinceTime: state.lastChangeTime,
@@ -49,33 +65,38 @@ export const resolveChangeEventCursor = (options: {
 
   return {
     ...cursor,
-    sinceTime: clampToChangeEventWindow(cursor.sinceTime, timeZone),
+    sinceTime: clampToChangeEventWindow(cursor.sinceTime, timeZone, windowDays),
   };
 };
 
-export const advanceChangeEventCursor = <T extends ChangeEventIdentity>(
+export const advanceChangeEventCursor = <T>(
   rows: T[],
   cursor: ChangeEventCursor,
   pageSize: number,
+  identify: (row: T) => ChangeRowIdentity,
   logger?: Pick<ActionLogger, "warn">,
 ): { emit: T[]; nextCursor: ChangeEventCursor | null } => {
   const alreadyEmitted = new Set(cursor.boundaryResourceNames);
-  const emit = rows.filter(
-    (row) => !alreadyEmitted.has(row.changeEvent?.resourceName ?? ""),
-  );
+  const emit = rows.filter((row) => {
+    const { resourceName } = identify(row);
+    return resourceName === undefined || !alreadyEmitted.has(resourceName);
+  });
 
   if (rows.length < pageSize) {
     return { emit, nextCursor: null };
   }
 
-  const seconds = rows.map((row) =>
-    toGAQLSecond(row.changeEvent?.changeDateTime ?? cursor.sinceTime),
-  );
+  const seconds = rows.map((row) => {
+    const { changeDateTime } = identify(row);
+    return toGAQLSecond(
+      changeDateTime === undefined ? cursor.sinceTime : changeDateTime,
+    );
+  });
   const newestSecond = seconds.reduce((max, s) => (s > max ? s : max));
 
   if (emit.length === 0) {
     logger?.warn(
-      `More than ${pageSize} change events share ${newestSecond}; skipping to the next second.`,
+      `More than ${pageSize} changes share ${newestSecond}; skipping to the next second.`,
     );
     const sinceTime = nextGAQLSecond(newestSecond);
     return {
@@ -89,8 +110,8 @@ export const advanceChangeEventCursor = <T extends ChangeEventIdentity>(
 
   const atNewestSecond = rows
     .filter((_row, index) => seconds[index] === newestSecond)
-    .map((row) => row.changeEvent?.resourceName ?? "")
-    .filter((name) => name !== "");
+    .map((row) => identify(row).resourceName)
+    .filter((name): name is string => name !== undefined && name !== "");
   const carried =
     newestSecond === cursor.sinceTime ? cursor.boundaryResourceNames : [];
 

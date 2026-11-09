@@ -3,6 +3,9 @@ type UppercaseMethod = 'GET' | 'DELETE' | 'HEAD' | 'OPTIONS' | 'POST' | 'PUT' | 
 type Method = (UppercaseMethod | Lowercase<UppercaseMethod>) & {};
 type ResponseType = 'arraybuffer' | 'blob' | 'document' | 'json' | 'text' | 'stream' | 'formdata';
 //#endregion
+//#region src/types/localServices.d.ts
+type SurveyAnswer = "VERY_SATISFIED" | "SATISFIED" | "NEUTRAL" | "DISSATISFIED" | "VERY_DISSATISFIED";
+//#endregion
 //#region npm-dist/.entry.d.ts
 declare const _default: import("@prismatic-io/spectral").CallableComponent<{
   key: "google-ads";
@@ -161,7 +164,44 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         default: string;
       };
     };
-  }, "dataManagerOAuth">)[];
+  }, "dataManagerOAuth"> | import("@prismatic-io/spectral").KeyedConnection<{
+    key: "serviceAccount";
+    display: {
+      label: string;
+      description: string;
+    };
+    inputs: {
+      keyFile: {
+        label: string;
+        placeholder: string;
+        type: "password";
+        required: true;
+        shown: true;
+        comments: string;
+        example: string;
+      };
+      scopes: {
+        label: string;
+        placeholder: string;
+        type: "string";
+        required: true;
+        shown: true;
+        comments: string;
+        example: string;
+        default: string;
+      };
+      apiVersion: {
+        label: string;
+        placeholder: string;
+        type: "string";
+        required: false;
+        shown: true;
+        comments: string;
+        example: string;
+        default: string;
+      };
+    };
+  }, "serviceAccount">)[];
   dataSources: {
     listAccessibleCustomers: import("@prismatic-io/spectral").DataSourceDefinition<{
       connection: {
@@ -197,6 +237,34 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         placeholder: string;
         default: string;
         clean: (value: unknown) => string | undefined;
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, "picklist">;
+    selectUserList: import("@prismatic-io/spectral").DataSourceDefinition<{
+      connection: {
+        label: string;
+        type: "connection";
+        required: true;
+        comments: string;
+      };
+      customerId: {
+        dataSource: undefined;
+        label: string;
+        placeholder: string;
+        type: "string";
+        required: true;
+        comments: string;
+        example: string;
+        clean: (value: unknown) => string;
+      };
+      managerCustomerId: {
+        required: boolean;
+        clean: (value: unknown) => string | undefined;
+        dataSource: undefined;
+        comments: string;
+        label: string;
+        placeholder: string;
+        type: "string";
+        example: string;
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, "picklist">;
   };
@@ -455,6 +523,54 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
       data: any;
     }>;
+    appendLeadConversation: import("@prismatic-io/spectral").ActionDefinition<{
+      connection: {
+        label: string;
+        type: "connection";
+        required: true;
+        comments: string;
+      };
+      customerId: {
+        label: string;
+        placeholder: string;
+        type: "string";
+        required: true;
+        comments: string;
+        example: string;
+        dataSource: string;
+        clean: (value: unknown) => string;
+      };
+      leadId: {
+        label: string;
+        placeholder: string;
+        type: "string";
+        required: true;
+        example: string;
+        comments: string;
+        clean: (value: unknown, defaultValue?: string) => string;
+      };
+      text: {
+        label: string;
+        placeholder: string;
+        type: "string";
+        required: true;
+        example: string;
+        comments: string;
+        clean: (value: unknown, defaultValue?: string) => string;
+      };
+      managerCustomerId: {
+        required: boolean;
+        clean: (value: unknown) => string | undefined;
+        label: string;
+        placeholder: string;
+        type: "string";
+        comments: string;
+        example: string;
+        dataSource: string;
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
+      data: any;
+    }>;
     detailedLeadReports: import("@prismatic-io/spectral").ActionDefinition<{
       connection: {
         label: string;
@@ -519,6 +635,208 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         clean: (value: unknown) => string | undefined;
       };
       endDateInput: {
+        label: string;
+        placeholder: string;
+        type: "string";
+        required: false;
+        example: string;
+        comments: string;
+        clean: (value: unknown) => string | undefined;
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
+      data: any;
+    }>;
+    listLeadConversations: import("@prismatic-io/spectral").ActionDefinition<{
+      connection: {
+        label: string;
+        type: "connection";
+        required: true;
+        comments: string;
+      };
+      customerId: {
+        label: string;
+        placeholder: string;
+        type: "string";
+        required: true;
+        comments: string;
+        example: string;
+        dataSource: string;
+        clean: (value: unknown) => string;
+      };
+      fetchAll: {
+        label: string;
+        type: "boolean";
+        required: false;
+        default: string;
+        clean: (value: unknown, defaultValue?: boolean) => boolean;
+        comments: string;
+      };
+      pageTokenInput: {
+        label: string;
+        placeholder: string;
+        type: "string";
+        required: false;
+        example: string;
+        clean: (value: unknown) => string | undefined;
+        comments: string;
+      };
+      managerCustomerId: {
+        required: boolean;
+        clean: (value: unknown) => string | undefined;
+        label: string;
+        placeholder: string;
+        type: "string";
+        comments: string;
+        example: string;
+        dataSource: string;
+      };
+      leadId: {
+        required: boolean;
+        comments: string;
+        clean: (value: unknown) => string | undefined;
+        label: string;
+        placeholder: string;
+        type: "string";
+        example: string;
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
+      data: unknown;
+    }>;
+    listLocalServicesLeads: import("@prismatic-io/spectral").ActionDefinition<{
+      connection: {
+        label: string;
+        type: "connection";
+        required: true;
+        comments: string;
+      };
+      customerId: {
+        label: string;
+        placeholder: string;
+        type: "string";
+        required: true;
+        comments: string;
+        example: string;
+        dataSource: string;
+        clean: (value: unknown) => string;
+      };
+      fetchAll: {
+        label: string;
+        type: "boolean";
+        required: false;
+        default: string;
+        clean: (value: unknown, defaultValue?: boolean) => boolean;
+        comments: string;
+      };
+      pageTokenInput: {
+        label: string;
+        placeholder: string;
+        type: "string";
+        required: false;
+        example: string;
+        clean: (value: unknown) => string | undefined;
+        comments: string;
+      };
+      managerCustomerId: {
+        required: boolean;
+        clean: (value: unknown) => string | undefined;
+        label: string;
+        placeholder: string;
+        type: "string";
+        comments: string;
+        example: string;
+        dataSource: string;
+      };
+      startDateInput: {
+        comments: string;
+        label: string;
+        placeholder: string;
+        type: "string";
+        required: false;
+        example: string;
+        clean: (value: unknown) => string | undefined;
+      };
+      endDateInput: {
+        comments: string;
+        label: string;
+        placeholder: string;
+        type: "string";
+        required: false;
+        example: string;
+        clean: (value: unknown) => string | undefined;
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
+      data: unknown;
+    }>;
+    provideLeadFeedback: import("@prismatic-io/spectral").ActionDefinition<{
+      connection: {
+        label: string;
+        type: "connection";
+        required: true;
+        comments: string;
+      };
+      customerId: {
+        label: string;
+        placeholder: string;
+        type: "string";
+        required: true;
+        comments: string;
+        example: string;
+        dataSource: string;
+        clean: (value: unknown) => string;
+      };
+      leadId: {
+        label: string;
+        placeholder: string;
+        type: "string";
+        required: true;
+        example: string;
+        comments: string;
+        clean: (value: unknown, defaultValue?: string) => string;
+      };
+      surveyAnswer: {
+        label: string;
+        type: "string";
+        required: true;
+        model: {
+          label: string;
+          value: string;
+        }[];
+        comments: string;
+        clean: (value: unknown) => SurveyAnswer;
+      };
+      managerCustomerId: {
+        required: boolean;
+        clean: (value: unknown) => string | undefined;
+        label: string;
+        placeholder: string;
+        type: "string";
+        comments: string;
+        example: string;
+        dataSource: string;
+      };
+      satisfiedReason: {
+        label: string;
+        type: "string";
+        required: false;
+        model: {
+          label: string;
+          value: string;
+        }[];
+        comments: string;
+        clean: (value: unknown) => string | undefined;
+      };
+      dissatisfiedReason: {
+        label: string;
+        type: "string";
+        required: false;
+        model: {
+          label: string;
+          value: string;
+        }[];
+        comments: string;
+        clean: (value: unknown) => string | undefined;
+      };
+      otherReasonComment: {
         label: string;
         placeholder: string;
         type: "string";
@@ -646,6 +964,198 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
       data: unknown;
     }>;
+    getRequestStatus: import("@prismatic-io/spectral").ActionDefinition<{
+      connection: {
+        label: string;
+        type: "connection";
+        required: true;
+        comments: string;
+      };
+      requestId: {
+        label: string;
+        placeholder: string;
+        type: "string";
+        required: true;
+        example: string;
+        comments: string;
+        clean: (value: unknown, defaultValue?: string) => string;
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
+      data: any;
+    }>;
+    ingestAudienceMembers: import("@prismatic-io/spectral").ActionDefinition<{
+      connection: {
+        label: string;
+        type: "connection";
+        required: true;
+        comments: string;
+      };
+      customerId: {
+        label: string;
+        placeholder: string;
+        type: "string";
+        required: true;
+        comments: string;
+        example: string;
+        dataSource: string;
+        clean: (value: unknown) => string;
+      };
+      audienceId: {
+        label: string;
+        placeholder: string;
+        type: "string";
+        required: true;
+        example: string;
+        dataSource: string;
+        comments: string;
+        clean: (value: unknown, defaultValue?: string) => string;
+      };
+      audienceMembers: {
+        label: string;
+        placeholder: string;
+        type: "code";
+        language: "json";
+        required: true;
+        example: string;
+        comments: string;
+        clean: (value: unknown) => object;
+      };
+      customerMatchTermsOfService: {
+        label: string;
+        type: "string";
+        required: true;
+        model: {
+          label: string;
+          value: string;
+        }[];
+        comments: string;
+        clean: (value: unknown, defaultValue?: string) => string;
+      };
+      managerCustomerId: {
+        required: boolean;
+        clean: (value: unknown) => string | undefined;
+        comments: string;
+        label: string;
+        placeholder: string;
+        type: "string";
+        example: string;
+        dataSource: string;
+      };
+      encoding: {
+        comments: string;
+        label: string;
+        type: "string";
+        required: false;
+        example: string;
+        model: {
+          label: string;
+          value: string;
+        }[];
+        clean: (value: unknown) => string | undefined;
+      };
+      adUserDataConsent: {
+        label: string;
+        type: "string";
+        required: false;
+        model: {
+          label: string;
+          value: string;
+        }[];
+        comments: string;
+        clean: (value: unknown) => string | undefined;
+      };
+      adPersonalizationConsent: {
+        label: string;
+        type: "string";
+        required: false;
+        model: {
+          label: string;
+          value: string;
+        }[];
+        comments: string;
+        clean: (value: unknown) => string | undefined;
+      };
+      validateOnly: {
+        label: string;
+        type: "boolean";
+        required: false;
+        clean: (value: unknown, defaultValue?: boolean) => boolean;
+        default: string;
+        comments: string;
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
+      data: any;
+    }>;
+    removeAudienceMembers: import("@prismatic-io/spectral").ActionDefinition<{
+      connection: {
+        label: string;
+        type: "connection";
+        required: true;
+        comments: string;
+      };
+      customerId: {
+        label: string;
+        placeholder: string;
+        type: "string";
+        required: true;
+        comments: string;
+        example: string;
+        dataSource: string;
+        clean: (value: unknown) => string;
+      };
+      audienceId: {
+        label: string;
+        placeholder: string;
+        type: "string";
+        required: true;
+        example: string;
+        dataSource: string;
+        comments: string;
+        clean: (value: unknown, defaultValue?: string) => string;
+      };
+      audienceMembers: {
+        label: string;
+        placeholder: string;
+        type: "code";
+        language: "json";
+        required: true;
+        example: string;
+        comments: string;
+        clean: (value: unknown) => object;
+      };
+      managerCustomerId: {
+        required: boolean;
+        clean: (value: unknown) => string | undefined;
+        comments: string;
+        label: string;
+        placeholder: string;
+        type: "string";
+        example: string;
+        dataSource: string;
+      };
+      encoding: {
+        comments: string;
+        label: string;
+        type: "string";
+        required: false;
+        example: string;
+        model: {
+          label: string;
+          value: string;
+        }[];
+        clean: (value: unknown) => string | undefined;
+      };
+      validateOnly: {
+        label: string;
+        type: "boolean";
+        required: false;
+        clean: (value: unknown, defaultValue?: boolean) => boolean;
+        default: string;
+        comments: string;
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
+      data: any;
+    }>;
     ingestOfflineConversions: import("@prismatic-io/spectral").ActionDefinition<{
       connection: {
         label: string;
@@ -741,6 +1251,15 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         default: string;
         comments: string;
       };
+      linkedCustomerId: {
+        label: string;
+        placeholder: string;
+        type: "string";
+        required: false;
+        example: string;
+        comments: string;
+        clean: (value: unknown) => string | undefined;
+      };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
       data: any;
     }>;
@@ -788,6 +1307,15 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         clean: (value: unknown, defaultValue?: boolean) => boolean;
         default: string;
         comments: string;
+      };
+      linkedCustomerId: {
+        label: string;
+        placeholder: string;
+        type: "string";
+        required: false;
+        example: string;
+        comments: string;
+        clean: (value: unknown) => string | undefined;
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
       data: any;
@@ -853,8 +1381,132 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         clean: (value: unknown, defaultValue?: boolean) => boolean;
         comments: string;
       };
+      linkedCustomerId: {
+        label: string;
+        placeholder: string;
+        type: "string";
+        required: false;
+        example: string;
+        comments: string;
+        clean: (value: unknown) => string | undefined;
+      };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
       data: unknown;
+    }>;
+    searchStream: import("@prismatic-io/spectral").ActionDefinition<{
+      connection: {
+        label: string;
+        type: "connection";
+        required: true;
+        comments: string;
+      };
+      customerId: {
+        label: string;
+        placeholder: string;
+        type: "string";
+        required: true;
+        comments: string;
+        example: string;
+        dataSource: string;
+        clean: (value: unknown) => string;
+      };
+      query: {
+        label: string;
+        placeholder: string;
+        type: "string";
+        required: true;
+        clean: (value: unknown, defaultValue?: string) => string;
+        comments: string;
+        example: string;
+      };
+      managerCustomerId: {
+        required: boolean;
+        clean: (value: unknown) => string | undefined;
+        label: string;
+        placeholder: string;
+        type: "string";
+        comments: string;
+        example: string;
+        dataSource: string;
+      };
+      linkedCustomerId: {
+        label: string;
+        placeholder: string;
+        type: "string";
+        required: false;
+        example: string;
+        comments: string;
+        clean: (value: unknown) => string | undefined;
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
+      data: unknown;
+    }>;
+    mutateResources: import("@prismatic-io/spectral").ActionDefinition<{
+      connection: {
+        label: string;
+        type: "connection";
+        required: true;
+        comments: string;
+      };
+      customerId: {
+        label: string;
+        placeholder: string;
+        type: "string";
+        required: true;
+        comments: string;
+        example: string;
+        dataSource: string;
+        clean: (value: unknown) => string;
+      };
+      mutateOperations: {
+        label: string;
+        placeholder: string;
+        type: "code";
+        language: "json";
+        required: true;
+        example: string;
+        comments: string;
+        clean: (value: unknown) => object;
+      };
+      partialFailure: {
+        default: string;
+        label: string;
+        type: "boolean";
+        required: true;
+        clean: (value: unknown, defaultValue?: boolean) => boolean;
+        comments: string;
+      };
+      managerCustomerId: {
+        required: boolean;
+        clean: (value: unknown) => string | undefined;
+        label: string;
+        placeholder: string;
+        type: "string";
+        comments: string;
+        example: string;
+        dataSource: string;
+      };
+      validateOnly: {
+        label: string;
+        type: "boolean";
+        required: false;
+        clean: (value: unknown, defaultValue?: boolean) => boolean;
+        default: string;
+        comments: string;
+      };
+      responseContentType: {
+        label: string;
+        type: "string";
+        required: false;
+        model: {
+          label: string;
+          value: string;
+        }[];
+        comments: string;
+        clean: (value: unknown) => string | undefined;
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
+      data: any;
     }>;
     mutateCampaign: import("@prismatic-io/spectral").ActionDefinition<{
       connection: {
@@ -1138,6 +1790,58 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         default: string;
         comments: string;
         clean: (value: unknown, defaultValue?: boolean) => boolean;
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, import("@prismatic-io/spectral").TriggerPayload<Record<string, unknown>>, boolean, {
+      payload: import("@prismatic-io/spectral").TriggerPayload;
+    } | undefined, import("@prismatic-io/spectral").Inputs>;
+    changeStatusTrigger: import("@prismatic-io/spectral").PollingTriggerDefinition<{
+      connection: {
+        label: string;
+        type: "connection";
+        required: true;
+        comments: string;
+      };
+      customerId: {
+        label: string;
+        placeholder: string;
+        type: "string";
+        required: true;
+        comments: string;
+        example: string;
+        dataSource: string;
+        clean: (value: unknown) => string;
+      };
+      lookBackDate: {
+        comments: string;
+        label: string;
+        placeholder: string;
+        type: "string";
+        required: false;
+        example: string;
+        clean: (value: unknown) => string;
+      };
+      managerCustomerId: {
+        required: boolean;
+        clean: (value: unknown) => string | undefined;
+        label: string;
+        placeholder: string;
+        type: "string";
+        comments: string;
+        example: string;
+        dataSource: string;
+      };
+      resourceTypes: {
+        label: string;
+        type: "string";
+        collection: "valuelist";
+        required: false;
+        model: {
+          label: string;
+          value: string;
+        }[];
+        comments: string;
+        placeholder: string;
+        clean: (value: unknown) => string[];
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, import("@prismatic-io/spectral").TriggerPayload<Record<string, unknown>>, boolean, {
       payload: import("@prismatic-io/spectral").TriggerPayload;

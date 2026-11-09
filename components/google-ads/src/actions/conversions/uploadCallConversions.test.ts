@@ -18,6 +18,7 @@ const params = {
   connection,
   customerId: CUSTOMER_ID,
   managerCustomerId: "",
+  linkedCustomerId: undefined,
   conversions: [
     {
       callerId: "+18005551234",

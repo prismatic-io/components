@@ -1,6 +1,7 @@
 import type { ChangeEventCursor } from "../../types";
 import {
   advanceChangeEventCursor,
+  changeEventRowIdentity,
   resolveChangeEventCursor,
 } from "./changeEventPagination";
 
@@ -99,7 +100,9 @@ describe("advanceChangeEventCursor", () => {
 
   test("a short page ends the drain and emits every row", () => {
     const rows = [row(1, "2026-03-15 11:10:00.1")];
-    expect(advanceChangeEventCursor(rows, cursor, 2)).toEqual({
+    expect(
+      advanceChangeEventCursor(rows, cursor, 2, changeEventRowIdentity),
+    ).toEqual({
       emit: rows,
       nextCursor: null,
     });
@@ -111,7 +114,9 @@ describe("advanceChangeEventCursor", () => {
       row(2, "2026-03-15 11:20:00.1"),
       row(3, "2026-03-15 11:20:00.9"),
     ];
-    expect(advanceChangeEventCursor(rows, cursor, 3)).toEqual({
+    expect(
+      advanceChangeEventCursor(rows, cursor, 3, changeEventRowIdentity),
+    ).toEqual({
       emit: rows,
       nextCursor: {
         ...cursor,
@@ -134,7 +139,9 @@ describe("advanceChangeEventCursor", () => {
       row(2, "2026-03-15 11:20:00.1"),
       row(4, "2026-03-15 11:30:00.1"),
     ];
-    expect(advanceChangeEventCursor(rows, resumed, 3)).toEqual({
+    expect(
+      advanceChangeEventCursor(rows, resumed, 3, changeEventRowIdentity),
+    ).toEqual({
       emit: [rows[1]],
       nextCursor: null,
     });
@@ -150,7 +157,10 @@ describe("advanceChangeEventCursor", () => {
       row(2, "2026-03-15 11:20:00.1"),
       row(5, "2026-03-15 11:20:00.5"),
     ];
-    expect(advanceChangeEventCursor(rows, resumed, 2).nextCursor).toEqual({
+    expect(
+      advanceChangeEventCursor(rows, resumed, 2, changeEventRowIdentity)
+        .nextCursor,
+    ).toEqual({
       ...resumed,
       boundaryResourceNames: [
         "customers/1/changeEvents/2~0~0",
@@ -173,7 +183,11 @@ describe("advanceChangeEventCursor", () => {
       row(5, "2026-03-15 11:20:00.5"),
     ];
     const warn = vi.fn();
-    expect(advanceChangeEventCursor(rows, resumed, 2, { warn })).toEqual({
+    expect(
+      advanceChangeEventCursor(rows, resumed, 2, changeEventRowIdentity, {
+        warn,
+      }),
+    ).toEqual({
       emit: [],
       nextCursor: {
         ...resumed,
@@ -192,7 +206,9 @@ describe("advanceChangeEventCursor", () => {
     };
     const rows = [row(2, "2026-03-15 11:59:59.1")];
     expect(
-      advanceChangeEventCursor(rows, resumed, 1, { warn: vi.fn() }).nextCursor,
+      advanceChangeEventCursor(rows, resumed, 1, changeEventRowIdentity, {
+        warn: vi.fn(),
+      }).nextCursor,
     ).toBeNull();
   });
 });

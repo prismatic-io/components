@@ -86,7 +86,7 @@ export const oauth = oauth2Connection({
       type: "string",
       required: false,
       shown: true,
-      comments: `The version of the Google Ads API to use. Defaults to ${GOOGLE_ADS_API_VERSION}. Any version from ${GOOGLE_ADS_MINIMUM_SUPPORTED_API_VERSION} through ${GOOGLE_ADS_API_VERSION} can be set explicitly; anything below ${GOOGLE_ADS_MINIMUM_SUPPORTED_API_VERSION} has already been sunset by Google and is automatically upgraded to ${GOOGLE_ADS_MINIMUM_SUPPORTED_API_VERSION}. Note: ${GOOGLE_ADS_MINIMUM_SUPPORTED_API_VERSION} sunsets in October 2026. See [API versions documentation](https://developers.google.com/google-ads/api/docs/release-notes).`,
+      comments: `The version of the Google Ads API to use. Defaults to ${GOOGLE_ADS_API_VERSION}. Any version from ${GOOGLE_ADS_MINIMUM_SUPPORTED_API_VERSION} through ${GOOGLE_ADS_API_VERSION} can be set explicitly; anything below ${GOOGLE_ADS_MINIMUM_SUPPORTED_API_VERSION} has already been sunset by Google and is automatically upgraded to ${GOOGLE_ADS_MINIMUM_SUPPORTED_API_VERSION}. See the [deprecation and sunset schedule](https://developers.google.com/google-ads/api/docs/sunset-dates) for when each version retires.`,
       example: GOOGLE_ADS_API_VERSION,
       default: GOOGLE_ADS_API_VERSION,
     },

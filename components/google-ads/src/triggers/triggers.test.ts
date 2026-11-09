@@ -1,3 +1,4 @@
+import { util } from "@prismatic-io/spectral";
 import {
   createConnection,
   defaultTriggerPayload,
@@ -6,6 +7,7 @@ import {
 import nock from "nock";
 import { oauth } from "../connections";
 import {
+  CHANGE_EVENT_SETTLE_MINUTES,
   DEFAULT_ALERT_THRESHOLD,
   GOOGLE_ADS_API_VERSION,
   GOOGLE_ADS_BASE_URL,
@@ -18,6 +20,8 @@ import type {
   CampaignChangesObject,
   ChangeEventResponse,
   ChangeHistoryChangesObject,
+  ChangeStatusChangesObject,
+  ResourceChange,
 } from "../types";
 import {
   clampToChangeEventWindow,
@@ -27,15 +31,18 @@ import {
   resolveBudgetAlerts,
   resolveCampaignChanges,
   resolveChangeHistoryItems,
+  resolveChangeStatusItems,
 } from "../util";
 import { budgetAlertTrigger } from "./budgetAlertTrigger";
 import { campaignChangesTrigger } from "./campaignChangesTrigger";
 import { changeHistoryTrigger } from "./changeHistoryTrigger";
+import { changeStatusTrigger } from "./changeStatusTrigger";
 
 test.each([
   ["New and Updated Campaigns", campaignChangesTrigger],
   ["Account Change History", changeHistoryTrigger],
   ["Campaign Budget Alerts", budgetAlertTrigger],
+  ["Changed Resources", changeStatusTrigger],
 ])("%s is opt-in batchable with a default batch size", (_label, trigger) => {
   expect(trigger.triggerResolverSupport).toBe("valid");
   expect(trigger.batchConfig).toEqual({ batchSize: 50 });
@@ -122,6 +129,46 @@ describe("resolveChangeHistoryItems", () => {
       }),
     ).toEqual([]);
     expect(resolveChangeHistoryItems(undefined)).toEqual([]);
+  });
+});
+
+describe("resolveChangeStatusItems", () => {
+  const change: ResourceChange = {
+    changeType: "removed",
+    resourceType: "AD_GROUP",
+    resourceStatus: "REMOVED",
+    resourceName: "customers/1234567890/adGroups/2",
+    lastChangeDateTime: "2026-03-15 11:20:00.200000",
+    changeStatus: {
+      resourceName: "customers/1234567890/changeStatus/2-2-2",
+      lastChangeDateTime: "2026-03-15 11:20:00.200000",
+      resourceType: "AD_GROUP",
+      resourceStatus: "REMOVED",
+      campaign: "customers/1234567890/campaigns/99",
+      adGroup: "customers/1234567890/adGroups/2",
+    },
+  };
+
+  test("wraps individual changed resources in tagged envelopes", () => {
+    const data: ChangeStatusChangesObject = {
+      changes: [change],
+      changeCount: 1,
+      timeRange: { start: "2026-03-15 11:00:00", end: "2026-03-15 11:55:00" },
+    };
+    expect(resolveChangeStatusItems(data)).toEqual([
+      { changeType: "removed", record: change },
+    ]);
+  });
+
+  test("returns [] for empty or undefined changes", () => {
+    expect(
+      resolveChangeStatusItems({
+        changes: [],
+        changeCount: 0,
+        timeRange: { start: "", end: "" },
+      }),
+    ).toEqual([]);
+    expect(resolveChangeStatusItems(undefined)).toEqual([]);
   });
 });
 
@@ -248,6 +295,38 @@ test("budgetAlertTrigger resolveItems flattens the payload shape perform returns
       payload,
     }),
   ).toEqual([{ changeType: "warning", record: alert }]);
+});
+
+test("changeStatusTrigger resolveItems flattens the payload shape perform returns", () => {
+  const change: ResourceChange = {
+    changeType: "created",
+    resourceType: "CAMPAIGN",
+    resourceStatus: "ADDED",
+    resourceName: "customers/1234567890/campaigns/99",
+    lastChangeDateTime: "2026-03-15 11:10:00.100000",
+    changeStatus: {
+      resourceName: "customers/1234567890/changeStatus/99-1-99",
+      lastChangeDateTime: "2026-03-15 11:10:00.100000",
+      resourceType: "CAMPAIGN",
+      resourceStatus: "ADDED",
+      campaign: "customers/1234567890/campaigns/99",
+    },
+  };
+  const payload = {
+    ...defaultTriggerPayload(),
+    body: {
+      data: {
+        changes: [change],
+        changeCount: 1,
+        timeRange: { start: "2026-03-15 11:00:00", end: "2026-03-15 11:55:00" },
+      },
+    },
+  };
+  expect(
+    changeStatusTrigger.triggerResolver?.resolveItems?.({} as never, {
+      payload,
+    }),
+  ).toEqual([{ changeType: "created", record: change }]);
 });
 
 describe("trigger performs", () => {
@@ -524,7 +603,10 @@ describe("trigger performs", () => {
       first.getQuery(),
     )?.[1];
     expect(lower1).toBe(getGAQLDateTime("UTC", 1));
-    expect(upper1).toBe(getGAQLDateTime("UTC"));
+    expect(upper1).toBe(
+      getGAQLDateTime("UTC", undefined, CHANGE_EVENT_SETTLE_MINUTES),
+    );
+    expect(upper1).toBe("2026-03-15 11:55:00");
     expect(first.setState).toHaveBeenCalledWith({
       lastChangeTime: upper1,
       errorCount: 0,
@@ -546,6 +628,13 @@ describe("trigger performs", () => {
       second.getQuery(),
     )?.[1];
     expect(lower2).toBe(upper1);
+    const upper2 = /change_event\.change_date_time < '([^']+)'/.exec(
+      second.getQuery(),
+    )?.[1];
+    expect(upper2).toBe("2026-03-15 12:55:00");
+    const lateChange = "2026-03-15 11:59:00";
+    expect(lateChange >= util.types.toString(lower2)).toBe(true);
+    expect(lateChange < util.types.toString(upper2)).toBe(true);
     expect(secondResult?.polledNoChanges).toBe(true);
   });
 
@@ -597,7 +686,10 @@ describe("trigger performs", () => {
       first.getQuery(),
     )?.[1];
     expect(lower1).toBe(getGAQLDateTime("UTC", 1));
-    expect(upper1).toBe(getGAQLDateTime("UTC"));
+    expect(upper1).toBe(
+      getGAQLDateTime("UTC", undefined, CHANGE_EVENT_SETTLE_MINUTES),
+    );
+    expect(upper1).toBe("2026-03-15 11:55:00");
     expect(first.setState).toHaveBeenCalledWith({
       lastChangeTime: upper1,
       changeCount: 0,
@@ -620,6 +712,13 @@ describe("trigger performs", () => {
       second.getQuery(),
     )?.[1];
     expect(lower2).toBe(upper1);
+    const upper2 = /change_event\.change_date_time < '([^']+)'/.exec(
+      second.getQuery(),
+    )?.[1];
+    expect(upper2).toBe("2026-03-15 12:55:00");
+    const lateChange = "2026-03-15 11:59:00";
+    expect(lateChange >= util.types.toString(lower2)).toBe(true);
+    expect(lateChange < util.types.toString(upper2)).toBe(true);
     expect(secondResult?.polledNoChanges).toBe(true);
   });
 

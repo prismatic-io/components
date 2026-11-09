@@ -1,3 +1,4 @@
+import { util } from "@prismatic-io/spectral";
 import type { HttpClient } from "@prismatic-io/spectral/http";
 import {
   CHANGE_EVENT_MAX_WINDOW_DAYS,
@@ -48,11 +49,16 @@ export const getPreviousDate = (timeZone: string): string => {
 export const getGAQLDateTime = (
   timeZone: string,
   hoursAgo?: number,
+  minutesAgo?: number,
 ): string => {
   const date = new Date();
 
-  if (typeof hoursAgo === "number" && hoursAgo > 0) {
-    date.setHours(date.getHours() - hoursAgo);
+  if (util.types.isNumber(hoursAgo) && util.types.toNumber(hoursAgo) > 0) {
+    date.setHours(date.getHours() - util.types.toNumber(hoursAgo));
+  }
+
+  if (util.types.isNumber(minutesAgo) && util.types.toNumber(minutesAgo) > 0) {
+    date.setTime(date.getTime() - util.types.toNumber(minutesAgo) * 60 * 1000);
   }
 
   const dateFormatter = new Intl.DateTimeFormat("en-CA", {
@@ -79,11 +85,9 @@ export const getGAQLDateTime = (
 export const clampToChangeEventWindow = (
   sinceTime: string,
   timeZone: string,
+  windowDays: number = CHANGE_EVENT_MAX_WINDOW_DAYS,
 ): string => {
-  const floor = getGAQLDateTime(
-    timeZone,
-    (CHANGE_EVENT_MAX_WINDOW_DAYS - 1) * 24,
-  );
+  const floor = getGAQLDateTime(timeZone, (windowDays - 1) * 24);
 
   return sinceTime < floor ? floor : sinceTime;
 };

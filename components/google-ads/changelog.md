@@ -1,5 +1,22 @@
 ## Changelog
 
+### 2026-11-09
+
+Added Local Services lead, Customer Match, and change status capabilities and a **Service Account** connection, moved the default to Google Ads API v26, and fixed several trigger and action issues:
+
+- Added the **List Local Services Leads**, **List Lead Conversations**, **Provide Lead Feedback**, and **Append Lead Conversation** actions for working with Local Services leads, and marked **Get Detailed Lead Reports** as deprecated, since Google has deprecated the Detailed Lead Reports API
+- Added the **Ingest Audience Members**, **Remove Audience Members**, and **Get Request Status** actions for managing Customer Match audiences through the Data Manager API, with a **Select Audience** data source for choosing the audience
+- Added the **Mutate Resources** action for creating, updating, or removing several Google Ads resources in one request using temporary IDs, and the **Search Stream** action for returning every row of a large GAQL query in one call
+- Added the **Changed Resources** polling trigger, which reports created, updated, and removed Google Ads resources, optionally limited by **Resource Types**. It supports opt-in batching, dispatching each change individually or in configured batches so large backlogs drain in one recurrence; enabling it changes the shape a downstream step receives. Its optional **Look-back Date** input performs an initial sync that begins on the first recurrence and backfills every change made on or after the specified date, up to Google's 90-day change status window, seeding each once
+- Added a **Service Account** connection for authenticating as a Google Cloud service account that has been added as a user in the Google Ads account; it works with the Google Ads and Local Services actions but not with the Data Manager API actions
+- Added an optional **Linked Customer ID** input to **Search Ads**, **Search Stream**, **Upload Click Conversions**, and **Upload Call Conversions** for partners acting on an advertiser's account through an account link
+- Updated the default Google Ads API version to v26; a connection set below v23 now uses v23 and logs a warning, since Google has sunset v22 and earlier versions
+- Fixed the **New and Updated Campaigns** and **Account Change History** triggers skipping changes that Google reported a few minutes late; each recurrence now reads changes up to 5 minutes before it runs, so a late-reported change is delivered on a later recurrence
+- Updated error messages to include the Google Ads error codes and messages, Data Manager field violations, setup guidance where an error needs it, and the request ID, and added retries with backoff; reads retry on transient errors, and writes retry only when Google reports a temporary rate limit
+- Fixed the default **Operations** on **Mutate Campaign** and **Mutate Campaign Criteria** being rejected by Google, because each operation combined a create, an update, and a remove; each default now holds three single-purpose operations
+- Added inline action calling support to the 9 new actions for improved example output during configuration
+- Added output schemas to the 9 new actions for improved field mapping during configuration
+
 ### 2026-11-05
 
 Updated spectral to 10.39.0

@@ -32,8 +32,6 @@ interface CampaignQueryCampaign {
 
   startDateTime?: string;
   endDateTime?: string;
-  startDate?: string;
-  endDate?: string;
   advertisingChannelType?: string;
   networkSettings?: CampaignQueryNetworkSettings;
 }

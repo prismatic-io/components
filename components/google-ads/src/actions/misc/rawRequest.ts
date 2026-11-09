@@ -1,6 +1,6 @@
 import { action } from "@prismatic-io/spectral";
 import { sendRawRequest } from "@prismatic-io/spectral/http";
-import { validateConnection } from "../../client";
+import { getAccessToken } from "../../client";
 import { GOOGLE_ADS_BASE_URL } from "../../constants";
 import { rawRequestExamplePayload } from "../../examplePayloads";
 import { rawRequestInputs } from "../../inputs";
@@ -13,7 +13,7 @@ export const rawRequest = action({
   inputs: rawRequestInputs,
   performSafety: "notAllowed",
   perform: async (context, { connection, ...rawRequestInputs }) => {
-    const { accessToken } = validateConnection(connection);
+    const accessToken = await getAccessToken(connection);
 
     const authorizationHeaders: Record<string, string> = {
       Authorization: `Bearer ${accessToken}`,

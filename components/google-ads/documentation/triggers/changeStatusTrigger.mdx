@@ -1,0 +1,81 @@
+The Changed Resources trigger checks for Google Ads resources that were added, changed, or removed on a configured schedule, using the Google Ads [change status resource](https://developers.google.com/google-ads/api/docs/change-status). It reports changes the Account Change History trigger cannot see: changes made in Google Ads Editor and criterion-level changes such as keywords, campaign criteria, and bid modifiers. It reports which resources changed, not their old and new field values.
+
+The optional **Resource Types** input limits the trigger to the selected resource types, such as Ad Group Criteria or Campaign Budgets. Leave it empty to report every type.
+
+The optional **Look-back Date** input seeds a one-time historical backfill: on the very first run (no polling state yet), the trigger reports changes from that date forward instead of the default one hour. It has no effect once polling state exists. Google only keeps change status for the past 90 days, so an earlier date is moved forward to 90 days ago.
+
+#### How It Works
+
+1. Run on the configured schedule (e.g., every 15 minutes)
+2. Query the change status resource for resources changed since the last poll. The window ends five minutes before the run: Google can take up to three minutes to report a change, so stopping short of the current time lets the next run pick up a late change instead of skipping it
+3. Return each changed resource with its type, its resource name, the time of its latest change, and whether it was created, updated, or removed
+4. Once the window is exhausted, store its end as the position for the next recurrence
+
+Google reports only the latest change to each resource within a window. A resource that was created and then changed before the trigger ran is reported once, as `updated`. Shared campaign budgets also report their shared set as a separate `SHARED_SET` change.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed resource is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the request volume sent to Google Ads.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off a downstream step reads `body.data.changes`. With batching on that field does not exist: each execution receives one `{ "changeType": ..., "record": ... }` item, or an array of them when the batch size is greater than 1. Any step reading the older shape must be updated before batching is enabled, or it breaks the moment the switch is flipped. Because batching is enabled per flow, that change is scoped to the flow rather than to the component or to other flows using the same trigger.
+
+The trigger reads changes oldest first, in pages of at most 10,000 (1,000 with batching on), from a window whose end is fixed when it opens. A window holding more drains within the same recurrence with batching on, or one page per recurrence with batching off, each page resuming where the last stopped, so a backlog larger than one page is not truncated. When batching is enabled, each execution receives one item:
+
+<details>
+<summary>Batched execution payload</summary>
+
+```json
+{
+  "changeType": "updated",
+  "record": {
+    "changeType": "updated",
+    "resourceType": "CAMPAIGN_BUDGET",
+    "resourceStatus": "CHANGED",
+    "resourceName": "customers/6577008345/campaignBudgets/15170398017",
+    "lastChangeDateTime": "2026-11-02 09:41:27.318204"
+  }
+}
+```
+
+</details>
+
+#### Returned Data
+
+The trigger returns an object containing the changed resources and metadata. When no changes are detected, returns `polledNoChanges: true`.
+
+Fields shown are representative. The full response object includes additional properties.
+
+<details>
+<summary>View example response</summary>
+
+```json
+{
+  "data": {
+    "changes": [
+      {
+        "changeType": "updated",
+        "resourceType": "CAMPAIGN_BUDGET",
+        "resourceStatus": "CHANGED",
+        "resourceName": "customers/6577008345/campaignBudgets/15170398017",
+        "lastChangeDateTime": "2026-11-02 09:41:27.318204",
+        "changeStatus": {
+          "resourceName": "customers/6577008345/changeStatus/1793634087318204-7-15170398017",
+          "lastChangeDateTime": "2026-11-02 09:41:27.318204",
+          "resourceType": "CAMPAIGN_BUDGET",
+          "resourceStatus": "CHANGED",
+          "campaignBudget": "customers/6577008345/campaignBudgets/15170398017"
+        }
+      }
+    ],
+    "changeCount": 1,
+    "timeRange": {
+      "start": "2026-11-02 09:00:00",
+      "end": "2026-11-02 09:55:00"
+    }
+  }
+}
+```
+
+</details>

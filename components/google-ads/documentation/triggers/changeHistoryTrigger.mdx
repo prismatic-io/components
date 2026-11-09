@@ -1,11 +1,11 @@
-The Account Change History trigger checks for account modifications with user attribution on a configured schedule. Unlike the New and Updated Campaigns trigger which monitors only campaigns, this trigger captures changes across all resource types using the Google Ads [Change Event API](https://developers.google.com/google-ads/api/docs/change-event).
+The Account Change History trigger checks for account modifications with user attribution on a configured schedule. Unlike the New and Updated Campaigns trigger which monitors only campaigns, this trigger captures changes across all resource types using the Google Ads [Change Event API](https://developers.google.com/google-ads/api/docs/change-event). Google's change events do not include changes made in Google Ads Editor or criterion-level changes; use the [Changed Resources](#changestatustrigger) trigger for those.
 
 The optional **Look-back Date** input seeds a one-time historical backfill: on the very first run (no polling state yet), the trigger queries change_event rows from that date forward instead of the default one hour. It has no effect once polling state exists, and Google's change_event window still caps how far back a query can reach to the past 30 days.
 
 #### How It Works
 
 1. Run on the configured schedule (e.g., every 15 minutes)
-2. Query the change_event resource for modifications since the last poll
+2. Query the change_event resource for modifications since the last poll. The window ends five minutes before the run: Google can take up to three minutes to report a change, so stopping short of the current time lets the next run pick up a late change instead of skipping it
 3. Return change details including what changed, who made the change, and when
 4. Once the window is exhausted, store its end as the position for the next recurrence
 

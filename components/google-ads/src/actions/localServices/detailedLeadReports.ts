@@ -6,9 +6,9 @@ import { detailedLeadReportsOutputSchema } from "../../outputSchemas";
 
 export const detailedLeadReports = action({
   display: {
-    label: "Get Detailed Lead Reports",
+    label: "Get Detailed Lead Reports (Deprecated)",
     description:
-      "Retrieves detailed lead reports providing an in-depth view of leads for Local Services accounts linked to a Manager account.",
+      "Retrieves detailed lead reports providing an in-depth view of leads for Local Services accounts linked to a Manager account. Google has deprecated the Detailed Lead Reports API; use List Local Services Leads and List Lead Conversations instead.",
   },
   inputs: detailedLeadReportsInputs,
   outputSchema: outputSchema({

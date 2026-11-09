@@ -12,11 +12,10 @@ export async function searchGoogleAds<T>(
   const { customerId, params, fetchAll = false } = options;
   const url = googleAdsSearchPath(customerId);
 
-  if (fetchAll) {
-    options.params.pageToken = undefined;
-  }
-
-  const firstRes = await client.post<GoogleAdsSearchResponse<T>>(url, params);
+  const firstRes = await client.post<GoogleAdsSearchResponse<T>>(
+    url,
+    fetchAll ? { ...params, pageToken: undefined } : params,
+  );
 
   const firstData = firstRes.data;
 

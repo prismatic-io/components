@@ -1,4 +1,7 @@
-import { localServicesAggregatorInfoSchema } from "./common";
+import {
+  googleRpcStatusSchema,
+  localServicesAggregatorInfoSchema,
+} from "./common";
 
 export const accountReportsOutputSchema = {
   type: "object" as const,
@@ -98,4 +101,205 @@ export const detailedLeadReportsOutputSchema = {
     },
     nextPageToken: { type: "string" },
   },
+};
+
+export const listLocalServicesLeadsOutputSchema = {
+  type: "object" as const,
+  properties: {
+    results: {
+      type: "array",
+      items: {
+        type: "object",
+        properties: {
+          localServicesLead: {
+            type: "object",
+            properties: {
+              resourceName: { type: "string" },
+              id: { type: "string" },
+              campaign: { type: "string" },
+              categoryId: { type: "string" },
+              serviceId: { type: "string" },
+              leadType: {
+                type: "string",
+                enum: [
+                  "UNSPECIFIED",
+                  "UNKNOWN",
+                  "MESSAGE",
+                  "PHONE_CALL",
+                  "BOOKING",
+                  "COUPON",
+                ],
+              },
+              leadStatus: {
+                type: "string",
+                enum: [
+                  "UNSPECIFIED",
+                  "UNKNOWN",
+                  "NEW",
+                  "ACTIVE",
+                  "BOOKED",
+                  "DECLINED",
+                  "EXPIRED",
+                  "DISABLED",
+                  "CONSUMER_DECLINED",
+                  "WIPED_OUT",
+                ],
+              },
+              creationDateTime: { type: "string" },
+              locale: { type: "string" },
+              contactDetails: {
+                type: "object",
+                properties: {
+                  phoneNumber: { type: "string" },
+                  phoneNumberExtension: { type: "string" },
+                  consumerName: { type: "string" },
+                },
+                required: [],
+                additionalProperties: true,
+              },
+              leadCharged: { type: "boolean" },
+              leadFeedbackSubmitted: { type: "boolean" },
+              creditDetails: {
+                type: "object",
+                properties: {
+                  creditState: {
+                    type: "string",
+                    enum: ["UNSPECIFIED", "UNKNOWN", "PENDING", "CREDITED"],
+                  },
+                  creditStateLastUpdateDateTime: { type: "string" },
+                },
+                required: [],
+                additionalProperties: true,
+              },
+              note: {
+                type: "object",
+                properties: {
+                  description: { type: "string" },
+                  editDateTime: { type: "string" },
+                },
+                required: [],
+                additionalProperties: true,
+              },
+            },
+            required: [],
+            additionalProperties: true,
+          },
+        },
+        required: [],
+        additionalProperties: true,
+      },
+    },
+    nextPageToken: { type: "string" },
+    fieldMask: { type: "string" },
+    queryResourceConsumption: { type: "string" },
+  },
+  required: [],
+  additionalProperties: true,
+};
+
+export const listLeadConversationsOutputSchema = {
+  type: "object" as const,
+  properties: {
+    results: {
+      type: "array",
+      items: {
+        type: "object",
+        properties: {
+          localServicesLeadConversation: {
+            type: "object",
+            properties: {
+              resourceName: { type: "string" },
+              id: { type: "string" },
+              lead: { type: "string" },
+              conversationChannel: {
+                type: "string",
+                enum: [
+                  "UNSPECIFIED",
+                  "UNKNOWN",
+                  "EMAIL",
+                  "MESSAGE",
+                  "PHONE_CALL",
+                  "SMS",
+                  "BOOKING",
+                  "WHATSAPP",
+                  "ADS_API",
+                ],
+              },
+              participantType: {
+                type: "string",
+                enum: ["UNSPECIFIED", "UNKNOWN", "ADVERTISER", "CONSUMER"],
+              },
+              eventDateTime: { type: "string" },
+              phoneCallDetails: {
+                type: "object",
+                properties: {
+                  callDurationMillis: { type: "string" },
+                  callRecordingUrl: { type: "string" },
+                },
+                required: [],
+                additionalProperties: true,
+              },
+              messageDetails: {
+                type: "object",
+                properties: {
+                  text: { type: "string" },
+                  attachmentUrls: { type: "array", items: { type: "string" } },
+                },
+                required: [],
+                additionalProperties: true,
+              },
+            },
+            required: [],
+            additionalProperties: true,
+          },
+        },
+        required: [],
+        additionalProperties: true,
+      },
+    },
+    nextPageToken: { type: "string" },
+    fieldMask: { type: "string" },
+    queryResourceConsumption: { type: "string" },
+  },
+  required: [],
+  additionalProperties: true,
+};
+
+export const provideLeadFeedbackOutputSchema = {
+  type: "object" as const,
+  properties: {
+    creditIssuanceDecision: {
+      type: "string",
+      enum: [
+        "UNSPECIFIED",
+        "UNKNOWN",
+        "SUCCESS_NOT_REACHED_THRESHOLD",
+        "SUCCESS_REACHED_THRESHOLD",
+        "FAIL_OVER_THRESHOLD",
+        "FAIL_NOT_ELIGIBLE",
+      ],
+    },
+  },
+  required: [],
+  additionalProperties: true,
+};
+
+export const appendLeadConversationOutputSchema = {
+  type: "object" as const,
+  properties: {
+    responses: {
+      type: "array",
+      items: {
+        type: "object",
+        properties: {
+          localServicesLeadConversation: { type: "string" },
+          partialFailureError: googleRpcStatusSchema,
+        },
+        required: [],
+        additionalProperties: true,
+      },
+    },
+  },
+  required: [],
+  additionalProperties: true,
 };

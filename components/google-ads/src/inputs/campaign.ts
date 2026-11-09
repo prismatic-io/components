@@ -8,18 +8,9 @@ import {
   connectionInput,
   customerIdInput,
   managerCustomerIdInput,
+  partialFailure,
   validateOnly,
 } from "./common";
-
-const partialFailure = input({
-  label: "Partial Failure",
-  type: "boolean",
-  required: true,
-  clean: util.types.toBool,
-  default: "false",
-  comments:
-    "When true, successful operations will be carried out and invalid operations will return errors. When false, all operations will be carried out in one transaction if and only if they are all valid. This should always be set to true. See [Partial failure documentation](https://developers.google.com/google-ads/api/docs/best-practices/partial-failures).",
-});
 
 const operations = input({
   label: "Operations",
@@ -29,7 +20,7 @@ const operations = input({
   required: true,
   default: JSON.stringify(campaignOperationsExampleInput, null, 2),
   comments:
-    "The list of operations to perform on individual campaigns. See [Campaign operations documentation](https://developers.google.com/google-ads/api/reference/rpc/v25/CampaignOperation).",
+    "The list of operations to perform on individual campaigns. See [Campaign operations documentation](https://developers.google.com/google-ads/api/reference/rpc/v26/CampaignOperation).",
   clean: util.types.toObject,
 });
 
@@ -54,7 +45,7 @@ export const mutateCampaignCriteriaInputs = {
     default: JSON.stringify(campaignCriteriaOperationsExampleInput, null, 2),
     placeholder: "Enter campaign criterion operations as a JSON array",
     comments:
-      "The list of operations to create, update, or remove individual campaign criteria. See [Campaign criterion operations documentation](https://developers.google.com/google-ads/api/reference/rpc/v25/CampaignCriterionOperation).",
+      "The list of operations to create, update, or remove individual campaign criteria. See [Campaign criterion operations documentation](https://developers.google.com/google-ads/api/reference/rpc/v26/CampaignCriterionOperation).",
   },
   partialFailure,
   managerCustomerId: {

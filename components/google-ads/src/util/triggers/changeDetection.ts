@@ -1,5 +1,15 @@
-import { CAMPAIGN_CHANGE_RESOURCE_TYPE, CHANGE_TYPE } from "../../constants";
-import type { CampaignChange, CampaignChangeEventRow } from "../../types";
+import {
+  CAMPAIGN_CHANGE_RESOURCE_TYPE,
+  CHANGE_STATUS_RESOURCE_FIELD,
+  CHANGE_STATUS_TO_CHANGE_TYPE,
+  CHANGE_TYPE,
+} from "../../constants";
+import type {
+  CampaignChange,
+  CampaignChangeEventRow,
+  ChangeStatusRow,
+  ResourceChange,
+} from "../../types";
 
 export const isAllChangeTypesSelected = (changeTypes: string[]): boolean =>
   changeTypes.length === 0 || changeTypes.includes(CHANGE_TYPE.ALL);
@@ -107,3 +117,22 @@ export const mapChangeEventsToCampaignChanges = (
 
   return changes.reverse();
 };
+
+export const mapChangeStatusRows = (
+  rows: ChangeStatusRow[],
+): ResourceChange[] =>
+  [...rows].reverse().map(({ changeStatus }) => {
+    const changeType =
+      CHANGE_STATUS_TO_CHANGE_TYPE[changeStatus.resourceStatus];
+    const field = CHANGE_STATUS_RESOURCE_FIELD[changeStatus.resourceType];
+    const entityName = field === undefined ? undefined : changeStatus[field];
+
+    return {
+      changeType: changeType === undefined ? "updated" : changeType,
+      resourceType: changeStatus.resourceType,
+      resourceStatus: changeStatus.resourceStatus,
+      resourceName: entityName === undefined ? null : entityName,
+      lastChangeDateTime: changeStatus.lastChangeDateTime,
+      changeStatus,
+    };
+  });

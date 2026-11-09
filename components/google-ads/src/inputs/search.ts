@@ -4,6 +4,7 @@ import {
   connectionInput,
   customerIdInput,
   fetchAll,
+  linkedCustomerIdInput,
   managerCustomerIdInput,
   pageTokenInput,
 } from "./common";
@@ -49,4 +50,17 @@ export const searchAdsLocalServicesInputs = {
     clean: toOptionalCustomerId,
   },
   returnTotalResultsCount,
+  linkedCustomerId: linkedCustomerIdInput,
+};
+
+export const searchStreamInputs = {
+  connection: connectionInput,
+  customerId: customerIdInput,
+  query,
+  managerCustomerId: {
+    ...managerCustomerIdInput,
+    required: false,
+    clean: toOptionalCustomerId,
+  },
+  linkedCustomerId: linkedCustomerIdInput,
 };

@@ -1,6 +1,14 @@
 Google documents many [common errors](https://developers.google.com/google-ads/api/docs/common-errors) that will aid in troubleshooting.
 
-#### Important Notes for v25
+#### Important Notes for v26
+
+**Breaking changes introduced in v26 (from v25):**
+- `LocalServicesPmaxCampaignSettings.country_code` and `listing_id` are now required when creating Local Services Performance Max campaigns
+- `ConversionTrackingSetting.enhanced_conversions_for_leads_enabled` was removed. Use `ConversionTrackingSetting.enablement_setting` instead
+- Hotel-specific `AdGroupBidModifier` criterion fields were renamed to vertical-agnostic fields (for example `hotel_length_of_stay` became `length_of_booking`, and `hotel_check_in_day` became `start_day_of_week`), and `HotelDateSelectionType` became `DateSelectionType`
+- The hotel `CriterionError` reasons were renamed to vertical-agnostic reasons (for example `HOTEL_CHECK_IN_DATE_RANGE_REVERSED` became `START_DATE_RANGE_REVERSED`)
+
+These v26 changes do **not** affect this component's own actions or triggers, which read and write none of these fields. **Mutate Campaign** passes its operations through as given, so anyone creating a Local Services Performance Max campaign with it must now send `countryCode` and `listingId` in `localServicesPmaxCampaignSettings`. **Raw Request** calls that use any of the renamed or removed fields must be updated before moving to v26.
 
 **Breaking changes introduced in v25 (from v24):**
 - The legacy `CustomerLifecycleGoal` and `CampaignLifecycleGoal` resources and their services were removed. New customer acquisition goals are now configured through the `Goal` and `CampaignGoalConfig` resources
@@ -18,7 +26,7 @@ The `LocalServicesLead.ContactDetails.email` removal is worth noting explicitly 
 
 If a **Raw Request** action is used to call any of the removed or renamed fields above, those calls must be updated before moving to v25.
 
-Because every version from v22 up is selectable, the earlier upgrade steps below still apply to anyone moving a connection forward from an older pinned version. None of them affect this component's own actions.
+Because every version from v23 up is selectable, the earlier upgrade steps below still apply to anyone moving a connection forward from an older pinned version. Connections pinned to v22 or earlier are upgraded to v23 automatically, so the v23 changes apply to their **Raw Request** calls. None of them affect this component's own actions.
 
 **Breaking changes introduced in v24 (from v23):**
 - `videos` and `logo_images` are now required fields on video ad types
@@ -33,7 +41,7 @@ Because every version from v22 up is selectable, the earlier upgrade steps below
 - Video metrics were renamed: `video_views` → `video_trueview_views`, `average_cpv` → `trueview_average_cpv`, `video_view_rate` → `video_trueview_view_rate`
 
 **EU Political Advertising Self-Declaration (v22+):**
-Because v22 is the minimum supported version, this requirement applies to every version the component can use. The `containsEuPoliticalAdvertising` field must be set when:
+Because v23 is the minimum supported version, this requirement applies to every version the component can use. The `containsEuPoliticalAdvertising` field must be set when:
 - Creating new campaigns
 - Modifying location or proximity targeting on existing campaigns
 
@@ -44,13 +52,49 @@ This field is required and accepts one of the following values:
 
 Failure to set this field will result in a `FieldError.REQUIRED` error from the API.
 
+From v26, the field is optional for campaigns that do not positively target the European Union: no positive location criterion inside the EU, no positive proximity or location group criterion, and at least one positive location criterion outside the EU.
+
 #### Version Compatibility
 
 The component supports every Google Ads API version that Google has not yet sunset, selectable through the `apiVersion` connection field:
-- **v25** (recommended, default): latest features and improvements
-- **v24**, **v23**: fully supported, set explicitly if an integration depends on their behavior
-- **v22** (minimum supported): connections configured below this are automatically upgraded to v22
+- **v26** (recommended, default): latest features and improvements
+- **v25**, **v24**: fully supported, set explicitly if an integration depends on their behavior
+- **v23** (minimum supported): connections configured below this are automatically upgraded to v23
 
-The minimum tracks Google's own sunset schedule rather than the component's default, so the floor only redirects connections that would otherwise call a retired endpoint. Versions v21 and earlier are no longer selectable. v21 sunsets in August 2026 (tentative), and v20 and earlier are already sunset, so connections pinned to them are auto-upgraded to v22. Note that v22 itself sunsets in October 2026. See the official [deprecation and sunset schedule](https://developers.google.com/google-ads/api/docs/sunset-dates) for the latest dates.
+The minimum tracks Google's own sunset schedule rather than the component's default, so the floor only redirects connections that would otherwise call a retired endpoint. Versions v22 and earlier are no longer selectable. Google sunset v22 on October 7, 2026, so connections pinned to it or earlier are auto-upgraded to v23. Note that v23 itself sunsets in February 2027. See the official [deprecation and sunset schedule](https://developers.google.com/google-ads/api/docs/sunset-dates) for the latest dates.
 
-Minor releases such as v25.1 do not need to be configured here. Google automatically updates the major-version endpoint the component calls, so minor-version features become available without a component change.
+Minor releases such as v26.1 do not need to be configured here. Google automatically updates the major-version endpoint the component calls, so minor-version features become available without a component change.
+
+#### Local Services Leads
+
+Google has deprecated the Detailed Lead Reports API that **Get Detailed Lead Reports** calls, and points to the Google Ads API for leads and their conversations instead. See the [Local Services reporting guide](https://developers.google.com/local-services-ads/guides/reporting). No sunset date has been published, so the action still works, but new flows should use these actions:
+
+- **List Local Services Leads** reads the `local_services_lead` resource. Its contact details carry the phone number and consumer name; the email address was removed in v25.
+- **List Lead Conversations** reads the `local_services_lead_conversation` resource: the calls, messages and bookings on each lead.
+- **Provide Lead Feedback** records how satisfied the business is with a lead. Google may issue a bonus credit in response.
+- **Append Lead Conversation** adds a text message to a lead's conversation.
+
+#### Customer Match
+
+Since April 1, 2026, the Google Ads API no longer accepts new adopters of Customer Match, so this component manages Customer Match audiences through the Data Manager API instead. See the [Data Manager Customer Match overview](https://developers.google.com/data-manager/api/devguides/audiences/google-ads/customer-match).
+
+- **Ingest Audience Members** adds members to an audience and **Remove Audience Members** removes them. Each call targets one audience of one customer; pick it from the **Audience** list, which shows the customer's audiences that accept uploaded members.
+- Members are identified by SHA-256 hashed email addresses, phone numbers or addresses, at most 10,000 per request. Set **Hash Encoding** to match how the hashes are written.
+- Ingest Audience Members requires **Customer Match Terms of Service** to be Accepted before Google takes user data.
+- Both actions are asynchronous: they return a `requestId`. **Get Request Status** reports, per destination, whether the request is still processing, succeeded or failed, and how many records matched. It also works for the `requestId` returned by **Ingest Offline Conversions**.
+
+These actions, and the **Audience** list, call the Data Manager API, which needs the `https://www.googleapis.com/auth/datamanager` scope. Use the **Data Manager OAuth 2.0** connection, or add that scope to the **Scopes** field of the **OAuth 2.0** connection. The Google Cloud project behind the OAuth client must have the Data Manager API enabled.
+
+#### Mutate Resources
+
+**Mutate Resources** sends any mix of Google Ads operations (budgets, campaigns, ad groups, ads, keywords, assets and the rest) to `googleAds:mutate` in one request. A resource created earlier in the same request can be referenced by a temporary ID, a negative number in its resource name such as `customers/1234567890/campaignBudgets/-1`, so a budget, campaign, ad group and keyword can be created together. See the [temporary IDs documentation](https://developers.google.com/google-ads/api/docs/batch-processing/temporary-ids).
+
+**Partial Failure** defaults to on for this action: valid operations are applied and invalid ones come back in `partialFailureError`. Turn it off when the request must succeed or fail as a whole. Campaign creates follow the same EU political advertising rule as **Mutate Campaign**.
+
+#### Search Stream
+
+**Search Stream** runs a GAQL query through `googleAds:searchStream`, which returns every matching row in one call instead of 10,000-row pages, and merges the streamed batches into a single `results` list. Use it for large reports where paging through **Search Ads** would take many calls. Very large results still have to fit in one step's output, so narrow the query or add a `LIMIT` when a report could be huge.
+
+#### Manager and Partner Headers
+
+Actions that act on a client account through a manager account take a **Manager Customer ID**, sent as the `login-customer-id` header. Partners acting on an advertiser's account through an account link also set **Linked Customer ID**, sent as the `linked-customer-id` header, on **Search Ads**, **Search Stream**, **Upload Click Conversions**, and **Upload Call Conversions**. **Raw Request** sends either header through its **Header** input. See [Google Ads REST authorization](https://developers.google.com/google-ads/api/rest/auth).

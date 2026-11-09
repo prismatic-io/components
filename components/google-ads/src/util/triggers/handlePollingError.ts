@@ -1,6 +1,7 @@
 import type { PollingContext } from "@prismatic-io/spectral";
 import { MAX_CONSECUTIVE_POLLING_ERRORS } from "../../constants";
 import type { BasePollingState } from "../../types";
+import { describeGoogleAdsError } from "../errors";
 
 export const handlePollingError = <T extends BasePollingState>(
   error: Error,
@@ -20,7 +21,7 @@ export const handlePollingError = <T extends BasePollingState>(
   if (consecutiveErrors >= MAX_CONSECUTIVE_POLLING_ERRORS) {
     context.logger.error(
       `${serviceName} polling failed ${consecutiveErrors} times consecutively. ` +
-        `Error: ${error.message}`,
+        `Error: ${describeGoogleAdsError(error)}`,
     );
   }
 

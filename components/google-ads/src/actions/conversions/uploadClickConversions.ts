@@ -8,7 +8,7 @@ export const uploadClickConversions = action({
   display: {
     label: "Upload Click Conversions",
     description:
-      "Upload offline click conversions into Google Ads in order to track ads that led to sales. Developer tokens that have not sent an offline conversion upload request between December 17, 2025 and June 15, 2026 will lose access to this endpoint; new integrations should use Ingest Offline Conversions (Data Manager API) instead.",
+      "Uploads offline click conversions into Google Ads to track ads that led to sales. Since June 15, 2026, Google rejects these requests from API clients that had not uploaded offline conversions before that date; new integrations should use Ingest Offline Conversions (Data Manager API) instead.",
   },
   inputs: uploadClickConversionsInputs,
   outputSchema: outputSchema({
@@ -18,13 +18,21 @@ export const uploadClickConversions = action({
   performSafety: "notAllowed",
   perform: async (
     context,
-    { connection, customerId, managerCustomerId, conversions, validateOnly },
+    {
+      connection,
+      customerId,
+      managerCustomerId,
+      conversions,
+      validateOnly,
+      linkedCustomerId,
+    },
   ) => {
     const client = createClient({
       connection: connection,
       debugEnabled: context.debug.enabled,
       logger: context.logger,
       loginCustomerId: managerCustomerId,
+      linkedCustomerId,
     });
     const { data } = await client.post(
       `/customers/${customerId}:uploadClickConversions`,

@@ -2,7 +2,7 @@
 
 #### API Documentation
 
-This component was built using the [Google Ads API](https://developers.google.com/google-ads/api/docs/get-started/introduction), currently utilizing v25 by default. Every version Google still supports (v22 through v25) can be selected by specifying the API Version in the connection.
+This component was built using the [Google Ads API](https://developers.google.com/google-ads/api/docs/get-started/introduction), currently utilizing v26 by default. Every version Google still supports (v23 through v26) can be selected by specifying the API Version in the connection.
 
 #### EU Political Advertising Self-Declaration (v22+)
 
@@ -18,3 +18,5 @@ This field is required and accepts one of the following values:
 - `UNSPECIFIED` or `UNKNOWN`: Use when the value is unknown or indeterminate.
 
 Failure to set this field will result in a `FieldError.REQUIRED` error from the API.
+
+From v26, the field is optional for campaigns that do not positively target the European Union: no positive location criterion inside the EU, no positive proximity or location group criterion, and at least one positive location criterion outside the EU. See the [Google Ads API release notes](https://developers.google.com/google-ads/api/docs/release-notes).

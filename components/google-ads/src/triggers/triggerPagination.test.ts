@@ -25,7 +25,7 @@ const BATCHED_PAGE_SIZE = 2;
 const CUSTOMER_ID = "1234567890";
 const SEARCH_PATH = `/${GOOGLE_ADS_API_VERSION}${googleAdsSearchPath(CUSTOMER_ID)}`;
 const TIMEZONE_QUERY = "SELECT customer.time_zone FROM customer LIMIT 1";
-const WINDOW_END = "2026-03-15 12:00:00";
+const WINDOW_END = "2026-03-15 11:55:00";
 const PERSISTED_CURSOR = "2026-03-15 11:00:00";
 
 const connection = createConnection(
@@ -306,6 +306,24 @@ describe.each(cases)("$name Tier 2 pagination", (tc) => {
       consecutiveErrors: 0,
     });
     expect(result?.polledNoChanges).toBe(false);
+  });
+
+  test("a stored cursor later than the settled window end sends no query and never moves backward", async () => {
+    const aheadCursor = "2026-03-15 11:58:00";
+    mockRound([]);
+    const { result, setState } = await runRound({
+      ...baseState,
+      lastChangeTime: aheadCursor,
+    });
+
+    expect(queries).toEqual([]);
+    expect(setState).toHaveBeenCalledWith({
+      lastChangeTime: aheadCursor,
+      ...tc.extraState(0),
+      errorCount: 0,
+      consecutiveErrors: 0,
+    });
+    expect(result?.polledNoChanges).toBe(true);
   });
 
   test("a failure mid-drain keeps the mirrored cursor and does not advance lastChangeTime", async () => {

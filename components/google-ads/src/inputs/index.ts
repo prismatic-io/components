@@ -1,3 +1,4 @@
+export * from "./audiences";
 export * from "./campaign";
 export * from "./common";
 export * from "./conversions";
@@ -5,6 +6,7 @@ export * from "./customer";
 export * from "./dataSources";
 export * from "./localServices";
 export * from "./misc";
+export * from "./mutate";
 export * from "./search";
 export * from "./triggers";
 export * from "./user";

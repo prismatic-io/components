@@ -9,7 +9,7 @@ export const dataManagerOAuth = oauth2Connection({
   display: {
     label: "Data Manager OAuth 2.0",
     description:
-      "Authenticate to the Google Data Manager API using OAuth 2.0. Use this connection for the Ingest Offline Conversions action. A Developer Token is not required for this API.",
+      "Authenticate to the Google Data Manager API using OAuth 2.0. Use this connection for the Ingest Offline Conversions, Ingest Audience Members, Remove Audience Members, and Get Request Status actions.",
     icons: {
       oauth2ConnectionIconPath: "oauth-button.png",
     },

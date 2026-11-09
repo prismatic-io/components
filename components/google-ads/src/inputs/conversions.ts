@@ -1,9 +1,11 @@
 import { input, util } from "@prismatic-io/spectral";
 import { clickConversionsExampleInput } from "../examplePayloads";
-import { cleanString, toOptionalCustomerId } from "../util";
+import { toOptionalCustomerId } from "../util";
 import {
   connectionInput,
   customerIdInput,
+  encodingInput,
+  linkedCustomerIdInput,
   managerCustomerIdInput,
   validateOnly,
 } from "./common";
@@ -31,6 +33,7 @@ const eventsInput = input({
       {
         eventTimestamp: "2026-05-15T12:30:00Z",
         transactionId: "ORDER-2026-00123",
+        eventSource: "WEB",
         adIdentifiers: {
           gclid: "CjwKCAjw1234567890abcdefGHIJKLmnoPQRStuvwxyz",
         },
@@ -72,20 +75,6 @@ const destinationsInput = input({
   comments:
     "The array of destinations that describe where each event should be ingested. See [Destination reference](https://developers.google.com/data-manager/api/reference/rest/v1/Destination).",
   clean: util.types.toObject,
-});
-
-const encodingInput = input({
-  label: "Hash Encoding",
-  type: "string",
-  required: false,
-  example: "HEX",
-  model: [
-    { label: "HEX", value: "HEX" },
-    { label: "BASE64", value: "BASE64" },
-  ],
-  comments:
-    "The encoding format to select for hashed user data fields (such as email or phone). Required when `userData` fields are included in events.",
-  clean: cleanString,
 });
 
 export const ingestOfflineConversionsInputs = {
@@ -135,6 +124,7 @@ export const uploadCallConversionsInputs = {
     clean: toOptionalCustomerId,
   },
   validateOnly,
+  linkedCustomerId: linkedCustomerIdInput,
 };
 
 export const uploadClickConversionsInputs = {
@@ -147,4 +137,5 @@ export const uploadClickConversionsInputs = {
     clean: toOptionalCustomerId,
   },
   validateOnly,
+  linkedCustomerId: linkedCustomerIdInput,
 };

@@ -18,13 +18,21 @@ export const uploadCallConversions = action({
   performSafety: "notAllowed",
   perform: async (
     context,
-    { connection, customerId, managerCustomerId, conversions, validateOnly },
+    {
+      connection,
+      customerId,
+      managerCustomerId,
+      conversions,
+      validateOnly,
+      linkedCustomerId,
+    },
   ) => {
     const client = createClient({
       connection: connection,
       debugEnabled: context.debug.enabled,
       logger: context.logger,
       loginCustomerId: managerCustomerId,
+      linkedCustomerId,
     });
     const { data } = await client.post(
       `/customers/${customerId}:uploadCallConversions`,

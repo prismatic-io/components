@@ -6,6 +6,8 @@ import type {
   CampaignChangesObject,
   ChangeHistoryBatchItem,
   ChangeHistoryChangesObject,
+  ChangeStatusBatchItem,
+  ChangeStatusChangesObject,
 } from "../../types";
 
 export const resolveCampaignChanges = (
@@ -38,6 +40,22 @@ export const resolveChangeHistoryItems = (
       changeType:
         OPERATION_TO_CHANGE_TYPE[record.changeEvent.resourceChangeOperation] ??
         "updated",
+      record,
+    }),
+  );
+};
+
+export const resolveChangeStatusItems = (
+  data: ChangeStatusChangesObject | undefined,
+): ChangeStatusBatchItem[] => {
+  const changesObject = data ?? {
+    changes: [],
+    changeCount: 0,
+    timeRange: { start: "", end: "" },
+  };
+  return (changesObject.changes ?? []).map(
+    (record): ChangeStatusBatchItem => ({
+      changeType: record.changeType,
       record,
     }),
   );

@@ -1,9 +1,9 @@
 import { component } from "@prismatic-io/spectral";
-import { handleErrors } from "@prismatic-io/spectral/http";
 import actions from "./actions";
 import connections from "./connections";
 import dataSources from "./dataSources";
 import triggers from "./triggers";
+import { handleGoogleAdsErrors } from "./util/errors";
 
 export default component({
   key: "google-ads",
@@ -16,7 +16,7 @@ export default component({
     iconPath: "icon.png",
     category: "Application Connectors",
   },
-  hooks: { error: handleErrors },
+  hooks: { error: handleGoogleAdsErrors },
   connections,
   dataSources,
   actions,

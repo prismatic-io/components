@@ -1,6 +1,7 @@
 import {
   CAMPAIGN_CHANGE_RESOURCE_TYPE,
   CHANGE_HISTORY_RESOURCE_TYPE_QUERY_VALUE,
+  CHANGE_STATUS_FIELDS,
   CHANGE_TYPE,
 } from "../../constants";
 import { isAllChangeTypesSelected } from "./changeDetection";
@@ -114,6 +115,35 @@ export const buildChangeHistoryQuery = (options: {
       AND change_event.change_date_time < '${toTime}'
       ${resourceFilter}
     ORDER BY change_event.change_date_time ASC
+    LIMIT ${limit}
+  `;
+
+  return query.trim();
+};
+
+export const buildChangeStatusQuery = (options: {
+  sinceTime: string;
+  toTime: string;
+  resourceTypes: string[];
+  limit: number;
+}): string => {
+  const { sinceTime, toTime, resourceTypes, limit } = options;
+
+  const resourceFilter =
+    resourceTypes.length > 0
+      ? `AND change_status.resource_type IN (${resourceTypes
+          .map((type) => `'${type}'`)
+          .join(",")})`
+      : "";
+
+  const query = `
+    SELECT
+      ${CHANGE_STATUS_FIELDS.join(",\n      ")}
+    FROM change_status
+    WHERE change_status.last_change_date_time >= '${sinceTime}'
+      AND change_status.last_change_date_time < '${toTime}'
+      ${resourceFilter}
+    ORDER BY change_status.last_change_date_time ASC
     LIMIT ${limit}
   `;
 

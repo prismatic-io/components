@@ -1,6 +1,7 @@
 export * from "./budgetCalculation";
 export * from "./changeDetection";
 export * from "./changeEventPagination";
+export * from "./changeEventRound";
 export * from "./dateUtils";
 export * from "./handlePollingError";
 export * from "./queryBuilders";

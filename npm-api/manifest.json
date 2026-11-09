@@ -229,8 +229,8 @@
   },
   "google-ads": {
     "name": "@prismatic-io/components-google-ads",
-    "version": "0.2.0",
-    "build": "f2a8d8a95dc56cb5f927d1747ed23b95849c9d8dc00fed56fd18ced4752f4fa1",
+    "version": "0.3.0",
+    "build": "ddc73775ebe6128a69cd33ea93c278b0eb6ee0f5455476d4b6638fb88e526dfe",
     "spectral": "^10.39.0"
   },
   "google-analytics-ga4": {

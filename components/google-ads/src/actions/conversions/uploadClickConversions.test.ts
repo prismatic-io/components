@@ -18,6 +18,7 @@ const params = {
   connection,
   customerId: CUSTOMER_ID,
   managerCustomerId: "",
+  linkedCustomerId: undefined,
   conversions: [
     {
       gclid: "TeSter123.gClIdString_xYz",

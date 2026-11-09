@@ -5,9 +5,20 @@ import type {
   CampaignResource,
   ChangeEventResponse,
 } from "./ChangeEventResponse";
+import type {
+  ChangeStatusRecord,
+  ChangeStatusResourceStatus,
+} from "./changeStatus";
 
 export type BudgetSeverity =
   (typeof BUDGET_SEVERITY)[keyof typeof BUDGET_SEVERITY];
+
+type CampaignChangeType =
+  | "created"
+  | "status"
+  | "budget"
+  | "bidding"
+  | "deleted";
 
 export interface BasePollingState {
   errorCount?: number;
@@ -30,8 +41,24 @@ export interface ChangeEventPollingState extends BasePollingState {
   changeCount?: number;
 }
 
+export type ChangeStatusPollingState = ChangeEventPollingState;
+
 export interface ChangeEventIdentity {
   changeEvent?: { resourceName?: string; changeDateTime: string };
+}
+
+export interface ChangeRowIdentity {
+  resourceName?: string;
+  changeDateTime?: string;
+}
+
+export interface ResourceChange {
+  changeType: "created" | "updated" | "removed";
+  resourceType: string;
+  resourceStatus: ChangeStatusResourceStatus;
+  resourceName: string | null;
+  lastChangeDateTime: string;
+  changeStatus: ChangeStatusRecord;
 }
 
 export interface TriggerClientContext {
@@ -44,13 +71,6 @@ export interface TriggerClientParams {
   customerId: string;
   managerCustomerId?: string;
 }
-
-type CampaignChangeType =
-  | "created"
-  | "status"
-  | "budget"
-  | "bidding"
-  | "deleted";
 
 export interface CampaignChange {
   changeType: CampaignChangeType;
@@ -90,6 +110,11 @@ export interface BudgetAlertBatchItem {
   record: BudgetStatus;
 }
 
+export interface ChangeStatusBatchItem {
+  changeType: "created" | "updated" | "removed";
+  record: ResourceChange;
+}
+
 export interface CampaignChangesObject {
   changes: CampaignChange[];
   changesDetected: number;
@@ -99,6 +124,12 @@ export interface CampaignChangesObject {
 
 export interface ChangeHistoryChangesObject {
   changes: ChangeEventResponse[];
+  changeCount: number;
+  timeRange: { start: string; end: string };
+}
+
+export interface ChangeStatusChangesObject {
+  changes: ResourceChange[];
   changeCount: number;
   timeRange: { start: string; end: string };
 }

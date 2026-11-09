@@ -23,6 +23,7 @@ export const searchAdsLocalServices = action({
       connection,
       customerId,
       managerCustomerId,
+      linkedCustomerId,
       pageTokenInput,
       query,
       returnTotalResultsCount,
@@ -34,6 +35,7 @@ export const searchAdsLocalServices = action({
       debugEnabled: context.debug.enabled,
       logger: context.logger,
       loginCustomerId: managerCustomerId,
+      linkedCustomerId,
     });
     const data = await searchGoogleAds(client, {
       customerId,
