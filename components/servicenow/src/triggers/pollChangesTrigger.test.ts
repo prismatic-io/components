@@ -1,4 +1,4 @@
-import { defaultTriggerPayload } from "@prismatic-io/spectral/dist/testing";
+import { defaultTriggerPayload } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { afterEach, describe, expect, test } from "vitest";
 import { DEFAULT_BATCH_SIZE } from "../constants";

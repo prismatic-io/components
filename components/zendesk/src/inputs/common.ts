@@ -21,7 +21,7 @@ import type {
   TicketType,
   UserRole,
 } from "../types";
-import { inputs as httpClientInputs } from "@prismatic-io/spectral/dist/clients/http";
+import { inputs as httpClientInputs } from "@prismatic-io/spectral/http";
 
 export const requesterName = input({
   label: "Requester Name",

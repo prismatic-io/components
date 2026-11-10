@@ -1,7 +1,7 @@
 import { action, util } from "@prismatic-io/spectral";
 import { connectionInput, recordType, requestBodyCode } from "../inputs";
 import { getSapClient } from "../client";
-import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
+import { handleErrors } from "@prismatic-io/spectral/http";
 
 export const createRecord = action({
   display: {

@@ -11,7 +11,7 @@ import {
   recordType,
 } from "../inputs";
 import { getSapClient } from "../client";
-import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
+import { handleErrors } from "@prismatic-io/spectral/http";
 
 export const listRecords = action({
   display: {

@@ -1,4 +1,4 @@
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 
 export const MAX_PAGE_SIZE_DEFAULT = 10000;
 export const MAX_ITERATIONS_DEFAULT = 1000;

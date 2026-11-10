@@ -1,7 +1,7 @@
 import {
   createConnection,
   invokeDataSource,
-} from "@prismatic-io/spectral/dist/testing";
+} from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { afterEach, describe, expect, test } from "vitest";
 import { basic } from "../connections";

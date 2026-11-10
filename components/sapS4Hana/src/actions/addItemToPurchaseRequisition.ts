@@ -1,7 +1,7 @@
 import { action, util } from "@prismatic-io/spectral";
 import { connectionInput, purchaseRequisitionNumberInput, requestBodyCode } from "../inputs";
 import { getSapClient } from "../client";
-import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
+import { handleErrors } from "@prismatic-io/spectral/http";
 import { ADD_ITEM_TO_PURCHASE_REQUISITION_DEFAULT_VALUE } from "../constants";
 
 export const addItemToPurchaseRequisition = action({

@@ -1,6 +1,6 @@
 import { URLSearchParams } from "node:url";
 import { type Connection, ConnectionError, util } from "@prismatic-io/spectral";
-import { createClient, type HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import { createClient, type HttpClient } from "@prismatic-io/spectral/http";
 import jwt from "jsonwebtoken";
 import connections, {
   oktaApiTokenConnection,

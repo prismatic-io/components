@@ -1,4 +1,4 @@
-import { createConnection } from "@prismatic-io/spectral/dist/testing";
+import { createConnection } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { createClient } from "../client";
 import { sfmcOAuth2ClientCredentials } from "../connections/sfmcOAuth2ClientCredentials";

@@ -2,7 +2,7 @@ import { component } from "@prismatic-io/spectral";
 
 import actions from "./actions";
 import connections from "./connections";
-import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
+import { handleErrors } from "@prismatic-io/spectral/http";
 import { webhookReceiver } from "./triggers";
 import dataSources from "./dataSources";
 

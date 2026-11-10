@@ -1,4 +1,4 @@
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import { ClientType } from "../client";
 import { DEFAULT_PAGE_NUMBER, DEFAULT_PER_PAGE } from "../constants";
 import type { paginationParams } from "../types";

@@ -1,4 +1,4 @@
-import { createConnection, invoke } from "@prismatic-io/spectral/dist/testing";
+import { createConnection, invoke } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { zohoTemplatedConnection } from "../connections";
 import { booksGetRecordsExamplePayload } from "../examplePayloads/books";

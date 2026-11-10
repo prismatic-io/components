@@ -1,4 +1,4 @@
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import { CHILD_TYPE } from "./mergeChildren";
 import { paginateByToken } from "./pagination";
 

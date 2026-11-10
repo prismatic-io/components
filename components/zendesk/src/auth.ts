@@ -3,7 +3,7 @@ import { util, type Connection, ConnectionError } from "@prismatic-io/spectral";
 import {
   type HttpClient,
   createClient as createHttpClient,
-} from "@prismatic-io/spectral/dist/clients/http";
+} from "@prismatic-io/spectral/http";
 import {
   createClient as createZendeskClient,
   type ZendeskClientOptions,

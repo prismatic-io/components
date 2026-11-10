@@ -1,7 +1,7 @@
 import { action, input, util } from "@prismatic-io/spectral";
 import { connectionInput, top, skip, search, filter, inlinecount } from "../inputs";
 import { getSapClient } from "../client";
-import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
+import { handleErrors } from "@prismatic-io/spectral/http";
 
 const orderByOptions = [
   "FileSize",

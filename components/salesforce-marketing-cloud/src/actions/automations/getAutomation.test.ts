@@ -1,4 +1,4 @@
-import { createConnection, invoke } from "@prismatic-io/spectral/dist/testing";
+import { createConnection, invoke } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { sfmcOAuth2ClientCredentials } from "../../connections/sfmcOAuth2ClientCredentials";
 import { AUTOMATIONS_PATH } from "../../constants";

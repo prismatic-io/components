@@ -1,7 +1,7 @@
 import { action, input, util } from "@prismatic-io/spectral";
 import { connectionInput, filter, inlinecount, recordId, recordType, skip, top } from "../inputs";
 import { getSapClient } from "../client";
-import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
+import { handleErrors } from "@prismatic-io/spectral/http";
 
 export const getRecord = action({
   display: {

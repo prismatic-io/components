@@ -1,5 +1,5 @@
 import { util } from "@prismatic-io/spectral";
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import crypto from "node:crypto";
 import type { PaginationResults } from "./interfaces/PaginationResults";
 import type { AxiosResponse } from "axios";

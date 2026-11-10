@@ -6,7 +6,7 @@ import {
   purchaseRequisitionNumberInput,
 } from "../inputs";
 import { getSapClient } from "../client";
-import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
+import { handleErrors } from "@prismatic-io/spectral/http";
 
 export const getPurchaseRequisition = action({
   display: {

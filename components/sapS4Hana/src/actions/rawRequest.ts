@@ -5,7 +5,7 @@ import {
   handleErrors,
   inputs as httpClientInputs,
   sendRawRequest,
-} from "@prismatic-io/spectral/dist/clients/http";
+} from "@prismatic-io/spectral/http";
 
 const { debugRequest: _, ...rawRequestInputs } = httpClientInputs;
 

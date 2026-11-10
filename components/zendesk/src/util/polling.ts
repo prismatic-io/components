@@ -1,4 +1,4 @@
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import {
   BATCHED_INCREMENTAL_PAGE_SIZE,
   BATCHED_MAX_PAGES_PER_POLL,
