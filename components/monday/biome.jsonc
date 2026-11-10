@@ -10,5 +10,5 @@
     "indentStyle": "space",
     "indentWidth": 2
   },
-  "files": { "includes": ["**", "!**/dist"] }
+  "files": { "includes": ["**", "!**/dist", "!**/npm-dist"] }
 }

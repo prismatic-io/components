@@ -1,5 +1,5 @@
 import { ConnectionError } from "@prismatic-io/spectral";
-import { createConnection } from "@prismatic-io/spectral/dist/testing";
+import { createConnection } from "@prismatic-io/spectral/testing";
 import { cert, deleteApp, initializeApp } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
 import { vi } from "vitest";

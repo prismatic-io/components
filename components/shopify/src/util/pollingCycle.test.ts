@@ -1,5 +1,5 @@
 import type { Connection, PollingContext, TriggerPayload } from "@prismatic-io/spectral";
-import { defaultTriggerPayload } from "@prismatic-io/spectral/dist/testing";
+import { defaultTriggerPayload } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import pollOrdersQuery from "../actions/graphql/queries/orders/PollOrders.gql";
 import { DEFAULT_SHOPIFY_GRAPHQL_API_VERSION } from "../constants";

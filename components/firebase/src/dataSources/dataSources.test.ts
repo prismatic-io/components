@@ -1,7 +1,7 @@
 import {
   createConnection,
   invokeDataSource,
-} from "@prismatic-io/spectral/dist/testing";
+} from "@prismatic-io/spectral/testing";
 import { vi } from "vitest";
 import { firebaseConnection } from "../connections/firebaseConnection";
 import {

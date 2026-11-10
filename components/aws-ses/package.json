@@ -1,31 +1,57 @@
 {
-  "name": "@prismatic-io/aws-ses",
-  "private": true,
+  "name": "@prismatic-io/components-aws-ses",
   "version": "0.0.1",
+  "main": "./npm-dist/index.cjs",
+  "types": "./npm-dist/index.d.cts",
+  "exports": {
+    ".": {
+      "types": "./npm-dist/index.d.cts",
+      "default": "./npm-dist/index.cjs"
+    }
+  },
   "description": "Amazon Simple Email Service Component for Prismatic",
-  "main": "index.ts",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prismatic-io/components.git",
+    "directory": "components/aws-ses"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "npm-dist",
+    "dist"
+  ],
+  "prismatic": {
+    "component": "./dist/index.js"
+  },
   "scripts": {
     "build": "npm run format && npm run lint && tsdown",
     "typecheck": "tsc --noEmit",
     "lint": "biome check --write .",
     "format": "biome format --write .",
-    "publish": "npm run build && prism components:publish",
     "generate-regions-json": "aws ec2 describe-regions | jq '.Regions | map(.RegionName) | sort' > src/aws-regions.json",
-    "test": "vitest run"
+    "test": "vitest run",
+    "prepare": "npm run build",
+    "publish:platform": "npm run build && prism components:publish"
+  },
+  "peerDependencies": {
+    "@prismatic-io/spectral": "^10.39.2"
   },
   "dependencies": {
     "@aws-sdk/client-ses": "3.1088.0",
-    "@prismatic-io/spectral": "10.34.1",
-    "aws-utils": "file:../../packages/aws-utils",
-    "nodemailer": "6.9.1"
+    "nodemailer": "6.9.1",
+    "@aws-sdk/client-sts": "3.1088.0"
   },
-  "author": "Prismatic",
-  "license": "Apache-2.0",
   "devDependencies": {
     "@biomejs/biome": "2.5.1",
     "@types/node": "^26.6.4",
     "tsdown": "0.22.3",
     "typescript": "6.0.3",
-    "vitest": "4.1.9"
-  }
+    "vitest": "4.1.9",
+    "@prismatic-io/spectral": "^10.39.2",
+    "aws-utils": "file:../../packages/aws-utils"
+  },
+  "author": "Prismatic"
 }

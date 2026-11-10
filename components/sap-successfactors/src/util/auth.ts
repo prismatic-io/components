@@ -2,7 +2,7 @@ import crypto from "node:crypto";
 import { URLSearchParams } from "node:url";
 import { promisify } from "node:util";
 import { type Connection, ConnectionError, util } from "@prismatic-io/spectral";
-import { createClient as createHttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import { createClient as createHttpClient } from "@prismatic-io/spectral/http";
 import { Saml20, type SamlUnassignedOpts } from "saml";
 import { apiKeyAuthentication, basicAuthentication } from "../connections";
 

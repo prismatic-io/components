@@ -1,4 +1,4 @@
-import { createConnection, invoke } from "@prismatic-io/spectral/dist/testing";
+import { createConnection, invoke } from "@prismatic-io/spectral/testing";
 import { vi } from "vitest";
 import { firebaseConnection } from "../../connections/firebaseConnection";
 import { listCollectionsExamplePayload } from "../../examplePayloads";

@@ -1,5 +1,5 @@
 import { type ActionLogger, type Connection, util } from "@prismatic-io/spectral";
-import { createClient, type HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import { createClient, type HttpClient } from "@prismatic-io/spectral/http";
 import { GraphQLClient } from "graphql-request";
 import { shopifyConnection as deprecatedOAuth2Connection } from "./connections/oauth2";
 import {

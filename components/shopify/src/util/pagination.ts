@@ -1,5 +1,5 @@
 import { util } from "@prismatic-io/spectral";
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import type { DocumentNode } from "graphql";
 import type { GraphQLClient, Variables } from "graphql-request";
 import parseLinkHeader from "parse-link-header";

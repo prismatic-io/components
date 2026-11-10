@@ -1,5 +1,5 @@
 import type { ActionLogger } from "@prismatic-io/spectral";
-import { createConnection } from "@prismatic-io/spectral/dist/testing";
+import { createConnection } from "@prismatic-io/spectral/testing";
 import {
   getConnectionHostname,
   getShopifyClient,

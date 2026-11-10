@@ -1,5 +1,5 @@
 import type { TriggerPayload } from "@prismatic-io/spectral";
-import { defaultTriggerPayload } from "@prismatic-io/spectral/dist/testing";
+import { defaultTriggerPayload } from "@prismatic-io/spectral/testing";
 
 const pageInfo = {
   hasNextPage: false,

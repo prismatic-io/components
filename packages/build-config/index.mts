@@ -17,6 +17,10 @@ import { createRequire } from "node:module";
 export const CJS_ENTRY_PACKAGES: readonly string[] = [
   // index.js has no exports syntax. The ESM and CommonJS wrappers both load it.
   "safe-stable-stringify",
+  // The ESM entries default-import the CommonJS build, which the bundler unwraps
+  // to undefined.
+  "firebase-admin/app",
+  "firebase-admin/firestore",
 ];
 
 /**

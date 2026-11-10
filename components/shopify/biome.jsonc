@@ -33,6 +33,6 @@
     }
   ],
   "files": {
-    "includes": ["**", "!**/dist"]
+    "includes": ["**", "!**/dist", "!**/npm-dist"]
   }
 }

@@ -4,7 +4,7 @@ import {
   createConnection,
   defaultTriggerPayload,
   invokeTrigger,
-} from "@prismatic-io/spectral/dist/testing";
+} from "@prismatic-io/spectral/testing";
 import { adminApiAccessToken } from "../connections";
 import { eventTopicWebhookGqlExamplePayload } from "../examplePayloads";
 import { eventTopicWebhookGql } from "./eventTopicWebhookGql";

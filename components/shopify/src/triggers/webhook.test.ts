@@ -1,6 +1,6 @@
 import * as crypto from "node:crypto";
 import type { TriggerPayload, TriggerResult } from "@prismatic-io/spectral";
-import { defaultTriggerPayload, invokeTrigger } from "@prismatic-io/spectral/dist/testing";
+import { defaultTriggerPayload, invokeTrigger } from "@prismatic-io/spectral/testing";
 import { webhookExamplePayload } from "../examplePayloads";
 import { webhook } from "./webhook";
 

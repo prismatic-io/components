@@ -1,5 +1,5 @@
 import type { PollingContext, TriggerPayload } from "@prismatic-io/spectral";
-import { createConnection, invokeTrigger } from "@prismatic-io/spectral/dist/testing";
+import { createConnection, invokeTrigger } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { adminApiAccessToken } from "../connections";
 import { DEFAULT_SHOPIFY_GRAPHQL_API_VERSION } from "../constants";

@@ -1,4 +1,4 @@
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import { PAGINATION_DEFAULT_LIMIT } from "../constants";
 import type { ActionResults, ListActionResults } from "../types";
 

@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import type { Connection } from "@prismatic-io/spectral";
-import { invoke } from "@prismatic-io/spectral/dist/testing";
+import { invoke } from "@prismatic-io/spectral/testing";
 import { listRecords } from "./actions/records/listRecords";
 import { createClient } from "./client";
 import { apiKeyAuthentication } from "./connections";
