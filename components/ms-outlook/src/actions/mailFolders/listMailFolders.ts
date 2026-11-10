@@ -1,4 +1,5 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { listMailFoldersOutputSchema } from "../../outputSchemas";
 import type { MailSearchFolder } from "@microsoft/microsoft-graph-types";
 import { createClient } from "../../client";
 import { listMailFoldersExamplePayload } from "../../examplePayloads";
@@ -13,6 +14,7 @@ export const listMailFolders = action({
       "Gets the mail folder collection directly under the root folder of the signed-in user, or under the specified parent folder.",
   },
   inputs: listMailFoldersInputs,
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = createClient(params.connection, context.debug.enabled);
     const url = computeEndpointBasedOnConnection(
@@ -38,5 +40,10 @@ export const listMailFolders = action({
     );
     return { data };
   },
+  examplePerform: async () => listMailFoldersExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listMailFoldersOutputSchema,
+  }),
   examplePayload: listMailFoldersExamplePayload,
 });

@@ -1,4 +1,5 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { listSubscriptionsOutputSchema } from "../../outputSchemas";
 import type { Subscription } from "@microsoft/microsoft-graph-types";
 import { createClient } from "../../client";
 import { listSubscriptionsExamplePayload } from "../../examplePayloads";
@@ -11,6 +12,7 @@ export const listSubscriptions = action({
     description: "Lists all subscriptions for Microsoft Outlook.",
   },
   inputs: listSubscriptionsInputs,
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = createClient(params.connection, context.debug.enabled);
     const data = await fetchAllData<Subscription>(client, "/subscriptions", params.fetchAll, {});
@@ -25,5 +27,10 @@ export const listSubscriptions = action({
 
     return { data };
   },
+  examplePerform: async () => listSubscriptionsExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listSubscriptionsOutputSchema,
+  }),
   examplePayload: listSubscriptionsExamplePayload,
 });

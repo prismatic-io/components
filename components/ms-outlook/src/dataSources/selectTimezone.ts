@@ -1,6 +1,6 @@
 import { dataSource, type Element, util } from "@prismatic-io/spectral";
 import { createClient } from "../client";
-import { connectionInput } from "../inputs";
+import { selectTimezoneInputs } from "../inputs";
 import { computeEndpointBasedOnConnection } from "../util";
 
 export const selectTimezone = dataSource({
@@ -8,9 +8,7 @@ export const selectTimezone = dataSource({
     label: "Select Timezone",
     description: "Select a timezone from the list of supported timezones.",
   },
-  inputs: {
-    connection: connectionInput,
-  },
+  inputs: selectTimezoneInputs,
   perform: async (context, { connection }) => {
     const client = createClient(connection, false);
     const { data } = await client.get<{

@@ -19,7 +19,9 @@ To connect to Microsoft Outlook using OAuth 2.0, create an App Registration in M
 #### Configure the Connection
 
 - Enter the **Application (client) ID** value into the **Client ID** field
-- Enter the **Client Secret** value into the same named field
+- Enter the **Client Secret** value into the **Client secret value** field
+- Keep the default **Base URL** (`https://graph.microsoft.com`), or use the [Microsoft Graph national cloud endpoint](https://learn.microsoft.com/en-us/graph/deployments) for a government or China cloud tenant
+- Keep the default **Tenant URL** (`login.microsoftonline.com/common`) for a Multitenant app. For a single-tenant app, replace `common` with the Directory (tenant) ID.
 - The default scopes are pre-configured for common use cases:
   ```
   https://graph.microsoft.com/User.Read https://graph.microsoft.com/Calendars.ReadWrite https://graph.microsoft.com/Mail.ReadWrite https://graph.microsoft.com/Mail.Send offline_access
@@ -34,11 +36,3 @@ To connect to Microsoft Outlook using OAuth 2.0, create an App Registration in M
   - Use `prompt=consent` to force Microsoft to display the consent screen, which is useful when the requested scopes have changed and users need to re-authorize
   - Use `login_hint=user@example.com` to pre-fill the user's email address on the sign-in page
   - Multiple parameters can be combined with `&` (e.g., `prompt=consent&login_hint=user@example.com`)
-
-:::note[Single-Tenant Applications]
-For single-tenant applications (not Multitenant), tenant-specific URLs are required. The connection will automatically handle tenant-specific configuration when a Tenant ID is provided.
-:::
-
-:::info[Cloud Environments]
-The connection supports different Microsoft cloud environments (Commercial, Government, China). The Base URL will automatically adjust based on the selected cloud environment.
-:::

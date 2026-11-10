@@ -2,7 +2,7 @@ import { input, util } from "@prismatic-io/spectral";
 import { cleanStringInput } from "../util";
 import { connectionInput, fetchAllInput, pagination } from "./common";
 
-export const parentFolderIdInput = input({
+const parentFolderIdInput = input({
   label: "Parent Folder ID",
   type: "string",
   required: false,

@@ -2,8 +2,8 @@ import { trigger } from "@prismatic-io/spectral";
 import { createSubscriptionTrigger, deleteSubscriptionTrigger, getBase64FromUrl } from "ms-utils";
 import { createClient } from "../client";
 import { mailFolderWebhookTriggerExamplePayload } from "../examplePayloads";
-import { createMailFolderWebhookInputs } from "../inputs";
-import { createWebhookPerformFN } from "../util";
+import { mailFolderWebhookInputs } from "../inputs";
+import { computeResourceBasedOnConnection, createWebhookPerformFN } from "../util";
 
 export const mailFolderWebhook = trigger({
   display: {
@@ -14,7 +14,7 @@ export const mailFolderWebhook = trigger({
   scheduleSupport: "valid",
   synchronousResponseSupport: "invalid",
   allowsBranching: true,
-  inputs: createMailFolderWebhookInputs,
+  inputs: mailFolderWebhookInputs,
   staticBranchNames: ["Notification", "URL Validation", "Scheduled Renewal"],
   perform: createWebhookPerformFN("message"),
   examplePayload: mailFolderWebhookTriggerExamplePayload,
@@ -24,7 +24,10 @@ export const mailFolderWebhook = trigger({
       { allowDuplicates, connection, expirationDateTime, folderId, changeTypes },
     ) => {
       const client = createClient(connection, context.debug.enabled);
-      const resource = folderId ? `me/mailFolders/${folderId}/messages` : "me/messages";
+      const resource = computeResourceBasedOnConnection(
+        connection,
+        folderId ? `me/mailFolders/${folderId}/messages` : "me/messages",
+      );
       const flowKey = getBase64FromUrl(context.webhookUrls[context.flow.name]);
       const subscription = await createSubscriptionTrigger(
         client,

@@ -3,16 +3,14 @@ import { computeEndpointBasedOnConnection, fetchAllData } from "../util";
 import type { Calendar } from "@microsoft/microsoft-graph-types";
 import type { ODataAttrs } from "../types";
 import { createClient } from "../client";
-import { connectionInput } from "../inputs";
+import { selectCalendarInputs } from "../inputs";
 
 export const selectCalendar = dataSource({
   display: {
     label: "Select Calendar",
     description: "Select a calendar from the list of calendars.",
   },
-  inputs: {
-    connection: connectionInput,
-  },
+  inputs: selectCalendarInputs,
   perform: async (context, { connection }) => {
     const client = createClient(connection, false);
     const { value } = await fetchAllData<Calendar & ODataAttrs>(

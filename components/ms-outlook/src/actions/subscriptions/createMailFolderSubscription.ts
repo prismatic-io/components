@@ -1,9 +1,10 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { createMailFolderSubscriptionOutputSchema } from "../../outputSchemas";
 import type { Subscription } from "@microsoft/microsoft-graph-types";
 import { createClient } from "../../client";
 import { createMailFolderSubscriptionExamplePayload } from "../../examplePayloads";
 import { createMailFolderSubscriptionInputs } from "../../inputs";
-import { fetchAllData } from "../../util";
+import { computeResourceBasedOnConnection, fetchAllData } from "../../util";
 
 export const createMailFolderSubscription = action({
   display: {
@@ -11,6 +12,7 @@ export const createMailFolderSubscription = action({
     description: "Creates a mail folder subscription for Microsoft Outlook.",
   },
   inputs: createMailFolderSubscriptionInputs,
+  performSafety: "notAllowed",
   perform: async (context, { notificationUrl, expirationDateTime, connection, changeType }) => {
     const client = createClient(connection, context.debug.enabled);
 
@@ -29,12 +31,17 @@ export const createMailFolderSubscription = action({
 
     context.logger.info("A subscription for Mail Folders does not exist, creating one.");
     const { data } = await client.post("/subscriptions", {
-      resource: "me/mailFolders('Inbox')/messages",
+      resource: computeResourceBasedOnConnection(connection, "me/mailFolders('Inbox')/messages"),
       changeType,
       notificationUrl,
       expirationDateTime,
     });
     return { data };
   },
+  examplePerform: async () => createMailFolderSubscriptionExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createMailFolderSubscriptionOutputSchema,
+  }),
   examplePayload: createMailFolderSubscriptionExamplePayload,
 });

@@ -1,4 +1,5 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { updateCalendarOutputSchema } from "../../outputSchemas";
 import type { Calendar } from "@microsoft/microsoft-graph-types";
 import { createClient } from "../../client";
 import { updateCalendarExamplePayload } from "../../examplePayloads";
@@ -12,6 +13,7 @@ export const updateCalendar = action({
     description: "Updates an existing calendar.",
   },
   inputs: updateCalendarInputs,
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = createClient(params.connection, context.debug.enabled);
     const { data } = await client.patch<Calendar & ODataAttrs>(
@@ -23,5 +25,10 @@ export const updateCalendar = action({
     );
     return { data };
   },
+  examplePerform: async () => updateCalendarExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: updateCalendarOutputSchema,
+  }),
   examplePayload: updateCalendarExamplePayload,
 });

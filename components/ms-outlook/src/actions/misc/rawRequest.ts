@@ -1,29 +1,15 @@
-import { action, input } from "@prismatic-io/spectral";
-import { inputs as httpClientInputs, sendRawRequest } from "@prismatic-io/spectral/http";
+import { action } from "@prismatic-io/spectral";
+import { sendRawRequest } from "@prismatic-io/spectral/http";
 import { rawRequestExamplePayload } from "../../examplePayloads";
-
-const { debugRequest: _, ...rawRequestInputs } = httpClientInputs;
+import { rawRequestInputs } from "../../inputs";
 
 export const rawRequest = action({
   display: {
     label: "Raw Request",
     description: "Sends a raw HTTP request to Microsoft Outlook.",
   },
-  inputs: {
-    connection: input({
-      type: "connection",
-      label: "Connection",
-      required: true,
-      comments: "The Microsoft Outlook connection to use.",
-    }),
-    ...rawRequestInputs,
-    url: {
-      ...rawRequestInputs.url,
-      comments:
-        "The path of the Microsoft Graph endpoint to call (e.g., `/me/calendars`). The base URL `https://graph.microsoft.com/v1.0` is added automatically. For example, to call `https://graph.microsoft.com/v1.0/me/calendars`, enter `/me/calendars`.",
-      example: "/me/calendars",
-    },
-  },
+  inputs: rawRequestInputs,
+  performSafety: "notAllowed",
   perform: async (context, { connection, ...rawRequestInputs }) => {
     const { data } = await sendRawRequest(
       "https://graph.microsoft.com/v1.0",

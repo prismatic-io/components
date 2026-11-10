@@ -9,10 +9,12 @@ export const deleteSubscription = action({
     description: "Deletes an existing subscription for Microsoft Outlook.",
   },
   inputs: deleteSubscriptionInputs,
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = createClient(params.connection, context.debug.enabled);
     const { data } = await client.delete(`/subscriptions/${params.subscriptionId}`);
     return { data };
   },
+  examplePerform: async () => deleteSubscriptionExamplePayload,
   examplePayload: deleteSubscriptionExamplePayload,
 });

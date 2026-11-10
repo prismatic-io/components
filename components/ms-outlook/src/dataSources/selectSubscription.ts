@@ -1,6 +1,6 @@
 import { dataSource, type Element, util } from "@prismatic-io/spectral";
 import { createClient } from "../client";
-import { connectionInput } from "../inputs";
+import { selectSubscriptionInputs } from "../inputs";
 import { computeEndpointBasedOnConnection, fetchAllData } from "../util";
 import type { Subscription } from "@microsoft/microsoft-graph-types";
 
@@ -9,9 +9,7 @@ export const selectSubscription = dataSource({
     label: "Select Subscription",
     description: "Select a subscription from the list of subscriptions.",
   },
-  inputs: {
-    connection: connectionInput,
-  },
+  inputs: selectSubscriptionInputs,
   perform: async (context, { connection }) => {
     const client = createClient(connection, false);
 

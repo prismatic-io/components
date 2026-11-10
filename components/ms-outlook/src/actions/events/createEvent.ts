@@ -1,4 +1,5 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { createEventOutputSchema } from "../../outputSchemas";
 import type { Attendee, Event } from "@microsoft/microsoft-graph-types";
 import { createClient } from "../../client";
 import { createEventExamplePayload } from "../../examplePayloads";
@@ -11,6 +12,7 @@ export const createEvent = action({
     description: "Creates an event on a calendar.",
   },
   inputs: createEventInputs,
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = createClient(params.connection, context.debug.enabled);
 
@@ -47,5 +49,10 @@ export const createEvent = action({
     const { data } = await client.post<Event>(url, payload);
     return { data };
   },
+  examplePerform: async () => createEventExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createEventOutputSchema,
+  }),
   examplePayload: createEventExamplePayload,
 });

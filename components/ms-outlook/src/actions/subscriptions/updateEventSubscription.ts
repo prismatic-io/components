@@ -1,4 +1,5 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { updateEventSubscriptionOutputSchema } from "../../outputSchemas";
 import { createClient } from "../../client";
 import { updateEventSubscriptionExamplePayload } from "../../examplePayloads";
 import { updateEventSubscriptionInputs } from "../../inputs";
@@ -9,6 +10,7 @@ export const updateEventSubscription = action({
     description: "Updates the expiration of an existing event subscription for Microsoft Outlook.",
   },
   inputs: updateEventSubscriptionInputs,
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = createClient(params.connection, context.debug.enabled);
     const { data } = await client.patch(`/subscriptions/${params.subscriptionId}`, {
@@ -16,5 +18,10 @@ export const updateEventSubscription = action({
     });
     return { data };
   },
+  examplePerform: async () => updateEventSubscriptionExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: updateEventSubscriptionOutputSchema,
+  }),
   examplePayload: updateEventSubscriptionExamplePayload,
 });

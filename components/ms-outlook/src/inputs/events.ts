@@ -1,5 +1,6 @@
-import { input, type KeyValuePair, util } from "@prismatic-io/spectral";
+import { input, type KeyValuePair, structuredObjectInput, util } from "@prismatic-io/spectral";
 import type { Attendee, AttendeeType } from "@microsoft/microsoft-graph-types";
+import { cleanStringInput } from "../util";
 import {
   connectionInput,
   endInput,
@@ -11,7 +12,7 @@ import {
   startTimezoneInput,
 } from "./common";
 
-export const eventCalendarIdInput = input({
+const eventCalendarIdInput = input({
   label: "Calendar ID",
   type: "string",
   required: false,
@@ -23,37 +24,37 @@ export const eventCalendarIdInput = input({
   clean: util.types.toString,
 });
 
-export const locationNameInput = input({
+const locationNameInput = input({
   label: "Location Name",
   type: "string",
   required: true,
-  comments: "The name of the event location.",
+  comments: "Where the event takes place, such as a meeting room name or a street address.",
   example: "Conference Room A",
   placeholder: "Enter location name",
   clean: util.types.toString,
 });
 
-export const subjectInput = input({
+const subjectInput = input({
   label: "Subject",
   type: "string",
   required: true,
-  comments: "The subject of the calendar event.",
+  comments: "The title shown for the event in calendars and meeting invitations.",
   example: "Team Meeting",
   placeholder: "Enter event subject",
   clean: util.types.toString,
 });
 
-export const bodyInput = input({
+const bodyInput = input({
   label: "Body (HTML)",
   type: "string",
   required: true,
-  comments: "The HTML body content of the event.",
+  comments: "The event description shown to attendees in the invitation, formatted as HTML.",
   example: "<p>Please join us for the team meeting.</p>",
   placeholder: "Enter event body (HTML)",
   clean: util.types.toString,
 });
 
-export const attendeesDataInput = input({
+const attendeesDataInput = input({
   label: "Attendees Data Collection",
   type: "data",
   example:
@@ -63,7 +64,7 @@ export const attendeesDataInput = input({
     "A reference to data structures representing attendees. Merged with Attendees if both are specified.",
 });
 
-export const attendeesInput = input({
+const attendeesInput = input({
   label: {
     key: "Email",
     value: "Type",
@@ -102,6 +103,18 @@ const cancelCommentInput = input({
   clean: util.types.toString,
 });
 
+const updateEventScheduleInput = structuredObjectInput({
+  label: "Schedule",
+  required: false,
+  comments: "Start and end times of the event and the timezone applied to each.",
+  inputs: {
+    start: { ...startInput, required: false, clean: cleanStringInput },
+    startTimezone: { ...startTimezoneInput, required: false, clean: cleanStringInput },
+    end: { ...endInput, required: false, clean: cleanStringInput },
+    endTimezone: { ...endTimezoneInput, required: false, clean: cleanStringInput },
+  },
+});
+
 export const listEventsInputs = {
   connection: connectionInput,
   fetchAll: fetchAllInput,
@@ -126,13 +139,10 @@ export const createEventInputs = {
 export const updateEventInputs = {
   connection: connectionInput,
   eventId: eventIdInput,
-  locationName: { ...locationNameInput, required: false },
-  subject: { ...subjectInput, required: false },
-  body: { ...bodyInput, required: false },
-  start: { ...startInput, required: false },
-  startTimezone: { ...startTimezoneInput, required: false },
-  end: { ...endInput, required: false },
-  endTimezone: { ...endTimezoneInput, required: false },
+  locationName: { ...locationNameInput, required: false, clean: cleanStringInput },
+  subject: { ...subjectInput, required: false, clean: cleanStringInput },
+  body: { ...bodyInput, required: false, clean: cleanStringInput },
+  schedule: updateEventScheduleInput,
   attendeesData: { ...attendeesDataInput, required: false },
   attendees: { ...attendeesInput, required: false },
 };

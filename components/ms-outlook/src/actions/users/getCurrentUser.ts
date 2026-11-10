@@ -1,4 +1,5 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { getCurrentUserOutputSchema } from "../../outputSchemas";
 import { createClient } from "../../client";
 import { getCurrentUserExamplePayload } from "../../examplePayloads";
 import { getCurrentUserInputs } from "../../inputs";
@@ -9,6 +10,7 @@ export const getCurrentUser = action({
     label: "Get Current User",
     description: "Gets the information and metadata of the user that is currently logged in.",
   },
+  performSafety: "safe",
   perform: async (context, params) => {
     const client = createClient(params.connection, context.debug.enabled);
     const url = computeEndpointBasedOnConnection(params.connection, "/me");
@@ -16,5 +18,9 @@ export const getCurrentUser = action({
     return { data };
   },
   inputs: getCurrentUserInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getCurrentUserOutputSchema,
+  }),
   examplePayload: getCurrentUserExamplePayload,
 });

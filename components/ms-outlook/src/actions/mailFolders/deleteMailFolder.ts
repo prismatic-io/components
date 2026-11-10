@@ -10,6 +10,7 @@ export const deleteMailFolder = action({
     description: "Deletes the specified mail folder.",
   },
   inputs: deleteMailFolderInputs,
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = createClient(params.connection, context.debug.enabled);
     const url = computeEndpointBasedOnConnection(
@@ -19,5 +20,6 @@ export const deleteMailFolder = action({
     const { data } = await client.delete(url);
     return { data };
   },
+  examplePerform: async () => deleteMailFolderExamplePayload,
   examplePayload: deleteMailFolderExamplePayload,
 });

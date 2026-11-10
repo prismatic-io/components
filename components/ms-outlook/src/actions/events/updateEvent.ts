@@ -1,4 +1,5 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { updateEventOutputSchema } from "../../outputSchemas";
 import type { Attendee, Event } from "@microsoft/microsoft-graph-types";
 import { createClient } from "../../client";
 import { updateEventExamplePayload } from "../../examplePayloads";
@@ -11,6 +12,7 @@ export const updateEvent = action({
     description: "Updates an existing event.",
   },
   inputs: updateEventInputs,
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = createClient(params.connection, context.debug.enabled);
     const url = computeEndpointBasedOnConnection(params.connection, `/me/events/${params.eventId}`);
@@ -36,21 +38,26 @@ export const updateEvent = action({
     if (attendees.length > 0) {
       payload.attendees = attendees;
     }
-    if (params.start && params.startTimezone) {
+    if (params.schedule?.start && params.schedule?.startTimezone) {
       payload.start = {
-        dateTime: params.start,
-        timeZone: params.startTimezone,
+        dateTime: params.schedule?.start,
+        timeZone: params.schedule?.startTimezone,
       };
     }
-    if (params.end && params.endTimezone) {
+    if (params.schedule?.end && params.schedule?.endTimezone) {
       payload.end = {
-        dateTime: params.end,
-        timeZone: params.endTimezone,
+        dateTime: params.schedule?.end,
+        timeZone: params.schedule?.endTimezone,
       };
     }
 
     const { data } = await client.patch<Event>(url, payload);
     return { data };
   },
+  examplePerform: async () => updateEventExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: updateEventOutputSchema,
+  }),
   examplePayload: updateEventExamplePayload,
 });

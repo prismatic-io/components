@@ -1,4 +1,5 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { getScheduleOutputSchema } from "../../outputSchemas";
 import type { ScheduleInformation } from "@microsoft/microsoft-graph-types";
 import { createClient } from "../../client";
 import { getScheduleExamplePayload } from "../../examplePayloads";
@@ -12,6 +13,7 @@ export const getSchedule = action({
     description: "Gets the free/busy availability information for a collection of users.",
   },
   inputs: getScheduleInputs,
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = createClient(params.connection, context.debug.enabled);
 
@@ -34,5 +36,10 @@ export const getSchedule = action({
     );
     return { data };
   },
+  examplePerform: async () => getScheduleExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getScheduleOutputSchema,
+  }),
   examplePayload: getScheduleExamplePayload,
 });

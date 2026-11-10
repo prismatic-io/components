@@ -2,8 +2,8 @@ import { trigger } from "@prismatic-io/spectral";
 import { createSubscriptionTrigger, deleteSubscriptionTrigger, getBase64FromUrl } from "ms-utils";
 import { createClient } from "../client";
 import { webhookLifecycleTriggerExamplePayload } from "../examplePayloads";
-import { createWebhookSubscriptionInputs } from "../inputs";
-import { createWebhookPerformFN } from "../util";
+import { webhookLifecycleInputs } from "../inputs";
+import { computeResourceBasedOnConnection, createWebhookPerformFN } from "../util";
 
 export const webhookLifecycle = trigger({
   display: {
@@ -14,7 +14,7 @@ export const webhookLifecycle = trigger({
   scheduleSupport: "valid",
   synchronousResponseSupport: "invalid",
   allowsBranching: true,
-  inputs: createWebhookSubscriptionInputs,
+  inputs: webhookLifecycleInputs,
   staticBranchNames: ["Notification", "URL Validation", "Scheduled Renewal"],
   perform: createWebhookPerformFN("event"),
   examplePayload: webhookLifecycleTriggerExamplePayload,
@@ -25,7 +25,7 @@ export const webhookLifecycle = trigger({
       const subscription = await createSubscriptionTrigger(
         client,
         {
-          resource: "me/events",
+          resource: computeResourceBasedOnConnection(connection, "me/events"),
           changeType: "updated",
           expirationDateTime,
           allowDuplicates,

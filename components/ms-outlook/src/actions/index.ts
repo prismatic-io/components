@@ -1,3 +1,4 @@
+import attachments from "./attachments";
 import calendars from "./calendars";
 import events from "./events";
 import lookups from "./lookups";
@@ -8,6 +9,7 @@ import subscriptions from "./subscriptions";
 import users from "./users";
 
 export default {
+  ...attachments,
   ...calendars,
   ...events,
   ...lookups,

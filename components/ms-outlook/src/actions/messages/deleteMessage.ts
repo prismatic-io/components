@@ -10,6 +10,7 @@ export const deleteMessage = action({
     description: "Deletes a message by ID.",
   },
   inputs: deleteMessageInputs,
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = createClient(params.connection, context.debug.enabled);
     const url = computeEndpointBasedOnConnection(
@@ -19,5 +20,6 @@ export const deleteMessage = action({
     const { data } = await client.delete(url);
     return { data };
   },
+  examplePerform: async () => deleteMessageExamplePayload,
   examplePayload: deleteMessageExamplePayload,
 });

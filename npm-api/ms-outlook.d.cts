@@ -751,6 +751,10 @@ interface PaginatedResponse<T> {
   value: T[];
   "@odata.nextLink"?: string;
 }
+interface AttachmentDownload {
+  data: Buffer;
+  contentType: string;
+}
 //#endregion
 //#region npm-dist/.entry.d.ts
 declare const _default: import("@prismatic-io/spectral").CallableComponent<{
@@ -1127,11 +1131,15 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         message: {
           headers: Record<string, unknown>;
           attachments: Array<{
+            filename?: string;
             contentType: string;
+            size: number;
+            contentId?: string;
+            related?: boolean;
             data: unknown;
           }>;
           text: string | undefined;
-          html: string | false;
+          html: string | false | undefined;
         };
         rawMessage: string;
       };
@@ -1608,70 +1616,79 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
       };
       locationName: {
         required: boolean;
+        clean: (value: unknown) => string | undefined;
         label: string;
         type: "string";
         comments: string;
         example: string;
         placeholder: string;
-        clean: (value: unknown, defaultValue?: string) => string;
       };
       subject: {
         required: boolean;
+        clean: (value: unknown) => string | undefined;
         label: string;
         type: "string";
         comments: string;
         example: string;
         placeholder: string;
-        clean: (value: unknown, defaultValue?: string) => string;
       };
       body: {
         required: boolean;
+        clean: (value: unknown) => string | undefined;
         label: string;
         type: "string";
         comments: string;
         example: string;
         placeholder: string;
-        clean: (value: unknown, defaultValue?: string) => string;
       };
-      start: {
-        required: boolean;
+      schedule: {
         label: string;
-        type: "string";
-        example: string;
-        placeholder: string;
-        comments: string;
-        clean: (value: unknown, defaultValue?: string) => string;
-      };
-      startTimezone: {
         required: boolean;
-        label: string;
-        type: "string";
-        default: string;
-        example: string;
-        placeholder: string;
-        dataSource: string;
         comments: string;
-        clean: (value: unknown, defaultValue?: string) => string;
-      };
-      end: {
-        required: boolean;
-        label: string;
-        type: "string";
-        example: string;
-        placeholder: string;
-        comments: string;
-        clean: (value: unknown, defaultValue?: string) => string;
-      };
-      endTimezone: {
-        required: boolean;
-        label: string;
-        type: "string";
-        default: string;
-        example: string;
-        placeholder: string;
-        dataSource: string;
-        comments: string;
-        clean: (value: unknown, defaultValue?: string) => string;
+        inputs: {
+          start: {
+            required: false;
+            clean: (value: unknown) => string | undefined;
+            label: string;
+            type: "string";
+            example: string;
+            placeholder: string;
+            comments: string;
+          };
+          startTimezone: {
+            required: false;
+            clean: (value: unknown) => string | undefined;
+            label: string;
+            type: "string";
+            default: string;
+            example: string;
+            placeholder: string;
+            dataSource: string;
+            comments: string;
+          };
+          end: {
+            required: false;
+            clean: (value: unknown) => string | undefined;
+            label: string;
+            type: "string";
+            example: string;
+            placeholder: string;
+            comments: string;
+          };
+          endTimezone: {
+            required: false;
+            clean: (value: unknown) => string | undefined;
+            label: string;
+            type: "string";
+            default: string;
+            example: string;
+            placeholder: string;
+            dataSource: string;
+            comments: string;
+          };
+        };
+      } & {
+        type: "structuredObject";
       };
       attendeesData: {
         required: boolean;
@@ -1844,12 +1861,12 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
       };
       name: {
         required: boolean;
+        clean: (value: unknown) => string | undefined;
         label: string;
         type: "string";
         comments: string;
         example: string;
         placeholder: string;
-        clean: (value: unknown, defaultValue?: string) => string;
       };
       color: {
         label: string;
@@ -1975,6 +1992,102 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
       data: any;
+    }>;
+    downloadEventAttachment: import("@prismatic-io/spectral").ActionDefinition<{
+      connection: {
+        label: string;
+        type: "connection";
+        required: true;
+        comments: string;
+      };
+      eventId: {
+        label: string;
+        type: "string";
+        required: true;
+        clean: (value: unknown, defaultValue?: string) => string;
+        comments: string;
+        example: string;
+        placeholder: string;
+        dataSource: string;
+      };
+      attachmentId: {
+        dataSource: string;
+        comments: string;
+        label: string;
+        type: "string";
+        required: true;
+        clean: (value: unknown, defaultValue?: string) => string;
+        example: string;
+        placeholder: string;
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, AttachmentDownload>;
+    downloadMessageAttachment: import("@prismatic-io/spectral").ActionDefinition<{
+      connection: {
+        label: string;
+        type: "connection";
+        required: true;
+        comments: string;
+      };
+      messageId: {
+        label: string;
+        type: "string";
+        required: true;
+        clean: (value: unknown, defaultValue?: string) => string;
+        dataSource: string;
+        comments: string;
+        example: string;
+        placeholder: string;
+      };
+      attachmentId: {
+        dataSource: string;
+        comments: string;
+        label: string;
+        type: "string";
+        required: true;
+        clean: (value: unknown, defaultValue?: string) => string;
+        example: string;
+        placeholder: string;
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, AttachmentDownload>;
+    listEventAttachments: import("@prismatic-io/spectral").ActionDefinition<{
+      connection: {
+        label: string;
+        type: "connection";
+        required: true;
+        comments: string;
+      };
+      eventId: {
+        label: string;
+        type: "string";
+        required: true;
+        clean: (value: unknown, defaultValue?: string) => string;
+        comments: string;
+        example: string;
+        placeholder: string;
+        dataSource: string;
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
+      data: PaginatedResponse<Attachment & ODataAttrs>;
+    }>;
+    listMessageAttachments: import("@prismatic-io/spectral").ActionDefinition<{
+      connection: {
+        label: string;
+        type: "connection";
+        required: true;
+        comments: string;
+      };
+      messageId: {
+        label: string;
+        type: "string";
+        required: true;
+        clean: (value: unknown, defaultValue?: string) => string;
+        dataSource: string;
+        comments: string;
+        example: string;
+        placeholder: string;
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
+      data: PaginatedResponse<Attachment & ODataAttrs>;
     }>;
   };
   triggers: {
@@ -2129,6 +2242,24 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         comments: string;
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, "picklist">;
+    selectEventAttachment: import("@prismatic-io/spectral").DataSourceDefinition<{
+      connection: {
+        label: string;
+        type: "connection";
+        required: true;
+        comments: string;
+      };
+      eventId: {
+        dataSource: undefined;
+        label: string;
+        type: "string";
+        required: true;
+        clean: (value: unknown, defaultValue?: string) => string;
+        comments: string;
+        example: string;
+        placeholder: string;
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, "picklist">;
     selectMailFolder: import("@prismatic-io/spectral").DataSourceDefinition<{
       connection: {
         label: string;
@@ -2171,6 +2302,24 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         example: string;
         placeholder: string;
         clean: (value: unknown) => string | undefined;
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, "picklist">;
+    selectMessageAttachment: import("@prismatic-io/spectral").DataSourceDefinition<{
+      connection: {
+        label: string;
+        type: "connection";
+        required: true;
+        comments: string;
+      };
+      messageId: {
+        dataSource: undefined;
+        label: string;
+        type: "string";
+        required: true;
+        clean: (value: unknown, defaultValue?: string) => string;
+        comments: string;
+        example: string;
+        placeholder: string;
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, "picklist">;
     selectSubscription: import("@prismatic-io/spectral").DataSourceDefinition<{

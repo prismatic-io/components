@@ -1,7 +1,27 @@
 import type { Message } from "@microsoft/microsoft-graph-types";
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import { POLL_PAGE_SIZE } from "../constants";
-import { readPollingWindow } from ".";
+import {
+  CLIENT_CREDENTIALS_USER_ID,
+  clientCredentialsConnection,
+  delegatedConnection,
+} from "../testHelpers";
+import { computeResourceBasedOnConnection, readPollingWindow } from ".";
+
+describe("computeResourceBasedOnConnection", () => {
+  test("leaves a delegated connection's resource unchanged", () => {
+    expect(computeResourceBasedOnConnection(delegatedConnection(), "me/events")).toBe("me/events");
+  });
+
+  test("rewrites me/ to users/{userId}/ for a client-credentials connection", () => {
+    expect(
+      computeResourceBasedOnConnection(
+        clientCredentialsConnection(),
+        "me/mailFolders('Inbox')/messages",
+      ),
+    ).toBe(`users/${CLIENT_CREDENTIALS_USER_ID}/mailFolders('Inbox')/messages`);
+  });
+});
 
 const { createClient } = vi.hoisted(() => ({ createClient: vi.fn() }));
 vi.mock("../client", () => ({ createClient: () => createClient() }));

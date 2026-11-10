@@ -1,4 +1,5 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { createMailFolderOutputSchema } from "../../outputSchemas";
 import type { MailSearchFolder } from "@microsoft/microsoft-graph-types";
 import { createClient } from "../../client";
 import { createMailFolderExamplePayload } from "../../examplePayloads";
@@ -11,6 +12,7 @@ export const createMailFolder = action({
     description: "Creates a new mail folder.",
   },
   inputs: createMailFolderInputs,
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = createClient(params.connection, context.debug.enabled);
     const url = computeEndpointBasedOnConnection(
@@ -24,5 +26,10 @@ export const createMailFolder = action({
     });
     return { data };
   },
+  examplePerform: async () => createMailFolderExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createMailFolderOutputSchema,
+  }),
   examplePayload: createMailFolderExamplePayload,
 });

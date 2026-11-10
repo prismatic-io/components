@@ -337,8 +337,8 @@
   },
   "ms-outlook": {
     "name": "@prismatic-io/components-ms-outlook",
-    "version": "0.3.0",
-    "build": "8b530f925e65309e062b5fec030825702701f0e4c3b49e87ccff19929d73efc4",
+    "version": "0.4.0",
+    "build": "ee854d30f286f9b78cf842a118f655eca2e16c4a789d34abc9ee3788fbb70880",
     "spectral": "^10.39.1"
   },
   "ms-planner": {

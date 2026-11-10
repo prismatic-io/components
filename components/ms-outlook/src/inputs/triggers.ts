@@ -8,13 +8,15 @@ import {
   folderIdInput,
 } from "./common";
 
-export const createWebhookSubscriptionInputs = {
+export const webhookInputs = {};
+
+export const webhookLifecycleInputs = {
   connection: connectionInput,
   expirationDateTime: expirationDateTimeInput,
   allowDuplicates: allowDuplicatesInput,
 };
 
-export const createMailFolderWebhookInputs = {
+export const mailFolderWebhookInputs = {
   connection: connectionInput,
   changeTypes: changeTypesInput,
   folderId: {

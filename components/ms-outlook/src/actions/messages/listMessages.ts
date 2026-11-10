@@ -1,4 +1,5 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { listMessagesOutputSchema } from "../../outputSchemas";
 import type { Message } from "@microsoft/microsoft-graph-types";
 import { createClient } from "../../client";
 import { listMessagesExamplePayload } from "../../examplePayloads";
@@ -12,6 +13,7 @@ export const listMessages = action({
     description: "Lists mail messages in a user's mailbox.",
   },
   inputs: listMessagesInputs,
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = createClient(params.connection, context.debug.enabled);
     const url = computeEndpointBasedOnConnection(
@@ -41,5 +43,10 @@ export const listMessages = action({
     );
     return { data };
   },
+  examplePerform: async () => listMessagesExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listMessagesOutputSchema,
+  }),
   examplePayload: listMessagesExamplePayload,
 });

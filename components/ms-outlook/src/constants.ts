@@ -37,3 +37,16 @@ export const POLL_UNBATCHED_MAX_PAGES = 10;
 export const WATERMARK_SKEW_MARGIN_MS = 60_000;
 
 export const LOOK_BACK_DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
+
+export const ATTACHMENT_METADATA_SELECT = "id,name,contentType,size,isInline,lastModifiedDateTime";
+
+export const REFERENCE_ATTACHMENT_ODATA_TYPE = "#microsoft.graph.referenceAttachment";
+
+export const DEFAULT_ATTACHMENT_CONTENT_TYPE = "application/octet-stream";
+
+export const ITEM_ATTACHMENT_EXPAND = "microsoft.graph.itemAttachment/item($select=id)";
+
+export const ITEM_ATTACHMENT_CONTENT_TYPES: Record<string, string> = {
+  "#microsoft.graph.message": "message/rfc822",
+  "#microsoft.graph.event": "text/calendar",
+};

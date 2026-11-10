@@ -14,8 +14,11 @@ export interface ODataQueryParams {
   $filter?: string;
 }
 
-export interface SubscriptionBody {
-  value: SubscriptionData[];
+export interface ResourceData {
+  "@odata.type": string;
+  "@odata.id": string;
+  "@odata.etag": string;
+  id: string;
 }
 
 export interface SubscriptionData {
@@ -29,11 +32,8 @@ export interface SubscriptionData {
   [key: string]: unknown;
 }
 
-export interface ResourceData {
-  "@odata.type": string;
-  "@odata.id": string;
-  "@odata.etag": string;
-  id: string;
+export interface SubscriptionBody {
+  value: SubscriptionData[];
 }
 
 export interface WebhookResourceConfig {
@@ -102,4 +102,9 @@ export interface MessagesWindow {
 export interface PollingStream {
   position: WatermarkPosition;
   classifySince: string;
+}
+
+export interface AttachmentDownload {
+  data: Buffer;
+  contentType: string;
 }

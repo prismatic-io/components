@@ -7,3 +7,6 @@ export * from "./subscriptions";
 export * from "./users";
 export * from "./lookups";
 export * from "./triggers";
+export * from "./attachments";
+export * from "./dataSources";
+export * from "./misc";

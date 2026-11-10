@@ -11,6 +11,7 @@ export const sendMessage = action({
     description: "Sends a new message.",
   },
   inputs: sendMessageInputs,
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = createClient(params.connection, context.debug.enabled);
     const message: Message = {
@@ -34,5 +35,6 @@ export const sendMessage = action({
     });
     return { data: null };
   },
+  examplePerform: async () => sendMessageExamplePayload,
   examplePayload: sendMessageExamplePayload,
 });

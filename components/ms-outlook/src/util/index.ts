@@ -147,6 +147,9 @@ export const computeEndpointBasedOnConnection = (connection: Connection, endpoin
   return endpoint.replace("/me", `/users/${connection.fields.userId}`);
 };
 
+export const computeResourceBasedOnConnection = (connection: Connection, resource: string) =>
+  computeEndpointBasedOnConnection(connection, `/${resource}`).slice(1);
+
 const toWholeSecond = (value: string | number | Date): string => {
   const date = new Date(value);
   date.setUTCMilliseconds(0);

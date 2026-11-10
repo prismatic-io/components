@@ -1,4 +1,5 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { createCalendarOutputSchema } from "../../outputSchemas";
 import type { Calendar } from "@microsoft/microsoft-graph-types";
 import { createClient } from "../../client";
 import { createCalendarExamplePayload } from "../../examplePayloads";
@@ -12,6 +13,7 @@ export const createCalendar = action({
     description: "Creates a new calendar.",
   },
   inputs: createCalendarInputs,
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = createClient(params.connection, context.debug.enabled);
     const { data } = await client.post<Calendar & ODataAttrs>(
@@ -23,5 +25,10 @@ export const createCalendar = action({
     );
     return { data };
   },
+  examplePerform: async () => createCalendarExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createCalendarOutputSchema,
+  }),
   examplePayload: createCalendarExamplePayload,
 });

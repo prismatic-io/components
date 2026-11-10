@@ -10,11 +10,13 @@ export const deleteEvent = action({
     description: "Deletes an event.",
   },
   inputs: deleteEventInputs,
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = createClient(params.connection, context.debug.enabled);
     const url = computeEndpointBasedOnConnection(params.connection, `/me/events/${params.eventId}`);
     const { data } = await client.delete(url);
     return { data };
   },
+  examplePerform: async () => deleteEventExamplePayload,
   examplePayload: deleteEventExamplePayload,
 });

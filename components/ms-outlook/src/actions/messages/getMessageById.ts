@@ -1,4 +1,5 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { getMessageByIdOutputSchema } from "../../outputSchemas";
 import { simpleParser } from "mailparser";
 import { createClient } from "../../client";
 import { getMessageByIdExamplePayload } from "../../examplePayloads";
@@ -11,6 +12,7 @@ export const getMessageById = action({
     description: "Fetches and parses a raw message by ID.",
   },
   inputs: getMessageByIdInputs,
+  performSafety: "safe",
   perform: async (context, params) => {
     const client = createClient(params.connection, context.debug.enabled);
     const url = computeEndpointBasedOnConnection(
@@ -23,17 +25,23 @@ export const getMessageById = action({
 
     const message = {
       headers: Object.fromEntries(parsed.headers),
-      attachments: parsed.attachments.map(
-        (attachment: { contentType: string; content: unknown }) => ({
-          contentType: attachment.contentType,
-          data: attachment.content,
-        }),
-      ),
+      attachments: parsed.attachments.map((attachment) => ({
+        filename: attachment.filename,
+        contentType: attachment.contentType,
+        size: attachment.size,
+        contentId: attachment.contentId,
+        related: attachment.related,
+        data: attachment.content,
+      })),
       text: parsed.text,
       html: parsed.html,
     };
 
     return { data: { message, rawMessage: data } };
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getMessageByIdOutputSchema,
+  }),
   examplePayload: getMessageByIdExamplePayload,
 });

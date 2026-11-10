@@ -10,6 +10,7 @@ export const cancelEvent = action({
     description: "Cancels an event.",
   },
   inputs: cancelEventInputs,
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = createClient(params.connection, context.debug.enabled);
     const url = computeEndpointBasedOnConnection(
@@ -21,5 +22,6 @@ export const cancelEvent = action({
     });
     return { data };
   },
+  examplePerform: async () => cancelEventExamplePayload,
   examplePayload: cancelEventExamplePayload,
 });

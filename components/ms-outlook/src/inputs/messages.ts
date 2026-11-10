@@ -30,13 +30,7 @@ export const attachments = input({
   collection: "keyvaluelist",
   comments:
     "The file attachments as key-value pairs. Specify the file name as the key (e.g., my-file.pdf) and the file data as the value.",
-  example: JSON.stringify(
-    {
-      "my-file.pdf": Buffer.from("file content"),
-    },
-    null,
-    2,
-  ),
+  example: JSON.stringify({ "my-file.pdf": "<file data from a previous step>" }, null, 2),
   placeholder: "Enter file attachments",
   clean: (value: unknown) => cleanAttachments(value, "Attachments"),
 });
@@ -128,7 +122,7 @@ const sendBodyContentTypeInput = input({
     { label: "HTML", value: "html" },
     { label: "Plain Text", value: "text" },
   ],
-  comments: "The format of the message body content.",
+  comments: "Whether the Message Body is sent as HTML or plain text.",
   placeholder: "Select body content type",
   clean: (value) => {
     if (!["text", "html"].includes(util.types.toString(value))) {

@@ -1,4 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
+import { cleanStringInput } from "../util";
 import {
   connectionInput,
   endInput,
@@ -10,7 +11,7 @@ import {
   startTimezoneInput,
 } from "./common";
 
-export const calendarIdInput = input({
+const calendarIdInput = input({
   label: "Calendar ID",
   type: "string",
   required: true,
@@ -21,7 +22,7 @@ export const calendarIdInput = input({
   clean: util.types.toString,
 });
 
-export const calendarNameInput = input({
+const calendarNameInput = input({
   label: "Name",
   type: "string",
   required: true,
@@ -31,13 +32,13 @@ export const calendarNameInput = input({
   clean: util.types.toString,
 });
 
-export const calendarColorInput = input({
+const calendarColorInput = input({
   label: "Color",
   type: "string",
   required: true,
   default: "auto",
   example: "lightRed",
-  placeholder: "Select a color",
+  placeholder: "Enter a calendar color",
   comments:
     "The color of the calendar. See the `color` property in the [Microsoft Graph calendar resource documentation](https://learn.microsoft.com/en-us/graph/api/resources/calendar?view=graph-rest-1.0#properties) for the supported values.",
   clean: util.types.toString,
@@ -86,7 +87,7 @@ export const createCalendarInputs = {
 export const updateCalendarInputs = {
   connection: connectionInput,
   id: calendarIdInput,
-  name: { ...calendarNameInput, required: false },
+  name: { ...calendarNameInput, required: false, clean: cleanStringInput },
   color: calendarColorInput,
 };
 

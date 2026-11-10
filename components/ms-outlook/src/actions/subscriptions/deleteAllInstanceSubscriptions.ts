@@ -1,4 +1,5 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { deleteAllInstanceSubscriptionsOutputSchema } from "../../outputSchemas";
 import type { Subscription } from "@microsoft/microsoft-graph-types";
 import { createClient } from "../../client";
 import { deleteAllInstanceSubscriptionsExamplePayload } from "../../examplePayloads";
@@ -11,6 +12,7 @@ export const deleteAllInstanceSubscriptions = action({
     description: "Deletes all subscriptions pointed at this instance.",
   },
   inputs: deleteAllInstanceSubscriptionsInputs,
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = createClient(params.connection, context.debug.enabled);
     const data = await fetchAllData<Subscription>(client, "/subscriptions", true, {});
@@ -23,5 +25,10 @@ export const deleteAllInstanceSubscriptions = action({
 
     return { data: { subscriptionsRemoved: subscriptionsToRemove } };
   },
+  examplePerform: async () => deleteAllInstanceSubscriptionsExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: deleteAllInstanceSubscriptionsOutputSchema,
+  }),
   examplePayload: deleteAllInstanceSubscriptionsExamplePayload,
 });

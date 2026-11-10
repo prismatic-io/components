@@ -1,5 +1,18 @@
 ## Changelog
 
+### 2026-11-10
+
+Added attachment actions and data sources, and updated existing actions:
+
+- Added the **List Message Attachments**, **List Event Attachments**, **Download Message Attachment**, and **Download Event Attachment** actions for listing the attachments on a mail message or calendar event and downloading an attachment's file contents
+- Added the **Select Message Attachment** and **Select Event Attachment** data sources for choosing the attachment to download on the **Download Message Attachment** and **Download Event Attachment** actions
+- Updated **Get Mail Message** to return `filename`, `size`, `contentId`, and `related` on each attachment alongside its `contentType` and `data`
+- Updated the **Update Event** action to group its start, end, and timezone inputs into a **Schedule** structured object
+- Updated **Update Calendar** to leave the name out of the request when **Name** is empty, so updating only the color no longer sends an empty name
+- Added inline action calling support to 31 actions for improved example output during configuration
+- Added output schemas to 22 actions for improved field mapping during configuration
+- Fixed **List Supported Timezones**, **List Supported Languages**, **Create Event Subscription**, **Create Mail Folder Subscription**, and deploying the **Calendar Event Webhook** and **Mail Message Webhook** triggers failing with an "only valid with delegated authentication flow" error when using the **OAuth 2.0 Client Credentials** connection
+
 ### 2026-11-09
 
 Updated spectral to 10.39.1

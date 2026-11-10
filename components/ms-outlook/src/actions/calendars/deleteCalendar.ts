@@ -10,6 +10,7 @@ export const deleteCalendar = action({
     description: "Deletes an existing calendar.",
   },
   inputs: deleteCalendarInputs,
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = createClient(params.connection, context.debug.enabled);
     const { data } = await client.delete(
@@ -17,5 +18,6 @@ export const deleteCalendar = action({
     );
     return { data };
   },
+  examplePerform: async () => deleteCalendarExamplePayload,
   examplePayload: deleteCalendarExamplePayload,
 });

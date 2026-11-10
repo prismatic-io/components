@@ -1,6 +1,6 @@
 import { dataSource, type Element, util } from "@prismatic-io/spectral";
 import { createClient } from "../client";
-import { connectionInput } from "../inputs";
+import { selectLanguageInputs } from "../inputs";
 import { computeEndpointBasedOnConnection } from "../util";
 
 export const selectLanguage = dataSource({
@@ -8,9 +8,7 @@ export const selectLanguage = dataSource({
     label: "Select Language",
     description: "Select a language from the list of supported languages.",
   },
-  inputs: {
-    connection: connectionInput,
-  },
+  inputs: selectLanguageInputs,
   perform: async (context, { connection }) => {
     const client = createClient(connection, false);
     const { data } = await client.get<{

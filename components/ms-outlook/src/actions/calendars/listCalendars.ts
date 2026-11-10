@@ -1,4 +1,5 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { listCalendarsOutputSchema } from "../../outputSchemas";
 import type { Calendar } from "@microsoft/microsoft-graph-types";
 import { createClient } from "../../client";
 import { listCalendarsExamplePayload } from "../../examplePayloads";
@@ -12,6 +13,7 @@ export const listCalendars = action({
     description: "Lists all calendars for the user.",
   },
   inputs: listCalendarsInputs,
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = createClient(params.connection, context.debug.enabled);
 
@@ -31,5 +33,10 @@ export const listCalendars = action({
     );
     return { data };
   },
+  examplePerform: async () => listCalendarsExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listCalendarsOutputSchema,
+  }),
   examplePayload: listCalendarsExamplePayload,
 });

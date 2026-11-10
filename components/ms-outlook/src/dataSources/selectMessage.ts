@@ -3,19 +3,14 @@ import { computeEndpointBasedOnConnection, fetchAllData } from "../util";
 import type { Message } from "@microsoft/microsoft-graph-types";
 import type { ODataAttrs } from "../types";
 import { createClient } from "../client";
-import { connectionInput, folderIdInput, searchInput, filterInput } from "../inputs";
+import { selectMessageInputs } from "../inputs";
 
 export const selectMessage = dataSource({
   display: {
     label: "Select Message",
     description: "Select a message from the list of messages.",
   },
-  inputs: {
-    connection: connectionInput,
-    folderId: { ...folderIdInput, dataSource: undefined },
-    search: searchInput,
-    filter: filterInput,
-  },
+  inputs: selectMessageInputs,
   perform: async (context, { connection, folderId, search, filter }) => {
     const client = createClient(connection, false);
     const url = folderId ? `/me/mailFolders/${folderId}/messages` : "/me/messages";

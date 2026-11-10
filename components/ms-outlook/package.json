@@ -1,6 +1,6 @@
 {
   "name": "@prismatic-io/components-ms-outlook",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "main": "./npm-dist/index.cjs",
   "types": "./npm-dist/index.d.cts",
   "exports": {
@@ -40,18 +40,18 @@
   },
   "dependencies": {
     "lodash.isempty": "^4.4.0",
-    "mailparser": "3.6.4"
+    "mailparser": "3.14.2"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.1",
     "@microsoft/microsoft-graph-types": "2.26.0",
-    "@types/lodash.isempty": "^4.4.9",
-    "@types/mailparser": "3.4.0",
-    "@types/node": "^26.6.5",
-    "typescript": "6.0.3",
-    "tsdown": "0.22.3",
-    "vitest": "4.1.9",
     "@prismatic-io/spectral": "^10.39.1",
-    "ms-utils": "file:../../packages/ms-utils"
+    "@types/lodash.isempty": "^4.4.9",
+    "@types/node": "^26.6.5",
+    "ms-utils": "file:../../packages/ms-utils",
+    "nock": "^14.0.17",
+    "tsdown": "0.22.3",
+    "typescript": "6.0.3",
+    "vitest": "4.1.9"
   }
 }

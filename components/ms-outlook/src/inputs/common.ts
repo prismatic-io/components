@@ -57,7 +57,7 @@ export const endTimezoneInput = input({
   clean: util.types.toString,
 });
 
-export const pageLimitInput = input({
+const pageLimitInput = input({
   label: "Page Limit",
   type: "string",
   required: false,
@@ -67,7 +67,7 @@ export const pageLimitInput = input({
   clean: (value) => util.types.toNumber(value) || undefined,
 });
 
-export const pageSkipInput = input({
+const pageSkipInput = input({
   label: "Page Skip",
   type: "string",
   required: false,

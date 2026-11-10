@@ -1,4 +1,4 @@
-The Mail Message Webhook trigger can manage [Microsoft Graph webhook subscriptions](https://learn.microsoft.com/en-us/graph/api/resources/change-notifications-api-overview) for mail messages on an instance. Unlike traditional webhook setups that require manual subscription creation and management, this trigger handles the entire webhook lifecycle automatically.
+The Mail Message Webhook trigger can manage [Microsoft Graph webhook subscriptions](https://learn.microsoft.com/en-us/graph/api/resources/change-notifications-api-overview?view=graph-rest-1.0) for mail messages on an instance. Unlike traditional webhook setups that require manual subscription creation and management, this trigger handles the entire webhook lifecycle automatically.
 
 When the trigger is used in a flow:
 - **On Instance Deploy**: The trigger automatically creates a webhook subscription in Microsoft Graph for mail messages. The subscription points to the instance's unique webhook URL. If the **Allow Duplicates** option is set to `false` and a matching subscription already exists, the trigger reuses the existing subscription instead of creating a new one.

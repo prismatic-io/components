@@ -3,16 +3,14 @@ import { computeEndpointBasedOnConnection, fetchAllData } from "../util";
 import type { MailSearchFolder } from "@microsoft/microsoft-graph-types";
 import type { ODataAttrs } from "../types";
 import { createClient } from "../client";
-import { connectionInput } from "../inputs";
+import { selectMailFolderInputs } from "../inputs";
 
 export const selectMailFolder = dataSource({
   display: {
     label: "Select Mail Folder",
     description: "Select a mail folder from the list of folders.",
   },
-  inputs: {
-    connection: connectionInput,
-  },
+  inputs: selectMailFolderInputs,
   perform: async (context, { connection }) => {
     const client = createClient(connection, false);
     const { value } = await fetchAllData<MailSearchFolder & ODataAttrs>(

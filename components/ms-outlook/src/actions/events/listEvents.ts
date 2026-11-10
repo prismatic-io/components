@@ -1,4 +1,5 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { listEventsOutputSchema } from "../../outputSchemas";
 import type { Event } from "@microsoft/microsoft-graph-types";
 import { createClient } from "../../client";
 import { listEventsExamplePayload } from "../../examplePayloads";
@@ -12,6 +13,7 @@ export const listEvents = action({
     description: "Lists all events for the user.",
   },
   inputs: listEventsInputs,
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = createClient(params.connection, context.debug.enabled);
 
@@ -36,5 +38,10 @@ export const listEvents = action({
     );
     return { data };
   },
+  examplePerform: async () => listEventsExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listEventsOutputSchema,
+  }),
   examplePayload: listEventsExamplePayload,
 });
