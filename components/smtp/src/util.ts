@@ -1,4 +1,4 @@
-import { KeyValuePair, util } from "@prismatic-io/spectral";
+import { type KeyValuePair, util } from "@prismatic-io/spectral";
 
 export const cleanString = (value: unknown) =>
   value ? util.types.toString(value).trim() : undefined;
@@ -29,7 +29,7 @@ export const cleanArrayCodeInput = (
   inputLabel: string,
 ): Record<string, unknown>[] => {
   if (value) {
-    let object;
+    let object: unknown;
     try {
       object = util.types.toObject(value);
     } catch (error) {

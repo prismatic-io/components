@@ -18,7 +18,7 @@ describe("listActions", () => {
       "Winter.jpg",
       "Autumn.jpg",
     ];
-    listDirectory.perform = jest
+    listDirectory.perform = vi
       .fn()
       .mockResolvedValue({ data: expectedResults });
     const { result } = await invoke(listDirectory, {

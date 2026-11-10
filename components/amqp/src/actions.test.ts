@@ -1,5 +1,10 @@
-import { createConnection, ComponentTestHarness } from "@prismatic-io/spectral/dist/testing";
+import {
+  ComponentTestHarness,
+  createConnection,
+  loggerMock,
+} from "@prismatic-io/spectral/dist/testing";
 import component from ".";
+import { createClient } from "./client";
 import { amqpConnection } from "./connections";
 
 const harness = new ComponentTestHarness(component);
@@ -24,6 +29,17 @@ interface GetMessageResult {
 }
 
 describe("Create client & establish connection", () => {
+  beforeAll(async () => {
+    const client = await createClient(connection, false, loggerMock());
+    try {
+      const channel = await client.createChannel();
+      await channel.assertQueue("myQueue");
+      await channel.purgeQueue("myQueue");
+    } finally {
+      await client.close();
+    }
+  }, 20000);
+
   it("attempts connection", async () => {
     const result = await harness.action("checkConnection", {
       amqpConnection: connection,

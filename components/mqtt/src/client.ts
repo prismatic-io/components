@@ -4,7 +4,7 @@ import {
   type Connection,
   ConnectionError,
   util,
-} from "@prismatic-io/spectral/dist/";
+} from "@prismatic-io/spectral";
 import { validateConnection } from "./utils";
 
 export const createClient = async (

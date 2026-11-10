@@ -26,7 +26,7 @@ describe("statFile", () => {
       isFIFO: false,
       isSocket: false,
     };
-    statFile.perform = jest.fn().mockResolvedValue({ data: expectedResults });
+    statFile.perform = vi.fn().mockResolvedValue({ data: expectedResults });
     const { result } = await invoke(statFile, {
       connection,
       inputPath,

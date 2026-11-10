@@ -17,16 +17,26 @@ The trigger detects:
 
 If no new or modified files are detected, the trigger reports no changes and the flow does not execute.
 
-#### Configuration
+**Batching**
 
-Configure the following inputs:
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own
+execution, or grouped by the configured batch size. Batch size and batch concurrency can both be
+overridden per instance. Raising concurrency increases the request volume sent to the SFTP server.
 
-- **Connection**: The SFTP server connection credentials
-- **Path**: The directory path on the SFTP server to monitor (e.g., `/uploads/incoming/`)
-- **Pattern**: A glob-style pattern to filter files (e.g., `*.csv`, `*.txt`). Defaults to `*` (all files)
-- **Include Subdirectories**: When enabled, the trigger recursively scans subdirectories within the specified path. Defaults to `false`
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable
+Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**.
+**Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off, a downstream step reads `body.data.newFiles` and `body.data.modifiedFiles`.
+With batching on, those fields do not exist: each execution receives one
+`{ "changeType": ..., "record": ... }` item, or an array of them when the batch size is greater
+than 1. Any step reading the older shape must be updated before batching is enabled. Because
+batching is enabled per flow, that change is scoped to the flow rather than to the component or to
+other flows using the same trigger.
 
 #### Returned Data
+
+With batching off, the trigger returns an object with two arrays: `newFiles` for new files and `modifiedFiles` for modified files.
 
 <details>
 <summary>Example Payload</summary>
@@ -58,7 +68,25 @@ Each file entry includes:
 
 - **path**: The full path to the file on the SFTP server
 - **size**: The file size in bytes
-- **modifiedAt**: The file's last modification timestamp (Unix milliseconds)
+- **modifiedAt**: The file's last modification timestamp (Unix milliseconds, at whole-second precision)
+
+With batching on, each execution receives one file tagged with how it changed (`new` or `modified`), or an array of such items when the batch size is greater than 1. The `newFiles` and `modifiedFiles` arrays are not part of this shape.
+
+<details>
+<summary>Batched Item</summary>
+
+```json
+{
+  "changeType": "new",
+  "record": {
+    "path": "/uploads/incoming/report-2026-02-11.csv",
+    "size": 24576,
+    "modifiedAt": 1739308800000
+  }
+}
+```
+
+</details>
 
 #### Notes
 

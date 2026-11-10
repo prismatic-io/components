@@ -1,8 +1,17 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
 import { connection, path, pattern, includeSubdirectories } from "../inputs";
 import { getSftpClient } from "../client";
-import type { FileMap, PollingState } from "../types";
-import { computeFileChanges, listFilesRecursive } from "../util";
+import type {
+  FileChange,
+  FileChangesObject,
+  FileMap,
+  PollingState,
+} from "../types";
+import {
+  computeFileChanges,
+  listFilesRecursive,
+  resolveFileChanges,
+} from "../util";
 
 export const newOrModifiedFiles = pollingTrigger({
   display: {
@@ -15,6 +24,12 @@ export const newOrModifiedFiles = pollingTrigger({
     path,
     pattern,
     includeSubdirectories,
+  },
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: 50 },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): FileChange[] =>
+      resolveFileChanges(payload.body.data as FileChangesObject),
   },
   perform: async (
     context,

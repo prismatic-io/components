@@ -14,3 +14,13 @@ export interface FileEntry {
   size: number;
   modifiedAt: number;
 }
+
+export interface FileChangesObject {
+  newFiles: FileEntry[];
+  modifiedFiles: FileEntry[];
+}
+
+export interface FileChange {
+  changeType: "new" | "modified";
+  record: FileEntry;
+}
