@@ -2,6 +2,10 @@
 
 ### 2026-11-10
 
+Refactored internal code
+
+### 2026-11-10
+
 - Added opt-in batching to the **New or Modified Files** trigger, dispatching each changed file individually or in configured batches; enabling it changes the shape a downstream step receives
 
 ### 2026-07-17

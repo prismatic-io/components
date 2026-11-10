@@ -1,4 +1,5 @@
 import { defineConfig } from "tsdown";
+import { cjsEntry } from "../../packages/build-config/index.mts";
 
 export default defineConfig({
 	entry: { index: "src/index.ts" },
@@ -15,4 +16,5 @@ export default defineConfig({
 	outExtensions: () => ({ js: ".js" }),
 	outputOptions: { exports: "named", codeSplitting: false },
 	copy: [{ from: "assets/*", to: "dist" }],
+	plugins: [cjsEntry()],
 });

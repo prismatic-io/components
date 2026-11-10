@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-11-10
+
+Refactored internal code
+
 ### 2026-11-09
 
 Updated file handling ahead of Microsoft's pre-authenticated URL deprecation and standardized the subscription action labels:

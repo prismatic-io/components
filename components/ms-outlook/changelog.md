@@ -2,6 +2,10 @@
 
 ### 2026-11-10
 
+Refactored internal code
+
+### 2026-11-10
+
 Added attachment actions and data sources, and updated existing actions:
 
 - Added the **List Message Attachments**, **List Event Attachments**, **Download Message Attachment**, and **Download Event Attachment** actions for listing the attachments on a mail message or calendar event and downloading an attachment's file contents

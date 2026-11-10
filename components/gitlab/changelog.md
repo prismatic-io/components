@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-11-10
+
+Refactored internal code
+
 ### 2026-10-20
 
 Initial release of GitLab component for GitLab.com and self-managed instances, with **Access Token** and **OAuth 2.0** connections that can each reach an instance on a private network through the on-prem agent:

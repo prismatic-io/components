@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-11-10
+
+Refactored internal code
+
 ### 2026-10-09
 
 - Added opt-in batching to the **New Service Requests** and **New Ops Alerts** triggers, dispatching each new record individually or in configured batches; enabling it changes the shape a downstream step receives

@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-11-10
+
+Refactored internal code
+
 ### 2026-10-30
 
 Restructured action inputs into structured objects, added output schemas and inline action calling, and fixed several issue, project, user, and version actions:

@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-11-10
+
+Refactored internal code
+
 ### 2026-11-04
 
 Updated customer inputs, inline action calling, and polling trigger batching:

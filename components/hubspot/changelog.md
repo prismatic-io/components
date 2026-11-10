@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-11-10
+
+Refactored internal code
+
 ### 2026-10-28
 
 Moved the component to HubSpot's date-based APIs and expanded action configuration support:

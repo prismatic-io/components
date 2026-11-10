@@ -1,0 +1,8 @@
+{
+  "name": "build-config",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Shared tsdown plugins for the component builds",
+  "exports": "./index.mts"
+}

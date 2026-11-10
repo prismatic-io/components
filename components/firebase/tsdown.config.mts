@@ -1,5 +1,6 @@
 import { createRequire } from "node:module";
 import { defineConfig } from "tsdown";
+import { cjsEntry } from "../../packages/build-config/index.mts";
 
 const require = createRequire(import.meta.url);
 
@@ -26,4 +27,5 @@ export default defineConfig({
       },
     },
   },
+  plugins: [cjsEntry()],
 });

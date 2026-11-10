@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-11-10
+
+Refactored internal code
+
 ### 2026-11-06
 
 Updated spectral to 10.38.5 and switched the build from webpack to tsdown:
