@@ -24,5 +24,5 @@ export const getCurrentUser = action({
     type: "actionOutput",
     schema: getCurrentUserOutputSchema,
   }),
-  examplePayload: getCurrentUserExamplePayload as unknown,
+  examplePayload: getCurrentUserExamplePayload,
 });

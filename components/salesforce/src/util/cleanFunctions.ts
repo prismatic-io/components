@@ -12,7 +12,7 @@ export const cleanSObject = (raw: Record<string, unknown>): CleanSObject => {
     throw new Error("Invalid input, missing sObject");
   }
 
-  const sObj = raw.sObject;
+  const sObj = raw.sObject as Record<string, string | undefined>;
   const result: CleanSObject = {
     type: sObj["@_xsi:type"]?.split(":")[1] || "Unknown",
     Id: sObj["sf:Id"] || sObj.Id || "",

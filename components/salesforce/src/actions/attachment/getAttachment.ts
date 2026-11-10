@@ -17,7 +17,7 @@ export const getAttachment = action({
       responseType: "arraybuffer",
     });
 
-    const contentType = headers["content-type"];
+    const contentType = headers["content-type"] as string;
 
     return { data, contentType };
   },

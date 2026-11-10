@@ -4,10 +4,6 @@
 
 Published the component as an npm package, so code-native integrations can install it and call its actions, triggers and data sources from code with TypeScript types
 
-### 2026-11-10
-
-Refactored internal code
-
 ### 2026-10-09
 
 - Added opt-in batching to the **New Service Requests** and **New Ops Alerts** triggers, dispatching each new record individually or in configured batches; enabling it changes the shape a downstream step receives

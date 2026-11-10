@@ -23,5 +23,5 @@ export const getObjectMetadataByName = action({
     const result = await executeSFAction(context, command);
     return { data: result };
   },
-  examplePayload: getObjectMetadataExamplePayload as unknown,
+  examplePayload: getObjectMetadataExamplePayload,
 });

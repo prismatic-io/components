@@ -1,4 +1,4 @@
-import { createConnection, invokeTrigger } from "@prismatic-io/spectral/dist/testing";
+import { createConnection, invokeTrigger } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { createSalesforceClient } from "../client";
 import { salesforceOAuth } from "../connections";
@@ -33,7 +33,7 @@ const cursor = {
   isBackfill: false,
 };
 
-const logger = { debug: jest.fn(), info: jest.fn(), warn: jest.fn(), error: jest.fn() };
+const logger = { debug: vi.fn(), info: vi.fn(), warn: vi.fn(), error: vi.fn() };
 
 const WINDOW_OPEN_MS = new Date("2026-08-10T12:00:00Z").getTime();
 
@@ -49,26 +49,9 @@ const page = (count: number, startSecond = 0): PollingTriggerObject[] =>
   });
 
 const freezeClockAt = (iso: string) => {
-  jest
-    .useFakeTimers({
-      doNotFake: [
-        "hrtime",
-        "nextTick",
-        "performance",
-        "queueMicrotask",
-        "requestAnimationFrame",
-        "cancelAnimationFrame",
-        "requestIdleCallback",
-        "cancelIdleCallback",
-        "setImmediate",
-        "clearImmediate",
-        "setInterval",
-        "clearInterval",
-        "setTimeout",
-        "clearTimeout",
-      ],
-    })
-    .setSystemTime(new Date(iso));
+  vi.useFakeTimers({
+    toFake: ["Date"],
+  }).setSystemTime(new Date(iso));
 };
 
 describe("pollChangesTrigger over HTTP (real jsforce against nock)", () => {
@@ -82,8 +65,8 @@ describe("pollChangesTrigger over HTTP (real jsforce against nock)", () => {
 
   afterEach(() => {
     nock.cleanAll();
-    jest.useRealTimers();
-    jest.clearAllMocks();
+    vi.useRealTimers();
+    vi.clearAllMocks();
   });
 
   test("the SOQL that reaches Salesforce carries the floored cursor bounds, the cursor ORDER BY, and the LIMIT", async () => {

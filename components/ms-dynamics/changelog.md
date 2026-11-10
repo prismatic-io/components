@@ -4,10 +4,6 @@
 
 Published the component as an npm package, so code-native integrations can install it and call its actions, triggers and data sources from code with TypeScript types
 
-### 2026-11-10
-
-Refactored internal code
-
 ### 2026-10-29
 
 Fixed the **New and Updated Records** polling trigger initial sync silently dropping records when **Show New Records** or **Show Updated Records** was disabled; the backfill now delivers every matched record regardless of the visibility toggles

@@ -1,4 +1,4 @@
-import { createConnection, invoke } from "@prismatic-io/spectral/dist/testing";
+import { createConnection, invoke } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { salesforceOAuth } from "../../connections";
 import { DEFAULT_SF_VERSION } from "../../constants";
@@ -19,7 +19,7 @@ const soapResponse = (method: string): string =>
   `<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="http://soap.sforce.com/2006/04/metadata"><soapenv:Body><${method}Response><result><fullName>TestObject1__c</fullName><success>true</success></result></${method}Response></soapenv:Body></soapenv:Envelope>`;
 
 const debugContext = (enabled: boolean) => {
-  const logger = { debug: jest.fn(), info: jest.fn(), warn: jest.fn(), error: jest.fn() };
+  const logger = { debug: vi.fn(), info: vi.fn(), warn: vi.fn(), error: vi.fn() };
   return { logger, context: { logger, debug: { enabled } } as never };
 };
 

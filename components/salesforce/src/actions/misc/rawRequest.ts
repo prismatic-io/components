@@ -1,7 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createSalesforceClient } from "../../client";
 import { rawRequestInputs } from "../../inputs";
-import { sendRawRequest } from "@prismatic-io/spectral/dist/clients/http";
+import { sendRawRequest } from "@prismatic-io/spectral/http";
 
 export const rawRequest = action({
   display: {

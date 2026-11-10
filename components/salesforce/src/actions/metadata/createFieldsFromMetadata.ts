@@ -35,5 +35,5 @@ export const createFieldsFromMetadata = action({
     type: "actionOutput",
     schema: saveMetadataOutputSchema,
   }),
-  examplePayload: genericCreateUpdateFullNameExamplePayload as unknown,
+  examplePayload: genericCreateUpdateFullNameExamplePayload,
 });

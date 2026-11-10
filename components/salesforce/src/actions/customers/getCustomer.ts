@@ -18,5 +18,5 @@ export const getCustomer = action({
     };
   },
   inputs: getCustomerInputs,
-  examplePayload: getCustomerExamplePayload as unknown,
+  examplePayload: getCustomerExamplePayload as { data: unknown },
 });

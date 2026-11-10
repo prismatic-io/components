@@ -1,7 +1,7 @@
 import * as dotenv from "dotenv";
 import { util } from "@prismatic-io/spectral";
-import { invoke, createConnection } from "@prismatic-io/spectral/dist/testing";
-import query from "./records/query";
+import { invoke, createConnection } from "@prismatic-io/spectral/testing";
+import { query } from "./records/query";
 import { rawRequest } from "./misc/rawRequest";
 import { createLead } from "./leads/createLead";
 import { getCurrentUser } from "./misc/getCurrentUser";
@@ -40,7 +40,6 @@ describe("test raw request", () => {
       version: version,
       url: "sobjects/Account/",
       data: { Name: `${randString()} Company` },
-      debugRequest: false,
       fileData: undefined,
       formData: undefined,
       headers: undefined,
@@ -69,7 +68,6 @@ describe("test raw request", () => {
       version,
       url: `sobjects/Account/${testAccountId}`,
       data: undefined,
-      debugRequest: false,
       fileData: undefined,
       formData: undefined,
       headers: undefined,
@@ -97,7 +95,6 @@ describe("test raw request", () => {
       version,
       url: `sobjects/Account/${testAccountId}`,
       data: { Name: randString() },
-      debugRequest: false,
       fileData: undefined,
       formData: undefined,
       headers: undefined,
@@ -125,7 +122,6 @@ describe("test raw request", () => {
       version,
       url: `sobjects/Account/${testAccountId}`,
       data: undefined,
-      debugRequest: false,
       fileData: undefined,
       formData: undefined,
       headers: undefined,
@@ -220,6 +216,7 @@ describe("test createLead action", () => {
     const state = "CA";
     const city = randString();
     const postalCode = "94024";
+    const country = "United States";
     const employeeCount = "200";
     const description = randString();
     const revenue = "3000";
@@ -229,19 +226,11 @@ describe("test createLead action", () => {
       version,
       dynamicValues,
       fieldValues,
-      firstName,
-      lastName,
       company,
-      title,
-      phone,
       email,
-      leadSource,
-      rating,
-      website,
-      address: { street, state, city, postalCode },
-      employeeCount,
-      description,
-      revenue,
+      nameAndContact: { firstName, lastName, phone, website },
+      address: { street, state, city, postalCode, country },
+      additionalFields: { title, leadSource, rating, employeeCount, description, revenue },
       leadStatus,
       connection,
     });

@@ -21,6 +21,7 @@ import { resolvePollingFields } from "./pollingFields";
 import { fetchDeletedRecords } from "./pollingDeletes";
 import type { PollingCursor, PollingTriggerObject } from "../types";
 import { pollChangesTriggerInputs } from "../inputs";
+import type { Mock } from "vitest";
 
 describe("toFindOptions", () => {
   it.each([
@@ -43,14 +44,13 @@ describe("toFindOptions", () => {
     { pageSize: "20", pageNumber: "2", expected: { limit: 20, offset: 20 } },
     { pageSize: 50, pageNumber: 5, expected: { limit: 50, offset: 200 } },
     { pageSize: "50", pageNumber: "5", expected: { limit: 50, offset: 200 } },
-  ])("should return expected options object for valid values", ({
-    pageSize,
-    pageNumber,
-    expected,
-  }) => {
-    const result = toFindOptions(pageSize, pageNumber);
-    expect(result).toStrictEqual(expected);
-  });
+  ])(
+    "should return expected options object for valid values",
+    ({ pageSize, pageNumber, expected }) => {
+      const result = toFindOptions(pageSize, pageNumber);
+      expect(result).toStrictEqual(expected);
+    },
+  );
 });
 
 describe("toFullNameIdentifier", () => {
@@ -349,12 +349,12 @@ describe("advanceCursor", () => {
 });
 
 describe("resolvePollingFields", () => {
-  const logger = { debug: jest.fn(), info: jest.fn(), warn: jest.fn(), error: jest.fn() };
+  const logger = { debug: vi.fn(), info: vi.fn(), warn: vi.fn(), error: vi.fn() };
 
   const clientWithFields = (fields: { name: string; type: string; length?: number }[]) =>
-    ({ describe: jest.fn().mockResolvedValue({ fields }) }) as never;
+    ({ describe: vi.fn().mockResolvedValue({ fields }) }) as never;
 
-  beforeEach(() => jest.clearAllMocks());
+  beforeEach(() => vi.clearAllMocks());
 
   test("returns only the required fields when returnIdsOnly is set", async () => {
     const client = clientWithFields([{ name: "Name", type: "string" }]);
@@ -368,7 +368,7 @@ describe("resolvePollingFields", () => {
   test("returnIdsOnly does not trigger a describe call", async () => {
     const client = clientWithFields([{ name: "Name", type: "string" }]);
     await resolvePollingFields(client, "Account", [], true, logger);
-    expect((client as unknown as { describe: jest.Mock }).describe).not.toHaveBeenCalled();
+    expect((client as unknown as { describe: Mock }).describe).not.toHaveBeenCalled();
   });
 
   test("merges selected fields with the required fields, without duplicates", async () => {
@@ -837,7 +837,7 @@ describe("fetchPollingPage", () => {
 
   test("queries ascending with an explicit LIMIT and returns the records", async () => {
     const records = [{ Id: "a", CreatedDate: "x", LastModifiedDate: "x" }];
-    const client = { query: jest.fn().mockResolvedValue({ records, done: true }) } as never;
+    const client = { query: vi.fn().mockResolvedValue({ records, done: true }) } as never;
 
     const result = await fetchPollingPage(client, {
       recordType: "Account",
@@ -848,7 +848,7 @@ describe("fetchPollingPage", () => {
     });
 
     expect(result).toEqual(records);
-    const soql = (client as unknown as { query: jest.Mock }).query.mock.calls[0][0];
+    const soql = (client as unknown as { query: Mock }).query.mock.calls[0][0];
     expect(soql).toContain("ORDER BY LastModifiedDate ASC, Id ASC");
     expect(soql).toContain("LIMIT 500");
     expect(soql).toContain("Industry = 'Banking'");
@@ -857,7 +857,7 @@ describe("fetchPollingPage", () => {
   });
 
   test("does not auto-fetch beyond the requested page", async () => {
-    const client = { query: jest.fn().mockResolvedValue({ records: [], done: true }) } as never;
+    const client = { query: vi.fn().mockResolvedValue({ records: [], done: true }) } as never;
     await fetchPollingPage(client, {
       recordType: "Account",
       fields: [],
@@ -865,34 +865,33 @@ describe("fetchPollingPage", () => {
       cursor,
       pageSize: 500,
     });
-    expect((client as unknown as { query: jest.Mock }).query).toHaveBeenCalledWith(
-      expect.any(String),
-      { autoFetch: true, maxFetch: 500 },
-    );
+    expect((client as unknown as { query: Mock }).query).toHaveBeenCalledWith(expect.any(String), {
+      autoFetch: true,
+      maxFetch: 500,
+    });
   });
 
-  test.each([
-    0,
-    -1,
-    Number.NaN,
-  ])("rejects an invalid page size (%p) before querying, rather than silently skipping the window", async (pageSize) => {
-    const client = { query: jest.fn() } as never;
+  test.each([0, -1, Number.NaN])(
+    "rejects an invalid page size (%p) before querying, rather than silently skipping the window",
+    async (pageSize) => {
+      const client = { query: vi.fn() } as never;
 
-    await expect(
-      fetchPollingPage(client, {
-        recordType: "Account",
-        fields: [],
-        filters: {},
-        cursor,
-        pageSize,
-      }),
-    ).rejects.toThrow(`Invalid polling page size ${pageSize}: must be a positive integer.`);
-    expect((client as unknown as { query: jest.Mock }).query).not.toHaveBeenCalled();
-  });
+      await expect(
+        fetchPollingPage(client, {
+          recordType: "Account",
+          fields: [],
+          filters: {},
+          cursor,
+          pageSize,
+        }),
+      ).rejects.toThrow(`Invalid polling page size ${pageSize}: must be a positive integer.`);
+      expect((client as unknown as { query: Mock }).query).not.toHaveBeenCalled();
+    },
+  );
 
   test("returns a short page normally when Salesforce confirms the result set is complete", async () => {
     const records = [{ Id: "a", CreatedDate: "x", LastModifiedDate: "x" }];
-    const client = { query: jest.fn().mockResolvedValue({ records, done: true }) } as never;
+    const client = { query: vi.fn().mockResolvedValue({ records, done: true }) } as never;
 
     const result = await fetchPollingPage(client, {
       recordType: "Account",
@@ -907,7 +906,7 @@ describe("fetchPollingPage", () => {
 
   test("throws on a short page when Salesforce reports the result set is not complete", async () => {
     const records = [{ Id: "a", CreatedDate: "x", LastModifiedDate: "x" }];
-    const client = { query: jest.fn().mockResolvedValue({ records, done: false }) } as never;
+    const client = { query: vi.fn().mockResolvedValue({ records, done: false }) } as never;
 
     await expect(
       fetchPollingPage(client, {
@@ -922,7 +921,7 @@ describe("fetchPollingPage", () => {
 
   test("throws on a short page when `done` is absent from the result entirely", async () => {
     const records = [{ Id: "a", CreatedDate: "x", LastModifiedDate: "x" }];
-    const client = { query: jest.fn().mockResolvedValue({ records }) } as never;
+    const client = { query: vi.fn().mockResolvedValue({ records }) } as never;
 
     await expect(
       fetchPollingPage(client, {
@@ -941,7 +940,7 @@ describe("fetchPollingPage", () => {
       CreatedDate: "x",
       LastModifiedDate: "x",
     }));
-    const client = { query: jest.fn().mockResolvedValue({ records, done: false }) } as never;
+    const client = { query: vi.fn().mockResolvedValue({ records, done: false }) } as never;
 
     const result = await fetchPollingPage(client, {
       recordType: "Account",
@@ -956,13 +955,13 @@ describe("fetchPollingPage", () => {
 });
 
 describe("fetchDeletedRecords", () => {
-  const logger = { debug: jest.fn(), info: jest.fn(), warn: jest.fn(), error: jest.fn() };
+  const logger = { debug: vi.fn(), info: vi.fn(), warn: vi.fn(), error: vi.fn() };
 
-  beforeEach(() => jest.clearAllMocks());
+  beforeEach(() => vi.clearAllMocks());
 
   const deleteClient = (result: Record<string, unknown>) =>
     ({
-      sobject: jest.fn().mockReturnValue({ deleted: jest.fn().mockResolvedValue(result) }),
+      sobject: vi.fn().mockReturnValue({ deleted: vi.fn().mockResolvedValue(result) }),
     }) as never;
 
   const now = "2026-08-10T12:00:00.000Z";
@@ -1010,8 +1009,8 @@ describe("fetchDeletedRecords", () => {
   test("clamps a start older than the 15-day window to the exact boundary and warns", async () => {
     const client = deleteClient({ deletedRecords: [] });
     await fetchDeletedRecords(client, "Account", "2020-01-01T00:00:00.000Z", now, logger);
-    const start = (client as unknown as { sobject: jest.Mock }).sobject.mock.results[0].value
-      .deleted.mock.calls[0][0];
+    const start = (client as unknown as { sobject: Mock }).sobject.mock.results[0].value.deleted
+      .mock.calls[0][0];
     expect(start).toBe(new Date(new Date(now).getTime() - 15 * 24 * 60 * 60 * 1000).toISOString());
     expect(logger.warn).toHaveBeenCalledWith(expect.stringContaining("15 days"));
   });
@@ -1020,8 +1019,8 @@ describe("fetchDeletedRecords", () => {
     const client = deleteClient({ deletedRecords: [] });
     const since = "2026-08-05T00:00:00.000Z";
     await fetchDeletedRecords(client, "Account", since, now, logger);
-    const start = (client as unknown as { sobject: jest.Mock }).sobject.mock.results[0].value
-      .deleted.mock.calls[0][0];
+    const start = (client as unknown as { sobject: Mock }).sobject.mock.results[0].value.deleted
+      .mock.calls[0][0];
     expect(start).toBe(since);
     expect(logger.warn).not.toHaveBeenCalledWith(expect.stringContaining("15 days"));
   });
@@ -1323,9 +1322,9 @@ describe("resolveCursor", () => {
 
 describe("resolveCursorSafely", () => {
   const now = "2026-08-10T12:00:00.000Z";
-  const logger = { warn: jest.fn() };
+  const logger = { warn: vi.fn() };
 
-  beforeEach(() => jest.clearAllMocks());
+  beforeEach(() => vi.clearAllMocks());
 
   test("discards a corrupted persisted cursor, warns, and falls back to lastPolledAt", () => {
     const corruptedPersisted = {

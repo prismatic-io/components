@@ -1,34 +1,61 @@
 {
-  "name": "@prismatic-io/salesforce",
-  "private": true,
+  "name": "@prismatic-io/components-salesforce",
+  "version": "0.0.1",
+  "main": "./npm-dist/index.cjs",
+  "types": "./npm-dist/index.d.cts",
+  "exports": {
+    ".": {
+      "types": "./npm-dist/index.d.cts",
+      "default": "./npm-dist/index.cjs"
+    }
+  },
+  "description": "Query, create, update, or delete Salesforce records.",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prismatic-io/components.git",
+    "directory": "components/salesforce"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "npm-dist",
+    "dist"
+  ],
+  "prismatic": {
+    "component": "./dist/index.js"
+  },
   "scripts": {
     "lint": "biome lint --write .",
     "format": "biome format --write .",
-    "build": "ts-node --prefer-ts-exts --compiler-options \"{\\\"module\\\": \\\"commonjs\\\"}\" ./esbuild.config.ts",
-    "test": "jest --maxWorkers=4",
-    "publish": "npm run build && prism components:publish",
+    "build": "npm run format && npm run lint && tsdown",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
     "generate:manifest": "npm run build && npx @prismatic-io/spectral component-manifest",
-    "generate:manifest:dev": "npm run build && npx @prismatic-io/spectral component-manifest --skip-signature-verify"
+    "generate:manifest:dev": "npm run build && npx @prismatic-io/spectral component-manifest --skip-signature-verify",
+    "prepare": "npm run build",
+    "publish:platform": "npm run build && prism components:publish"
+  },
+  "peerDependencies": {
+    "@prismatic-io/spectral": "^10.39.1"
   },
   "dependencies": {
-    "@prismatic-io/spectral": "10.26.1",
     "fast-xml-parser": "5.11.2",
     "jsforce": "^3.10.16",
     "mime-types": "2.1.35",
     "timezone-support": "2.0.2"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.5.0",
-    "@types/jest": "30.0.0",
+    "@biomejs/biome": "2.6.5",
     "@types/jsforce": "^1.11.6",
     "@types/mime-types": "2.1.0",
     "@types/node": "^26.0.0",
     "dotenv": "8.2.0",
-    "esbuild": "0.28.1",
-    "jest": "30.4.2",
     "nock": "^14.0.17",
-    "ts-jest": "29.4.11",
-    "ts-node": "10.9.2",
-    "typescript": "5.9.2"
+    "tsdown": "0.22.3",
+    "typescript": "6.0.3",
+    "vitest": "4.1.9",
+    "@prismatic-io/spectral": "^10.39.1"
   }
 }

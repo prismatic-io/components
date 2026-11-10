@@ -57,5 +57,5 @@ export const listContacts = action({
   },
   examplePerform: async (): Promise<{ data: unknown }> => listContactsExamplePayload,
   inputs: listContactsInputs,
-  examplePayload: listContactsExamplePayload as unknown,
+  examplePayload: listContactsExamplePayload,
 });

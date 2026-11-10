@@ -1,4 +1,4 @@
-import { defaultTriggerPayload, invokeTrigger } from "@prismatic-io/spectral/dist/testing";
+import { defaultTriggerPayload, invokeTrigger } from "@prismatic-io/spectral/testing";
 import { WEBHOOK_SFDC_RESPONSE } from "../constants";
 import type { DeletedRecord, PollingCursor, PollingTriggerObject } from "../types";
 import { getPollingChanges, resolvePollingRecordChanges } from "../util";

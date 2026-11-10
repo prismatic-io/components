@@ -2,15 +2,10 @@
 
 ### 2026-11-10
 
-Published the component as an npm package, so code-native integrations can install it and call its actions, triggers and data sources from code with TypeScript types
-
-### 2026-11-10
-
-Refactored internal code
-
-### 2026-11-10
+Added trigger batching and published the component as an npm package:
 
 - Added opt-in batching to the **New or Modified Files** trigger, dispatching each changed file individually or in configured batches; enabling it changes the shape a downstream step receives
+- Published the component as an npm package, so code-native integrations can install it and call its actions, triggers and data sources from code with TypeScript types
 
 ### 2026-07-17
 

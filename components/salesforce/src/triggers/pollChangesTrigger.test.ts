@@ -9,29 +9,30 @@ import type {
 } from "../types";
 import { MAX_BATCHED_PAGE_SIZE } from "../constants";
 import { pollChangesTrigger } from "./pollChangesTrigger";
+import type { Mock, MockedFunction } from "vitest";
 
-jest.mock("../client");
+vi.mock("../client");
 
-const mockedCreateSalesforceClient = createSalesforceClient as jest.MockedFunction<
+const mockedCreateSalesforceClient = createSalesforceClient as MockedFunction<
   typeof createSalesforceClient
 >;
 
 interface FakeClient {
-  query: jest.Mock;
-  describe: jest.Mock;
-  sobject: jest.Mock;
+  query: Mock;
+  describe: Mock;
+  sobject: Mock;
 }
 
 const createFakeClient = (): FakeClient => ({
-  query: jest.fn(),
-  describe: jest.fn().mockResolvedValue({ fields: [{ name: "Name", type: "string" }] }),
-  sobject: jest.fn(),
+  query: vi.fn(),
+  describe: vi.fn().mockResolvedValue({ fields: [{ name: "Name", type: "string" }] }),
+  sobject: vi.fn(),
 });
 
 const createContext = (initialState: PollingState = {}, batch?: BatchInfo) => {
   let state: Record<string, unknown> = initialState;
   const context = {
-    logger: { debug: jest.fn(), info: jest.fn(), warn: jest.fn(), error: jest.fn() },
+    logger: { debug: vi.fn(), info: vi.fn(), warn: vi.fn(), error: vi.fn() },
     polling: {
       getState: () => state,
       setState: (s: Record<string, unknown>) => {
@@ -95,8 +96,8 @@ describe("pollChangesTrigger perform composition", () => {
   });
 
   afterEach(() => {
-    jest.useRealTimers();
-    jest.clearAllMocks();
+    vi.useRealTimers();
+    vi.clearAllMocks();
   });
 
   test("a full page keeps draining: paginationState is set, lastPolledAt holds at its committed value, and the cursor is persisted", async () => {
@@ -124,7 +125,7 @@ describe("pollChangesTrigger perform composition", () => {
   });
 
   test("a full page on the very first poll, with no committed lastPolledAt, holds at the cursor's opening watermark", async () => {
-    jest.useFakeTimers().setSystemTime(new Date("2026-08-10T12:00:00.000Z"));
+    vi.useFakeTimers().setSystemTime(new Date("2026-08-10T12:00:00.000Z"));
     const records = [
       record("a", "2026-08-01T00:05:00.000+0000", "2026-08-01T00:05:00.000+0000"),
       record("b", "2026-08-01T00:06:00.000+0000", "2026-08-01T00:06:00.000+0000"),
@@ -169,7 +170,7 @@ describe("pollChangesTrigger perform composition", () => {
   });
 
   test("the final round of a platform-driven drain never reports polledNoChanges", async () => {
-    jest.useFakeTimers().setSystemTime(new Date("2026-08-10T12:00:00.000Z"));
+    vi.useFakeTimers().setSystemTime(new Date("2026-08-10T12:00:00.000Z"));
     fakeClient.query.mockResolvedValue({ records: [], done: true });
 
     const { context } = createContext({ lastPolledAt: "2026-08-10T10:00:00.000Z" });
@@ -196,7 +197,7 @@ describe("pollChangesTrigger perform composition", () => {
   });
 
   test("without batching, an identical empty round still reports polledNoChanges", async () => {
-    jest.useFakeTimers().setSystemTime(new Date("2026-08-10T12:00:00.000Z"));
+    vi.useFakeTimers().setSystemTime(new Date("2026-08-10T12:00:00.000Z"));
     fakeClient.query.mockResolvedValue({ records: [], done: true });
 
     const { context } = createContext({ lastPolledAt: "2026-08-10T10:00:00.000Z" });
@@ -211,7 +212,7 @@ describe("pollChangesTrigger perform composition", () => {
   });
 
   test("a short page ends the drain: paginationState is undefined, lastPolledAt is the frozen windowEnd, and no cursor is persisted", async () => {
-    jest.useFakeTimers().setSystemTime(new Date("2026-08-10T12:00:00.000Z"));
+    vi.useFakeTimers().setSystemTime(new Date("2026-08-10T12:00:00.000Z"));
     fakeClient.query.mockResolvedValue({ records: [], done: true });
 
     const { context, getState } = createContext({ lastPolledAt: "2026-08-10T10:00:00.000Z" });
@@ -261,7 +262,7 @@ describe("pollChangesTrigger perform composition", () => {
     });
 
     test("no inbound paginationState: the cursor is persisted and lastPolledAt holds", async () => {
-      jest.useFakeTimers().setSystemTime(new Date("2026-08-10T12:00:00.000Z"));
+      vi.useFakeTimers().setSystemTime(new Date("2026-08-10T12:00:00.000Z"));
       fakeClient.query.mockResolvedValue({ records: fullPage, done: true });
 
       const { context, getState } = createContext({ lastPolledAt: "2026-08-10T10:00:00.000Z" });
@@ -282,7 +283,7 @@ describe("pollChangesTrigger perform composition", () => {
     test("no inbound paginationState and no state.cursor: deletions are fetched", async () => {
       fakeClient.query.mockResolvedValue({ records: [], done: true });
       fakeClient.sobject.mockReturnValue({
-        deleted: jest
+        deleted: vi
           .fn()
           .mockResolvedValue({ deletedRecords: [], latestDateCovered: "2026-08-10T11:00:00.000Z" }),
       });
@@ -299,14 +300,14 @@ describe("pollChangesTrigger perform composition", () => {
       );
 
       expect(fakeClient.sobject).toHaveBeenCalledWith("Account");
-      const sobjectResult = fakeClient.sobject.mock.results[0].value as { deleted: jest.Mock };
+      const sobjectResult = fakeClient.sobject.mock.results[0].value as { deleted: Mock };
       expect(sobjectResult.deleted).toHaveBeenCalled();
     });
 
     test("an inbound paginationState (mid-drain continuation): deletions are skipped", async () => {
       fakeClient.query.mockResolvedValue({ records: [], done: true });
       fakeClient.sobject.mockReturnValue({
-        deleted: jest.fn().mockResolvedValue({ deletedRecords: [], latestDateCovered: "x" }),
+        deleted: vi.fn().mockResolvedValue({ deletedRecords: [], latestDateCovered: "x" }),
       });
 
       const { context } = createContext({ lastDeletedAt: "2026-08-10T09:00:00.000Z" });
@@ -330,7 +331,7 @@ describe("pollChangesTrigger perform composition", () => {
     test("state.cursor present with no inbound paginationState (poll-to-poll continuation): deletions are skipped", async () => {
       fakeClient.query.mockResolvedValue({ records: [], done: true });
       fakeClient.sobject.mockReturnValue({
-        deleted: jest.fn().mockResolvedValue({ deletedRecords: [], latestDateCovered: "x" }),
+        deleted: vi.fn().mockResolvedValue({ deletedRecords: [], latestDateCovered: "x" }),
       });
 
       const { context } = createContext({
@@ -354,7 +355,7 @@ describe("pollChangesTrigger perform composition", () => {
   });
 
   test("lastDeletedAt is kept current while Show Deleted Records is off", async () => {
-    jest.useFakeTimers().setSystemTime(new Date("2026-08-10T12:00:00.000Z"));
+    vi.useFakeTimers().setSystemTime(new Date("2026-08-10T12:00:00.000Z"));
     fakeClient.query.mockResolvedValue({ records: [], done: true });
 
     const { context, getState } = createContext({
@@ -458,7 +459,7 @@ describe("pollChangesTrigger perform composition", () => {
 
   describe("a multi-round drain of one cycle", () => {
     test("delivers every record exactly once, with the correct created/updated classification", async () => {
-      jest.useFakeTimers().setSystemTime(new Date("2026-08-10T11:00:00.000Z"));
+      vi.useFakeTimers().setSystemTime(new Date("2026-08-10T11:00:00.000Z"));
       seedQuery(fakeClient, cycleRecords);
 
       const rounds = await drain(baseParams(), { lastPolledAt: "2026-08-10T10:00:00.000Z" });
@@ -476,7 +477,7 @@ describe("pollChangesTrigger perform composition", () => {
     });
 
     test("with Show Updated Records off, a record created inside the window still arrives on a later page", async () => {
-      jest.useFakeTimers().setSystemTime(new Date("2026-08-10T11:00:00.000Z"));
+      vi.useFakeTimers().setSystemTime(new Date("2026-08-10T11:00:00.000Z"));
       seedQuery(fakeClient, cycleRecords);
 
       const rounds = await drain(baseParams({ showUpdatedRecords: false }), {
@@ -488,10 +489,10 @@ describe("pollChangesTrigger perform composition", () => {
     });
 
     test("with Show Deleted Records on, each deleted record is carried by exactly one round of the drain", async () => {
-      jest.useFakeTimers().setSystemTime(new Date("2026-08-10T11:00:00.000Z"));
+      vi.useFakeTimers().setSystemTime(new Date("2026-08-10T11:00:00.000Z"));
       seedQuery(fakeClient, cycleRecords);
       fakeClient.sobject.mockReturnValue({
-        deleted: jest.fn().mockResolvedValue({
+        deleted: vi.fn().mockResolvedValue({
           deletedRecords: [
             { id: "001000000000001", deletedDate: "2026-08-10T10:20:00.000Z" },
             { id: "001000000000002", deletedDate: "2026-08-10T10:45:00.000Z" },
@@ -520,7 +521,7 @@ describe("pollChangesTrigger perform composition", () => {
     const legacyState: PollingState = { lastPolledAt: "2026-08-10T10:00:00.000Z" };
 
     test("resumes incrementally without crashing and keeps applying the user's filters", async () => {
-      jest.useFakeTimers().setSystemTime(new Date("2026-08-10T11:00:00.000Z"));
+      vi.useFakeTimers().setSystemTime(new Date("2026-08-10T11:00:00.000Z"));
       fakeClient.query.mockResolvedValue({ records: [], done: true });
 
       const { context } = createContext({ ...legacyState });
@@ -537,9 +538,9 @@ describe("pollChangesTrigger perform composition", () => {
     });
 
     test("with Show Deleted Records on, deletions are fetched from the legacy lastPolledAt rather than skipped", async () => {
-      jest.useFakeTimers().setSystemTime(new Date("2026-08-10T11:00:00.000Z"));
+      vi.useFakeTimers().setSystemTime(new Date("2026-08-10T11:00:00.000Z"));
       fakeClient.query.mockResolvedValue({ records: [], done: true });
-      const deleted = jest.fn().mockResolvedValue({
+      const deleted = vi.fn().mockResolvedValue({
         deletedRecords: [{ id: "001", deletedDate: "2026-08-10T10:30:00.000Z" }],
         latestDateCovered: "2026-08-10T10:59:00.000Z",
       });
@@ -562,7 +563,7 @@ describe("pollChangesTrigger perform composition", () => {
   });
 
   test("a brand-new instance with no Look-back Date never queries Salesforce and commits an empty poll", async () => {
-    jest.useFakeTimers().setSystemTime(new Date("2026-08-10T12:00:00.000Z"));
+    vi.useFakeTimers().setSystemTime(new Date("2026-08-10T12:00:00.000Z"));
 
     const { context, getState } = createContext({});
 
@@ -586,7 +587,7 @@ describe("pollChangesTrigger perform composition", () => {
   });
 
   test("a brand-new instance with no Look-back Date and Show Deleted Records on skips the deletion lookup too", async () => {
-    jest.useFakeTimers().setSystemTime(new Date("2026-08-10T12:00:00.000Z"));
+    vi.useFakeTimers().setSystemTime(new Date("2026-08-10T12:00:00.000Z"));
 
     const { context, getState } = createContext({});
 
@@ -605,7 +606,7 @@ describe("pollChangesTrigger perform composition", () => {
   });
 
   test("a Look-back Date is honored: the first poll engages a backfill and the SOQL carries no user WHERE terms", async () => {
-    jest.useFakeTimers().setSystemTime(new Date("2026-08-10T12:00:00.000Z"));
+    vi.useFakeTimers().setSystemTime(new Date("2026-08-10T12:00:00.000Z"));
     const records = [
       record("a", "2026-08-01T00:05:00.000+0000", "2026-08-01T00:05:00.000+0000"),
       record("b", "2026-08-01T00:06:00.000+0000", "2026-08-01T00:06:00.000+0000"),
@@ -633,7 +634,7 @@ describe("pollChangesTrigger perform composition", () => {
   });
 
   test("a backfill issues SOQL with no user filter terms at all", async () => {
-    jest.useFakeTimers().setSystemTime(new Date("2026-08-10T11:00:00.000Z"));
+    vi.useFakeTimers().setSystemTime(new Date("2026-08-10T11:00:00.000Z"));
     fakeClient.query.mockResolvedValue({ records: [], done: true });
 
     const { context } = createContext({});
@@ -656,7 +657,7 @@ describe("pollChangesTrigger perform composition", () => {
   });
 
   test("a backfill excludes a record created before the Look-back Date at the query", async () => {
-    jest.useFakeTimers().setSystemTime(new Date("2026-08-10T11:00:00.000Z"));
+    vi.useFakeTimers().setSystemTime(new Date("2026-08-10T11:00:00.000Z"));
     fakeClient.query.mockResolvedValue({ records: [], done: true });
 
     const { context } = createContext({});
@@ -738,7 +739,7 @@ describe("pollChangesTrigger perform composition", () => {
     });
 
     test("a backfill interrupted mid-drain resumes as a backfill", async () => {
-      jest.useFakeTimers().setSystemTime(new Date("2026-08-10T12:00:00.000Z"));
+      vi.useFakeTimers().setSystemTime(new Date("2026-08-10T12:00:00.000Z"));
       fakeClient.query.mockResolvedValue({ records: fullPage, done: true });
 
       const { context, getState } = createContext({}, { enabled: true, batchSize: 50 });
@@ -811,7 +812,7 @@ describe("pollChangesTrigger perform composition", () => {
   });
 
   test("an incremental poll adds no CreatedDate bound", async () => {
-    jest.useFakeTimers().setSystemTime(new Date("2026-08-10T11:00:00.000Z"));
+    vi.useFakeTimers().setSystemTime(new Date("2026-08-10T11:00:00.000Z"));
     fakeClient.query.mockResolvedValue({ records: [], done: true });
 
     const { context } = createContext({ lastPolledAt: "2026-08-10T10:00:00.000Z" });
@@ -826,7 +827,7 @@ describe("pollChangesTrigger perform composition", () => {
   });
 
   test("a backfill ignores both toggles and emits each record exactly once", async () => {
-    jest.useFakeTimers().setSystemTime(new Date("2026-08-10T11:00:00.000Z"));
+    vi.useFakeTimers().setSystemTime(new Date("2026-08-10T11:00:00.000Z"));
     const createdInsideEditedSince = record(
       "new-1",
       "2026-08-05T00:00:00.000+0000",
@@ -922,7 +923,7 @@ describe("pollChangesTrigger perform composition", () => {
       item.changeType === "deleted" ? item.record.id : (item.record.Id as string);
 
     test("every round's item count equals the change count perform used, and no-changes never coincides with items", async () => {
-      jest.useFakeTimers().setSystemTime(new Date("2026-08-10T11:00:00.000Z"));
+      vi.useFakeTimers().setSystemTime(new Date("2026-08-10T11:00:00.000Z"));
       seedQuery(fakeClient, cycleRecords);
 
       const rounds = await resolverDrain(baseParams(), {
@@ -940,7 +941,7 @@ describe("pollChangesTrigger perform composition", () => {
     });
 
     test("no round ever reports polledNoChanges while the resolver still has a next page", async () => {
-      jest.useFakeTimers().setSystemTime(new Date("2026-08-10T11:00:00.000Z"));
+      vi.useFakeTimers().setSystemTime(new Date("2026-08-10T11:00:00.000Z"));
       seedQuery(fakeClient, cycleRecords);
 
       const rounds = await resolverDrain(baseParams({ showNewRecords: false }), {
@@ -954,10 +955,10 @@ describe("pollChangesTrigger perform composition", () => {
     });
 
     test("deleted records reach the resolver as items with IsDeleted preserved, on exactly one round", async () => {
-      jest.useFakeTimers().setSystemTime(new Date("2026-08-10T11:00:00.000Z"));
+      vi.useFakeTimers().setSystemTime(new Date("2026-08-10T11:00:00.000Z"));
       seedQuery(fakeClient, cycleRecords);
       fakeClient.sobject.mockReturnValue({
-        deleted: jest.fn().mockResolvedValue({
+        deleted: vi.fn().mockResolvedValue({
           deletedRecords: [{ id: "001000000000009", deletedDate: "2026-08-10T10:20:00.000Z" }],
           latestDateCovered: "2026-08-10T10:59:00.000Z",
         }),
@@ -984,7 +985,7 @@ describe("pollChangesTrigger perform composition", () => {
     });
 
     test("a resolver-driven drain terminates, delivers every record exactly once, and ends with a null next page", async () => {
-      jest.useFakeTimers().setSystemTime(new Date("2026-08-10T11:00:00.000Z"));
+      vi.useFakeTimers().setSystemTime(new Date("2026-08-10T11:00:00.000Z"));
       seedQuery(fakeClient, cycleRecords);
 
       const rounds = await resolverDrain(baseParams(), {
@@ -1006,7 +1007,7 @@ describe("pollChangesTrigger perform composition", () => {
     });
 
     test("a round larger than the batch size chunks on exact boundaries with no loss or duplication", async () => {
-      jest.useFakeTimers().setSystemTime(new Date("2026-08-10T11:00:00.000Z"));
+      vi.useFakeTimers().setSystemTime(new Date("2026-08-10T11:00:00.000Z"));
       const many: PollingTriggerObject[] = Array.from({ length: 120 }, (_unused, index) => {
         const at = new Date(new Date("2026-08-10T10:05:00.000Z").getTime() + index * 1000);
         return record(`r${index}`, "2020-01-01T00:00:00.000+0000", at.toISOString());
@@ -1028,12 +1029,12 @@ describe("pollChangesTrigger perform composition", () => {
     });
 
     test("items arrive in created, then updated, then deleted order, so chunk boundaries replay identically", async () => {
-      jest.useFakeTimers().setSystemTime(new Date("2026-08-10T11:00:00.000Z"));
+      vi.useFakeTimers().setSystemTime(new Date("2026-08-10T11:00:00.000Z"));
       const createdOnly = record("new-1", "2026-08-10T10:05:00.000Z", "2026-08-10T10:05:00.000Z");
       const updatedOnly = record("old-1", "2020-01-01T00:00:00.000Z", "2026-08-10T10:10:00.000Z");
       fakeClient.query.mockResolvedValue({ records: [createdOnly, updatedOnly], done: true });
       fakeClient.sobject.mockReturnValue({
-        deleted: jest.fn().mockResolvedValue({
+        deleted: vi.fn().mockResolvedValue({
           deletedRecords: [
             { id: "del-1", deletedDate: "2026-08-10T10:20:00.000Z" },
             { id: "del-2", deletedDate: "2026-08-10T10:30:00.000Z" },

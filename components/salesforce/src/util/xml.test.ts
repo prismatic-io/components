@@ -18,13 +18,12 @@ describe("parseXml", () => {
     expect(parseXml(`<a>${value}</a>`)).toStrictEqual({ a: expected });
   });
 
-  test.each([
-    "Infinity",
-    "+Infinity",
-    "-Infinity",
-  ])("yields NaN for %p like fast-xml-parser 3.x instead of throwing", (value) => {
-    expect(parseXml(`<a>${value}</a>`)).toStrictEqual({ a: Number.NaN });
-  });
+  test.each(["Infinity", "+Infinity", "-Infinity"])(
+    "yields NaN for %p like fast-xml-parser 3.x instead of throwing",
+    (value) => {
+      expect(parseXml(`<a>${value}</a>`)).toStrictEqual({ a: Number.NaN });
+    },
+  );
 
   test("truncates an exponent that overflows Number to its integer prefix like 3.x", () => {
     expect(parseXml("<a>1e400</a>")).toStrictEqual({ a: 1 });

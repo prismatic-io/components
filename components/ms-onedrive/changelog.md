@@ -4,10 +4,6 @@
 
 Published the component as an npm package, so code-native integrations can install it and call its actions, triggers and data sources from code with TypeScript types
 
-### 2026-11-10
-
-Refactored internal code
-
 ### 2026-11-09
 
 Updated file handling ahead of Microsoft's pre-authenticated URL deprecation and standardized the subscription action labels:

@@ -23,5 +23,5 @@ export const listWorkflowRules = action({
     type: "actionOutput",
     schema: listMetadataOutputSchema,
   }),
-  examplePayload: listWorkflowRulesExamplePayload as unknown,
+  examplePayload: listWorkflowRulesExamplePayload,
 });

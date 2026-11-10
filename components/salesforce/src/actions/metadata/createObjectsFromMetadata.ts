@@ -34,5 +34,5 @@ export const createObjectsFromMetadata = action({
     type: "actionOutput",
     schema: saveMetadataOutputSchema,
   }),
-  examplePayload: genericCreateUpdateFullNameExamplePayload as unknown,
+  examplePayload: genericCreateUpdateFullNameExamplePayload,
 });

@@ -4,10 +4,6 @@
 
 Published the component as an npm package, so code-native integrations can install it and call its actions, triggers and data sources from code with TypeScript types
 
-### 2026-11-10
-
-Refactored internal code
-
 ### 2026-10-20
 
 Initial release of GitLab component for GitLab.com and self-managed instances, with **Access Token** and **OAuth 2.0** connections that can each reach an instance on a private network through the on-prem agent:

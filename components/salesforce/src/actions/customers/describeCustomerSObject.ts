@@ -23,5 +23,5 @@ export const describeCustomerSObject = action({
     type: "actionOutput",
     schema: describeObjectOutputSchema,
   }),
-  examplePayload: describeCustomerSObjectExamplePayload as unknown,
+  examplePayload: describeCustomerSObjectExamplePayload as { data: unknown },
 });

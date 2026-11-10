@@ -1,5 +1,5 @@
 import { input, type KeyValuePair, structuredObjectInput, util } from "@prismatic-io/spectral";
-import { inputs as httpClientInputs } from "@prismatic-io/spectral/dist/clients/http";
+import { inputs as httpClientInputs } from "@prismatic-io/spectral/http";
 import { DEFAULT_SF_VERSION } from "../constants";
 import {
   cleanKeyValueListToObject,

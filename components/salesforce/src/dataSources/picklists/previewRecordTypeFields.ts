@@ -1,7 +1,7 @@
 import { dataSource, util } from "@prismatic-io/spectral";
 import { createSalesforceHttpClient } from "../../client";
 import { previewRecordTypeFieldsInputs } from "../../inputs";
-import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
+import { handleErrors } from "@prismatic-io/spectral/http";
 
 export const previewRecordTypeFields = dataSource({
   display: {

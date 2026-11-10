@@ -1,7 +1,7 @@
 import { dataSource, util, type ObjectFieldMap } from "@prismatic-io/spectral";
 import { createSalesforceHttpClient } from "../../client";
 import { mapRecordTypeFieldsInputs } from "../../inputs";
-import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
+import { handleErrors } from "@prismatic-io/spectral/http";
 import type { NestedRecord, SupplementalData } from "../../types";
 
 export const mapRecordTypeFields = dataSource({

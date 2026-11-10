@@ -35,5 +35,5 @@ export const upsertRecord = action({
     type: "actionOutput",
     schema: upsertRecordOutputSchema,
   }),
-  examplePayload: genericUpsertExamplePayload as unknown,
+  examplePayload: genericUpsertExamplePayload,
 });

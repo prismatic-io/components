@@ -1,7 +1,7 @@
 import jsforce from "jsforce";
 import { type Connection, ConnectionError, util } from "@prismatic-io/spectral";
 import { salesforceBasic, salesforceClientCredentials, salesforceOAuth } from "./connections";
-import { createClient } from "@prismatic-io/spectral/dist/clients/http";
+import { createClient } from "@prismatic-io/spectral/http";
 
 export const createSalesforceClient = async (connection: Connection, version: string) => {
   switch (connection.key) {

@@ -23,5 +23,5 @@ export const listObjectMetadata = action({
     type: "actionOutput",
     schema: listMetadataOutputSchema,
   }),
-  examplePayload: listObjectMetadataExamplePayload as unknown,
+  examplePayload: listObjectMetadataExamplePayload,
 });
