@@ -1,6 +1,6 @@
 import { type Connection, ConnectionError, util } from "@prismatic-io/spectral";
 import { teamviewerOauth } from "./connections";
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import type { TeamViewerRecord } from "./types";
 
 export const validateConnection = (connection: Connection): void => {

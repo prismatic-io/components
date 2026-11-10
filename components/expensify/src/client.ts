@@ -2,7 +2,7 @@ import { type Connection, ConnectionError } from "@prismatic-io/spectral";
 import {
   createClient as createHttpClient,
   type HttpClient,
-} from "@prismatic-io/spectral/dist/clients/http";
+} from "@prismatic-io/spectral/http";
 import { basicConnection } from "./connections";
 import { BASE_URL, SUCCESS_RESPONSE_CODE } from "./constants";
 import type { JobResponseEnvelope } from "./types";

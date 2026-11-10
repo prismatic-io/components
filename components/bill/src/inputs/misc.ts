@@ -1,7 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { connection } from "./shared";
 import { ApiUrls } from "../enums/apiUrls";
-import { inputs as httpClientInputs } from "@prismatic-io/spectral/dist/clients/http";
+import { inputs as httpClientInputs } from "@prismatic-io/spectral/http";
 
 export const generateMfaChallengeIdInputs = {
   connection,

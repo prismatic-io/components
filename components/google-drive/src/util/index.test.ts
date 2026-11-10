@@ -1,7 +1,7 @@
 import { Readable } from "node:stream";
 import type { ActionContext } from "@prismatic-io/spectral";
 import { ConnectionError } from "@prismatic-io/spectral";
-import { createConnection } from "@prismatic-io/spectral/dist/testing";
+import { createConnection } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { createActivityClient, createClient } from "../client";
 import { connection as connectionDefinition } from "../connections";

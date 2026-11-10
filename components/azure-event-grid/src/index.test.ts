@@ -2,7 +2,7 @@ import { myTrigger } from "./triggers";
 import {
   invokeTrigger,
   defaultTriggerPayload,
-} from "@prismatic-io/spectral/dist/testing";
+} from "@prismatic-io/spectral/testing";
 const EVENT_GRID_SAMPLE_PAYLOAD = [
   {
     id: "2d1781af-3a4c-4d7c-bd0c-e34b19da4e66",

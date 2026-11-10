@@ -1,4 +1,4 @@
-import { defaultTriggerPayload, invokeTrigger } from "@prismatic-io/spectral/dist/testing";
+import { defaultTriggerPayload, invokeTrigger } from "@prismatic-io/spectral/testing";
 import { pushNotificationWebhook } from "./pushNotificationWebhook";
 
 describe("pushNotificationWebhook", () => {

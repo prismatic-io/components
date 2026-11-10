@@ -7,10 +7,7 @@ import {
   ConnectionError,
   util,
 } from "@prismatic-io/spectral";
-import {
-  createClient,
-  type HttpClient,
-} from "@prismatic-io/spectral/dist/clients/http";
+import { createClient, type HttpClient } from "@prismatic-io/spectral/http";
 import type { AxiosError } from "axios";
 import { accessToken, oauth2 } from "./connections";
 import { API_PATH, MAX_RETRIES } from "./constants";

@@ -1,4 +1,4 @@
-import { handleErrors as handleHttpClientErrors } from "@prismatic-io/spectral/dist/clients/http";
+import { handleErrors as handleHttpClientErrors } from "@prismatic-io/spectral/http";
 import type { RequestError } from "../types";
 
 const isRequestError = (val: unknown): val is RequestError =>

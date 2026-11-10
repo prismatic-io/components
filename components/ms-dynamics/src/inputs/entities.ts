@@ -106,20 +106,20 @@ const batchActionsInput = input({
   default: JSON.stringify(batchActionsDefault, null, 2),
 });
 
-interface CreateAction {
+export interface CreateAction {
   collection: string;
   action: "create";
   returnRepresentation?: boolean;
   data: Record<string, unknown>;
 }
-interface UpdateAction {
+export interface UpdateAction {
   collection: string;
   action: "update";
   key: string;
   returnRepresentation?: boolean;
   data: Record<string, unknown>;
 }
-interface DeleteAction {
+export interface DeleteAction {
   collection: string;
   action: "delete";
   key: string;

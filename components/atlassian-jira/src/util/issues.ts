@@ -1,5 +1,5 @@
 import type { Connection, Element } from "@prismatic-io/spectral";
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import { isAtlassianBasicAuth } from "atlassian-utils";
 import { createV3Client } from "../client";
 import { CONNECTION_KEYS } from "../connections";

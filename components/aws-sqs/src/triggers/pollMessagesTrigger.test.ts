@@ -3,7 +3,7 @@ import type { ActionContext } from "@prismatic-io/spectral";
 import {
   defaultTriggerPayload,
   invokeTrigger,
-} from "@prismatic-io/spectral/dist/testing";
+} from "@prismatic-io/spectral/testing";
 import { convertTrigger } from "@prismatic-io/spectral/dist/serverTypes/convertComponent";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import type { PollMessagesPollingState } from "../interfaces/PollMessagesPollingState";

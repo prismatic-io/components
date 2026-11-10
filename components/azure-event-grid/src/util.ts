@@ -1,6 +1,6 @@
 import { type Connection, util } from "@prismatic-io/spectral";
 import { azureEventGridOauth } from "./connections";
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 
 export const cleanString = (value: unknown) =>
   value ? util.types.toString(value) : undefined;

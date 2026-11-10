@@ -1,6 +1,6 @@
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import type { PaginatedResponse } from "./interfaces";
-import util from "@prismatic-io/spectral/dist/util";
+import { util } from "@prismatic-io/spectral";
 import type { ElementWithLabel } from "./types";
 
 export async function fetchPaginatedData<T>(

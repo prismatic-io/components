@@ -23,7 +23,7 @@ import {
   resolveDriveActivities,
 } from "../util";
 
-interface ActivityResult {
+export interface ActivityResult {
   payload: Omit<TriggerPayload, "body" | "paginationState"> & {
     body: { data: driveactivity_v2.Schema$DriveActivity[]; contentType?: string };
     paginationState?: ActivityPaginationState;

@@ -1,5 +1,5 @@
 import { util } from "@prismatic-io/spectral";
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import FormData from "form-data";
 
 export const jsonInputClean = (value: unknown) => {

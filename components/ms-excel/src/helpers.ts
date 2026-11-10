@@ -151,7 +151,7 @@ import {
   ConnectionError,
   type InputFieldChoice,
 } from "@prismatic-io/spectral";
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import connections from "./connections";
 import { API_URL, API_VERSIONS, WORKBOOK_SOURCES } from "./constants";
 import { ConnectionKeys } from "ms-utils";

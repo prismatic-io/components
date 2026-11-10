@@ -1,7 +1,7 @@
 import {
   createConnection,
   createHarness,
-} from "@prismatic-io/spectral/dist/testing";
+} from "@prismatic-io/spectral/testing";
 import axios from "axios";
 import { arenaUsernamePassword } from "../connections";
 import component from "../index";

@@ -1,6 +1,6 @@
 import { createHash, createPrivateKey, createPublicKey } from "node:crypto";
 import { type ActionLogger, util } from "@prismatic-io/spectral";
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import { sign } from "jsonwebtoken";
 import { ACCEPTED, BAD_REQUEST } from "../constants";
 import type { QueryStatus, ResultSet } from "../types";

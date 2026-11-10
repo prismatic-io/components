@@ -1,5 +1,5 @@
 import type { ActionLogger } from "@prismatic-io/spectral";
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import {
   ARENA_MAX_PAGE_SIZE,
   ARENA_OUTBOUND_INTEGRATIONS_PATH,

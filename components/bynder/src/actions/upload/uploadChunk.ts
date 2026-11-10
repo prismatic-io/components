@@ -1,6 +1,6 @@
 import { basename } from "node:path";
 import { action } from "@prismatic-io/spectral";
-import { createClient } from "@prismatic-io/spectral/dist/clients/http";
+import { createClient } from "@prismatic-io/spectral/http";
 import FormData from "form-data";
 import { parseStringPromise } from "xml2js";
 import { uploadChunkResponse } from "../../examplePayloads";

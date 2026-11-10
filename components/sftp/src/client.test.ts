@@ -1,6 +1,6 @@
 import { getAuthParams } from "./client";
 import { basic, privateKey } from "./connections";
-import { createConnection } from "@prismatic-io/spectral/dist/testing";
+import { createConnection } from "@prismatic-io/spectral/testing";
 
 describe("getAuthParams", () => {
   test("returns params with basic credentials", () => {

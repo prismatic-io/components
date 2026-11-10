@@ -1,5 +1,5 @@
 import { type Connection, ConnectionError, util } from "@prismatic-io/spectral";
-import { type ClientProps, createClient } from "@prismatic-io/spectral/dist/clients/http";
+import { type ClientProps, createClient } from "@prismatic-io/spectral/http";
 import { hubspotOAuth, privateAppAccessToken } from "./connections";
 import { BASE_URL } from "./constants";
 

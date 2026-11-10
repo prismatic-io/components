@@ -2,7 +2,7 @@ import type { Connection } from "@prismatic-io/spectral";
 import {
   createClient as createHttpClient,
   type HttpClient,
-} from "@prismatic-io/spectral/dist/clients/http";
+} from "@prismatic-io/spectral/http";
 import { getBaseUrl, validateConnection } from "./util";
 import { stringify } from "qs";
 import type { LoginData } from "./interfaces/LoginData";

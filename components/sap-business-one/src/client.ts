@@ -1,9 +1,8 @@
-import type { ActionContext, Connection } from "@prismatic-io/spectral";
+import type { ActionContext, Connection, DataSourceContext } from "@prismatic-io/spectral";
 import axios, { type AxiosInstance } from "axios";
 import https from "node:https";
 import { getAuthCredentials, getBaseUrlAndProxy, validateConnection } from "./util";
 import type { CustomAxiosClient, LoginClientParams } from "./interfaces/general";
-import type { DataSourceContext } from "@prismatic-io/spectral/dist/serverTypes";
 
 export const createClient = async (
   connection: Connection,

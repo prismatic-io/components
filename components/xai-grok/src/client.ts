@@ -1,5 +1,5 @@
 import type { Connection } from "@prismatic-io/spectral";
-import { createClient as createHttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import { createClient as createHttpClient } from "@prismatic-io/spectral/http";
 import { API_BASE_URL } from "./constants";
 import type {
   IChatCompletionParams,

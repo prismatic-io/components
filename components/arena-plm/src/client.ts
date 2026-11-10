@@ -1,6 +1,6 @@
 import type { Connection } from "@prismatic-io/spectral";
 import { util } from "@prismatic-io/spectral";
-import { createClient } from "@prismatic-io/spectral/dist/clients/http";
+import { createClient } from "@prismatic-io/spectral/http";
 
 export const getSessionId = async (connection: Connection, debug: boolean) => {
   const { region: baseUrl, email, password, workspaceId } = connection.fields;

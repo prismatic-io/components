@@ -3,7 +3,7 @@ import { mailchimpConnection } from "../connections";
 import {
   createConnection,
   createHarness,
-} from "@prismatic-io/spectral/dist/testing";
+} from "@prismatic-io/spectral/testing";
 
 const harness = createHarness(component);
 const myApiKey = createConnection(mailchimpConnection, {

@@ -1,5 +1,5 @@
 import nock from "nock";
-import { createConnection, invoke } from "@prismatic-io/spectral/dist/testing";
+import { createConnection, invoke } from "@prismatic-io/spectral/testing";
 import { connection as connectionDefinition } from "../../connections";
 import { createDriveWebhook } from "./createDriveWebhook";
 

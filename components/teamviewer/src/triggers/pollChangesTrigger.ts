@@ -2,7 +2,7 @@ import { pollingTrigger } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { POLL_RESOURCE_CONFIG } from "../constants";
 import { pollChangesTriggerInputs } from "../inputs/triggers";
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import type { PollingState, TeamViewerRecord } from "../types";
 import { fetchDevices, fetchGroups, fetchUsers } from "../util";
 

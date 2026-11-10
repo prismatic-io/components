@@ -1,6 +1,6 @@
 import { Storage } from "@google-cloud/storage";
 import type { Connection } from "@prismatic-io/spectral";
-import { createClient, type HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import { createClient, type HttpClient } from "@prismatic-io/spectral/http";
 import { getProjectId, getStorageOptions, validateConnection } from "./util";
 
 export const googleStorageClient = (connection: Connection) => {

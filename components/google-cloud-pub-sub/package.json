@@ -1,17 +1,45 @@
 {
-  "name": "@prismatic-io/google-cloud-pub-sub",
-  "private": true,
+  "name": "@prismatic-io/components-google-cloud-pub-sub",
+  "version": "0.0.1",
+  "main": "./npm-dist/index.cjs",
+  "types": "./npm-dist/index.d.cts",
+  "exports": {
+    ".": {
+      "types": "./npm-dist/index.d.cts",
+      "default": "./npm-dist/index.cjs"
+    }
+  },
+  "description": "Manage topics, subscriptions, and messages in Google Cloud Pub/Sub.",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prismatic-io/components.git",
+    "directory": "components/google-cloud-pub-sub"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "npm-dist",
+    "dist"
+  ],
+  "prismatic": {
+    "component": "./dist/index.js"
+  },
   "scripts": {
-    "publish": "npm run build && prism components:publish",
     "build": "npm run format && npm run lint && tsdown",
     "typecheck": "tsc --noEmit",
     "test": "echo 'no tests'",
     "lint": "biome check --write .",
     "format": "biome format --write .",
-    "build:testapp": "npm run build"
+    "build:testapp": "npm run build",
+    "prepare": "npm run build",
+    "publish:platform": "npm run build && prism components:publish"
+  },
+  "peerDependencies": {
+    "@prismatic-io/spectral": "^10.39.1"
   },
   "dependencies": {
-    "@prismatic-io/spectral": "10.38.5",
     "googleapis": "^118.0.0"
   },
   "devDependencies": {
@@ -19,6 +47,7 @@
     "@types/node": "^26.6.4",
     "tsdown": "0.22.3",
     "typescript": "6.0.3",
-    "vitest": "4.1.9"
+    "vitest": "4.1.9",
+    "@prismatic-io/spectral": "^10.39.1"
   }
 }

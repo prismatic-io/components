@@ -3,7 +3,7 @@ import _ from "lodash";
 import FormData from "form-data";
 import https from "node:https";
 import { action, util } from "@prismatic-io/spectral";
-import { inputs as httpClientInputs } from "@prismatic-io/spectral/dist/clients/http";
+import { inputs as httpClientInputs } from "@prismatic-io/spectral/http";
 import { connection } from "../inputs/general";
 import { addInterceptorsToClient, getCookies } from "../client";
 import { getBaseUrlAndProxy, toFormData, validateConnection } from "../util";

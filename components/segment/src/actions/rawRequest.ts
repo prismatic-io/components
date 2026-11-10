@@ -2,7 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import {
   inputs as httpClientInputs,
   sendRawRequest,
-} from "@prismatic-io/spectral/dist/clients/http";
+} from "@prismatic-io/spectral/http";
 import { getHeaders, validateConnection } from "../client";
 import { connectionInput, region } from "../inputs";
 import { handleErrors } from "../util";

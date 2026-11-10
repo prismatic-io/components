@@ -1,4 +1,4 @@
-import { createConnection, invoke } from "@prismatic-io/spectral/dist/testing";
+import { createConnection, invoke } from "@prismatic-io/spectral/testing";
 import * as dotenv from "dotenv";
 import { getCurrentUser } from "./actions/misc/getCurrentUser";
 import { rawRequest } from "./actions/misc/rawRequest";

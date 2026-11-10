@@ -1,6 +1,6 @@
 import { build } from "./actions/build";
 import { parseBuffer } from "./actions/parseBuffer";
-import { invoke } from "@prismatic-io/spectral/dist/testing";
+import { invoke } from "@prismatic-io/spectral/testing";
 
 const sheetData = [
   [0, "First Name", "Last Name", "Gender", "Country", "Age", "Date", "Id"],

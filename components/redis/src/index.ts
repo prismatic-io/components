@@ -7,7 +7,7 @@ import set from "./actions/set";
 import flushAll from "./actions/flushAll";
 import deleteKey from "./actions/deleteKey";
 import connections from "./connections";
-import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
+import { handleErrors } from "@prismatic-io/spectral/http";
 
 export default component({
   key: "redis",

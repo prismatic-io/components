@@ -1,6 +1,9 @@
 import https from "node:https";
-import { type Connection, util } from "@prismatic-io/spectral";
-import type { ActionContext } from "@prismatic-io/spectral/dist/serverTypes";
+import {
+  type ActionContext,
+  type Connection,
+  util,
+} from "@prismatic-io/spectral";
 import axios, { type AxiosInstance } from "axios";
 import type { ConsumerApplicationSubscription, PersistedToken } from "./types";
 import {

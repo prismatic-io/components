@@ -1,5 +1,5 @@
 import type { Connection } from "@prismatic-io/spectral";
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import { downloadFile } from "../client";
 import type { Attachment, AttachmentResponse, Issue } from "../types";
 

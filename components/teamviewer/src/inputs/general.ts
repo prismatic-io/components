@@ -1,6 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanCode, cleanKeyValueListInput } from "../util";
-import { inputs as httpClientInputs } from "@prismatic-io/spectral/dist/clients/http";
+import { inputs as httpClientInputs } from "@prismatic-io/spectral/http";
 import { BASE_URL } from "../constants";
 
 export const connection = input({

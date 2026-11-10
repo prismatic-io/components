@@ -1,4 +1,4 @@
-import { createConnection } from "@prismatic-io/spectral/dist/testing";
+import { createConnection } from "@prismatic-io/spectral/testing";
 import { accessToken, oauth2 } from "./connections";
 
 export const GITLAB_URL = "https://gitlab.example.com";

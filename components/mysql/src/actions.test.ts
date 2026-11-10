@@ -1,7 +1,7 @@
 import {
   ComponentTestHarness,
   createConnection,
-} from "@prismatic-io/spectral/dist/testing";
+} from "@prismatic-io/spectral/testing";
 import component from ".";
 import { mySQLConnection } from "./connections";
 

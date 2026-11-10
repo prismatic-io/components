@@ -2,7 +2,7 @@ import { stringify } from "node:querystring";
 import { URL } from "node:url";
 import type { Connection } from "@prismatic-io/spectral";
 import { util } from "@prismatic-io/spectral";
-import { createClient as createHttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import { createClient as createHttpClient } from "@prismatic-io/spectral/http";
 
 export const cleanString = (value: unknown): string | undefined =>
   value ? util.types.toString(value) : undefined;

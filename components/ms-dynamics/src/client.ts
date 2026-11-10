@@ -1,5 +1,5 @@
 import { type Connection, ConnectionError, util } from "@prismatic-io/spectral";
-import { createClient as createHttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import { createClient as createHttpClient } from "@prismatic-io/spectral/http";
 import { DynamicsWebApi } from "dynamics-web-api";
 
 const DATAVERSE_API_VERSION = "9.2";

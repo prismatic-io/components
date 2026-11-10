@@ -2,7 +2,13 @@
   "$schema": "https://biomejs.dev/schemas/2.5.1/schema.json",
   "assist": { "actions": { "source": { "organizeImports": "on" } } },
   "files": {
-    "includes": ["**", "!**/dist", "!**/node_modules", "!**/*.js"]
+    "includes": [
+      "**",
+      "!**/dist",
+      "!**/npm-dist",
+      "!**/node_modules",
+      "!**/*.js"
+    ]
   },
   "formatter": {
     "enabled": true,

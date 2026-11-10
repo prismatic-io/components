@@ -1,5 +1,5 @@
 import * as http from "node:http";
-import { createConnection, invoke } from "@prismatic-io/spectral/dist/testing";
+import { createConnection, invoke } from "@prismatic-io/spectral/testing";
 import { deleteExtract } from "../actions/extracts/deleteExtract";
 import { deleteRequirement } from "../actions/requirements/deleteRequirement";
 import { deleteSupplier } from "../actions/suppliers/deleteSupplier";

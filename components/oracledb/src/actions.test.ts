@@ -1,7 +1,7 @@
 import {
   createConnection,
   createHarness,
-} from "@prismatic-io/spectral/dist/testing";
+} from "@prismatic-io/spectral/testing";
 import myComponent from ".";
 import { oracledbConnection } from "./connections";
 

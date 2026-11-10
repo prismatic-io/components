@@ -2,7 +2,7 @@ import { util } from "@prismatic-io/spectral";
 import {
   createConnection,
   createHarness,
-} from "@prismatic-io/spectral/dist/testing";
+} from "@prismatic-io/spectral/testing";
 import { arenaUsernamePassword } from "../connections";
 import component from "../index";
 import { getErrorMessage, getHttpStatus, getNestedValue } from "../util";

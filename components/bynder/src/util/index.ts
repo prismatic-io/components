@@ -1,5 +1,5 @@
 import { type KeyValuePair, util } from "@prismatic-io/spectral";
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import { LOOK_BACK_DATE_PATTERN } from "../constants";
 import type { Collection, Collections, Records } from "../types";
 

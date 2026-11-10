@@ -1,4 +1,4 @@
-import { invoke } from "@prismatic-io/spectral/dist/testing";
+import { invoke } from "@prismatic-io/spectral/testing";
 import { updateInvoiceExamplePayload } from "../../examplePayloads";
 import {
   SANDBOX_BASE,

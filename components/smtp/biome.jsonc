@@ -19,6 +19,13 @@
     "indentWidth": 2
   },
   "files": {
-    "includes": ["**", "!**/dist", "!**/*.md", "!**/*.yml", "!**/*.yaml"]
+    "includes": [
+      "**",
+      "!**/dist",
+      "!**/npm-dist",
+      "!**/*.md",
+      "!**/*.yml",
+      "!**/*.yaml"
+    ]
   }
 }

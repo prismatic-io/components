@@ -1,4 +1,4 @@
-import { defaultTriggerPayload } from "@prismatic-io/spectral/dist/testing";
+import { defaultTriggerPayload } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { accessTokenConnection, GITLAB_URL } from "../testHelpers";
 import { webhookEvents } from "./webhookEvents";

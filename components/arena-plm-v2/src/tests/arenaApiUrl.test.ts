@@ -1,4 +1,4 @@
-import { createConnection } from "@prismatic-io/spectral/dist/testing";
+import { createConnection } from "@prismatic-io/spectral/testing";
 import { arenaApiKey } from "../connections";
 import { getArenaApiBaseUrl } from "../util/arenaApiUrl";
 

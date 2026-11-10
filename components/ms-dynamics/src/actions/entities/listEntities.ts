@@ -1,5 +1,5 @@
 import { action, PerformSafety } from "@prismatic-io/spectral";
-import { createClient as createHttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import { createClient as createHttpClient } from "@prismatic-io/spectral/http";
 import { getWebApiUrl } from "../../client";
 import { listEntitiesExamplePayload } from "../../examplePayloads";
 import { listEntitiesInputs } from "../../inputs";

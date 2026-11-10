@@ -1,5 +1,8 @@
-import type { TriggerPayload, TriggerResult } from "@prismatic-io/spectral";
-import type { PollingTriggerPerformFunction } from "@prismatic-io/spectral/dist/types/PollingTriggerDefinition";
+import type {
+  PollingTriggerPerformFunction,
+  TriggerPayload,
+  TriggerResult,
+} from "@prismatic-io/spectral";
 import { getHubspotClient } from "../client";
 import { BATCHED_WINDOW_LIMIT, MAX_SEARCH_RESULTS, POLL_REQUEST_TIMEOUT_MS } from "../constants";
 import type {

@@ -2,7 +2,7 @@ import { component } from "@prismatic-io/spectral";
 import actions from "./actions";
 import triggers from "./triggers";
 import connections from "./connections";
-import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
+import { handleErrors } from "@prismatic-io/spectral/http";
 
 export default component({
   key: "ms-bot-framework",

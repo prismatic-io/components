@@ -1,4 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
+import { inputs as httpInputs } from "@prismatic-io/spectral/http";
 import { METAPROPERTY_TYPES, ORDER_STATUSES } from "./constants";
 import { initialiseUploadResponse } from "./examplePayloads";
 import type { OrderStatus } from "./types";
@@ -10,7 +11,7 @@ import {
   cleanValueListInput,
 } from "./util";
 
-export { debugRequest } from "@prismatic-io/spectral/dist/clients/http/inputs";
+export const { debugRequest } = httpInputs;
 
 export const connection = input({
   label: "Connection",

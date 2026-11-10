@@ -1,5 +1,5 @@
 import type { TriggerBaseResult, TriggerPayload } from "@prismatic-io/spectral";
-import { createConnection } from "@prismatic-io/spectral/dist/testing";
+import { createConnection } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { arenaApiKey } from "../connections";
 import { ARENA_MAX_PAGE_SIZE } from "../constants";

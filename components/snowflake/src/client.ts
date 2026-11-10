@@ -1,5 +1,5 @@
 import { type Connection, util } from "@prismatic-io/spectral";
-import { createClient, type HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import { createClient, type HttpClient } from "@prismatic-io/spectral/http";
 import { snowflakeKeyPairConnection } from "./connections";
 import type { HeaderProps } from "./types";
 import { cleanFunctionForSnowflakeUserInputs, generateJwtAuthToken } from "./util";

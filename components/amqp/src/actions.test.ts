@@ -1,8 +1,4 @@
-import {
-  ComponentTestHarness,
-  createConnection,
-  loggerMock,
-} from "@prismatic-io/spectral/dist/testing";
+import { ComponentTestHarness, createConnection, loggerMock } from "@prismatic-io/spectral/testing";
 import component from ".";
 import { createClient } from "./client";
 import { amqpConnection } from "./connections";

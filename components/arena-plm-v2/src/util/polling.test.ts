@@ -1,4 +1,4 @@
-import { createClient } from "@prismatic-io/spectral/dist/clients/http";
+import { createClient } from "@prismatic-io/spectral/http";
 import nock from "nock";
 import { ARENA_MAX_PAGE_SIZE } from "../constants";
 import type { ArenaRecord, PollingCursor } from "../types";

@@ -1,4 +1,4 @@
-import { invoke } from "@prismatic-io/spectral/dist/testing";
+import { invoke } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { createIssueNoteExamplePayload } from "../../examplePayloads";
 import { accessTokenConnection, GITLAB_URL } from "../../testHelpers";

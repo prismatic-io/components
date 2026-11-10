@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, test, vi } from "vitest";
-import { defaultTriggerPayload } from "@prismatic-io/spectral/dist/testing";
+import { defaultTriggerPayload } from "@prismatic-io/spectral/testing";
 import { createClient } from "../client";
 import type { PollingState, SAPBusinessOneRecord } from "../types";
 import { lookBackDateClean, resolvePollingRecordChanges } from "../util";

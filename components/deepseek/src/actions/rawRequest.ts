@@ -2,7 +2,7 @@ import { action, type Connection } from "@prismatic-io/spectral";
 import {
   sendRawRequest,
   inputs as httpClientInputs,
-} from "@prismatic-io/spectral/dist/clients/http";
+} from "@prismatic-io/spectral/http";
 import { validateConnection } from "../client";
 import { connection } from "../inputs/general";
 

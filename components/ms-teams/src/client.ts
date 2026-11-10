@@ -1,8 +1,8 @@
 import { oauth, clientCredentials, webhook, adminConsent } from "./connections";
 import type { Connection } from "@prismatic-io/spectral";
 import { ConnectionError, util } from "@prismatic-io/spectral";
-import { createClient as createHttpClient } from "@prismatic-io/spectral/dist/clients/http";
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import { createClient as createHttpClient } from "@prismatic-io/spectral/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import { getAdminConsentToken } from "./utils";
 
 export const baseUrl = "https://graph.microsoft.com/v1.0";

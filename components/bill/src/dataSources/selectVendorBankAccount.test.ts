@@ -1,4 +1,4 @@
-import { invokeDataSource } from "@prismatic-io/spectral/dist/testing";
+import { invokeDataSource } from "@prismatic-io/spectral/testing";
 import { listVendorBankAccountsExamplePayload } from "../examplePayloads";
 import { BANK_ACCOUNT_LIST_ENDPOINTS } from "../constants";
 import {

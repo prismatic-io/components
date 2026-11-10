@@ -4,7 +4,7 @@ import { publishMessage } from "./actions/publishMessage";
 import { rejectMessage } from "./actions/rejectMessage";
 import { acknowledgeMessage } from "./actions/acknowledgeMessage";
 import { checkConnection } from "./actions/checkConnection";
-import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
+import { handleErrors } from "@prismatic-io/spectral/http";
 import connections from "./connections";
 
 export default component({

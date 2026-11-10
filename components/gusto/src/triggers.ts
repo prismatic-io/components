@@ -1,6 +1,6 @@
 import { trigger, util } from "@prismatic-io/spectral";
 import { connectionInput } from "./inputs";
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import { createWebhookClient } from "./client";
 
 async function listWebhookSubscriptions(client: HttpClient) {

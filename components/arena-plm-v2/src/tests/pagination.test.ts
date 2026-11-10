@@ -1,5 +1,5 @@
 import * as http from "node:http";
-import { createClient } from "@prismatic-io/spectral/dist/clients/http";
+import { createClient } from "@prismatic-io/spectral/http";
 import { fetchArenaList } from "../util/pagination";
 
 vi.setConfig({ testTimeout: 10000 });

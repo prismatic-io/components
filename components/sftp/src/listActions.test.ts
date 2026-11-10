@@ -1,4 +1,4 @@
-import { createConnection, invoke } from "@prismatic-io/spectral/dist/testing";
+import { createConnection, invoke } from "@prismatic-io/spectral/testing";
 import listDirectory from "./actions/directories/listDirectory";
 import { basic } from "./connections";
 

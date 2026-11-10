@@ -1,5 +1,4 @@
 import { HttpResponse, input, trigger, util } from "@prismatic-io/spectral";
-import { responseType } from "@prismatic-io/spectral/dist/clients/http/inputs";
 import crypto from "node:crypto";
 
 export const webhook = trigger({

@@ -1,5 +1,5 @@
 import { util } from "@prismatic-io/spectral";
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import { MAX_PER_PAGE, POLL_RESOURCE_CONFIG } from "../constants";
 import type {
   GitlabRecord,

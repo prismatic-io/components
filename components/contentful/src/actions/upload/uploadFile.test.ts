@@ -1,5 +1,5 @@
 import { util } from "@prismatic-io/spectral";
-import { invoke } from "@prismatic-io/spectral/dist/testing";
+import { invoke } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { uploadFileExamplePayload } from "../../examplePayloads";
 import {

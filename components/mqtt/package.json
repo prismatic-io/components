@@ -1,21 +1,46 @@
 {
-  "name": "@prismatic-io/mqtt",
-  "private": true,
+  "name": "@prismatic-io/components-mqtt",
+  "version": "0.0.1",
+  "main": "./npm-dist/index.cjs",
+  "types": "./npm-dist/index.d.cts",
+  "exports": {
+    ".": {
+      "types": "./npm-dist/index.d.cts",
+      "default": "./npm-dist/index.cjs"
+    }
+  },
+  "description": "Interact with an MQTT Queue",
   "license": "Apache-2.0",
-  "version": "0.0.2",
-  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prismatic-io/components.git",
+    "directory": "components/mqtt"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "npm-dist",
+    "dist"
+  ],
+  "prismatic": {
+    "component": "./dist/index.js"
+  },
   "scripts": {
     "lint": "biome lint --write .",
     "format": "biome format --write .",
     "build": "npm run format && npm run lint && tsdown",
     "typecheck": "tsc --noEmit",
-    "publish": "npm run build && prism components:publish",
     "generate:manifest": "npm run build && npx @prismatic-io/spectral component-manifest",
     "generate:manifest:dev": "npm run build && npx @prismatic-io/spectral component-manifest --skip-signature-verify",
-    "test": "echo 'no tests'"
+    "test": "echo 'no tests'",
+    "prepare": "npm run build",
+    "publish:platform": "npm run build && prism components:publish"
+  },
+  "peerDependencies": {
+    "@prismatic-io/spectral": "^10.39.1"
   },
   "dependencies": {
-    "@prismatic-io/spectral": "10.38.5",
     "mqtt": "^5.7.0"
   },
   "devDependencies": {
@@ -23,6 +48,7 @@
     "@types/node": "^26.6.4",
     "tsdown": "0.22.3",
     "typescript": "6.0.3",
-    "vitest": "4.1.9"
+    "vitest": "4.1.9",
+    "@prismatic-io/spectral": "^10.39.1"
   }
 }

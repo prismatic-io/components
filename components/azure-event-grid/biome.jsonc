@@ -3,5 +3,5 @@
   "assist": { "actions": { "source": { "organizeImports": "on" } } },
   "linter": { "enabled": true, "rules": { "recommended": true } },
   "formatter": { "enabled": true, "indentStyle": "space", "indentWidth": 2 },
-  "files": { "includes": ["**", "!**/dist"] }
+  "files": { "includes": ["**", "!**/dist", "!**/npm-dist"] }
 }

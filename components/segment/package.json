@@ -1,20 +1,46 @@
 {
-  "name": "segment",
-  "private": true,
-  "license": "Apache-2.0",
+  "name": "@prismatic-io/components-segment",
   "version": "0.0.1",
+  "main": "./npm-dist/index.cjs",
+  "types": "./npm-dist/index.d.cts",
+  "exports": {
+    ".": {
+      "types": "./npm-dist/index.d.cts",
+      "default": "./npm-dist/index.cjs"
+    }
+  },
+  "description": "Segment is a customer data platform (CDP) service that simplifies collecting and using data from users of your digital properties (websites, apps, etc.) Use the Segment component to manage your Sources, Warehouses, and Destinations.",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prismatic-io/components.git",
+    "directory": "components/segment"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "npm-dist",
+    "dist"
+  ],
+  "prismatic": {
+    "component": "./dist/index.js"
+  },
   "scripts": {
     "lint": "biome lint --write .",
     "format": "biome format --write .",
     "build": "npm run format && npm run lint && tsdown",
     "typecheck": "tsc --noEmit",
-    "publish": "npm run build && prism components:publish",
     "generate:manifest": "npm run build && npx @prismatic-io/spectral component-manifest",
     "generate:manifest:dev": "npm run build && npx @prismatic-io/spectral component-manifest --skip-signature-verify",
-    "test": "vitest run"
+    "test": "vitest run",
+    "prepare": "npm run build",
+    "publish:platform": "npm run build && prism components:publish"
+  },
+  "peerDependencies": {
+    "@prismatic-io/spectral": "^10.39.1"
   },
   "dependencies": {
-    "@prismatic-io/spectral": "10.38.5",
     "form-data": "^4.0.0"
   },
   "devDependencies": {
@@ -22,6 +48,7 @@
     "@types/node": "^26.6.4",
     "tsdown": "0.22.3",
     "typescript": "6.0.3",
-    "vitest": "4.1.9"
+    "vitest": "4.1.9",
+    "@prismatic-io/spectral": "^10.39.1"
   }
 }

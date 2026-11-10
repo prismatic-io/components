@@ -1,4 +1,4 @@
-import { createConnection } from "@prismatic-io/spectral/dist/testing";
+import { createConnection } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { contentfulOauth2Connection } from "./connections";
 import { API_BASE_URL, API_UPLOAD_URL } from "./constants";

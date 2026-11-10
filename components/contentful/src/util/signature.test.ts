@@ -1,4 +1,4 @@
-import { defaultTriggerPayload } from "@prismatic-io/spectral/dist/testing";
+import { defaultTriggerPayload } from "@prismatic-io/spectral/testing";
 import type { ContentfulCanonicalRequest } from "../types";
 import {
   validateContentfulWebhookRequest,

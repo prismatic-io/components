@@ -1,5 +1,5 @@
 import type { BatchInfo } from "@prismatic-io/spectral";
-import { defaultTriggerPayload } from "@prismatic-io/spectral/dist/testing";
+import { defaultTriggerPayload } from "@prismatic-io/spectral/testing";
 import { createGitlabClient } from "../client";
 import { MAX_BATCHED_PAYLOAD_BYTES, MAX_UNBATCHED_RECORDS } from "../constants";
 import type {

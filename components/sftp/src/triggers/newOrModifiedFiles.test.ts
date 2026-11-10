@@ -1,4 +1,4 @@
-import { defaultTriggerPayload } from "@prismatic-io/spectral/dist/testing";
+import { defaultTriggerPayload } from "@prismatic-io/spectral/testing";
 import { beforeEach, vi } from "vitest";
 import type { FileChangesObject, FileEntry, PollingState } from "../types";
 import { resolveFileChanges } from "../util";

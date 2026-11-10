@@ -1,4 +1,4 @@
-import { createClient as createHttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import { createClient as createHttpClient } from "@prismatic-io/spectral/http";
 import type { GetClient } from "./types";
 import { getBaseUrl } from "./utils/getBaseUrl";
 import { getConnectionHeaders } from "./utils/getConnectionHeaders";

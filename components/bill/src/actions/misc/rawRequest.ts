@@ -1,7 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { cleanReturnData, getBaseUrl, validateConnection } from "../../util";
 import { rawRequestInputs } from "../../inputs/misc";
-import { sendRawRequest } from "@prismatic-io/spectral/dist/clients/http";
+import { sendRawRequest } from "@prismatic-io/spectral/http";
 
 export const rawRequest = action({
   display: {

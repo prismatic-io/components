@@ -1,16 +1,43 @@
 {
-  "name": "@prismatic-io/mysql",
-  "private": true,
+  "name": "@prismatic-io/components-mysql",
+  "version": "0.0.1",
+  "main": "./npm-dist/index.cjs",
+  "types": "./npm-dist/index.d.cts",
+  "exports": {
+    ".": {
+      "types": "./npm-dist/index.d.cts",
+      "default": "./npm-dist/index.cjs"
+    }
+  },
+  "description": "Query and manage data in a MySQL Database",
   "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prismatic-io/components.git",
+    "directory": "components/mysql"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "npm-dist",
+    "dist"
+  ],
+  "prismatic": {
+    "component": "./dist/index.js"
+  },
   "scripts": {
     "build": "npm run format && npm run lint && tsdown",
     "typecheck": "tsc --noEmit",
     "lint": "biome check --write .",
     "format": "biome format --write .",
-    "test": "vitest run"
+    "test": "vitest run",
+    "prepare": "npm run build"
+  },
+  "peerDependencies": {
+    "@prismatic-io/spectral": "^10.39.1"
   },
   "dependencies": {
-    "@prismatic-io/spectral": "10.38.5",
     "mysql2": "3.24.5"
   },
   "devDependencies": {
@@ -18,6 +45,7 @@
     "@types/node": "^25.9.1",
     "tsdown": "0.22.3",
     "typescript": "6.0.3",
-    "vitest": "4.1.9"
+    "vitest": "4.1.9",
+    "@prismatic-io/spectral": "^10.39.1"
   }
 }

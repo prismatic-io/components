@@ -1,5 +1,5 @@
 import * as http from "node:http";
-import { createConnection, invoke } from "@prismatic-io/spectral/dist/testing";
+import { createConnection, invoke } from "@prismatic-io/spectral/testing";
 import { rawRequest } from "../actions/misc/rawRequest";
 import { arenaApiKey } from "../connections";
 import { type CapturedLog, createTestContext } from "./testContext";

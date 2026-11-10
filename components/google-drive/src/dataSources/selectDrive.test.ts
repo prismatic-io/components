@@ -1,4 +1,4 @@
-import { createConnection, invokeDataSource } from "@prismatic-io/spectral/dist/testing";
+import { createConnection, invokeDataSource } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { connection as connectionDefinition } from "../connections";
 import { MY_DRIVE, MY_DRIVE_LABEL } from "../constants";

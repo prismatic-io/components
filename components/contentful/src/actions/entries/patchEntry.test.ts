@@ -1,4 +1,4 @@
-import { invoke } from "@prismatic-io/spectral/dist/testing";
+import { invoke } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { patchEntryExamplePayload } from "../../examplePayloads";
 import { ACCESS_TOKEN, BASE, connection, useNock } from "../../testHelpers";

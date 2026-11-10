@@ -1,4 +1,4 @@
-import { createConnection, invokeTrigger } from "@prismatic-io/spectral/dist/testing";
+import { createConnection, invokeTrigger } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { jiraOAuthConnection } from "../connections";
 import { webhookEventsExamplePayload } from "../examplePayloads";

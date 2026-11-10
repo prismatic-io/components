@@ -1,6 +1,6 @@
 import * as dotenv from "dotenv";
 import type { Connection } from "@prismatic-io/spectral";
-import { invoke } from "@prismatic-io/spectral/dist/testing";
+import { invoke } from "@prismatic-io/spectral/testing";
 
 import { googleConnection } from "./connections";
 import { createDocument } from "./actions/createDocument";

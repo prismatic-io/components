@@ -1,4 +1,4 @@
-import { inputs as httpClientInputs } from "@prismatic-io/spectral/dist/clients/http";
+import { inputs as httpClientInputs } from "@prismatic-io/spectral/http";
 import { connectionInput, apiVersion } from "./common";
 import { BASE_URL } from "../constants";
 

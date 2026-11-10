@@ -1,4 +1,4 @@
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import type { ActionContext, Connection } from "@prismatic-io/spectral";
 import { ConnectionError } from "@prismatic-io/spectral";
 import type { CreateWebhookParams, Webhook, WebhookParams } from "../types";

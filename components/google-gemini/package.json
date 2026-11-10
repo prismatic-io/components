@@ -1,24 +1,52 @@
 {
-  "name": "google-gemini",
-  "private": true,
+  "name": "@prismatic-io/components-google-gemini",
+  "version": "0.0.1",
+  "main": "./npm-dist/index.cjs",
+  "types": "./npm-dist/index.d.cts",
+  "exports": {
+    ".": {
+      "types": "./npm-dist/index.d.cts",
+      "default": "./npm-dist/index.cjs"
+    }
+  },
+  "description": "Interact with Google Gemini AI models to generate text, images, videos, and manage chat conversations.",
   "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prismatic-io/components.git",
+    "directory": "components/google-gemini"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "npm-dist",
+    "dist"
+  ],
+  "prismatic": {
+    "component": "./dist/index.js"
+  },
   "scripts": {
     "build": "npm run format && npm run lint && tsdown",
     "typecheck": "tsc --noEmit",
     "lint": "biome check --write .",
     "format": "biome format --write .",
     "test": "echo 'no tests'",
-    "publish": "npm run build && prism components:publish"
+    "prepare": "npm run build",
+    "publish:platform": "npm run build && prism components:publish"
+  },
+  "peerDependencies": {
+    "@prismatic-io/spectral": "^10.39.1"
   },
   "dependencies": {
-    "@google/genai": "^1.45.0",
-    "@prismatic-io/spectral": "10.38.5"
+    "@google/genai": "^1.45.0"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.1",
     "@types/node": "^25.4.0",
     "tsdown": "0.22.3",
     "typescript": "6.0.3",
-    "vitest": "4.1.9"
+    "vitest": "4.1.9",
+    "@prismatic-io/spectral": "^10.39.1"
   }
 }

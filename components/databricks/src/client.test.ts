@@ -1,4 +1,4 @@
-import { createConnection } from "@prismatic-io/spectral/dist/testing";
+import { createConnection } from "@prismatic-io/spectral/testing";
 import { getHostAndApiKey } from "./client";
 import { personalAccessToken, workspaceServicePrincipal } from "./connections";
 

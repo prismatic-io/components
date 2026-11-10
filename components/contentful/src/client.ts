@@ -1,9 +1,8 @@
-import type { Connection } from "@prismatic-io/spectral";
+import type { ActionContext, Connection } from "@prismatic-io/spectral";
 import {
   createClient as createAxiosClient,
   type HttpClient,
-} from "@prismatic-io/spectral/dist/clients/http";
-import type { ActionContext } from "@prismatic-io/spectral/dist/serverTypes";
+} from "@prismatic-io/spectral/http";
 import {
   type ClientAPI,
   createClient as createContentfulClient,

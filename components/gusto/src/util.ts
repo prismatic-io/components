@@ -2,7 +2,7 @@ import { util, type Connection } from "@prismatic-io/spectral";
 import {
   createClient as createHttpClient,
   type HttpClient,
-} from "@prismatic-io/spectral/dist/clients/http";
+} from "@prismatic-io/spectral/http";
 
 export const fetchToken = async (connection: Connection, debug: boolean) => {
   const { clientId, clientSecret, tokenUrl } = connection.fields;
@@ -52,7 +52,7 @@ export const fetchAllPages = async <T = unknown>(
   return allRecords;
 };
 
-interface CursorEventItem {
+export interface CursorEventItem {
   uuid: string;
   [key: string]: unknown;
 }

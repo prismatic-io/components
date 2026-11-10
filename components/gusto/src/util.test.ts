@@ -1,4 +1,4 @@
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import { fetchAllPages, fetchAllCursorEvents } from "./util";
 import type { Mock } from "vitest";
 

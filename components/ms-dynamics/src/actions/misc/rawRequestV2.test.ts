@@ -6,7 +6,7 @@ const { mockSendRawRequest } = vi.hoisted(() => ({
   mockSendRawRequest: vi.fn(),
 }));
 
-vi.mock("@prismatic-io/spectral/dist/clients/http", async (importOriginal) => {
+vi.mock("@prismatic-io/spectral/http", async (importOriginal) => {
   const actual = (await importOriginal()) as Record<string, unknown>;
   return {
     ...actual,

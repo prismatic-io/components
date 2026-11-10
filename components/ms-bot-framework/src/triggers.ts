@@ -7,7 +7,7 @@ import {
   type VerifyOptions,
 } from "jsonwebtoken";
 import { JwksClient } from "jwks-rsa";
-import { createClient as createHttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import { createClient as createHttpClient } from "@prismatic-io/spectral/http";
 import { botId } from "./inputs";
 
 const verify = promisify<string, Secret | GetPublicKeyOrSecret, VerifyOptions>(verifyCb);

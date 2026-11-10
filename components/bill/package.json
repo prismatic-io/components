@@ -1,19 +1,44 @@
 {
-  "name": "bill",
-  "private": true,
-  "license": "Apache-2.0",
+  "name": "@prismatic-io/components-bill",
   "version": "0.0.1",
-  "main": "index.js",
+  "main": "./npm-dist/index.cjs",
+  "types": "./npm-dist/index.d.cts",
+  "exports": {
+    ".": {
+      "types": "./npm-dist/index.d.cts",
+      "default": "./npm-dist/index.cjs"
+    }
+  },
+  "description": "Use the Bill component to manage Bank Accounts, Invoices, Bills, and more.",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prismatic-io/components.git",
+    "directory": "components/bill"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "npm-dist",
+    "dist"
+  ],
+  "prismatic": {
+    "component": "./dist/index.js"
+  },
   "scripts": {
     "build": "npm run format && npm run lint && tsdown",
     "typecheck": "tsc --noEmit",
-    "publish": "npm run build && prism components:publish",
     "lint": "biome lint --write .",
     "format": "biome format --write .",
-    "test": "vitest run"
+    "test": "vitest run",
+    "prepare": "npm run build",
+    "publish:platform": "npm run build && prism components:publish"
+  },
+  "peerDependencies": {
+    "@prismatic-io/spectral": "^10.39.1"
   },
   "dependencies": {
-    "@prismatic-io/spectral": "10.38.5",
     "qs": "^6.15.3"
   },
   "devDependencies": {
@@ -23,6 +48,7 @@
     "nock": "14.0.17",
     "tsdown": "0.22.3",
     "typescript": "6.0.3",
-    "vitest": "4.1.9"
+    "vitest": "4.1.9",
+    "@prismatic-io/spectral": "^10.39.1"
   }
 }

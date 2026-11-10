@@ -1,8 +1,5 @@
 import { type Connection, ConnectionError } from "@prismatic-io/spectral";
-import {
-  createClient,
-  type HttpClient,
-} from "@prismatic-io/spectral/dist/clients/http";
+import { createClient, type HttpClient } from "@prismatic-io/spectral/http";
 import { validateConnection } from "./utils";
 import { buildAuthHeader } from "./utils/auth";
 import type { CosmosDbResourceType, HttpVerb } from "./constants";

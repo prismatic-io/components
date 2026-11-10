@@ -4,6 +4,7 @@
     "includes": [
       "**",
       "!**/dist",
+      "!**/npm-dist",
       "!**/node_modules",
       "!**/*.js",
       "!**/*.md",

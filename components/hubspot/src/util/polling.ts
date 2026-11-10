@@ -1,4 +1,4 @@
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import {
   CUSTOM_OBJECT_CREATED_PROPERTY,
   CUSTOM_OBJECT_LAST_MODIFIED_PROPERTY,

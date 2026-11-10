@@ -1,6 +1,6 @@
 import type { CreateApiPaginationResponse } from "../types";
 
-interface Event {
+export interface Event {
   id: number;
   context: string | null;
   created_datetime: string | null;

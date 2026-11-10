@@ -1,4 +1,4 @@
-import { invokeTrigger, loggerMock } from "@prismatic-io/spectral/dist/testing";
+import { invokeTrigger, loggerMock } from "@prismatic-io/spectral/testing";
 import { getBillExamplePayload } from "../examplePayloads";
 import {
   SANDBOX_BASE,

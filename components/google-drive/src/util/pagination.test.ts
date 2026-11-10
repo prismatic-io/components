@@ -1,4 +1,4 @@
-import { createConnection } from "@prismatic-io/spectral/dist/testing";
+import { createConnection } from "@prismatic-io/spectral/testing";
 import type { GaxiosResponse } from "gaxios";
 import nock from "nock";
 import { createClient } from "../client";

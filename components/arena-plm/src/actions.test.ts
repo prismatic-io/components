@@ -1,7 +1,7 @@
 import {
   createConnection,
   createHarness,
-} from "@prismatic-io/spectral/dist/testing";
+} from "@prismatic-io/spectral/testing";
 import component from ".";
 import { arenaPlmBasicAuth } from "./connections";
 

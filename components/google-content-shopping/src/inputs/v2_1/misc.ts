@@ -1,4 +1,4 @@
-import { inputs as httpClientInputs } from "@prismatic-io/spectral/dist/clients/http";
+import { inputs as httpClientInputs } from "@prismatic-io/spectral/http";
 import { connectionInput, version } from "./common";
 
 const { debugRequest: _, ...rawHttpInputs } = httpClientInputs;

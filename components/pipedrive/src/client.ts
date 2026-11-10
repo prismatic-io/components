@@ -1,8 +1,5 @@
 import { type Connection, util } from "@prismatic-io/spectral";
-import {
-  type HttpClient,
-  createClient as createHttpClient,
-} from "@prismatic-io/spectral/dist/clients/http";
+import { type HttpClient, createClient as createHttpClient } from "@prismatic-io/spectral/http";
 import { getBaseUrl, validateConnection } from "./util";
 import { WebhookVersion } from "./constants";
 

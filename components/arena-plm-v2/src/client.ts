@@ -1,8 +1,5 @@
 import { type Connection, ConnectionError, util } from "@prismatic-io/spectral";
-import {
-  createClient,
-  type HttpClient,
-} from "@prismatic-io/spectral/dist/clients/http";
+import { createClient, type HttpClient } from "@prismatic-io/spectral/http";
 import {
   ARENA_DEFAULT_TIMEOUT_MS,
   ARENA_LIMIT_RESET_HEADER,

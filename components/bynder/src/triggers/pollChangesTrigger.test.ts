@@ -9,7 +9,7 @@ import type { ActionContext } from "@prismatic-io/spectral";
 import {
   defaultTriggerPayload,
   invokeTrigger,
-} from "@prismatic-io/spectral/dist/testing";
+} from "@prismatic-io/spectral/testing";
 import { getJobResponse, listJobsResponse } from "../examplePayloads";
 import type {
   BynderChangesObject,

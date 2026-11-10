@@ -1,6 +1,6 @@
 import crypto from "node:crypto";
 import { type ActionContext, type Connection, ConnectionError, util } from "@prismatic-io/spectral";
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import { hubspotOAuth, hubspotOAuthTrigger } from "../connections";
 import type { GetSubscriptionPayload, WebhookSettings } from "../types";
 import { hubspotPaths } from "../constants";

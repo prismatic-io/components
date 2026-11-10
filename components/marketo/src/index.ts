@@ -1,5 +1,5 @@
 import { component } from "@prismatic-io/spectral";
-import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
+import { handleErrors } from "@prismatic-io/spectral/http";
 import rawRequest from "./actions/rawRequest";
 import companies from "./actions/companies";
 import customObjects from "./actions/customObjects";

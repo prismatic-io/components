@@ -1,4 +1,4 @@
-import { inputs as httpClientInputs } from "@prismatic-io/spectral/dist/clients/http";
+import { inputs as httpClientInputs } from "@prismatic-io/spectral/http";
 import { sharedInputs } from "./shared";
 
 const BASE_URL = "https://<YOUR_DOMAIN>.gorgias.com/api";

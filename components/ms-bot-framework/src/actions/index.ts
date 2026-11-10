@@ -1,4 +1,4 @@
-import { buildRawRequestAction } from "@prismatic-io/spectral/dist/clients/http";
+import { buildRawRequestAction } from "@prismatic-io/spectral/http";
 import activities from "./activities";
 import conversations from "./conversations";
 

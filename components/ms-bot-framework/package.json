@@ -1,17 +1,44 @@
 {
-  "name": "@prismatic-io/ms-bot-framework",
-  "private": true,
+  "name": "@prismatic-io/components-ms-bot-framework",
+  "version": "0.0.1",
+  "main": "./npm-dist/index.cjs",
+  "types": "./npm-dist/index.d.cts",
+  "exports": {
+    ".": {
+      "types": "./npm-dist/index.d.cts",
+      "default": "./npm-dist/index.cjs"
+    }
+  },
+  "description": "Manage conversations, messages, and activities in Microsoft Bot Framework.",
   "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prismatic-io/components.git",
+    "directory": "components/ms-bot-framework"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "npm-dist",
+    "dist"
+  ],
+  "prismatic": {
+    "component": "./dist/index.js"
+  },
   "scripts": {
     "lint": "biome lint --write .",
     "format": "biome format --write .",
     "build": "npm run format && npm run lint && tsdown",
     "typecheck": "tsc --noEmit",
-    "publish": "npm run build && prism components:publish",
-    "test": "echo 'no tests'"
+    "test": "echo 'no tests'",
+    "prepare": "npm run build",
+    "publish:platform": "npm run build && prism components:publish"
+  },
+  "peerDependencies": {
+    "@prismatic-io/spectral": "^10.39.1"
   },
   "dependencies": {
-    "@prismatic-io/spectral": "10.38.5",
     "jsonwebtoken": "9.0.0",
     "jwks-rsa": "3.0.0"
   },
@@ -21,6 +48,7 @@
     "@types/node": "^26.6.4",
     "tsdown": "0.22.3",
     "typescript": "6.0.3",
-    "vitest": "4.1.9"
+    "vitest": "4.1.9",
+    "@prismatic-io/spectral": "^10.39.1"
   }
 }

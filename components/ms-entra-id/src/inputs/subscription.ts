@@ -1,5 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
-import { headers } from "@prismatic-io/spectral/dist/clients/http/inputs";
+import { inputs as httpInputs } from "@prismatic-io/spectral/http";
 import { cleanHeaders } from "../util";
 import {
   additionalProperties,
@@ -51,7 +51,7 @@ export const createSubscriptionInputs = {
     comments: `${additionalProperties.comments} See [Create Subscription API](https://learn.microsoft.com/en-us/graph/api/subscription-post-subscriptions).`,
   }),
   headers: input({
-    ...headers,
+    ...httpInputs.headers,
     clean: cleanHeaders,
   }),
 };

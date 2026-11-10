@@ -1,6 +1,6 @@
 import type { CreateApiPaginationResponse } from "../types";
 
-interface TicketMessage {
+export interface TicketMessage {
   id: number;
   attachments: {
     url: string;

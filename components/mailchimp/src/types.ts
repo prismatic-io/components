@@ -1,4 +1,4 @@
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 
 export interface PaginatedResponse<T> {
   [key: string]: T[] | number | unknown;

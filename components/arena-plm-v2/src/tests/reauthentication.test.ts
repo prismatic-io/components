@@ -1,5 +1,5 @@
 import * as http from "node:http";
-import { createConnection } from "@prismatic-io/spectral/dist/testing";
+import { createConnection } from "@prismatic-io/spectral/testing";
 import { createArenaClient } from "../client";
 import { arenaApiKey, arenaOAuth, arenaUsernamePassword } from "../connections";
 import { createTestContext } from "./testContext";

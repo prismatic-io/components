@@ -1,18 +1,44 @@
 {
-  "name": "snowflake",
-  "private": true,
-  "license": "Apache-2.0",
+  "name": "@prismatic-io/components-snowflake",
   "version": "0.0.1",
+  "main": "./npm-dist/index.cjs",
+  "types": "./npm-dist/index.d.cts",
+  "exports": {
+    ".": {
+      "types": "./npm-dist/index.d.cts",
+      "default": "./npm-dist/index.cjs"
+    }
+  },
+  "description": "Execute SQL queries and manage statements in Snowflake.",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prismatic-io/components.git",
+    "directory": "components/snowflake"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "npm-dist",
+    "dist"
+  ],
+  "prismatic": {
+    "component": "./dist/index.js"
+  },
   "scripts": {
     "build": "npm run format && npm run lint && tsdown",
     "typecheck": "tsc --noEmit",
-    "publish": "npm run build && prism components:publish",
     "test": "echo 'no tests'",
     "lint": "biome check --write .",
-    "format": "biome format --write ."
+    "format": "biome format --write .",
+    "prepare": "npm run build",
+    "publish:platform": "npm run build && prism components:publish"
+  },
+  "peerDependencies": {
+    "@prismatic-io/spectral": "^10.39.1"
   },
   "dependencies": {
-    "@prismatic-io/spectral": "10.38.5",
     "jsonwebtoken": "^9.0.3",
     "snowflake-sdk": "^1.6.22"
   },
@@ -23,6 +49,7 @@
     "@types/snowflake-sdk": "^1.6.24",
     "tsdown": "0.22.3",
     "typescript": "6.0.3",
-    "vitest": "4.1.9"
+    "vitest": "4.1.9",
+    "@prismatic-io/spectral": "^10.39.1"
   }
 }

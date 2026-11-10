@@ -1,5 +1,5 @@
 import type { ActionLogger, Connection } from "@prismatic-io/spectral";
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 
 export interface GetClient {
   connection: Connection;

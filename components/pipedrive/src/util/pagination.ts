@@ -1,4 +1,4 @@
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import type { GenericCursorPaginationData, GenericPaginationData } from "../types";
 import { PAGINATION_LIMIT } from "../constants";
 

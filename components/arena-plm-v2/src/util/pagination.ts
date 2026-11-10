@@ -1,4 +1,4 @@
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import { ARENA_MAX_PAGE_SIZE } from "../constants";
 import type { ArenaListResponse } from "../types";
 

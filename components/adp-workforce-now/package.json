@@ -1,19 +1,46 @@
 {
-  "name": "@prismatic-io/adp-workforce-now",
-  "private": true,
+  "name": "@prismatic-io/components-adp-workforce-now",
+  "version": "0.0.1",
+  "main": "./npm-dist/index.cjs",
+  "types": "./npm-dist/index.d.cts",
+  "exports": {
+    ".": {
+      "types": "./npm-dist/index.d.cts",
+      "default": "./npm-dist/index.cjs"
+    }
+  },
+  "description": "Manage applicants, workers, and payroll data in ADP Workforce Now.",
   "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prismatic-io/components.git",
+    "directory": "components/adp-workforce-now"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "npm-dist",
+    "dist"
+  ],
+  "prismatic": {
+    "component": "./dist/index.js"
+  },
   "scripts": {
     "build": "npm run format && npm run lint && tsdown",
     "typecheck": "tsc --noEmit",
     "lint": "biome check --write .",
     "format": "biome format --write .",
     "test": "vitest run",
-    "publish": "npm run build && prism components:publish",
     "generate:manifest": "npm run build && npx @prismatic-io/spectral component-manifest",
-    "generate:manifest:dev": "npm run build && npx @prismatic-io/spectral component-manifest --skip-signature-verify"
+    "generate:manifest:dev": "npm run build && npx @prismatic-io/spectral component-manifest --skip-signature-verify",
+    "prepare": "npm run build",
+    "publish:platform": "npm run build && prism components:publish"
+  },
+  "peerDependencies": {
+    "@prismatic-io/spectral": "^10.39.1"
   },
   "dependencies": {
-    "@prismatic-io/spectral": "10.35.0",
     "lodash": "^4.17.21"
   },
   "devDependencies": {
@@ -23,6 +50,7 @@
     "nock": "13.5.6",
     "tsdown": "0.22.3",
     "typescript": "6.0.3",
-    "vitest": "4.1.9"
+    "vitest": "4.1.9",
+    "@prismatic-io/spectral": "^10.39.1"
   }
 }

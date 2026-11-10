@@ -31,7 +31,7 @@ interface PollRound {
   noChanges: boolean;
 }
 
-interface PollResult {
+export interface PollResult {
   payload: Omit<TriggerPayload, "body" | "paginationState"> & {
     body: { data: PollRound["data"]; contentType?: string };
     paginationState?: ChangesPaginationState;

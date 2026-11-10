@@ -1,18 +1,44 @@
 {
-  "name": "atlassian-jira",
-  "private": true,
+  "name": "@prismatic-io/components-atlassian-jira",
+  "version": "0.0.1",
+  "main": "./npm-dist/index.cjs",
+  "types": "./npm-dist/index.d.cts",
+  "exports": {
+    ".": {
+      "types": "./npm-dist/index.d.cts",
+      "default": "./npm-dist/index.cjs"
+    }
+  },
+  "description": "Manage issues, comments, projects, and users in Jira.",
   "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prismatic-io/components.git",
+    "directory": "components/atlassian-jira"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "npm-dist",
+    "dist"
+  ],
+  "prismatic": {
+    "component": "./dist/index.js"
+  },
   "scripts": {
     "build": "npm run format && npm run lint && tsdown",
     "typecheck": "tsc --noEmit",
     "lint": "biome lint --write .",
     "format": "biome format --write .",
     "test": "vitest run",
-    "publish": "npm run build && prism components:publish"
+    "prepare": "npm run build",
+    "publish:platform": "npm run build && prism components:publish"
+  },
+  "peerDependencies": {
+    "@prismatic-io/spectral": "^10.39.1"
   },
   "dependencies": {
-    "@prismatic-io/spectral": "10.36.2",
-    "atlassian-utils": "file:../../packages/atlassian-utils",
     "form-data": "4.0.6",
     "lodash": "4.18.1"
   },
@@ -23,6 +49,8 @@
     "nock": "13.5.6",
     "tsdown": "0.22.3",
     "typescript": "6.0.3",
-    "vitest": "4.1.9"
+    "vitest": "4.1.9",
+    "@prismatic-io/spectral": "^10.39.1",
+    "atlassian-utils": "file:../../packages/atlassian-utils"
   }
 }
