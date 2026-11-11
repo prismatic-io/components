@@ -1,6 +1,6 @@
 {
   "name": "@prismatic-io/components-jira-service-management",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "main": "./npm-dist/index.cjs",
   "types": "./npm-dist/index.d.cts",
   "exports": {
@@ -51,7 +51,8 @@
     "typescript": "6.0.3",
     "vitest": "4.1.9",
     "@prismatic-io/spectral": "^10.39.1",
-    "atlassian-utils": "file:../../packages/atlassian-utils"
+    "atlassian-utils": "file:../../packages/atlassian-utils",
+    "build-config": "file:../../packages/build-config"
   },
   "overrides": {
     "axios": "1.13.5"

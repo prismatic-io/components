@@ -46,6 +46,7 @@
     "typescript": "6.0.3",
     "vitest": "4.1.9",
     "@prismatic-io/spectral": "^10.39.1",
-    "ms-utils": "file:../../packages/ms-utils"
+    "ms-utils": "file:../../packages/ms-utils",
+    "build-config": "file:../../packages/build-config"
   }
 }

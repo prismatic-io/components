@@ -52,6 +52,7 @@
     "nock": "^14.0.17",
     "tsdown": "0.22.3",
     "typescript": "6.0.3",
-    "vitest": "4.1.9"
+    "vitest": "4.1.9",
+    "build-config": "file:../../packages/build-config"
   }
 }

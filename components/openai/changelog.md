@@ -2,6 +2,10 @@
 
 ### 2026-11-11
 
+Refactored internal code
+
+### 2026-11-11
+
 Updated model defaults and the agent runtime, and published the component as an npm package:
 
 - Updated the **Model** default on **Create Chat Completion** and **Create Response** to gpt-6-luna, replacing gpt-3.5-turbo, which OpenAI has shut down, and the retiring gpt-4.1

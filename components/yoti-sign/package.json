@@ -44,6 +44,7 @@
     "@types/node": "^26.6.5",
     "tsdown": "0.22.3",
     "typescript": "6.0.3",
-    "@prismatic-io/spectral": "^10.39.1"
+    "@prismatic-io/spectral": "^10.39.1",
+    "build-config": "file:../../packages/build-config"
   }
 }

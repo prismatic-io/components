@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-11-11
+
+Refactored internal code
+
 ### 2026-11-10
 
 Added attachment actions and data sources, and updated existing actions:

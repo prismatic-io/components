@@ -1,6 +1,6 @@
 {
   "name": "@prismatic-io/components-zoom",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "main": "./npm-dist/index.cjs",
   "types": "./npm-dist/index.d.cts",
   "exports": {
@@ -45,6 +45,7 @@
     "tsdown": "0.22.3",
     "typescript": "6.0.3",
     "vitest": "4.1.9",
-    "@prismatic-io/spectral": "^10.39.2"
+    "@prismatic-io/spectral": "^10.39.2",
+    "build-config": "file:../../packages/build-config"
   }
 }
