@@ -1,7 +1,4 @@
-import {
-  createClient,
-  type HttpClient,
-} from "@prismatic-io/spectral/dist/clients/http";
+import { createClient, type HttpClient } from "@prismatic-io/spectral/http";
 
 import { MsAdsRestService } from "./constants";
 import type { GetRestClientProps } from "./types";

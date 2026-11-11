@@ -1,5 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
-import { inputs as httpClientInputs } from "@prismatic-io/spectral/dist/clients/http";
+import { inputs as httpClientInputs } from "@prismatic-io/spectral/http";
 
 import { MsAdsRestService, REST_BASE_URLS, WEB_SERVICE } from "../constants";
 import { cleanModelValue } from "../util";
