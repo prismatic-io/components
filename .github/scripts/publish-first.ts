@@ -38,7 +38,8 @@ import {
   parseAs,
   planFirstPublish,
   REGISTRY,
-  sharedPackagesOf,
+  readSharedPackage,
+  sharedPackagesToBuild,
   trustConfigsIn,
   waitForPackages,
 } from "./publish-plan.ts";
@@ -312,7 +313,7 @@ const main = async () => {
   const packDir = await mkdtemp(join(tmpdir(), "publish-first-"));
   await eachJob(toBootstrap, async (job, label) => {
     console.log(`\n== ${label}`);
-    for (const shared of sharedPackagesOf(packages[job.key] ?? {})) {
+    for (const shared of sharedPackagesToBuild(packages[job.key] ?? {}, readSharedPackage)) {
       if (builtShared.has(shared)) continue;
       await npm(join("packages", shared), NPM_CI_ARGS);
       await npm(join("packages", shared), ["run", "build"]);

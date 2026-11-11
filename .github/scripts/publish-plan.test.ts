@@ -12,7 +12,9 @@ import {
   parseAs,
   planFirstPublish,
   planPublish,
+  hasBuildScript,
   sharedPackagesOf,
+  sharedPackagesToBuild,
   trustConfigsIn,
   trustProblem,
   waitForPackages,
@@ -105,6 +107,35 @@ describe("planPublish", () => {
 
   test("an empty manifest plans nothing", () => {
     expect(planPublish({}, {}, {})).toEqual([]);
+  });
+});
+
+describe("sharedPackagesToBuild", () => {
+  const shared: Record<string, { scripts?: Record<string, string> }> = {
+    "aws-utils": { scripts: { build: "tsc" } },
+    "build-config": {},
+  };
+  const readShared = (name: string) => shared[name];
+
+  test("leaves out a shared package with no build script", () => {
+    const pkg = {
+      devDependencies: {
+        "@prismatic-io/aws-utils": "file:../../packages/aws-utils",
+        "build-config": "file:../../packages/build-config",
+      },
+    };
+    expect(sharedPackagesToBuild(pkg, readShared)).toEqual(["aws-utils"]);
+  });
+
+  test("leaves out a shared package with no package.json", () => {
+    const pkg = { devDependencies: { missing: "file:../../packages/missing" } };
+    expect(sharedPackagesToBuild(pkg, readShared)).toEqual([]);
+  });
+
+  test("hasBuildScript reads the build script", () => {
+    expect(hasBuildScript({ scripts: { build: "tsc" } })).toBe(true);
+    expect(hasBuildScript({ scripts: { test: "vitest" } })).toBe(false);
+    expect(hasBuildScript({})).toBe(false);
   });
 });
 
