@@ -9,7 +9,6 @@ export type AgentConfigData = {
 };
 
 export interface PendingApproval {
-  toolName: string;
   arguments: unknown;
   agentName: string;
   approvalRequest: {
@@ -17,4 +16,5 @@ export interface PendingApproval {
     approved: boolean;
     feedback: string | null;
   };
+  toolName?: string;
 }

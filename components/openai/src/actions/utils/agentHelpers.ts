@@ -16,10 +16,10 @@ export const DEFAULT_MAX_TOKENS = 4096;
 export const DEFAULT_MAX_TURNS = 5;
 
 export const AVAILABLE_MODELS = [
-  "gpt-5-2025-08-07",
-  "gpt-5-mini-2025-08-07",
-  "gpt-5-nano-2025-08-07",
-  "gpt-4.1-2025-04-14",
+  "gpt-6-astra",
+  "gpt-6.1-sol",
+  "gpt-6.1-terra",
+  "gpt-6-luna",
 ] as const;
 
 export type AvailableModel = (typeof AVAILABLE_MODELS)[number];
@@ -209,8 +209,8 @@ export function buildPendingApprovals(
 
   for (const interruption of interruptions) {
     const pendingApproval: PendingApproval = {
-      toolName: interruption.rawItem?.name,
-      arguments: interruption.rawItem?.arguments,
+      toolName: interruption.name,
+      arguments: interruption.arguments,
       agentName: interruption.agent?.name,
       approvalRequest: {
         functionId: interruption.rawItem?.providerData?.id,

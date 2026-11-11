@@ -10,7 +10,7 @@ const createFunctionCallingResponse = action({
   },
   inputs: {
     connection: connectionInput,
-    model: { ...modelInput, default: "gpt-4.1" },
+    model: { ...modelInput, default: "gpt-6-luna" },
     input: input({
       label: "Input",
       type: "string",

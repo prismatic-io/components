@@ -18,7 +18,7 @@ export const agentConfigInput = input({
       agent: {
         name: "Assistant",
         instructions: "You are a helpful assistant",
-        model: "gpt-4",
+        model: "gpt-6-luna",
       },
     },
     null,
@@ -59,7 +59,7 @@ export const handoffsInput = input({
         agent: {
           name: "Technical Support",
           instructions: "Handle technical issues and troubleshooting",
-          model: "gpt-4",
+          model: "gpt-6-luna",
         },
       },
     ],
@@ -296,23 +296,23 @@ export const modelInput = input({
   label: "Model",
   type: "string",
   required: true,
-  example: "gpt-5-mini-2025-08-07",
+  example: "gpt-6-luna",
   model: [
     {
-      value: "gpt-5-2025-08-07",
-      label: "GPT-5 (Latest reasoning, highest capability)",
+      value: "gpt-6-astra",
+      label: "GPT-6 Astra (Most capable, for the most demanding work)",
     },
     {
-      value: "gpt-5-mini-2025-08-07",
-      label: "GPT-5 Mini (Reasoning, balanced cost/performance)",
+      value: "gpt-6.1-sol",
+      label: "GPT-6.1 Sol (Near-Astra performance at a lower cost)",
     },
     {
-      value: "gpt-5-nano-2025-08-07",
-      label: "GPT-5 Nano (Reasoning, cost-optimized)",
+      value: "gpt-6.1-terra",
+      label: "GPT-6.1 Terra (Fast and efficient, visual reasoning and writing)",
     },
     {
-      value: "gpt-4.1-2025-04-14",
-      label: "GPT-4.1 (Smartest non-reasoning)",
+      value: "gpt-6-luna",
+      label: "GPT-6 Luna (Most efficient, for high-volume tasks)",
     },
   ],
   clean: util.types.toString,

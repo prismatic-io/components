@@ -1,7 +1,7 @@
 import {
   createConnection,
   createHarness,
-} from "@prismatic-io/spectral/dist/testing";
+} from "@prismatic-io/spectral/testing";
 import { describe, test, expect } from "vitest";
 import myComponent from ".";
 import { openAiApiKey as openaiApiKey } from "./connections";
@@ -53,7 +53,7 @@ describe("OpenAI Agent Actions", () => {
   If no action is requested of the user, categorize it as ignore.
 
   Give your reasoning for the categorization result and your confidence.`,
-        modelName: "gpt-4o-mini",
+        modelName: "gpt-6-luna",
         outputSchema: JSON.stringify({
           type: "object",
           properties: {
@@ -98,7 +98,7 @@ describe("OpenAI Agent Actions", () => {
       const agent = (await harness.action("createAgent", {
         name: "Simple Assistant",
         instructions: "You are a helpful assistant.",
-        modelName: "gpt-4o-mini",
+        modelName: "gpt-6-luna",
       })) as CreateAgentResponse;
 
       expect(agent.data).toBeDefined();
@@ -118,7 +118,7 @@ describe("OpenAI Agent Actions", () => {
   - Free Plan: Free for first user forever.
   - Scale Plan: $25/per user per month
   - Enterprise Plan: Custom pricing available upon request. Reach out to finance for more information.`,
-        modelName: "gpt-4o-mini",
+        modelName: "gpt-6-luna",
         handoffDescription: "Answers pricing related questions",
       })) as CreateAgentResponse;
 
@@ -126,7 +126,7 @@ describe("OpenAI Agent Actions", () => {
         name: "Scheduler Specialist",
         instructions: `You are an expert in scheduling.
   When asked about scheduling information, take the information and let the user know the request has been forwarded to the team and that they should receive a meeting invite shortly.`,
-        modelName: "gpt-4o-mini",
+        modelName: "gpt-6-luna",
         handoffDescription: "Handles scheduling demos and meetings",
       })) as CreateAgentResponse;
 
@@ -136,7 +136,7 @@ describe("OpenAI Agent Actions", () => {
   Analyze incoming messages, identify customer needs, and draft appropriate responses.
   For pricing inquiries, delegate to the Pricing Specialist.
   For demo requests, delegate to the Demo Schedule Specialist.`,
-        modelName: "gpt-4o-mini",
+        modelName: "gpt-6-luna",
       })) as CreateAgentResponse;
 
       expect(pricingSpecialist.data).toBeDefined();
@@ -167,7 +167,7 @@ describe("OpenAI Agent Actions", () => {
       const assistant = (await harness.action("createAgent", {
         name: "Assistant",
         instructions: "You are a helpful assistant.",
-        modelName: "gpt-4o-mini",
+        modelName: "gpt-6-luna",
       })) as CreateAgentResponse;
 
       expect(assistant.data).toBeDefined();
@@ -217,7 +217,7 @@ describe("OpenAI Agent Actions", () => {
         name: "Assistant",
         instructions: `You are a helpful assistant. When you are asked a question, first check with the human using the human approval tool before generating an answer.
   Never answer without first checking with the human.`,
-        modelName: "gpt-4o-mini",
+        modelName: "gpt-6-luna",
         tools: [approvalTool.data],
       })) as CreateAgentResponse;
 
@@ -262,269 +262,259 @@ describe("OpenAI Agent Actions", () => {
     });
   });
 
-  describe(
-    "File Operations",
-    () => {
-      test("Upload PDF file", async () => {
-        const fs = require("node:fs");
+  describe("File Operations", { timeout: 300000 }, () => {
+    test("Upload PDF file", async () => {
+      const fs = require("node:fs");
 
-        const pdfContent = fs.readFileSync("./Receipt.pdf");
+      const pdfContent = fs.readFileSync("./Receipt.pdf");
 
-        if (!process.env.OPENAI_API_KEY) {
-          console.log("Skipping file upload - no OPENAI_API_KEY provided");
-          return;
-        }
+      if (!process.env.OPENAI_API_KEY) {
+        console.log("Skipping file upload - no OPENAI_API_KEY provided");
+        return;
+      }
 
-        const result = (await harness.action("uploadFile", {
-          connection: testConnection,
-          file: pdfContent,
-          filename: "Receipt.pdf",
-          purpose: "assistants",
-        })) as UploadFileResponse;
+      const result = (await harness.action("uploadFile", {
+        connection: testConnection,
+        file: pdfContent,
+        filename: "Receipt.pdf",
+        purpose: "assistants",
+      })) as UploadFileResponse;
 
-        if (!result) {
-          throw Error("Failed to upload file");
-        }
-        console.log("File upload result:", result);
-        expect(result.data).toBeDefined();
-        expect(result.data).toHaveProperty("id");
-        expect(result.data.id).toMatch(/^file-/);
-        expect(result.data).toHaveProperty("object", "file");
-        expect(result.data).toHaveProperty("filename", "Receipt.pdf");
-        expect(result.data).toHaveProperty("purpose", "assistants");
-        expect(result.data).toHaveProperty("bytes");
-        expect(result.data.bytes).toBeGreaterThan(0);
-        expect(result.data).toHaveProperty("created_at");
-        expect(result.data).toHaveProperty("status");
+      if (!result) {
+        throw Error("Failed to upload file");
+      }
+      console.log("File upload result:", result);
+      expect(result.data).toBeDefined();
+      expect(result.data).toHaveProperty("id");
+      expect(result.data.id).toMatch(/^file-/);
+      expect(result.data).toHaveProperty("object", "file");
+      expect(result.data).toHaveProperty("filename", "Receipt.pdf");
+      expect(result.data).toHaveProperty("purpose", "assistants");
+      expect(result.data).toHaveProperty("bytes");
+      expect(result.data.bytes).toBeGreaterThan(0);
+      expect(result.data).toHaveProperty("created_at");
+      expect(result.data).toHaveProperty("status");
 
-        console.log("File uploaded successfully:", result.data.id);
-      });
+      console.log("File uploaded successfully:", result.data.id);
+    });
 
-      test("Upload file and analyze with agent", async () => {
-        if (!process.env.OPENAI_API_KEY) {
-          console.log(
-            "Skipping file analysis test - no OPENAI_API_KEY provided",
-          );
-          return;
-        }
+    test("Upload file and analyze with agent", async () => {
+      if (!process.env.OPENAI_API_KEY) {
+        console.log("Skipping file analysis test - no OPENAI_API_KEY provided");
+        return;
+      }
 
-        const fs = require("node:fs");
-        const pdfContent = fs.readFileSync("./Receipt.pdf");
+      const fs = require("node:fs");
+      const pdfContent = fs.readFileSync("./Receipt.pdf");
 
-        const uploadResult = (await harness.action("uploadFile", {
-          connection: testConnection,
-          file: pdfContent,
-          filename: "Receipt.pdf",
-          purpose: "assistants",
-        })) as UploadFileResponse;
+      const uploadResult = (await harness.action("uploadFile", {
+        connection: testConnection,
+        file: pdfContent,
+        filename: "Receipt.pdf",
+        purpose: "assistants",
+      })) as UploadFileResponse;
 
-        if (!uploadResult || !uploadResult.data) {
-          throw Error("Failed to upload file");
-        }
+      if (!uploadResult || !uploadResult.data) {
+        throw Error("Failed to upload file");
+      }
 
-        const fileId = uploadResult.data.id;
-        console.log("File uploaded with ID:", fileId);
+      const fileId = uploadResult.data.id;
+      console.log("File uploaded with ID:", fileId);
 
-        const agent = (await harness.action("createAgent", {
-          name: "Document Analyzer",
-          instructions:
-            "Determine if the pdf is a receipt. Always use your code tool to analyze it.",
-          modelName: "gpt-5",
-          outputSchemaStrict: true,
-          outputSchema: JSON.stringify({
-            type: "object",
-            properties: {
-              vendor: {
-                type: "string",
-                description: "Name of the company/vendor",
-              },
-              date: {
-                type: "string",
-                description: "Transaction date",
-              },
-              total: {
-                type: "number",
-                description: "Total amount paid",
-              },
-              receiptNumber: {
-                type: "string",
-                description: "Receipt or invoice number",
-              },
-              items: {
-                type: "array",
-                items: {
-                  type: "object",
-                  properties: {
-                    name: {
-                      type: "string",
-                      description: "Item name",
-                    },
-                    price: {
-                      type: "number",
-                      description: "Item price",
-                    },
-                  },
-                  required: ["name", "price"],
-                  additionalProperties: false,
-                },
-                description: "List of items purchased",
-              },
+      const agent = (await harness.action("createAgent", {
+        name: "Document Analyzer",
+        instructions:
+          "Determine if the pdf is a receipt. Always use your code tool to analyze it.",
+        modelName: "gpt-6-luna",
+        outputSchemaStrict: true,
+        outputSchema: JSON.stringify({
+          type: "object",
+          properties: {
+            vendor: {
+              type: "string",
+              description: "Name of the company/vendor",
             },
-            required: ["vendor", "date", "total", "receiptNumber", "items"],
-            additionalProperties: false,
-          }),
-        })) as CreateAgentResponse;
+            date: {
+              type: "string",
+              description: "Transaction date",
+            },
+            total: {
+              type: "number",
+              description: "Total amount paid",
+            },
+            receiptNumber: {
+              type: "string",
+              description: "Receipt or invoice number",
+            },
+            items: {
+              type: "array",
+              items: {
+                type: "object",
+                properties: {
+                  name: {
+                    type: "string",
+                    description: "Item name",
+                  },
+                  price: {
+                    type: "number",
+                    description: "Item price",
+                  },
+                },
+                required: ["name", "price"],
+                additionalProperties: false,
+              },
+              description: "List of items purchased",
+            },
+          },
+          required: ["vendor", "date", "total", "receiptNumber", "items"],
+          additionalProperties: false,
+        }),
+      })) as CreateAgentResponse;
 
-        expect(agent.data).toBeDefined();
-        expect(agent.data).toHaveProperty("agent");
+      expect(agent.data).toBeDefined();
+      expect(agent.data).toHaveProperty("agent");
 
-        const analysisResult = (await harness.action("runAgent", {
-          openaiConnection: testConnection,
-          agentConfig: agent.data,
-          userInput: "Analyze the provided file",
-          fileIds: [fileId],
-        })) as RunAgentResponse;
+      const analysisResult = (await harness.action("runAgent", {
+        openaiConnection: testConnection,
+        agentConfig: agent.data,
+        userInput: "Analyze the provided file",
+        fileIds: [fileId],
+      })) as RunAgentResponse;
 
-        expect(analysisResult).toBeDefined();
-        expect(analysisResult.data).toBeDefined();
-        expect(analysisResult.data.finalOutput).toBeDefined();
+      expect(analysisResult).toBeDefined();
+      expect(analysisResult.data).toBeDefined();
+      expect(analysisResult.data.finalOutput).toBeDefined();
 
-        console.log("Agent analysis result:", analysisResult.data.finalOutput);
+      console.log("Agent analysis result:", analysisResult.data.finalOutput);
 
-        const output = String(analysisResult.data.finalOutput);
-        expect(output.toLowerCase()).toMatch(
-          /anthropic|receipt|invoice|august|25\.00|\$25/i,
-        );
-      });
+      const output = String(analysisResult.data.finalOutput);
+      expect(output.toLowerCase()).toMatch(
+        /anthropic|receipt|invoice|august|25\.00|\$25/i,
+      );
+    });
 
-      test("List uploaded files", async () => {
-        if (!process.env.OPENAI_API_KEY) {
-          console.log("Skipping list files test - no OPENAI_API_KEY provided");
-          return;
+    test("List uploaded files", async () => {
+      if (!process.env.OPENAI_API_KEY) {
+        console.log("Skipping list files test - no OPENAI_API_KEY provided");
+        return;
+      }
+
+      const result = (await harness.action("listFiles", {
+        connection: testConnection,
+      })) as ListFilesResponse;
+
+      expect(result).toBeDefined();
+      expect(result.data).toBeDefined();
+      expect(result.data).toHaveProperty("object", "list");
+      expect(result.data).toHaveProperty("data");
+      expect(Array.isArray(result.data.data)).toBe(true);
+
+      console.log(`Found ${result.data.data.length} files in the account`);
+
+      const assistantFiles = (await harness.action("listFiles", {
+        connection: testConnection,
+        purpose: "assistants",
+      })) as ListFilesResponse;
+
+      expect(assistantFiles).toBeDefined();
+      expect(assistantFiles.data).toBeDefined();
+      expect(Array.isArray(assistantFiles.data.data)).toBe(true);
+
+      if (assistantFiles.data.data.length > 0) {
+        for (const file of assistantFiles.data.data) {
+          expect(file.purpose).toBe("assistants");
         }
+      }
+    });
 
-        const result = (await harness.action("listFiles", {
-          connection: testConnection,
-        })) as ListFilesResponse;
+    test("Retrieve file metadata", async () => {
+      if (!process.env.OPENAI_API_KEY) {
+        console.log("Skipping retrieve file test - no OPENAI_API_KEY provided");
+        return;
+      }
 
-        expect(result).toBeDefined();
-        expect(result.data).toBeDefined();
-        expect(result.data).toHaveProperty("object", "list");
-        expect(result.data).toHaveProperty("data");
-        expect(Array.isArray(result.data.data)).toBe(true);
+      const fs = require("node:fs");
+      const pdfContent = fs.readFileSync("./Receipt.pdf");
 
-        console.log(`Found ${result.data.data.length} files in the account`);
+      const uploadResult = (await harness.action("uploadFile", {
+        connection: testConnection,
+        file: pdfContent,
+        filename: "test-retrieve.pdf",
+        purpose: "assistants",
+      })) as UploadFileResponse;
 
-        const assistantFiles = (await harness.action("listFiles", {
-          connection: testConnection,
-          purpose: "assistants",
-        })) as ListFilesResponse;
+      expect(uploadResult).toBeDefined();
+      expect(uploadResult.data).toBeDefined();
+      expect(uploadResult.data).toHaveProperty("id");
 
-        expect(assistantFiles).toBeDefined();
-        expect(assistantFiles.data).toBeDefined();
-        expect(Array.isArray(assistantFiles.data.data)).toBe(true);
+      const fileId = uploadResult.data.id;
 
-        if (assistantFiles.data.data.length > 0) {
-          for (const file of assistantFiles.data.data) {
-            expect(file.purpose).toBe("assistants");
-          }
-        }
-      });
+      const retrieveResult = (await harness.action("retrieveFile", {
+        connection: testConnection,
+        fileId: fileId,
+      })) as RetrieveFileResponse;
 
-      test("Retrieve file metadata", async () => {
-        if (!process.env.OPENAI_API_KEY) {
-          console.log(
-            "Skipping retrieve file test - no OPENAI_API_KEY provided",
-          );
-          return;
-        }
+      expect(retrieveResult).toBeDefined();
+      expect(retrieveResult.data).toBeDefined();
+      expect(retrieveResult.data).toHaveProperty("id", fileId);
+      expect(retrieveResult.data).toHaveProperty("object", "file");
+      expect(retrieveResult.data).toHaveProperty(
+        "filename",
+        "test-retrieve.pdf",
+      );
+      expect(retrieveResult.data).toHaveProperty("purpose", "assistants");
+      expect(retrieveResult.data).toHaveProperty("bytes");
+      expect(retrieveResult.data.bytes).toBeGreaterThan(0);
 
-        const fs = require("node:fs");
-        const pdfContent = fs.readFileSync("./Receipt.pdf");
+      console.log("File metadata retrieved successfully:", fileId);
+    });
 
-        const uploadResult = (await harness.action("uploadFile", {
-          connection: testConnection,
-          file: pdfContent,
-          filename: "test-retrieve.pdf",
-          purpose: "assistants",
-        })) as UploadFileResponse;
+    test("Delete file", async () => {
+      if (!process.env.OPENAI_API_KEY) {
+        console.log("Skipping delete file test - no OPENAI_API_KEY provided");
+        return;
+      }
 
-        expect(uploadResult).toBeDefined();
-        expect(uploadResult.data).toBeDefined();
-        expect(uploadResult.data).toHaveProperty("id");
+      const testBuffer = Buffer.from("File to be deleted", "utf-8");
 
-        const fileId = uploadResult.data.id;
+      const uploadResult = (await harness.action("uploadFile", {
+        connection: testConnection,
+        file: testBuffer,
+        filename: "test-delete.txt",
+        purpose: "assistants",
+      })) as UploadFileResponse;
 
-        const retrieveResult = (await harness.action("retrieveFile", {
+      expect(uploadResult).toBeDefined();
+      expect(uploadResult.data).toBeDefined();
+      expect(uploadResult.data).toHaveProperty("id");
+
+      const fileId = uploadResult.data.id;
+      console.log("Uploaded file for deletion:", fileId);
+
+      const deleteResult = (await harness.action("deleteFile", {
+        connection: testConnection,
+        fileId: fileId,
+      })) as DeleteFileResponse;
+
+      expect(deleteResult).toBeDefined();
+      expect(deleteResult.data).toBeDefined();
+      expect(deleteResult.data).toHaveProperty("id", fileId);
+      expect(deleteResult.data).toHaveProperty("object", "file");
+      expect(deleteResult.data).toHaveProperty("deleted", true);
+
+      console.log("File deleted successfully:", fileId);
+
+      try {
+        await harness.action("retrieveFile", {
           connection: testConnection,
           fileId: fileId,
-        })) as RetrieveFileResponse;
-
-        expect(retrieveResult).toBeDefined();
-        expect(retrieveResult.data).toBeDefined();
-        expect(retrieveResult.data).toHaveProperty("id", fileId);
-        expect(retrieveResult.data).toHaveProperty("object", "file");
-        expect(retrieveResult.data).toHaveProperty(
-          "filename",
-          "test-retrieve.pdf",
-        );
-        expect(retrieveResult.data).toHaveProperty("purpose", "assistants");
-        expect(retrieveResult.data).toHaveProperty("bytes");
-        expect(retrieveResult.data.bytes).toBeGreaterThan(0);
-
-        console.log("File metadata retrieved successfully:", fileId);
-      });
-
-      test("Delete file", async () => {
-        if (!process.env.OPENAI_API_KEY) {
-          console.log("Skipping delete file test - no OPENAI_API_KEY provided");
-          return;
-        }
-
-        const testBuffer = Buffer.from("File to be deleted", "utf-8");
-
-        const uploadResult = (await harness.action("uploadFile", {
-          connection: testConnection,
-          file: testBuffer,
-          filename: "test-delete.txt",
-          purpose: "assistants",
-        })) as UploadFileResponse;
-
-        expect(uploadResult).toBeDefined();
-        expect(uploadResult.data).toBeDefined();
-        expect(uploadResult.data).toHaveProperty("id");
-
-        const fileId = uploadResult.data.id;
-        console.log("Uploaded file for deletion:", fileId);
-
-        const deleteResult = (await harness.action("deleteFile", {
-          connection: testConnection,
-          fileId: fileId,
-        })) as DeleteFileResponse;
-
-        expect(deleteResult).toBeDefined();
-        expect(deleteResult.data).toBeDefined();
-        expect(deleteResult.data).toHaveProperty("id", fileId);
-        expect(deleteResult.data).toHaveProperty("object", "file");
-        expect(deleteResult.data).toHaveProperty("deleted", true);
-
-        console.log("File deleted successfully:", fileId);
-
-        try {
-          await harness.action("retrieveFile", {
-            connection: testConnection,
-            fileId: fileId,
-          });
-          throw new Error("File should have been deleted");
-        } catch (e) {
-          const error = e as Error;
-          expect(error.message).toMatch(/not found|404|deleted/i);
-          console.log(
-            "Confirmed file is deleted - retrieve failed as expected",
-          );
-        }
-      });
-    },
-    { timeout: 300000 },
-  );
+        });
+        throw new Error("File should have been deleted");
+      } catch (e) {
+        const error = e as Error;
+        expect(error.message).toMatch(/not found|404|deleted/i);
+        console.log("Confirmed file is deleted - retrieve failed as expected");
+      }
+    });
+  });
 });

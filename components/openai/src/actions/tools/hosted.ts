@@ -359,7 +359,7 @@ export const createImageGenerationTool = action({
       label: "Model",
       type: "text",
       required: false,
-      default: "gpt-image-1",
+      default: "gpt-image-2.5-flare",
       comments: "Model to use for generation",
     }),
 

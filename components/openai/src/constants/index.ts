@@ -30,7 +30,7 @@ export const EXAMPLES = {
       name: "Sales Email Assistant",
       instructions:
         "You are a sales email assistant. Analyze incoming emails and draft appropriate responses.",
-      model: "gpt-5-mini-2025-08-07",
+      model: "gpt-6-luna",
     },
   },
 
@@ -44,7 +44,7 @@ export const EXAMPLES = {
         name: "Pricing Specialist",
         instructions:
           "Provide detailed pricing information, discounts, and create custom quotes.",
-        model: "gpt-5-mini-2025-08-07",
+        model: "gpt-6-luna",
         handoffDescription: "Handles pricing and quotes",
       },
     },
@@ -53,7 +53,7 @@ export const EXAMPLES = {
         name: "Demo Scheduler",
         instructions:
           "Schedule product demos and coordinate with the sales team calendar.",
-        model: "gpt-5-mini-2025-08-07",
+        model: "gpt-6-luna",
         handoffDescription: "Schedules product demos",
       },
     },

@@ -15,7 +15,7 @@ Create a simple AI assistant in three steps:
 
    - Set **Name**: "Assistant"
    - Set **Instructions**: "You are a helpful assistant"
-   - Select **Model**: "gpt-4o-mini" (fast and cost-effective)
+   - Select **Model**: "gpt-6-luna" (fast and cost-effective)
 
 2. **Add "Agent: Run" action**
 
@@ -135,7 +135,7 @@ Understanding the configuration objects helps you work with agent actions.
   "agent": {
     "name": "Assistant",
     "instructions": "You are a helpful assistant",
-    "model": "gpt-4o-mini"
+    "model": "gpt-6-luna"
   }
 }
 ```
@@ -147,7 +147,7 @@ Understanding the configuration objects helps you work with agent actions.
   "agent": {
     "name": "Email Classifier",
     "instructions": "Classify emails by priority and sentiment",
-    "model": "gpt-4o",
+    "model": "gpt-6.1-sol",
     "outputType": {
       "type": "json_schema",
       "name": "EmailClassification",
@@ -178,7 +178,7 @@ Understanding the configuration objects helps you work with agent actions.
 
    - Name: "Q&A Bot"
    - Instructions: "Answer questions about our product. Be helpful and concise."
-   - Model: "gpt-4o-mini"
+   - Model: "gpt-6-luna"
 
 2. Add **Agent: Run** action
 
@@ -319,7 +319,7 @@ Pass file IDs to agents for processing PDFs, images, and other documents:
 2. Add **Agent: Create** action:
 
    - Instructions: "Analyze the provided documents and extract key information"
-   - Model: "gpt-4o" (for best document understanding)
+   - Model: "gpt-6.1-terra" (for document and image understanding)
 
 3. Add **Agent: Run** action:
    - Agent Configuration: `{{$agentCreate.results}}`
@@ -337,7 +337,7 @@ Pass file IDs to agents for processing PDFs, images, and other documents:
 **Image Processing**:
 
 1. Upload image with **File: Upload**
-2. Create agent with vision capabilities (gpt-4o model)
+2. Create agent with vision capabilities (gpt-6.1-terra model)
 3. Run agent with file ID to describe, analyze, or extract text from images
 
 **Multi-File Processing**:

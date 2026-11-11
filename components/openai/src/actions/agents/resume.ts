@@ -34,7 +34,7 @@ export const resumeRun = action({
           agent: {
             name: "Assistant",
             instructions: "You are a helpful assistant",
-            model: "gpt-4",
+            model: "gpt-6-luna",
           },
         },
         null,

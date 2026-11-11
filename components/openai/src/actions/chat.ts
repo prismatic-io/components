@@ -17,7 +17,7 @@ const createChatCompletion = action({
   },
   inputs: {
     connection: connectionInput,
-    model: { ...modelInput, default: "gpt-3.5-turbo" },
+    model: { ...modelInput, default: "gpt-6-luna" },
     messages: messagesInput,
     temperature: temperatureInput,
     topP: topPInput,

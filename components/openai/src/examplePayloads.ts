@@ -3,7 +3,7 @@ export const createChatCompletionExamplePayload = {
     id: "chatcmpl-6vf993Onyn1Bwq67AYDTR6fIjzvBu",
     object: "chat.completion",
     created: 1679200883,
-    model: "gpt-3.5-turbo-0301",
+    model: "gpt-6-luna",
     usage: { prompt_tokens: 56, completion_tokens: 21, total_tokens: 77 },
     choices: [
       {
@@ -125,7 +125,7 @@ export const createResponseExamplePayload = {
     id: "resp-123",
     object: "response",
     created: 1677652288,
-    model: "gpt-4.1",
+    model: "gpt-6-luna",
     choices: [
       {
         index: 0,

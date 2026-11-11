@@ -27,10 +27,10 @@ const listModels = dataSource({
   dataSourceType: "picklist",
   examplePayload: {
     result: [
-      { label: "gpt-4-turbo-preview", key: "gpt-4-turbo-preview" },
-      { label: "gpt-4", key: "gpt-4" },
-      { label: "gpt-3.5-turbo", key: "gpt-3.5-turbo" },
-      { label: "dall-e-3", key: "dall-e-3" },
+      { label: "gpt-6-astra", key: "gpt-6-astra" },
+      { label: "gpt-6.1-sol", key: "gpt-6.1-sol" },
+      { label: "gpt-6-luna", key: "gpt-6-luna" },
+      { label: "gpt-image-2.5-flare", key: "gpt-image-2.5-flare" },
     ],
   },
 });
