@@ -1,3 +1,5 @@
+import { existsSync, readFileSync } from "node:fs";
+import { join } from "node:path";
 import semver from "semver";
 import { z } from "zod";
 
@@ -29,6 +31,7 @@ export const PackageJsonSchema = z
   .object({
     name: z.string().optional(),
     version: z.string().optional(),
+    scripts: z.record(z.string(), z.string()).optional(),
     dependencies: z.record(z.string(), z.string()).optional(),
     devDependencies: z.record(z.string(), z.string()).optional(),
   })
@@ -55,6 +58,34 @@ export const sharedPackagesOf = (pkg: PackageJson): string[] =>
     .filter((spec) => spec.startsWith(SHARED_PACKAGE_PREFIX))
     .map((spec) => spec.slice(SHARED_PACKAGE_PREFIX.length).replace(/\/$/, ""))
     .sort();
+
+/** Whether a package.json has a build script. */
+export const hasBuildScript = (pkg: PackageJson): boolean => pkg.scripts?.["build"] !== undefined;
+
+/**
+ * The shared packages a component pulls in that must be installed and built
+ * before it builds. A shared package with no build script, such as
+ * packages/build-config, is build tooling that the component's tsdown config
+ * loads from source; the component's own `npm ci` links it, and nothing builds
+ * it. `readShared` reads packages/<name>/package.json, or gives undefined when
+ * there is none.
+ */
+export const sharedPackagesToBuild = (
+  pkg: PackageJson,
+  readShared: (name: string) => PackageJson | undefined,
+): string[] =>
+  sharedPackagesOf(pkg).filter((name) => {
+    const shared = readShared(name);
+    return shared !== undefined && hasBuildScript(shared);
+  });
+
+/** Reads packages/<name>/package.json, or gives undefined when there is none. */
+export const readSharedPackage = (name: string): PackageJson | undefined => {
+  const path = join("packages", name, "package.json");
+  return existsSync(path)
+    ? parseAs(PackageJsonSchema, JSON.parse(readFileSync(path, "utf8")), path)
+    : undefined;
+};
 
 /** What the registry already has for a package; `null` when it has never been published. */
 export interface Published {

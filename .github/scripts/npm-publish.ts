@@ -27,7 +27,8 @@ import {
   type PackageJson,
   parseAs,
   planPublish,
-  sharedPackagesOf,
+  readSharedPackage,
+  sharedPackagesToBuild,
   trustProblem,
 } from "./publish-plan.ts";
 
@@ -105,7 +106,7 @@ const main = async () => {
 
     const ok = await core.group(label, async () => {
       const dir = join("components", step.key);
-      for (const shared of sharedPackagesOf(packages[step.key] ?? {})) {
+      for (const shared of sharedPackagesToBuild(packages[step.key] ?? {}, readSharedPackage)) {
         if (!(await buildShared(shared))) return false;
       }
       // `npm publish` runs `prepare`, which builds both outputs, so the
