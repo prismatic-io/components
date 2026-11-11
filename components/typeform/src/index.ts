@@ -12,7 +12,7 @@ export default component({
   display: {
     label: "Typeform",
     description:
-      "Typeform is an online form builder that enables users to create interactive and engaging surveys, forms, and quizzes.",
+      "Manage Typeform forms, responses, workspaces, and webhooks, and react to Typeform events with a webhook trigger.",
     iconPath: "icon.png",
     category: "Application Connectors",
   },

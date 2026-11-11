@@ -19,7 +19,8 @@ export default component({
   public: true,
   display: {
     label: "Arena Solutions",
-    description: "Connect and sync data with Arena Solutions PLM system",
+    description:
+      "Manage Arena PLM items, BOMs, changes, files, requests, quality processes, and training plans, and detect new Arena events.",
     iconPath: "icon.png",
     category: "Application Connectors",
   },

@@ -2,7 +2,7 @@
 
 ### 2026-11-11
 
-Refactored internal code
+Updated the component description and the **Typeform Webhook Trigger** description to accurately reflect what they do
 
 ### 2026-11-10
 

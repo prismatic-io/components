@@ -11,7 +11,7 @@ export default component({
     category: "Application Connectors",
     label: "New Relic",
     description:
-      "Send metrics, logs, and events to New Relic observability platform.",
+      "Send metrics, logs, and events to the New Relic observability platform.",
     iconPath: "icon.png",
   },
   actions,

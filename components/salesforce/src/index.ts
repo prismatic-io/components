@@ -11,7 +11,8 @@ export default component({
   public: true,
   display: {
     label: "Salesforce",
-    description: "Query, create, update, or delete Salesforce records.",
+    description:
+      "Query and manage Salesforce CRM records, bulk jobs, metadata, users, and flows, and react to record changes with outbound message and polling triggers.",
     iconPath: "icon.png",
     category: "Application Connectors",
   },

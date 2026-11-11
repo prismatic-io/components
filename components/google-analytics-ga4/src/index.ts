@@ -12,7 +12,8 @@ export default component({
   display: {
     label: "Google Analytics - GA4",
     category: "Application Connectors",
-    description: "Manage Google Analytics GA4 accounts and data",
+    description:
+      "Run Google Analytics 4 (GA4) Data API reports, list accounts and properties, and send Measurement Protocol events.",
     iconPath: "icon.png",
   },
   actions,

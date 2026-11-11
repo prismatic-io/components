@@ -13,7 +13,7 @@ export default component({
     label: "Bynder",
     category: "Application Connectors",
     description:
-      "Bynder is a leading digital asset management software that allows users to easily create, find, and use content, such as documents, graphics, and videos.",
+      "Manage Bynder assets, collections, campaigns, jobs, orders, and users, and upload new assets or asset versions.",
     iconPath: "icon.png",
   },
   actions,

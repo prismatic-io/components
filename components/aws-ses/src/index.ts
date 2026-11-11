@@ -9,7 +9,8 @@ export default component({
   public: true,
   display: {
     label: "Amazon SES",
-    description: "Send Emails through Amazon (AWS) SES",
+    description:
+      "Send emails and list verified identities with Amazon Simple Email Service (SES).",
     iconPath: "icon.png",
     category: "Application Connectors",
   },

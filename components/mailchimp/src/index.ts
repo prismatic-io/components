@@ -50,7 +50,8 @@ export default component({
   display: {
     category: "Application Connectors",
     label: "Mailchimp",
-    description: "Interact with email campaign lists and e-commerce resources.",
+    description:
+      "Manage Mailchimp lists, members, and webhooks, send campaigns, and manage e-commerce stores, customers, products, carts, and orders.",
     iconPath: "icon.png",
   },
   actions: {

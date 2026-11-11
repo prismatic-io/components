@@ -12,7 +12,7 @@ export default component({
   display: {
     label: "Confluence",
     description:
-      "Confluence is an open and shared workspace platform provided by Atlassian. Use the Confluence component to manage spaces, pages, and content properties.",
+      "Manage Confluence spaces, pages, attachments, and content properties, and react to new and updated pages and spaces.",
     iconPath: "icon.png",
     category: "Application Connectors",
   },

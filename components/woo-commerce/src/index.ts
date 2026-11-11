@@ -55,7 +55,7 @@ export default component({
     label: "WooCommerce",
     category: "Application Connectors",
     description:
-      "Easily manage your customers, orders, and products in your WooCommerce platform",
+      "Manage WooCommerce customers, orders, products, product categories, and refunds, retrieve sales reports, and react to new records with a polling trigger.",
     iconPath: "icon.png",
   },
   actions: {

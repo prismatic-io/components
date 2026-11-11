@@ -12,7 +12,7 @@ export default component({
   display: {
     label: "Google Cloud BigQuery",
     description:
-      "BigQuery is Google Cloud's fully managed, petabyte-scale, and cost-effective analytics data warehouse that lets you run analytics over vast amounts of data in near real time.",
+      "Manage datasets, tables, jobs, routines, and models in Google Cloud BigQuery, and retrieve query job results.",
     iconPath: "icon.png",
     category: "Application Connectors",
   },

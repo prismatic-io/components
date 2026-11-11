@@ -44,7 +44,8 @@ export default component({
   documentationUrl: "https://prismatic.io/docs/components/sage/",
   display: {
     label: "Sage Accounting",
-    description: "Manage contacts and others connected to your Sage account.",
+    description:
+      "Manage contacts, ledger accounts, sales invoices, and purchase invoices in Sage Accounting, and react to new and updated records with a polling trigger.",
     category: "Application Connectors",
     iconPath: "icon.png",
   },

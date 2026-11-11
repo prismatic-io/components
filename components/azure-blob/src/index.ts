@@ -9,7 +9,8 @@ export default component({
   public: true,
   display: {
     label: "Azure Blob Storage",
-    description: "Manage files and folders within Azure Blob Storage",
+    description:
+      "Manage containers and blobs in Azure Blob Storage, including uploads, downloads, and shared access signature URLs.",
     iconPath: "icon.png",
     category: "Data Platforms",
   },

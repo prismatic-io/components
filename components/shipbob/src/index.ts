@@ -12,7 +12,7 @@ export default component({
   display: {
     label: "ShipBob",
     description:
-      "Shipbob offers an end to end fulfillment services for Ecommerce vendors.",
+      "Manage ShipBob orders, shipments, products, inventory, warehouse receiving orders, and webhooks, and react to order events with webhook and polling triggers.",
     iconPath: "icon.png",
     category: "Application Connectors",
   },

@@ -13,7 +13,8 @@ export default component({
   display: {
     category: "Application Connectors",
     label: "IMAP",
-    description: "Interact with your IMAP email account",
+    description:
+      "Search, read, and manage messages and mailboxes on an IMAP email server, and react to new emails.",
     iconPath: "icon.png",
   },
   hooks: { error: handleErrors },

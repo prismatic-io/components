@@ -2,7 +2,7 @@
 
 ### 2026-11-11
 
-Refactored internal code
+Updated the component description to better summarize what the component does
 
 ### 2026-11-10
 

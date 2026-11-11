@@ -9,7 +9,7 @@ export default component({
   display: {
     label: "MQTT",
     category: "Application Connectors",
-    description: "Interact with an MQTT Queue",
+    description: "Publish messages to topics on an MQTT broker.",
     iconPath: "icon.png",
   },
   actions: { publish },

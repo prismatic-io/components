@@ -10,7 +10,8 @@ export default component({
   public: true,
   display: {
     label: "Fluent Commerce",
-    description: "Manage orders within Fluent Commerce",
+    description:
+      "Create customers and products, run GraphQL queries and mutations, and detect new and updated records in Fluent Commerce.",
     iconPath: "icon.png",
     category: "Application Connectors",
   },

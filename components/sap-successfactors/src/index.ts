@@ -12,7 +12,7 @@ export default component({
   display: {
     label: "SAP SuccessFactors",
     description:
-      "SAP SuccessFactors is a human resources platform that provides cloud-based solutions to manage various HR functions such as business alignment, people performance, recruitment, and learning activities.",
+      "Manage SAP SuccessFactors candidates, job requisitions, job applications, onboarding candidate info, and other OData entity records.",
     iconPath: "icon.png",
     category: "Application Connectors",
   },

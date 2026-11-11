@@ -12,7 +12,7 @@ export default component({
   display: {
     label: "Sage HR",
     description:
-      "Sage HR is all inclusive Human Resource management solution. Use the Sage HR component to manage Employees, Teams, Projects, and more.",
+      "Manage Sage HR employees, documents, projects, teams, positions, and time off requests, and react to new records with a polling trigger.",
     iconPath: "icon.png",
     category: "Application Connectors",
   },

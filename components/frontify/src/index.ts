@@ -11,7 +11,7 @@ export default component({
   display: {
     label: "Frontify",
     description:
-      "Frontify is a comprehensive brand management platform that enables organizations to create, manage, and distribute brand assets, guidelines, and digital content across teams and channels, streamlining brand consistency and collaboration.",
+      "Manage Frontify brands, libraries, assets, collections, folders, and attachments, and react to new and updated assets.",
     iconPath: "icon.png",
     category: "Application Connectors",
   },

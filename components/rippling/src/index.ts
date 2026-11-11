@@ -12,7 +12,7 @@ export default component({
   display: {
     label: "Rippling",
     description:
-      "Rippling makes it easy to manage your company's Payroll, Benefits, HR, and IT—all in one, modern platform.",
+      "Manage Rippling employees, workers, users, departments, teams, groups, business partners, custom objects, and leave requests, and react to new and updated records.",
     category: "Application Connectors",
     iconPath: "icon.png",
   },

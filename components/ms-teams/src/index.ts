@@ -12,7 +12,7 @@ export default component({
   display: {
     label: "Microsoft Teams",
     description:
-      "Manage the teams, groups, channels, and messages associated with your Microsoft Teams account",
+      "Manage teams, channels, members, apps, and webinars, and send channel messages and Adaptive Cards in Microsoft Teams.",
     iconPath: "icon.png",
     category: "Application Connectors",
   },

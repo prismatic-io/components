@@ -11,7 +11,7 @@ export default component({
   display: {
     label: "Segment",
     description:
-      "Segment is a customer data platform (CDP) service that simplifies collecting and using data from users of your digital properties (websites, apps, etc.) Use the Segment component to manage your Sources, Warehouses, and Destinations.",
+      "Manage Segment sources, destinations, warehouses, destination subscriptions, functions, transformations, and workspace users through the Segment Public API.",
     iconPath: "icon.png",
     category: "Application Connectors",
   },

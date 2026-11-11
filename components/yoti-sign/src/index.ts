@@ -12,7 +12,7 @@ export default component({
   display: {
     label: "Yoti Sign",
     description:
-      "Yoti Sign is a digital identity and e-signature solution that allows users to verify their identity and sign documents electronically and securely.",
+      "Retrieve Yoti Sign identity verification session results and media, and react to new signature envelopes with a polling trigger.",
     iconPath: "icon.png",
     category: "Application Connectors",
   },

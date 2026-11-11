@@ -11,7 +11,7 @@ export default component({
   display: {
     label: "Adobe I/O Events",
     description:
-      "Adobe I/O Events notifies you when changes occur. Use the Adobe I/O Events component to easily integrate events into your applications using Webhooks.",
+      "Manage Adobe I/O Events providers and webhook or journal registrations, and receive Adobe events with a webhook trigger.",
     iconPath: "icon.png",
     category: "Application Connectors",
   },

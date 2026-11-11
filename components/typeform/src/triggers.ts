@@ -12,7 +12,7 @@ const formTrigger = trigger({
   display: {
     label: "Typeform Webhook Trigger",
     description:
-      "Get notified when a project is created, updated, or deleted in a workspace.",
+      "Receive webhook notifications from Typeform when responses are submitted to a specified form.",
   },
   inputs: {
     connection,

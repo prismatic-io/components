@@ -1,6 +1,6 @@
 {
   "name": "@prismatic-io/components-asana",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "main": "./npm-dist/index.cjs",
   "types": "./npm-dist/index.d.cts",
   "exports": {

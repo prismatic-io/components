@@ -12,7 +12,7 @@ export default component({
   display: {
     label: "Ramp",
     description:
-      "Ramp is a spend management platform focused on automating accounts payable and procurement processes. Use the Ramp component to manage transactions related to vendors, bills, reimbursements and more.",
+      "Manage Ramp transactions, bills, reimbursements, vendors, departments, locations, and accounting fields, and react to new and updated records with a polling trigger.",
     iconPath: "icon.png",
     category: "Application Connectors",
   },

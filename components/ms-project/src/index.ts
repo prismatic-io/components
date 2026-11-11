@@ -37,7 +37,8 @@ export default component({
   display: {
     label: "Microsoft Project",
     category: "Application Connectors",
-    description: "Query reporting data from a Project Web App instance.",
+    description:
+      "Manage projects, tasks, assignments, and resources in Microsoft Project Web App, including checking out, updating, and publishing draft projects.",
     iconPath: "icon.png",
   },
   triggers,

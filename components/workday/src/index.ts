@@ -12,7 +12,7 @@ export default component({
   display: {
     label: "Workday (Beta)",
     description:
-      "Workday HCM is a single, cloud-based solution for workforce planning, talent management, and payroll processes.",
+      "Manage Workday workers, people, organizations, job changes, time off, supplier invoices, and payments, run RaaS reports and WQL queries, and react to data changes.",
     iconPath: "icon.png",
     category: "Application Connectors",
   },

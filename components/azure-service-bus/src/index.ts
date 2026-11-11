@@ -12,7 +12,7 @@ export default component({
   display: {
     label: "Azure Service Bus",
     description:
-      "Interact with message queues and publish-subscribe topics (in a namespace)",
+      "Send and receive Azure Service Bus queue messages, and manage namespaces, queues, topics, subscriptions, and rules.",
     iconPath: "icon.png",
     category: "Data Platforms",
   },

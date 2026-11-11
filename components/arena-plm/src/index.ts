@@ -9,7 +9,7 @@ export default component({
   documentationUrl: "https://prismatic.io/docs/components/arena-plm/",
   display: {
     label: "Arena PLM",
-    description: "Interact with items and resources in Arena PLM",
+    description: "Send authenticated HTTP requests to the Arena PLM REST API.",
     iconPath: "icon.png",
     category: "Application Connectors",
   },

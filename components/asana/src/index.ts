@@ -12,7 +12,8 @@ export default component({
   display: {
     category: "Application Connectors",
     label: "Asana",
-    description: "Manage users, projects, and teams in an Asana workspace.",
+    description:
+      "Manage Asana tasks, projects, sections, portfolios, tags, teams, and users, and react to task and project changes with triggers.",
     iconPath: "icon.png",
   },
   actions,

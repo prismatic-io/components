@@ -11,7 +11,7 @@ export default component({
   display: {
     label: "xAI Grok",
     description:
-      "xAI Grok is an AI-powered component that provides advanced chat and image generation capabilities.",
+      "Generate chat completions and images, and list available models, with the xAI Grok API.",
     iconPath: "icon.png",
     category: "Application Connectors",
   },

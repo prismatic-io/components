@@ -11,7 +11,8 @@ export default component({
   documentationUrl: "https://prismatic.io/docs/components/teamviewer/",
   display: {
     label: "TeamViewer",
-    description: "Connect to TeamViewer to automate your remote support tasks.",
+    description:
+      "Manage TeamViewer devices, managed devices, groups, contacts, users, and remote support sessions, and react to new records with a polling trigger.",
     iconPath: "icon.png",
     category: "Application Connectors",
   },

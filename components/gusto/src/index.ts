@@ -12,7 +12,8 @@ export default component({
   display: {
     category: "Application Connectors",
     label: "Gusto",
-    description: "Manage payroll, benefits, and human resource within Gusto",
+    description:
+      "Manage companies, employees, pay schedules, and webhook subscriptions in Gusto.",
     iconPath: "icon.png",
   },
   actions,

@@ -11,7 +11,8 @@ export default component({
   documentationUrl: "https://prismatic.io/docs/components/openai/",
   display: {
     label: "OpenAI",
-    description: "Interact with OpenAI's models and build AI Agents",
+    description:
+      "Create chat completions, responses, and images with OpenAI models, manage files, and build agents with tools, MCP servers, and human approvals.",
     iconPath: "icon.png",
     category: "Application Connectors",
   },

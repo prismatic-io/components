@@ -13,9 +13,7 @@ export default component({
     category: "Application Connectors",
     label: "Adobe Acrobat Sign",
     description:
-      "Adobe Acrobat Sign is an e-signature management solution. " +
-      "Use the Adobe Acrobat Sign component to send, sign, track, " +
-      "and manage the signature process.",
+      "Manage Adobe Acrobat Sign agreements, transient documents, users, groups, and webhooks, and react to new and updated agreements.",
     iconPath: "icon.png",
   },
   actions,

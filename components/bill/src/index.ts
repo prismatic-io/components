@@ -12,7 +12,7 @@ export default component({
   display: {
     label: "Bill",
     description:
-      "Use the Bill component to manage Bank Accounts, Invoices, Bills, and more.",
+      "Manage bills, invoices, customers, vendors, and bank accounts in Bill, and detect new and updated records.",
     iconPath: "icon.png",
     category: "Application Connectors",
   },

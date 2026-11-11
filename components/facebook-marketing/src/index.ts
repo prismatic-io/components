@@ -12,7 +12,8 @@ export default component({
   display: {
     category: "Application Connectors",
     label: "Meta Ads",
-    description: "Interact with ads and adsets in your Meta Ads account.",
+    description:
+      "Manage Meta (Facebook) Ads campaigns, ad sets, ads, creatives, leads, and conversions.",
     iconPath: "icon.png",
   },
   actions,

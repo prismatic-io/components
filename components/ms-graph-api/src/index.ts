@@ -56,7 +56,8 @@ export default component({
   documentationUrl: "https://prismatic.io/docs/components/ms-graph-api/",
   display: {
     label: "Microsoft Graph API",
-    description: "Access Microsoft 365 services and data through the Microsoft Graph API.",
+    description:
+      "Send authenticated HTTP requests to any Microsoft Graph API endpoint to access Microsoft 365 services and data.",
     iconPath: "icon.png",
     category: "Application Connectors",
   },

@@ -12,7 +12,7 @@ export default component({
   display: {
     label: "ServiceDesk Plus",
     description:
-      "ServiceDesk Plus is a comprehensive service desk software that offers a suite of IT Service management, IT asset management, CBDM, and more.",
+      "Manage ServiceDesk Plus requests, problems, tasks, notes, assets, products, and configuration items, and react to new records with a polling trigger.",
     iconPath: "icon.png",
     category: "Application Connectors",
   },

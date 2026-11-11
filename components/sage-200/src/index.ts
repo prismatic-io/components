@@ -12,7 +12,7 @@ export default component({
   display: {
     label: "Sage 200",
     description:
-      "Sage 200 is an online business management solution designed to help businesses manage their finances, customers, and business insight in one solution.",
+      "Manage customers, contacts, delivery addresses, products, price bands, sales orders, and sales invoices in Sage 200.",
     iconPath: "icon.png",
     category: "Application Connectors",
   },

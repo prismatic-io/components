@@ -11,7 +11,7 @@ export default component({
   display: {
     label: "Gorgias",
     description:
-      "Gorgias is a customer support platform designed to help e-commerce businesses manage customer inquiries and support tickets efficiently.",
+      "Manage customers, tickets, ticket messages, and ticket custom fields in the Gorgias helpdesk.",
     iconPath: "icon.png",
     category: "Application Connectors",
   },

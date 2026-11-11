@@ -13,7 +13,7 @@ export default component({
   display: {
     label: "Google Shopping",
     description:
-      "Manage products, inventory, and orders in Google Merchant Center.",
+      "Manage Google Merchant Center accounts, products, orders, and returns through the Merchant API and the legacy Content API for Shopping v2.1.",
     iconPath: "icon.png",
     category: "Application Connectors",
   },

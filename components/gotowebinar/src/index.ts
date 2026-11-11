@@ -12,7 +12,7 @@ export default component({
     label: "GoTo Webinar",
     category: "Application Connectors",
     description:
-      "GoTo Webinar is a platform for hosting, managing, and attending live or pre-recorded webinars.",
+      "Manage webinars, registrants, attendees, and webhook subscriptions in GoTo Webinar.",
     iconPath: "icon.png",
   },
   hooks: { error: handleErrors },

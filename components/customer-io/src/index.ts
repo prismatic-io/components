@@ -10,7 +10,8 @@ export default component({
   display: {
     label: "Customer.io",
     category: "Application Connectors",
-    description: "Manage customers on the Customer.io platform.",
+    description:
+      "Identify and delete Customer.io customers, and track customer events and page views.",
     iconPath: "icon.png",
   },
   actions: { destroy, identify, track, trackPageView, rawRequest },

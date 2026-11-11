@@ -13,7 +13,7 @@ export default component({
     label: "Azure Event Grid",
     category: "Application Connectors",
     description:
-      "Azure Event Grid is an event routing service that can be used to build event driven applications by distributing events from various sources to subscribers.",
+      "Publish events to Azure Event Grid, manage event subscriptions, and receive Event Grid events with a webhook trigger.",
     iconPath: "icon.png",
   },
   actions,

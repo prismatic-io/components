@@ -10,7 +10,8 @@ export default component({
   documentationUrl: "https://prismatic.io/docs/components/ldap/",
   display: {
     label: "Active Directory",
-    description: "Connect to an Active Directory server.",
+    description:
+      "Manage users, groups, and directory entries in Active Directory or another LDAP server.",
     iconPath: "icon.png",
     category: "Application Connectors",
   },

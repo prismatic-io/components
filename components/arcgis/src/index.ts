@@ -11,7 +11,7 @@ export default component({
     category: "Application Connectors",
     label: "ArcGIS",
     description:
-      "Use the Esri ArcGIS component to manage map layers, and update locations.",
+      "Manage Esri ArcGIS feature services, layers, features, and web maps, and geocode addresses.",
     iconPath: "icon.png",
   },
   actions,

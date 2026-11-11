@@ -12,7 +12,7 @@ export default component({
     label: "PagerDuty",
     category: "Application Connectors",
     description:
-      "PagerDuty is a platform for managing on-call operations. This component supports PagerDuty REST API V2.",
+      "Manage PagerDuty incidents, alerts, services, users, templates, and webhook subscriptions, and send events and change events.",
     iconPath: "icon.png",
   },
   hooks: { error: handleErrors },

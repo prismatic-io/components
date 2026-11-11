@@ -41,7 +41,8 @@ export default component({
   documentationUrl: "https://prismatic.io/docs/components/tableau/",
   display: {
     label: "Tableau",
-    description: "Manage projects and workbooks in your Tableau site.",
+    description:
+      "Manage projects, workbooks, users, connections, and webhooks on a Tableau site, and react to Tableau events with webhook and polling triggers.",
     iconPath: "icon.png",
     category: "Application Connectors",
   },

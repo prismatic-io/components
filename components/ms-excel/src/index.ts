@@ -11,7 +11,8 @@ export default component({
   display: {
     category: "Data Platforms",
     label: "Microsoft Excel",
-    description: "Parse and build .xlsx files (spreadsheets)",
+    description:
+      "Manage workbooks, worksheets, tables, rows, columns, and cell ranges in Excel files on OneDrive and SharePoint via Microsoft Graph, and parse or build .xlsx files.",
     iconPath: "icon.png",
   },
   actions,

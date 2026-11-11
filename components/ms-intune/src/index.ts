@@ -12,7 +12,7 @@ export default component({
   display: {
     label: "Microsoft Intune",
     description:
-      "Use the Microsoft Intune component to manage users, devices, and applications.",
+      "Manage Microsoft Intune users, groups, managed devices, mobile apps, device compliance policies, and change notification subscriptions.",
     iconPath: "icon.png",
     category: "Application Connectors",
   },

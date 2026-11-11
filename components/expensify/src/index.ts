@@ -12,7 +12,7 @@ export default component({
   display: {
     label: "Expensify",
     description:
-      "Expensify provides an industry leading expense management system. Use the Expensify component to programmatically download expense report data for analysis or insertion into an accounting package, provision accounts for new hires, and much more.",
+      "Manage Expensify reports, expenses, policies, expense rules, and employees, and export report data.",
     iconPath: "icon.png",
     category: "Application Connectors",
   },

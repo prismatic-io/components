@@ -12,7 +12,7 @@ export default component({
     label: "DocuSign",
     category: "Application Connectors",
     description:
-      "Use the DocuSign component to manage signature collection and document distribution.",
+      "Manage DocuSign envelopes, templates, documents, contacts, bulk send lists, and users, and receive DocuSign account events with webhooks.",
     iconPath: "icon.png",
   },
   actions,

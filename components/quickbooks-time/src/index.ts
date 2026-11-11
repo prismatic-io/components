@@ -10,7 +10,8 @@ export default component({
   public: true,
   display: {
     label: "QuickBooks Time",
-    description: "Manage Employee Time Tracking within Intuit QuickBooks Time",
+    description:
+      "Manage timesheets, users, and job codes in Intuit QuickBooks Time, and react to new records with a polling trigger.",
     iconPath: "icon.png",
     category: "Application Connectors",
   },

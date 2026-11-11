@@ -12,7 +12,7 @@ export default component({
   display: {
     label: "Qlik",
     description:
-      "Qlik is a business analytics platform. Use the Qlik component to manage your Data Sets, Assets, and Apps.",
+      "Manage Qlik Cloud apps, spaces, data sets, data assets, data files, data stores, and reports, and react to new and updated records with a polling trigger.",
     iconPath: "icon.png",
     category: "Application Connectors",
   },

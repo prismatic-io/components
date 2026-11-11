@@ -20,7 +20,7 @@ export default component({
   display: {
     label: "Microsoft Power BI",
     category: "Application Connectors",
-    description: "Interact with and modify Power BI datasets",
+    description: "Manage Power BI datasets, tables, and rows, list groups and reports, and react to new records.",
     iconPath: "icon.png",
   },
   actions: {

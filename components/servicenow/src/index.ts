@@ -11,7 +11,8 @@ export default component({
   public: true,
   display: {
     label: "ServiceNow",
-    description: "Create records and incidents within ServiceNow.",
+    description:
+      "Manage ServiceNow table records, incidents, configuration items, users, attachments, and knowledge articles, and react to new and updated records with a polling trigger.",
     iconPath: "icon.png",
     category: "Application Connectors",
   },

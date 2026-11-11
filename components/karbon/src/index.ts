@@ -13,7 +13,7 @@ export default component({
   display: {
     label: "Karbon",
     description:
-      "Karbon is a collaborative practice management platform for accounting firms.",
+      "Manage contacts, work items, and users, and retrieve invoices in the Karbon accounting practice management platform.",
     iconPath: "icon.png",
     category: "Application Connectors",
   },

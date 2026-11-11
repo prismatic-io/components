@@ -12,7 +12,7 @@ export default component({
   display: {
     label: "Toast",
     description:
-      "Use the Toast component to manage Employees, Jobs, Cash Entries, and more.",
+      "Manage Toast restaurant employees, jobs, shifts, time entries, cash entries, and deposits, and react to Toast events with webhook and polling triggers.",
     iconPath: "icon.png",
     category: "Application Connectors",
   },

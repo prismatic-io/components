@@ -11,7 +11,8 @@ export default component({
   documentationUrl: "https://prismatic.io/docs/components/ms-dynamics/",
   display: {
     label: "Microsoft Dynamics 365",
-    description: "Query, create, update, or delete Microsoft Dynamics 365 entity records.",
+    description:
+      "Query, create, update, and delete entity records and metadata in Microsoft Dynamics 365 (Dataverse Web API), including FetchXML queries and batch operations.",
     iconPath: "icon.png",
     category: "Application Connectors",
   },

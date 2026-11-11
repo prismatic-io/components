@@ -11,7 +11,8 @@ export default component({
   documentationUrl: "https://prismatic.io/docs/components/monday/",
   display: {
     label: "Monday",
-    description: "Manage boards, tasks and workflows within Monday.",
+    description:
+      "Manage monday.com boards and webhooks, find items by column value, send GraphQL requests, and react to new and updated items.",
     iconPath: "icon.png",
     category: "Application Connectors",
   },
