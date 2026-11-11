@@ -4,6 +4,10 @@
 
 Refactored internal code
 
+### 2026-11-11
+
+Refactored internal code
+
 ### 2026-11-10
 
 Added trigger batching and published the component as an npm package:

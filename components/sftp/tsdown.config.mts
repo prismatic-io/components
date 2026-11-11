@@ -13,6 +13,7 @@ export default defineConfig([
     minify: true,
     deps: {
       alwaysBundle: () => true,
+      neverBundle: ["cpu-features"],
       onlyBundle: false,
     },
     outExtensions: () => ({ js: ".js" }),
