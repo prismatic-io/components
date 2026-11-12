@@ -1,5 +1,5 @@
 export const contactJson = {
-  contacts: [
+  contactList: [
     {
       signingGroupUsers: [
         {

@@ -1,31 +1,16 @@
 import { dataSource } from "@prismatic-io/spectral";
-import {
-  connection,
-  count,
-  include,
-  includeItems,
-  startPosition,
-  subFolderDepth,
-  userFilter,
-} from "../inputs";
+import { foldersInputs } from "../inputs";
 
-import { getFolders } from "../utils";
+import { getFolders } from "../util";
 import { getDocuSignClient } from "../client";
+import { foldersExamplePayload } from "../examplePayloads";
 
 export const folders = dataSource({
   display: {
     label: "Select Folder",
-    description: "Select a Folder.",
+    description: "A picklist of folders in the DocuSign account.",
   },
-  inputs: {
-    connection,
-    count,
-    include,
-    includeItems,
-    startPosition,
-    subFolderDepth,
-    userFilter,
-  },
+  inputs: foldersInputs,
   perform: async (
     context,
     {
@@ -59,4 +44,5 @@ export const folders = dataSource({
     };
   },
   dataSourceType: "picklist",
+  examplePayload: foldersExamplePayload,
 });

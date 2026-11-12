@@ -271,8 +271,8 @@
   },
   "docusign": {
     "name": "@prismatic-io/components-docusign",
-    "version": "0.3.1",
-    "build": "a7e08c3a3dda79b4fd5fb9258cf22eefb667ef049bd2322c175443f0d5130912",
+    "version": "0.4.0",
+    "build": "88bf8c8434a08e98acbc65e45599b9d1a94feaccdf6a92c4b0641c4dc5ac6a4a",
     "spectral": "^10.39.1"
   },
   "domo": {

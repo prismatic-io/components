@@ -1,16 +1,15 @@
 import { dataSource } from "@prismatic-io/spectral";
-import { connection } from "../inputs";
-import { getTemplates } from "../utils";
+import { templatesInputs } from "../inputs";
+import { getTemplates } from "../util";
 import { getDocuSignClient } from "../client";
+import { templatesExamplePayload } from "../examplePayloads";
 
 export const templates = dataSource({
   display: {
     label: "Select Template",
-    description: "Select a Template.",
+    description: "A picklist of templates in the DocuSign account.",
   },
-  inputs: {
-    connection,
-  },
+  inputs: templatesInputs,
   perform: async (context, { connection }) => {
     const client = await getDocuSignClient(connection);
     const data = await getTemplates(client);
@@ -25,4 +24,5 @@ export const templates = dataSource({
     };
   },
   dataSourceType: "picklist",
+  examplePayload: templatesExamplePayload,
 });
