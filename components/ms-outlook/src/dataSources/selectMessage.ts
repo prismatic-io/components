@@ -3,6 +3,7 @@ import { computeEndpointBasedOnConnection, fetchAllData } from "../util";
 import type { Message } from "@microsoft/microsoft-graph-types";
 import type { ODataAttrs } from "../types";
 import { createClient } from "../client";
+import { selectMessageExamplePayload } from "../examplePayloads";
 import { selectMessageInputs } from "../inputs";
 
 export const selectMessage = dataSource({
@@ -30,5 +31,6 @@ export const selectMessage = dataSource({
     }));
     return { result };
   },
+  examplePayload: selectMessageExamplePayload,
   dataSourceType: "picklist",
 });

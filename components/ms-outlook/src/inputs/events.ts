@@ -1,6 +1,5 @@
-import { input, type KeyValuePair, structuredObjectInput, util } from "@prismatic-io/spectral";
-import type { Attendee, AttendeeType } from "@microsoft/microsoft-graph-types";
-import { cleanStringInput } from "../util";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
+import { cleanOptionalAttendees, cleanStringInput, toAttendees } from "../util";
 import {
   connectionInput,
   endInput,
@@ -21,7 +20,7 @@ const eventCalendarIdInput = input({
     "The unique identifier of the calendar to list events from. Lists all events for the current user if unspecified.",
   example: "AAMkAGI2TGuLAAA=",
   placeholder: "Select a calendar",
-  clean: util.types.toString,
+  clean: cleanStringInput,
 });
 
 const locationNameInput = input({
@@ -80,17 +79,7 @@ const attendeesInput = input({
     "The event attendees as key-value pairs. Specify the email address as the key and the attendee type (required, optional, or resource) as the value.",
   example: '{"john.doe@example.com": "required", "jane.smith@example.com": "optional"}',
   placeholder: "Enter attendee email addresses",
-  clean: (rawValue) => {
-    if (!Array.isArray(rawValue)) {
-      throw new Error("Unexpected format of attendees collection.");
-    }
-
-    const payload = (rawValue as KeyValuePair<unknown>[]).map<Attendee>(({ key, value }) => ({
-      emailAddress: { address: util.types.toString(key) },
-      type: util.types.toString(value) as AttendeeType,
-    }));
-    return payload;
-  },
+  clean: toAttendees,
 });
 
 const cancelCommentInput = input({
@@ -100,18 +89,37 @@ const cancelCommentInput = input({
   example: "Meeting rescheduled to next week.",
   placeholder: "Enter cancellation comment",
   comments: "An optional comment about the cancellation sent to all attendees.",
-  clean: util.types.toString,
+  clean: cleanStringInput,
 });
 
 const updateEventScheduleInput = structuredObjectInput({
   label: "Schedule",
   required: false,
-  comments: "Start and end times of the event and the timezone applied to each.",
+  comments: "Start and end times and the timezone applied to each.",
   inputs: {
     start: { ...startInput, required: false, clean: cleanStringInput },
     startTimezone: { ...startTimezoneInput, required: false, clean: cleanStringInput },
     end: { ...endInput, required: false, clean: cleanStringInput },
     endTimezone: { ...endTimezoneInput, required: false, clean: cleanStringInput },
+  },
+});
+
+const updateEventLocationNameInput = {
+  ...locationNameInput,
+  required: false,
+  clean: cleanStringInput,
+};
+const updateEventSubjectInput = { ...subjectInput, required: false, clean: cleanStringInput };
+const updateEventBodyInput = { ...bodyInput, required: false, clean: cleanStringInput };
+
+const updateEventDetailsInput = structuredObjectInput({
+  label: "Event Details",
+  required: false,
+  comments: "Subject, body, and location shown for the event.",
+  inputs: {
+    locationName: updateEventLocationNameInput,
+    subject: updateEventSubjectInput,
+    body: updateEventBodyInput,
   },
 });
 
@@ -139,12 +147,10 @@ export const createEventInputs = {
 export const updateEventInputs = {
   connection: connectionInput,
   eventId: eventIdInput,
-  locationName: { ...locationNameInput, required: false, clean: cleanStringInput },
-  subject: { ...subjectInput, required: false, clean: cleanStringInput },
-  body: { ...bodyInput, required: false, clean: cleanStringInput },
+  eventDetails: updateEventDetailsInput,
   schedule: updateEventScheduleInput,
   attendeesData: { ...attendeesDataInput, required: false },
-  attendees: { ...attendeesInput, required: false },
+  attendees: { ...attendeesInput, required: false, clean: cleanOptionalAttendees },
 };
 
 export const deleteEventInputs = {

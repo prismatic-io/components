@@ -8,6 +8,7 @@ import {
   recipientArray,
   recipientSchema,
   stringArray,
+  deleteResultSchema,
 } from "./shared";
 
 const messageSchema = {
@@ -107,3 +108,7 @@ export const getMessageByIdOutputSchema = {
   },
   required: ["message", "rawMessage"],
 };
+
+export const sendMessageOutputSchema = { type: "null" as const };
+
+export const deleteMessageOutputSchema = deleteResultSchema;

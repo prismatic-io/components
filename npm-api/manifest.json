@@ -613,8 +613,8 @@
   },
   "ms-outlook": {
     "name": "@prismatic-io/components-ms-outlook",
-    "version": "0.4.1",
-    "build": "7f740a2368cad1aba45a82ee1f31e6ef0bc155485b9e3e790fdaed9498fc5d0a",
+    "version": "0.5.0",
+    "build": "a75b8f6de1c179752efb8107c3d34da2deb8850218efb6227ccf2c6914ec4c0f",
     "spectral": "^10.39.1"
   },
   "ms-planner": {

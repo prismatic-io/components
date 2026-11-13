@@ -1,4 +1,10 @@
-import { nullableBoolean, nullableInteger, nullableString, stringArray } from "./shared";
+import {
+  deleteResultSchema,
+  nullableBoolean,
+  nullableInteger,
+  nullableString,
+  stringArray,
+} from "./shared";
 
 const mailFolderSchema = {
   type: "object" as const,
@@ -43,3 +49,5 @@ export const listMailFoldersOutputSchema = {
   },
   required: ["value"],
 };
+
+export const deleteMailFolderOutputSchema = deleteResultSchema;

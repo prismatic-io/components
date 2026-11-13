@@ -8,6 +8,17 @@ import {
   folderIdInput,
 } from "./common";
 
+const skipMessageFetchInput = input({
+  label: "Skip Message Fetch",
+  type: "boolean",
+  required: false,
+  default: "false",
+  example: "false",
+  comments:
+    "When true, returns each notification without fetching the full message, so the trigger responds to Microsoft Graph faster and fewer notifications are retried. Notifications then carry no messageData; use the Raw Request action with GET /me/messages/{id} (/users/{userId}/messages/{id} with the client credentials connection) and the notification's resourceData.id to read the message in the same shape.",
+  clean: util.types.toBool,
+});
+
 export const webhookInputs = {};
 
 export const webhookLifecycleInputs = {
@@ -26,6 +37,7 @@ export const mailFolderWebhookInputs = {
   },
   expirationDateTime: expirationDateTimeInput,
   allowDuplicates: allowDuplicatesInput,
+  skipMessageFetch: skipMessageFetchInput,
 };
 
 const lookBackDate = input({

@@ -1,6 +1,10 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
-import { cleanStringInput } from "../util";
-import { RENEWAL_EXPIRATION_MINUTES } from "../constants";
+import {
+  cleanExpirationDateTime,
+  cleanNumberInput,
+  cleanStringInput,
+  toCommaSeparatedString,
+} from "../util";
 
 export const connectionInput = input({
   label: "Connection",
@@ -64,7 +68,7 @@ const pageLimitInput = input({
   example: "100",
   placeholder: "Enter maximum results per page",
   comments: "The maximum number of results to return per page.",
-  clean: (value) => util.types.toNumber(value) || undefined,
+  clean: cleanNumberInput,
 });
 
 const pageSkipInput = input({
@@ -74,7 +78,7 @@ const pageSkipInput = input({
   example: "100",
   placeholder: "Enter number of records to skip",
   comments: "The number of records to skip before returning results.",
-  clean: cleanStringInput,
+  clean: cleanNumberInput,
 });
 
 export const pagination = structuredObjectInput({
@@ -129,12 +133,7 @@ export const changeTypesInput = input({
   model: ["created", "updated", "deleted"].map((changeType) => {
     return { value: changeType, label: `on ${changeType}` };
   }),
-  clean: (value: unknown): string => {
-    if (Array.isArray(value)) {
-      return value.join(",");
-    }
-    return util.types.toString(value);
-  },
+  clean: toCommaSeparatedString,
 });
 
 export const allowDuplicatesInput = input({
@@ -165,16 +164,7 @@ export const expirationDateTimeInput = input({
     "The expiration date and time for the webhook subscription in ISO 8601 format. If unspecified, defaults to the current date/time plus 10,070 minutes (the maximum permitted by the Graph API).",
   example: "2024-12-31T23:59:59.999Z",
   placeholder: "Enter expiration date/time (ISO 8601 format)",
-  clean: (rawValue: unknown) => {
-    const defaultDate = new Date();
-    defaultDate.setTime(defaultDate.getTime() + RENEWAL_EXPIRATION_MINUTES * 60 * 1000);
-
-    const value = rawValue || defaultDate;
-    if (value instanceof Date) {
-      return value.toISOString();
-    }
-    return util.types.toString(value);
-  },
+  clean: cleanExpirationDateTime,
 });
 
 export const subscriptionIdInput = input({

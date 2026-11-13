@@ -1,4 +1,5 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { deleteMailFolderOutputSchema } from "../../outputSchemas";
 import { createClient } from "../../client";
 import { deleteMailFolderExamplePayload } from "../../examplePayloads";
 import { deleteMailFolderInputs } from "../../inputs";
@@ -17,9 +18,15 @@ export const deleteMailFolder = action({
       params.connection,
       `/me/mailFolders/${params.folderId}`,
     );
-    const { data } = await client.delete(url);
-    return { data };
+    await client.delete(url);
+    return {
+      data: { success: true, id: params.folderId, message: "Mail folder deleted successfully" },
+    };
   },
   examplePerform: async () => deleteMailFolderExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: deleteMailFolderOutputSchema,
+  }),
   examplePayload: deleteMailFolderExamplePayload,
 });

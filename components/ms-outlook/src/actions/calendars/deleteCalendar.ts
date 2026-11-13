@@ -1,4 +1,5 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { deleteCalendarOutputSchema } from "../../outputSchemas";
 import { createClient } from "../../client";
 import { deleteCalendarExamplePayload } from "../../examplePayloads";
 import { deleteCalendarInputs } from "../../inputs";
@@ -13,11 +14,15 @@ export const deleteCalendar = action({
   performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = createClient(params.connection, context.debug.enabled);
-    const { data } = await client.delete(
+    await client.delete(
       computeEndpointBasedOnConnection(params.connection, `/me/calendars/${params.id}`),
     );
-    return { data };
+    return { data: { success: true, id: params.id, message: "Calendar deleted successfully" } };
   },
   examplePerform: async () => deleteCalendarExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: deleteCalendarOutputSchema,
+  }),
   examplePayload: deleteCalendarExamplePayload,
 });

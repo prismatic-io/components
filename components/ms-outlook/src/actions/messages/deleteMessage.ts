@@ -1,4 +1,5 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { deleteMessageOutputSchema } from "../../outputSchemas";
 import { createClient } from "../../client";
 import { deleteMessageExamplePayload } from "../../examplePayloads";
 import { deleteMessageInputs } from "../../inputs";
@@ -17,9 +18,15 @@ export const deleteMessage = action({
       params.connection,
       `/me/messages/${params.messageId}`,
     );
-    const { data } = await client.delete(url);
-    return { data };
+    await client.delete(url);
+    return {
+      data: { success: true, id: params.messageId, message: "Message deleted successfully" },
+    };
   },
   examplePerform: async () => deleteMessageExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: deleteMessageOutputSchema,
+  }),
   examplePayload: deleteMessageExamplePayload,
 });

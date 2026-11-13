@@ -6,6 +6,7 @@ import {
   nullableEnum,
   nullableString,
   ONLINE_MEETING_PROVIDERS,
+  deleteResultSchema,
 } from "./shared";
 
 const calendarSchema = {
@@ -119,3 +120,5 @@ export const getScheduleOutputSchema = {
   },
   required: ["value"],
 };
+
+export const deleteCalendarOutputSchema = deleteResultSchema;

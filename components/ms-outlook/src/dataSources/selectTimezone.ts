@@ -1,5 +1,6 @@
 import { dataSource, type Element, util } from "@prismatic-io/spectral";
 import { createClient } from "../client";
+import { selectTimezoneExamplePayload } from "../examplePayloads";
 import { selectTimezoneInputs } from "../inputs";
 import { computeEndpointBasedOnConnection } from "../util";
 
@@ -22,5 +23,6 @@ export const selectTimezone = dataSource({
     }));
     return { result };
   },
+  examplePayload: selectTimezoneExamplePayload,
   dataSourceType: "picklist",
 });

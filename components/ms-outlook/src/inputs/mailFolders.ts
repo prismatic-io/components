@@ -47,12 +47,12 @@ export const listMailFoldersInputs = {
 
 export const createMailFolderInputs = {
   connection: connectionInput,
+  name: folderDisplayNameInput,
   parentFolderId: {
     ...parentFolderIdInput,
     comments:
       "The unique identifier of the parent folder. Creates the folder under this parent. Omit to create a root-level folder.",
   },
-  name: folderDisplayNameInput,
 };
 
 export const deleteMailFolderInputs = {

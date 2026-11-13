@@ -739,7 +739,13 @@ type UppercaseMethod = 'GET' | 'DELETE' | 'HEAD' | 'OPTIONS' | 'POST' | 'PUT' | 
 type Method = (UppercaseMethod | Lowercase<UppercaseMethod>) & {};
 type ResponseType = 'arraybuffer' | 'blob' | 'document' | 'json' | 'text' | 'stream' | 'formdata';
 //#endregion
-//#region src/types/index.d.ts
+//#region src/types/attachments.d.ts
+interface AttachmentDownload {
+  data: Buffer;
+  contentType: string;
+}
+//#endregion
+//#region src/types/odata.d.ts
 interface ODataAttrs {
   "@odata.id"?: string;
   "@odata.etag"?: string;
@@ -750,10 +756,6 @@ interface PaginatedResponse<T> {
   "@odata.context": string;
   value: T[];
   "@odata.nextLink"?: string;
-}
-interface AttachmentDownload {
-  data: Buffer;
-  contentType: string;
 }
 //#endregion
 //#region npm-dist/.entry.d.ts
@@ -897,7 +899,11 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         clean: (value: unknown, defaultValue?: string) => string;
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
-      data: any;
+      data: {
+        success: boolean;
+        id: string;
+        message: string;
+      };
     }>;
     deleteAllInstanceSubscriptions: import("@prismatic-io/spectral").ActionDefinition<{
       connection: {
@@ -1081,8 +1087,8 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         clean: (value: unknown) => boolean;
       };
       connection: {
-        type: "connection";
         label: string;
+        type: "connection";
         required: true;
         comments: string;
       };
@@ -1107,7 +1113,11 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         placeholder: string;
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
-      data: any;
+      data: {
+        success: boolean;
+        id: string;
+        message: string;
+      };
     }>;
     getMessageById: import("@prismatic-io/spectral").ActionDefinition<{
       connection: {
@@ -1181,7 +1191,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
             example: string;
             placeholder: string;
             comments: string;
-            clean: (value: unknown) => string | undefined;
+            clean: (value: unknown) => number | undefined;
           };
         };
       } & {
@@ -1313,6 +1323,15 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         required: true;
         comments: string;
       };
+      name: {
+        label: string;
+        required: true;
+        type: "string";
+        comments: string;
+        example: string;
+        placeholder: string;
+        clean: (value: unknown, defaultValue?: string) => string;
+      };
       parentFolderId: {
         comments: string;
         label: string;
@@ -1322,15 +1341,6 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         example: string;
         placeholder: string;
         clean: (value: unknown) => string | undefined;
-      };
-      name: {
-        label: string;
-        required: true;
-        type: "string";
-        comments: string;
-        example: string;
-        placeholder: string;
-        clean: (value: unknown, defaultValue?: string) => string;
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
       data: MailSearchFolder;
@@ -1353,7 +1363,11 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         clean: (value: unknown, defaultValue?: string) => string;
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
-      data: any;
+      data: {
+        success: boolean;
+        id: string;
+        message: string;
+      };
     }>;
     listMailFolders: import("@prismatic-io/spectral").ActionDefinition<{
       connection: {
@@ -1392,7 +1406,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
             example: string;
             placeholder: string;
             comments: string;
-            clean: (value: unknown) => string | undefined;
+            clean: (value: unknown) => number | undefined;
           };
         };
       } & {
@@ -1468,7 +1482,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
             example: string;
             placeholder: string;
             comments: string;
-            clean: (value: unknown) => string | undefined;
+            clean: (value: unknown) => number | undefined;
           };
         };
       } & {
@@ -1482,7 +1496,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         comments: string;
         example: string;
         placeholder: string;
-        clean: (value: unknown, defaultValue?: string) => string;
+        clean: (value: unknown) => string | undefined;
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
       data: PaginatedResponse<Event & ODataAttrs>;
@@ -1569,7 +1583,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         comments: string;
         example: string;
         placeholder: string;
-        clean: (value: unknown, defaultValue?: string) => string;
+        clean: (value: unknown) => string | undefined;
       };
       attendeesData: {
         label: string;
@@ -1614,32 +1628,41 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         placeholder: string;
         dataSource: string;
       };
-      locationName: {
-        required: boolean;
-        clean: (value: unknown) => string | undefined;
+      eventDetails: {
         label: string;
-        type: "string";
-        comments: string;
-        example: string;
-        placeholder: string;
-      };
-      subject: {
         required: boolean;
-        clean: (value: unknown) => string | undefined;
-        label: string;
-        type: "string";
         comments: string;
-        example: string;
-        placeholder: string;
-      };
-      body: {
-        required: boolean;
-        clean: (value: unknown) => string | undefined;
-        label: string;
-        type: "string";
-        comments: string;
-        example: string;
-        placeholder: string;
+        inputs: {
+          locationName: {
+            required: boolean;
+            clean: (value: unknown) => string | undefined;
+            label: string;
+            type: "string";
+            comments: string;
+            example: string;
+            placeholder: string;
+          };
+          subject: {
+            required: boolean;
+            clean: (value: unknown) => string | undefined;
+            label: string;
+            type: "string";
+            comments: string;
+            example: string;
+            placeholder: string;
+          };
+          body: {
+            required: boolean;
+            clean: (value: unknown) => string | undefined;
+            label: string;
+            type: "string";
+            comments: string;
+            example: string;
+            placeholder: string;
+          };
+        };
+      } & {
+        type: "structuredObject";
       };
       schedule: {
         label: string;
@@ -1700,6 +1723,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
       };
       attendees: {
         required: boolean;
+        clean: (rawValue: unknown) => Attendee[];
         label: {
           key: string;
           value: string;
@@ -1713,7 +1737,6 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         comments: string;
         example: string;
         placeholder: string;
-        clean: (rawValue: unknown) => Attendee[];
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
       data: Event;
@@ -1736,7 +1759,11 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         dataSource: string;
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
-      data: any;
+      data: {
+        success: boolean;
+        id: string;
+        message: string;
+      };
     }>;
     cancelEvent: import("@prismatic-io/spectral").ActionDefinition<{
       connection: {
@@ -1762,10 +1789,14 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         example: string;
         placeholder: string;
         comments: string;
-        clean: (value: unknown, defaultValue?: string) => string;
+        clean: (value: unknown) => string | undefined;
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
-      data: any;
+      data: {
+        success: boolean;
+        id: string;
+        message: string;
+      };
     }>;
     listCalendars: import("@prismatic-io/spectral").ActionDefinition<{
       connection: {
@@ -1804,7 +1835,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
             example: string;
             placeholder: string;
             comments: string;
-            clean: (value: unknown) => string | undefined;
+            clean: (value: unknown) => number | undefined;
           };
         };
       } & {
@@ -1859,15 +1890,6 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         dataSource: string;
         clean: (value: unknown, defaultValue?: string) => string;
       };
-      name: {
-        required: boolean;
-        clean: (value: unknown) => string | undefined;
-        label: string;
-        type: "string";
-        comments: string;
-        example: string;
-        placeholder: string;
-      };
       color: {
         label: string;
         type: "string";
@@ -1877,6 +1899,15 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         placeholder: string;
         comments: string;
         clean: (value: unknown, defaultValue?: string) => string;
+      };
+      name: {
+        required: boolean;
+        clean: (value: unknown) => string | undefined;
+        label: string;
+        type: "string";
+        comments: string;
+        example: string;
+        placeholder: string;
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
       data: Calendar & ODataAttrs;
@@ -1899,7 +1930,11 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         clean: (value: unknown, defaultValue?: string) => string;
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
-      data: any;
+      data: {
+        success: boolean;
+        id: string;
+        message: string;
+      };
     }>;
     getSchedule: import("@prismatic-io/spectral").ActionDefinition<{
       connection: {
@@ -1966,7 +2001,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         default: string;
         placeholder: string;
         comments: string;
-        clean: (value: unknown, defaultValue?: number) => number;
+        clean: (value: unknown) => number | undefined;
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
       data: {
@@ -2164,6 +2199,15 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         clean: (rawValue: unknown) => string;
       };
       allowDuplicates: {
+        label: string;
+        type: "boolean";
+        required: false;
+        default: string;
+        example: string;
+        comments: string;
+        clean: (value: unknown, defaultValue?: boolean) => boolean;
+      };
+      skipMessageFetch: {
         label: string;
         type: "boolean";
         required: false;

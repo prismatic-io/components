@@ -43,4 +43,18 @@ describe("updateCalendar", () => {
 
     expect(scope.isDone()).toBe(true);
   });
+
+  test("rejects when Graph returns an error", async () => {
+    nock(GRAPH_HOST)
+      .patch(CALENDAR_PATH)
+      .reply(404, { error: { code: "ErrorItemNotFound", message: "Not found." } });
+
+    await expect(
+      harness.action("updateCalendar", {
+        connection: delegatedConnection(),
+        id: CALENDAR_ID,
+        color: "lightRed",
+      }),
+    ).rejects.toThrow();
+  });
 });

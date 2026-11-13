@@ -1,4 +1,4 @@
-import { nullableBoolean, nullableDateTime, nullableString } from "./shared";
+import { deleteResultSchema, nullableBoolean, nullableDateTime, nullableString } from "./shared";
 
 const subscriptionSchema = {
   type: "object" as const,
@@ -49,3 +49,5 @@ export const deleteAllInstanceSubscriptionsOutputSchema = {
   },
   required: ["subscriptionsRemoved"],
 };
+
+export const deleteSubscriptionOutputSchema = deleteResultSchema;

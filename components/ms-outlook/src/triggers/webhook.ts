@@ -1,5 +1,5 @@
 import { trigger } from "@prismatic-io/spectral";
-import { webhookTriggerExamplePayload } from "../examplePayloads";
+import { webhookExamplePayload } from "../examplePayloads";
 import { webhookInputs } from "../inputs";
 import { createWebhookPerformFN } from "../util";
 
@@ -15,5 +15,5 @@ export const webhook = trigger({
   inputs: webhookInputs,
   staticBranchNames: ["Notification", "URL Validation"],
   perform: createWebhookPerformFN(),
-  examplePayload: webhookTriggerExamplePayload,
+  examplePayload: webhookExamplePayload,
 });

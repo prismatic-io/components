@@ -3,6 +3,7 @@ import { computeEndpointBasedOnConnection, fetchAllData } from "../util";
 import type { MailSearchFolder } from "@microsoft/microsoft-graph-types";
 import type { ODataAttrs } from "../types";
 import { createClient } from "../client";
+import { selectMailFolderExamplePayload } from "../examplePayloads";
 import { selectMailFolderInputs } from "../inputs";
 
 export const selectMailFolder = dataSource({
@@ -26,5 +27,6 @@ export const selectMailFolder = dataSource({
     }));
     return { result };
   },
+  examplePayload: selectMailFolderExamplePayload,
   dataSourceType: "picklist",
 });

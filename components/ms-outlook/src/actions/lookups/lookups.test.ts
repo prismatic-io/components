@@ -49,4 +49,12 @@ describe.each([
 
     expect(scope.isDone()).toBe(true);
   });
+
+  test("rejects when Graph returns an error", async () => {
+    nock(GRAPH_HOST)
+      .get(`/v1.0/me/outlook/${path}`)
+      .reply(403, { error: { code: "ErrorAccessDenied", message: "Access is denied." } });
+
+    await expect(invoke(action, { connection: delegatedConnection() })).rejects.toThrow();
+  });
 });

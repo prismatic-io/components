@@ -3,6 +3,7 @@ import { computeEndpointBasedOnConnection, fetchAllData } from "../util";
 import type { Event } from "@microsoft/microsoft-graph-types";
 import type { ODataAttrs } from "../types";
 import { createClient } from "../client";
+import { selectEventExamplePayload } from "../examplePayloads";
 import { selectEventInputs } from "../inputs";
 
 export const selectEvent = dataSource({
@@ -26,5 +27,6 @@ export const selectEvent = dataSource({
     }));
     return { result };
   },
+  examplePayload: selectEventExamplePayload,
   dataSourceType: "picklist",
 });

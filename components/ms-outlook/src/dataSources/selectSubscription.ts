@@ -1,5 +1,6 @@
 import { dataSource, type Element, util } from "@prismatic-io/spectral";
 import { createClient } from "../client";
+import { selectSubscriptionExamplePayload } from "../examplePayloads";
 import { selectSubscriptionInputs } from "../inputs";
 import { computeEndpointBasedOnConnection, fetchAllData } from "../util";
 import type { Subscription } from "@microsoft/microsoft-graph-types";
@@ -25,5 +26,6 @@ export const selectSubscription = dataSource({
     }));
     return { result };
   },
+  examplePayload: selectSubscriptionExamplePayload,
   dataSourceType: "picklist",
 });

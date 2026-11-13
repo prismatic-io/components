@@ -1,4 +1,4 @@
-import type { WebhookResourceConfig } from "./types";
+import type { WebhookResourceConfig, WebhookResourceType } from "./types";
 
 export const ATTACHMENTS_DATA_INPUT_EXAMPLE = [
   { key: "my-attachment.pdf", value: "<BINARY FILE DATA TO ATTACH>" },
@@ -10,7 +10,7 @@ export const scopesForAuthorizationCodeFlow =
 
 export const RENEWAL_EXPIRATION_MINUTES = 10070;
 
-export const WEBHOOK_RESOURCE_CONFIG: Record<string, WebhookResourceConfig> = {
+export const WEBHOOK_RESOURCE_CONFIG: Record<WebhookResourceType, WebhookResourceConfig> = {
   event: {
     endpoint: "/me/events",
     dataKey: "eventData",

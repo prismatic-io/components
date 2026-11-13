@@ -1,7 +1,7 @@
 import { trigger } from "@prismatic-io/spectral";
 import { createSubscriptionTrigger, deleteSubscriptionTrigger, getBase64FromUrl } from "ms-utils";
 import { createClient } from "../client";
-import { mailFolderWebhookTriggerExamplePayload } from "../examplePayloads";
+import { mailFolderWebhookExamplePayload } from "../examplePayloads";
 import { mailFolderWebhookInputs } from "../inputs";
 import { computeResourceBasedOnConnection, createWebhookPerformFN } from "../util";
 
@@ -17,7 +17,7 @@ export const mailFolderWebhook = trigger({
   inputs: mailFolderWebhookInputs,
   staticBranchNames: ["Notification", "URL Validation", "Scheduled Renewal"],
   perform: createWebhookPerformFN("message"),
-  examplePayload: mailFolderWebhookTriggerExamplePayload,
+  examplePayload: mailFolderWebhookExamplePayload,
   webhookLifecycleHandlers: {
     create: async (
       context,

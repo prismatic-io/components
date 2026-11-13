@@ -22,7 +22,7 @@ describe("updateEvent", () => {
     const result = await harness.action("updateEvent", {
       connection: delegatedConnection(),
       eventId: EVENT_ID,
-      subject: "Team Meeting",
+      eventDetails: { subject: "Team Meeting" },
       schedule: undefined,
       attendees: [],
     });
@@ -52,5 +52,20 @@ describe("updateEvent", () => {
     });
 
     expect(scope.isDone()).toBe(true);
+  });
+
+  test("rejects when Graph returns an error", async () => {
+    nock(GRAPH_HOST)
+      .patch(EVENT_PATH)
+      .reply(404, { error: { code: "ErrorItemNotFound", message: "Not found." } });
+
+    await expect(
+      harness.action("updateEvent", {
+        connection: delegatedConnection(),
+        eventId: EVENT_ID,
+        eventDetails: { subject: "Team Meeting" },
+        attendees: [],
+      }),
+    ).rejects.toThrow();
   });
 });

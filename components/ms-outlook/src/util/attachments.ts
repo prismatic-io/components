@@ -10,7 +10,8 @@ import {
   REFERENCE_ATTACHMENT_ODATA_TYPE,
 } from "../constants";
 import type { AttachmentDownload, ODataAttrs, PaginatedResponse } from "../types";
-import { computeEndpointBasedOnConnection, fetchAllData } from ".";
+import { computeEndpointBasedOnConnection } from "./connection";
+import { fetchAllData } from "./records";
 
 export const listAttachments = (
   client: HttpClient,

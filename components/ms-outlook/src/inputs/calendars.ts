@@ -1,5 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
-import { cleanStringInput } from "../util";
+import { cleanNumberInput, cleanStringInput, toStringArray } from "../util";
 import {
   connectionInput,
   endInput,
@@ -52,24 +52,19 @@ const availabilityViewIntervalInput = input({
   default: "30",
   placeholder: "Enter interval in minutes",
   comments: "The duration of each time slot used to check availability, in minutes.",
-  clean: util.types.toNumber,
+  clean: cleanNumberInput,
 });
 
 const schedulesInput = input({
   label: "Schedules",
   type: "string",
   collection: "valuelist",
-  example: "example@example.com",
+  example: '["adele.vance@example.com", "conference.room@example.com"]',
   required: true,
   placeholder: "Enter SMTP addresses",
   comments:
     "The collection of SMTP addresses of users, distribution lists, or resources to get availability information for.",
-  clean: (rawValue) => {
-    if (!Array.isArray(rawValue)) {
-      return rawValue;
-    }
-    return rawValue.map((v) => util.types.toString(v));
-  },
+  clean: toStringArray,
 });
 
 export const listCalendarsInputs = {
@@ -87,8 +82,8 @@ export const createCalendarInputs = {
 export const updateCalendarInputs = {
   connection: connectionInput,
   id: calendarIdInput,
-  name: { ...calendarNameInput, required: false, clean: cleanStringInput },
   color: calendarColorInput,
+  name: { ...calendarNameInput, required: false, clean: cleanStringInput },
 };
 
 export const deleteCalendarInputs = {

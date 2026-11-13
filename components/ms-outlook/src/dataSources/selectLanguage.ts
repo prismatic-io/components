@@ -1,5 +1,6 @@
 import { dataSource, type Element, util } from "@prismatic-io/spectral";
 import { createClient } from "../client";
+import { selectLanguageExamplePayload } from "../examplePayloads";
 import { selectLanguageInputs } from "../inputs";
 import { computeEndpointBasedOnConnection } from "../util";
 
@@ -22,5 +23,6 @@ export const selectLanguage = dataSource({
     }));
     return { result };
   },
+  examplePayload: selectLanguageExamplePayload,
   dataSourceType: "picklist",
 });

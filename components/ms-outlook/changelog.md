@@ -1,5 +1,18 @@
 ## Changelog
 
+### 2026-11-13
+
+Added an option to skip the message fetch on the **Mail Message Webhook** trigger, and updated existing actions and triggers:
+
+- Added the **Skip Message Fetch** input to the **Mail Message Webhook** trigger, so the trigger can respond to Microsoft Graph without fetching each message and fewer notifications are retried; notifications then carry no `messageData`
+- Updated the **Delete Calendar**, **Delete Event**, **Cancel Event**, **Delete Mail Folder**, **Delete Message**, and **Delete Subscription** actions to return a result with `success`, `id`, and `message` instead of an empty response
+- Added output schemas to 7 actions for improved field mapping during configuration
+- Updated the **Update Event** action to group its **Location Name**, **Subject**, and **Body (HTML)** inputs into an **Event Details** structured object
+- Updated **Update Event** to accept an empty **Attendees** value instead of rejecting it
+- Updated **Get Schedule Availability** to leave the interval out of the request when **Availability View Interval** is empty, instead of sending 0
+- Updated **Send Message** to trim the addresses in **To**, **CC**, and **BCC** and drop the empty entries that extra commas leave, and to fail with a clear error before sending when **To** holds no address
+- Updated the **Calendar Event Webhook** and **Mail Message Webhook** triggers to skip the message or event fetch for a notification that carries no resource ID, instead of reading the whole collection
+
 ### 2026-11-11
 
 Refactored internal code

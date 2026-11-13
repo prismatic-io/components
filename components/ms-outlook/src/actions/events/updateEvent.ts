@@ -23,16 +23,16 @@ export const updateEvent = action({
     ];
 
     const payload: Event = {};
-    if (params.locationName) {
-      payload.location = { displayName: params.locationName };
+    if (params.eventDetails?.locationName) {
+      payload.location = { displayName: params.eventDetails.locationName };
     }
-    if (params.subject) {
-      payload.subject = params.subject;
+    if (params.eventDetails?.subject) {
+      payload.subject = params.eventDetails.subject;
     }
-    if (params.body) {
+    if (params.eventDetails?.body) {
       payload.body = {
         contentType: "html",
-        content: params.body,
+        content: params.eventDetails.body,
       };
     }
     if (attendees.length > 0) {

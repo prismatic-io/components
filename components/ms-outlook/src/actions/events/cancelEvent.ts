@@ -1,4 +1,5 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { cancelEventOutputSchema } from "../../outputSchemas";
 import { createClient } from "../../client";
 import { cancelEventExamplePayload } from "../../examplePayloads";
 import { cancelEventInputs } from "../../inputs";
@@ -17,11 +18,17 @@ export const cancelEvent = action({
       params.connection,
       `/me/events/${params.eventId}/cancel`,
     );
-    const { data } = await client.post(url, {
+    await client.post(url, {
       comment: params.comment,
     });
-    return { data };
+    return {
+      data: { success: true, id: params.eventId, message: "Event cancelled successfully" },
+    };
   },
   examplePerform: async () => cancelEventExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: cancelEventOutputSchema,
+  }),
   examplePayload: cancelEventExamplePayload,
 });

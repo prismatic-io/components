@@ -3,6 +3,7 @@ import { computeEndpointBasedOnConnection, fetchAllData } from "../util";
 import type { Calendar } from "@microsoft/microsoft-graph-types";
 import type { ODataAttrs } from "../types";
 import { createClient } from "../client";
+import { selectCalendarExamplePayload } from "../examplePayloads";
 import { selectCalendarInputs } from "../inputs";
 
 export const selectCalendar = dataSource({
@@ -26,5 +27,6 @@ export const selectCalendar = dataSource({
     }));
     return { result };
   },
+  examplePayload: selectCalendarExamplePayload,
   dataSourceType: "picklist",
 });

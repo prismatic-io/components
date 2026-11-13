@@ -1,4 +1,5 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { sendMessageOutputSchema } from "../../outputSchemas";
 import type { Attachment, Message } from "@microsoft/microsoft-graph-types";
 import { createClient } from "../../client";
 import { sendMessageExamplePayload } from "../../examplePayloads";
@@ -36,5 +37,9 @@ export const sendMessage = action({
     return { data: null };
   },
   examplePerform: async () => sendMessageExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: sendMessageOutputSchema,
+  }),
   examplePayload: sendMessageExamplePayload,
 });

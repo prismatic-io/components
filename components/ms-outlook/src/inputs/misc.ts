@@ -1,15 +1,10 @@
-import { input } from "@prismatic-io/spectral";
 import { inputs as httpClientInputs } from "@prismatic-io/spectral/http";
+import { connectionInput } from "./common";
 
 const { debugRequest: _, ...httpInputs } = httpClientInputs;
 
 export const rawRequestInputs = {
-  connection: input({
-    type: "connection",
-    label: "Connection",
-    required: true,
-    comments: "The Microsoft Outlook connection to use.",
-  }),
+  connection: connectionInput,
   ...httpInputs,
   url: {
     ...httpInputs.url,

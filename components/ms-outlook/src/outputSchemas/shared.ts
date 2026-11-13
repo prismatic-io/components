@@ -5,6 +5,16 @@ export const nullableInteger = { type: ["integer", "null"] };
 export const nullableNumber = { type: ["number", "null"] };
 export const stringArray = { type: "array" as const, items: { type: "string" } };
 
+export const deleteResultSchema = {
+  type: "object" as const,
+  properties: {
+    success: { type: "boolean", enum: [true] },
+    id: { type: "string" },
+    message: { type: "string" },
+  },
+  required: ["success", "id", "message"],
+};
+
 export const nullableEnum = (values: string[]) => ({
   type: ["string", "null"],
   enum: [...values, null],

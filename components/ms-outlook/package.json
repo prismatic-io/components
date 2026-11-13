@@ -1,6 +1,6 @@
 {
   "name": "@prismatic-io/components-ms-outlook",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "main": "./npm-dist/index.cjs",
   "types": "./npm-dist/index.d.cts",
   "exports": {
@@ -45,9 +45,9 @@
   "devDependencies": {
     "@biomejs/biome": "2.5.1",
     "@microsoft/microsoft-graph-types": "2.26.0",
-    "@prismatic-io/spectral": "^10.39.1",
+    "@prismatic-io/spectral": "^10.39.2",
     "@types/lodash.isempty": "^4.4.9",
-    "@types/node": "^26.6.5",
+    "@types/node": "^26.6.6",
     "ms-utils": "file:../../packages/ms-utils",
     "nock": "^14.0.17",
     "tsdown": "0.22.3",

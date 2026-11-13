@@ -1,6 +1,11 @@
 import { input, util } from "@prismatic-io/spectral";
-import type { BodyType } from "@microsoft/microsoft-graph-types";
-import { cleanAttachments, cleanFunctionForBccAndCcInputs, cleanStringInput } from "../util";
+import {
+  cleanAttachments,
+  cleanFunctionForBccAndCcInputs,
+  cleanRequiredRecipients,
+  cleanStringInput,
+  toBodyContentType,
+} from "../util";
 import { ATTACHMENTS_DATA_INPUT_EXAMPLE } from "../constants";
 import { connectionInput, fetchAllInput, folderIdInput, pagination } from "./common";
 
@@ -62,7 +67,7 @@ const sendToInput = input({
   type: "string",
   required: true,
   collection: "valuelist",
-  clean: cleanFunctionForBccAndCcInputs,
+  clean: cleanRequiredRecipients,
   comments:
     "The recipient email addresses. Multiple addresses can be specified as a comma-separated list.",
   example: '["john.doe@example.com", "jane.smith@example.com"]',
@@ -124,12 +129,7 @@ const sendBodyContentTypeInput = input({
   ],
   comments: "Whether the Message Body is sent as HTML or plain text.",
   placeholder: "Select body content type",
-  clean: (value) => {
-    if (!["text", "html"].includes(util.types.toString(value))) {
-      throw new Error("Invalid body content type. Must be 'text' or 'html'");
-    }
-    return util.types.toString(value) as BodyType;
-  },
+  clean: toBodyContentType,
 });
 
 export const listMessagesInputs = {

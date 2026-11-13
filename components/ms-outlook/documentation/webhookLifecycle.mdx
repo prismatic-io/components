@@ -1,5 +1,7 @@
 The Calendar Event Webhook trigger can manage [Microsoft Graph webhook subscriptions](https://learn.microsoft.com/en-us/graph/api/resources/change-notifications-api-overview?view=graph-rest-1.0) for calendar events on an instance. Unlike traditional webhook setups that require manual subscription creation and management, this trigger handles the entire webhook lifecycle automatically.
 
+#### How It Works
+
 When the trigger is used in a flow:
 - **On Instance Deploy**: The trigger automatically creates a webhook subscription in Microsoft Graph for calendar events (`me/events`) with the `updated` change type. The subscription points to the instance's unique webhook URL. If the **Allow Duplicates** option is set to `false` and a matching subscription already exists, the trigger reuses the existing subscription instead of creating a new one.
 - **On Instance Deletion**: The trigger automatically removes the webhook subscription from Microsoft Graph, ensuring no orphaned subscriptions remain.
@@ -39,5 +41,42 @@ This approach ensures uninterrupted calendar monitoring without manual intervent
 
 - **Resource Monitored**: This trigger specifically monitors `me/events` (calendar events for the authenticated user)
 - **Change Type**: Only the `updated` change type is configured, which captures creates, updates, and deletes
+
+#### Returned Data
+
+Each notification that is not a deletion includes the full calendar event, fetched from Microsoft Graph, as `eventData`, unless that fetch fails.
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "value": [
+    {
+      "subscriptionId": "e9d5b726-4478-4412-bfba-268530484566",
+      "subscriptionExpirationDateTime": "2024-12-31T23:59:59.999Z",
+      "changeType": "updated",
+      "resource": "me/events/AAMkAGIAAAoZDOFAAA=",
+      "resourceData": {
+        "@odata.type": "#Microsoft.Graph.Event",
+        "@odata.id": "me/events/AAMkAGIAAAoZDOFAAA=",
+        "id": "AAMkAGIAAAoZDOFAAA="
+      },
+      "clientState": "secretClientValue",
+      "tenantId": "1717622f-1d94-4d0c-9d74-709fad664b77",
+      "eventData": {
+        "id": "AAMkAGIAAAoZDOFAAA=",
+        "subject": "Quarterly planning review",
+        "start": { "dateTime": "2026-11-12T10:00:00.0000000", "timeZone": "Pacific Standard Time" },
+        "end": { "dateTime": "2026-11-12T11:00:00.0000000", "timeZone": "Pacific Standard Time" }
+      }
+    }
+  ]
+}
+```
+
+</details>
+
+Fields shown are representative. The full response object includes additional properties.
 
 Refer to the [Microsoft Graph change notifications for Outlook resources](https://learn.microsoft.com/en-us/graph/outlook-change-notifications-overview) for more details about subscription management and lifecycle.

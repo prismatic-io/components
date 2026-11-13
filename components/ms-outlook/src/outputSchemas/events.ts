@@ -14,6 +14,7 @@ import {
   recipientSchema,
   responseStatusSchema,
   stringArray,
+  deleteResultSchema,
 } from "./shared";
 
 const eventSchema = {
@@ -89,3 +90,7 @@ export const listEventsOutputSchema = {
 export const createEventOutputSchema = eventEntitySchema;
 
 export const updateEventOutputSchema = eventEntitySchema;
+
+export const deleteEventOutputSchema = deleteResultSchema;
+
+export const cancelEventOutputSchema = deleteResultSchema;

@@ -1,5 +1,7 @@
 The Mail Message Webhook trigger can manage [Microsoft Graph webhook subscriptions](https://learn.microsoft.com/en-us/graph/api/resources/change-notifications-api-overview?view=graph-rest-1.0) for mail messages on an instance. Unlike traditional webhook setups that require manual subscription creation and management, this trigger handles the entire webhook lifecycle automatically.
 
+#### How It Works
+
 When the trigger is used in a flow:
 - **On Instance Deploy**: The trigger automatically creates a webhook subscription in Microsoft Graph for mail messages. The subscription points to the instance's unique webhook URL. If the **Allow Duplicates** option is set to `false` and a matching subscription already exists, the trigger reuses the existing subscription instead of creating a new one.
 - **On Instance Deletion**: The trigger automatically removes the webhook subscription from Microsoft Graph, ensuring no orphaned subscriptions remain.
@@ -19,6 +21,7 @@ This trigger routes incoming requests to different branches based on their type:
 - **Folder ID**: Specific mail folder to monitor. Leave empty to monitor the entire mailbox (`me/messages`)
 - **Expiration Date/Time**: When the subscription should expire (ISO 8601 format). Defaults to approximately 7 days from creation, which is the maximum allowed by Microsoft Graph
 - **Allow Duplicates**: When set to `true`, allows multiple webhook subscriptions for the same endpoint. When `false`, reuses existing subscriptions to prevent duplication
+- **Skip Message Fetch**: When set to `true`, returns each notification without fetching the full message. Defaults to `false`, which adds the message to each notification as `messageData`
 
 #### Scheduled Renewal
 
@@ -34,5 +37,47 @@ This approach ensures uninterrupted mail monitoring without manual intervention.
 
 - **Resource Monitored**: Monitors `me/messages` (or `me/mailFolders/{folderId}/messages` when a folder is specified)
 - **Change Types**: Unlike the Calendar Event Webhook, this trigger allows selecting specific change types to reduce unnecessary notifications.
+- **Response Time**: Microsoft Graph treats a notification as delivered only when the endpoint answers within 3 seconds, and retries any notification that takes longer, so one message can start more than one execution. Graph also delays or drops notifications for an endpoint that answers slowly too often ([webhook delivery](https://learn.microsoft.com/en-us/graph/change-notifications-delivery-webhooks)). Fetching each message adds to the response time. Turning on **Skip Message Fetch** removes that fetch, and the notification then carries only the message ID in `resourceData.id`. To read the message in the same shape as `messageData`, add a **Raw Request** step with `GET /me/messages/{id}`, or `GET /users/{userId}/messages/{id}` with the client credentials connection. The **Get Mail Message** action returns the parsed MIME message, which has a different shape. Retries can still occur for other reasons, so flows that must not process a message twice should check the message ID.
+
+#### Returned Data
+
+With **Skip Message Fetch** off, each notification that is not a deletion includes the message fetched from Microsoft Graph as `messageData`, unless that fetch fails. With it on, `messageData` is absent.
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "value": [
+    {
+      "subscriptionId": "7f105c7d-2dc5-4530-97cd-4e7ae6534c07",
+      "subscriptionExpirationDateTime": "2024-12-31T23:59:59.999Z",
+      "changeType": "created",
+      "resource": "me/mailFolders('Inbox')/messages/AAMkAGUAAAwTW09AAA=",
+      "resourceData": {
+        "@odata.type": "#Microsoft.Graph.Message",
+        "@odata.id": "me/mailFolders('Inbox')/messages/AAMkAGUAAAwTW09AAA=",
+        "id": "AAMkAGUAAAwTW09AAA="
+      },
+      "clientState": "secretClientValue",
+      "tenantId": "1717622f-1d94-4d0c-9d74-709fad664b77",
+      "messageData": {
+        "id": "AAMkAGUAAAwTW09AAA=",
+        "subject": "You have late tasks!",
+        "sender": {
+          "emailAddress": {
+            "name": "Microsoft Planner",
+            "address": "noreply@Planner.Office365.com"
+          }
+        }
+      }
+    }
+  ]
+}
+```
+
+</details>
+
+Fields shown are representative. The full response object includes additional properties.
 
 Refer to the [Microsoft Graph change notifications for Outlook resources](https://learn.microsoft.com/en-us/graph/outlook-change-notifications-overview) for more details about subscription management and lifecycle.
