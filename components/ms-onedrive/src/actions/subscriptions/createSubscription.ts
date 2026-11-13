@@ -1,8 +1,9 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createSubscriptionFN } from "ms-utils";
 import { getOneDriveClient } from "../../client";
 import { createSubscriptionExamplePayload } from "../../examplePayloads";
 import { createSubscriptionInputs } from "../../inputs";
+import { createSubscriptionOutputSchema } from "../../outputSchemas";
 
 export const createSubscription = action({
   display: {
@@ -11,6 +12,7 @@ export const createSubscription = action({
       "Creates a subscription to receive notifications about changes to a resource.",
   },
   inputs: createSubscriptionInputs,
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -38,5 +40,26 @@ export const createSubscription = action({
     );
     return { data };
   },
+  examplePerform: async (
+    _context,
+    { changeType, notificationUrl, resource, expirationDateTime, clientState },
+  ) => {
+    const { clientState: _example, ...subscription } =
+      createSubscriptionExamplePayload.data;
+    return {
+      data: {
+        ...subscription,
+        resource,
+        changeType,
+        notificationUrl,
+        expirationDateTime,
+        ...(clientState ? { clientState } : {}),
+      },
+    };
+  },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createSubscriptionOutputSchema,
+  }),
   examplePayload: createSubscriptionExamplePayload,
 });

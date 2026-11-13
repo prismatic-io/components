@@ -1,8 +1,8 @@
 export interface WebhookNotification {
   subscriptionId: string;
-  clientState?: string;
   changeType: string;
   resource: string;
+  clientState?: string | null;
   resourceData?: {
     "@odata.type": string;
     "@odata.id": string;
@@ -12,6 +12,19 @@ export interface WebhookNotification {
   tenantId?: string;
 }
 
-export interface WebhookNotificationPayload {
-  value: WebhookNotification[];
+export type LifecycleEvent =
+  | "reauthorizationRequired"
+  | "subscriptionRemoved"
+  | "missed";
+
+export interface LifecycleNotification {
+  subscriptionId: string;
+  lifecycleEvent: LifecycleEvent;
+  subscriptionExpirationDateTime?: string;
+  tenantId?: string;
+  clientState?: string | null;
+}
+
+export interface GraphNotificationPayload {
+  value: Array<WebhookNotification | LifecycleNotification>;
 }

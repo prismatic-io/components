@@ -4,7 +4,7 @@ import { ConnectionKeys } from "ms-utils";
 export const oauth = oauth2Connection({
   key: ConnectionKeys.SharedOauth,
   display: {
-    description: "OAuth 2.0 Connectivity for Microsoft One Drive",
+    description: "Authenticate requests to Microsoft OneDrive using OAuth 2.0.",
     label: "OAuth 2.0",
   },
   oauth2Type: OAuth2Type.AuthorizationCode,
@@ -32,7 +32,7 @@ export const oauth = oauth2Connection({
       placeholder: "Enter scopes",
       type: "string",
       required: false,
-      shown: false,
+      shown: true,
       comments:
         "Space-separated list of Microsoft Graph permission scopes. Scopes are configured on the Azure AD application registration. [Learn more](https://learn.microsoft.com/en-us/graph/permissions-reference).",
       default:
@@ -45,7 +45,7 @@ export const oauth = oauth2Connection({
       required: true,
       shown: true,
       comments:
-        "The Application (client) ID from your Azure AD app registration. [Learn more](https://learn.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app).",
+        "The Application (client) ID from the Azure AD app registration. [Learn more](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app).",
       example: "12345678-1234-1234-1234-123456789012",
     },
     clientSecret: {
@@ -55,7 +55,7 @@ export const oauth = oauth2Connection({
       required: true,
       shown: true,
       comments:
-        "The client secret value generated in your Azure AD app registration. [Learn more](https://learn.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app#add-a-client-secret).",
+        "The client secret value generated in the Azure AD app registration. [Learn more](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app).",
     },
     source: {
       label: "Source",

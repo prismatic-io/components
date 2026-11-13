@@ -1,5 +1,6 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
 import { getOneDriveClient } from "../client";
+import { selectSubscriptionExamplePayload } from "../examplePayloads";
 import { selectSubscriptionInputs } from "../inputs";
 import type { GraphListResponse, Subscription } from "../types";
 
@@ -25,12 +26,5 @@ export const selectSubscription = dataSource({
     };
   },
   dataSourceType: "picklist",
-  examplePayload: {
-    result: [
-      {
-        label: "/me/drive/root (updated)",
-        key: "38031b7d-16b1-448a-8e68-68b8aec62315",
-      },
-    ],
-  },
+  examplePayload: selectSubscriptionExamplePayload,
 });

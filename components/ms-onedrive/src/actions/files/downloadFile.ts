@@ -10,6 +10,7 @@ export const downloadFile = action({
     description: "Downloads a file from the current user's drive.",
   },
   inputs: downloadFileInputs,
+  performSafety: "notAllowed",
   perform: async (context, { connection, fileLocation, timeout }) => {
     const client = getOneDriveClient(
       connection,
@@ -36,5 +37,6 @@ export const downloadFile = action({
       contentType: metadata.file.mimeType,
     };
   },
+  examplePerform: async () => downloadFileExamplePayload,
   examplePayload: downloadFileExamplePayload,
 });

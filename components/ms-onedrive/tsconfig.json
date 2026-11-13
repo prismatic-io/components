@@ -9,8 +9,7 @@
     "module": "esnext",
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
-    "isolatedModules": false,
-    "types": ["node"],
+    "types": ["node", "vitest/globals"],
     "skipLibCheck": true
   },
   "include": ["src", ".spectral/*"]

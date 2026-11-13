@@ -1,33 +1,30 @@
 <Vimeo video="907604023" />
 
+This connection authenticates to Microsoft OneDrive with OAuth 2.0 through an Azure app registration.
+
 #### Prerequisites
 
-- A Microsoft OneDrive license
-- Access to the [Azure Active Directory tenant](https://portal.azure.com/#home)
+- A Microsoft Entra ID (Azure AD) tenant with an account licensed for Microsoft OneDrive
+- Permission to create an app registration in that tenant
 
 #### Setup Steps
 
-Create and configure a new "App Registration" within the [Azure Active Directory tenant](https://portal.azure.com/#home).
-When creating the application, select 'Accounts in any organizational directory (Any Azure AD directory - Multitenant)' under 'Supported account types'.
-
-Go to "Platforms" and add the "Web" platform. In that section, add the OAuth 2.0 callback URL - <OauthCallbackUrl /> - as a **Redirect URI**.
-
-Next, go to "Certificates & Secrets" for the app and add a new **Client Secret**. Note this value as it is needed for the connection.
-
-The **Application (client) ID** from the "Overview" page is also required.
-
-The last step of configuring the "App Registration" is assigning "App Permissions". Click "Add Permission", click on the square labeled "Microsoft Graph", and then "Delegated permissions". Select all permissions that are required for the desired integration.
-- Additionally, ensure the `offline_access` scope is included in the app registration. It is essential to maintain the OAuth connection and receive refresh tokens. Without it, users need to re-authenticate every hour.
+1. In the [Azure portal](https://portal.azure.com/#home), create a new **App registration**. Under **Supported account types**, select **Any Entra ID tenant + Personal Microsoft accounts** so both work and school and personal OneDrive accounts can authenticate.
+2. Open **Authentication**, add the **Web** platform, and add the OAuth 2.0 callback URL <OauthCallbackUrl /> as a **Redirect URI**.
+3. Open **Certificates & secrets** and add a new **Client secret**. Copy the secret value; it is shown only once.
+4. Copy the **Application (client) ID** from the **Overview** page.
+5. Open **API permissions**, click **Add a permission**, choose **Microsoft Graph**, then **Delegated permissions**, and select the permissions the integration requires. Include `offline_access`; without it refresh tokens are not issued and users must re-authenticate every hour.
 
 #### Configure the Connection
 
-Add an MS OneDrive OAuth 2.0 connection config variable:
+Create a connection of type **OAuth 2.0**:
 
-- Use the **Application (client) ID** value for the **Client ID** field.
-- Use the **Client Secret** for the same named field.
-- If Multitenant was not selected when creating the Azure application, replace the **Authorize URL** and **Token URL** with ones specific to the tenant.
+- **Client ID**: the Application (client) ID
+- **Client Secret**: the client secret value
+- **Scopes**: the default scopes cover files, sites and refresh tokens; add others the integration requires
+- **Authorize URL** and **Token URL**: keep the defaults for a multitenant app. For a single-tenant app registration, replace both with the tenant-specific URLs.
 
-Save the integration to authenticate through MS OneDrive with OAuth 2.0.
+Save the integration. Users can then authenticate through Microsoft OneDrive with OAuth 2.0.
 
 #### App Verification and Admin Consent
 
@@ -41,7 +38,7 @@ Azure AD app registrations have two distinct verification concepts that affect h
 
 To verify the publisher:
 
-1. Ensure the organization has a [Microsoft Partner Network (MPN) account](https://partner.microsoft.com/)
+1. Ensure the organization has a [Microsoft Partner Network (MPN) account](https://partner.microsoft.com/en-US/)
 2. In the [Microsoft Entra Admin Center](https://entra.microsoft.com/), open the app registration
 3. Under **Branding & properties**, click **Add a verified publisher**
 4. Enter the MPN ID and confirm
@@ -50,22 +47,19 @@ Once verified, the consent screen displays the organization name with a verified
 
 #### Admin Consent
 
-Apps requesting **application permissions** (permissions that act without a signed-in user) or high-privilege **delegated permissions** require admin consent before any user in a Microsoft 365 tenant can authenticate. Without admin consent, users see a **"Need admin approval"** error.
+Apps requesting **application permissions** (permissions that act without a signed-in user) or high-privilege **delegated permissions** require admin consent before any user in a Microsoft 365 tenant can authenticate. Without admin consent, users see a **"Need admin approval"** error. Delegated permissions rarely need admin consent unless classified as high privilege; see the [Microsoft Graph permissions reference](https://learn.microsoft.com/en-us/graph/permissions-reference) to check which do.
 
 A tenant administrator can grant consent using either method:
 
-**Method 1: Admin Consent URL:**
+**Method 1: Admin Consent URL**
 
 Navigate to the following URL, replacing `{tenant}` with the Directory tenant ID and `{client_id}` with the Application client ID:
 
     https://login.microsoftonline.com/{tenant}/adminconsent?client_id={client_id}
 
-**Method 2: Microsoft Entra Admin Center:**
+**Method 2: Microsoft Entra Admin Center**
 
 1. Navigate to [Microsoft Entra Admin Center](https://entra.microsoft.com/) → **Enterprise applications**
 2. Select the app registration
 3. Under **Permissions**, click **Grant admin consent for [organization name]**
 
-:::note[Delegated vs. Application Permissions]
-Delegated permissions (user-level) typically do not require admin consent unless they are classified as high privilege. Application permissions always require admin consent. Review the [Microsoft Graph permissions reference](https://learn.microsoft.com/en-us/graph/permissions-reference) to identify which permissions require consent.
-:::

@@ -6,6 +6,8 @@ import {
   resource,
 } from "./subscriptions";
 
+export const webhookInputs = {};
+
 export const instanceDeployWebhookInputs = {
   oneDriveConnection,
   resource: {
@@ -28,6 +30,6 @@ export const instanceDeployWebhookInputs = {
     ...expirationDateTime,
     required: false,
     comments:
-      "Optional expiration date/time for the subscription. If not provided, defaults to 3 days from now. Maximum is 30 days for OneDrive resources.",
+      "Optional expiration date/time for the subscription. If not provided, defaults to about 7 days from now. Set a schedule on the trigger to renew the subscription before it expires. Maximum is just under 30 days (42,300 minutes) for OneDrive resources.",
   },
 };

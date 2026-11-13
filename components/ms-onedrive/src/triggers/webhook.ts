@@ -1,5 +1,7 @@
 import { type HttpResponse, trigger, util } from "@prismatic-io/spectral";
-import { webhookNotificationExamplePayload } from "../examplePayloads";
+import { TriggerBranches } from "../enums";
+import { webhookExamplePayload } from "../examplePayloads";
+import { webhookInputs } from "../inputs";
 
 export const webhook = trigger({
   display: {
@@ -10,8 +12,11 @@ export const webhook = trigger({
   scheduleSupport: "invalid",
   synchronousResponseSupport: "valid",
   allowsBranching: true,
-  inputs: {},
-  staticBranchNames: ["Notification", "URL Validation"],
+  inputs: webhookInputs,
+  staticBranchNames: [
+    TriggerBranches.Notification,
+    TriggerBranches.URLValidation,
+  ],
   perform: async (_context, payload) => {
     const rawValidationToken = payload.queryParameters?.validationToken;
     const validationToken = util.types.toString(rawValidationToken);
@@ -25,8 +30,10 @@ export const webhook = trigger({
     return Promise.resolve({
       payload,
       response,
-      branch: validationToken ? "URL Validation" : "Notification",
+      branch: validationToken
+        ? TriggerBranches.URLValidation
+        : TriggerBranches.Notification,
     });
   },
-  examplePayload: webhookNotificationExamplePayload,
+  examplePayload: webhookExamplePayload,
 });

@@ -1,7 +1,8 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { getOneDriveClient } from "../../client";
 import { listSubscriptionsExamplePayload } from "../../examplePayloads";
 import { listSubscriptionsInputs } from "../../inputs";
+import { listSubscriptionsOutputSchema } from "../../outputSchemas";
 import type { GraphListResponse, Subscription } from "../../types";
 
 export const listSubscriptions = action({
@@ -10,6 +11,7 @@ export const listSubscriptions = action({
     description: "Lists all available subscriptions.",
   },
   inputs: listSubscriptionsInputs,
+  performSafety: "notAllowed",
   perform: async (
     context,
     { oneDriveConnection, showInstanceSubscriptions },
@@ -28,5 +30,10 @@ export const listSubscriptions = action({
 
     return { data };
   },
+  examplePerform: async () => listSubscriptionsExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listSubscriptionsOutputSchema,
+  }),
   examplePayload: listSubscriptionsExamplePayload,
 });

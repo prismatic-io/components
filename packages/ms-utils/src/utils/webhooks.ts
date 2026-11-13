@@ -17,8 +17,9 @@ import {
 
 export const calculateExpirationDateTime = (
   minutes: number = DEFAULT_SUBSCRIPTION_EXPIRATION_MINUTES,
+  maxMinutes: number = MAX_SUBSCRIPTION_EXPIRATION_MINUTES,
 ): string => {
-  const cappedMinutes = Math.min(minutes, MAX_SUBSCRIPTION_EXPIRATION_MINUTES);
+  const cappedMinutes = Math.min(minutes, maxMinutes);
   const expirationDate = new Date();
   expirationDate.setTime(expirationDate.getTime() + cappedMinutes * 60 * 1000);
   return expirationDate.toISOString();
@@ -117,8 +118,12 @@ export const renewSubscriptionFN = async (
   client: HttpClient,
   subscriptionId: string,
   expirationMinutes: number = DEFAULT_SUBSCRIPTION_EXPIRATION_MINUTES,
+  maxMinutes: number = MAX_SUBSCRIPTION_EXPIRATION_MINUTES,
 ): Promise<GraphSubscription> => {
-  const expirationDateTime = calculateExpirationDateTime(expirationMinutes);
+  const expirationDateTime = calculateExpirationDateTime(
+    expirationMinutes,
+    maxMinutes,
+  );
 
   const { data } = await client.patch<GraphSubscription>(
     `/subscriptions/${subscriptionId}`,
@@ -222,6 +227,7 @@ export const renewAllSubscriptionsByUrlFN = async (
   client: HttpClient,
   notificationUrl: string,
   expirationMinutes: number = DEFAULT_SUBSCRIPTION_EXPIRATION_MINUTES,
+  maxMinutes: number = MAX_SUBSCRIPTION_EXPIRATION_MINUTES,
 ): Promise<GraphSubscription[]> => {
   const subscriptions = await listAllSubscriptionsFN(client);
   const matchingSubscriptions = subscriptions.filter(
@@ -237,6 +243,7 @@ export const renewAllSubscriptionsByUrlFN = async (
           client,
           subscription.id,
           expirationMinutes,
+          maxMinutes,
         );
         renewedSubscriptions.push(renewed);
       }
@@ -251,6 +258,7 @@ export const scheduledRenewalFN = async (
   storedSubscriptionId: string | undefined,
   webhookUrl: string,
   expirationMinutes: number = DEFAULT_SUBSCRIPTION_EXPIRATION_MINUTES,
+  maxMinutes: number = MAX_SUBSCRIPTION_EXPIRATION_MINUTES,
 ): Promise<ScheduledRenewalResult> => {
   let newSubscriptionId: string | undefined;
   let usedUrlFallback = !storedSubscriptionId;
@@ -262,6 +270,7 @@ export const scheduledRenewalFN = async (
         client,
         storedSubscriptionId,
         expirationMinutes,
+        maxMinutes,
       );
       renewedCount = 1;
     } catch {
@@ -274,6 +283,7 @@ export const scheduledRenewalFN = async (
       client,
       webhookUrl,
       expirationMinutes,
+      maxMinutes,
     );
     renewedCount = renewedSubscriptions.length;
 

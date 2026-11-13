@@ -4,5 +4,6 @@ export { getMicrosoftCertificateCredentialsConnection } from "./connections/OAut
 export { getMicrosoftOAuth2ClientCredentialsConnection } from "./connections/OAuth2ClientCredentialsConnection";
 export * from "./interfaces/Subscriptions";
 export * from "./interfaces/WebhookPerform";
+export * from "./subscriptions/constants";
 export * from "./subscriptions/triggerFunctions";
 export * from "./utils";

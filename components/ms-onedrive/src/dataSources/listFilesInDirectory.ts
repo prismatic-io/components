@@ -1,10 +1,11 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
 import { getOneDriveClient } from "../client";
+import { listFilesInDirectoryExamplePayload } from "../examplePayloads";
 import { listFilesInDirectoryInputs } from "../inputs";
 
 export const listFilesInDirectory = dataSource({
   display: {
-    label: "Files in Directory",
+    label: "List Files in Directory",
     description: "Lists files in a given directory.",
   },
   inputs: listFilesInDirectoryInputs,
@@ -34,5 +35,6 @@ export const listFilesInDirectory = dataSource({
         }) as Element[],
     };
   },
+  examplePayload: listFilesInDirectoryExamplePayload,
   dataSourceType: "picklist",
 });

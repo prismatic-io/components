@@ -1,3 +1,18 @@
+//#region src/types/inputs.d.ts
+interface ParentRef {
+  id: string;
+  label?: string;
+}
+//#endregion
+//#region src/types/subscriptions.d.ts
+interface Subscription {
+  id: string;
+  notificationUrl: string;
+  resource: string;
+  changeType: string;
+  [key: string]: unknown;
+}
+//#endregion
 //#region ../../packages/ms-utils/dist/connections/index.d.ts
 declare enum ConnectionKeys {
   SharedOauth = "oauth",
@@ -17,15 +32,6 @@ interface GraphSubscription {
   clientState?: string;
   latestSupportedTlsVersion?: string;
   creatorId?: string;
-}
-//#endregion
-//#region src/types/subscriptions.d.ts
-interface Subscription {
-  id: string;
-  notificationUrl: string;
-  resource: string;
-  changeType: string;
-  [key: string]: unknown;
 }
 //#endregion
 //#region node_modules/axios/index.d.ts
@@ -103,6 +109,58 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         comments: string;
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, "picklist">;
+    selectDriveItem: import("@prismatic-io/spectral").DataSourceDefinition<{
+      connection: {
+        label: string;
+        type: "connection";
+        required: true;
+        comments: string;
+      };
+      driveId: {
+        dataSource: undefined;
+        label: string;
+        type: "string";
+        required: true;
+        example: string;
+        placeholder: string;
+        comments: string;
+        clean: (value: unknown) => string;
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, "picklist">;
+    selectDrivesFromSites: import("@prismatic-io/spectral").DataSourceDefinition<{
+      connection: {
+        label: string;
+        type: "connection";
+        required: true;
+        comments: string;
+      };
+      siteIds: {
+        label: string;
+        type: "string";
+        required: true;
+        example: string;
+        placeholder: string;
+        comments: string;
+        clean: (value: unknown) => ParentRef[];
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, "objectSelection">;
+    selectFoldersFromDrives: import("@prismatic-io/spectral").DataSourceDefinition<{
+      connection: {
+        label: string;
+        type: "connection";
+        required: true;
+        comments: string;
+      };
+      driveIds: {
+        label: string;
+        type: "string";
+        required: true;
+        example: string;
+        placeholder: string;
+        comments: string;
+        clean: (value: unknown) => ParentRef[];
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, "objectSelection">;
     selectSite: import("@prismatic-io/spectral").DataSourceDefinition<{
       connection: {
         label: string;
@@ -111,6 +169,14 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         comments: string;
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, "picklist">;
+    selectSites: import("@prismatic-io/spectral").DataSourceDefinition<{
+      connection: {
+        label: string;
+        type: "connection";
+        required: true;
+        comments: string;
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, "objectSelection">;
     selectSubscription: import("@prismatic-io/spectral").DataSourceDefinition<{
       connection: {
         label: string;
@@ -192,7 +258,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         comments: string;
         example: string;
         placeholder: string;
-        clean: (value: unknown, defaultValue?: string) => string;
+        clean: (value: unknown) => string | undefined;
       };
       allowDuplicates: {
         label: string;
@@ -233,7 +299,10 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         comments: string;
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
-      data: {};
+      data: {
+        subscriptionsRemoved?: string[];
+        message?: string;
+      };
     }>;
     listSubscriptions: import("@prismatic-io/spectral").ActionDefinition<{
       oneDriveConnection: {
@@ -321,23 +390,32 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         required: false;
         default: string;
       };
-      pageLimit: {
+      pagination: {
         label: string;
-        type: "string";
-        required: false;
-        example: string;
-        placeholder: string;
+        required: boolean;
         comments: string;
-        clean: (value: unknown, defaultValue?: string) => string;
-      };
-      pageToken: {
-        label: string;
-        type: "string";
-        required: false;
-        example: string;
-        placeholder: string;
-        comments: string;
-        clean: (value: unknown, defaultValue?: string) => string;
+        inputs: {
+          pageLimit: {
+            label: string;
+            type: "string";
+            required: false;
+            example: string;
+            placeholder: string;
+            comments: string;
+            clean: (value: unknown) => number | undefined;
+          };
+          pageToken: {
+            label: string;
+            type: "string";
+            required: false;
+            example: string;
+            placeholder: string;
+            comments: string;
+            clean: (value: unknown) => string | undefined;
+          };
+        };
+      } & {
+        type: "structuredObject";
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
       data: {
@@ -507,23 +585,32 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         required: false;
         default: string;
       };
-      pageToken: {
+      pagination: {
         label: string;
-        type: "string";
-        required: false;
-        example: string;
-        placeholder: string;
+        required: boolean;
         comments: string;
-        clean: (value: unknown, defaultValue?: string) => string;
-      };
-      pageLimit: {
-        label: string;
-        type: "string";
-        required: false;
-        example: string;
-        placeholder: string;
-        comments: string;
-        clean: (value: unknown, defaultValue?: string) => string;
+        inputs: {
+          pageLimit: {
+            label: string;
+            type: "string";
+            required: false;
+            example: string;
+            placeholder: string;
+            comments: string;
+            clean: (value: unknown) => number | undefined;
+          };
+          pageToken: {
+            label: string;
+            type: "string";
+            required: false;
+            example: string;
+            placeholder: string;
+            comments: string;
+            clean: (value: unknown) => string | undefined;
+          };
+        };
+      } & {
+        type: "structuredObject";
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
       data: {
@@ -594,7 +681,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         example: string;
         placeholder: string;
         comments: string;
-        clean: (value: unknown, defaultValue?: string) => string;
+        clean: (value: unknown) => number | undefined;
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
       data: Buffer<any>;
@@ -630,7 +717,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         example: string;
         placeholder: string;
         comments: string;
-        clean: (value: unknown, defaultValue?: string) => string;
+        clean: (value: unknown) => number | undefined;
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
       data: any;
@@ -654,20 +741,20 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
       fileName: {
         label: string;
         required: boolean;
+        clean: (value: unknown) => string | undefined;
         type: "string";
         example: string;
         placeholder: string;
         comments: string;
-        clean: (value: unknown) => string;
       };
       path: {
         label: string;
         required: boolean;
+        clean: (value: unknown) => string | undefined;
         type: "string";
         example: string;
         placeholder: string;
         comments: string;
-        clean: (value: unknown) => string;
       };
       values: {
         label: string;
@@ -675,7 +762,9 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         required: false;
         collection: "keyvaluelist";
         comments: string;
-        clean: (value: unknown) => Record<string, unknown>;
+        example: string;
+        placeholder: string;
+        clean: (value: unknown) => Record<string, unknown> | undefined;
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
       data: any;
@@ -801,23 +890,32 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         required: false;
         default: string;
       };
-      pageLimit: {
+      pagination: {
         label: string;
-        type: "string";
-        required: false;
-        example: string;
-        placeholder: string;
+        required: boolean;
         comments: string;
-        clean: (value: unknown, defaultValue?: string) => string;
-      };
-      pageToken: {
-        label: string;
-        type: "string";
-        required: false;
-        example: string;
-        placeholder: string;
-        comments: string;
-        clean: (value: unknown, defaultValue?: string) => string;
+        inputs: {
+          pageLimit: {
+            label: string;
+            type: "string";
+            required: false;
+            example: string;
+            placeholder: string;
+            comments: string;
+            clean: (value: unknown) => number | undefined;
+          };
+          pageToken: {
+            label: string;
+            type: "string";
+            required: false;
+            example: string;
+            placeholder: string;
+            comments: string;
+            clean: (value: unknown) => string | undefined;
+          };
+        };
+      } & {
+        type: "structuredObject";
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
       data: {
@@ -881,23 +979,32 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         required: false;
         default: string;
       };
-      pageLimit: {
+      pagination: {
         label: string;
-        type: "string";
-        required: false;
-        example: string;
-        placeholder: string;
+        required: boolean;
         comments: string;
-        clean: (value: unknown, defaultValue?: string) => string;
-      };
-      pageToken: {
-        label: string;
-        type: "string";
-        required: false;
-        example: string;
-        placeholder: string;
-        comments: string;
-        clean: (value: unknown, defaultValue?: string) => string;
+        inputs: {
+          pageLimit: {
+            label: string;
+            type: "string";
+            required: false;
+            example: string;
+            placeholder: string;
+            comments: string;
+            clean: (value: unknown) => number | undefined;
+          };
+          pageToken: {
+            label: string;
+            type: "string";
+            required: false;
+            example: string;
+            placeholder: string;
+            comments: string;
+            clean: (value: unknown) => string | undefined;
+          };
+        };
+      } & {
+        type: "structuredObject";
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
       data: {
@@ -962,23 +1069,32 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         required: false;
         default: string;
       };
-      pageLimit: {
+      pagination: {
         label: string;
-        type: "string";
-        required: false;
-        example: string;
-        placeholder: string;
+        required: boolean;
         comments: string;
-        clean: (value: unknown, defaultValue?: string) => string;
-      };
-      pageToken: {
-        label: string;
-        type: "string";
-        required: false;
-        example: string;
-        placeholder: string;
-        comments: string;
-        clean: (value: unknown, defaultValue?: string) => string;
+        inputs: {
+          pageLimit: {
+            label: string;
+            type: "string";
+            required: false;
+            example: string;
+            placeholder: string;
+            comments: string;
+            clean: (value: unknown) => number | undefined;
+          };
+          pageToken: {
+            label: string;
+            type: "string";
+            required: false;
+            example: string;
+            placeholder: string;
+            comments: string;
+            clean: (value: unknown) => string | undefined;
+          };
+        };
+      } & {
+        type: "structuredObject";
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
       data: {
@@ -1033,32 +1149,41 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         default: string;
         clean: (value: unknown, defaultValue?: string) => string;
       };
-      $select: {
+      queryParameters: {
         label: string;
-        type: "string";
-        required: false;
+        required: boolean;
         comments: string;
-        example: string;
-        placeholder: string;
-        clean: (value: unknown) => string | undefined;
-      };
-      $expand: {
-        label: string;
-        type: "string";
-        required: false;
-        comments: string;
-        example: string;
-        placeholder: string;
-        clean: (value: unknown) => string | undefined;
-      };
-      $top: {
-        label: string;
-        type: "string";
-        required: false;
-        comments: string;
-        example: string;
-        placeholder: string;
-        clean: (value: unknown) => string | undefined;
+        inputs: {
+          $select: {
+            label: string;
+            type: "string";
+            required: false;
+            comments: string;
+            example: string;
+            placeholder: string;
+            clean: (value: unknown) => string | undefined;
+          };
+          $expand: {
+            label: string;
+            type: "string";
+            required: false;
+            comments: string;
+            example: string;
+            placeholder: string;
+            clean: (value: unknown) => string | undefined;
+          };
+          $top: {
+            label: string;
+            type: "string";
+            required: false;
+            comments: string;
+            example: string;
+            placeholder: string;
+            clean: (value: unknown) => number | undefined;
+          };
+        };
+      } & {
+        type: "structuredObject";
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
       data: any;
@@ -1097,23 +1222,32 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         required: false;
         default: string;
       };
-      pageLimit: {
+      pagination: {
         label: string;
-        type: "string";
-        required: false;
-        example: string;
-        placeholder: string;
+        required: boolean;
         comments: string;
-        clean: (value: unknown, defaultValue?: string) => string;
-      };
-      pageToken: {
-        label: string;
-        type: "string";
-        required: false;
-        example: string;
-        placeholder: string;
-        comments: string;
-        clean: (value: unknown, defaultValue?: string) => string;
+        inputs: {
+          pageLimit: {
+            label: string;
+            type: "string";
+            required: false;
+            example: string;
+            placeholder: string;
+            comments: string;
+            clean: (value: unknown) => number | undefined;
+          };
+          pageToken: {
+            label: string;
+            type: "string";
+            required: false;
+            example: string;
+            placeholder: string;
+            comments: string;
+            clean: (value: unknown) => string | undefined;
+          };
+        };
+      } & {
+        type: "structuredObject";
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
       data: {
@@ -1190,23 +1324,32 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         required: false;
         default: string;
       };
-      pageLimit: {
+      pagination: {
         label: string;
-        type: "string";
-        required: false;
-        example: string;
-        placeholder: string;
+        required: boolean;
         comments: string;
-        clean: (value: unknown, defaultValue?: string) => string;
-      };
-      pageToken: {
-        label: string;
-        type: "string";
-        required: false;
-        example: string;
-        placeholder: string;
-        comments: string;
-        clean: (value: unknown, defaultValue?: string) => string;
+        inputs: {
+          pageLimit: {
+            label: string;
+            type: "string";
+            required: false;
+            example: string;
+            placeholder: string;
+            comments: string;
+            clean: (value: unknown) => number | undefined;
+          };
+          pageToken: {
+            label: string;
+            type: "string";
+            required: false;
+            example: string;
+            placeholder: string;
+            comments: string;
+            clean: (value: unknown) => string | undefined;
+          };
+        };
+      } & {
+        type: "structuredObject";
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
       data: {
@@ -1283,23 +1426,32 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         required: false;
         default: string;
       };
-      pageLimit: {
+      pagination: {
         label: string;
-        type: "string";
-        required: false;
-        example: string;
-        placeholder: string;
+        required: boolean;
         comments: string;
-        clean: (value: unknown, defaultValue?: string) => string;
-      };
-      pageToken: {
-        label: string;
-        type: "string";
-        required: false;
-        example: string;
-        placeholder: string;
-        comments: string;
-        clean: (value: unknown, defaultValue?: string) => string;
+        inputs: {
+          pageLimit: {
+            label: string;
+            type: "string";
+            required: false;
+            example: string;
+            placeholder: string;
+            comments: string;
+            clean: (value: unknown) => number | undefined;
+          };
+          pageToken: {
+            label: string;
+            type: "string";
+            required: false;
+            example: string;
+            placeholder: string;
+            comments: string;
+            clean: (value: unknown) => string | undefined;
+          };
+        };
+      } & {
+        type: "structuredObject";
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
       data: {
@@ -1376,23 +1528,32 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         required: false;
         default: string;
       };
-      pageLimit: {
+      pagination: {
         label: string;
-        type: "string";
-        required: false;
-        example: string;
-        placeholder: string;
+        required: boolean;
         comments: string;
-        clean: (value: unknown, defaultValue?: string) => string;
-      };
-      pageToken: {
-        label: string;
-        type: "string";
-        required: false;
-        example: string;
-        placeholder: string;
-        comments: string;
-        clean: (value: unknown, defaultValue?: string) => string;
+        inputs: {
+          pageLimit: {
+            label: string;
+            type: "string";
+            required: false;
+            example: string;
+            placeholder: string;
+            comments: string;
+            clean: (value: unknown) => number | undefined;
+          };
+          pageToken: {
+            label: string;
+            type: "string";
+            required: false;
+            example: string;
+            placeholder: string;
+            comments: string;
+            clean: (value: unknown) => string | undefined;
+          };
+        };
+      } & {
+        type: "structuredObject";
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
       data: {
@@ -1499,7 +1660,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         placeholder: string;
         type: "string";
         required: false;
-        shown: false;
+        shown: true;
         comments: string;
         default: string;
       };
@@ -1565,7 +1726,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         required: false;
         example: string;
         placeholder: string;
-        clean: (value: unknown, defaultValue?: string) => string;
+        clean: (value: unknown) => string | undefined;
       };
       expirationDateTime: {
         required: boolean;

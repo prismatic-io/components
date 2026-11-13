@@ -1,5 +1,25 @@
 ## Changelog
 
+### 2026-11-13
+
+Updated the **Drive Subscription** trigger to keep its Microsoft Graph subscription active, and improved action and data source configuration:
+- Fixed the **Drive Subscription** trigger no longer receiving notifications after its Microsoft Graph subscription expired; the trigger now accepts a schedule and renews the subscription on each scheduled run through a new **Scheduled Renewal** branch, to just under the Microsoft Graph maximum for drive resources
+- Added a **Lifecycle Event** branch to the **Drive Subscription** trigger that handles Microsoft Graph lifecycle notifications, renewing the subscription when Graph asks for reauthorization and recreating it when Graph removes it
+- Updated the **Drive Subscription** trigger to allow its subscription requests more time to complete
+- Fixed the **Renew Subscription** action extending a subscription by the entered number of minutes instead of days
+- Updated the **Update File** action to resolve the new parent folder path under the drive root, matching **Move File**
+- Added the **Select Sites**, **Select Drives from Sites**, and **Select Folders from Drives** data sources for selecting several sites, drives, and top-level folders in the configuration wizard; each takes one or more parents (a single ID, a list of IDs, or the selection from the previous data source), skips a site or drive that Microsoft Graph refuses or no longer has when several are selected instead of failing the whole list, and **Select Folders from Drives** keys combine the drive ID and folder ID, separated by a colon
+- Fixed the **Item ID** dropdown on the **Delete File**, **Get Item**, and **List Children** actions showing no options; it now lists the top-level files and folders of the selected **Drive ID** through a new **Select Drive Item** data source
+- Fixed the **List Folders from Source** data source failing when **Directory** is a folder path such as `/Reports/2024`; it now lists that folder
+- Fixed the **Select Site**, **List Drives from Source**, **List Groups from Source**, and **List Users from Source** data sources returning only the first page of results; they now return every page, and **Select Site** now lists sites under the **OAuth 2.0** connection, where it previously returned none
+- Updated the **List Drives from Source**, **List Groups from Source**, **List Users from Source**, and **Select Site** data sources to return their options in the picklist result format
+- Updated the **Files in Directory** data source label to **List Files in Directory**
+- Updated the **OAuth 2.0** connection to show the **Scopes** field
+- Updated the **List My Drives**, **List Drives By User**, **List Drives By Group**, **List Drives By Site**, **List Groups**, **List Sites**, **List Children**, **List Items In Directory**, and **List Files Shared With Me (Deprecation Notice)** actions to group **Page Limit** and **Page Token** into **Pagination**; **Fetch All** stays a top-level toggle
+- Updated the **List Changes** action to group its query options into **Query Parameters**
+- Added inline action calling support to 27 actions for improved example output during configuration
+- Added output schemas to 24 actions for improved field mapping during configuration
+
 ### 2026-11-11
 
 Refactored internal code

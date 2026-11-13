@@ -1,29 +1,33 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { paginateResults } from "ms-utils";
 import { getOneDriveClient } from "../../client";
-import { listDrivesExamplePayload } from "../../examplePayloads";
+import { listDrivesByUserExamplePayload } from "../../examplePayloads";
 import { listDrivesByUserInputs } from "../../inputs";
+import { listDrivesByUserOutputSchema } from "../../outputSchemas";
+import { resolvePagination } from "../../util";
 
 export const listDrivesByUser = action({
   display: {
     label: "List Drives By User",
     description: "Returns a list of all drives available to the given user.",
   },
-  perform: async (
-    context,
-    { connection, userId, fetchAll, pageLimit, pageToken },
-  ) => {
+  performSafety: "notAllowed",
+  perform: async (context, { connection, userId, fetchAll, ...paging }) => {
     const client = getOneDriveClient(connection, context.debug.enabled);
     return await paginateResults<
-      (typeof listDrivesExamplePayload)["data"]["value"][number]
+      (typeof listDrivesByUserExamplePayload)["data"]["value"][number]
     >({
       client,
       endpoint: `/users/${userId}/drives`,
       fetchAll,
-      pageSize: pageLimit,
-      pageToken,
+      ...resolvePagination(paging),
     });
   },
+  examplePerform: async () => listDrivesByUserExamplePayload,
   inputs: listDrivesByUserInputs,
-  examplePayload: listDrivesExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listDrivesByUserOutputSchema,
+  }),
+  examplePayload: listDrivesByUserExamplePayload,
 });

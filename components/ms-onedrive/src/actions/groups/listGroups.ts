@@ -1,15 +1,18 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { paginateResults } from "ms-utils";
 import { getOneDriveClient } from "../../client";
 import { listGroupsExamplePayload } from "../../examplePayloads";
 import { listGroupsInputs } from "../../inputs";
+import { listGroupsOutputSchema } from "../../outputSchemas";
+import { resolvePagination } from "../../util";
 
 export const listGroups = action({
   display: {
     label: "List Groups",
     description: "Returns a list of all groups the user has access to.",
   },
-  perform: async (context, { connection, fetchAll, pageLimit, pageToken }) => {
+  performSafety: "notAllowed",
+  perform: async (context, { connection, fetchAll, ...paging }) => {
     const client = getOneDriveClient(connection, context.debug.enabled);
     return await paginateResults<
       (typeof listGroupsExamplePayload)["data"]["value"][number]
@@ -17,10 +20,14 @@ export const listGroups = action({
       client,
       endpoint: "/groups",
       fetchAll,
-      pageSize: pageLimit,
-      pageToken,
+      ...resolvePagination(paging),
     });
   },
+  examplePerform: async () => listGroupsExamplePayload,
   inputs: listGroupsInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listGroupsOutputSchema,
+  }),
   examplePayload: listGroupsExamplePayload,
 });

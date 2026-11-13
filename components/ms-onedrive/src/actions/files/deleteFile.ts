@@ -7,8 +7,9 @@ import { deleteFileInputs } from "../../inputs";
 export const deleteFile = action({
   display: {
     label: "Delete File",
-    description: "Deletes a file by path.",
+    description: "Deletes a file by drive ID and item ID.",
   },
+  performSafety: "notAllowed",
   perform: async (context, { connection, driveId, itemId }) => {
     const client = getOneDriveClient(connection, context.debug.enabled);
     return {
@@ -17,6 +18,7 @@ export const deleteFile = action({
       ),
     };
   },
+  examplePerform: async () => deleteFileExamplePayload,
   inputs: deleteFileInputs,
   examplePayload: deleteFileExamplePayload,
 });

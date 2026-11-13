@@ -607,14 +607,14 @@
   },
   "ms-onedrive": {
     "name": "@prismatic-io/components-ms-onedrive",
-    "version": "0.1.0",
-    "build": "8dc580b47bd497b9e6421121e811e70b5f987092b28014036f4f0f91ad322fea",
+    "version": "0.2.0",
+    "build": "044b93a20ce85bc41a76520b4a8dbab6cbb7a72d32ed59f72e410a7d51a88c8b",
     "spectral": "^10.39.1"
   },
   "ms-outlook": {
     "name": "@prismatic-io/components-ms-outlook",
-    "version": "0.4.0",
-    "build": "ee854d30f286f9b78cf842a118f655eca2e16c4a789d34abc9ee3788fbb70880",
+    "version": "0.4.1",
+    "build": "7f740a2368cad1aba45a82ee1f31e6ef0bc155485b9e3e790fdaed9498fc5d0a",
     "spectral": "^10.39.1"
   },
   "ms-planner": {
@@ -637,8 +637,8 @@
   },
   "ms-sharepoint": {
     "name": "@prismatic-io/components-ms-sharepoint",
-    "version": "0.3.0",
-    "build": "3ca303fe4db7b1db288af98ab6693f7fddcf4fa81648d494be28d23d7b0888ff",
+    "version": "0.3.1",
+    "build": "9a756006b350ad6744043b339842d3fa25459439a4da7d2abe20c0f5c1575abc",
     "spectral": "^10.39.1"
   },
   "ms-sql-server": {

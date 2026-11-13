@@ -1,9 +1,10 @@
 import { Readable } from "node:stream";
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { getOneDriveClient } from "../../client";
 import { handleErrors } from "../../errors";
 import { uploadFileExamplePayload } from "../../examplePayloads";
 import { uploadFileInputs } from "../../inputs";
+import { uploadFileOutputSchema } from "../../outputSchemas";
 
 export const uploadFile = action({
   display: {
@@ -11,6 +12,7 @@ export const uploadFile = action({
     description: "Uploads a file to the connected drive.",
   },
   inputs: uploadFileInputs,
+  performSafety: "notAllowed",
   perform: async (context, { connection, fileName, fileData, timeout }) => {
     const client = getOneDriveClient(
       connection,
@@ -25,5 +27,15 @@ export const uploadFile = action({
       ),
     };
   },
+  examplePerform: async (_context, { fileName }) => ({
+    data: {
+      ...uploadFileExamplePayload.data,
+      name: fileName.split("/").pop() ?? fileName,
+    },
+  }),
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: uploadFileOutputSchema,
+  }),
   examplePayload: uploadFileExamplePayload,
 });

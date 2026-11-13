@@ -1,8 +1,10 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { paginateResults } from "ms-utils";
 import { getOneDriveClient } from "../../client";
 import { listChildrenExamplePayload } from "../../examplePayloads";
 import { listChildrenInputs } from "../../inputs";
+import { listChildrenOutputSchema } from "../../outputSchemas";
+import { resolvePagination } from "../../util";
 
 export const listChildren = action({
   display: {
@@ -10,9 +12,10 @@ export const listChildren = action({
     description: "Returns all child elements on a given drive item.",
   },
   inputs: listChildrenInputs,
+  performSafety: "notAllowed",
   perform: async (
     context,
-    { connection, driveId, itemId, fetchAll, pageLimit, pageToken },
+    { connection, driveId, itemId, fetchAll, ...paging },
   ) => {
     const client = getOneDriveClient(connection, context.debug.enabled);
     return await paginateResults<
@@ -21,9 +24,13 @@ export const listChildren = action({
       client,
       endpoint: `/drives/${driveId}/items/${itemId}/children`,
       fetchAll,
-      pageSize: pageLimit,
-      pageToken,
+      ...resolvePagination(paging),
     });
   },
+  examplePerform: async () => listChildrenExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listChildrenOutputSchema,
+  }),
   examplePayload: listChildrenExamplePayload,
 });

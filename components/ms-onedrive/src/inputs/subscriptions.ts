@@ -1,6 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanExpirationDateTime } from "ms-utils";
-import { cleanExpirationDays } from "../util/clean";
+import { cleanExpirationDays, toOptionalString } from "../util/clean";
 import { oneDriveConnection } from "./common";
 
 export const changeType = input({
@@ -10,7 +10,7 @@ export const changeType = input({
   comments:
     "The type of changes that should generate notifications for this subscription. OneDrive only supports 'updated'.",
   example: "updated",
-  placeholder: "Select change type",
+  placeholder: "Enter change type",
   default: "updated",
   clean: util.types.toString,
 });
@@ -31,7 +31,7 @@ export const resource = input({
   type: "string",
   required: true,
   comments:
-    "The Microsoft Graph resource path to monitor for changes. See [Microsoft Graph documentation](https://learn.microsoft.com/en-us/graph/api/resources/subscription) for valid resource paths.",
+    "The Microsoft Graph resource path to monitor for changes. See [Microsoft Graph documentation](https://learn.microsoft.com/en-us/graph/api/resources/subscription?view=graph-rest-1.0) for valid resource paths.",
   example: "/me/drive/root",
   placeholder: "Enter resource path",
   clean: util.types.toString,
@@ -42,7 +42,7 @@ export const expirationDateTime = input({
   type: "string",
   required: true,
   comments:
-    "The date and time when the subscription expires in ISO 8601 format. Maximum is 30 days from now for OneDrive resources.",
+    "The date and time when the subscription expires in ISO 8601 format. Maximum is just under 30 days (42,300 minutes) from now for OneDrive resources.",
   example: "2025-12-31T23:59:59.000Z",
   placeholder: "Enter expiration date (ISO 8601)",
   clean: cleanExpirationDateTime,
@@ -56,7 +56,7 @@ export const clientState = input({
     "An optional validation token that is passed back in each notification for verification purposes.",
   example: "client-specific-validation-token",
   placeholder: "Enter client state token",
-  clean: util.types.toString,
+  clean: toOptionalString,
 });
 
 const subscriptionId = input({
@@ -93,7 +93,7 @@ const expirationDays = input({
   label: "Expiration Days",
   type: "string",
   comments:
-    "Number of days to extend the subscription (1-30). Maximum is 30 days for OneDrive resources.",
+    "Number of days to extend the subscription (1-30). Renewals are capped at the Microsoft Graph maximum for drive resources, just under 30 days.",
   example: "3",
   placeholder: "Enter number of days",
   default: "3",

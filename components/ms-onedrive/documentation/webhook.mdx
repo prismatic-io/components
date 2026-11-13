@@ -18,15 +18,33 @@ The trigger operates in two distinct modes based on the type of request received
 
 #### Configuration
 
-This trigger requires webhook subscriptions to be created manually using the [Microsoft Graph API](https://learn.microsoft.com/en-us/graph/api/subscription-post-subscriptions) or Azure portal. Configure the subscription with:
+This trigger requires webhook subscriptions to be created manually using the [Microsoft Graph API](https://learn.microsoft.com/en-us/graph/api/subscription-post-subscriptions?view=graph-rest-1.0) or Azure portal. Configure the subscription with:
+
+<details>
+<summary>Subscription Fields (5)</summary>
 
 - **notificationUrl**: The webhook URL provided by the instance
 - **resource**: The OneDrive resource path to monitor (e.g., `/me/drive/root`)
 - **changeType**: The type of changes to monitor (`updated` for OneDrive)
-- **expirationDateTime**: When the subscription expires (maximum 30 days for OneDrive)
+- **expirationDateTime**: When the subscription expires (maximum just under 30 days, 42,300 minutes, for OneDrive)
 - **clientState**: Optional validation string sent with each notification
 
+</details>
+
 The trigger automatically handles URL validation when the subscription is created.
+
+#### Event Types
+
+<details>
+<summary>Available Events (1)</summary>
+
+| Event | Description |
+|-------|-------------|
+| `updated` | Sent when an item in the monitored drive hierarchy is created, changed, or deleted. Drive root subscriptions support only this change type. |
+
+</details>
+
+See the [Microsoft Graph change notifications overview](https://learn.microsoft.com/en-us/graph/change-notifications-overview) for the full list of supported resources.
 
 #### Branches
 
@@ -86,18 +104,17 @@ The notification does not include change details. Use the [delta API](https://le
 
 #### Best Practices
 
-- **Respond Quickly**: Microsoft Graph expects a response within 30 seconds. Queue notifications for processing rather than performing lengthy operations during the webhook request.
+- **Respond Quickly**: Microsoft Graph expects a response within 3 seconds. Queue notifications for processing rather than performing lengthy operations during the webhook request.
 - **Validate clientState**: If configured, verify the `clientState` value matches the expected value to ensure notifications originate from Microsoft Graph.
-- **Handle Retries**: Microsoft Graph retries failed webhook deliveries with exponential backoff for up to 15 minutes. Ensure the endpoint returns appropriate status codes.
-- **Monitor Expiration**: OneDrive subscriptions expire after a maximum of 30 days. Implement a process to renew subscriptions before expiration.
-- **Use Delta Queries**: Webhook notifications indicate something changed but don't specify what. Use the [delta query API](https://learn.microsoft.com/en-us/onedrive/developer/rest-api/api/driveitem_delta) to identify specific changes.
+- **Handle Retries**: Microsoft Graph retries failed webhook deliveries with exponential backoff for up to 4 hours. Ensure the endpoint returns appropriate status codes.
+- **Monitor Expiration**: OneDrive subscriptions expire after a maximum of just under 30 days (42,300 minutes). Implement a process to renew subscriptions before expiration.
+- **Use Delta Queries**: Webhook notifications indicate something changed but don't specify what. Use the [delta query API](https://learn.microsoft.com/en-us/graph/api/driveitem-delta?view=graph-rest-1.0) to identify specific changes.
 
 #### Notes
 
 - OneDrive only supports `changeType: "updated"` for drive resources
-- Subscriptions can monitor the root folder or any subfolder
 - Personal OneDrive allows subscriptions to any folder; OneDrive for Business only allows root folder subscriptions
-- Maximum subscription duration is 30 days for OneDrive resources
+- Maximum subscription duration is just under 30 days (42,300 minutes) for OneDrive resources
 - The platform automatically URL-decodes query parameters before passing them to the trigger
 
-For complete details on OneDrive webhooks, see the [Microsoft Graph webhooks documentation](https://learn.microsoft.com/en-us/graph/change-notifications-delivery-webhooks) and [OneDrive webhook concepts](https://learn.microsoft.com/en-us/onedrive/developer/rest-api/concepts/using-webhooks).
+For complete details on OneDrive webhooks, see the [Microsoft Graph webhooks documentation](https://learn.microsoft.com/en-us/graph/change-notifications-delivery-webhooks) and [OneDrive webhook concepts](https://learn.microsoft.com/en-us/onedrive/developer/rest-api/concepts/using-webhooks?view=odsp-graph-online).

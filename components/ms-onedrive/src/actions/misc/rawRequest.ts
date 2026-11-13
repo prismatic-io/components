@@ -11,6 +11,7 @@ export const rawRequest = action({
     description: "Sends a raw HTTP request to Microsoft OneDrive.",
   },
   inputs: rawRequestInputs,
+  performSafety: "notAllowed",
   perform: async (context, { connection, ...rawRequestInputs }) => {
     validateConnection(connection);
     const headers = getAuthHeaders(connection);

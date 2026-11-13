@@ -1,8 +1,7 @@
-import { fetchAll, oneDriveConnection, pageLimit, pageToken } from "./common";
+import { fetchAll, oneDriveConnection, pagination } from "./common";
 
 export const listGroupsInputs = {
   connection: oneDriveConnection,
   fetchAll,
-  pageToken,
-  pageLimit,
+  pagination,
 };

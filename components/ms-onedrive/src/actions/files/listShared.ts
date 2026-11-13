@@ -1,8 +1,9 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { getOneDriveClient } from "../../client";
 import { handleErrors } from "../../errors";
 import { listSharedExamplePayload } from "../../examplePayloads";
 import { listSharedInputs } from "../../inputs";
+import { listSharedOutputSchema } from "../../outputSchemas";
 
 export const listShared = action({
   display: {
@@ -10,6 +11,7 @@ export const listShared = action({
     description: "Lists shared items in SharePoint or OneDrive.",
   },
   inputs: listSharedInputs,
+  performSafety: "notAllowed",
   perform: async (context, { connection }) => {
     const client = getOneDriveClient(connection, context.debug.enabled);
 
@@ -17,6 +19,11 @@ export const listShared = action({
       data: await handleErrors(client.get("/me/insights/shared")),
     };
   },
+  examplePerform: async () => listSharedExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listSharedOutputSchema,
+  }),
   examplePayload: listSharedExamplePayload,
 });
 

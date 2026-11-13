@@ -1,12 +1,12 @@
 import { type Connection, util } from "@prismatic-io/spectral";
 import { createClient, type HttpClient } from "@prismatic-io/spectral/http";
-import { BASE_URL } from "./constants";
+import { BASE_URL, DEFAULT_TIMEOUT } from "./constants";
 import { getAuthHeaders, validateConnection } from "./util";
 
 export const getOneDriveClient = (
   connection: Connection,
-  debug: boolean,
-  timeout?: string,
+  debug = false,
+  timeout?: number,
 ): HttpClient => {
   validateConnection(connection);
   const headers = getAuthHeaders(connection);
@@ -15,10 +15,11 @@ export const getOneDriveClient = (
     baseUrl: BASE_URL,
     headers: {
       ...headers,
-      Accepts: "application/json",
+      Accept: "application/json",
       "Content-type": "application/json",
     },
-    timeout: util.types.toInt(timeout, 4000),
+    responseType: "json",
+    timeout: util.types.toInt(timeout, DEFAULT_TIMEOUT),
     debug,
   });
 

@@ -5,3 +5,9 @@ export interface Subscription {
   changeType: string;
   [key: string]: unknown;
 }
+
+export interface DriveSubscriptionParams {
+  resource: string;
+  changeType: string;
+  clientState?: string;
+}

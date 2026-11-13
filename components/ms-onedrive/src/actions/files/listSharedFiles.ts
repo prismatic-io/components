@@ -1,8 +1,10 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { paginateResults } from "ms-utils";
 import { getOneDriveClient } from "../../client";
 import { listSharedFilesExamplePayload } from "../../examplePayloads";
 import { listSharedFilesInputs } from "../../inputs";
+import { listSharedFilesOutputSchema } from "../../outputSchemas";
+import { resolvePagination } from "../../util";
 
 export const listSharedFiles = action({
   display: {
@@ -10,7 +12,8 @@ export const listSharedFiles = action({
     description:
       'Returns all files shared with the current account. Deprecated: the underlying Microsoft Graph endpoint is degraded and scheduled for removal around November 2026, and may return incomplete results. Use the "List Shared" action instead.',
   },
-  perform: async (context, { connection, fetchAll, pageLimit, pageToken }) => {
+  performSafety: "notAllowed",
+  perform: async (context, { connection, fetchAll, ...paging }) => {
     const client = getOneDriveClient(connection, context.debug.enabled);
     return await paginateResults<
       (typeof listSharedFilesExamplePayload)["data"]["value"][number]
@@ -18,10 +21,14 @@ export const listSharedFiles = action({
       client,
       endpoint: "/me/drive/sharedWithMe",
       fetchAll,
-      pageSize: pageLimit,
-      pageToken,
+      ...resolvePagination(paging),
     });
   },
+  examplePerform: async () => listSharedFilesExamplePayload,
   inputs: listSharedFilesInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listSharedFilesOutputSchema,
+  }),
   examplePayload: listSharedFilesExamplePayload,
 });

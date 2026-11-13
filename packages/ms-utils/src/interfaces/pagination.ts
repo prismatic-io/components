@@ -12,6 +12,6 @@ export interface PaginateOptions {
   endpoint: string;
   params?: Record<string, unknown>;
   fetchAll: boolean;
-  pageSize?: string;
+  pageSize?: string | number;
   pageToken?: string;
 }

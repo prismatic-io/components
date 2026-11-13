@@ -1,6 +1,8 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
 import { getOneDriveClient } from "../client";
+import { listFoldersExamplePayload } from "../examplePayloads";
 import { listFoldersInputs } from "../inputs";
+import { folderChildrenPath } from "../util";
 
 export const listFolders = dataSource({
   display: {
@@ -10,7 +12,7 @@ export const listFolders = dataSource({
   inputs: listFoldersInputs,
   perform: async (_context, { oneDriveConnection, dir }) => {
     const client = getOneDriveClient(oneDriveConnection, false);
-    const path = dir === "/" ? "/me/drive/root/children" : dir;
+    const path = folderChildrenPath(dir);
     let files: Record<string, unknown>[] = [];
     let nextLink = `${client.defaults.baseURL}${path}`;
     client.defaults.baseURL = undefined;
@@ -35,5 +37,6 @@ export const listFolders = dataSource({
       }) as Element[],
     };
   },
+  examplePayload: listFoldersExamplePayload,
   dataSourceType: "picklist",
 });

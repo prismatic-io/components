@@ -1,9 +1,9 @@
 import { input } from "@prismatic-io/spectral";
-import { cleanString } from "../util/clean";
-import { fetchAll, oneDriveConnection, pageLimit, pageToken } from "./common";
+import { toTrimmedString } from "../util/clean";
+import { fetchAll, oneDriveConnection, pagination } from "./common";
 
 export const siteId = input({
-  label: "Site",
+  label: "Site ID",
   type: "string",
   required: true,
   example:
@@ -11,7 +11,7 @@ export const siteId = input({
   placeholder: "Enter site ID",
   comments: "The unique identifier of the SharePoint site.",
   dataSource: "selectSite",
-  clean: cleanString,
+  clean: toTrimmedString,
 });
 
 export const getSiteInputs = {
@@ -22,6 +22,5 @@ export const getSiteInputs = {
 export const listSitesInputs = {
   connection: oneDriveConnection,
   fetchAll,
-  pageLimit,
-  pageToken,
+  pagination,
 };

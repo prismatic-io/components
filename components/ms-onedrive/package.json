@@ -1,6 +1,6 @@
 {
   "name": "@prismatic-io/components-ms-onedrive",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "main": "./npm-dist/index.cjs",
   "types": "./npm-dist/index.d.cts",
   "exports": {
@@ -31,7 +31,7 @@
     "format": "biome format --write .",
     "build": "npm run format && npm run lint && tsdown",
     "typecheck": "tsc --noEmit",
-    "test": "echo 'no tests'",
+    "test": "vitest run",
     "prepare": "npm run build",
     "publish:platform": "npm run build && prism components:publish"
   },
@@ -41,7 +41,8 @@
   "dependencies": {},
   "devDependencies": {
     "@biomejs/biome": "2.5.1",
-    "@types/node": "^25",
+    "@types/node": "^26.6.6",
+    "nock": "14.0.17",
     "tsdown": "0.22.3",
     "typescript": "6.0.3",
     "vitest": "4.1.9",

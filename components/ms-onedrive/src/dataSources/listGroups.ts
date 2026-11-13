@@ -1,6 +1,8 @@
-import { dataSource } from "@prismatic-io/spectral";
+import { dataSource, type Element } from "@prismatic-io/spectral";
 import { getOneDriveClient } from "../client";
+import { listGroupsDataSourceExamplePayload } from "../examplePayloads";
 import { listGroupsDataSourceInputs } from "../inputs";
+import { fetchAllPages } from "../util";
 
 export const listGroups = dataSource({
   display: {
@@ -10,16 +12,20 @@ export const listGroups = dataSource({
   inputs: listGroupsDataSourceInputs,
   perform: async (_context, { connection }) => {
     const client = getOneDriveClient(connection, false);
-    const {
-      data: { value },
-    } = await client.get("/groups");
+    const groups = await fetchAllPages<Record<string, unknown>>(
+      client,
+      "/groups",
+    );
 
-    return value.map((record: Record<string, unknown>) => {
-      return {
-        label: record.displayName,
-        key: record.id,
-      };
-    });
+    return {
+      result: groups.map((record) => {
+        return {
+          label: record.displayName,
+          key: record.id,
+        };
+      }) as Element[],
+    };
   },
+  examplePayload: listGroupsDataSourceExamplePayload,
   dataSourceType: "picklist",
 });

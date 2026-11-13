@@ -1,15 +1,18 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { paginateResults } from "ms-utils";
 import { getOneDriveClient } from "../../client";
 import { listDrivesExamplePayload } from "../../examplePayloads";
 import { listDrivesInputs } from "../../inputs";
+import { listDrivesOutputSchema } from "../../outputSchemas";
+import { resolvePagination } from "../../util";
 
 export const listDrives = action({
   display: {
     label: "List My Drives",
     description: "Returns a list of all drives available to the current user.",
   },
-  perform: async (context, { connection, fetchAll, pageLimit, pageToken }) => {
+  performSafety: "notAllowed",
+  perform: async (context, { connection, fetchAll, ...paging }) => {
     const client = getOneDriveClient(connection, context.debug.enabled);
     return await paginateResults<
       (typeof listDrivesExamplePayload)["data"]["value"][number]
@@ -17,10 +20,14 @@ export const listDrives = action({
       client,
       endpoint: "/me/drives",
       fetchAll,
-      pageSize: pageLimit,
-      pageToken,
+      ...resolvePagination(paging),
     });
   },
+  examplePerform: async () => listDrivesExamplePayload,
   inputs: listDrivesInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listDrivesOutputSchema,
+  }),
   examplePayload: listDrivesExamplePayload,
 });

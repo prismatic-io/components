@@ -1,17 +1,23 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import {
   cleanKeyValueList,
-  cleanString,
+  toOptionalNumber,
   toOptionalString,
+  toOptionalTrimmedString,
+  toTrimmedString,
 } from "../util/clean";
-import {
-  fetchAll,
-  oneDriveConnection,
-  pageLimit,
-  pageToken,
-  timeout,
-} from "./common";
+import { fetchAll, oneDriveConnection, pagination } from "./common";
 import { driveId } from "./drives";
+
+const timeout = input({
+  label: "Timeout",
+  type: "string",
+  required: false,
+  example: "3000",
+  placeholder: "Enter timeout in milliseconds",
+  comments: "The maximum time in milliseconds to wait for a response.",
+  clean: toOptionalNumber,
+});
 
 export const dir = input({
   label: "Directory",
@@ -21,7 +27,7 @@ export const dir = input({
   placeholder: "Enter directory path",
   comments:
     "The directory path of the file. Use a forward slash (/) to access the root directory.",
-  clean: cleanString,
+  clean: toTrimmedString,
 });
 
 const itemId = input({
@@ -31,8 +37,8 @@ const itemId = input({
   example: "01NKDM7HMOJTVYMDOSXFDK2QJDXCDI3WUK",
   placeholder: "Enter item ID",
   comments: "The unique identifier of the drive item (file or folder).",
-  dataSource: "listFilesInDirectory",
-  clean: cleanString,
+  dataSource: "selectDriveItem",
+  clean: toTrimmedString,
 });
 
 const path = input({
@@ -43,7 +49,7 @@ const path = input({
   placeholder: "Enter file or folder path",
   comments:
     "The path to the desired SharePoint resource. The root directory does not need to be included.",
-  clean: cleanString,
+  clean: toTrimmedString,
 });
 
 const fileName = input({
@@ -53,7 +59,7 @@ const fileName = input({
   example: "exampleFile.txt",
   placeholder: "Enter file name",
   comments: "The new name for the file.",
-  clean: cleanString,
+  clean: toTrimmedString,
 });
 
 const search = input({
@@ -63,7 +69,7 @@ const search = input({
   example: "myFile",
   placeholder: "Enter search text",
   comments: "The text to search for within the current drive.",
-  clean: cleanString,
+  clean: toTrimmedString,
 });
 
 const fileData = input({
@@ -79,7 +85,7 @@ const deltaURL = input({
   type: "string",
   required: true,
   comments:
-    "The URL to track changes in a driveItem and its children over time. You can also use the @odata.nextLink or @odata.deltaLink from a previous response to resume tracking changes. See [Microsoft Graph delta query documentation](https://learn.microsoft.com/en-us/graph/delta-query-overview).",
+    "The URL to track changes in a driveItem and its children over time. The @odata.nextLink or @odata.deltaLink from a previous response can also be used to resume tracking changes. See [Microsoft Graph delta query documentation](https://learn.microsoft.com/en-us/graph/delta-query-overview).",
   example: "/drives/{drive-id}/root/delta",
   placeholder: "Enter delta URL or token",
   default: "/drives/{drive-id}/root/delta",
@@ -92,40 +98,42 @@ const values = input({
   required: false,
   collection: "keyvaluelist",
   comments: "Optional key-value pairs to include in the request body.",
+  example: '{"description": "Updated quarterly report"}',
+  placeholder: "Enter key-value pairs",
   clean: cleanKeyValueList,
 });
 
 const $select = input({
-  label: "$select Parameter",
+  label: "Select",
   type: "string",
   required: false,
   comments:
-    "Comma-separated list of properties to include in the response. See [Microsoft Graph $select documentation](https://learn.microsoft.com/en-us/graph/query-parameters?tabs=http#select-parameter).",
-  example: "givenName,surname",
+    "Comma-separated list of properties to include in the response. See [Microsoft Graph $select documentation](https://learn.microsoft.com/en-us/graph/query-parameters?tabs=http#select).",
+  example: "id,name,lastModifiedDateTime",
   placeholder: "Enter properties to select",
   clean: toOptionalString,
 });
 
 const $expand = input({
-  label: "$expand Parameter",
+  label: "Expand",
   type: "string",
   required: false,
   comments:
-    "Comma-separated list of related resources to include in the response. See [Microsoft Graph $expand documentation](https://learn.microsoft.com/en-us/graph/query-parameters?tabs=http#expand-parameter).",
-  example: "members",
+    "Comma-separated list of related resources to include in the response. See [Microsoft Graph $expand documentation](https://learn.microsoft.com/en-us/graph/query-parameters?tabs=http#expand).",
+  example: "thumbnails",
   placeholder: "Enter relationships to expand",
   clean: toOptionalString,
 });
 
 const $top = input({
-  label: "$top Parameter",
+  label: "Top",
   type: "string",
   required: false,
   comments:
-    "The maximum number of results to return per page. See [Microsoft Graph $top documentation](https://learn.microsoft.com/en-us/graph/query-parameters?tabs=http#top-parameter).",
+    "The maximum number of results to return per page. See [Microsoft Graph $top documentation](https://learn.microsoft.com/en-us/graph/query-parameters?tabs=http#top).",
   example: "5",
   placeholder: "Enter maximum results",
-  clean: toOptionalString,
+  clean: toOptionalNumber,
 });
 
 export const deleteFileInputs = {
@@ -141,7 +149,7 @@ export const downloadFileInputs = {
     label: "File Location",
     example: "/folder1/myExampleFile.csv",
     comments:
-      "Provide a leading slash followed by the location of your file within the current user's drive.",
+      "Provide a leading slash followed by the location of the file within the current user's drive.",
   },
   timeout,
 };
@@ -152,7 +160,7 @@ export const getItemInputs = {
     ...dir,
     label: "File Location",
     comments:
-      "Provide a leading slash, followed by the location and name of your file.",
+      "Provide a leading slash, followed by the location and name of the file.",
     example: "/folder1/myFile.txt",
   },
 };
@@ -163,12 +171,21 @@ export const getItemByIdInputs = {
   itemId,
 };
 
+const queryParameters = structuredObjectInput({
+  label: "Query Parameters",
+  required: false,
+  comments: "OData system query options to shape the delta query results.",
+  inputs: {
+    $select,
+    $expand,
+    $top,
+  },
+});
+
 export const listChangesInputs = {
   oneDriveConnection,
   deltaURL,
-  $select,
-  $expand,
-  $top,
+  queryParameters,
 };
 
 export const listChildrenInputs = {
@@ -176,16 +193,14 @@ export const listChildrenInputs = {
   driveId,
   itemId,
   fetchAll,
-  pageLimit,
-  pageToken,
+  pagination,
 };
 
 export const listDriveItemsInputs = {
   connection: oneDriveConnection,
   dir,
   fetchAll,
-  pageLimit,
-  pageToken,
+  pagination,
 };
 
 export const listSharedInputs = {
@@ -195,8 +210,7 @@ export const listSharedInputs = {
 export const listSharedFilesInputs = {
   connection: oneDriveConnection,
   fetchAll,
-  pageLimit,
-  pageToken,
+  pagination,
 };
 
 export const moveFileInputs = {
@@ -231,8 +245,18 @@ export const updateFileInputs = {
       "Provide a leading slash, followed by the location and name of the file.",
     example: "/folder1/myFile.txt",
   },
-  fileName: { ...fileName, label: "New File Name", required: false },
-  path: { ...path, label: "New File Path", required: false },
+  fileName: {
+    ...fileName,
+    label: "New File Name",
+    required: false,
+    clean: toOptionalTrimmedString,
+  },
+  path: {
+    ...path,
+    label: "New File Path",
+    required: false,
+    clean: toOptionalTrimmedString,
+  },
   values,
 };
 

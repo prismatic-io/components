@@ -1,7 +1,8 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { getOneDriveClient } from "../../client";
 import { deleteSubscriptionsExamplePayload } from "../../examplePayloads";
 import { deleteSubscriptionsInputs } from "../../inputs";
+import { deleteSubscriptionsOutputSchema } from "../../outputSchemas";
 import type { GraphListResponse, Subscription } from "../../types";
 
 export const deleteSubscriptions = action({
@@ -10,6 +11,7 @@ export const deleteSubscriptions = action({
     description: "Deletes all existing subscriptions for this instance.",
   },
   inputs: deleteSubscriptionsInputs,
+  performSafety: "notAllowed",
   perform: async (context, { oneDriveConnection }) => {
     const client = getOneDriveClient(oneDriveConnection, context.debug.enabled);
 
@@ -34,5 +36,10 @@ export const deleteSubscriptions = action({
 
     return { data: { subscriptionsRemoved: subscriptionsToRemove } };
   },
+  examplePerform: async () => deleteSubscriptionsExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: deleteSubscriptionsOutputSchema,
+  }),
   examplePayload: deleteSubscriptionsExamplePayload,
 });

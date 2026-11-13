@@ -9,10 +9,12 @@ export const deleteSubscription = action({
     description: "Deletes a subscription by ID.",
   },
   inputs: deleteSubscriptionInputs,
+  performSafety: "notAllowed",
   perform: async (context, { oneDriveConnection, subscriptionId }) => {
     const client = getOneDriveClient(oneDriveConnection, context.debug.enabled);
     const { data } = await client.delete(`/subscriptions/${subscriptionId}`);
     return { data };
   },
+  examplePerform: async () => deleteSubscriptionExamplePayload,
   examplePayload: deleteSubscriptionExamplePayload,
 });
