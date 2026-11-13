@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-11-13
+
+Fixed a failure in the **List Assets (ITAM)**, **List Devices (ITAM)**, **Select Asset (ITAM)** and **Select Device (ITAM)** actions and data sources when the ITAM collection was empty
+
 ### 2026-11-11
 
 Refactored internal code

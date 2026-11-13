@@ -151,6 +151,24 @@ describe("getItamListData", () => {
     expect(nock.isDone()).toBe(true);
   });
 
+  test("an empty collection with no per_page in meta returns without throwing", async () => {
+    nock(HOST)
+      .get(`${BASE}/itam/devices`)
+      .query(true)
+      .reply(200, {
+        meta: { total_count: 0 },
+        devices: [],
+      });
+
+    const { data, meta } = await getItamListData<
+      ReturnType<typeof device>,
+      "devices"
+    >(client(), "devices", "devices", { fetchAll: true, params: {} });
+
+    expect(data.devices).toHaveLength(0);
+    expect(meta.total_count).toBe(0);
+  });
+
   test("a missing envelope key throws instead of returning an empty list", async () => {
     nock(HOST)
       .get(`${BASE}/itam/devices`)

@@ -1,6 +1,6 @@
 {
   "name": "@prismatic-io/components-freshservice",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "main": "./npm-dist/index.cjs",
   "types": "./npm-dist/index.d.cts",
   "exports": {

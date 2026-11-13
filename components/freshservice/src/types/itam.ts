@@ -1,7 +1,7 @@
 export interface ItamMeta {
-  page: number;
-  per_page: number;
   total_count: number;
+  page?: number;
+  per_page?: number;
 }
 
 export interface ItamWriteResult {
@@ -28,13 +28,9 @@ export interface ItamDevice {
   serial_no?: string;
 }
 
-export type ItamDevicesResponse = { devices: ItamDevice[] };
-
 export interface ItamAsset {
   id: number;
   name: string;
   serial_no?: string;
   type?: string;
 }
-
-export type ItamAssetsResponse = { assets: ItamAsset[] };

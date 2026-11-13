@@ -325,8 +325,8 @@
   },
   "freshservice": {
     "name": "@prismatic-io/components-freshservice",
-    "version": "0.3.0",
-    "build": "2ef4dba8f5d3dfb0615f5737734eb71a97da21bcb62316166087f6f507b70b6c",
+    "version": "0.4.0",
+    "build": "34671724b679e440ab8802b84e20c4ca9e1a4ccdfeed9b300cee43025864e9a6",
     "spectral": "^10.39.1"
   },
   "frontify": {

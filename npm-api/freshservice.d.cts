@@ -5,9 +5,9 @@ type ResponseType = 'arraybuffer' | 'blob' | 'document' | 'json' | 'text' | 'str
 //#endregion
 //#region src/types/itam.d.ts
 interface ItamMeta {
-  page: number;
-  per_page: number;
   total_count: number;
+  page?: number;
+  per_page?: number;
 }
 interface ItamWriteResult {
   action: string;

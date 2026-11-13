@@ -94,6 +94,10 @@ export const getItamListData = async <T, K extends string>(
 
   const meta = data.meta as ItamMeta | undefined;
 
+  if (meta && typeof meta.total_count === "number" && meta.total_count === 0) {
+    return { data: result, meta };
+  }
+
   if (
     !meta ||
     typeof meta.total_count !== "number" ||
