@@ -1,8 +1,19 @@
 ## Changelog
 
-### 2026-11-11
+### 2026-11-16
 
-Refactored internal code
+Updated the client credentials connection, record actions and SuiteQL support:
+
+- Added the **Select Record Type** data source for selecting a record type the account exposes through REST web services
+- Added the optional **Query Parameters** input to the **SuiteQL Query** action and the **Select SuiteQL** data source for binding values to a query's `?` placeholders
+- Updated the **Record Type** input on the **Create Record**, **Get Record**, **List Records**, **Update Record** and **Delete Record** actions and the **Select Record** data source to accept the script ID of a custom record or custom transaction type; **New and Updated Records** still accepts only the standard record types
+- Fixed the **Record ID** input on **Get Record**, **Update Record** and **Delete Record** rejecting external IDs in the `eid:` format; characters such as `#` and `/` after `eid:` are now encoded, and an empty **Record ID** is rejected
+- Fixed the **NetSuite OAuth Client Credentials** connection failing with EC private keys on the P-384 and P-521 curves, which now sign with ES384 and ES512
+- Updated the **NetSuite OAuth Client Credentials** connection to reuse its access token until shortly before it expires, and to request the scopes configured on the connection (REST web services by default) instead of also requesting the RESTlets and SuiteAnalytics scopes
+- Fixed requests failing for sandbox accounts when the **Token URL** uses the account ID as NetSuite displays it, such as `123456_SB1`; it now resolves to the `123456-sb1` host
+- Updated requests that NetSuite rejects with HTTP 429 to retry with backoff, and error messages to include NetSuite's error code and detail
+- Updated the **List Records** action and the **Select Record** data source to leave an empty **Query** out of the request
+- Updated the **Raw Request** action to reject a **Service Type** other than record or query
 
 ### 2026-11-10
 

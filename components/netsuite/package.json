@@ -1,6 +1,6 @@
 {
   "name": "@prismatic-io/components-netsuite",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "main": "./npm-dist/index.cjs",
   "types": "./npm-dist/index.d.cts",
   "exports": {
@@ -36,23 +36,22 @@
     "publish:platform": "npm run build && prism components:publish"
   },
   "peerDependencies": {
-    "@prismatic-io/spectral": "^10.39.1"
+    "@prismatic-io/spectral": "^10.39.2"
   },
   "dependencies": {
     "jsonwebtoken": "^9.0.2",
-    "lodash": "^4.17.21",
-    "node-rsa": "^1.1.1"
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.1",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/lodash": "^4.17.21",
-    "@types/node": "^26.2.0",
-    "@types/node-rsa": "^1.1.4",
+    "@types/node": "^26.6.4",
+    "nock": "14.0.17",
     "tsdown": "0.22.3",
     "typescript": "6.0.3",
     "vitest": "4.1.9",
-    "@prismatic-io/spectral": "^10.39.1",
+    "@prismatic-io/spectral": "^10.39.2",
     "build-config": "file:../../packages/build-config"
   }
 }

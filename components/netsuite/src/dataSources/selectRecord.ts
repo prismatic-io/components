@@ -1,5 +1,7 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
 import { createClient } from "../client";
+import { RECORD_SERVICE } from "../constants";
+import { selectRecordExamplePayload } from "../examplePayloads";
 import { selectRecordInputs } from "../inputs";
 import type { Record } from "../types/Record";
 
@@ -9,12 +11,13 @@ export const selectRecord = dataSource({
     description: "Select a record from a list of records.",
   },
   inputs: selectRecordInputs,
+  examplePayload: selectRecordExamplePayload,
   dataSourceType: "picklist",
   perform: async (
     _context,
     { connection, recordType, query, pagination, recordField },
   ) => {
-    const client = await createClient(connection, "record", false);
+    const client = await createClient(connection, RECORD_SERVICE, false);
     const { data } = await client.get(`/${recordType}`, {
       params: {
         q: query,

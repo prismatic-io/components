@@ -1,4 +1,5 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
+import { suiteQlParametersClean } from "../utils";
 import { connectionInput, limitInput, offsetInput } from "./common";
 
 const queryPagination = structuredObjectInput({
@@ -8,26 +9,38 @@ const queryPagination = structuredObjectInput({
   inputs: { limitInput, offsetInput },
 });
 
-const selectPagination = structuredObjectInput({
+export const selectPagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Page and page-size controls.",
   inputs: { limit: limitInput, offset: offsetInput },
 });
 
-const suiteQLInput = input({
+export const suiteQLInput = input({
   label: "SuiteQL Payload",
   type: "code",
   language: "plaintext",
   required: true,
   comments:
-    "SuiteQL query string to execute. See [Executing SuiteQL Queries](https://docs.oracle.com/en/cloud/saas/netsuite/ns-online-help/section_157909186990.html) for details.",
+    "SuiteQL query string to execute. Write a ? placeholder for each value and supply the values in Query Parameters. A query returns at most 100,000 results; when paging, ORDER BY a unique column such as id so no row is skipped or repeated. See [Executing SuiteQL Queries](https://docs.oracle.com/en/cloud/saas/netsuite/ns-online-help/section_157909186990.html) for details.",
   placeholder: "Enter SuiteQL query",
   clean: util.types.toString,
   default: "SELECT email, COUNT(*) as count FROM transaction GROUP BY email",
 });
 
-const keyInput = input({
+export const parametersInput = input({
+  label: "Query Parameters",
+  type: "code",
+  language: "json",
+  required: false,
+  comments:
+    "Values for the query's ? placeholders, as a JSON array in placeholder order. NetSuite binds them to the query, so a value is never parsed as SuiteQL.",
+  example: '["-7", "0"]',
+  placeholder: "Enter query parameters",
+  clean: suiteQlParametersClean,
+});
+
+export const keyInput = input({
   label: "Key Field",
   type: "string",
   required: true,
@@ -38,7 +51,7 @@ const keyInput = input({
   clean: util.types.toString,
 });
 
-const labelInput = input({
+export const labelInput = input({
   label: "Label Field",
   type: "string",
   required: true,
@@ -52,13 +65,6 @@ const labelInput = input({
 export const suiteQLQueryInputs = {
   connection: connectionInput,
   suiteQLInput,
+  parameters: parametersInput,
   pagination: queryPagination,
-};
-
-export const selectSuiteQlInputs = {
-  connection: connectionInput,
-  query: suiteQLInput,
-  key: keyInput,
-  label: labelInput,
-  pagination: selectPagination,
 };

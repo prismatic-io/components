@@ -1,4 +1,8 @@
-import { RECORDS_PAGE_SIZE } from "../constants";
+import {
+  EXTERNAL_ID_PREFIX,
+  LOCATION_RECORD_PATTERN,
+  RECORDS_PAGE_SIZE,
+} from "../constants";
 import type { FetchAllRecordsParams } from "../types/Record";
 
 export const fetchAllRecords = async ({
@@ -29,10 +33,11 @@ export const fetchAllRecords = async ({
   return allRecords;
 };
 
-export const parseLocationData = (locationHeader: string) => {
-  const idRegex = /\/services\/rest\/record\/v1\/(\w*)\/(\d*)/;
-  const locationData = idRegex.exec(locationHeader);
-  if (locationData?.length !== 3) {
+export const parseLocationData = (
+  locationHeader: string,
+): { recordType: string; id: string } => {
+  const locationData = LOCATION_RECORD_PATTERN.exec(locationHeader);
+  if (!locationData) {
     throw new Error(
       `Something went wrong when parsing location header ${locationHeader}`,
     );
@@ -40,3 +45,8 @@ export const parseLocationData = (locationHeader: string) => {
   const [, recordType, id] = locationData;
   return { recordType, id };
 };
+
+export const encodeRecordId = (id: string): string =>
+  id.startsWith(EXTERNAL_ID_PREFIX)
+    ? `${EXTERNAL_ID_PREFIX}${encodeURIComponent(id.slice(EXTERNAL_ID_PREFIX.length))}`
+    : encodeURIComponent(id);

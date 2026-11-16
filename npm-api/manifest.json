@@ -661,9 +661,9 @@
   },
   "netsuite": {
     "name": "@prismatic-io/components-netsuite",
-    "version": "0.3.0",
-    "build": "fa54ec69d61a6721b0f4477124a91d513c597b6244ab51bf242c4c3873dfe61c",
-    "spectral": "^10.39.1"
+    "version": "0.4.0",
+    "build": "233fb7e74c37eefa885b3a38181a916bb172c2db7b23a6bd35810e54c3de0908",
+    "spectral": "^10.39.2"
   },
   "new-relic": {
     "name": "@prismatic-io/components-new-relic",

@@ -1,6 +1,6 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
 import { createClient } from "../client";
-import { DEFAULT_BATCH_SIZE } from "../constants";
+import { DEFAULT_BATCH_SIZE, RECORD_SERVICE } from "../constants";
 import { pollRecordsExamplePayload } from "../examplePayloads";
 import { pollRecordsInputs } from "../inputs";
 import type { NetSuitePollingState } from "../types/PollingState";
@@ -44,12 +44,12 @@ export const pollRecords = pollingTrigger({
     context.logger.debug(`Polled for changes from: ${lastPolledAt} to ${now}`);
     if (context.debug.enabled) {
       context.logger.debug(`Polling state: ${JSON.stringify(pollState)}`);
+      context.logger.debug(`Query: ${query}`);
     }
-    context.logger.debug(`Query: ${query}`);
 
     const client = await createClient(
       params.connection,
-      "record",
+      RECORD_SERVICE,
       context.debug.enabled,
     );
 

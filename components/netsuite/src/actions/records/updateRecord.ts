@@ -1,9 +1,10 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
+import { RECORD_SERVICE } from "../../constants";
 import { updateCustomerExamplePayload } from "../../examplePayloads";
 import { updateRecordInputs } from "../../inputs";
 import { updateRecordOutputSchema } from "../../outputSchemas";
-import { parseLocationData } from "../../utils";
+import { encodeRecordId, parseLocationData } from "../../utils";
 
 export const updateRecord = action({
   display: {
@@ -20,11 +21,11 @@ export const updateRecord = action({
   perform: async (context, params) => {
     const client = await createClient(
       params.connection,
-      "record",
+      RECORD_SERVICE,
       context.debug.enabled,
     );
     const { data, headers } = await client.patch(
-      `/${params.recordType}/${params.id}`,
+      `/${params.recordType}/${encodeRecordId(params.id)}`,
       params.payload,
       {
         params: {

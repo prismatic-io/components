@@ -1,5 +1,7 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input } from "@prismatic-io/spectral";
 import { inputs as httpClientInputs } from "@prismatic-io/spectral/http";
+import { QUERY_SERVICE, RECORD_SERVICE } from "../constants";
+import { restServiceTypeClean } from "../utils";
 import { connectionInput } from "./common";
 
 const serviceType = input({
@@ -8,13 +10,13 @@ const serviceType = input({
   comments:
     "Selects which NetSuite REST service the request targets: the record service for CRUD operations, or the query service for SuiteQL.",
   model: [
-    { label: "CRUD (Record)", value: "record" },
-    { label: "Query", value: "query" },
+    { label: "CRUD (Record)", value: RECORD_SERVICE },
+    { label: "Query", value: QUERY_SERVICE },
   ],
-  default: "record",
+  default: RECORD_SERVICE,
   placeholder: "Select service type",
   required: true,
-  clean: util.types.toString,
+  clean: restServiceTypeClean,
 });
 
 const { debugRequest: _, ...noDebugRawRequestInputs } = httpClientInputs;

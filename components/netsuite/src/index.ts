@@ -1,9 +1,9 @@
 import { component } from "@prismatic-io/spectral";
-import { handleErrors } from "@prismatic-io/spectral/http";
 import actions from "./actions";
 import connections from "./connections";
 import dataSources from "./dataSources";
 import triggers from "./triggers";
+import { handleNetSuiteErrors } from "./utils";
 
 export default component({
   key: "netsuite",
@@ -15,7 +15,7 @@ export default component({
     iconPath: "icon.png",
     category: "Application Connectors",
   },
-  hooks: { error: handleErrors },
+  hooks: { error: handleNetSuiteErrors },
   actions,
   dataSources,
   connections,

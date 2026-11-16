@@ -1,11 +1,15 @@
+export {
+  selectRecordInputs,
+  selectRecordTypeInputs,
+  selectSuiteQlInputs,
+} from "./dataSources";
 export { rawRequestInputs } from "./misc";
-export { selectSuiteQlInputs, suiteQLQueryInputs } from "./query";
+export { suiteQLQueryInputs } from "./query";
 export {
   createRecordInputs,
   deleteRecordInputs,
   getRecordInputs,
   listRecordInputs,
-  pollRecordsInputs,
-  selectRecordInputs,
   updateRecordInputs,
 } from "./records";
+export { pollRecordsInputs } from "./triggers";

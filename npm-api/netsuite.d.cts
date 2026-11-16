@@ -1,3 +1,10 @@
+//#region src/constants.d.ts
+declare const RECORD_SERVICE: "record";
+declare const QUERY_SERVICE: "query";
+//#endregion
+//#region src/types/restServiceType.d.ts
+type RestServiceType = typeof RECORD_SERVICE | typeof QUERY_SERVICE;
+//#endregion
 //#region node_modules/axios/index.d.ts
 type UppercaseMethod = 'GET' | 'DELETE' | 'HEAD' | 'OPTIONS' | 'POST' | 'PUT' | 'PATCH' | 'PURGE' | 'LINK' | 'UNLINK' | 'QUERY';
 type Method = (UppercaseMethod | Lowercase<UppercaseMethod>) & {};
@@ -23,14 +30,17 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         label: string;
         type: "string";
         comments: string;
-        model: {
+        model: ({
           label: string;
-          value: string;
-        }[];
-        default: string;
+          value: "record";
+        } | {
+          label: string;
+          value: "query";
+        })[];
+        default: "record";
         placeholder: string;
         required: true;
-        clean: (value: unknown, defaultValue?: string) => string;
+        clean: (value: unknown) => RestServiceType;
       };
       url: {
         comments: string;
@@ -188,6 +198,16 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         clean: (value: unknown, defaultValue?: string) => string;
         default: string;
       };
+      parameters: {
+        label: string;
+        type: "code";
+        language: "json";
+        required: false;
+        comments: string;
+        example: string;
+        placeholder: string;
+        clean: (value: unknown) => unknown[];
+      };
       pagination: {
         label: string;
         required: boolean;
@@ -235,7 +255,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
           label: string;
           value: "account" | "accountingPeriod" | "advIntercompanyJournalEntry" | "assemblyBuild" | "assemblyItem" | "assemblyUnbuild" | "billingAccount" | "billingRevenueEvent" | "billingSchedule" | "bin" | "binTransfer" | "blanketPurchaseOrder" | "bom" | "bomRevision" | "calendarEvent" | "campaign" | "campaignResponse" | "cashRefund" | "cashSale" | "charge" | "check" | "classification" | "commerceCategory" | "competitor" | "consolidatedExchangeRate" | "contact" | "contactCategory" | "contactRole" | "costCategory" | "couponCode" | "creditCardCharge" | "creditCardRefund" | "creditMemo" | "currency" | "currencyRate" | "customer" | "customerCategory" | "customerDeposit" | "customerMessage" | "customerPayment" | "customerRefund" | "customerStatus" | "customerSubsidiaryRelationship" | "department" | "deposit" | "depositApplication" | "descriptionItem" | "discountItem" | "downloadItem" | "emailTemplate" | "employee" | "estimate" | "expenseCategory" | "expenseReport" | "fairValuePrice" | "fulfillmentRequest" | "giftCertificateItem" | "inboundShipment" | "intercompanyJournalEntry" | "intercompanyTransferOrder" | "inventoryAdjustment" | "inventoryCostRevaluation" | "inventoryCount" | "inventoryItem" | "inventoryNumber" | "inventoryTransfer" | "invoice" | "issue" | "itemFulfillment" | "itemGroup" | "itemReceipt" | "itemRevision" | "job" | "jobStatus" | "jobType" | "journalEntry" | "kitItem" | "location" | "manufacturingCostTemplate" | "manufacturingOperationTask" | "manufacturingRouting" | "markupItem" | "message" | "nexus" | "nonInventoryPurchaseItem" | "nonInventoryResaleItem" | "nonInventorySaleItem" | "noteType" | "opportunity" | "otherChargePurchaseItem" | "otherChargeResaleItem" | "otherChargeSaleItem" | "otherName" | "otherNameCategory" | "partner" | "paycheck" | "paymentItem" | "paymentMethod" | "phoneCall" | "priceBook" | "priceLevel" | "pricePlan" | "pricingGroup" | "projectTask" | "promotionCode" | "purchaseContract" | "purchaseOrder" | "purchaseRequisition" | "resourceGroup" | "returnAuthorization" | "revRecSchedule" | "revRecTemplate" | "salesOrder" | "salesRole" | "salesTaxItem" | "servicePurchaseItem" | "serviceResaleItem" | "serviceSaleItem" | "shipItem" | "statisticalJournalEntry" | "subscription" | "subscriptionChangeOrder" | "subscriptionLine" | "subscriptionPlan" | "subscriptionTerm" | "subsidiary" | "subtotalItem" | "supportCase" | "task" | "taxType" | "term" | "timeBill" | "timeSheet" | "topic" | "transferOrder" | "unitsType" | "usage" | "vendor" | "vendorBill" | "vendorCategory" | "vendorCredit" | "vendorPayment" | "vendorPrepayment" | "vendorPrepaymentApplication" | "vendorReturnAuthorization" | "vendorSubsidiaryRelationship" | "webSite" | "workOrder" | "workOrderClose" | "workOrderCompletion" | "workOrderIssue";
         }[];
-        clean: (rawValue: unknown) => "account" | "accountingPeriod" | "advIntercompanyJournalEntry" | "assemblyBuild" | "assemblyItem" | "assemblyUnbuild" | "billingAccount" | "billingRevenueEvent" | "billingSchedule" | "bin" | "binTransfer" | "blanketPurchaseOrder" | "bom" | "bomRevision" | "calendarEvent" | "campaign" | "campaignResponse" | "cashRefund" | "cashSale" | "charge" | "check" | "classification" | "commerceCategory" | "competitor" | "consolidatedExchangeRate" | "contact" | "contactCategory" | "contactRole" | "costCategory" | "couponCode" | "creditCardCharge" | "creditCardRefund" | "creditMemo" | "currency" | "currencyRate" | "customer" | "customerCategory" | "customerDeposit" | "customerMessage" | "customerPayment" | "customerRefund" | "customerStatus" | "customerSubsidiaryRelationship" | "department" | "deposit" | "depositApplication" | "descriptionItem" | "discountItem" | "downloadItem" | "emailTemplate" | "employee" | "estimate" | "expenseCategory" | "expenseReport" | "fairValuePrice" | "fulfillmentRequest" | "giftCertificateItem" | "inboundShipment" | "intercompanyJournalEntry" | "intercompanyTransferOrder" | "inventoryAdjustment" | "inventoryCostRevaluation" | "inventoryCount" | "inventoryItem" | "inventoryNumber" | "inventoryTransfer" | "invoice" | "issue" | "itemFulfillment" | "itemGroup" | "itemReceipt" | "itemRevision" | "job" | "jobStatus" | "jobType" | "journalEntry" | "kitItem" | "location" | "manufacturingCostTemplate" | "manufacturingOperationTask" | "manufacturingRouting" | "markupItem" | "message" | "nexus" | "nonInventoryPurchaseItem" | "nonInventoryResaleItem" | "nonInventorySaleItem" | "noteType" | "opportunity" | "otherChargePurchaseItem" | "otherChargeResaleItem" | "otherChargeSaleItem" | "otherName" | "otherNameCategory" | "partner" | "paycheck" | "paymentItem" | "paymentMethod" | "phoneCall" | "priceBook" | "priceLevel" | "pricePlan" | "pricingGroup" | "projectTask" | "promotionCode" | "purchaseContract" | "purchaseOrder" | "purchaseRequisition" | "resourceGroup" | "returnAuthorization" | "revRecSchedule" | "revRecTemplate" | "salesOrder" | "salesRole" | "salesTaxItem" | "servicePurchaseItem" | "serviceResaleItem" | "serviceSaleItem" | "shipItem" | "statisticalJournalEntry" | "subscription" | "subscriptionChangeOrder" | "subscriptionLine" | "subscriptionPlan" | "subscriptionTerm" | "subsidiary" | "subtotalItem" | "supportCase" | "task" | "taxType" | "term" | "timeBill" | "timeSheet" | "topic" | "transferOrder" | "unitsType" | "usage" | "vendor" | "vendorBill" | "vendorCategory" | "vendorCredit" | "vendorPayment" | "vendorPrepayment" | "vendorPrepaymentApplication" | "vendorReturnAuthorization" | "vendorSubsidiaryRelationship" | "webSite" | "workOrder" | "workOrderClose" | "workOrderCompletion" | "workOrderIssue";
+        clean: (value: unknown) => string;
         comments: string;
       };
       query: {
@@ -245,7 +265,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         example: string;
         placeholder: string;
         comments: string;
-        clean: (value: unknown, defaultValue?: string) => string;
+        clean: (value: unknown) => string | undefined;
       };
       pagination: {
         label: string;
@@ -294,7 +314,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
           label: string;
           value: "account" | "accountingPeriod" | "advIntercompanyJournalEntry" | "assemblyBuild" | "assemblyItem" | "assemblyUnbuild" | "billingAccount" | "billingRevenueEvent" | "billingSchedule" | "bin" | "binTransfer" | "blanketPurchaseOrder" | "bom" | "bomRevision" | "calendarEvent" | "campaign" | "campaignResponse" | "cashRefund" | "cashSale" | "charge" | "check" | "classification" | "commerceCategory" | "competitor" | "consolidatedExchangeRate" | "contact" | "contactCategory" | "contactRole" | "costCategory" | "couponCode" | "creditCardCharge" | "creditCardRefund" | "creditMemo" | "currency" | "currencyRate" | "customer" | "customerCategory" | "customerDeposit" | "customerMessage" | "customerPayment" | "customerRefund" | "customerStatus" | "customerSubsidiaryRelationship" | "department" | "deposit" | "depositApplication" | "descriptionItem" | "discountItem" | "downloadItem" | "emailTemplate" | "employee" | "estimate" | "expenseCategory" | "expenseReport" | "fairValuePrice" | "fulfillmentRequest" | "giftCertificateItem" | "inboundShipment" | "intercompanyJournalEntry" | "intercompanyTransferOrder" | "inventoryAdjustment" | "inventoryCostRevaluation" | "inventoryCount" | "inventoryItem" | "inventoryNumber" | "inventoryTransfer" | "invoice" | "issue" | "itemFulfillment" | "itemGroup" | "itemReceipt" | "itemRevision" | "job" | "jobStatus" | "jobType" | "journalEntry" | "kitItem" | "location" | "manufacturingCostTemplate" | "manufacturingOperationTask" | "manufacturingRouting" | "markupItem" | "message" | "nexus" | "nonInventoryPurchaseItem" | "nonInventoryResaleItem" | "nonInventorySaleItem" | "noteType" | "opportunity" | "otherChargePurchaseItem" | "otherChargeResaleItem" | "otherChargeSaleItem" | "otherName" | "otherNameCategory" | "partner" | "paycheck" | "paymentItem" | "paymentMethod" | "phoneCall" | "priceBook" | "priceLevel" | "pricePlan" | "pricingGroup" | "projectTask" | "promotionCode" | "purchaseContract" | "purchaseOrder" | "purchaseRequisition" | "resourceGroup" | "returnAuthorization" | "revRecSchedule" | "revRecTemplate" | "salesOrder" | "salesRole" | "salesTaxItem" | "servicePurchaseItem" | "serviceResaleItem" | "serviceSaleItem" | "shipItem" | "statisticalJournalEntry" | "subscription" | "subscriptionChangeOrder" | "subscriptionLine" | "subscriptionPlan" | "subscriptionTerm" | "subsidiary" | "subtotalItem" | "supportCase" | "task" | "taxType" | "term" | "timeBill" | "timeSheet" | "topic" | "transferOrder" | "unitsType" | "usage" | "vendor" | "vendorBill" | "vendorCategory" | "vendorCredit" | "vendorPayment" | "vendorPrepayment" | "vendorPrepaymentApplication" | "vendorReturnAuthorization" | "vendorSubsidiaryRelationship" | "webSite" | "workOrder" | "workOrderClose" | "workOrderCompletion" | "workOrderIssue";
         }[];
-        clean: (rawValue: unknown) => "account" | "accountingPeriod" | "advIntercompanyJournalEntry" | "assemblyBuild" | "assemblyItem" | "assemblyUnbuild" | "billingAccount" | "billingRevenueEvent" | "billingSchedule" | "bin" | "binTransfer" | "blanketPurchaseOrder" | "bom" | "bomRevision" | "calendarEvent" | "campaign" | "campaignResponse" | "cashRefund" | "cashSale" | "charge" | "check" | "classification" | "commerceCategory" | "competitor" | "consolidatedExchangeRate" | "contact" | "contactCategory" | "contactRole" | "costCategory" | "couponCode" | "creditCardCharge" | "creditCardRefund" | "creditMemo" | "currency" | "currencyRate" | "customer" | "customerCategory" | "customerDeposit" | "customerMessage" | "customerPayment" | "customerRefund" | "customerStatus" | "customerSubsidiaryRelationship" | "department" | "deposit" | "depositApplication" | "descriptionItem" | "discountItem" | "downloadItem" | "emailTemplate" | "employee" | "estimate" | "expenseCategory" | "expenseReport" | "fairValuePrice" | "fulfillmentRequest" | "giftCertificateItem" | "inboundShipment" | "intercompanyJournalEntry" | "intercompanyTransferOrder" | "inventoryAdjustment" | "inventoryCostRevaluation" | "inventoryCount" | "inventoryItem" | "inventoryNumber" | "inventoryTransfer" | "invoice" | "issue" | "itemFulfillment" | "itemGroup" | "itemReceipt" | "itemRevision" | "job" | "jobStatus" | "jobType" | "journalEntry" | "kitItem" | "location" | "manufacturingCostTemplate" | "manufacturingOperationTask" | "manufacturingRouting" | "markupItem" | "message" | "nexus" | "nonInventoryPurchaseItem" | "nonInventoryResaleItem" | "nonInventorySaleItem" | "noteType" | "opportunity" | "otherChargePurchaseItem" | "otherChargeResaleItem" | "otherChargeSaleItem" | "otherName" | "otherNameCategory" | "partner" | "paycheck" | "paymentItem" | "paymentMethod" | "phoneCall" | "priceBook" | "priceLevel" | "pricePlan" | "pricingGroup" | "projectTask" | "promotionCode" | "purchaseContract" | "purchaseOrder" | "purchaseRequisition" | "resourceGroup" | "returnAuthorization" | "revRecSchedule" | "revRecTemplate" | "salesOrder" | "salesRole" | "salesTaxItem" | "servicePurchaseItem" | "serviceResaleItem" | "serviceSaleItem" | "shipItem" | "statisticalJournalEntry" | "subscription" | "subscriptionChangeOrder" | "subscriptionLine" | "subscriptionPlan" | "subscriptionTerm" | "subsidiary" | "subtotalItem" | "supportCase" | "task" | "taxType" | "term" | "timeBill" | "timeSheet" | "topic" | "transferOrder" | "unitsType" | "usage" | "vendor" | "vendorBill" | "vendorCategory" | "vendorCredit" | "vendorPayment" | "vendorPrepayment" | "vendorPrepaymentApplication" | "vendorReturnAuthorization" | "vendorSubsidiaryRelationship" | "webSite" | "workOrder" | "workOrderClose" | "workOrderCompletion" | "workOrderIssue";
+        clean: (value: unknown) => string;
         comments: string;
       };
       id: {
@@ -304,7 +324,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         comments: string;
         example: string;
         placeholder: string;
-        clean: (value: unknown, defaultValue?: number) => number;
+        clean: (value: unknown) => string;
       };
       expandSubResources: {
         label: string;
@@ -330,7 +350,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         comments: string;
         example: string;
         placeholder: string;
-        clean: (rawValue: unknown) => unknown;
+        clean: (value: unknown) => unknown;
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
       data: {
@@ -354,7 +374,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
           label: string;
           value: "account" | "accountingPeriod" | "advIntercompanyJournalEntry" | "assemblyBuild" | "assemblyItem" | "assemblyUnbuild" | "billingAccount" | "billingRevenueEvent" | "billingSchedule" | "bin" | "binTransfer" | "blanketPurchaseOrder" | "bom" | "bomRevision" | "calendarEvent" | "campaign" | "campaignResponse" | "cashRefund" | "cashSale" | "charge" | "check" | "classification" | "commerceCategory" | "competitor" | "consolidatedExchangeRate" | "contact" | "contactCategory" | "contactRole" | "costCategory" | "couponCode" | "creditCardCharge" | "creditCardRefund" | "creditMemo" | "currency" | "currencyRate" | "customer" | "customerCategory" | "customerDeposit" | "customerMessage" | "customerPayment" | "customerRefund" | "customerStatus" | "customerSubsidiaryRelationship" | "department" | "deposit" | "depositApplication" | "descriptionItem" | "discountItem" | "downloadItem" | "emailTemplate" | "employee" | "estimate" | "expenseCategory" | "expenseReport" | "fairValuePrice" | "fulfillmentRequest" | "giftCertificateItem" | "inboundShipment" | "intercompanyJournalEntry" | "intercompanyTransferOrder" | "inventoryAdjustment" | "inventoryCostRevaluation" | "inventoryCount" | "inventoryItem" | "inventoryNumber" | "inventoryTransfer" | "invoice" | "issue" | "itemFulfillment" | "itemGroup" | "itemReceipt" | "itemRevision" | "job" | "jobStatus" | "jobType" | "journalEntry" | "kitItem" | "location" | "manufacturingCostTemplate" | "manufacturingOperationTask" | "manufacturingRouting" | "markupItem" | "message" | "nexus" | "nonInventoryPurchaseItem" | "nonInventoryResaleItem" | "nonInventorySaleItem" | "noteType" | "opportunity" | "otherChargePurchaseItem" | "otherChargeResaleItem" | "otherChargeSaleItem" | "otherName" | "otherNameCategory" | "partner" | "paycheck" | "paymentItem" | "paymentMethod" | "phoneCall" | "priceBook" | "priceLevel" | "pricePlan" | "pricingGroup" | "projectTask" | "promotionCode" | "purchaseContract" | "purchaseOrder" | "purchaseRequisition" | "resourceGroup" | "returnAuthorization" | "revRecSchedule" | "revRecTemplate" | "salesOrder" | "salesRole" | "salesTaxItem" | "servicePurchaseItem" | "serviceResaleItem" | "serviceSaleItem" | "shipItem" | "statisticalJournalEntry" | "subscription" | "subscriptionChangeOrder" | "subscriptionLine" | "subscriptionPlan" | "subscriptionTerm" | "subsidiary" | "subtotalItem" | "supportCase" | "task" | "taxType" | "term" | "timeBill" | "timeSheet" | "topic" | "transferOrder" | "unitsType" | "usage" | "vendor" | "vendorBill" | "vendorCategory" | "vendorCredit" | "vendorPayment" | "vendorPrepayment" | "vendorPrepaymentApplication" | "vendorReturnAuthorization" | "vendorSubsidiaryRelationship" | "webSite" | "workOrder" | "workOrderClose" | "workOrderCompletion" | "workOrderIssue";
         }[];
-        clean: (rawValue: unknown) => "account" | "accountingPeriod" | "advIntercompanyJournalEntry" | "assemblyBuild" | "assemblyItem" | "assemblyUnbuild" | "billingAccount" | "billingRevenueEvent" | "billingSchedule" | "bin" | "binTransfer" | "blanketPurchaseOrder" | "bom" | "bomRevision" | "calendarEvent" | "campaign" | "campaignResponse" | "cashRefund" | "cashSale" | "charge" | "check" | "classification" | "commerceCategory" | "competitor" | "consolidatedExchangeRate" | "contact" | "contactCategory" | "contactRole" | "costCategory" | "couponCode" | "creditCardCharge" | "creditCardRefund" | "creditMemo" | "currency" | "currencyRate" | "customer" | "customerCategory" | "customerDeposit" | "customerMessage" | "customerPayment" | "customerRefund" | "customerStatus" | "customerSubsidiaryRelationship" | "department" | "deposit" | "depositApplication" | "descriptionItem" | "discountItem" | "downloadItem" | "emailTemplate" | "employee" | "estimate" | "expenseCategory" | "expenseReport" | "fairValuePrice" | "fulfillmentRequest" | "giftCertificateItem" | "inboundShipment" | "intercompanyJournalEntry" | "intercompanyTransferOrder" | "inventoryAdjustment" | "inventoryCostRevaluation" | "inventoryCount" | "inventoryItem" | "inventoryNumber" | "inventoryTransfer" | "invoice" | "issue" | "itemFulfillment" | "itemGroup" | "itemReceipt" | "itemRevision" | "job" | "jobStatus" | "jobType" | "journalEntry" | "kitItem" | "location" | "manufacturingCostTemplate" | "manufacturingOperationTask" | "manufacturingRouting" | "markupItem" | "message" | "nexus" | "nonInventoryPurchaseItem" | "nonInventoryResaleItem" | "nonInventorySaleItem" | "noteType" | "opportunity" | "otherChargePurchaseItem" | "otherChargeResaleItem" | "otherChargeSaleItem" | "otherName" | "otherNameCategory" | "partner" | "paycheck" | "paymentItem" | "paymentMethod" | "phoneCall" | "priceBook" | "priceLevel" | "pricePlan" | "pricingGroup" | "projectTask" | "promotionCode" | "purchaseContract" | "purchaseOrder" | "purchaseRequisition" | "resourceGroup" | "returnAuthorization" | "revRecSchedule" | "revRecTemplate" | "salesOrder" | "salesRole" | "salesTaxItem" | "servicePurchaseItem" | "serviceResaleItem" | "serviceSaleItem" | "shipItem" | "statisticalJournalEntry" | "subscription" | "subscriptionChangeOrder" | "subscriptionLine" | "subscriptionPlan" | "subscriptionTerm" | "subsidiary" | "subtotalItem" | "supportCase" | "task" | "taxType" | "term" | "timeBill" | "timeSheet" | "topic" | "transferOrder" | "unitsType" | "usage" | "vendor" | "vendorBill" | "vendorCategory" | "vendorCredit" | "vendorPayment" | "vendorPrepayment" | "vendorPrepaymentApplication" | "vendorReturnAuthorization" | "vendorSubsidiaryRelationship" | "webSite" | "workOrder" | "workOrderClose" | "workOrderCompletion" | "workOrderIssue";
+        clean: (value: unknown) => string;
         comments: string;
       };
       payload: {
@@ -386,7 +406,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
           label: string;
           value: "account" | "accountingPeriod" | "advIntercompanyJournalEntry" | "assemblyBuild" | "assemblyItem" | "assemblyUnbuild" | "billingAccount" | "billingRevenueEvent" | "billingSchedule" | "bin" | "binTransfer" | "blanketPurchaseOrder" | "bom" | "bomRevision" | "calendarEvent" | "campaign" | "campaignResponse" | "cashRefund" | "cashSale" | "charge" | "check" | "classification" | "commerceCategory" | "competitor" | "consolidatedExchangeRate" | "contact" | "contactCategory" | "contactRole" | "costCategory" | "couponCode" | "creditCardCharge" | "creditCardRefund" | "creditMemo" | "currency" | "currencyRate" | "customer" | "customerCategory" | "customerDeposit" | "customerMessage" | "customerPayment" | "customerRefund" | "customerStatus" | "customerSubsidiaryRelationship" | "department" | "deposit" | "depositApplication" | "descriptionItem" | "discountItem" | "downloadItem" | "emailTemplate" | "employee" | "estimate" | "expenseCategory" | "expenseReport" | "fairValuePrice" | "fulfillmentRequest" | "giftCertificateItem" | "inboundShipment" | "intercompanyJournalEntry" | "intercompanyTransferOrder" | "inventoryAdjustment" | "inventoryCostRevaluation" | "inventoryCount" | "inventoryItem" | "inventoryNumber" | "inventoryTransfer" | "invoice" | "issue" | "itemFulfillment" | "itemGroup" | "itemReceipt" | "itemRevision" | "job" | "jobStatus" | "jobType" | "journalEntry" | "kitItem" | "location" | "manufacturingCostTemplate" | "manufacturingOperationTask" | "manufacturingRouting" | "markupItem" | "message" | "nexus" | "nonInventoryPurchaseItem" | "nonInventoryResaleItem" | "nonInventorySaleItem" | "noteType" | "opportunity" | "otherChargePurchaseItem" | "otherChargeResaleItem" | "otherChargeSaleItem" | "otherName" | "otherNameCategory" | "partner" | "paycheck" | "paymentItem" | "paymentMethod" | "phoneCall" | "priceBook" | "priceLevel" | "pricePlan" | "pricingGroup" | "projectTask" | "promotionCode" | "purchaseContract" | "purchaseOrder" | "purchaseRequisition" | "resourceGroup" | "returnAuthorization" | "revRecSchedule" | "revRecTemplate" | "salesOrder" | "salesRole" | "salesTaxItem" | "servicePurchaseItem" | "serviceResaleItem" | "serviceSaleItem" | "shipItem" | "statisticalJournalEntry" | "subscription" | "subscriptionChangeOrder" | "subscriptionLine" | "subscriptionPlan" | "subscriptionTerm" | "subsidiary" | "subtotalItem" | "supportCase" | "task" | "taxType" | "term" | "timeBill" | "timeSheet" | "topic" | "transferOrder" | "unitsType" | "usage" | "vendor" | "vendorBill" | "vendorCategory" | "vendorCredit" | "vendorPayment" | "vendorPrepayment" | "vendorPrepaymentApplication" | "vendorReturnAuthorization" | "vendorSubsidiaryRelationship" | "webSite" | "workOrder" | "workOrderClose" | "workOrderCompletion" | "workOrderIssue";
         }[];
-        clean: (rawValue: unknown) => "account" | "accountingPeriod" | "advIntercompanyJournalEntry" | "assemblyBuild" | "assemblyItem" | "assemblyUnbuild" | "billingAccount" | "billingRevenueEvent" | "billingSchedule" | "bin" | "binTransfer" | "blanketPurchaseOrder" | "bom" | "bomRevision" | "calendarEvent" | "campaign" | "campaignResponse" | "cashRefund" | "cashSale" | "charge" | "check" | "classification" | "commerceCategory" | "competitor" | "consolidatedExchangeRate" | "contact" | "contactCategory" | "contactRole" | "costCategory" | "couponCode" | "creditCardCharge" | "creditCardRefund" | "creditMemo" | "currency" | "currencyRate" | "customer" | "customerCategory" | "customerDeposit" | "customerMessage" | "customerPayment" | "customerRefund" | "customerStatus" | "customerSubsidiaryRelationship" | "department" | "deposit" | "depositApplication" | "descriptionItem" | "discountItem" | "downloadItem" | "emailTemplate" | "employee" | "estimate" | "expenseCategory" | "expenseReport" | "fairValuePrice" | "fulfillmentRequest" | "giftCertificateItem" | "inboundShipment" | "intercompanyJournalEntry" | "intercompanyTransferOrder" | "inventoryAdjustment" | "inventoryCostRevaluation" | "inventoryCount" | "inventoryItem" | "inventoryNumber" | "inventoryTransfer" | "invoice" | "issue" | "itemFulfillment" | "itemGroup" | "itemReceipt" | "itemRevision" | "job" | "jobStatus" | "jobType" | "journalEntry" | "kitItem" | "location" | "manufacturingCostTemplate" | "manufacturingOperationTask" | "manufacturingRouting" | "markupItem" | "message" | "nexus" | "nonInventoryPurchaseItem" | "nonInventoryResaleItem" | "nonInventorySaleItem" | "noteType" | "opportunity" | "otherChargePurchaseItem" | "otherChargeResaleItem" | "otherChargeSaleItem" | "otherName" | "otherNameCategory" | "partner" | "paycheck" | "paymentItem" | "paymentMethod" | "phoneCall" | "priceBook" | "priceLevel" | "pricePlan" | "pricingGroup" | "projectTask" | "promotionCode" | "purchaseContract" | "purchaseOrder" | "purchaseRequisition" | "resourceGroup" | "returnAuthorization" | "revRecSchedule" | "revRecTemplate" | "salesOrder" | "salesRole" | "salesTaxItem" | "servicePurchaseItem" | "serviceResaleItem" | "serviceSaleItem" | "shipItem" | "statisticalJournalEntry" | "subscription" | "subscriptionChangeOrder" | "subscriptionLine" | "subscriptionPlan" | "subscriptionTerm" | "subsidiary" | "subtotalItem" | "supportCase" | "task" | "taxType" | "term" | "timeBill" | "timeSheet" | "topic" | "transferOrder" | "unitsType" | "usage" | "vendor" | "vendorBill" | "vendorCategory" | "vendorCredit" | "vendorPayment" | "vendorPrepayment" | "vendorPrepaymentApplication" | "vendorReturnAuthorization" | "vendorSubsidiaryRelationship" | "webSite" | "workOrder" | "workOrderClose" | "workOrderCompletion" | "workOrderIssue";
+        clean: (value: unknown) => string;
         comments: string;
       };
       id: {
@@ -396,7 +416,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         comments: string;
         example: string;
         placeholder: string;
-        clean: (value: unknown, defaultValue?: number) => number;
+        clean: (value: unknown) => string;
       };
       payload: {
         label: string;
@@ -416,7 +436,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         comments: string;
         example: string;
         placeholder: string;
-        clean: (rawValue: unknown) => unknown;
+        clean: (value: unknown) => unknown;
       };
       replaceSelectedFields: {
         label: string;
@@ -445,7 +465,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
           label: string;
           value: "account" | "accountingPeriod" | "advIntercompanyJournalEntry" | "assemblyBuild" | "assemblyItem" | "assemblyUnbuild" | "billingAccount" | "billingRevenueEvent" | "billingSchedule" | "bin" | "binTransfer" | "blanketPurchaseOrder" | "bom" | "bomRevision" | "calendarEvent" | "campaign" | "campaignResponse" | "cashRefund" | "cashSale" | "charge" | "check" | "classification" | "commerceCategory" | "competitor" | "consolidatedExchangeRate" | "contact" | "contactCategory" | "contactRole" | "costCategory" | "couponCode" | "creditCardCharge" | "creditCardRefund" | "creditMemo" | "currency" | "currencyRate" | "customer" | "customerCategory" | "customerDeposit" | "customerMessage" | "customerPayment" | "customerRefund" | "customerStatus" | "customerSubsidiaryRelationship" | "department" | "deposit" | "depositApplication" | "descriptionItem" | "discountItem" | "downloadItem" | "emailTemplate" | "employee" | "estimate" | "expenseCategory" | "expenseReport" | "fairValuePrice" | "fulfillmentRequest" | "giftCertificateItem" | "inboundShipment" | "intercompanyJournalEntry" | "intercompanyTransferOrder" | "inventoryAdjustment" | "inventoryCostRevaluation" | "inventoryCount" | "inventoryItem" | "inventoryNumber" | "inventoryTransfer" | "invoice" | "issue" | "itemFulfillment" | "itemGroup" | "itemReceipt" | "itemRevision" | "job" | "jobStatus" | "jobType" | "journalEntry" | "kitItem" | "location" | "manufacturingCostTemplate" | "manufacturingOperationTask" | "manufacturingRouting" | "markupItem" | "message" | "nexus" | "nonInventoryPurchaseItem" | "nonInventoryResaleItem" | "nonInventorySaleItem" | "noteType" | "opportunity" | "otherChargePurchaseItem" | "otherChargeResaleItem" | "otherChargeSaleItem" | "otherName" | "otherNameCategory" | "partner" | "paycheck" | "paymentItem" | "paymentMethod" | "phoneCall" | "priceBook" | "priceLevel" | "pricePlan" | "pricingGroup" | "projectTask" | "promotionCode" | "purchaseContract" | "purchaseOrder" | "purchaseRequisition" | "resourceGroup" | "returnAuthorization" | "revRecSchedule" | "revRecTemplate" | "salesOrder" | "salesRole" | "salesTaxItem" | "servicePurchaseItem" | "serviceResaleItem" | "serviceSaleItem" | "shipItem" | "statisticalJournalEntry" | "subscription" | "subscriptionChangeOrder" | "subscriptionLine" | "subscriptionPlan" | "subscriptionTerm" | "subsidiary" | "subtotalItem" | "supportCase" | "task" | "taxType" | "term" | "timeBill" | "timeSheet" | "topic" | "transferOrder" | "unitsType" | "usage" | "vendor" | "vendorBill" | "vendorCategory" | "vendorCredit" | "vendorPayment" | "vendorPrepayment" | "vendorPrepaymentApplication" | "vendorReturnAuthorization" | "vendorSubsidiaryRelationship" | "webSite" | "workOrder" | "workOrderClose" | "workOrderCompletion" | "workOrderIssue";
         }[];
-        clean: (rawValue: unknown) => "account" | "accountingPeriod" | "advIntercompanyJournalEntry" | "assemblyBuild" | "assemblyItem" | "assemblyUnbuild" | "billingAccount" | "billingRevenueEvent" | "billingSchedule" | "bin" | "binTransfer" | "blanketPurchaseOrder" | "bom" | "bomRevision" | "calendarEvent" | "campaign" | "campaignResponse" | "cashRefund" | "cashSale" | "charge" | "check" | "classification" | "commerceCategory" | "competitor" | "consolidatedExchangeRate" | "contact" | "contactCategory" | "contactRole" | "costCategory" | "couponCode" | "creditCardCharge" | "creditCardRefund" | "creditMemo" | "currency" | "currencyRate" | "customer" | "customerCategory" | "customerDeposit" | "customerMessage" | "customerPayment" | "customerRefund" | "customerStatus" | "customerSubsidiaryRelationship" | "department" | "deposit" | "depositApplication" | "descriptionItem" | "discountItem" | "downloadItem" | "emailTemplate" | "employee" | "estimate" | "expenseCategory" | "expenseReport" | "fairValuePrice" | "fulfillmentRequest" | "giftCertificateItem" | "inboundShipment" | "intercompanyJournalEntry" | "intercompanyTransferOrder" | "inventoryAdjustment" | "inventoryCostRevaluation" | "inventoryCount" | "inventoryItem" | "inventoryNumber" | "inventoryTransfer" | "invoice" | "issue" | "itemFulfillment" | "itemGroup" | "itemReceipt" | "itemRevision" | "job" | "jobStatus" | "jobType" | "journalEntry" | "kitItem" | "location" | "manufacturingCostTemplate" | "manufacturingOperationTask" | "manufacturingRouting" | "markupItem" | "message" | "nexus" | "nonInventoryPurchaseItem" | "nonInventoryResaleItem" | "nonInventorySaleItem" | "noteType" | "opportunity" | "otherChargePurchaseItem" | "otherChargeResaleItem" | "otherChargeSaleItem" | "otherName" | "otherNameCategory" | "partner" | "paycheck" | "paymentItem" | "paymentMethod" | "phoneCall" | "priceBook" | "priceLevel" | "pricePlan" | "pricingGroup" | "projectTask" | "promotionCode" | "purchaseContract" | "purchaseOrder" | "purchaseRequisition" | "resourceGroup" | "returnAuthorization" | "revRecSchedule" | "revRecTemplate" | "salesOrder" | "salesRole" | "salesTaxItem" | "servicePurchaseItem" | "serviceResaleItem" | "serviceSaleItem" | "shipItem" | "statisticalJournalEntry" | "subscription" | "subscriptionChangeOrder" | "subscriptionLine" | "subscriptionPlan" | "subscriptionTerm" | "subsidiary" | "subtotalItem" | "supportCase" | "task" | "taxType" | "term" | "timeBill" | "timeSheet" | "topic" | "transferOrder" | "unitsType" | "usage" | "vendor" | "vendorBill" | "vendorCategory" | "vendorCredit" | "vendorPayment" | "vendorPrepayment" | "vendorPrepaymentApplication" | "vendorReturnAuthorization" | "vendorSubsidiaryRelationship" | "webSite" | "workOrder" | "workOrderClose" | "workOrderCompletion" | "workOrderIssue";
+        clean: (value: unknown) => string;
         comments: string;
       };
       id: {
@@ -455,7 +475,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         comments: string;
         example: string;
         placeholder: string;
-        clean: (value: unknown, defaultValue?: number) => number;
+        clean: (value: unknown) => string;
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
       data: unknown;
@@ -478,7 +498,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
           label: string;
           value: "account" | "accountingPeriod" | "advIntercompanyJournalEntry" | "assemblyBuild" | "assemblyItem" | "assemblyUnbuild" | "billingAccount" | "billingRevenueEvent" | "billingSchedule" | "bin" | "binTransfer" | "blanketPurchaseOrder" | "bom" | "bomRevision" | "calendarEvent" | "campaign" | "campaignResponse" | "cashRefund" | "cashSale" | "charge" | "check" | "classification" | "commerceCategory" | "competitor" | "consolidatedExchangeRate" | "contact" | "contactCategory" | "contactRole" | "costCategory" | "couponCode" | "creditCardCharge" | "creditCardRefund" | "creditMemo" | "currency" | "currencyRate" | "customer" | "customerCategory" | "customerDeposit" | "customerMessage" | "customerPayment" | "customerRefund" | "customerStatus" | "customerSubsidiaryRelationship" | "department" | "deposit" | "depositApplication" | "descriptionItem" | "discountItem" | "downloadItem" | "emailTemplate" | "employee" | "estimate" | "expenseCategory" | "expenseReport" | "fairValuePrice" | "fulfillmentRequest" | "giftCertificateItem" | "inboundShipment" | "intercompanyJournalEntry" | "intercompanyTransferOrder" | "inventoryAdjustment" | "inventoryCostRevaluation" | "inventoryCount" | "inventoryItem" | "inventoryNumber" | "inventoryTransfer" | "invoice" | "issue" | "itemFulfillment" | "itemGroup" | "itemReceipt" | "itemRevision" | "job" | "jobStatus" | "jobType" | "journalEntry" | "kitItem" | "location" | "manufacturingCostTemplate" | "manufacturingOperationTask" | "manufacturingRouting" | "markupItem" | "message" | "nexus" | "nonInventoryPurchaseItem" | "nonInventoryResaleItem" | "nonInventorySaleItem" | "noteType" | "opportunity" | "otherChargePurchaseItem" | "otherChargeResaleItem" | "otherChargeSaleItem" | "otherName" | "otherNameCategory" | "partner" | "paycheck" | "paymentItem" | "paymentMethod" | "phoneCall" | "priceBook" | "priceLevel" | "pricePlan" | "pricingGroup" | "projectTask" | "promotionCode" | "purchaseContract" | "purchaseOrder" | "purchaseRequisition" | "resourceGroup" | "returnAuthorization" | "revRecSchedule" | "revRecTemplate" | "salesOrder" | "salesRole" | "salesTaxItem" | "servicePurchaseItem" | "serviceResaleItem" | "serviceSaleItem" | "shipItem" | "statisticalJournalEntry" | "subscription" | "subscriptionChangeOrder" | "subscriptionLine" | "subscriptionPlan" | "subscriptionTerm" | "subsidiary" | "subtotalItem" | "supportCase" | "task" | "taxType" | "term" | "timeBill" | "timeSheet" | "topic" | "transferOrder" | "unitsType" | "usage" | "vendor" | "vendorBill" | "vendorCategory" | "vendorCredit" | "vendorPayment" | "vendorPrepayment" | "vendorPrepaymentApplication" | "vendorReturnAuthorization" | "vendorSubsidiaryRelationship" | "webSite" | "workOrder" | "workOrderClose" | "workOrderCompletion" | "workOrderIssue";
         }[];
-        clean: (rawValue: unknown) => "account" | "accountingPeriod" | "advIntercompanyJournalEntry" | "assemblyBuild" | "assemblyItem" | "assemblyUnbuild" | "billingAccount" | "billingRevenueEvent" | "billingSchedule" | "bin" | "binTransfer" | "blanketPurchaseOrder" | "bom" | "bomRevision" | "calendarEvent" | "campaign" | "campaignResponse" | "cashRefund" | "cashSale" | "charge" | "check" | "classification" | "commerceCategory" | "competitor" | "consolidatedExchangeRate" | "contact" | "contactCategory" | "contactRole" | "costCategory" | "couponCode" | "creditCardCharge" | "creditCardRefund" | "creditMemo" | "currency" | "currencyRate" | "customer" | "customerCategory" | "customerDeposit" | "customerMessage" | "customerPayment" | "customerRefund" | "customerStatus" | "customerSubsidiaryRelationship" | "department" | "deposit" | "depositApplication" | "descriptionItem" | "discountItem" | "downloadItem" | "emailTemplate" | "employee" | "estimate" | "expenseCategory" | "expenseReport" | "fairValuePrice" | "fulfillmentRequest" | "giftCertificateItem" | "inboundShipment" | "intercompanyJournalEntry" | "intercompanyTransferOrder" | "inventoryAdjustment" | "inventoryCostRevaluation" | "inventoryCount" | "inventoryItem" | "inventoryNumber" | "inventoryTransfer" | "invoice" | "issue" | "itemFulfillment" | "itemGroup" | "itemReceipt" | "itemRevision" | "job" | "jobStatus" | "jobType" | "journalEntry" | "kitItem" | "location" | "manufacturingCostTemplate" | "manufacturingOperationTask" | "manufacturingRouting" | "markupItem" | "message" | "nexus" | "nonInventoryPurchaseItem" | "nonInventoryResaleItem" | "nonInventorySaleItem" | "noteType" | "opportunity" | "otherChargePurchaseItem" | "otherChargeResaleItem" | "otherChargeSaleItem" | "otherName" | "otherNameCategory" | "partner" | "paycheck" | "paymentItem" | "paymentMethod" | "phoneCall" | "priceBook" | "priceLevel" | "pricePlan" | "pricingGroup" | "projectTask" | "promotionCode" | "purchaseContract" | "purchaseOrder" | "purchaseRequisition" | "resourceGroup" | "returnAuthorization" | "revRecSchedule" | "revRecTemplate" | "salesOrder" | "salesRole" | "salesTaxItem" | "servicePurchaseItem" | "serviceResaleItem" | "serviceSaleItem" | "shipItem" | "statisticalJournalEntry" | "subscription" | "subscriptionChangeOrder" | "subscriptionLine" | "subscriptionPlan" | "subscriptionTerm" | "subsidiary" | "subtotalItem" | "supportCase" | "task" | "taxType" | "term" | "timeBill" | "timeSheet" | "topic" | "transferOrder" | "unitsType" | "usage" | "vendor" | "vendorBill" | "vendorCategory" | "vendorCredit" | "vendorPayment" | "vendorPrepayment" | "vendorPrepaymentApplication" | "vendorReturnAuthorization" | "vendorSubsidiaryRelationship" | "webSite" | "workOrder" | "workOrderClose" | "workOrderCompletion" | "workOrderIssue";
+        clean: (value: unknown) => string;
         comments: string;
       };
       recordField: {
@@ -488,7 +508,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         example: string;
         placeholder: string;
         comments: string;
-        clean: (value: unknown, defaultValue?: string) => string;
+        clean: (value: unknown) => string | undefined;
       };
       query: {
         label: string;
@@ -497,7 +517,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         example: string;
         placeholder: string;
         comments: string;
-        clean: (value: unknown, defaultValue?: string) => string;
+        clean: (value: unknown) => string | undefined;
       };
       pagination: {
         label: string;
@@ -528,6 +548,14 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         type: "structuredObject";
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, "picklist">;
+    selectRecordType: import("@prismatic-io/spectral").DataSourceDefinition<{
+      connection: {
+        label: string;
+        type: "connection";
+        required: true;
+        comments: string;
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, "picklist">;
     selectSuiteQl: import("@prismatic-io/spectral").DataSourceDefinition<{
       connection: {
         label: string;
@@ -544,6 +572,16 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         placeholder: string;
         clean: (value: unknown, defaultValue?: string) => string;
         default: string;
+      };
+      parameters: {
+        label: string;
+        type: "code";
+        language: "json";
+        required: false;
+        comments: string;
+        example: string;
+        placeholder: string;
+        clean: (value: unknown) => unknown[];
       };
       key: {
         label: string;
@@ -700,6 +738,33 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
   }, "oauth">)[];
   triggers: {
     pollRecords: import("@prismatic-io/spectral").PollingTriggerDefinition<{
+      recordType: {
+        clean: (value: unknown) => string;
+        comments: string;
+        label: string;
+        type: "string";
+        required: true;
+        placeholder: string;
+        model: {
+          label: string;
+          value: "account" | "accountingPeriod" | "advIntercompanyJournalEntry" | "assemblyBuild" | "assemblyItem" | "assemblyUnbuild" | "billingAccount" | "billingRevenueEvent" | "billingSchedule" | "bin" | "binTransfer" | "blanketPurchaseOrder" | "bom" | "bomRevision" | "calendarEvent" | "campaign" | "campaignResponse" | "cashRefund" | "cashSale" | "charge" | "check" | "classification" | "commerceCategory" | "competitor" | "consolidatedExchangeRate" | "contact" | "contactCategory" | "contactRole" | "costCategory" | "couponCode" | "creditCardCharge" | "creditCardRefund" | "creditMemo" | "currency" | "currencyRate" | "customer" | "customerCategory" | "customerDeposit" | "customerMessage" | "customerPayment" | "customerRefund" | "customerStatus" | "customerSubsidiaryRelationship" | "department" | "deposit" | "depositApplication" | "descriptionItem" | "discountItem" | "downloadItem" | "emailTemplate" | "employee" | "estimate" | "expenseCategory" | "expenseReport" | "fairValuePrice" | "fulfillmentRequest" | "giftCertificateItem" | "inboundShipment" | "intercompanyJournalEntry" | "intercompanyTransferOrder" | "inventoryAdjustment" | "inventoryCostRevaluation" | "inventoryCount" | "inventoryItem" | "inventoryNumber" | "inventoryTransfer" | "invoice" | "issue" | "itemFulfillment" | "itemGroup" | "itemReceipt" | "itemRevision" | "job" | "jobStatus" | "jobType" | "journalEntry" | "kitItem" | "location" | "manufacturingCostTemplate" | "manufacturingOperationTask" | "manufacturingRouting" | "markupItem" | "message" | "nexus" | "nonInventoryPurchaseItem" | "nonInventoryResaleItem" | "nonInventorySaleItem" | "noteType" | "opportunity" | "otherChargePurchaseItem" | "otherChargeResaleItem" | "otherChargeSaleItem" | "otherName" | "otherNameCategory" | "partner" | "paycheck" | "paymentItem" | "paymentMethod" | "phoneCall" | "priceBook" | "priceLevel" | "pricePlan" | "pricingGroup" | "projectTask" | "promotionCode" | "purchaseContract" | "purchaseOrder" | "purchaseRequisition" | "resourceGroup" | "returnAuthorization" | "revRecSchedule" | "revRecTemplate" | "salesOrder" | "salesRole" | "salesTaxItem" | "servicePurchaseItem" | "serviceResaleItem" | "serviceSaleItem" | "shipItem" | "statisticalJournalEntry" | "subscription" | "subscriptionChangeOrder" | "subscriptionLine" | "subscriptionPlan" | "subscriptionTerm" | "subsidiary" | "subtotalItem" | "supportCase" | "task" | "taxType" | "term" | "timeBill" | "timeSheet" | "topic" | "transferOrder" | "unitsType" | "usage" | "vendor" | "vendorBill" | "vendorCategory" | "vendorCredit" | "vendorPayment" | "vendorPrepayment" | "vendorPrepaymentApplication" | "vendorReturnAuthorization" | "vendorSubsidiaryRelationship" | "webSite" | "workOrder" | "workOrderClose" | "workOrderCompletion" | "workOrderIssue";
+        }[];
+      };
+      lookBackDate: {
+        label: string;
+        placeholder: string;
+        type: "string";
+        required: false;
+        comments: string;
+        example: string;
+        clean: (value: unknown) => string;
+      };
+      connection: {
+        label: string;
+        type: "connection";
+        required: true;
+        comments: string;
+      };
       showNewRecords: {
         label: string;
         type: "boolean";
@@ -716,33 +781,6 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         comments: string;
         clean: (value: unknown, defaultValue?: boolean) => boolean;
       };
-      connection: {
-        label: string;
-        type: "connection";
-        required: true;
-        comments: string;
-      };
-      recordType: {
-        label: string;
-        type: "string";
-        required: true;
-        placeholder: string;
-        model: {
-          label: string;
-          value: "account" | "accountingPeriod" | "advIntercompanyJournalEntry" | "assemblyBuild" | "assemblyItem" | "assemblyUnbuild" | "billingAccount" | "billingRevenueEvent" | "billingSchedule" | "bin" | "binTransfer" | "blanketPurchaseOrder" | "bom" | "bomRevision" | "calendarEvent" | "campaign" | "campaignResponse" | "cashRefund" | "cashSale" | "charge" | "check" | "classification" | "commerceCategory" | "competitor" | "consolidatedExchangeRate" | "contact" | "contactCategory" | "contactRole" | "costCategory" | "couponCode" | "creditCardCharge" | "creditCardRefund" | "creditMemo" | "currency" | "currencyRate" | "customer" | "customerCategory" | "customerDeposit" | "customerMessage" | "customerPayment" | "customerRefund" | "customerStatus" | "customerSubsidiaryRelationship" | "department" | "deposit" | "depositApplication" | "descriptionItem" | "discountItem" | "downloadItem" | "emailTemplate" | "employee" | "estimate" | "expenseCategory" | "expenseReport" | "fairValuePrice" | "fulfillmentRequest" | "giftCertificateItem" | "inboundShipment" | "intercompanyJournalEntry" | "intercompanyTransferOrder" | "inventoryAdjustment" | "inventoryCostRevaluation" | "inventoryCount" | "inventoryItem" | "inventoryNumber" | "inventoryTransfer" | "invoice" | "issue" | "itemFulfillment" | "itemGroup" | "itemReceipt" | "itemRevision" | "job" | "jobStatus" | "jobType" | "journalEntry" | "kitItem" | "location" | "manufacturingCostTemplate" | "manufacturingOperationTask" | "manufacturingRouting" | "markupItem" | "message" | "nexus" | "nonInventoryPurchaseItem" | "nonInventoryResaleItem" | "nonInventorySaleItem" | "noteType" | "opportunity" | "otherChargePurchaseItem" | "otherChargeResaleItem" | "otherChargeSaleItem" | "otherName" | "otherNameCategory" | "partner" | "paycheck" | "paymentItem" | "paymentMethod" | "phoneCall" | "priceBook" | "priceLevel" | "pricePlan" | "pricingGroup" | "projectTask" | "promotionCode" | "purchaseContract" | "purchaseOrder" | "purchaseRequisition" | "resourceGroup" | "returnAuthorization" | "revRecSchedule" | "revRecTemplate" | "salesOrder" | "salesRole" | "salesTaxItem" | "servicePurchaseItem" | "serviceResaleItem" | "serviceSaleItem" | "shipItem" | "statisticalJournalEntry" | "subscription" | "subscriptionChangeOrder" | "subscriptionLine" | "subscriptionPlan" | "subscriptionTerm" | "subsidiary" | "subtotalItem" | "supportCase" | "task" | "taxType" | "term" | "timeBill" | "timeSheet" | "topic" | "transferOrder" | "unitsType" | "usage" | "vendor" | "vendorBill" | "vendorCategory" | "vendorCredit" | "vendorPayment" | "vendorPrepayment" | "vendorPrepaymentApplication" | "vendorReturnAuthorization" | "vendorSubsidiaryRelationship" | "webSite" | "workOrder" | "workOrderClose" | "workOrderCompletion" | "workOrderIssue";
-        }[];
-        clean: (rawValue: unknown) => "account" | "accountingPeriod" | "advIntercompanyJournalEntry" | "assemblyBuild" | "assemblyItem" | "assemblyUnbuild" | "billingAccount" | "billingRevenueEvent" | "billingSchedule" | "bin" | "binTransfer" | "blanketPurchaseOrder" | "bom" | "bomRevision" | "calendarEvent" | "campaign" | "campaignResponse" | "cashRefund" | "cashSale" | "charge" | "check" | "classification" | "commerceCategory" | "competitor" | "consolidatedExchangeRate" | "contact" | "contactCategory" | "contactRole" | "costCategory" | "couponCode" | "creditCardCharge" | "creditCardRefund" | "creditMemo" | "currency" | "currencyRate" | "customer" | "customerCategory" | "customerDeposit" | "customerMessage" | "customerPayment" | "customerRefund" | "customerStatus" | "customerSubsidiaryRelationship" | "department" | "deposit" | "depositApplication" | "descriptionItem" | "discountItem" | "downloadItem" | "emailTemplate" | "employee" | "estimate" | "expenseCategory" | "expenseReport" | "fairValuePrice" | "fulfillmentRequest" | "giftCertificateItem" | "inboundShipment" | "intercompanyJournalEntry" | "intercompanyTransferOrder" | "inventoryAdjustment" | "inventoryCostRevaluation" | "inventoryCount" | "inventoryItem" | "inventoryNumber" | "inventoryTransfer" | "invoice" | "issue" | "itemFulfillment" | "itemGroup" | "itemReceipt" | "itemRevision" | "job" | "jobStatus" | "jobType" | "journalEntry" | "kitItem" | "location" | "manufacturingCostTemplate" | "manufacturingOperationTask" | "manufacturingRouting" | "markupItem" | "message" | "nexus" | "nonInventoryPurchaseItem" | "nonInventoryResaleItem" | "nonInventorySaleItem" | "noteType" | "opportunity" | "otherChargePurchaseItem" | "otherChargeResaleItem" | "otherChargeSaleItem" | "otherName" | "otherNameCategory" | "partner" | "paycheck" | "paymentItem" | "paymentMethod" | "phoneCall" | "priceBook" | "priceLevel" | "pricePlan" | "pricingGroup" | "projectTask" | "promotionCode" | "purchaseContract" | "purchaseOrder" | "purchaseRequisition" | "resourceGroup" | "returnAuthorization" | "revRecSchedule" | "revRecTemplate" | "salesOrder" | "salesRole" | "salesTaxItem" | "servicePurchaseItem" | "serviceResaleItem" | "serviceSaleItem" | "shipItem" | "statisticalJournalEntry" | "subscription" | "subscriptionChangeOrder" | "subscriptionLine" | "subscriptionPlan" | "subscriptionTerm" | "subsidiary" | "subtotalItem" | "supportCase" | "task" | "taxType" | "term" | "timeBill" | "timeSheet" | "topic" | "transferOrder" | "unitsType" | "usage" | "vendor" | "vendorBill" | "vendorCategory" | "vendorCredit" | "vendorPayment" | "vendorPrepayment" | "vendorPrepaymentApplication" | "vendorReturnAuthorization" | "vendorSubsidiaryRelationship" | "webSite" | "workOrder" | "workOrderClose" | "workOrderCompletion" | "workOrderIssue";
-        comments: string;
-      };
-      lookBackDate: {
-        label: string;
-        placeholder: string;
-        type: "string";
-        required: false;
-        comments: string;
-        example: string;
-        clean: (value: unknown) => string;
-      };
       additionalFilter: {
         label: string;
         type: "string";
@@ -750,7 +788,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         comments: string;
         example: string;
         placeholder: string;
-        clean: (value: unknown, defaultValue?: string) => string;
+        clean: (value: unknown) => string | undefined;
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, import("@prismatic-io/spectral").TriggerPayload<Record<string, unknown>>, boolean, import("@prismatic-io/spectral").TriggerBaseResult<import("@prismatic-io/spectral").TriggerPayload<Record<string, unknown>>>, import("@prismatic-io/spectral").Inputs>;
   };

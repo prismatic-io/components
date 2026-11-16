@@ -1,18 +1,22 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { startCase } from "lodash";
 import { recordTypes } from "../constants";
-import type { RecordType } from "../types/RecordType";
-import { lookBackDateClean } from "../utils";
+import {
+  recordIdClean,
+  recordTypeClean,
+  toCommaSeparatedList,
+  toOptionalString,
+} from "../utils";
 import { connectionInput, limitInput, offsetInput } from "./common";
 
-const pagination = structuredObjectInput({
+export const pagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Page and page-size controls.",
   inputs: { limit: limitInput, offset: offsetInput },
 });
 
-const recordTypeInput = input({
+export const recordTypeInput = input({
   label: "Record Type",
   type: "string",
   required: true,
@@ -24,14 +28,9 @@ const recordTypeInput = input({
         : startCase(key),
     value: key,
   })),
-  clean: (rawValue) => {
-    const value = util.types.toString(rawValue) as RecordType;
-    if (!recordTypes.includes(value)) {
-      throw new Error(`Unexpected Record Type: ${value}`);
-    }
-    return value;
-  },
-  comments: "Record type to perform the action against.",
+  clean: recordTypeClean,
+  comments:
+    "Record type to perform the action against. Also accepts the script ID of a custom record or custom transaction type, such as customrecord_milestone.",
 });
 
 const recordIdInput = input({
@@ -42,7 +41,7 @@ const recordIdInput = input({
     "The internal ID of the record. For external IDs, use the format 'eid:YOUR_EXTERNAL_ID'. See [Getting a Record Instance](https://docs.oracle.com/en/cloud/saas/netsuite/ns-online-help/section_1545141500.html) for details.",
   example: "107",
   placeholder: "Enter record ID",
-  clean: util.types.toNumber,
+  clean: recordIdClean,
 });
 
 const payloadInput = input({
@@ -51,7 +50,7 @@ const payloadInput = input({
   language: "json",
   required: true,
   comments:
-    "Data payload to send in the action request. See [REST API Browser](https://system.netsuite.com/help/helpcenter/en_US/APIs/REST_API_Browser/record/v1/2024.1/index.html) for details.",
+    "Data payload to send in the action request. See [REST API Browser](https://docs.oracle.com/en/cloud/saas/netsuite/ns-online-help/section_157373386674.html) for details.",
   placeholder: "Enter JSON payload",
   clean: util.types.toObject,
   default: JSON.stringify(
@@ -65,7 +64,7 @@ const payloadInput = input({
   ),
 });
 
-const queryInput = input({
+export const queryInput = input({
   label: "Query",
   type: "string",
   required: false,
@@ -73,10 +72,10 @@ const queryInput = input({
   placeholder: "Enter filter query",
   comments:
     "Query string to filter records. Use operators like START_WITH, EQUAL, CONTAIN. See [Record Collection Filtering](https://docs.oracle.com/en/cloud/saas/netsuite/ns-online-help/section_1545222128.html) for details.",
-  clean: util.types.toString,
+  clean: toOptionalString,
 });
 
-const recordFieldInput = input({
+export const recordFieldInput = input({
   label: "Record Field",
   type: "string",
   required: false,
@@ -84,7 +83,7 @@ const recordFieldInput = input({
   placeholder: "Enter field name",
   comments:
     "The record field to use as the label for the picklist. If unspecified, the record ID is used.",
-  clean: util.types.toString,
+  clean: toOptionalString,
 });
 
 const expandSubResources = input({
@@ -115,14 +114,8 @@ const fields = input({
   comments:
     "Specific fields and sublists to return in the request. If unspecified, the full record is returned.",
   example: '["email", "companyname", "subsidiary"]',
-  placeholder: "Select fields to return",
-  clean: (rawValue) => {
-    if (!Array.isArray(rawValue)) {
-      return rawValue;
-    }
-    const values = rawValue.map((v) => util.types.toString(v));
-    return values.join(",");
-  },
+  placeholder: "Enter field name",
+  clean: toCommaSeparatedList,
 });
 
 const replace = input({
@@ -133,14 +126,8 @@ const replace = input({
   comments:
     "Names of sublists on this record. All specified sublists will be replaced instead of added to.",
   example: '["itemList", "addressbookList"]',
-  placeholder: "Select sublists to replace",
-  clean: (rawValue) => {
-    if (!Array.isArray(rawValue)) {
-      return rawValue;
-    }
-    const values = rawValue.map((v) => util.types.toString(v));
-    return values.join(",");
-  },
+  placeholder: "Enter sublist name",
+  clean: toCommaSeparatedList,
 });
 
 const replaceSelectedFields = input({
@@ -151,46 +138,6 @@ const replaceSelectedFields = input({
   comments:
     "When true, deletes all fields, including body fields, specified in the Replace input.",
   clean: util.types.toBool,
-});
-
-const showNewRecordsInput = input({
-  label: "Show New Records",
-  type: "boolean",
-  required: false,
-  default: "true",
-  comments: "When true, includes new records in the results.",
-  clean: util.types.toBool,
-});
-
-const showUpdatedRecordsInput = input({
-  label: "Show Updated Records",
-  type: "boolean",
-  required: false,
-  default: "true",
-  comments: "When true, includes updated records in the results.",
-  clean: util.types.toBool,
-});
-
-const lookBackDateInput = input({
-  label: "Look-back Date",
-  placeholder: "Enter look-back date (YYYY-MM-DD)",
-  type: "string",
-  required: false,
-  comments:
-    "The date the initial sync starts from, in YYYY-MM-DD format. Cannot be a future date. Leave empty to start from the first recurrence with no backfill. When set, the initial sync seeds each record modified on or after this date once, ignoring the additional filter.",
-  example: "2026-01-01",
-  clean: lookBackDateClean,
-});
-
-const additionalFilterInput = input({
-  label: "Additional Filter",
-  type: "string",
-  required: false,
-  comments:
-    "Additional WHERE clause conditions to append to the polling query. Do not include 'AND' prefix - it will be added automatically. See [Record Collection Filtering](https://docs.oracle.com/en/cloud/saas/netsuite/ns-online-help/section_1545222128.html) for query syntax.",
-  example: "isinactive = 'F'",
-  placeholder: "Enter additional filter conditions",
-  clean: util.types.toString,
 });
 
 export const listRecordInputs = {
@@ -228,21 +175,4 @@ export const deleteRecordInputs = {
   connection: connectionInput,
   recordType: recordTypeInput,
   id: recordIdInput,
-};
-
-export const selectRecordInputs = {
-  connection: connectionInput,
-  recordType: recordTypeInput,
-  recordField: recordFieldInput,
-  query: queryInput,
-  pagination,
-};
-
-export const pollRecordsInputs = {
-  showNewRecords: showNewRecordsInput,
-  showUpdatedRecords: showUpdatedRecordsInput,
-  connection: connectionInput,
-  recordType: recordTypeInput,
-  lookBackDate: lookBackDateInput,
-  additionalFilter: additionalFilterInput,
 };

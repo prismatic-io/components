@@ -1,8 +1,10 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
+import { RECORD_SERVICE } from "../../constants";
 import { getCustomerExamplePayload } from "../../examplePayloads";
 import { getRecordInputs } from "../../inputs";
 import { getRecordOutputSchema } from "../../outputSchemas";
+import { encodeRecordId } from "../../utils";
 
 export const getRecord = action({
   display: {
@@ -19,11 +21,11 @@ export const getRecord = action({
   perform: async (context, params) => {
     const client = await createClient(
       params.connection,
-      "record",
+      RECORD_SERVICE,
       context.debug.enabled,
     );
     const { data, headers } = await client.get(
-      `/${params.recordType}/${params.id}`,
+      `/${params.recordType}/${encodeRecordId(params.id)}`,
       {
         params: {
           expandSubResources: params.expandSubResources,

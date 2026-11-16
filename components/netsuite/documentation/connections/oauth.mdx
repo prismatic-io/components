@@ -37,7 +37,7 @@ This requires users to re-authenticate every 7 days, which is not a good user ex
 
 - Enter the **Consumer Key** (Client ID) and **Consumer Secret** (Client Secret) from the NetSuite integration
 - **Token URL**: Enter the NetSuite account's token URL in the format: `https://[ACCOUNT_ID].suitetalk.api.netsuite.com/services/rest/auth/oauth2/v1/token`
-  - Replace `[ACCOUNT_ID]` with the NetSuite account ID (found in **Setup** > **Company** > **Company Information**)
+  - Replace `[ACCOUNT_ID]` with the subdomain of the account-specific domain on the **Company URLs** subtab of **Setup** > **Company** > **Company Information**. A sandbox account ID is lower-case and hyphenated there (`1234567-sb1`), not the `1234567_SB1` form shown elsewhere on that page
   - Example: `https://1234567.suitetalk.api.netsuite.com/services/rest/auth/oauth2/v1/token`
 
 #### Verify Connection

@@ -1,8 +1,10 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
+import { QUERY_SERVICE, SUITEQL_PATH } from "../../constants";
 import { suiteQLQueryCustomersExamplePayload } from "../../examplePayloads";
 import { suiteQLQueryInputs } from "../../inputs";
 import { suiteQlQueryOutputSchema } from "../../outputSchemas";
+import { suiteQlRequestBody } from "../../utils";
 
 export const suiteQLQuery = action({
   display: {
@@ -20,14 +22,12 @@ export const suiteQLQuery = action({
   perform: async (context, params) => {
     const client = await createClient(
       params.connection,
-      "query",
+      QUERY_SERVICE,
       context.debug.enabled,
     );
     const { data, headers } = await client.post(
-      `/suiteql?limit=${params.pagination.limitInput}&offset=${params.pagination.offsetInput}`,
-      {
-        q: params.suiteQLInput,
-      },
+      `${SUITEQL_PATH}?limit=${params.pagination.limitInput}&offset=${params.pagination.offsetInput}`,
+      suiteQlRequestBody(params.suiteQLInput, params.parameters),
     );
     return { data: { data, headers: headers as Record<string, string> } };
   },
