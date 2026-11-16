@@ -10,6 +10,7 @@ export const uploadCompanyFile = action({
     description: "Upload a new company file.",
   },
   inputs: uploadCompanyFileInputs,
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = createBambooClient(params.connection, context.debug.enabled);
     const formData = new FormData();
@@ -23,5 +24,6 @@ export const uploadCompanyFile = action({
     const location = response.headers.location || response.headers.Location;
     return { data: { location } };
   },
+  examplePerform: async () => uploadCompanyFileExamplePayload,
   examplePayload: uploadCompanyFileExamplePayload,
 });

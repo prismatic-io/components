@@ -3,8 +3,12 @@ import { createBambooClient } from "../client";
 import { DEFAULT_BATCH_SIZE } from "../constants";
 import { pollChangesTriggerExamplePayload } from "../examplePayloads";
 import { pollChangesInputs } from "../inputs";
-import type { EmployeeChange, PollingState } from "../types";
-import type { BambooHRChangesObject, BambooHRRecordChange } from "../util";
+import type {
+  BambooHRChangesObject,
+  BambooHRRecordChange,
+  EmployeeChange,
+  PollingState,
+} from "../types";
 import {
   fetchChangedEmployeesSince,
   partitionChangedEmployees,

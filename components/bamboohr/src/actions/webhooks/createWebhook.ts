@@ -1,7 +1,9 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createBambooClient } from "../../client";
+import { ENDPOINTS } from "../../constants";
 import { createWebhookExamplePayload } from "../../examplePayloads";
 import { createWebhookInputs } from "../../inputs";
+import { createWebhookOutputSchema } from "../../outputSchemas";
 
 export const createWebhook = action({
   display: {
@@ -9,14 +11,19 @@ export const createWebhook = action({
     description: "Create a new webhook.",
   },
   inputs: createWebhookInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createWebhookOutputSchema,
+  }),
   examplePayload: createWebhookExamplePayload,
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = createBambooClient(params.connection, context.debug.enabled);
 
     if (!params.allowDuplicates) {
       const {
         data: { webhooks: allWebhooks },
-      } = await client.get("/v1/webhooks");
+      } = await client.get(ENDPOINTS.WEBHOOKS);
       const existingWebhooks = allWebhooks.filter(
         (webhook: { url: string; id: string }) => params.url === webhook.url,
       );
@@ -25,7 +32,7 @@ export const createWebhook = action({
           "A webhook with those parameters already exists. Skipping webhook creation and returning existing webhook.",
         );
         const { data: webhookData } = await client.get(
-          `/v1/webhooks/${existingWebhooks[0].id}/`,
+          `${ENDPOINTS.WEBHOOKS}/${existingWebhooks[0].id}/`,
         );
         return {
           data: webhookData,
@@ -35,7 +42,7 @@ export const createWebhook = action({
 
     const {
       data: { fields: clientFields },
-    } = await client.get("/v1/webhooks/monitor_fields");
+    } = await client.get(`${ENDPOINTS.WEBHOOKS}/monitor_fields`);
     const aliasClientFields = clientFields
       .map((field: { alias: string }) => field.alias)
       .filter((data: string) => data);
@@ -72,7 +79,7 @@ export const createWebhook = action({
       })
       .filter((field): field is string => field !== null);
 
-    const { data } = await client.post("/v1/webhooks", {
+    const { data } = await client.post(ENDPOINTS.WEBHOOKS, {
       name: params.name,
       monitorFields: monitorAvailableFields,
       postFields,
@@ -89,4 +96,5 @@ export const createWebhook = action({
       crossFlowState: { webhookSecrets },
     };
   },
+  examplePerform: async () => createWebhookExamplePayload,
 });

@@ -1,38 +1,24 @@
 import { action, util } from "@prismatic-io/spectral";
-import {
-  inputs as httpClientInputs,
-  sendRawRequest,
-} from "@prismatic-io/spectral/http";
+import { sendRawRequest } from "@prismatic-io/spectral/http";
+import { GATEWAY_URL } from "../../constants";
 import { rawRequestExamplePayload } from "../../examplePayloads";
-import { connectionInput } from "../../inputs";
-
-const { debugRequest: _, ...rawRequestInputs } = httpClientInputs;
+import { rawRequestInputs } from "../../inputs";
 
 export const rawRequest = action({
   display: {
     label: "Raw Request",
     description: "Send a raw HTTP request to BambooHR.",
   },
-  inputs: {
-    connection: connectionInput,
-    ...rawRequestInputs,
-    url: {
-      ...rawRequestInputs.url,
-      comments:
-        "Input the path only (/v1/employees/directory), The base URL is already included (https://api.bamboohr.com/api/gateway.php/COMPANY_DOMAIN). For example, to connect to https://api.bamboohr.com/api/gateway.php/COMPANY_DOMAIN/v1/employees/directory, only /v1/employees/directory is entered in this field.",
-      example: "/v1/employees/directory",
-    },
-  },
+  inputs: rawRequestInputs,
   examplePayload: rawRequestExamplePayload,
-  perform: async (context, { connection, ...rawRequestInputs }) => {
+  performSafety: "notAllowed",
+  perform: async (context, { connection, ...httpInputValues }) => {
     const encodedAuth = Buffer.from(`${connection.fields.apiKey}:x`).toString(
       "base64",
     );
     const { data, headers } = await sendRawRequest(
-      `https://api.bamboohr.com/api/gateway.php/${util.types.toString(
-        connection.fields.companyDomain,
-      )}/`,
-      { ...rawRequestInputs, debugRequest: context.debug.enabled },
+      `${GATEWAY_URL}/${util.types.toString(connection.fields.companyDomain)}/`,
+      { ...httpInputValues, debugRequest: context.debug.enabled },
       {
         Authorization: `Basic ${encodedAuth}`,
       },

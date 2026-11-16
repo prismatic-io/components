@@ -9,6 +9,7 @@ export const getCompanyFile = action({
     description: "Retrieve a company file.",
   },
   inputs: getCompanyFileInputs,
+  performSafety: "safe",
   perform: async (context, params) => {
     const client = createBambooClient(params.connection, context.debug.enabled);
     const { data, headers } = await client.get(`/v1/files/${params.fileId}`, {

@@ -1,5 +1,6 @@
 import { input, type KeyValuePair, util } from "@prismatic-io/spectral";
-import { employeeFields, validateEmployeeFields } from "../util";
+import { EMPLOYEE_FIELDS } from "../constants";
+import { validateEmployeeFields } from "../util";
 import { connectionInput, employeeId } from "./common";
 
 const firstName = input({
@@ -24,10 +25,11 @@ const lastName = input({
 
 const employeeFieldValues = input({
   label: "Employee Fields",
+  placeholder: "Enter employee fields",
   type: "string",
   collection: "keyvaluelist",
   required: false,
-  comments: `The names of the fields and their values to use when creating/updating a record. Possible fields are: ${employeeFields.join(
+  comments: `The names of the fields and their values to use when creating/updating a record. Possible fields are: ${EMPLOYEE_FIELDS.join(
     ", ",
   )}.`,
   clean: (values: unknown) =>

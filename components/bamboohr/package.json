@@ -1,6 +1,6 @@
 {
   "name": "@prismatic-io/components-bamboohr",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "main": "./npm-dist/index.cjs",
   "types": "./npm-dist/index.d.cts",
   "exports": {
@@ -40,10 +40,10 @@
   "peerDependencies": {
     "@prismatic-io/spectral": "^10.39.1"
   },
-  "dependencies": {},
   "devDependencies": {
     "@biomejs/biome": "2.5.1",
     "@types/node": "^26.6.4",
+    "nock": "14.0.5",
     "tsdown": "0.22.3",
     "typescript": "6.0.3",
     "vitest": "^5.0.4",

@@ -1,4 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
+import { toYesNo } from "../util";
 
 export const connectionInput = input({
   label: "Connection",
@@ -28,6 +29,16 @@ export const categoryId = input({
   example: "20",
 });
 
+export const categoryName = input({
+  label: "Category Name",
+  type: "string",
+  required: true,
+  comments: "The display name to assign to the new file category.",
+  placeholder: "Enter category name",
+  clean: util.types.toString,
+  example: "A new category",
+});
+
 export const fileName = input({
   label: "File Name",
   type: "string",
@@ -43,7 +54,7 @@ export const share = input({
   type: "boolean",
   default: "false",
   comments: "When true, the file is shared with the employee.",
-  clean: (value) => (util.types.toBool(value) ? "yes" : "no"),
+  clean: toYesNo,
 });
 
 export const file = input({

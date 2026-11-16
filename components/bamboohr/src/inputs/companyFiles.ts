@@ -1,5 +1,12 @@
 import { input, util } from "@prismatic-io/spectral";
-import { categoryId, connectionInput, file, fileName, share } from "./common";
+import {
+  categoryId,
+  categoryName,
+  connectionInput,
+  file,
+  fileName,
+  share,
+} from "./common";
 
 const fileId = input({
   label: "File ID",
@@ -10,16 +17,6 @@ const fileId = input({
   example: "456",
   clean: util.types.toString,
   dataSource: "selectCompanyFile",
-});
-
-const categoryName = input({
-  label: "Category Name",
-  type: "string",
-  required: true,
-  comments: "The display name to assign to the new file category.",
-  placeholder: "Enter category name",
-  clean: util.types.toString,
-  example: "A new category",
 });
 
 export const listCompanyFilesInputs = {

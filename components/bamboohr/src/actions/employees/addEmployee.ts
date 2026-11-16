@@ -8,6 +8,7 @@ export const addEmployee = action({
     label: "Create Employee",
     description: "Create a new employee.",
   },
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = createBambooClient(params.connection, context.debug.enabled);
     const response = await client.post("/v1/employees/", {
@@ -20,6 +21,7 @@ export const addEmployee = action({
     const id = location.split("/").pop() || "";
     return { data: { id, location } };
   },
+  examplePerform: async () => addEmployeeExamplePayload,
   inputs: addEmployeeInputs,
   examplePayload: addEmployeeExamplePayload,
 });

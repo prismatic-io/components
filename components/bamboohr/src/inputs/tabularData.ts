@@ -14,11 +14,12 @@ const tableName = input({
 
 const tableFieldValues = input({
   label: "Table Fields",
+  placeholder: "Enter table fields",
   type: "string",
   collection: "keyvaluelist",
   required: false,
   comments:
-    'The names of the fields and their values to use when creating/updating a row in a table. Use the "List Tabular Fields (Tables)" action to list possible field names for a table.',
+    'The names of the fields and their values to use when creating or updating a row in a table. Use the "List Tabular Fields" action to list the field names for a table. Values for list-type fields (for example jobTitle, employmentStatus, or relationship) must exactly match an existing option in BambooHR; a value that does not match is rejected.',
   clean: (values: unknown) =>
     util.types.keyValPairListToObject(values as KeyValuePair<unknown>[]),
 });

@@ -10,6 +10,7 @@ export const addCompanyFileCategory = action({
     description: "Create a new company file category (folder).",
   },
   inputs: addCompanyFileCategoryInputs,
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = createBambooClient(params.connection, context.debug.enabled);
     const response = await client.post("/v1/files/categories", [
@@ -21,5 +22,6 @@ export const addCompanyFileCategory = action({
         : MESSAGES.CATEGORY_NOT_CREATED;
     return { data: { message } };
   },
+  examplePerform: async () => addCompanyFileCategoryExamplePayload,
   examplePayload: addCompanyFileCategoryExamplePayload,
 });

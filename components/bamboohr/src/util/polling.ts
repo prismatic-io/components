@@ -1,15 +1,11 @@
 import { util } from "@prismatic-io/spectral";
-import { LOOK_BACK_DATE_PATTERN } from "../constants";
-
-export interface BambooHRChangesObject {
-  created: unknown[];
-  updated: unknown[];
-}
-
-export interface BambooHRRecordChange {
-  changeType: "created" | "updated";
-  record: unknown;
-}
+import type { HttpClient } from "@prismatic-io/spectral/http";
+import { ENDPOINTS, LOOK_BACK_DATE_PATTERN } from "../constants";
+import type {
+  BambooHRChangesObject,
+  BambooHRRecordChange,
+  EmployeeChange,
+} from "../types";
 
 export const lookBackDateClean = (value: unknown): string => {
   const str = util.types.toString(value).trim();
@@ -47,4 +43,43 @@ export const resolvePollingRecordChanges = (
     changes.push({ changeType: "updated", record });
   }
   return changes;
+};
+
+export const fetchChangedEmployeesSince = async (
+  client: HttpClient,
+  since: string,
+): Promise<EmployeeChange[]> => {
+  const { data } = await client.get(
+    `${ENDPOINTS.EMPLOYEES_CHANGED}?since=${encodeURIComponent(since)}`,
+  );
+  const employees = data?.employees;
+  if (!employees || typeof employees !== "object") return [];
+  return Object.entries(employees as Record<string, unknown>).map(
+    ([id, change]) => {
+      const entry = change as {
+        action?: string;
+        lastChanged?: string;
+      } | null;
+      return {
+        id,
+        action: entry?.action as EmployeeChange["action"],
+        lastChanged: util.types.toString(entry?.lastChanged),
+      };
+    },
+  );
+};
+
+export const partitionChangedEmployees = (
+  changes: EmployeeChange[],
+): {
+  created: EmployeeChange[];
+  updated: EmployeeChange[];
+} => {
+  const created: EmployeeChange[] = [];
+  const updated: EmployeeChange[] = [];
+  for (const change of changes) {
+    if (change.action === "Inserted") created.push(change);
+    else updated.push(change);
+  }
+  return { created, updated };
 };

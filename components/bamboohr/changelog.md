@@ -1,5 +1,16 @@
 ## Changelog
 
+### 2026-11-16
+
+Updated table row writes, error reporting, and employee selection:
+
+- Updated **Add Employee Table Row** and **Update Employee Table Row** to use BambooHR's v1_1 table row endpoints in place of the v1 endpoints
+- Updated error messages to include the reason BambooHR returns for a rejected request, such as the table field and value it did not accept
+- Updated requests to retry automatically when BambooHR rate limits them (HTTP 429), honoring its Retry-After delay, and to retry read requests that fail with a network error
+- Fixed the **Select Employee** data source listing employee field names (such as Display Name) instead of employees in every **Employee ID** dropdown; it now lists employees by name
+- Added inline action calling support to 24 actions for improved example output during configuration
+- Added output schemas to 11 actions for improved field mapping during configuration
+
 ### 2026-11-11
 
 Refactored internal code

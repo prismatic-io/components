@@ -1,6 +1,7 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
 import { createBambooClient } from "../client";
-import { connectionInput, employeeId } from "../inputs";
+import { selectEmployeeFileExamplePayload } from "../examplePayloads";
+import { selectEmployeeFileInputs } from "../inputs";
 
 interface EmployeeFile {
   id: number;
@@ -19,13 +20,7 @@ export const selectEmployeeFile = dataSource({
     description:
       "Select an employee file from a list of files for the specified employee.",
   },
-  inputs: {
-    connection: connectionInput,
-    employeeId: {
-      ...employeeId,
-      dataSource: undefined,
-    },
-  },
+  inputs: selectEmployeeFileInputs,
   perform: async (_context, { connection, employeeId }) => {
     const client = createBambooClient(connection, false);
     const {
@@ -46,16 +41,5 @@ export const selectEmployeeFile = dataSource({
     return { result };
   },
   dataSourceType: "picklist",
-  examplePayload: {
-    result: [
-      {
-        label: "Signed Documents - Company Handbook.pdf",
-        key: "4",
-      },
-      {
-        label: "Signed Documents - I-9 (2017).pdf",
-        key: "10",
-      },
-    ],
-  },
+  examplePayload: selectEmployeeFileExamplePayload,
 });

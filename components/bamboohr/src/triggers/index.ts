@@ -1,5 +1,5 @@
 import { pollChangesTrigger } from "./pollChangesTrigger";
-import { bamboohrTrigger } from "./webhook";
+import { bamboohrTrigger } from "./bamboohrTrigger";
 
 export { bamboohrTrigger, pollChangesTrigger };
 

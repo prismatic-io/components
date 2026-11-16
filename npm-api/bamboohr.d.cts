@@ -50,6 +50,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
           label: string;
           value: string;
         }[];
+        clean: (values: unknown) => string[];
       };
       postFields: {
         label: string;
@@ -61,6 +62,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
           label: string;
           value: string;
         }[];
+        clean: (values: unknown) => string[];
       };
       allowDuplicates: {
         label: string;
@@ -71,10 +73,13 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
       data: {
-        id: number;
+        id: string;
         name: string;
+        created: string;
+        lastSent: null;
         url: string;
         format: string;
+        events: string[];
         privateKey: string;
         monitorFields: string[];
         postFields: {
@@ -170,11 +175,11 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
       };
       employeeId: {
         required: boolean;
+        clean: (value: unknown) => string | undefined;
         label: string;
         type: "string";
         comments: string;
         placeholder: string;
-        clean: (value: unknown, defaultValue?: string) => string;
         example: string;
         dataSource: string;
       };
@@ -248,6 +253,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
       };
       tableFieldValues: {
         label: string;
+        placeholder: string;
         type: "string";
         collection: "keyvaluelist";
         required: false;
@@ -335,6 +341,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
       };
       tableFieldValues: {
         label: string;
+        placeholder: string;
         type: "string";
         collection: "keyvaluelist";
         required: false;
@@ -680,6 +687,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
       };
       employeeFieldValues: {
         label: string;
+        placeholder: string;
         type: "string";
         collection: "keyvaluelist";
         required: false;
@@ -741,6 +749,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
       };
       employeeFieldValues: {
         label: string;
+        placeholder: string;
         type: "string";
         collection: "keyvaluelist";
         required: false;

@@ -9,6 +9,7 @@ export const deleteEmployeeFile = action({
     description: "Delete an employee file.",
   },
   inputs: deleteEmployeeFileInputs,
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = createBambooClient(params.connection, context.debug.enabled);
     const { data } = await client.delete(
@@ -16,5 +17,6 @@ export const deleteEmployeeFile = action({
     );
     return { data };
   },
+  examplePerform: async () => deleteEmployeeFileExamplePayload,
   examplePayload: deleteEmployeeFileExamplePayload,
 });

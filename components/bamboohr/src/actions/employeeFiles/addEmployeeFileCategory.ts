@@ -10,6 +10,7 @@ export const addEmployeeFileCategory = action({
     description: "Create a new employee file category (folder).",
   },
   inputs: addEmployeeFileCategoryInputs,
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = createBambooClient(params.connection, context.debug.enabled);
     const response = await client.post("/v1/employees/files/categories", [
@@ -21,5 +22,6 @@ export const addEmployeeFileCategory = action({
         : MESSAGES.CATEGORY_NOT_CREATED;
     return { data: { message } };
   },
+  examplePerform: async () => addEmployeeFileCategoryExamplePayload,
   examplePayload: addEmployeeFileCategoryExamplePayload,
 });

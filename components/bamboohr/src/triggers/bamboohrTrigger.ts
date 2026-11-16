@@ -1,27 +1,7 @@
 import { trigger, util } from "@prismatic-io/spectral";
-import crypto from "crypto";
 import { bamboohrTriggerExamplePayload } from "../examplePayloads";
-
-const validateHmac = (
-  rawBody: { data: unknown },
-  timestamp: string,
-  signature: string,
-  secrets: string[],
-) => {
-  const body = util.types.toString(rawBody.data);
-  for (const secret of secrets) {
-    const computedSignature = crypto
-      .createHmac("sha256", secret)
-      .update(`${body}${timestamp}`)
-      .digest("hex");
-    if (computedSignature === signature) {
-      return;
-    }
-  }
-  throw new Error(
-    "The included signing signature does not match a known BambooHR signing key for this integration. Rejecting payload.",
-  );
-};
+import { bamboohrTriggerInputs } from "../inputs";
+import { validateHmac } from "../util";
 
 export const bamboohrTrigger = trigger({
   display: {
@@ -53,7 +33,7 @@ export const bamboohrTrigger = trigger({
       payload,
     });
   },
-  inputs: {},
+  inputs: bamboohrTriggerInputs,
   synchronousResponseSupport: "invalid",
   scheduleSupport: "invalid",
 });

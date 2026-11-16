@@ -1,6 +1,8 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
 import { createBambooClient } from "../client";
-import { connectionInput } from "../inputs";
+import { ENDPOINTS } from "../constants";
+import { selectCompanyFileExamplePayload } from "../examplePayloads";
+import { selectCompanyFileInputs } from "../inputs";
 
 interface CompanyFile {
   id: number;
@@ -18,15 +20,13 @@ export const selectCompanyFile = dataSource({
     label: "Select Company File",
     description: "Select a company file from a list of company files.",
   },
-  inputs: {
-    connection: connectionInput,
-  },
+  inputs: selectCompanyFileInputs,
   perform: async (_context, { connection }) => {
     const client = createBambooClient(connection, false);
     const {
       data: { categories },
     } = await client.get<{ categories: CompanyFileCategory[] }>(
-      "/v1/files/view",
+      ENDPOINTS.FILES_VIEW,
     );
 
     const result: Element[] = categories
@@ -41,16 +41,5 @@ export const selectCompanyFile = dataSource({
     return { result };
   },
   dataSourceType: "picklist",
-  examplePayload: {
-    result: [
-      {
-        label: "BambooHR - 4 Ways the BambooHR ATS Improves the Hiring Process",
-        key: "220",
-      },
-      {
-        label: "New Hire Forms - Australia Standard Choice Form.pdf",
-        key: "164",
-      },
-    ],
-  },
+  examplePayload: selectCompanyFileExamplePayload,
 });

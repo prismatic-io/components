@@ -1,7 +1,8 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createBambooClient } from "../../client";
 import { getTimeOffRequestsExamplePayload } from "../../examplePayloads";
 import { getTimeOffRequestsInputs } from "../../inputs";
+import { getTimeOffRequestsOutputSchema } from "../../outputSchemas";
 import { filterFalseyValues } from "../../util";
 
 export const getTimeOffRequests = action({
@@ -9,6 +10,7 @@ export const getTimeOffRequests = action({
     label: "List Time Off Requests",
     description: "List employee time off requests for a given date range.",
   },
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = createBambooClient(params.connection, context.debug.enabled);
     const queryParams = filterFalseyValues({
@@ -23,6 +25,11 @@ export const getTimeOffRequests = action({
     });
     return { data };
   },
+  examplePerform: async () => getTimeOffRequestsExamplePayload,
   inputs: getTimeOffRequestsInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getTimeOffRequestsOutputSchema,
+  }),
   examplePayload: getTimeOffRequestsExamplePayload,
 });

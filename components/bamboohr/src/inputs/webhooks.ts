@@ -1,4 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
+import { toStringList } from "../util";
 import { connectionInput } from "./common";
 
 const webhookFields = [
@@ -88,6 +89,7 @@ const monitorFields = input({
   type: "string",
   collection: "valuelist",
   model: webhookFields.map((field) => ({ label: field, value: field })),
+  clean: toStringList,
 });
 
 const postFields = input({
@@ -99,6 +101,7 @@ const postFields = input({
   type: "string",
   collection: "valuelist",
   model: webhookFields.map((field) => ({ label: field, value: field })),
+  clean: toStringList,
 });
 
 const allowDuplicates = input({
@@ -106,7 +109,7 @@ const allowDuplicates = input({
   type: "boolean",
   default: "false",
   comments:
-    "When true, allows the creation of duplicate webhooks. By default this action checks if a webhook with this callback and sheet ID already exists and, if so, skips configuration.",
+    "When true, allows the creation of duplicate webhooks. By default this action checks if a webhook with the same callback URL already exists and, if so, returns that webhook instead of creating a new one.",
   clean: util.types.toBool,
 });
 

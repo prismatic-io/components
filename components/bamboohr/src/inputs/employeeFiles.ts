@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import {
   categoryId,
+  categoryName,
   connectionInput,
   employeeId,
   file,
@@ -17,16 +18,6 @@ const employeeFileId = input({
   example: "456",
   clean: util.types.toString,
   dataSource: "selectEmployeeFile",
-});
-
-const categoryName = input({
-  label: "Category Name",
-  type: "string",
-  required: true,
-  comments: "The display name to assign to the new file category.",
-  placeholder: "Enter category name",
-  clean: util.types.toString,
-  example: "A new category",
 });
 
 export const listEmployeeFilesInputs = {

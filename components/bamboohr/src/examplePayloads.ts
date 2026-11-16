@@ -51,6 +51,12 @@ export const getEmployeeExamplePayload = {
     workEmail: "aadams@efficientoffice.com",
     workPhone: "+44 207 555 4730",
     zipcode: "84042",
+    nationality: null,
+    payGroup: null,
+    includeInPayroll: null,
+    timeTrackingEnabled: null,
+    sin: null,
+    standardHoursPerWeek: null,
   },
 };
 
@@ -65,7 +71,7 @@ export const updateEmployeeExamplePayload = {
   data: {},
 };
 
-export const listEmployeesExamplePayload = {
+export const getEmployeeDirectoryExamplePayload = {
   data: {
     fields: [
       { id: "displayName", type: "text", name: "Display Name" },
@@ -80,7 +86,7 @@ export const listEmployeesExamplePayload = {
     ],
     employees: [
       {
-        id: 123,
+        id: "123",
         displayName: "John Doe",
         firstName: "John",
         lastName: "Doe",
@@ -90,6 +96,7 @@ export const listEmployeesExamplePayload = {
         workPhoneExtension: null,
         skypeUsername: "JohnDoe",
         facebook: "JohnDoeFacebook",
+        canUploadPhoto: 1,
       },
     ],
   },
@@ -338,10 +345,13 @@ export const whosOutExamplePayload = {
 
 export const createWebhookExamplePayload = {
   data: {
-    id: 472,
+    id: "472",
     name: "Employee Updates",
+    created: "2026-05-21 14:32:10",
+    lastSent: null,
     url: "https://hooks.example.com/trigger/EXAMPLE",
     format: "json",
+    events: ["employee_with_fields.updated"],
     privateKey:
       "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
     monitorFields: ["firstName", "lastName", "jobTitle", "department"],
@@ -360,8 +370,10 @@ export const createWebhookExamplePayload = {
 export const listWebhooksExamplePayload = {
   data: [
     {
-      id: 472,
+      id: "472",
       name: "Employee Updates",
+      created: "2026-05-21 14:32:10",
+      lastSent: "2026-05-22 09:15:42",
       url: "https://hooks.example.com/trigger/EXAMPLE",
       format: "json",
       monitorFields: ["firstName", "lastName", "jobTitle", "department"],
@@ -374,8 +386,10 @@ export const listWebhooksExamplePayload = {
       includeCompanyDomain: false,
     },
     {
-      id: 473,
+      id: "473",
       name: "Hire Date Updates",
+      created: "2026-05-21 14:40:03",
+      lastSent: null,
       url: "https://hooks.example.com/trigger/ANOTHER",
       format: "json",
       monitorFields: ["hireDate"],
@@ -392,7 +406,7 @@ export const listWebhooksExamplePayload = {
 };
 
 export const deleteWebhookByIdExamplePayload = {
-  data: {},
+  data: "Web hook has been deleted.",
 };
 
 export const deleteInstanceWebhooksExamplePayload = {
@@ -420,7 +434,7 @@ export const rawRequestExamplePayload = {
   },
 };
 
-export const bamboohrTriggerExamplePayload = {
+export const bamboohrTriggerExamplePayload: { payload: TriggerPayload } = {
   payload: {
     headers: {
       "Content-Type": "application/json",
@@ -429,10 +443,7 @@ export const bamboohrTriggerExamplePayload = {
       "X-BambooHR-Timestamp": "2026-05-21T14:00:00Z",
     },
     queryParameters: {},
-    rawBody: {
-      data: "",
-      contentType: "application/json",
-    },
+    rawBody: { data: null },
     body: {
       data: {
         employees: [
@@ -452,43 +463,44 @@ export const bamboohrTriggerExamplePayload = {
           jobTitle: "Job Title",
         },
       },
-      contentType: "application/json",
     },
     pathFragment: "",
-    webhookUrls: {
-      "Webhook Flow": "https://hooks.example.com/trigger/EXAMPLE",
-    },
-    webhookApiKeys: {
-      "Webhook Flow": ["example-api-key"],
-    },
-    invokeUrl: "https://hooks.example.com/trigger/EXAMPLE",
-    executionId: "SW5zdGFuY2VFeGVjdXRpb246MTIzNDU=",
+    webhookUrls: {},
+    webhookApiKeys: {},
+    invokeUrl: "",
+    executionId: "RXhhbXBsZUV4ZWN1dGlvblJlc3VsdElk",
     customer: {
-      id: "Q3VzdG9tZXI6MTIzNDU=",
-      externalId: "example-customer-external-id",
-      name: "Example Customer",
+      id: "testCustomerId",
+      name: "Test Customer",
+      externalId: "testExternalId",
     },
-    instance: {
-      id: "SW5zdGFuY2U6MTIzNDU=",
-      name: "Example Instance",
-    },
+    instance: { id: "testInstanceId", name: "Test Instance" },
     user: {
-      id: "VXNlcjoxMjM0NQ==",
-      externalId: "example-user-external-id",
-      name: "Example User",
+      id: "testUserId",
       email: "user@example.com",
+      name: "Test User",
+      externalId: "testUserExternalId",
     },
-  } as unknown as TriggerPayload,
+    integration: {
+      id: "testIntegrationId",
+      name: "Test Integration",
+      versionSequenceId: "1",
+      externalVersion: "",
+    },
+    flow: { id: "testFlowId", name: "Test Flow", stableId: "testFlowStableId" },
+    startedAt: "2024-01-15T00:00:00.000Z",
+    globalDebug: false,
+  },
 };
 
-export const pollChangesTriggerExamplePayload = {
+export const pollChangesTriggerExamplePayload: {
+  payload: TriggerPayload;
+  polledNoChanges: boolean;
+} = {
   payload: {
     headers: {},
     queryParameters: {},
-    rawBody: {
-      data: "",
-      contentType: "application/json",
-    },
+    rawBody: { data: null },
     body: {
       data: {
         created: [
@@ -511,36 +523,63 @@ export const pollChangesTriggerExamplePayload = {
           },
         ],
       },
-      contentType: "application/json",
     },
     pathFragment: "",
-    webhookUrls: {
-      "Polling Flow": "https://hooks.example.com/trigger/EXAMPLE",
-    },
-    webhookApiKeys: {
-      "Polling Flow": ["example-api-key"],
-    },
-    invokeUrl: "https://hooks.example.com/trigger/EXAMPLE",
-    executionId: "SW5zdGFuY2VFeGVjdXRpb246MTIzNDU=",
+    webhookUrls: {},
+    webhookApiKeys: {},
+    invokeUrl: "",
+    executionId: "RXhhbXBsZUV4ZWN1dGlvblJlc3VsdElk",
     customer: {
-      id: "Q3VzdG9tZXI6MTIzNDU=",
-      externalId: "example-customer-external-id",
-      name: "Example Customer",
+      id: "testCustomerId",
+      name: "Test Customer",
+      externalId: "testExternalId",
     },
-    instance: {
-      id: "SW5zdGFuY2U6MTIzNDU=",
-      name: "Example Instance",
-    },
+    instance: { id: "testInstanceId", name: "Test Instance" },
     user: {
-      id: "VXNlcjoxMjM0NQ==",
-      externalId: "example-user-external-id",
-      name: "Example User",
+      id: "testUserId",
       email: "user@example.com",
+      name: "Test User",
+      externalId: "testUserExternalId",
     },
-  } as unknown as TriggerPayload,
+    integration: {
+      id: "testIntegrationId",
+      name: "Test Integration",
+      versionSequenceId: "1",
+      externalVersion: "",
+    },
+    flow: { id: "testFlowId", name: "Test Flow", stableId: "testFlowStableId" },
+    startedAt: "2024-01-15T00:00:00.000Z",
+    globalDebug: false,
+  },
   polledNoChanges: false,
 };
 
-export const pollChangesExamplePayload = {
-  body: pollChangesTriggerExamplePayload.payload.body,
+export const selectCompanyFileExamplePayload = {
+  result: [
+    {
+      label: "BambooHR - 4 Ways the BambooHR ATS Improves the Hiring Process",
+      key: "220",
+    },
+    {
+      label: "New Hire Forms - Australia Standard Choice Form.pdf",
+      key: "164",
+    },
+  ],
+};
+
+export const selectEmployeeFileExamplePayload = {
+  result: [
+    {
+      label: "Signed Documents - Company Handbook.pdf",
+      key: "4",
+    },
+    {
+      label: "Signed Documents - I-9 (2017).pdf",
+      key: "10",
+    },
+  ],
+};
+
+export const selectEmployeeExamplePayload = {
+  result: [{ label: "John Doe", key: "123" }],
 };

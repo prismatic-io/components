@@ -9,6 +9,7 @@ export const getEmployeeFile = action({
     description: "Retrieve an employee file.",
   },
   inputs: getEmployeeFileInputs,
+  performSafety: "safe",
   perform: async (context, params) => {
     const client = createBambooClient(params.connection, context.debug.enabled);
     const { data, headers } = await client.get(

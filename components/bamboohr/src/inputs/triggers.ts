@@ -35,6 +35,8 @@ const lookBackDate = input({
   clean: lookBackDateClean,
 });
 
+export const bamboohrTriggerInputs = {};
+
 export const pollChangesInputs = {
   connection: connectionInput,
   lookBackDate,

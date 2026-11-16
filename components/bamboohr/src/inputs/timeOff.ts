@@ -1,11 +1,6 @@
-import { input, util } from "@prismatic-io/spectral";
-import { validateDate } from "../util";
+import { input } from "@prismatic-io/spectral";
+import { cleanString, validateDate } from "../util";
 import { connectionInput, employeeId } from "./common";
-
-const cleanOptionalString = (value: unknown): string | undefined => {
-  const str = util.types.toString(value);
-  return str ? str : undefined;
-};
 
 const startDate = input({
   label: "Start Date",
@@ -35,7 +30,7 @@ const timeOffRecordId = input({
   required: false,
   comments: "The unique identifier for a specific time off request record.",
   placeholder: "Enter time off record ID",
-  clean: cleanOptionalString,
+  clean: cleanString,
   example: "42",
 });
 
@@ -51,7 +46,7 @@ const timeOffStatus = input({
     { label: "Canceled", value: "canceled" },
     { label: "Requested", value: "requested" },
   ],
-  clean: cleanOptionalString,
+  clean: cleanString,
 });
 
 const whosOutStartDate = input({
@@ -62,7 +57,7 @@ const whosOutStartDate = input({
     "The first date of the range to query. Defaults to today's date if omitted. Format: YYYY-MM-DD.",
   placeholder: "Enter start date (YYYY-MM-DD)",
   example: "2024-01-01",
-  clean: cleanOptionalString,
+  clean: cleanString,
 });
 
 const whosOutEndDate = input({
@@ -73,7 +68,7 @@ const whosOutEndDate = input({
     "The last date of the range to query. Defaults to 14 days from the start date if omitted. Format: YYYY-MM-DD.",
   placeholder: "Enter end date (YYYY-MM-DD)",
   example: "2024-01-15",
-  clean: cleanOptionalString,
+  clean: cleanString,
 });
 
 export const getTimeOffRequestsInputs = {
@@ -81,7 +76,7 @@ export const getTimeOffRequestsInputs = {
   startDate,
   endDate,
   timeOffRecordId,
-  employeeId: { ...employeeId, required: false },
+  employeeId: { ...employeeId, required: false, clean: cleanString },
   timeOffStatus,
 };
 

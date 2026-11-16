@@ -187,8 +187,8 @@
   },
   "bamboohr": {
     "name": "@prismatic-io/components-bamboohr",
-    "version": "0.3.0",
-    "build": "fd67876eb79755114caaafe784d4fd5112026da4943179ee48041ff3482b657d",
+    "version": "0.4.0",
+    "build": "6e529377cff7b2ad1db583b0c8bfbcece6d3e5aa028e1f2f9960e8bafb8310d5",
     "spectral": "^10.39.1"
   },
   "bigcommerce": {

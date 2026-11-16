@@ -1,7 +1,8 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createBambooClient } from "../../client";
 import { listEmployeeFilesExamplePayload } from "../../examplePayloads";
 import { listEmployeeFilesInputs } from "../../inputs";
+import { listEmployeeFilesOutputSchema } from "../../outputSchemas";
 
 export const listEmployeeFiles = action({
   display: {
@@ -9,6 +10,11 @@ export const listEmployeeFiles = action({
     description: "List all employee file categories and files.",
   },
   inputs: listEmployeeFilesInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listEmployeeFilesOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = createBambooClient(params.connection, context.debug.enabled);
     const { data } = await client.get(
@@ -16,5 +22,6 @@ export const listEmployeeFiles = action({
     );
     return { data };
   },
+  examplePerform: async () => listEmployeeFilesExamplePayload,
   examplePayload: listEmployeeFilesExamplePayload,
 });

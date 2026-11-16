@@ -9,10 +9,12 @@ export const deleteCompanyFile = action({
     description: "Delete a company file.",
   },
   inputs: deleteCompanyFileInputs,
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = createBambooClient(params.connection, context.debug.enabled);
     const { data } = await client.delete(`/v1/files/${params.fileId}`);
     return { data };
   },
+  examplePerform: async () => deleteCompanyFileExamplePayload,
   examplePayload: deleteCompanyFileExamplePayload,
 });

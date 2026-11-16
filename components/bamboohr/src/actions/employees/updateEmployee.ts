@@ -8,6 +8,7 @@ export const updateEmployee = action({
     label: "Update Employee",
     description: "Update an existing employee.",
   },
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = createBambooClient(params.connection, context.debug.enabled);
     const { data } = await client.post(
@@ -16,6 +17,7 @@ export const updateEmployee = action({
     );
     return { data };
   },
+  examplePerform: async () => updateEmployeeExamplePayload,
   inputs: updateEmployeeInputs,
   examplePayload: updateEmployeeExamplePayload,
 });
