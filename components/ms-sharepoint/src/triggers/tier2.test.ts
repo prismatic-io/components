@@ -1,6 +1,6 @@
 import { type Mock, vi } from "vitest";
 import { defaultTriggerPayload } from "@prismatic-io/spectral/testing";
-import type { DriveItem } from "../interfaces";
+import type { DriveItem } from "../types";
 import { drivePollingTrigger } from "./drivePollingTrigger";
 import { folderPollingTrigger } from "./folderPollingTrigger";
 import { pollSiteChanges } from "./pollSiteChanges";
@@ -145,6 +145,20 @@ describe("drivePollingTrigger batched drain", () => {
     expect(round.polledNoChanges).not.toBe(true);
   });
 
+  test("an empty first round reports polledNoChanges; one with changes or more pages does not", async () => {
+    getMock.mockResolvedValueOnce(finalPage([], "https://graph/delta?token=2"));
+    const empty = await runRound({ "drive-1": "https://graph/delta?token=1" }, undefined);
+    expect(empty.round.polledNoChanges).toBe(true);
+
+    getMock.mockResolvedValueOnce(finalPage([item("a")], "https://graph/delta?token=3"));
+    const changed = await runRound({ "drive-1": "https://graph/delta?token=2" }, undefined);
+    expect(changed.round.polledNoChanges).toBe(false);
+
+    getMock.mockResolvedValueOnce(nextPage([], "https://graph/page2"));
+    const midWalk = await runRound({ "drive-1": "https://graph/delta?token=3" }, undefined);
+    expect(midWalk.round.polledNoChanges).toBe(false);
+  });
+
   test("410 Gone restarts the enumeration from the Location header", async () => {
     getMock
       .mockRejectedValueOnce(gone("https://graph/delta?resync=1"))
@@ -252,6 +266,24 @@ describe("folderPollingTrigger batched drain", () => {
       "drive-1:folder-1": "https://graph/delta?token=9",
       "drive-1:folder-1:path": "/drives/drive-1/root:/Docs",
     });
+  });
+
+  test("a first round with nothing in the folder reports polledNoChanges; a driven round never does", async () => {
+    const known = {
+      "drive-1:folder-1": "https://graph/delta?token=1",
+      "drive-1:folder-1:path": "/drives/drive-1/root:/Docs",
+    };
+    getMock.mockResolvedValueOnce(finalPage([outside], "https://graph/delta?token=2"));
+    const empty = await runRound(known, undefined);
+    expect(empty.round.polledNoChanges).toBe(true);
+
+    getMock.mockResolvedValueOnce(finalPage([child("c1")], "https://graph/delta?token=3"));
+    const changed = await runRound(known, undefined);
+    expect(changed.round.polledNoChanges).toBe(false);
+
+    getMock.mockResolvedValueOnce(finalPage([outside], "https://graph/delta?token=4"));
+    const driven = await runRound(known, { nextLink: "https://graph/page2" });
+    expect(driven.round.polledNoChanges).toBe(false);
   });
 
   test("410 Gone restarts from the Location header", async () => {

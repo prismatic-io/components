@@ -1,6 +1,6 @@
 import { type Mock, vi } from "vitest";
 import { defaultTriggerPayload } from "@prismatic-io/spectral/testing";
-import type { DriveItem } from "../interfaces";
+import type { DriveItem } from "../types";
 import { drivePollingTrigger } from "./drivePollingTrigger";
 import { folderPollingTrigger } from "./folderPollingTrigger";
 import { pollSiteChanges } from "./pollSiteChanges";
@@ -123,6 +123,7 @@ describe("drivePollingTrigger", () => {
     expect(ids(data.updated)).toEqual(["upd"]);
     expect(ids(data.added)).toEqual(["add"]);
     expect(data.moved).toBeUndefined();
+    expect(result.polledNoChanges).toBe(false);
   });
 
   test("an item modified before it was created is classified nowhere", async () => {
@@ -138,6 +139,7 @@ describe("drivePollingTrigger", () => {
     const { result, setState } = await runDrive({ "drive-1": "https://graph/delta?token=2" });
 
     expect(result.payload.body.data).toEqual({});
+    expect(result.polledNoChanges).toBe(true);
     expect(setState).toHaveBeenCalledWith({ "drive-1": "https://graph/delta?token=3" });
   });
 });
@@ -188,6 +190,18 @@ describe("folderPollingTrigger", () => {
     const { result } = await runFolder({}, false);
 
     expect(ids(result.payload.body.data.added)).toEqual(["folder-1", "child"]);
+    expect(result.polledNoChanges).toBe(false);
+  });
+
+  test("a poll whose only changes are outside the folder reports polledNoChanges true", async () => {
+    getMock.mockResolvedValueOnce(delta([outside], "https://graph/delta?token=2"));
+    const { result } = await runFolder({
+      "drive-1:folder-1": "https://graph/delta?token=1",
+      "drive-1:folder-1:path": "/drives/drive-1/root:/Docs",
+    });
+
+    expect(result.payload.body.data).toEqual({});
+    expect(result.polledNoChanges).toBe(true);
   });
 
   test("includeSubfolders keeps the whole folder hierarchy and filters outside items", async () => {
@@ -269,6 +283,7 @@ describe("folderPollingTrigger", () => {
     });
 
     expect(result.payload.body.data).toEqual({});
+    expect(result.polledNoChanges).toBe(true);
     expect(setState).toHaveBeenCalledWith({
       "drive-1:folder-1": "https://graph/delta?token=2",
       "drive-1:folder-1:path": "/drives/drive-1/root:/Docs",

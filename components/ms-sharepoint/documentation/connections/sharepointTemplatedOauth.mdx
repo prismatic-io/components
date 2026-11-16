@@ -2,37 +2,34 @@
 
 The templated OAuth flow enables user authentication with SharePoint to access data on their behalf.
 
-#### App Registration
+#### Prerequisites
 
-First, create an app registration in Microsoft Entra by following the steps in the [OAuth connection guide](#creating-an-app-registration).
+- A licensed instance of Microsoft SharePoint
+- Permission to create an app registration in the [Microsoft Entra admin center](https://entra.microsoft.com/)
 
-#### Permissions
+#### Setup Steps
 
-Configure **SharePoint Delegated permissions** in the app registration:
+1. Create an app registration in Microsoft Entra by following the steps in the [OAuth 2.0 (Deprecated) connection guide](#oauth)
+2. Configure **Microsoft Graph Delegated permissions** in the app registration:
+   - Select all permissions required for the integration
+   - Grant admin consent for the organization
+   - Include `offline_access` scope for refresh token support
+3. Navigate to **Certificates & Secrets** in the app registration
+4. Click **New client secret**
+5. Provide a description and select expiration period
+6. Click **Add**
+7. Copy the secret **Value** (not the Secret ID)
 
-- Select all permissions required for the integration
-- Grant admin consent for the organization
-- Include `offline_access` scope for refresh token support
+#### Configure the Connection
 
-#### Creating Client Secret
+Create a connection of type **OAuth 2.0 Authorization Code**:
 
-1. Navigate to **Certificates & Secrets** in the app registration
-2. Click **New client secret**
-3. Provide a description and select expiration period
-4. Click **Add**
-5. Copy the secret **Value** (not the Secret ID)
-
-#### Connection Configuration
-
-Configure the following fields:
-
+- **Base URL**: Keep the default `https://graph.microsoft.com`, or enter the Microsoft Graph root endpoint for the national cloud the tenant uses
+- **Tenant URL**: For single-tenant apps, set **Tenant URL** to `login.microsoftonline.com/{tenant-id}` (default `login.microsoftonline.com/common`).
+- **Scopes**: Space-separated permission scopes. The default is `Sites.ReadWrite.All Sites.Manage.All offline_access`
 - **Client ID**: Application ID from app registration
-- **Client Secret**: Secret value created above
-
-For non-multitenant applications, replace the default URLs:
-
-- **Authorize URL**: `https://login.microsoftonline.com/{tenant-id}/oauth2/v2.0/authorize`
-- **Token URL**: `https://login.microsoftonline.com/{tenant-id}/oauth2/v2.0/token`
+- **Client secret value**: Secret value created above
+- **Additional Authorization Parameters**: Optional query string parameters appended to the authorization URL, such as `prompt=consent`
 
 #### App Verification and Admin Consent
 
@@ -46,7 +43,7 @@ Azure AD app registrations have two distinct verification concepts that affect h
 
 To verify the publisher:
 
-1. Ensure the organization has a [Microsoft Partner Network (MPN) account](https://partner.microsoft.com/)
+1. Ensure the organization has a [Microsoft Partner Network (MPN) account](https://partner.microsoft.com/en-US/)
 2. In the [Microsoft Entra Admin Center](https://entra.microsoft.com/), open the app registration
 3. Under **Branding & properties**, click **Add a verified publisher**
 4. Enter the MPN ID and confirm
@@ -55,24 +52,20 @@ Once verified, the consent screen displays the organization name with a verified
 
 #### Admin Consent
 
-Apps requesting **application permissions** (permissions that act without a signed-in user) or high-privilege **delegated permissions** require admin consent before any user in a Microsoft 365 tenant can authenticate. Without admin consent, users see a **"Need admin approval"** error.
+Apps requesting **application permissions** (permissions that act without a signed-in user) or high-privilege **delegated permissions** require admin consent before any user in a Microsoft 365 tenant can authenticate. Without admin consent, users see a **"Need admin approval"** error. Delegated permissions rarely need admin consent unless classified as high privilege; see the [Microsoft Graph permissions reference](https://learn.microsoft.com/en-us/graph/permissions-reference) to check which do.
 
 A tenant administrator can grant consent using either method:
 
-**Method 1 — Admin Consent URL:**
+**Method 1: Admin Consent URL**
 
 Navigate to the following URL, replacing `{tenant}` with the Directory tenant ID and `{client_id}` with the Application client ID:
 
     https://login.microsoftonline.com/{tenant}/adminconsent?client_id={client_id}
 
-**Method 2 — Microsoft Entra Admin Center:**
+**Method 2: Microsoft Entra Admin Center**
 
 1. Navigate to [Microsoft Entra Admin Center](https://entra.microsoft.com/) → **Enterprise applications**
 2. Select the app registration
 3. Under **Permissions**, click **Grant admin consent for [organization name]**
-
-:::note[Delegated vs. Application Permissions]
-Delegated permissions (user-level) typically do not require admin consent unless they are classified as high privilege. Application permissions always require admin consent. Review the [Microsoft Graph permissions reference](https://learn.microsoft.com/en-us/graph/permissions-reference) to identify which permissions require consent.
-:::
 
 <Vimeo video="907604023" />

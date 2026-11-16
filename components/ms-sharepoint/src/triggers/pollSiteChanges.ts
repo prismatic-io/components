@@ -1,5 +1,6 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
-import { connection, siteId } from "../inputs";
+import { pollSiteChangesInputs } from "../inputs";
+import { pollSiteChangesExamplePayload } from "../examplePayloads";
 import { createClient } from "../client";
 import {
   fetchSiteDeltaRound,
@@ -7,7 +8,7 @@ import {
   resolveDeltaUrl,
   resolveSitePollingRecordChanges,
   separateDriveChanges,
-} from "../utils";
+} from "../util";
 import type {
   Drive,
   DriveDeltaResponse,
@@ -15,18 +16,16 @@ import type {
   PollingRecordChange,
   PollSiteChangesResult,
   SiteDeltaCursor,
-} from "../interfaces";
+} from "../types";
 
 export const pollSiteChanges = pollingTrigger({
   display: {
-    label: "New and Updated Site Items",
+    label: "Site Item Changes",
     description:
       "Checks for new and updated items across all drives in a SharePoint site on a configured schedule.",
   },
-  inputs: {
-    connection,
-    siteId,
-  },
+  inputs: pollSiteChangesInputs,
+  examplePayload: pollSiteChangesExamplePayload,
   triggerResolverSupport: "valid",
   batchConfig: { batchSize: 50 },
   triggerResolver: {

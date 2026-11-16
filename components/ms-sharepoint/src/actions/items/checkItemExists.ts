@@ -1,14 +1,16 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
+import { checkItemExistsExamplePayload } from "../../examplePayloads";
 import { checkItemExistsInputs } from "../../inputs";
-import { checkItemExistsExamplePayload } from "../../examplePayloads/items/checkItemExistsExamplePayload";
+import { checkItemExistsOutputSchema } from "../../outputSchemas";
 
 export const checkItemExists = action({
   display: {
     label: "Check Item Exists",
-    description: "Check if a file or folder exists in a SharePoint drive",
+    description: "Check if a file or folder exists in a SharePoint drive.",
   },
   inputs: checkItemExistsInputs,
+  performSafety: "safe",
   perform: async (context, { connection, siteId, driveId, itemPath }) => {
     const client = await createClient(connection, context.debug.enabled);
 
@@ -39,5 +41,9 @@ export const checkItemExists = action({
       throw error;
     }
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: checkItemExistsOutputSchema,
+  }),
   examplePayload: checkItemExistsExamplePayload,
 });

@@ -1,15 +1,17 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
+import { searchItemsExamplePayload } from "../../examplePayloads";
 import { searchItemsInputs } from "../../inputs";
-import { searchItemsExamplePayload } from "../../examplePayloads/items/searchItemsExamplePayload";
-import { paginateResults } from "../../utils";
+import { paginateResults } from "../../util";
+import { searchItemsOutputSchema } from "../../outputSchemas";
 
 export const searchItems = action({
   display: {
     label: "Search Items",
-    description: "Search for items across all drives in a SharePoint site",
+    description: "Search for items across all drives in a SharePoint site.",
   },
   inputs: searchItemsInputs,
+  performSafety: "notAllowed",
   perform: async (context, { connection, siteId, query }) => {
     const client = await createClient(connection, context.debug.enabled);
 
@@ -49,5 +51,10 @@ export const searchItems = action({
 
     return { data };
   },
+  examplePerform: async () => searchItemsExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: searchItemsOutputSchema,
+  }),
   examplePayload: searchItemsExamplePayload,
 });

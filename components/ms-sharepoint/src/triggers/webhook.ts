@@ -1,5 +1,7 @@
 import { trigger, util } from "@prismatic-io/spectral";
-import { TriggerBranches } from "../actions/enums";
+import { TriggerBranches } from "../enums";
+import { webhookInputs } from "../inputs";
+import { webhookExamplePayload } from "../examplePayloads";
 
 export const webhook = trigger({
   display: {
@@ -10,7 +12,8 @@ export const webhook = trigger({
   scheduleSupport: "invalid",
   synchronousResponseSupport: "valid",
   allowsBranching: true,
-  inputs: {},
+  inputs: webhookInputs,
+  examplePayload: webhookExamplePayload,
   staticBranchNames: [TriggerBranches.Notification, TriggerBranches.URLValidation],
   perform: async (_context, payload) => {
     const rawValidationToken = payload.queryParameters?.validationToken;

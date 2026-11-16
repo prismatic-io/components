@@ -1,14 +1,16 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
+import { renameFolderExamplePayload } from "../../examplePayloads";
 import { renameFolderInputs } from "../../inputs";
-import { renameFolderExamplePayload } from "../../examplePayloads/folders/renameFolderExamplePayload";
+import { renameFolderOutputSchema } from "../../outputSchemas";
 
 export const renameFolder = action({
   display: {
-    label: "Rename a Folder",
-    description: "Rename a Folder in a Drive",
+    label: "Rename Folder",
+    description: "Rename a Folder in a Drive.",
   },
   inputs: renameFolderInputs,
+  performSafety: "notAllowed",
   perform: async (context, { connection, siteId, driveId, folderId, folderName }) => {
     const client = await createClient(connection, context.debug.enabled);
 
@@ -18,5 +20,12 @@ export const renameFolder = action({
 
     return { data };
   },
+  examplePerform: async (_context, { folderName }) => ({
+    data: { ...renameFolderExamplePayload.data, name: folderName },
+  }),
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: renameFolderOutputSchema,
+  }),
   examplePayload: renameFolderExamplePayload,
 });

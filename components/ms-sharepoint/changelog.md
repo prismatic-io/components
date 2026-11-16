@@ -1,5 +1,21 @@
 ## Changelog
 
+### 2026-11-16
+
+Fixed subscription renewal and moved file downloads off Microsoft's retiring pre-authenticated URL, added multi-select site, drive, and folder data sources, and improved the list actions and polling triggers:
+- Fixed the **Drive Subscription** trigger no longer receiving notifications once its Microsoft Graph subscription expired; when the trigger runs on a schedule it now renews the subscription on a **Scheduled Renewal** branch, extending it to just under the Microsoft Graph maximum and recreating it if it has lapsed, and it handles Graph lifecycle notices on a new **Lifecycle Event** branch
+- Updated the **Download File** action to use the official Microsoft Graph `/content` endpoint instead of the deprecated `@microsoft.graph.downloadUrl` property, which Microsoft stops pre-authenticating on April 1, 2027; the **Get File** description now points binary files to **Download File**
+- Fixed the **Renew Subscription** action treating **Expiration Days** as minutes instead of days; renewals are now capped at the Microsoft Graph maximum
+- Fixed the **Raw Request** action ignoring the connection's **Base URL** and always sending to the global Microsoft Graph endpoint
+- Fixed the **List Items in Site List** action ignoring **Opt In Fields** when no page size or page token was set
+- Added the **Select Sites**, **Select Drives from Sites**, and **Select Folders from Drives** data sources for selecting several sites, drives, and top-level folders in a configuration wizard; the drive and folder data sources take one or more parents (a single ID, a list, or the selection from the previous data source) and, when several are selected, skip a site or drive Microsoft Graph refuses or no longer has instead of failing the whole list, and each **Select Folders from Drives** key joins the drive ID and folder ID with a colon
+- Updated the **Drive Item Changes** and **Folder Item Changes** triggers to skip the flow when a recurrence finds no changes, as **Site Item Changes** already did
+- Updated the polling trigger labels from **New and Updated Drive Items**, **New and Updated Folder Items**, and **New and Updated Site Items** to **Drive Item Changes**, **Folder Item Changes**, and **Site Item Changes**; trigger keys are unchanged, so existing flows keep working
+- Updated **List Drives**, **List Files in Drive**, **List Folder Files in Drive**, **List Followed Sites**, **List Items in Site List**, and **List Sites** to group their page size and page token inputs into **Pagination**, and **List Changes** to group its delta query options into **Query Parameters**; **Fetch All** stays a top-level toggle where offered
+- Updated the actions that take **Pagination** to send no page size when **Page Limit** is blank, instead of a page size of 0
+- Added output schemas to 30 actions for improved field mapping during configuration
+- Added inline action calling support to 33 actions for improved example output during configuration
+
 ### 2026-11-11
 
 Refactored internal code

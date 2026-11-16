@@ -1,6 +1,6 @@
-SharePoint supports webhook notifications through the Microsoft Graph API with automatic subscription lifecycle management. This trigger automatically creates and manages webhook subscriptions, eliminating the need for manual subscription creation and maintenance.
+SharePoint supports webhook notifications through the Microsoft Graph API with automatic subscription lifecycle management. This trigger automatically creates and manages [webhook subscriptions](https://learn.microsoft.com/en-us/graph/api/resources/subscription?view=graph-rest-1.0), eliminating the need for manual subscription creation.
 
-When an integration instance is deployed, the trigger creates a webhook subscription with Microsoft Graph. When the instance is deleted, the subscription is automatically removed. This lifecycle management ensures subscriptions stay synchronized with active integrations.
+When an integration instance is deployed, the trigger creates a webhook subscription with Microsoft Graph. When the instance is deleted, the subscription is automatically removed. When the trigger runs on a schedule, it renews the subscription before it expires, extending it to the 42,300-minute maximum. This lifecycle management ensures subscriptions stay synchronized with active integrations.
 
 For manual webhook configuration without automatic lifecycle management, use the **Webhook** trigger instead.
 
@@ -11,10 +11,11 @@ Configure the trigger using these inputs:
 - **Connection**: Microsoft SharePoint connection for authentication
 - **Resource**: The Microsoft Graph resource path to monitor for changes
   - Examples: `/me/drive/root`, `/sites/{site-id}/drive/root`, `/drives/{drive-id}/root`
-- **Change Type**: The type of changes to monitor (created, updated, deleted)
+- **Change Type**: The type of changes to monitor. Drive root items and lists support only `updated`.
 - **Client State**: Optional validation token included in each notification to verify the source
-- **Expiration Date Time**: Optional expiration for the subscription (defaults to 3 days if not provided)
-  - Maximum is 30 days for SharePoint/OneDrive resources
+- **Expiration Date Time**: Optional expiration for the subscription (defaults to about 7 days if not provided)
+  - Maximum is just under 30 days (42,300 minutes) for SharePoint and OneDrive resources
+  - Set a schedule on the trigger to renew the subscription before it expires (see **Keeping the Subscription Active**)
 
 #### How It Works
 
@@ -23,22 +24,68 @@ The trigger manages webhook subscriptions through a complete lifecycle:
 **On Instance Deploy:**
 1. Creates a webhook subscription using the Microsoft Graph Subscriptions API
 2. Subscribes to the specified resource path with the configured change types
-3. Sets the subscription expiration (default 3 days, maximum 30 days for SharePoint resources)
-4. Microsoft validates the webhook endpoint by sending a validation token
-5. The trigger responds with the token to complete subscription creation
+3. Sets the subscription expiration: about 7 days by default, and at most just under 30 days (42,300 minutes) for SharePoint resources
+4. Registers the flow's webhook URL for Microsoft Graph lifecycle notifications
+5. Microsoft validates the webhook endpoint by sending a validation token
+6. The trigger responds with the token to complete subscription creation
 
 **On Webhook Notification:**
 - Microsoft posts notification payloads when monitored resources change
-- The trigger validates the clientState (if configured)
+- The trigger validates the clientState (if configured) and logs a warning on a mismatch
 - Notifications are routed to the appropriate branch for processing
+
+**On Scheduled Execution:**
+- Extends the subscription expiration to 10 minutes under the Microsoft Graph maximum for drive and list resources (42,300 minutes, just under 30 days)
+- Creates a new subscription if the previous one has already expired
+
+**On Lifecycle Notification:**
+- Renews the subscription to just under the 42,300-minute maximum when Microsoft Graph asks for reauthorization, and creates a replacement subscription if that renewal fails
+- Creates a new subscription if Microsoft Graph reports that the subscription was removed
+- Passes `missed` notices to the flow so it can run a delta query
+- For drive and list resources Microsoft Graph currently sends only `reauthorizationRequired`; the trigger also handles `subscriptionRemoved` and `missed` if they arrive
+- A lifecycle notice whose clientState does not match the configured **Client State** is acknowledged with HTTP 202, but the trigger takes no action on it
 
 **On Instance Deletion:**
 - Automatically deletes the webhook subscription from Microsoft Graph
 - Cleans up all subscription resources to prevent orphaned subscriptions
 
+#### Keeping the Subscription Active
+
+Microsoft Graph subscriptions expire. Without renewal, notifications stop about 7 days after deployment, or at the configured expiration. To keep notifications flowing:
+
+1. Configure the trigger with a schedule (for example, daily)
+2. Scheduled executions route to the **Scheduled Renewal** branch
+3. The trigger extends the subscription to just under the 42,300-minute maximum on each run, so any schedule shorter than that keeps it active, and recreates the subscription if it has already lapsed
+
+Microsoft Graph also sends `reauthorizationRequired` lifecycle notifications to the flow's webhook URL, which the trigger answers by renewing the subscription. [Microsoft documents](https://learn.microsoft.com/en-us/graph/change-notifications-lifecycle-events) that these notifications do not replace renewal, so the schedule remains the reliable way to keep a subscription active.
+
+#### Event Types
+
+<details>
+<summary>Available Events (1)</summary>
+
+| Event | Branch | Description |
+|-------|--------|-------------|
+| `updated` | Notification | Sent when an item in the monitored drive or list changes. Drive root items and lists support only this change type. |
+
+</details>
+
+<details>
+<summary>Lifecycle Events (3)</summary>
+
+| Event | Branch | Description |
+|-------|--------|-------------|
+| `reauthorizationRequired` | Lifecycle Event | Microsoft Graph asks for the subscription to be reauthorized. The trigger renews it, or creates a replacement if the renewal fails. |
+| `subscriptionRemoved` | Lifecycle Event | Microsoft Graph removed the subscription. The trigger creates a new one. |
+| `missed` | Lifecycle Event | Some change notifications were not delivered. The trigger passes the notice to the flow; run a delta query to catch up. |
+
+</details>
+
+For drive and list resources Microsoft Graph currently sends only `reauthorizationRequired`; the other two are handled if they arrive. See the [lifecycle notifications guide](https://learn.microsoft.com/en-us/graph/change-notifications-lifecycle-events).
+
 #### Branches
 
-The trigger uses two branches to handle different webhook events:
+The trigger uses four branches to handle different webhook events:
 
 **URL Validation** - Handles Microsoft's endpoint validation:
 - Triggered when Microsoft validates the webhook endpoint during subscription creation
@@ -47,8 +94,19 @@ The trigger uses two branches to handle different webhook events:
 
 **Notification** - Handles actual change notifications:
 - Triggered when SharePoint sends change event payloads
-- Validates clientState if configured (logs warning on mismatch)
+- Validates clientState if configured (logs a warning on mismatch; the notification still reaches this branch)
 - Passes the payload to the integration flow for processing
+
+**Scheduled Renewal** - Handles scheduled executions:
+- Triggered when the trigger runs on its configured schedule
+- Renews the subscription, or creates a new one if none remains
+- No steps are required on this branch
+
+**Lifecycle Event** - Handles Microsoft Graph lifecycle notifications:
+- Triggered when Microsoft Graph posts a lifecycle notice. For drive and list resources Graph currently sends only `reauthorizationRequired`; `subscriptionRemoved` and `missed` are handled if they arrive
+- Renews or recreates the subscription as needed, then responds with HTTP 202
+- A notice whose clientState does not match the configured **Client State** is acknowledged with HTTP 202 and reaches this branch, but the trigger does not renew or recreate the subscription for it. It never reaches the **Notification** branch
+- Passes the lifecycle payload to the flow; a `missed` notice means some change notifications were not delivered and a delta query should be run
 
 #### Returned Data
 
@@ -77,3 +135,29 @@ The trigger returns the raw webhook payload containing change notifications:
 ```
 
 </details>
+
+On the **Lifecycle Event** branch, the payload describes the subscription rather than a changed resource:
+
+<details>
+<summary>Example Lifecycle Notification Payload</summary>
+
+```json
+{
+  "value": [
+    {
+      "subscriptionId": "7f105c7d-2dc5-4530-97cd-4e7ae6534c07",
+      "subscriptionExpirationDateTime": "2024-12-15T18:23:45.9356913Z",
+      "tenantId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "clientState": "optional-validation-token",
+      "lifecycleEvent": "reauthorizationRequired"
+    }
+  ]
+}
+```
+
+</details>
+
+#### Best Practices
+
+- **Subscription Renewal**: Subscriptions expire after about 7 days by default and after just under 30 days (42,300 minutes) at most. Configure the trigger with a schedule (for example, daily) so it renews the subscription before it expires. Each renewal extends the subscription to the 42,300-minute maximum, so any schedule shorter than that keeps it active.
+- **Client State Validation**: Configure a unique **Client State** value. Lifecycle notices with a mismatched value are ignored, and change notifications with a mismatched value are logged as a warning.

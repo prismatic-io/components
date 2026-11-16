@@ -1,8 +1,3 @@
-//#region node_modules/axios/index.d.ts
-type UppercaseMethod = 'GET' | 'DELETE' | 'HEAD' | 'OPTIONS' | 'POST' | 'PUT' | 'PATCH' | 'PURGE' | 'LINK' | 'UNLINK' | 'QUERY';
-type Method = (UppercaseMethod | Lowercase<UppercaseMethod>) & {};
-type ResponseType = 'arraybuffer' | 'blob' | 'document' | 'json' | 'text' | 'stream' | 'formdata';
-//#endregion
 //#region ../../packages/ms-utils/dist/interfaces/Subscriptions.d.ts
 interface GraphSubscription {
   id?: string;
@@ -15,47 +10,15 @@ interface GraphSubscription {
   creatorId?: string;
 }
 //#endregion
-//#region src/actions/enums.d.ts
-declare enum TriggerBranches {
-  Notification = "Notification",
-  URLValidation = "URL Validation"
-}
+//#region node_modules/axios/index.d.ts
+type UppercaseMethod = 'GET' | 'DELETE' | 'HEAD' | 'OPTIONS' | 'POST' | 'PUT' | 'PATCH' | 'PURGE' | 'LINK' | 'UNLINK' | 'QUERY';
+type Method = (UppercaseMethod | Lowercase<UppercaseMethod>) & {};
+type ResponseType = 'arraybuffer' | 'blob' | 'document' | 'json' | 'text' | 'stream' | 'formdata';
 //#endregion
-//#region src/interfaces.d.ts
-interface DriveItem {
+//#region src/types/inputs.d.ts
+interface ParentRef {
   id: string;
-  name: string;
-  folder?: {
-    childCount: number;
-  };
-  file?: {
-    mimeType: string;
-  };
-  size?: number;
-  webUrl?: string;
-  lastModifiedDateTime?: string;
-  createdDateTime?: string;
-  deleted?: {
-    state: string;
-  };
-  parentReference: {
-    driveId: string;
-    id: string;
-    path: string;
-  };
-}
-interface SiteDeltaCursor extends Record<string, unknown> {
-  remaining: string[];
-  nextLink?: string;
-}
-interface PollSiteChangesSeparatedChanges {
-  deleted?: DriveItem[];
-  added?: DriveItem[];
-  updated?: DriveItem[];
-  moved?: DriveItem[];
-}
-interface PollSiteChangesResult {
-  [key: string]: PollSiteChangesSeparatedChanges;
+  label?: string;
 }
 //#endregion
 //#region npm-dist/.entry.d.ts
@@ -73,74 +36,27 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
     error: (error: unknown) => unknown;
   };
   actions: {
-    listItems: import("@prismatic-io/spectral").ActionDefinition<{
+    listSharedDocuments: import("@prismatic-io/spectral").ActionDefinition<{
       connection: {
         label: string;
         type: "connection";
         required: true;
         comments: string;
-      };
-      siteId: {
-        required: boolean;
-        label: string;
-        type: "string";
-        placeholder: string;
-        comments: string;
-        dataSource: string;
-        example: string;
-      };
-      driveId: {
-        comments: string;
-        label: string;
-        type: "string";
-        required: true;
-        placeholder: string;
-        example: string;
-        dataSource: string;
-        clean: (value: unknown, defaultValue?: string) => string;
-      };
-      folderId: {
-        comments: string;
-        required: boolean;
-        label: string;
-        placeholder: string;
-        type: "string";
-        example: string;
-        dataSource: string;
-        clean: (value: unknown) => string;
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
       data: any;
     }>;
-    searchItems: import("@prismatic-io/spectral").ActionDefinition<{
+    getCurrentUser: import("@prismatic-io/spectral").ActionDefinition<{
       connection: {
         label: string;
         type: "connection";
         required: true;
         comments: string;
-      };
-      siteId: {
-        comments: string;
-        label: string;
-        type: "string";
-        required: true;
-        placeholder: string;
-        dataSource: string;
-        example: string;
-      };
-      query: {
-        comments: string;
-        label: string;
-        type: "string";
-        required: true;
-        example: string;
-        placeholder: string;
-        clean: (value: unknown, defaultValue?: string) => string;
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
-      data: Record<string, unknown[]>;
+      data: any;
     }>;
-    checkItemExists: import("@prismatic-io/spectral").ActionDefinition<{
+    createSiteListSubscription: import("@prismatic-io/spectral").ActionDefinition<{
       connection: {
         label: string;
         type: "connection";
@@ -148,192 +64,358 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         comments: string;
       };
       siteId: {
-        comments: string;
         label: string;
         type: "string";
         required: true;
         placeholder: string;
-        dataSource: string;
-        example: string;
-      };
-      driveId: {
         comments: string;
-        label: string;
-        type: "string";
-        required: true;
-        placeholder: string;
-        example: string;
         dataSource: string;
+        example: string;
         clean: (value: unknown, defaultValue?: string) => string;
-      };
-      itemPath: {
-        comments: string;
-        label: string;
-        type: "string";
-        required: true;
-        example: string;
-        placeholder: string;
-        clean: (value: unknown, defaultValue?: string) => string;
-      };
-    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
-      data: {
-        exists: boolean;
-        message: string;
-        item: any;
-      };
-    } | {
-      data: {
-        exists: boolean;
-        message: string;
-        item?: undefined;
-      };
-    }>;
-    moveFile: import("@prismatic-io/spectral").ActionDefinition<{
-      connection: {
-        label: string;
-        type: "connection";
-        required: true;
-        comments: string;
-      };
-      siteId: {
-        required: boolean;
-        label: string;
-        type: "string";
-        placeholder: string;
-        comments: string;
-        dataSource: string;
-        example: string;
       };
       listId: {
-        required: boolean;
-        label: string;
-        type: "string";
-        placeholder: string;
-        comments: string;
-        example: string;
-        dataSource: string;
-      };
-      driveId: {
-        comments: string;
         label: string;
         type: "string";
         required: true;
         placeholder: string;
+        comments: string;
         example: string;
         dataSource: string;
         clean: (value: unknown, defaultValue?: string) => string;
       };
-      itemId: {
-        comments: string;
+      notificationUrl: {
         label: string;
         type: "string";
         required: true;
         placeholder: string;
-        dataSource: string;
-        example: string;
-      };
-      parentItemId: {
-        label: string;
         comments: string;
-        type: "string";
-        required: true;
-        placeholder: string;
         example: string;
         clean: (value: unknown, defaultValue?: string) => string;
       };
-    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
-      data: any;
-    }>;
-    createFolder: import("@prismatic-io/spectral").ActionDefinition<{
-      connection: {
-        label: string;
-        type: "connection";
-        required: true;
-        comments: string;
-      };
-      siteId: {
-        comments: string;
+      expirationDateTime: {
         label: string;
         type: "string";
-        required: true;
-        placeholder: string;
-        dataSource: string;
-        example: string;
-      };
-      driveId: {
+        required: false;
         comments: string;
-        label: string;
-        type: "string";
-        required: true;
         placeholder: string;
         example: string;
-        dataSource: string;
-        clean: (value: unknown, defaultValue?: string) => string;
-      };
-      parentItemId: {
-        comments: string;
-        label: string;
-        type: "string";
-        required: true;
-        placeholder: string;
-        example: string;
-        clean: (value: unknown, defaultValue?: string) => string;
-      };
-      folderName: {
-        comments: string;
-        label: string;
-        type: "string";
-        required: true;
-        example: string;
-        placeholder: string;
-        clean: (value: unknown, defaultValue?: string) => string;
-      };
-    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
-      data: any;
-    }>;
-    renameFolder: import("@prismatic-io/spectral").ActionDefinition<{
-      connection: {
-        label: string;
-        type: "connection";
-        required: true;
-        comments: string;
-      };
-      siteId: {
-        comments: string;
-        label: string;
-        type: "string";
-        required: true;
-        placeholder: string;
-        dataSource: string;
-        example: string;
-      };
-      driveId: {
-        comments: string;
-        label: string;
-        type: "string";
-        required: true;
-        placeholder: string;
-        example: string;
-        dataSource: string;
-        clean: (value: unknown, defaultValue?: string) => string;
-      };
-      folderId: {
-        comments: string;
-        required: boolean;
-        label: string;
-        placeholder: string;
-        type: "string";
-        example: string;
-        dataSource: string;
         clean: (value: unknown) => string;
       };
-      folderName: {
+      allowDuplicates: {
+        label: string;
+        type: "boolean";
+        required: false;
+        default: string;
         comments: string;
+        clean: (value: unknown, defaultValue?: boolean) => boolean;
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
+      data: any;
+    }>;
+    updateSiteListSubscriptionExpiration: import("@prismatic-io/spectral").ActionDefinition<{
+      connection: {
+        label: string;
+        type: "connection";
+        required: true;
+        comments: string;
+      };
+      subscriptionId: {
         label: string;
         type: "string";
         required: true;
-        example: string;
         placeholder: string;
+        comments: string;
+        example: string;
+        dataSource: string;
+        clean: (value: unknown, defaultValue?: string) => string;
+      };
+      expirationDateTime: {
+        label: string;
+        type: "string";
+        required: false;
+        comments: string;
+        placeholder: string;
+        example: string;
+        clean: (value: unknown) => string;
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
+      data: any;
+    }>;
+    createSubscription: import("@prismatic-io/spectral").ActionDefinition<{
+      connection: {
+        label: string;
+        type: "connection";
+        required: true;
+        comments: string;
+      };
+      changeType: {
+        label: string;
+        type: "string";
+        required: true;
+        placeholder: string;
+        comments: string;
+        example: string;
+        default: string;
+        clean: (value: unknown, defaultValue?: string) => string;
+      };
+      notificationUrl: {
+        label: string;
+        type: "string";
+        required: true;
+        placeholder: string;
+        comments: string;
+        example: string;
+        clean: (value: unknown, defaultValue?: string) => string;
+      };
+      resource: {
+        label: string;
+        type: "string";
+        required: true;
+        placeholder: string;
+        comments: string;
+        example: string;
+        clean: (value: unknown, defaultValue?: string) => string;
+      };
+      expirationDateTime: {
+        label: string;
+        type: "string";
+        required: true;
+        placeholder: string;
+        comments: string;
+        example: string;
+        clean: (input: unknown) => string;
+      };
+      clientState: {
+        label: string;
+        type: "string";
+        required: false;
+        placeholder: string;
+        comments: string;
+        example: string;
+        clean: (value: unknown) => string | undefined;
+      };
+      allowDuplicates: {
+        label: string;
+        type: "boolean";
+        required: false;
+        default: string;
+        comments: string;
+        clean: (value: unknown, defaultValue?: boolean) => boolean;
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
+      data: GraphSubscription;
+    }>;
+    deleteSubscription: import("@prismatic-io/spectral").ActionDefinition<{
+      connection: {
+        label: string;
+        type: "connection";
+        required: true;
+        comments: string;
+      };
+      subscriptionId: {
+        label: string;
+        type: "string";
+        required: true;
+        placeholder: string;
+        comments: string;
+        example: string;
+        dataSource: string;
+        clean: (value: unknown, defaultValue?: string) => string;
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
+      data: any;
+    }>;
+    deleteAllInstanceSubscriptions: import("@prismatic-io/spectral").ActionDefinition<{
+      connection: {
+        label: string;
+        type: "connection";
+        required: true;
+        comments: string;
+      };
+      notificationUrl: {
+        comments: string;
+        required: boolean;
+        clean: (value: unknown) => string | undefined;
+        label: string;
+        type: "string";
+        placeholder: string;
+        example: string;
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
+      data: {
+        subscriptionsRemoved: string[];
+        count: number;
+      };
+    }>;
+    listSubscriptions: import("@prismatic-io/spectral").ActionDefinition<{
+      connection: {
+        label: string;
+        type: "connection";
+        required: true;
+        comments: string;
+      };
+      showInstanceSubscriptions: {
+        label: string;
+        type: "boolean";
+        required: false;
+        default: string;
+        comments: string;
+        clean: (value: unknown, defaultValue?: boolean) => boolean;
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
+      data: {
+        value: {
+          [key: string]: unknown;
+          notificationUrl: string;
+        }[];
+        "@odata.context": string;
+      };
+    }>;
+    renewSubscription: import("@prismatic-io/spectral").ActionDefinition<{
+      connection: {
+        label: string;
+        type: "connection";
+        required: true;
+        comments: string;
+      };
+      subscriptionId: {
+        label: string;
+        type: "string";
+        required: true;
+        placeholder: string;
+        comments: string;
+        example: string;
+        dataSource: string;
+        clean: (value: unknown, defaultValue?: string) => string;
+      };
+      expirationDays: {
+        label: string;
+        type: "string";
+        placeholder: string;
+        comments: string;
+        example: string;
+        default: string;
+        required: false;
+        clean: (value: unknown) => number;
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
+      data: GraphSubscription;
+    }>;
+    listFollowedSites: import("@prismatic-io/spectral").ActionDefinition<{
+      connection: {
+        label: string;
+        type: "connection";
+        required: true;
+        comments: string;
+      };
+      fetchAll: {
+        label: string;
+        type: "boolean";
+        required: false;
+        default: string;
+        comments: string;
+        clean: (value: unknown, defaultValue?: boolean) => boolean;
+      };
+      pagination: {
+        label: string;
+        required: boolean;
+        comments: string;
+        inputs: {
+          pageLimit: {
+            label: string;
+            type: "string";
+            required: false;
+            placeholder: string;
+            example: string;
+            comments: string;
+            clean: (value: unknown, defaultValue?: number) => number;
+          };
+          pageToken: {
+            label: string;
+            type: "string";
+            required: false;
+            placeholder: string;
+            example: string;
+            comments: string;
+            clean: (value: unknown) => string | undefined;
+          };
+        };
+      } & {
+        type: "structuredObject";
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
+      data: any;
+    }>;
+    listSites: import("@prismatic-io/spectral").ActionDefinition<{
+      connection: {
+        label: string;
+        type: "connection";
+        required: true;
+        comments: string;
+      };
+      fetchAll: {
+        label: string;
+        type: "boolean";
+        required: false;
+        default: string;
+        comments: string;
+        clean: (value: unknown, defaultValue?: boolean) => boolean;
+      };
+      pagination: {
+        label: string;
+        required: boolean;
+        comments: string;
+        inputs: {
+          pageLimit: {
+            label: string;
+            type: "string";
+            required: false;
+            placeholder: string;
+            example: string;
+            comments: string;
+            clean: (value: unknown, defaultValue?: number) => number;
+          };
+          pageToken: {
+            label: string;
+            type: "string";
+            required: false;
+            placeholder: string;
+            example: string;
+            comments: string;
+            clean: (value: unknown) => string | undefined;
+          };
+        };
+      } & {
+        type: "structuredObject";
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
+      data: any;
+    }>;
+    getRootSite: import("@prismatic-io/spectral").ActionDefinition<{
+      connection: {
+        label: string;
+        type: "connection";
+        required: true;
+        comments: string;
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
+      data: any;
+    }>;
+    getSite: import("@prismatic-io/spectral").ActionDefinition<{
+      connection: {
+        label: string;
+        type: "connection";
+        required: true;
+        comments: string;
+      };
+      siteId: {
+        label: string;
+        type: "string";
+        required: true;
+        placeholder: string;
+        comments: string;
+        dataSource: string;
+        example: string;
         clean: (value: unknown, defaultValue?: string) => string;
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
@@ -476,414 +558,6 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
       data: any;
     }>;
-    listChanges: import("@prismatic-io/spectral").ActionDefinition<{
-      connection: {
-        label: string;
-        type: "connection";
-        required: true;
-        comments: string;
-      };
-      deltaURL: {
-        label: string;
-        type: "string";
-        required: true;
-        placeholder: string;
-        comments: string;
-        example: string;
-        default: string;
-        clean: (value: unknown, defaultValue?: string) => string;
-      };
-      $select: {
-        label: string;
-        type: "string";
-        required: false;
-        placeholder: string;
-        comments: string;
-        example: string;
-        clean: (value: unknown, defaultValue?: string) => string;
-      };
-      $expand: {
-        label: string;
-        type: "string";
-        required: false;
-        placeholder: string;
-        comments: string;
-        example: string;
-        clean: (value: unknown, defaultValue?: string) => string;
-      };
-      $top: {
-        label: string;
-        type: "string";
-        required: false;
-        placeholder: string;
-        comments: string;
-        example: string;
-        clean: (value: unknown, defaultValue?: string) => string;
-      };
-      fetchAll: {
-        label: string;
-        type: "boolean";
-        required: false;
-        comments: string;
-        clean: (value: unknown, defaultValue?: boolean) => boolean;
-      };
-    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
-      data: any;
-    }>;
-    createSubscription: import("@prismatic-io/spectral").ActionDefinition<{
-      connection: {
-        label: string;
-        type: "connection";
-        required: true;
-        comments: string;
-      };
-      changeType: {
-        label: string;
-        type: "string";
-        required: true;
-        placeholder: string;
-        comments: string;
-        example: string;
-        default: string;
-        clean: (value: unknown, defaultValue?: string) => string;
-      };
-      notificationUrl: {
-        label: string;
-        type: "string";
-        required: true;
-        placeholder: string;
-        comments: string;
-        example: string;
-        clean: (value: unknown, defaultValue?: string) => string;
-      };
-      resource: {
-        label: string;
-        type: "string";
-        required: true;
-        placeholder: string;
-        comments: string;
-        example: string;
-        clean: (value: unknown, defaultValue?: string) => string;
-      };
-      expirationDateTime: {
-        label: string;
-        type: "string";
-        required: true;
-        placeholder: string;
-        comments: string;
-        example: string;
-        clean: (input: unknown) => string;
-      };
-      clientState: {
-        label: string;
-        type: "string";
-        required: false;
-        placeholder: string;
-        comments: string;
-        example: string;
-        clean: (value: unknown, defaultValue?: string) => string;
-      };
-      allowDuplicates: {
-        label: string;
-        type: "boolean";
-        required: false;
-        default: string;
-        comments: string;
-        clean: (value: unknown, defaultValue?: boolean) => boolean;
-      };
-    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
-      data: GraphSubscription;
-    }>;
-    deleteAllInstanceSubscriptions: import("@prismatic-io/spectral").ActionDefinition<{
-      connection: {
-        label: string;
-        type: "connection";
-        required: true;
-        comments: string;
-      };
-      notificationUrl: {
-        comments: string;
-        required: boolean;
-        label: string;
-        type: "string";
-        placeholder: string;
-        example: string;
-        clean: (value: unknown, defaultValue?: string) => string;
-      };
-    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
-      data: {
-        subscriptionsRemoved: string[];
-        count: number;
-      };
-    }>;
-    deleteSubscription: import("@prismatic-io/spectral").ActionDefinition<{
-      connection: {
-        label: string;
-        type: "connection";
-        required: true;
-        comments: string;
-      };
-      subscriptionId: {
-        label: string;
-        type: "string";
-        required: true;
-        placeholder: string;
-        comments: string;
-        example: string;
-        dataSource: string;
-        clean: (value: unknown, defaultValue?: string) => string;
-      };
-    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
-      data: any;
-    }>;
-    listSubscriptions: import("@prismatic-io/spectral").ActionDefinition<{
-      connection: {
-        label: string;
-        type: "connection";
-        required: true;
-        comments: string;
-      };
-      showInstanceSubscriptions: {
-        label: string;
-        type: "boolean";
-        required: false;
-        default: string;
-        comments: string;
-        clean: (value: unknown, defaultValue?: boolean) => boolean;
-      };
-    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
-      data: {
-        value: {
-          [key: string]: unknown;
-          notificationUrl: string;
-        }[];
-        "@odata.context": string;
-      };
-    }>;
-    renewSubscription: import("@prismatic-io/spectral").ActionDefinition<{
-      connection: {
-        label: string;
-        type: "connection";
-        required: true;
-        comments: string;
-      };
-      subscriptionId: {
-        label: string;
-        type: "string";
-        required: true;
-        placeholder: string;
-        comments: string;
-        example: string;
-        dataSource: string;
-        clean: (value: unknown, defaultValue?: string) => string;
-      };
-      expirationDays: {
-        label: string;
-        type: "string";
-        placeholder: string;
-        comments: string;
-        example: string;
-        default: string;
-        required: false;
-        clean: (value: unknown) => number;
-      };
-    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
-      data: GraphSubscription;
-    }>;
-    getCurrentUser: import("@prismatic-io/spectral").ActionDefinition<{
-      connection: {
-        label: string;
-        type: "connection";
-        required: true;
-        comments: string;
-      };
-    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
-      data: any;
-    }>;
-    createSiteListSubscription: import("@prismatic-io/spectral").ActionDefinition<{
-      connection: {
-        label: string;
-        type: "connection";
-        required: true;
-        comments: string;
-      };
-      siteId: {
-        label: string;
-        type: "string";
-        required: true;
-        placeholder: string;
-        comments: string;
-        dataSource: string;
-        example: string;
-      };
-      listId: {
-        label: string;
-        type: "string";
-        required: true;
-        placeholder: string;
-        comments: string;
-        example: string;
-        dataSource: string;
-      };
-      notificationUrl: {
-        label: string;
-        type: "string";
-        required: true;
-        comments: string;
-        clean: (value: unknown, defaultValue?: string) => string;
-      };
-      expirationDateTime: {
-        label: string;
-        type: "string";
-        required: false;
-        comments: string;
-        clean: (rawValue: unknown) => string;
-      };
-      allowDuplicates: {
-        label: string;
-        type: "boolean";
-        required: false;
-        default: string;
-        comments: string;
-        clean: (value: unknown, defaultValue?: boolean) => boolean;
-      };
-    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
-      data: any;
-    }>;
-    updateSiteListSubscriptionExpiration: import("@prismatic-io/spectral").ActionDefinition<{
-      connection: {
-        label: string;
-        type: "connection";
-        required: true;
-        comments: string;
-      };
-      subscriptionId: {
-        label: string;
-        type: "string";
-        required: true;
-        comments: string;
-        dataSource: string;
-        clean: (value: unknown, defaultValue?: string) => string;
-      };
-      expirationDateTime: {
-        label: string;
-        type: "string";
-        required: false;
-        comments: string;
-        clean: (rawValue: unknown) => string;
-      };
-    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
-      data: any;
-    }>;
-    listSharedDocuments: import("@prismatic-io/spectral").ActionDefinition<{
-      connection: {
-        label: string;
-        type: "connection";
-        required: true;
-        comments: string;
-      };
-    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
-      data: any;
-    }>;
-    listSites: import("@prismatic-io/spectral").ActionDefinition<{
-      connection: {
-        label: string;
-        type: "connection";
-        required: true;
-        comments: string;
-      };
-      pageLimit: {
-        label: string;
-        type: "string";
-        required: false;
-        placeholder: string;
-        example: string;
-        comments: string;
-        clean: (value: unknown, defaultValue?: number) => number;
-      };
-      pageToken: {
-        label: string;
-        type: "string";
-        required: false;
-        placeholder: string;
-        example: string;
-        comments: string;
-        clean: (value: unknown, defaultValue?: string) => string;
-      };
-      fetchAll: {
-        label: string;
-        type: "boolean";
-        required: false;
-        comments: string;
-        clean: (value: unknown, defaultValue?: boolean) => boolean;
-      };
-    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
-      data: any;
-    }>;
-    listFollowedSites: import("@prismatic-io/spectral").ActionDefinition<{
-      connection: {
-        label: string;
-        type: "connection";
-        required: true;
-        comments: string;
-      };
-      pageLimit: {
-        label: string;
-        type: "string";
-        required: false;
-        placeholder: string;
-        example: string;
-        comments: string;
-        clean: (value: unknown, defaultValue?: number) => number;
-      };
-      pageToken: {
-        label: string;
-        type: "string";
-        required: false;
-        placeholder: string;
-        example: string;
-        comments: string;
-        clean: (value: unknown, defaultValue?: string) => string;
-      };
-      fetchAll: {
-        label: string;
-        type: "boolean";
-        required: false;
-        comments: string;
-        clean: (value: unknown, defaultValue?: boolean) => boolean;
-      };
-    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
-      data: any;
-    }>;
-    getRootSite: import("@prismatic-io/spectral").ActionDefinition<{
-      connection: {
-        label: string;
-        type: "connection";
-        required: true;
-        comments: string;
-      };
-    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
-      data: any;
-    }>;
-    getSite: import("@prismatic-io/spectral").ActionDefinition<{
-      connection: {
-        label: string;
-        type: "connection";
-        required: true;
-        comments: string;
-      };
-      siteId: {
-        label: string;
-        type: "string";
-        required: true;
-        placeholder: string;
-        comments: string;
-        dataSource: string;
-        example: string;
-      };
-    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
-      data: any;
-    }>;
     listSiteLists: import("@prismatic-io/spectral").ActionDefinition<{
       connection: {
         label: string;
@@ -899,104 +573,15 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         comments: string;
         dataSource: string;
         example: string;
+        clean: (value: unknown, defaultValue?: string) => string;
       };
       fetchAll: {
         label: string;
         type: "boolean";
         required: false;
+        default: string;
         comments: string;
         clean: (value: unknown, defaultValue?: boolean) => boolean;
-      };
-    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
-      data: any;
-    }>;
-    getListItemsInSite: import("@prismatic-io/spectral").ActionDefinition<{
-      connection: {
-        label: string;
-        type: "connection";
-        required: true;
-        comments: string;
-      };
-      siteId: {
-        label: string;
-        type: "string";
-        required: true;
-        placeholder: string;
-        comments: string;
-        dataSource: string;
-        example: string;
-      };
-      listId: {
-        label: string;
-        type: "string";
-        required: true;
-        placeholder: string;
-        comments: string;
-        example: string;
-        dataSource: string;
-      };
-      pageLimit: {
-        label: string;
-        type: "string";
-        required: false;
-        placeholder: string;
-        example: string;
-        comments: string;
-        clean: (value: unknown, defaultValue?: number) => number;
-      };
-      pageToken: {
-        label: string;
-        type: "string";
-        required: false;
-        placeholder: string;
-        example: string;
-        comments: string;
-        clean: (value: unknown, defaultValue?: string) => string;
-      };
-      optInFields: {
-        label: string;
-        type: "string";
-        required: false;
-        placeholder: string;
-        example: string;
-        comments: string;
-        clean: (value: unknown, defaultValue?: string) => string;
-      };
-    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
-      data: any;
-    }>;
-    createItemInSite: import("@prismatic-io/spectral").ActionDefinition<{
-      connection: {
-        label: string;
-        type: "connection";
-        required: true;
-        comments: string;
-      };
-      siteId: {
-        label: string;
-        type: "string";
-        required: true;
-        placeholder: string;
-        comments: string;
-        dataSource: string;
-        example: string;
-      };
-      listId: {
-        label: string;
-        type: "string";
-        required: true;
-        placeholder: string;
-        comments: string;
-        example: string;
-        dataSource: string;
-      };
-      fields: {
-        label: string;
-        type: "string";
-        required: true;
-        collection: "keyvaluelist";
-        placeholder: string;
-        comments: string;
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
       data: any;
@@ -1016,6 +601,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         comments: string;
         dataSource: string;
         example: string;
+        clean: (value: unknown, defaultValue?: string) => string;
       };
       listId: {
         label: string;
@@ -1025,6 +611,73 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         comments: string;
         example: string;
         dataSource: string;
+        clean: (value: unknown, defaultValue?: string) => string;
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
+      data: any;
+    }>;
+    getListItemsInSite: import("@prismatic-io/spectral").ActionDefinition<{
+      connection: {
+        label: string;
+        type: "connection";
+        required: true;
+        comments: string;
+      };
+      siteId: {
+        label: string;
+        type: "string";
+        required: true;
+        placeholder: string;
+        comments: string;
+        dataSource: string;
+        example: string;
+        clean: (value: unknown, defaultValue?: string) => string;
+      };
+      listId: {
+        label: string;
+        type: "string";
+        required: true;
+        placeholder: string;
+        comments: string;
+        example: string;
+        dataSource: string;
+        clean: (value: unknown, defaultValue?: string) => string;
+      };
+      pagination: {
+        label: string;
+        required: boolean;
+        comments: string;
+        inputs: {
+          pageLimit: {
+            label: string;
+            type: "string";
+            required: false;
+            placeholder: string;
+            example: string;
+            comments: string;
+            clean: (value: unknown, defaultValue?: number) => number;
+          };
+          pageToken: {
+            label: string;
+            type: "string";
+            required: false;
+            placeholder: string;
+            example: string;
+            comments: string;
+            clean: (value: unknown) => string | undefined;
+          };
+        };
+      } & {
+        type: "structuredObject";
+      };
+      optInFields: {
+        label: string;
+        type: "string";
+        required: false;
+        placeholder: string;
+        example: string;
+        comments: string;
+        clean: (value: unknown) => string | undefined;
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
       data: any;
@@ -1044,6 +697,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         comments: string;
         dataSource: string;
         example: string;
+        clean: (value: unknown, defaultValue?: string) => string;
       };
       listId: {
         label: string;
@@ -1053,6 +707,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         comments: string;
         example: string;
         dataSource: string;
+        clean: (value: unknown, defaultValue?: string) => string;
       };
       itemId: {
         label: string;
@@ -1062,6 +717,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         comments: string;
         dataSource: string;
         example: string;
+        clean: (value: unknown, defaultValue?: string) => string;
       };
       optInFields: {
         label: string;
@@ -1070,12 +726,12 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         placeholder: string;
         example: string;
         comments: string;
-        clean: (value: unknown, defaultValue?: string) => string;
+        clean: (value: unknown) => string | undefined;
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
       data: any;
     }>;
-    listDrives: import("@prismatic-io/spectral").ActionDefinition<{
+    createItemInSite: import("@prismatic-io/spectral").ActionDefinition<{
       connection: {
         label: string;
         type: "connection";
@@ -1090,36 +746,31 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         comments: string;
         dataSource: string;
         example: string;
-      };
-      pageLimit: {
-        label: string;
-        type: "string";
-        required: false;
-        placeholder: string;
-        example: string;
-        comments: string;
-        clean: (value: unknown, defaultValue?: number) => number;
-      };
-      pageToken: {
-        label: string;
-        type: "string";
-        required: false;
-        placeholder: string;
-        example: string;
-        comments: string;
         clean: (value: unknown, defaultValue?: string) => string;
       };
-      fetchAll: {
+      listId: {
         label: string;
-        type: "boolean";
-        required: false;
+        type: "string";
+        required: true;
+        placeholder: string;
         comments: string;
-        clean: (value: unknown, defaultValue?: boolean) => boolean;
+        example: string;
+        dataSource: string;
+        clean: (value: unknown, defaultValue?: string) => string;
+      };
+      fields: {
+        label: string;
+        type: "string";
+        required: true;
+        collection: "keyvaluelist";
+        placeholder: string;
+        comments: string;
+        clean: (value: unknown) => Record<string, unknown>;
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
       data: any;
     }>;
-    getDrive: import("@prismatic-io/spectral").ActionDefinition<{
+    listItems: import("@prismatic-io/spectral").ActionDefinition<{
       connection: {
         label: string;
         type: "connection";
@@ -1127,7 +778,8 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         comments: string;
       };
       siteId: {
-        required: false;
+        required: boolean;
+        clean: (value: unknown) => string | undefined;
         label: string;
         type: "string";
         placeholder: string;
@@ -1136,13 +788,198 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         example: string;
       };
       driveId: {
+        comments: string;
         label: string;
         type: "string";
         required: true;
         placeholder: string;
-        comments: string;
         example: string;
         dataSource: string;
+        clean: (value: unknown, defaultValue?: string) => string;
+      };
+      folderId: {
+        comments: string;
+        required: boolean;
+        label: string;
+        placeholder: string;
+        type: "string";
+        example: string;
+        dataSource: string;
+        clean: (value: unknown) => string;
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
+      data: any;
+    }>;
+    searchItems: import("@prismatic-io/spectral").ActionDefinition<{
+      connection: {
+        label: string;
+        type: "connection";
+        required: true;
+        comments: string;
+      };
+      siteId: {
+        comments: string;
+        label: string;
+        type: "string";
+        required: true;
+        placeholder: string;
+        dataSource: string;
+        example: string;
+        clean: (value: unknown, defaultValue?: string) => string;
+      };
+      query: {
+        comments: string;
+        label: string;
+        type: "string";
+        required: true;
+        example: string;
+        placeholder: string;
+        clean: (value: unknown, defaultValue?: string) => string;
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
+      data: Record<string, unknown[]>;
+    }>;
+    checkItemExists: import("@prismatic-io/spectral").ActionDefinition<{
+      connection: {
+        label: string;
+        type: "connection";
+        required: true;
+        comments: string;
+      };
+      siteId: {
+        comments: string;
+        label: string;
+        type: "string";
+        required: true;
+        placeholder: string;
+        dataSource: string;
+        example: string;
+        clean: (value: unknown, defaultValue?: string) => string;
+      };
+      driveId: {
+        comments: string;
+        label: string;
+        type: "string";
+        required: true;
+        placeholder: string;
+        example: string;
+        dataSource: string;
+        clean: (value: unknown, defaultValue?: string) => string;
+      };
+      itemPath: {
+        comments: string;
+        label: string;
+        type: "string";
+        required: true;
+        example: string;
+        placeholder: string;
+        clean: (value: unknown, defaultValue?: string) => string;
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
+      data: {
+        exists: boolean;
+        message: string;
+        item: any;
+      };
+    } | {
+      data: {
+        exists: boolean;
+        message: string;
+        item?: undefined;
+      };
+    }>;
+    createFolder: import("@prismatic-io/spectral").ActionDefinition<{
+      connection: {
+        label: string;
+        type: "connection";
+        required: true;
+        comments: string;
+      };
+      siteId: {
+        comments: string;
+        label: string;
+        type: "string";
+        required: true;
+        placeholder: string;
+        dataSource: string;
+        example: string;
+        clean: (value: unknown, defaultValue?: string) => string;
+      };
+      driveId: {
+        comments: string;
+        label: string;
+        type: "string";
+        required: true;
+        placeholder: string;
+        example: string;
+        dataSource: string;
+        clean: (value: unknown, defaultValue?: string) => string;
+      };
+      parentItemId: {
+        comments: string;
+        label: string;
+        type: "string";
+        required: true;
+        placeholder: string;
+        example: string;
+        clean: (value: unknown, defaultValue?: string) => string;
+      };
+      folderName: {
+        comments: string;
+        label: string;
+        type: "string";
+        required: true;
+        example: string;
+        placeholder: string;
+        clean: (value: unknown, defaultValue?: string) => string;
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
+      data: any;
+    }>;
+    renameFolder: import("@prismatic-io/spectral").ActionDefinition<{
+      connection: {
+        label: string;
+        type: "connection";
+        required: true;
+        comments: string;
+      };
+      siteId: {
+        comments: string;
+        label: string;
+        type: "string";
+        required: true;
+        placeholder: string;
+        dataSource: string;
+        example: string;
+        clean: (value: unknown, defaultValue?: string) => string;
+      };
+      driveId: {
+        comments: string;
+        label: string;
+        type: "string";
+        required: true;
+        placeholder: string;
+        example: string;
+        dataSource: string;
+        clean: (value: unknown, defaultValue?: string) => string;
+      };
+      folderId: {
+        comments: string;
+        required: boolean;
+        label: string;
+        placeholder: string;
+        type: "string";
+        example: string;
+        dataSource: string;
+        clean: (value: unknown) => string;
+      };
+      folderName: {
+        comments: string;
+        label: string;
+        type: "string";
+        required: true;
+        example: string;
+        placeholder: string;
         clean: (value: unknown, defaultValue?: string) => string;
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
@@ -1156,7 +993,8 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         comments: string;
       };
       siteId: {
-        required: false;
+        required: boolean;
+        clean: (value: unknown) => string | undefined;
         label: string;
         type: "string";
         placeholder: string;
@@ -1165,7 +1003,8 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         example: string;
       };
       listId: {
-        required: false;
+        required: boolean;
+        clean: (value: unknown) => string | undefined;
         label: string;
         type: "string";
         placeholder: string;
@@ -1191,6 +1030,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         comments: string;
         dataSource: string;
         example: string;
+        clean: (value: unknown, defaultValue?: string) => string;
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
       data: any;
@@ -1203,7 +1043,8 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         comments: string;
       };
       siteId: {
-        required: false;
+        required: boolean;
+        clean: (value: unknown) => string | undefined;
         label: string;
         type: "string";
         placeholder: string;
@@ -1228,6 +1069,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         placeholder: string;
         comments: string;
         example: string;
+        clean: (value: unknown) => string;
       };
       fileData: {
         label: string;
@@ -1257,7 +1099,8 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         comments: string;
       };
       siteId: {
-        required: false;
+        required: boolean;
+        clean: (value: unknown) => string | undefined;
         label: string;
         type: "string";
         placeholder: string;
@@ -1266,7 +1109,8 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         example: string;
       };
       listId: {
-        required: false;
+        required: boolean;
+        clean: (value: unknown) => string | undefined;
         label: string;
         type: "string";
         placeholder: string;
@@ -1292,6 +1136,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         comments: string;
         dataSource: string;
         example: string;
+        clean: (value: unknown, defaultValue?: string) => string;
       };
       fileData: {
         label: string;
@@ -1311,7 +1156,8 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         comments: string;
       };
       siteId: {
-        required: false;
+        required: boolean;
+        clean: (value: unknown) => string | undefined;
         label: string;
         type: "string";
         placeholder: string;
@@ -1320,7 +1166,8 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         example: string;
       };
       listId: {
-        required: false;
+        required: boolean;
+        clean: (value: unknown) => string | undefined;
         label: string;
         type: "string";
         placeholder: string;
@@ -1346,10 +1193,227 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         comments: string;
         dataSource: string;
         example: string;
+        clean: (value: unknown, defaultValue?: string) => string;
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
+      data: Buffer<any>;
+      contentType: any;
+    }>;
+    moveFile: import("@prismatic-io/spectral").ActionDefinition<{
+      connection: {
+        label: string;
+        type: "connection";
+        required: true;
+        comments: string;
+      };
+      siteId: {
+        required: boolean;
+        clean: (value: unknown) => string | undefined;
+        label: string;
+        type: "string";
+        placeholder: string;
+        comments: string;
+        dataSource: string;
+        example: string;
+      };
+      listId: {
+        required: boolean;
+        clean: (value: unknown) => string | undefined;
+        label: string;
+        type: "string";
+        placeholder: string;
+        comments: string;
+        example: string;
+        dataSource: string;
+      };
+      driveId: {
+        comments: string;
+        label: string;
+        type: "string";
+        required: true;
+        placeholder: string;
+        example: string;
+        dataSource: string;
+        clean: (value: unknown, defaultValue?: string) => string;
+      };
+      itemId: {
+        comments: string;
+        label: string;
+        type: "string";
+        required: true;
+        placeholder: string;
+        dataSource: string;
+        example: string;
+        clean: (value: unknown, defaultValue?: string) => string;
+      };
+      parentItemId: {
+        label: string;
+        comments: string;
+        type: "string";
+        required: true;
+        placeholder: string;
+        example: string;
+        clean: (value: unknown, defaultValue?: string) => string;
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
       data: any;
-      contentType: any;
+    }>;
+    listDrives: import("@prismatic-io/spectral").ActionDefinition<{
+      connection: {
+        label: string;
+        type: "connection";
+        required: true;
+        comments: string;
+      };
+      siteId: {
+        label: string;
+        type: "string";
+        required: true;
+        placeholder: string;
+        comments: string;
+        dataSource: string;
+        example: string;
+        clean: (value: unknown, defaultValue?: string) => string;
+      };
+      fetchAll: {
+        label: string;
+        type: "boolean";
+        required: false;
+        default: string;
+        comments: string;
+        clean: (value: unknown, defaultValue?: boolean) => boolean;
+      };
+      pagination: {
+        label: string;
+        required: boolean;
+        comments: string;
+        inputs: {
+          pageLimit: {
+            label: string;
+            type: "string";
+            required: false;
+            placeholder: string;
+            example: string;
+            comments: string;
+            clean: (value: unknown, defaultValue?: number) => number;
+          };
+          pageToken: {
+            label: string;
+            type: "string";
+            required: false;
+            placeholder: string;
+            example: string;
+            comments: string;
+            clean: (value: unknown) => string | undefined;
+          };
+        };
+      } & {
+        type: "structuredObject";
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
+      data: any;
+    }>;
+    getDrive: import("@prismatic-io/spectral").ActionDefinition<{
+      connection: {
+        label: string;
+        type: "connection";
+        required: true;
+        comments: string;
+      };
+      siteId: {
+        required: boolean;
+        clean: (value: unknown) => string | undefined;
+        label: string;
+        type: "string";
+        placeholder: string;
+        comments: string;
+        dataSource: string;
+        example: string;
+      };
+      driveId: {
+        label: string;
+        type: "string";
+        required: true;
+        placeholder: string;
+        comments: string;
+        example: string;
+        dataSource: string;
+        clean: (value: unknown, defaultValue?: string) => string;
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
+      data: any;
+    }>;
+    getFilesFromDriveWithPagination: import("@prismatic-io/spectral").ActionDefinition<{
+      connection: {
+        label: string;
+        type: "connection";
+        required: true;
+        comments: string;
+      };
+      siteId: {
+        required: boolean;
+        clean: (value: unknown) => string | undefined;
+        label: string;
+        type: "string";
+        placeholder: string;
+        comments: string;
+        dataSource: string;
+        example: string;
+      };
+      driveId: {
+        label: string;
+        type: "string";
+        required: true;
+        placeholder: string;
+        comments: string;
+        example: string;
+        dataSource: string;
+        clean: (value: unknown, defaultValue?: string) => string;
+      };
+      fetchAll: {
+        label: string;
+        type: "boolean";
+        required: false;
+        default: string;
+        comments: string;
+        clean: (value: unknown, defaultValue?: boolean) => boolean;
+      };
+      pagination: {
+        label: string;
+        required: boolean;
+        comments: string;
+        inputs: {
+          pageLimit: {
+            label: string;
+            type: "string";
+            required: false;
+            placeholder: string;
+            example: string;
+            comments: string;
+            clean: (value: unknown, defaultValue?: number) => number;
+          };
+          pageToken: {
+            label: string;
+            type: "string";
+            required: false;
+            placeholder: string;
+            example: string;
+            comments: string;
+            clean: (value: unknown) => string | undefined;
+          };
+        };
+      } & {
+        type: "structuredObject";
+      };
+      recursive: {
+        label: string;
+        type: "boolean";
+        required: false;
+        comments: string;
+        clean: (value: unknown, defaultValue?: boolean) => boolean;
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
+      data: any;
     }>;
     getFilesFromDriveFolderWithPagination: import("@prismatic-io/spectral").ActionDefinition<{
       connection: {
@@ -1359,7 +1423,8 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         comments: string;
       };
       siteId: {
-        required: false;
+        required: boolean;
+        clean: (value: unknown) => string | undefined;
         label: string;
         type: "string";
         placeholder: string;
@@ -1387,101 +1452,111 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         dataSource: string;
         clean: (value: unknown) => string;
       };
-      pageLimit: {
-        label: string;
-        type: "string";
-        required: false;
-        placeholder: string;
-        example: string;
-        comments: string;
-        clean: (value: unknown, defaultValue?: number) => number;
-      };
-      pageToken: {
-        label: string;
-        type: "string";
-        required: false;
-        placeholder: string;
-        example: string;
-        comments: string;
-        clean: (value: unknown, defaultValue?: string) => string;
-      };
       fetchAll: {
         label: string;
         type: "boolean";
         required: false;
+        default: string;
         comments: string;
         clean: (value: unknown, defaultValue?: boolean) => boolean;
+      };
+      pagination: {
+        label: string;
+        required: boolean;
+        comments: string;
+        inputs: {
+          pageLimit: {
+            label: string;
+            type: "string";
+            required: false;
+            placeholder: string;
+            example: string;
+            comments: string;
+            clean: (value: unknown, defaultValue?: number) => number;
+          };
+          pageToken: {
+            label: string;
+            type: "string";
+            required: false;
+            placeholder: string;
+            example: string;
+            comments: string;
+            clean: (value: unknown) => string | undefined;
+          };
+        };
+      } & {
+        type: "structuredObject";
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
       data: any;
     }>;
-    getFilesFromDriveWithPagination: import("@prismatic-io/spectral").ActionDefinition<{
+    listChanges: import("@prismatic-io/spectral").ActionDefinition<{
       connection: {
         label: string;
         type: "connection";
         required: true;
         comments: string;
       };
-      siteId: {
-        required: false;
-        label: string;
-        type: "string";
-        placeholder: string;
-        comments: string;
-        dataSource: string;
-        example: string;
-      };
-      driveId: {
+      deltaURL: {
         label: string;
         type: "string";
         required: true;
         placeholder: string;
         comments: string;
         example: string;
-        dataSource: string;
-        clean: (value: unknown, defaultValue?: string) => string;
-      };
-      pageLimit: {
-        label: string;
-        type: "string";
-        required: false;
-        placeholder: string;
-        example: string;
-        comments: string;
-        clean: (value: unknown, defaultValue?: number) => number;
-      };
-      pageToken: {
-        label: string;
-        type: "string";
-        required: false;
-        placeholder: string;
-        example: string;
-        comments: string;
+        default: string;
         clean: (value: unknown, defaultValue?: string) => string;
       };
       fetchAll: {
         label: string;
         type: "boolean";
         required: false;
+        default: string;
         comments: string;
         clean: (value: unknown, defaultValue?: boolean) => boolean;
       };
-      recursive: {
+      queryParameters: {
         label: string;
-        type: "boolean";
-        required: false;
+        required: boolean;
         comments: string;
-        clean: (value: unknown, defaultValue?: boolean) => boolean;
+        inputs: {
+          $select: {
+            label: string;
+            type: "string";
+            required: false;
+            placeholder: string;
+            comments: string;
+            example: string;
+            clean: (value: unknown) => string | undefined;
+          };
+          $expand: {
+            label: string;
+            type: "string";
+            required: false;
+            placeholder: string;
+            comments: string;
+            example: string;
+            clean: (value: unknown) => string | undefined;
+          };
+          $top: {
+            label: string;
+            type: "string";
+            required: false;
+            placeholder: string;
+            comments: string;
+            example: string;
+            clean: (value: unknown) => number | undefined;
+          };
+        };
+      } & {
+        type: "structuredObject";
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
       data: any;
     }>;
   };
   triggers: {
-    webhook: import("@prismatic-io/spectral").TriggerDefinition<{}, import("@prismatic-io/spectral").ConfigVarResultCollection, true, {
-      payload: import("@prismatic-io/spectral").TriggerPayload<Record<string, unknown>>;
-      branch: TriggerBranches;
-    }, import("@prismatic-io/spectral").Inputs>;
+    webhook: import("@prismatic-io/spectral").TriggerDefinition<{}, import("@prismatic-io/spectral").ConfigVarResultCollection, true, import("@prismatic-io/spectral").TriggerBranchingResult<import("@prismatic-io/spectral").TriggerPayload<Record<string, unknown>>>, import("@prismatic-io/spectral").Inputs>;
     instanceDeployWebhook: import("@prismatic-io/spectral").TriggerDefinition<{
       connection: {
         label: string;
@@ -1515,7 +1590,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         required: false;
         placeholder: string;
         example: string;
-        clean: (value: unknown, defaultValue?: string) => string;
+        clean: (value: unknown) => string | undefined;
       };
       expirationDateTime: {
         required: boolean;
@@ -1526,10 +1601,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         example: string;
         clean: (input: unknown) => string;
       };
-    }, import("@prismatic-io/spectral").ConfigVarResultCollection, true, {
-      payload: import("@prismatic-io/spectral").TriggerPayload<Record<string, unknown>>;
-      branch: TriggerBranches;
-    }, import("@prismatic-io/spectral").Inputs>;
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, true, import("@prismatic-io/spectral").TriggerBranchingResult<import("@prismatic-io/spectral").TriggerPayload<Record<string, unknown>>>, import("@prismatic-io/spectral").Inputs>;
     pollSiteChanges: import("@prismatic-io/spectral").PollingTriggerDefinition<{
       connection: {
         label: string;
@@ -1545,75 +1617,10 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         comments: string;
         dataSource: string;
         example: string;
+        clean: (value: unknown, defaultValue?: string) => string;
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, import("@prismatic-io/spectral").TriggerPayload<Record<string, unknown>>, boolean, {
-      payload: {
-        body: {
-          data: Record<string, unknown>;
-        };
-        headers: {
-          [key: string]: string;
-        };
-        queryParameters: {
-          [key: string]: string;
-        };
-        rawBody: {
-          data: unknown;
-          contentType?: string;
-        };
-        pathFragment: string;
-        webhookUrls: {
-          [key: string]: string;
-        };
-        webhookApiKeys: {
-          [key: string]: string[];
-        };
-        invokeUrl: string;
-        executionId: string;
-        customer: import("@prismatic-io/spectral").CustomerAttributes;
-        instance: import("@prismatic-io/spectral").InstanceAttributes;
-        user: import("@prismatic-io/spectral").UserAttributes;
-        integration: import("@prismatic-io/spectral").IntegrationAttributes;
-        flow: import("@prismatic-io/spectral").FlowAttributes;
-        startedAt: string;
-        globalDebug: boolean;
-        paginationState?: Record<string, unknown> | undefined;
-      };
-      polledNoChanges: true;
-    } | {
-      payload: {
-        paginationState: SiteDeltaCursor | undefined;
-        body: {
-          data: PollSiteChangesResult;
-        };
-        headers: {
-          [key: string]: string;
-        };
-        queryParameters: {
-          [key: string]: string;
-        };
-        rawBody: {
-          data: unknown;
-          contentType?: string;
-        };
-        pathFragment: string;
-        webhookUrls: {
-          [key: string]: string;
-        };
-        webhookApiKeys: {
-          [key: string]: string[];
-        };
-        invokeUrl: string;
-        executionId: string;
-        customer: import("@prismatic-io/spectral").CustomerAttributes;
-        instance: import("@prismatic-io/spectral").InstanceAttributes;
-        user: import("@prismatic-io/spectral").UserAttributes;
-        integration: import("@prismatic-io/spectral").IntegrationAttributes;
-        flow: import("@prismatic-io/spectral").FlowAttributes;
-        startedAt: string;
-        globalDebug: boolean;
-      };
-      polledNoChanges: boolean;
+      payload: import("@prismatic-io/spectral").TriggerPayload;
     }, import("@prismatic-io/spectral").Inputs>;
     drivePollingTrigger: import("@prismatic-io/spectral").PollingTriggerDefinition<{
       connection: {
@@ -1623,7 +1630,8 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         comments: string;
       };
       siteId: {
-        required: false;
+        required: boolean;
+        clean: (value: unknown) => string | undefined;
         label: string;
         type: "string";
         placeholder: string;
@@ -1642,38 +1650,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         clean: (value: unknown, defaultValue?: string) => string;
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, import("@prismatic-io/spectral").TriggerPayload<Record<string, unknown>>, boolean, {
-      payload: {
-        body: {
-          data: PollSiteChangesSeparatedChanges;
-        };
-        headers: {
-          [key: string]: string;
-        };
-        queryParameters: {
-          [key: string]: string;
-        };
-        rawBody: {
-          data: unknown;
-          contentType?: string;
-        };
-        pathFragment: string;
-        webhookUrls: {
-          [key: string]: string;
-        };
-        webhookApiKeys: {
-          [key: string]: string[];
-        };
-        invokeUrl: string;
-        executionId: string;
-        customer: import("@prismatic-io/spectral").CustomerAttributes;
-        instance: import("@prismatic-io/spectral").InstanceAttributes;
-        user: import("@prismatic-io/spectral").UserAttributes;
-        integration: import("@prismatic-io/spectral").IntegrationAttributes;
-        flow: import("@prismatic-io/spectral").FlowAttributes;
-        startedAt: string;
-        globalDebug: boolean;
-        paginationState?: Record<string, unknown> | undefined;
-      };
+      payload: import("@prismatic-io/spectral").TriggerPayload;
     }, import("@prismatic-io/spectral").Inputs>;
     folderPollingTrigger: import("@prismatic-io/spectral").PollingTriggerDefinition<{
       connection: {
@@ -1684,6 +1661,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
       };
       siteId: {
         required: boolean;
+        clean: (value: unknown) => string | undefined;
         label: string;
         type: "string";
         placeholder: string;
@@ -1720,38 +1698,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         clean: (value: unknown, defaultValue?: boolean) => boolean;
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, import("@prismatic-io/spectral").TriggerPayload<Record<string, unknown>>, boolean, {
-      payload: {
-        body: {
-          data: PollSiteChangesSeparatedChanges;
-        };
-        headers: {
-          [key: string]: string;
-        };
-        queryParameters: {
-          [key: string]: string;
-        };
-        rawBody: {
-          data: unknown;
-          contentType?: string;
-        };
-        pathFragment: string;
-        webhookUrls: {
-          [key: string]: string;
-        };
-        webhookApiKeys: {
-          [key: string]: string[];
-        };
-        invokeUrl: string;
-        executionId: string;
-        customer: import("@prismatic-io/spectral").CustomerAttributes;
-        instance: import("@prismatic-io/spectral").InstanceAttributes;
-        user: import("@prismatic-io/spectral").UserAttributes;
-        integration: import("@prismatic-io/spectral").IntegrationAttributes;
-        flow: import("@prismatic-io/spectral").FlowAttributes;
-        startedAt: string;
-        globalDebug: boolean;
-        paginationState?: Record<string, unknown> | undefined;
-      };
+      payload: import("@prismatic-io/spectral").TriggerPayload;
     }, import("@prismatic-io/spectral").Inputs>;
   };
   connections: any[];
@@ -1771,6 +1718,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         placeholder: string;
         comments: string;
         example: string;
+        clean: (value: unknown, defaultValue?: string) => string;
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, "picklist">;
     listFolders: import("@prismatic-io/spectral").DataSourceDefinition<{
@@ -1814,6 +1762,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         placeholder: string;
         comments: string;
         example: string;
+        clean: (value: unknown, defaultValue?: string) => string;
       };
       listId: {
         dataSource: undefined;
@@ -1823,6 +1772,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         placeholder: string;
         comments: string;
         example: string;
+        clean: (value: unknown, defaultValue?: string) => string;
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, "picklist">;
     listSubscriptions: import("@prismatic-io/spectral").DataSourceDefinition<{
@@ -1833,6 +1783,40 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         comments: string;
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, "picklist">;
+    selectDrivesFromSites: import("@prismatic-io/spectral").DataSourceDefinition<{
+      connection: {
+        label: string;
+        type: "connection";
+        required: true;
+        comments: string;
+      };
+      siteIds: {
+        label: string;
+        type: "string";
+        required: true;
+        placeholder: string;
+        comments: string;
+        example: string;
+        clean: (value: unknown) => ParentRef[];
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, "objectSelection">;
+    selectFoldersFromDrives: import("@prismatic-io/spectral").DataSourceDefinition<{
+      connection: {
+        label: string;
+        type: "connection";
+        required: true;
+        comments: string;
+      };
+      driveIds: {
+        label: string;
+        type: "string";
+        required: true;
+        placeholder: string;
+        comments: string;
+        example: string;
+        clean: (value: unknown) => ParentRef[];
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, "objectSelection">;
     selectSiteList: import("@prismatic-io/spectral").DataSourceDefinition<{
       connection: {
         label: string;
@@ -1848,8 +1832,17 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         placeholder: string;
         comments: string;
         example: string;
+        clean: (value: unknown, defaultValue?: string) => string;
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, "picklist">;
+    selectSites: import("@prismatic-io/spectral").DataSourceDefinition<{
+      connection: {
+        label: string;
+        type: "connection";
+        required: true;
+        comments: string;
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, "objectSelection">;
   };
 }>;
 export = _default;

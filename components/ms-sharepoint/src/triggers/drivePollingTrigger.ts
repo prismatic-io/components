@@ -1,5 +1,6 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
-import { connection, driveId, siteId } from "../inputs";
+import { drivePollingTriggerInputs } from "../inputs";
+import { drivePollingTriggerExamplePayload } from "../examplePayloads";
 import { createClient } from "../client";
 import {
   fetchDeltaRound,
@@ -7,26 +8,23 @@ import {
   resolveDeltaUrl,
   resolvePollingRecordChanges,
   separateDriveChanges,
-} from "../utils";
+} from "../util";
 import type {
   DeltaCursor,
   DriveDeltaResponse,
   PollingState,
   PollingRecordChange,
   PollSiteChangesSeparatedChanges,
-} from "../interfaces";
+} from "../types";
 
 export const drivePollingTrigger = pollingTrigger({
   display: {
-    label: "New and Updated Drive Items",
+    label: "Drive Item Changes",
     description:
       "Checks for new and updated items in a specified SharePoint drive on a configured schedule.",
   },
-  inputs: {
-    connection,
-    siteId: { ...siteId, required: false },
-    driveId,
-  },
+  inputs: drivePollingTriggerInputs,
+  examplePayload: drivePollingTriggerExamplePayload,
   triggerResolverSupport: "valid",
   batchConfig: { batchSize: 50 },
   triggerResolver: {
@@ -40,6 +38,7 @@ export const drivePollingTrigger = pollingTrigger({
     const client = await createClient(connection, debug.enabled);
     const state = polling.getState() as PollingState;
     const rootDelta = `/drives/${driveId}/root/delta`;
+    const incoming = payload.paginationState as DeltaCursor | undefined;
 
     if (context.batch?.enabled === true) {
       const { page, next, cursorState } = await fetchDeltaRound(
@@ -47,16 +46,18 @@ export const drivePollingTrigger = pollingTrigger({
         state,
         driveId,
         rootDelta,
-        payload.paginationState as DeltaCursor | undefined,
+        incoming,
       );
+      const changes = separateDriveChanges(page.value);
       polling.setState(cursorState);
 
       return {
         payload: {
           ...payload,
           paginationState: next ?? undefined,
-          body: { data: separateDriveChanges(page.value) },
+          body: { data: changes },
         },
+        polledNoChanges: Object.keys(changes).length === 0 && next === null && !incoming,
       };
     }
 
@@ -85,6 +86,7 @@ export const drivePollingTrigger = pollingTrigger({
 
     return Promise.resolve({
       payload: { ...payload, body: { data: allChanges } },
+      polledNoChanges: Object.keys(allChanges).length === 0 && !incoming,
     });
   },
 });

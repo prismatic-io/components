@@ -4,13 +4,26 @@ For automatic webhook subscription management (recommended for most use cases), 
 
 #### Configuration
 
-Configure SharePoint webhooks manually using the [Microsoft Graph Subscriptions API](https://learn.microsoft.com/en-us/graph/api/resources/subscription):
+Configure SharePoint webhooks manually using the [Microsoft Graph Subscriptions API](https://learn.microsoft.com/en-us/graph/api/resources/subscription?view=graph-rest-1.0):
 
 1. Create a subscription using the Graph API by sending a POST request to `/subscriptions`
 2. Specify the resource to monitor (e.g., `/sites/{siteId}/lists/{listId}`)
 3. Set the `notificationUrl` to the webhook URL provided by the integration instance
-4. Include desired change types (created, updated, deleted)
-5. Set an expiration date/time (maximum 6 months for most SharePoint resources)
+4. Set `changeType` to `updated` (the only change type lists and drive root items support)
+5. Set an expiration date/time (maximum 42,300 minutes, under 30 days, for SharePoint lists and drive items)
+
+#### Event Types
+
+<details>
+<summary>Available Events (1)</summary>
+
+| Event | Description |
+|-------|-------------|
+| `updated` | Sent when an item in the monitored list or drive changes. Lists and drive root items support only this change type. |
+
+</details>
+
+See the [Microsoft Graph subscription resource](https://learn.microsoft.com/en-us/graph/api/resources/subscription?view=graph-rest-1.0) for supported resources and subscription lifetimes.
 
 #### How It Works
 

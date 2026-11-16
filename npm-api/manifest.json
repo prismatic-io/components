@@ -637,8 +637,8 @@
   },
   "ms-sharepoint": {
     "name": "@prismatic-io/components-ms-sharepoint",
-    "version": "0.3.1",
-    "build": "9a756006b350ad6744043b339842d3fa25459439a4da7d2abe20c0f5c1575abc",
+    "version": "0.4.0",
+    "build": "b72a0ebc328f64f10c8280367712dc965140c57cf611885265f95260429c7c4a",
     "spectral": "^10.39.1"
   },
   "ms-sql-server": {

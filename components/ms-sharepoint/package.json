@@ -1,6 +1,6 @@
 {
   "name": "@prismatic-io/components-ms-sharepoint",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "main": "./npm-dist/index.cjs",
   "types": "./npm-dist/index.d.cts",
   "exports": {
@@ -30,7 +30,7 @@
     "build": "npm run format && npm run lint && tsdown",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "lint": "biome lint .",
+    "lint": "biome lint --write .",
     "format": "biome format --write .",
     "prepare": "npm run build",
     "publish:platform": "npm run build && prism components:publish"
@@ -49,6 +49,7 @@
     "vitest": "4.1.9",
     "@prismatic-io/spectral": "^10.39.1",
     "ms-utils": "file:../../packages/ms-utils",
+    "nock": "14.0.17",
     "build-config": "file:../../packages/build-config"
   }
 }

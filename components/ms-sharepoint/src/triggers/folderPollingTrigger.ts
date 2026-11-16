@@ -1,5 +1,6 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
 import { folderPollingTriggerInputs } from "../inputs";
+import { folderPollingTriggerExamplePayload } from "../examplePayloads";
 import { createClient } from "../client";
 import {
   fetchDeltaRound,
@@ -9,22 +10,23 @@ import {
   resolveDeltaUrl,
   resolvePollingRecordChanges,
   separateDriveChanges,
-} from "../utils";
+} from "../util";
 import type {
   DeltaCursor,
   DriveDeltaResponse,
   PollingState,
   PollingRecordChange,
   PollSiteChangesSeparatedChanges,
-} from "../interfaces";
+} from "../types";
 
 export const folderPollingTrigger = pollingTrigger({
   display: {
-    label: "New and Updated Folder Items",
+    label: "Folder Item Changes",
     description:
       "Checks for new and updated items in a specified folder within a SharePoint drive on a configured schedule.",
   },
   inputs: folderPollingTriggerInputs,
+  examplePayload: folderPollingTriggerExamplePayload,
   triggerResolverSupport: "valid",
   batchConfig: { batchSize: 50 },
   triggerResolver: {
@@ -43,6 +45,7 @@ export const folderPollingTrigger = pollingTrigger({
     const rootDelta = `/drives/${driveId}/root/delta`;
 
     let folderPath = state[pathKey] as string | undefined;
+    const incoming = payload.paginationState as DeltaCursor | undefined;
 
     if (context.batch?.enabled === true) {
       const { page, next, cursorState } = await fetchDeltaRound(
@@ -50,22 +53,22 @@ export const folderPollingTrigger = pollingTrigger({
         state,
         stateKey,
         rootDelta,
-        payload.paginationState as DeltaCursor | undefined,
+        incoming,
       );
       folderPath = folderPathFrom(page.value, folderId, folderPath);
       polling.setState({ ...cursorState, ...(folderPath ? { [pathKey]: folderPath } : {}) });
+      const changes = separateDriveChanges(
+        page.value,
+        folderMatcher(folderId, includeSubfolders, folderPath),
+      );
 
       return {
         payload: {
           ...payload,
           paginationState: next ?? undefined,
-          body: {
-            data: separateDriveChanges(
-              page.value,
-              folderMatcher(folderId, includeSubfolders, folderPath),
-            ),
-          },
+          body: { data: changes },
         },
+        polledNoChanges: Object.keys(changes).length === 0 && next === null && !incoming,
       };
     }
 
@@ -78,8 +81,6 @@ export const folderPollingTrigger = pollingTrigger({
       excludeParents: true,
     })) as unknown as DriveDeltaResponse;
 
-    const newPollingState: PollingState = {};
-
     if (data.value.length > 0) {
       folderPath = folderPathFrom(data.value, folderId, folderPath);
       allChanges = separateDriveChanges(
@@ -88,10 +89,10 @@ export const folderPollingTrigger = pollingTrigger({
       );
     }
 
-    if (folderPath) {
-      newPollingState[pathKey] = folderPath;
-    }
-    newPollingState[stateKey] = data["@odata.deltaLink"];
+    const newPollingState: PollingState = {
+      ...(folderPath ? { [pathKey]: folderPath } : {}),
+      [stateKey]: data["@odata.deltaLink"],
+    };
 
     polling.setState(newPollingState);
 
@@ -101,6 +102,7 @@ export const folderPollingTrigger = pollingTrigger({
 
     return Promise.resolve({
       payload: { ...payload, body: { data: allChanges } },
+      polledNoChanges: Object.keys(allChanges).length === 0 && !incoming,
     });
   },
 });

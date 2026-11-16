@@ -1,26 +1,21 @@
-import drive from "./drive";
+import drives from "./drives";
+import files from "./files";
+import folders from "./folders";
+import items from "./items";
 import lists from "./lists";
+import misc from "./misc";
 import sites from "./sites";
-import listSharedDocuments from "./listShared";
 import subscriptions from "./subscriptions";
 import users from "./users";
-import webhooks from "./webhooks";
-import { rawRequest } from "./rawRequest";
-import { listChanges } from "./listChanges";
-import folders from "./folders";
-import files from "./files";
-import items from "./items";
+
 export default {
-  ...drive,
+  ...drives,
+  ...files,
+  ...folders,
+  ...items,
   ...lists,
+  ...misc,
   ...sites,
-  ...listSharedDocuments,
   ...subscriptions,
   ...users,
-  ...webhooks,
-  rawRequest,
-  listChanges,
-  ...folders,
-  ...files,
-  ...items,
 };

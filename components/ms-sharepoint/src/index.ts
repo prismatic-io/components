@@ -3,7 +3,7 @@ import connections from "./connections";
 import { handleErrors } from "@prismatic-io/spectral/http";
 import actions from "./actions";
 import triggers from "./triggers";
-import dataSources from "./actions/datasources";
+import dataSources from "./dataSources";
 
 export default component({
   key: "ms-sharepoint",
