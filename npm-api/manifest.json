@@ -877,8 +877,8 @@
   },
   "sftp": {
     "name": "@prismatic-io/components-sftp",
-    "version": "0.1.0",
-    "build": "408048009eb930e8ca419539051d390cd973fc6867b07b8d6e32416a13ed98ce",
+    "version": "0.1.1",
+    "build": "0b4de18dd1153a2b691880bbc4756dfaf06d892da2465ab04cc58b20b2e5c25d",
     "spectral": "^10.39.1"
   },
   "shipbob": {

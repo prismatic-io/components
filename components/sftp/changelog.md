@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-11-16
+
+Fixed an error where importing the npm package in a code-native integration failed with "no published version matching signature"
+
 ### 2026-11-11
 
 Refactored internal code

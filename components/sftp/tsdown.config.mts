@@ -13,7 +13,7 @@ export default defineConfig([
     minify: true,
     deps: {
       alwaysBundle: () => true,
-      neverBundle: ["cpu-features"],
+      neverBundle: ["cpu-features", /sshcrypto\.node$/],
       onlyBundle: false,
     },
     outExtensions: () => ({ js: ".js" }),
