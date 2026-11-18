@@ -23,7 +23,7 @@ const connection = createConnection(
   { access_token: ACCESS_TOKEN },
 );
 
-const [subscription] = getSubscriptionExamplePayload.data;
+const subscription = getSubscriptionExamplePayload.data;
 
 describe("updateSubscription", () => {
   afterEach(() => nock.cleanAll());

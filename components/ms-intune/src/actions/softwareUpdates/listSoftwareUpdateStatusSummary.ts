@@ -1,16 +1,21 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { ENDPOINTS } from "../../constants";
-import { getSoftwareUpdateStatusSummaryExamplePayload } from "../../examplePayloads";
+import { listSoftwareUpdateStatusSummaryExamplePayload } from "../../examplePayloads";
 import { listSoftwareUpdateStatusSummaryInputs } from "../../inputs";
-import { paginateResults } from "../../util";
+import { listSoftwareUpdateStatusSummaryOutputSchema } from "../../outputSchemas";
 
 export const listSoftwareUpdateStatusSummary = action({
   display: {
     label: "List Software Update Status Summary",
     description: "List the status summary of a software update.",
   },
-  perform: async (context, { connection, $skipToken, fetchAll, filters }) => {
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listSoftwareUpdateStatusSummaryOutputSchema,
+  }),
+  performSafety: "safe",
+  perform: async (context, { connection, $skipToken, filters }) => {
     const client = createClient(connection, context.debug.enabled);
     const params = {
       $expand: filters.$expand,
@@ -19,17 +24,16 @@ export const listSoftwareUpdateStatusSummary = action({
       $select: filters.$select,
       $skipToken,
     };
-    const data = await paginateResults(
-      client,
+    const { data } = await client.get(
       ENDPOINTS.SOFTWARE_UPDATE_STATUS_SUMMARY,
-      fetchAll,
-      params,
+      { params },
     );
 
     return {
       data,
     };
   },
+  examplePerform: async () => listSoftwareUpdateStatusSummaryExamplePayload,
   inputs: listSoftwareUpdateStatusSummaryInputs,
-  examplePayload: getSoftwareUpdateStatusSummaryExamplePayload,
+  examplePayload: listSoftwareUpdateStatusSummaryExamplePayload,
 });

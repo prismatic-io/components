@@ -23,7 +23,7 @@ const connection = createConnection(
 describe("deleteUser", () => {
   afterEach(() => nock.cleanAll());
 
-  test("deletes the user and returns the empty 204 body", async () => {
+  test("deletes the user and returns the delete record", async () => {
     const scope = nock(HOST).delete(PATH).reply(204);
 
     const { result } = await invoke(deleteUser, {
@@ -32,7 +32,11 @@ describe("deleteUser", () => {
     });
 
     expect(scope.isDone()).toBe(true);
-    expect(result.data).toEqual("");
+    expect(result.data).toEqual({
+      success: true,
+      id: USER_ID,
+      message: "User deleted successfully.",
+    });
   });
 
   test("surfaces the failure when the user does not exist", async () => {

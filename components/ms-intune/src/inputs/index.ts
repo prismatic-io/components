@@ -7,7 +7,6 @@ export * from "./deviceConfiguration";
 export * from "./devices";
 export * from "./domains";
 export * from "./groups";
-export * from "./managedAppAssign";
 export * from "./managedApps";
 export * from "./members";
 export * from "./misc";

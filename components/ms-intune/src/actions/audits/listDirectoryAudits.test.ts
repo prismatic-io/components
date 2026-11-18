@@ -1,7 +1,7 @@
 import { createConnection, invoke } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { msIntuneOAuth2 } from "../../connections";
-import { listDirectoryAuditExamplePayload } from "../../examplePayloads";
+import { listDirectoryAuditsExamplePayload } from "../../examplePayloads";
 import { listDirectoryAudits } from "./listDirectoryAudits";
 
 const HOST = "https://graph.microsoft.com";
@@ -20,7 +20,7 @@ const connection = createConnection(
   { access_token: ACCESS_TOKEN },
 );
 
-const listReply = listDirectoryAuditExamplePayload.data;
+const listReply = listDirectoryAuditsExamplePayload.data;
 const [firstAudit] = listReply.value;
 const secondAudit = { ...firstAudit, id: "id-2" };
 

@@ -15,7 +15,11 @@ const listFilters = structuredObjectInput({
 
 export const listSoftwareUpdateStatusSummaryInputs = {
   connection,
-  fetchAll,
+  fetchAll: {
+    ...fetchAll,
+    comments:
+      "Has no effect on this action: the status summary endpoint returns a single response, so there are no further pages to fetch. Kept so existing integrations continue to work.",
+  },
   $skipToken: odataSoftwareUpdatesParams.$skipToken,
   filters: listFilters,
 };

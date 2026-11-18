@@ -1,8 +1,9 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { ENDPOINTS } from "../../constants";
-import { getSubscriptionExamplePayload as updateSubscriptionExamplePayload } from "../../examplePayloads";
+import { updateSubscriptionExamplePayload } from "../../examplePayloads";
 import { updateSubscriptionInputs } from "../../inputs";
+import { updateSubscriptionOutputSchema } from "../../outputSchemas";
 import { getExpirationDate } from "../../util";
 
 export const updateSubscription = action({
@@ -10,6 +11,11 @@ export const updateSubscription = action({
     label: "Update Subscription",
     description: "Update a single subscription.",
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: updateSubscriptionOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, subscriptionId, expirationDateTime, notificationUrl },
@@ -29,6 +35,7 @@ export const updateSubscription = action({
       data,
     };
   },
+  examplePerform: async () => updateSubscriptionExamplePayload,
   inputs: updateSubscriptionInputs,
   examplePayload: updateSubscriptionExamplePayload,
 });

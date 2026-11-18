@@ -4,6 +4,7 @@ import { ENDPOINTS } from "../constants";
 import { selectDeviceConfigurationExamplePayload } from "../examplePayloads";
 import { selectDeviceConfigurationInputs } from "../inputs";
 import type { SelectableResource } from "../types";
+import { compareElementsByLabel } from "../util";
 
 export const selectDeviceConfiguration = dataSource({
   display: {
@@ -23,7 +24,7 @@ export const selectDeviceConfiguration = dataSource({
         label: config.displayName,
         key: config.id.toString(),
       }))
-      .sort((a, b) => ((a.label ?? "") < (b.label ?? "") ? -1 : 1));
+      .sort(compareElementsByLabel);
 
     return { result };
   },

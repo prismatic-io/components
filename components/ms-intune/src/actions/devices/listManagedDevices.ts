@@ -1,8 +1,9 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { ENDPOINTS } from "../../constants";
 import { listManagedDevicesExamplePayload } from "../../examplePayloads";
 import { listManagedDevicesInputs } from "../../inputs";
+import { listManagedDevicesOutputSchema } from "../../outputSchemas";
 import { paginateResults } from "../../util";
 
 export const listManagedDevices = action({
@@ -11,6 +12,11 @@ export const listManagedDevices = action({
     description:
       "List properties and relationships of the Managed Device objects.",
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listManagedDevicesOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (context, { connection, fetchAll, pagination, filters }) => {
     const client = createClient(connection, context.debug.enabled);
     const params = {
@@ -35,6 +41,7 @@ export const listManagedDevices = action({
       data,
     };
   },
+  examplePerform: async () => listManagedDevicesExamplePayload,
   inputs: listManagedDevicesInputs,
   examplePayload: listManagedDevicesExamplePayload,
 });

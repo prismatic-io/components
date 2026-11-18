@@ -1,7 +1,12 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { cleanBooleanStringInput, cleanStringInput } from "../util";
-import { bodyFields, connection, fetchAll, odataGroupParams } from "./common";
-import { groupId } from "./mobileApps";
+import {
+  bodyFields,
+  connection,
+  fetchAll,
+  groupId,
+  odataGroupParams,
+} from "./common";
 
 const assignedLabels = input({
   label: "Assigned Labels",
@@ -82,7 +87,8 @@ const mailEnabled = input({
 const createAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
-  comments: "Less common group properties.",
+  comments:
+    "Additional optional fields: includes Description, Assigned Labels, and Visibility.",
   inputs: { description, assignedLabels, visibility },
 });
 
@@ -136,7 +142,8 @@ export const listGroupsInputs = {
 const updateAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
-  comments: "Less common group properties.",
+  comments:
+    "Additional optional fields: includes Description, Assigned Labels, and Visibility.",
   inputs: { description, assignedLabels, visibility },
 });
 
@@ -158,7 +165,7 @@ export const updateGroupInputs = {
     label: "Security Enabled",
     type: "string",
     comments:
-      "Set to true for mail-enabled groups. If Not Set the input will not be included in the request.",
+      "Set to true to make the group a security group. When Not Set, the field is omitted from the request.",
     required: false,
     model: [
       {

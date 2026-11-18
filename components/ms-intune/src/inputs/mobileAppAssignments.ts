@@ -1,6 +1,13 @@
-import { input, util } from "@prismatic-io/spectral";
-import { connection, fetchAll, odataParams } from "./common";
-import { intent, mobileAppId, settings, target } from "./mobileApps";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
+import {
+  connection,
+  fetchAll,
+  intent,
+  mobileAppId,
+  odataParams,
+  settings,
+  target,
+} from "./common";
 
 const mobileAppAssignmentId = input({
   label: "Mobile App Assignment ID",
@@ -42,11 +49,38 @@ export const getMobileAppAssignmentInputs = {
   mobileAppAssignmentId,
 };
 
+const listPagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments: "Page and page-size controls.",
+  inputs: {
+    $top: odataParams.$top,
+    $skip: odataParams.$skip,
+    $skipToken: odataParams.$skipToken,
+  },
+});
+
+const listFilters = structuredObjectInput({
+  label: "Filters",
+  required: false,
+  comments: "Optional query controls to sort and refine the results.",
+  inputs: {
+    $filter: odataParams.$filter,
+    $select: odataParams.$select,
+    $expand: odataParams.$expand,
+    $orderBy: odataParams.$orderBy,
+    $count: odataParams.$count,
+    $search: odataParams.$search,
+    $format: odataParams.$format,
+  },
+});
+
 export const listMobileAppAssignmentsInputs = {
   connection,
   mobileAppId,
   fetchAll,
-  ...odataParams,
+  pagination: listPagination,
+  filters: listFilters,
 };
 
 export const updateMobileAppAssignmentInputs = {

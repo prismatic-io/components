@@ -1,6 +1,4 @@
-import { connection } from "./common";
-import { groupIdForMembers } from "./members";
-import { mobileAppId } from "./mobileApps";
+import { connection, groupIdForMembers, mobileAppId } from "./common";
 
 export const selectDetectedAppInputs = {
   connection,

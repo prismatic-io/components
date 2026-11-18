@@ -26,18 +26,27 @@ const NOTIFICATION_URL = existingSubscription.notificationUrl;
 describe("deleteAllSubscription", () => {
   afterEach(() => nock.cleanAll());
 
-  test("pages the subscription list but deletes nothing, because the URL is spread into characters", async () => {
-    const scope = nock(HOST)
+  test("deletes every subscription on the notification URL and returns their IDs", async () => {
+    const otherSubscription = {
+      ...existingSubscription,
+      id: "0fc0d6db-0073-42e5-a186-853da75fb308",
+      notificationUrl: "https://example.com/other-webhook",
+    };
+    const listScope = nock(HOST)
       .get(PATH)
-      .reply(200, { value: [existingSubscription] });
+      .reply(200, { value: [existingSubscription, otherSubscription] });
+    const deleteScope = nock(HOST)
+      .delete(`${PATH}/${existingSubscription.id}`)
+      .reply(204);
 
     const { result } = await invoke(deleteAllSubscription, {
       connection,
       notificationUrl: NOTIFICATION_URL,
     });
 
-    expect(scope.isDone()).toBe(true);
-    expect(result.data).toEqual([]);
+    expect(listScope.isDone()).toBe(true);
+    expect(deleteScope.isDone()).toBe(true);
+    expect(result.data).toEqual([existingSubscription.id]);
   });
 
   test("returns an empty list when the tenant has no subscriptions", async () => {

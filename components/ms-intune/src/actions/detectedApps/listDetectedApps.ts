@@ -1,8 +1,9 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { ENDPOINTS } from "../../constants";
 import { listDetectedAppsExamplePayload } from "../../examplePayloads";
 import { listDetectedAppsInputs } from "../../inputs";
+import { listDetectedAppsOutputSchema } from "../../outputSchemas";
 import { paginateResults } from "../../util";
 
 export const listDetectedApps = action({
@@ -11,6 +12,11 @@ export const listDetectedApps = action({
     description:
       "List properties and relationships of the Detected Apps objects.",
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listDetectedAppsOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (context, { connection, fetchAll, pagination, filters }) => {
     const client = createClient(connection, context.debug.enabled);
     const params = {
@@ -35,6 +41,7 @@ export const listDetectedApps = action({
       data,
     };
   },
+  examplePerform: async () => listDetectedAppsExamplePayload,
   inputs: listDetectedAppsInputs,
   examplePayload: listDetectedAppsExamplePayload,
 });

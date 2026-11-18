@@ -1,14 +1,20 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { ENDPOINTS } from "../../constants";
 import { getUserExamplePayload } from "../../examplePayloads";
 import { getUserInputs } from "../../inputs";
+import { getUserOutputSchema } from "../../outputSchemas";
 
 export const getUser = action({
   display: {
     label: "Get User",
     description: "Read properties and relationships of the User object.",
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getUserOutputSchema,
+  }),
+  performSafety: "safe",
   perform: async (context, { connection, userId, $select }) => {
     const client = createClient(connection, context.debug.enabled);
     const params = { $select };

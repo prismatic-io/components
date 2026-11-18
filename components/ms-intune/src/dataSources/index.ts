@@ -5,7 +5,7 @@ import { selectDeviceConfiguration } from "./selectDeviceConfiguration";
 import { selectDirectoryAudit } from "./selectDirectoryAudit";
 import { selectGroup } from "./selectGroup";
 import { selectManagedDevice } from "./selectManagedDevice";
-import { selectMember } from "./selectMembers";
+import { selectMember } from "./selectMember";
 import { selectMobileApp } from "./selectMobileApp";
 import { selectMobileAppAssignment } from "./selectMobileAppAssignment";
 import { selectSubscription } from "./selectSubscription";

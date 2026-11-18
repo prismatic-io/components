@@ -1,6 +1,6 @@
 import { dataSource } from "@prismatic-io/spectral";
 import { createClient } from "../client";
-import { ENDPOINTS } from "../constants";
+import { ENDPOINTS, MANAGED_APPS_FILTER } from "../constants";
 import { selectMobileAppExamplePayload } from "../examplePayloads";
 import { selectMobileAppInputs } from "../inputs";
 import { paginateResults } from "../util";
@@ -14,8 +14,7 @@ export const selectMobileApp = dataSource({
   perform: async (_context, { connection }) => {
     const client = createClient(connection, false, true);
     const params = {
-      $filter:
-        "(microsoft.graph.managedApp/appAvailability eq null or microsoft.graph.managedApp/appAvailability eq 'lineOfBusiness' or isAssigned eq true)",
+      $filter: MANAGED_APPS_FILTER,
     };
     const data = await paginateResults(
       client,

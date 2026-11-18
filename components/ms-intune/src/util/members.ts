@@ -1,22 +1,15 @@
+import { util } from "@prismatic-io/spectral";
 import { GENERAL_MEMBER_TYPE_URL } from "../constants";
 
-const isValidUrl = (urlString: string) => {
-  try {
-    return Boolean(new URL(urlString));
-  } catch {
-    return false;
-  }
-};
-
-export const addObjectTypeToMemberIds = (memberIds: string[]) =>
+export const addObjectTypeToMemberIds = (memberIds: string[]): string[] =>
   memberIds.map((id) =>
-    isValidUrl(id) ? id : `${GENERAL_MEMBER_TYPE_URL}/${id}`,
+    util.types.isUrl(id) ? id : `${GENERAL_MEMBER_TYPE_URL}/${id}`,
   );
 
 export const getMemberIds = (
   memberIds: string[] | undefined,
   memberIdsString: string | undefined,
-) => {
+): string[] => {
   const memberIdsToAdd =
     memberIds && memberIds.length > 0
       ? memberIds

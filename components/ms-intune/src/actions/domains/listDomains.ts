@@ -1,14 +1,20 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { ENDPOINTS } from "../../constants";
 import { listDomainsExamplePayload } from "../../examplePayloads";
 import { listDomainsInputs } from "../../inputs";
+import { listDomainsOutputSchema } from "../../outputSchemas";
 
 export const listDomains = action({
   display: {
     label: "List Domains",
     description: "Retrieve a list of domain objects.",
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listDomainsOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (context, { connection, pagination, filters }) => {
     const client = createClient(connection, context.debug.enabled);
     const params = {
@@ -30,6 +36,7 @@ export const listDomains = action({
       data,
     };
   },
+  examplePerform: async () => listDomainsExamplePayload,
   inputs: listDomainsInputs,
   examplePayload: listDomainsExamplePayload,
 });

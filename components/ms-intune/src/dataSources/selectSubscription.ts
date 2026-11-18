@@ -4,7 +4,7 @@ import { ENDPOINTS } from "../constants";
 import { selectSubscriptionExamplePayload } from "../examplePayloads";
 import { selectSubscriptionInputs } from "../inputs";
 import type { SelectableSubscription } from "../types";
-import { paginateResults } from "../util";
+import { compareElementsByLabel, paginateResults } from "../util";
 
 export const selectSubscription = dataSource({
   display: {
@@ -21,7 +21,7 @@ export const selectSubscription = dataSource({
         label: `${subscription.resource} (${subscription.changeType})`,
         key: subscription.id.toString(),
       }))
-      .sort((a, b) => ((a.label ?? "") < (b.label ?? "") ? -1 : 1));
+      .sort(compareElementsByLabel);
 
     return { result };
   },

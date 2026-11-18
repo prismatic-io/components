@@ -141,7 +141,7 @@ const createNotes = input({
 const createSpecificPlatformProperties = input({
   label: "Specific Platform Properties",
   comments:
-    "The specific properties for the app to be created, generic properties like '@odata.type', 'displayName', 'description', etc. are already covered by the other inputs. This input should be a JSON object with the specific properties for the app to be created. Check the Microsoft Graph API documentation for the correct properties for the app type you are creating. Documentation for an Office Suite app can be found [here](https://learn.microsoft.com/en-us/graph/api/intune-apps-officesuiteapp-create?view=graph-rest-beta).",
+    "The specific properties for the app to be created, generic properties like '@odata.type', 'displayName', 'description', etc. are already covered by the other inputs. This input should be a JSON object with the specific properties for the app to be created. Check the Microsoft Graph API documentation for the correct properties for the app type being created. Documentation for an Office Suite app can be found [here](https://learn.microsoft.com/en-us/graph/api/intune-apps-officesuiteapp-create?view=graph-rest-beta).",
   type: "code",
   language: "json",
   example: CREATE_OFFICE_SUITE_APP_SPECIFIC_PROPERTIES_EXAMPLE,
@@ -152,7 +152,8 @@ const createSpecificPlatformProperties = input({
 const createAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
-  comments: "Less common app properties.",
+  comments:
+    "Additional optional fields: includes Publisher, Icon Image Type, Icon Image Data, Privacy Information URL, Information URL, Owner, Developer, and Notes.",
   inputs: {
     publisher: createPublisher,
     largeIconType: createLargeIconType,
@@ -193,7 +194,7 @@ export const deleteManagedAppInputs = {
 const getAppId = input({
   label: "App ID",
   comments:
-    "The unique identifier of a managed app. You can get this from the 'List Managed Apps' action.",
+    "The unique identifier of a managed app. Available from the 'List Managed Apps' action.",
   example: "caf60db6-0db6-caf6-b60d-f6cab60df6ca",
   placeholder: "Enter app ID",
   type: "string",
@@ -384,7 +385,7 @@ const updateNotes = input({
 const updateSpecificPlatformProperties = input({
   label: "Specific Platform Properties",
   comments:
-    "The specific properties for the app to be updated, generic properties like '@odata.type', 'displayName', 'description', etc. are already covered by the other inputs. This input should be a JSON object with the specific properties for the app to be updated. Check the Microsoft Graph API documentation for the correct properties for the app type you are updating. Documentation for an Office Suite app can be found [here](https://learn.microsoft.com/en-us/graph/api/intune-apps-officesuiteapp-update?view=graph-rest-beta).",
+    "The specific properties for the app to be updated, generic properties like '@odata.type', 'displayName', 'description', etc. are already covered by the other inputs. This input should be a JSON object with the specific properties for the app to be updated. Check the Microsoft Graph API documentation for the correct properties for the app type being updated. Documentation for an Office Suite app can be found [here](https://learn.microsoft.com/en-us/graph/api/intune-apps-officesuiteapp-update?view=graph-rest-beta).",
   type: "code",
   language: "json",
   example: UPDATE_OFFICE_SUITE_APP_SPECIFIC_PROPERTIES_EXAMPLE,
@@ -395,7 +396,8 @@ const updateSpecificPlatformProperties = input({
 const updateAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
-  comments: "Less common app properties.",
+  comments:
+    "Additional optional fields: includes Publisher, Icon Image Type, Icon Image Data, Privacy Information URL, Information URL, Owner, Developer, Notes, and Specific Platform Properties.",
   inputs: {
     publisher: updatePublisher,
     largeIconType: updateLargeIconType,

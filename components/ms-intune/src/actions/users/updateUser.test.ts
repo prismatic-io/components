@@ -1,6 +1,7 @@
 import { createConnection, invoke } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { msIntuneOAuth2 } from "../../connections";
+import { NO_RESPONSE_SUCCESSFUL_PAYLOAD } from "../../constants";
 import { updateUser } from "./updateUser";
 
 const HOST = "https://graph.microsoft.com";
@@ -35,7 +36,7 @@ const baseParams = {
 describe("updateUser", () => {
   afterEach(() => nock.cleanAll());
 
-  test("joins the principal name to the domain, flattens the name group, and returns the empty 204 body", async () => {
+  test("joins the principal name to the domain, flattens the name group, and returns the confirmation", async () => {
     const scope = nock(HOST)
       .patch(PATH, {
         accountEnabled: true,
@@ -51,7 +52,7 @@ describe("updateUser", () => {
     const { result } = await invoke(updateUser, baseParams);
 
     expect(scope.isDone()).toBe(true);
-    expect(result.data).toEqual("");
+    expect(result.data).toEqual(NO_RESPONSE_SUCCESSFUL_PAYLOAD);
   });
 
   test("surfaces the failure when the API rejects the update", async () => {

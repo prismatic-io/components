@@ -1,8 +1,9 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { ENDPOINTS } from "../../constants";
+import { ENDPOINTS, NO_RESPONSE_SUCCESSFUL_PAYLOAD } from "../../constants";
 import { assignMobileAppExamplePayload } from "../../examplePayloads";
 import { assignMobileAppInputs } from "../../inputs";
+import { assignMobileAppOutputSchema } from "../../outputSchemas";
 import { getMobileAppObject } from "../../util";
 
 export const assignMobileApp = action({
@@ -10,6 +11,11 @@ export const assignMobileApp = action({
     label: "Assign Mobile App",
     description: "Assign a mobile app to a group.",
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: assignMobileAppOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, groupId, intent, mobileAppId, settings, target },
@@ -21,16 +27,14 @@ export const assignMobileApp = action({
       settings,
       groupId,
     );
-    const { data } = await client.post(
-      `${ENDPOINTS.MOBILE_APPS}/${mobileAppId}/assign`,
-      {
-        mobileAppAssignments: [mobileAppAssign],
-      },
-    );
+    await client.post(`${ENDPOINTS.MOBILE_APPS}/${mobileAppId}/assign`, {
+      mobileAppAssignments: [mobileAppAssign],
+    });
     return {
-      data,
+      data: NO_RESPONSE_SUCCESSFUL_PAYLOAD,
     };
   },
+  examplePerform: async () => assignMobileAppExamplePayload,
   inputs: assignMobileAppInputs,
   examplePayload: assignMobileAppExamplePayload,
 });

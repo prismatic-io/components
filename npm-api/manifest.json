@@ -601,9 +601,9 @@
   },
   "ms-intune": {
     "name": "@prismatic-io/components-ms-intune",
-    "version": "0.3.1",
-    "build": "634376a9583dce69500747b07bb3d2721ddd2e240b0fd0503ad5edb02666ce40",
-    "spectral": "^10.39.1"
+    "version": "0.4.0",
+    "build": "92f66665e11d9daa9cc1f849d5c5ff363e92af01168150110db1a705e72c9477",
+    "spectral": "^10.39.2"
   },
   "ms-onedrive": {
     "name": "@prismatic-io/components-ms-onedrive",

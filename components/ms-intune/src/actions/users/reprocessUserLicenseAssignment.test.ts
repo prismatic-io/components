@@ -1,7 +1,7 @@
 import { createConnection, invoke } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { msIntuneOAuth2 } from "../../connections";
-import { reprocessLicenseAssignmentExamplePayload } from "../../examplePayloads";
+import { reprocessUserLicenseAssignmentExamplePayload } from "../../examplePayloads";
 import { reprocessUserLicenseAssignment } from "./reprocessUserLicenseAssignment";
 
 const HOST = "https://graph.microsoft.com";
@@ -21,7 +21,7 @@ const connection = createConnection(
   { access_token: ACCESS_TOKEN },
 );
 
-const reprocessedUser = reprocessLicenseAssignmentExamplePayload.data;
+const reprocessedUser = reprocessUserLicenseAssignmentExamplePayload.data;
 
 describe("reprocessUserLicenseAssignment", () => {
   afterEach(() => nock.cleanAll());

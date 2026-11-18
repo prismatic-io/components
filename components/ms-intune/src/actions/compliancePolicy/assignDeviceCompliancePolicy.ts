@@ -1,14 +1,20 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { ENDPOINTS, ODATA_TYPES } from "../../constants";
 import { assignDeviceCompliancePolicyExamplePayload } from "../../examplePayloads";
 import { assignDeviceCompliancePolicyInputs } from "../../inputs";
+import { assignDeviceCompliancePolicyOutputSchema } from "../../outputSchemas";
 
 export const assignDeviceCompliancePolicy = action({
   display: {
     label: "Assign Device Compliance Policy",
     description: "Assign a device compliance policy by ID.",
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: assignDeviceCompliancePolicyOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, deviceCompliancePolicyId, assignId, collectionId, target },
@@ -33,6 +39,7 @@ export const assignDeviceCompliancePolicy = action({
       data,
     };
   },
+  examplePerform: async () => assignDeviceCompliancePolicyExamplePayload,
   inputs: assignDeviceCompliancePolicyInputs,
   examplePayload: assignDeviceCompliancePolicyExamplePayload,
 });

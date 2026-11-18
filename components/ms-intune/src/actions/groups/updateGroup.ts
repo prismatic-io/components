@@ -1,14 +1,20 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { ENDPOINTS, NO_RESPONSE_SUCCESSFULL_PAYLOAD } from "../../constants";
+import { ENDPOINTS, NO_RESPONSE_SUCCESSFUL_PAYLOAD } from "../../constants";
 import { updateGroupExamplePayload } from "../../examplePayloads";
 import { updateGroupInputs } from "../../inputs";
+import { updateGroupOutputSchema } from "../../outputSchemas";
 
 export const updateGroup = action({
   display: {
     label: "Update Group",
     description: "Update a single group.",
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: updateGroupOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -33,9 +39,10 @@ export const updateGroup = action({
     });
 
     return {
-      data: NO_RESPONSE_SUCCESSFULL_PAYLOAD,
+      data: NO_RESPONSE_SUCCESSFUL_PAYLOAD,
     };
   },
+  examplePerform: async () => updateGroupExamplePayload,
   inputs: updateGroupInputs,
   examplePayload: updateGroupExamplePayload,
 });

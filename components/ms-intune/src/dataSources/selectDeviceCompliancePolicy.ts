@@ -4,6 +4,7 @@ import { ENDPOINTS } from "../constants";
 import { selectDeviceCompliancePolicyExamplePayload } from "../examplePayloads";
 import { selectDeviceCompliancePolicyInputs } from "../inputs";
 import type { SelectableResource } from "../types";
+import { compareElementsByLabel } from "../util";
 
 export const selectDeviceCompliancePolicy = dataSource({
   display: {
@@ -23,7 +24,7 @@ export const selectDeviceCompliancePolicy = dataSource({
         label: policy.displayName,
         key: policy.id.toString(),
       }))
-      .sort((a, b) => ((a.label ?? "") < (b.label ?? "") ? -1 : 1));
+      .sort(compareElementsByLabel);
 
     return { result };
   },

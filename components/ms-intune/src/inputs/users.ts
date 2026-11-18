@@ -163,7 +163,7 @@ const reprocessUserId = input({
   clean: util.types.toString,
 });
 
-export const reprocessLicenseAssignmentInputs = {
+export const reprocessUserLicenseAssignmentInputs = {
   connection,
   userId: reprocessUserId,
 };

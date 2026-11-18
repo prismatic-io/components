@@ -1,10 +1,10 @@
-The Resource Trigger monitors Microsoft Intune resources for changes using Microsoft Graph [change notifications](https://learn.microsoft.com/en-us/graph/api/resources/change-notifications-api-overview). When a monitored resource is created, updated, or deleted, Microsoft Graph sends a notification to this trigger.
+The Resource Trigger monitors Microsoft Intune resources for changes using Microsoft Graph [change notifications](https://learn.microsoft.com/en-us/graph/api/resources/change-notifications-api-overview?view=graph-rest-1.0). When a monitored resource is created, updated, or deleted, Microsoft Graph sends a notification to this trigger.
 
 #### How It Works
 
 This trigger uses lifecycle webhook handlers to automatically manage Microsoft Graph subscriptions:
 
-- **On Deploy**: When the integration is deployed, subscriptions are automatically created for the selected resource and change types
+- **On Deploy**: When the instance is deployed, a subscription is automatically created for the selected resource and change types. On a redeploy, the trigger creates a new subscription from the current inputs and connection, then removes the previous ones, so a changed **Resource**, **Change Type** or connection takes effect. If Microsoft Graph refuses to delete a previous subscription, for example because it belongs to another account than the new connection, both subscriptions deliver notifications until the old one is deleted: the trigger retries the delete on every later deploy and when the instance is deleted, and Microsoft Graph removes the old subscription when it expires.
 - **On Delete**: When the instance is deleted, all subscriptions associated with the webhook URL are automatically removed
 
 #### Branches
@@ -16,32 +16,27 @@ This trigger uses two branches to handle different types of incoming requests:
 | **Notification** | Receives actual change notifications when the monitored resource changes |
 | **URL Validation** | Handles Microsoft Graph validation requests when subscriptions are created |
 
-:::info[URL Validation]
-When a subscription is created, Microsoft Graph sends a validation request containing a `validationToken` query parameter. The trigger automatically responds with the validation token to complete the subscription setup.
-:::
-
 #### Configuration
 
 | Input | Description |
 |-------|-------------|
-| **Resource** | The Microsoft Graph resource to monitor (e.g., `users`, `groups`, `devices`) |
+| **Resource** | The Microsoft Graph resource to monitor (e.g., `users`, `groups`) |
 | **Change Type** | The types of changes to monitor. Multiple selections allowed: `created`, `updated`, `deleted` |
-| **Expiration Date Time** | Optional. When the subscription expires. Defaults to 29 days for users and groups |
+| **Expiration Date Time** | Optional. When the subscription expires. Defaults to 29 days from deploy |
+
+Each instance deploy replaces the subscription with a new one. When **Expiration Date Time** is empty, this restarts the expiration window.
 
 #### Supported Resources
 
 <details>
-<summary>Common resources that can be monitored</summary>
+<summary>Common resources that can be monitored (2)</summary>
 
 - `users` - User accounts
 - `groups` - Security and Microsoft 365 groups
-- `devices` - Managed devices
-- `applications` - Registered applications
-- `deviceManagement/managedDevices` - Intune managed devices
 
 </details>
 
-For a complete list of supported resources, refer to the [Microsoft Graph change notifications documentation](https://learn.microsoft.com/en-us/graph/change-notifications-delivery-webhooks).
+For a complete list of supported resources, refer to the [Microsoft Graph change notifications documentation](https://learn.microsoft.com/en-us/graph/api/resources/change-notifications-api-overview?view=graph-rest-1.0).
 
 #### Returned Data
 

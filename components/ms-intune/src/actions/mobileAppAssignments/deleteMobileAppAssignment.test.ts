@@ -1,8 +1,6 @@
 import { createConnection, invoke } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { msIntuneOAuth2 } from "../../connections";
-import { NO_RESPONSE_SUCCESSFULL_PAYLOAD } from "../../constants";
-import { deleteMobileAppAssignmentExamplePayload } from "../../examplePayloads";
 import { deleteMobileAppAssignment } from "./deleteMobileAppAssignment";
 
 const HOST = "https://graph.microsoft.com";
@@ -26,7 +24,7 @@ const connection = createConnection(
 describe("deleteMobileAppAssignment", () => {
   afterEach(() => nock.cleanAll());
 
-  test("deletes the assignment and returns the fixed success payload", async () => {
+  test("deletes the assignment and returns the delete record", async () => {
     const scope = nock(HOST).delete(PATH).reply(204);
 
     const { result } = await invoke(deleteMobileAppAssignment, {
@@ -36,8 +34,11 @@ describe("deleteMobileAppAssignment", () => {
     });
 
     expect(scope.isDone()).toBe(true);
-    expect(result.data).toEqual(NO_RESPONSE_SUCCESSFULL_PAYLOAD);
-    expect(result.data).toEqual(deleteMobileAppAssignmentExamplePayload.data);
+    expect(result.data).toEqual({
+      success: true,
+      id: ASSIGNMENT_ID,
+      message: "Mobile app assignment deleted successfully.",
+    });
   });
 
   test("surfaces the failure when the assignment does not exist", async () => {

@@ -39,7 +39,7 @@ describe("selectDeviceCompliancePolicy", () => {
     expect(Array.isArray(result)).toBe(true);
     expect(result).toEqual([
       {
-        label: "Display Name value",
+        label: "Windows 11 Compliance Policy",
         key: "4214b716-b716-4214-16b7-144216b71442",
       },
     ]);

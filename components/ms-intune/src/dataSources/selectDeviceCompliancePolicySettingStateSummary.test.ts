@@ -41,7 +41,7 @@ describe("selectDeviceCompliancePolicySettingStateSummary", () => {
     expect(Array.isArray(result)).toBe(true);
     expect(result).toEqual([
       {
-        label: "Setting Name value",
+        label: "Require a password to unlock mobile devices",
         key: "7474d6d5-d6d5-7474-d5d6-7474d5d67474",
       },
     ]);

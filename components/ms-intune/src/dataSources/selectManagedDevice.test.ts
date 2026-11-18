@@ -42,7 +42,7 @@ describe("selectManagedDevice", () => {
     expect(Array.isArray(result)).toBe(true);
     expect(result).toEqual([
       {
-        label: "Device Name value",
+        label: "DESKTOP-4F2K9QZ",
         key: "705c034c-034c-705c-4c03-5c704c035c70",
       },
     ]);

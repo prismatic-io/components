@@ -1,7 +1,7 @@
 import { createConnection, invoke } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { msIntuneOAuth2 } from "../../connections";
-import { getDirectoryAuditExamplePayload } from "../../examplePayloads";
+import { getDirectoyAuditExamplePayload } from "../../examplePayloads";
 import { getDirectoyAudit } from "./getDirectoyAudit";
 
 const HOST = "https://graph.microsoft.com";
@@ -21,7 +21,7 @@ const connection = createConnection(
   { access_token: ACCESS_TOKEN },
 );
 
-const auditReply = getDirectoryAuditExamplePayload.data;
+const auditReply = getDirectoyAuditExamplePayload.data;
 
 describe("getDirectoyAudit", () => {
   afterEach(() => nock.cleanAll());

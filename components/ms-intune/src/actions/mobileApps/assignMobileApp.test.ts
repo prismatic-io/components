@@ -1,6 +1,7 @@
 import { createConnection, invoke } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { msIntuneOAuth2 } from "../../connections";
+import { NO_RESPONSE_SUCCESSFUL_PAYLOAD } from "../../constants";
 import { assignMobileApp } from "./assignMobileApp";
 
 const HOST = "https://graph.microsoft.com";
@@ -21,21 +22,10 @@ const connection = createConnection(
   { access_token: ACCESS_TOKEN },
 );
 
-const assignReply = {
-  value: [
-    {
-      "@odata.type": "#microsoft.graph.mobileAppAssignment",
-      id: "591620b7-20b7-5916-b720-1659b7201659",
-      intent: "required",
-      target: { "@odata.type": "microsoft.graph.groupAssignmentTarget" },
-    },
-  ],
-};
-
 describe("assignMobileApp", () => {
   afterEach(() => nock.cleanAll());
 
-  test("posts the group ID as the assignment id and returns the API response", async () => {
+  test("posts the group ID as the assignment target's groupId and returns the confirmation", async () => {
     const scope = nock(HOST)
       .post(PATH, {
         mobileAppAssignments: [
@@ -43,17 +33,17 @@ describe("assignMobileApp", () => {
             intent: "required",
             target: {
               "@odata.type": "microsoft.graph.groupAssignmentTarget",
+              groupId: GROUP_ID,
             },
             settings: {
               "@odata.type":
                 "microsoft.graph.windowsUniversalAppXAppAssignmentSettings",
               useDeviceContext: true,
             },
-            id: GROUP_ID,
           },
         ],
       })
-      .reply(200, assignReply);
+      .reply(204);
 
     const { result } = await invoke(assignMobileApp, {
       connection,
@@ -65,7 +55,70 @@ describe("assignMobileApp", () => {
     });
 
     expect(scope.isDone()).toBe(true);
-    expect(result.data).toEqual(assignReply);
+    expect(result.data).toEqual(NO_RESPONSE_SUCCESSFUL_PAYLOAD);
+  });
+
+  test("leaves groupId out of the target for an all-licensed-users target", async () => {
+    const scope = nock(HOST)
+      .post(PATH, {
+        mobileAppAssignments: [
+          {
+            intent: "available",
+            target: {
+              "@odata.type": "microsoft.graph.allLicensedUsersAssignmentTarget",
+            },
+            settings: {
+              "@odata.type":
+                "microsoft.graph.windowsUniversalAppXAppAssignmentSettings",
+              useDeviceContext: true,
+            },
+          },
+        ],
+      })
+      .reply(204);
+
+    await invoke(assignMobileApp, {
+      connection,
+      mobileAppId: MOBILE_APP_ID,
+      groupId: GROUP_ID,
+      intent: "available",
+      target: "microsoft.graph.allLicensedUsersAssignmentTarget",
+      settings: "microsoft.graph.windowsUniversalAppXAppAssignmentSettings",
+    });
+
+    expect(scope.isDone()).toBe(true);
+  });
+
+  test("sends groupId for an exclusion group target written with a leading #", async () => {
+    const scope = nock(HOST)
+      .post(PATH, {
+        mobileAppAssignments: [
+          {
+            intent: "required",
+            target: {
+              "@odata.type": "#microsoft.graph.exclusionGroupAssignmentTarget",
+              groupId: GROUP_ID,
+            },
+            settings: {
+              "@odata.type":
+                "microsoft.graph.windowsUniversalAppXAppAssignmentSettings",
+              useDeviceContext: true,
+            },
+          },
+        ],
+      })
+      .reply(204);
+
+    await invoke(assignMobileApp, {
+      connection,
+      mobileAppId: MOBILE_APP_ID,
+      groupId: GROUP_ID,
+      intent: "required",
+      target: "#microsoft.graph.exclusionGroupAssignmentTarget",
+      settings: "microsoft.graph.windowsUniversalAppXAppAssignmentSettings",
+    });
+
+    expect(scope.isDone()).toBe(true);
   });
 
   test("surfaces the failure when the API rejects the assignment", async () => {

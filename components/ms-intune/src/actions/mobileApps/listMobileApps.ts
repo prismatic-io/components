@@ -1,8 +1,9 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { ENDPOINTS } from "../../constants";
 import { listMobileAppsExamplePayload } from "../../examplePayloads";
 import { listMobileAppsInputs } from "../../inputs";
+import { listMobileAppsOutputSchema } from "../../outputSchemas";
 import { paginateResults } from "../../util";
 
 export const listMobileApps = action({
@@ -10,6 +11,11 @@ export const listMobileApps = action({
     label: "List Mobile Apps",
     description: "Retrieve a list of mobile apps.",
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listMobileAppsOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (context, { connection, fetchAll, pagination, filters }) => {
     const client = createClient(connection, context.debug.enabled);
     const params = {
@@ -34,6 +40,7 @@ export const listMobileApps = action({
       data,
     };
   },
+  examplePerform: async () => listMobileAppsExamplePayload,
   inputs: listMobileAppsInputs,
   examplePayload: listMobileAppsExamplePayload,
 });

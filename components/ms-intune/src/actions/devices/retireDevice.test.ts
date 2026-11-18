@@ -1,6 +1,7 @@
 import { createConnection, invoke } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { msIntuneOAuth2 } from "../../connections";
+import { NO_RESPONSE_SUCCESSFUL_PAYLOAD } from "../../constants";
 import { retireDevice } from "./retireDevice";
 
 const HOST = "https://graph.microsoft.com";
@@ -23,7 +24,7 @@ const connection = createConnection(
 describe("retireDevice", () => {
   afterEach(() => nock.cleanAll());
 
-  test("posts to the retire path and returns the empty response body untouched", async () => {
+  test("posts to the retire path and returns the confirmation", async () => {
     const scope = nock(HOST).post(PATH).reply(204);
 
     const { result } = await invoke(retireDevice, {
@@ -32,7 +33,7 @@ describe("retireDevice", () => {
     });
 
     expect(scope.isDone()).toBe(true);
-    expect(result.data).toBe("");
+    expect(result.data).toEqual(NO_RESPONSE_SUCCESSFUL_PAYLOAD);
   });
 
   test("surfaces the failure when the retire request is rejected", async () => {

@@ -1,7 +1,6 @@
 import { createConnection, invoke } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { msIntuneOAuth2 } from "../../connections";
-import { deleteManagedDeviceExamplePayload } from "../../examplePayloads";
 import { deleteManagedDevice } from "./deleteManagedDevice";
 
 const HOST = "https://graph.microsoft.com";
@@ -21,13 +20,11 @@ const connection = createConnection(
   { access_token: ACCESS_TOKEN },
 );
 
-const deleteReply = deleteManagedDeviceExamplePayload.data;
-
 describe("deleteManagedDevice", () => {
   afterEach(() => nock.cleanAll());
 
-  test("issues a DELETE for the managed device and returns the response body", async () => {
-    const scope = nock(HOST).delete(PATH).reply(200, deleteReply);
+  test("deletes the managed device and returns the delete record", async () => {
+    const scope = nock(HOST).delete(PATH).reply(204);
 
     const { result } = await invoke(deleteManagedDevice, {
       connection,
@@ -35,7 +32,11 @@ describe("deleteManagedDevice", () => {
     });
 
     expect(scope.isDone()).toBe(true);
-    expect(result.data).toEqual(deleteReply);
+    expect(result.data).toEqual({
+      success: true,
+      id: DEVICE_ID,
+      message: "Managed device deleted successfully.",
+    });
   });
 
   test("surfaces the failure when the managed device does not exist", async () => {

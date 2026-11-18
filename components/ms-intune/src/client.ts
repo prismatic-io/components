@@ -1,22 +1,45 @@
-import type { Connection } from "@prismatic-io/spectral";
+import { type Connection, ConnectionError, util } from "@prismatic-io/spectral";
 import {
   createClient as createAxiosClient,
   type HttpClient,
 } from "@prismatic-io/spectral/http";
-import { getBaseUrl, validateConnection } from "./util";
+import { msIntuneClientCredentials, msIntuneOAuth2 } from "./connections";
+import { getBaseUrl } from "./util";
+
+export const validateConnection = (connection: Connection): void => {
+  if (
+    ![msIntuneOAuth2.key, msIntuneClientCredentials.key].includes(
+      connection.key,
+    )
+  ) {
+    throw new ConnectionError(
+      connection,
+      `Unsupported connection method ${connection.key}.`,
+    );
+  }
+};
+
+export const getAuthHeaders = (
+  connection: Connection,
+): Record<string, string> => {
+  validateConnection(connection);
+  const accessToken = util.types.toString(connection.token?.access_token);
+  if (!accessToken) {
+    throw new ConnectionError(
+      connection,
+      "The connection has no access token. Reauthenticate the connection.",
+    );
+  }
+  return { Authorization: `Bearer ${accessToken}` };
+};
 
 export const createClient = (
   connection: Connection,
-  debug: boolean,
+  debug = false,
   useBeta = false,
-): HttpClient => {
-  validateConnection(connection);
-
-  return createAxiosClient({
+): HttpClient =>
+  createAxiosClient({
     baseUrl: getBaseUrl(useBeta),
-    headers: {
-      Authorization: `Bearer ${connection.token?.access_token}`,
-    },
+    headers: getAuthHeaders(connection),
     debug,
   });
-};

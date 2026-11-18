@@ -1,6 +1,7 @@
 import {
   type ActionContext,
   type ConfigVarResultCollection,
+  type TriggerBranchingResult,
   type TriggerPayload,
   util,
 } from "@prismatic-io/spectral";
@@ -8,16 +9,17 @@ import type { HttpClient } from "@prismatic-io/spectral/http";
 import {
   ENDPOINTS,
   MAX_MINUTES_EXPIRATION_USERS_GROUPS_SUBSCRIPTION,
+  MISSING_CHANGE_TYPE_MESSAGE,
   MS_PER_MINUTE,
   TriggerBranches,
 } from "../constants";
-import type { Subscription } from "../types";
+import type { GraphResponseData, Subscription } from "../types";
 import { paginateResults } from "./pagination";
 
 export const triggerPerformFunction = async (
   _context: ActionContext<ConfigVarResultCollection>,
   payload: TriggerPayload,
-) => {
+): Promise<TriggerBranchingResult<TriggerPayload>> => {
   const rawValidationToken = payload.queryParameters?.validationToken;
   const validationToken = util.types.toString(rawValidationToken);
   if (validationToken)
@@ -37,20 +39,30 @@ export const triggerPerformFunction = async (
   });
 };
 
+const splitChangeTypes = (changeType: unknown): string[] =>
+  util.types
+    .toString(changeType)
+    .split(",")
+    .map((value) => value.trim());
+
 export const subscribeToResource = async (
   client: HttpClient,
   endpoint: string,
   resource: string,
-  changeTypes: string[],
+  changeTypes: string[] | undefined,
   expirationDateTime: string,
   extraParams: Record<string, unknown> = {},
-) => {
+): Promise<GraphResponseData[]> => {
+  if (!changeTypes?.length) {
+    throw new Error(MISSING_CHANGE_TYPE_MESSAGE);
+  }
   const promises = [];
   const data = await paginateResults(client, ENDPOINTS.SUBSCRIPTIONS, true, {});
   for (const type of changeTypes) {
     const existingSubscription = (data.value as Subscription[]).find(
       ({ notificationUrl, changeType }) =>
-        notificationUrl === endpoint && type === changeType,
+        notificationUrl === endpoint &&
+        splitChangeTypes(changeType).includes(type),
     );
 
     if (existingSubscription)
@@ -71,10 +83,7 @@ export const subscribeToResource = async (
   return createdSubscriptions.map(({ data }) => data);
 };
 
-export const addMinutesToDate = (
-  currentDate: Date,
-  minutesToAdd: number,
-): string => {
+const addMinutesToDate = (currentDate: Date, minutesToAdd: number): string => {
   const futureDate = new Date(
     currentDate.getTime() + minutesToAdd * MS_PER_MINUTE,
   );
@@ -92,7 +101,7 @@ export const addMinutesToDate = (
 export const removeSubscriptions = async (
   client: HttpClient,
   instanceWebhooks: Set<string>,
-) => {
+): Promise<{ subscriptionsRemoved: string[] }> => {
   const data = await paginateResults(client, ENDPOINTS.SUBSCRIPTIONS, true, {});
 
   const subscriptionsToRemove: string[] = (data.value as Subscription[])
@@ -108,7 +117,9 @@ export const removeSubscriptions = async (
   return { subscriptionsRemoved: subscriptionsToRemove };
 };
 
-export const getExpirationDate = (expirationDateTime: string | undefined) => {
+export const getExpirationDate = (
+  expirationDateTime: string | undefined,
+): string => {
   return expirationDateTime
     ? expirationDateTime
     : addMinutesToDate(

@@ -14,15 +14,10 @@ export const selectMobileAppAssignment = dataSource({
   inputs: selectMobileAppAssignmentInputs,
   perform: async (_context, { connection, mobileAppId }) => {
     const client = createClient(connection, false, true);
-    const params = {
-      $filter:
-        "(microsoft.graph.managedApp/appAvailability eq null or microsoft.graph.managedApp/appAvailability eq 'lineOfBusiness' or isAssigned eq true)",
-    };
     const data = await paginateResults(
       client,
       `${ENDPOINTS.MOBILE_APPS}/${mobileAppId}/assignments`,
       true,
-      params,
     );
 
     return data.value.map(

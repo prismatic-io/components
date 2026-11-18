@@ -1,7 +1,7 @@
 import { createConnection, invoke } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { msIntuneOAuth2 } from "../../connections";
-import { NO_RESPONSE_SUCCESSFULL_PAYLOAD } from "../../constants";
+import { NO_RESPONSE_SUCCESSFUL_PAYLOAD } from "../../constants";
 import { updateGroupExamplePayload } from "../../examplePayloads";
 import { updateGroup } from "./updateGroup";
 
@@ -52,7 +52,7 @@ describe("updateGroup", () => {
     });
 
     expect(scope.isDone()).toBe(true);
-    expect(result.data).toEqual(NO_RESPONSE_SUCCESSFULL_PAYLOAD);
+    expect(result.data).toEqual(NO_RESPONSE_SUCCESSFUL_PAYLOAD);
     expect(result.data).toEqual(updateGroupExamplePayload.data);
   });
 

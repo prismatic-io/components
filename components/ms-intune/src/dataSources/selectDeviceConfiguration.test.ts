@@ -38,7 +38,7 @@ describe("selectDeviceConfiguration", () => {
     expect(Array.isArray(result)).toBe(true);
     expect(result).toEqual([
       {
-        label: "Display Name value",
+        label: "Windows 11 Device Restrictions",
         key: "34977265-7265-3497-6572-973465729734",
       },
     ]);

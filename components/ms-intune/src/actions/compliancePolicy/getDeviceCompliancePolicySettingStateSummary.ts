@@ -1,8 +1,9 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { ENDPOINTS } from "../../constants";
 import { getDeviceCompliancePolicySettingStateSummaryExamplePayload } from "../../examplePayloads";
 import { getDeviceCompliancePolicySettingStateSummaryInputs } from "../../inputs";
+import { getDeviceCompliancePolicySettingStateSummaryOutputSchema } from "../../outputSchemas";
 
 export const getDeviceCompliancePolicySettingStateSummary = action({
   display: {
@@ -10,6 +11,11 @@ export const getDeviceCompliancePolicySettingStateSummary = action({
     description:
       "Retrieve a device compliance policy setting state summary by its ID.",
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getDeviceCompliancePolicySettingStateSummaryOutputSchema,
+  }),
+  performSafety: "safe",
   perform: async (
     context,
     { connection, deviceCompliancePolicySettingStateSummaryId },

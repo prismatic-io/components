@@ -6,7 +6,7 @@ export const msIntuneClientCredentials = oauth2Connection({
   display: {
     label: "OAuth 2.0 Client Credentials",
     description:
-      "OAuth 2.0 Client Credentials Connectivity for Microsoft Intune",
+      "Authenticate requests to Microsoft Intune using OAuth 2.0 client credentials.",
   },
   inputs: {
     tokenUrl: {
@@ -16,7 +16,7 @@ export const msIntuneClientCredentials = oauth2Connection({
       required: true,
       shown: true,
       comments:
-        "The OAuth 2.0 Token URL for Microsoft Intune. <strong>Important:</strong> Replace **<YOUR_TENANT_ID>** with your Azure AD tenant ID. Find your tenant ID in Azure Portal > Azure Active Directory > Overview.",
+        "The OAuth 2.0 Token URL for Microsoft Intune. <strong>Important:</strong> Replace **<YOUR_TENANT_ID>** with the Azure AD tenant ID. Find the tenant ID in Azure Portal > Azure Active Directory > Overview.",
       default:
         "https://login.microsoftonline.com/**<YOUR_TENANT_ID>**/oauth2/v2.0/token",
     },
@@ -27,7 +27,7 @@ export const msIntuneClientCredentials = oauth2Connection({
       required: false,
       shown: true,
       comments:
-        "The scope for Microsoft Graph API access. For client credentials flow, use https://graph.microsoft.com/.default to request all permissions configured in your app registration. [Learn more](https://learn.microsoft.com/en-us/graph/auth-v2-service)",
+        "The scope for Microsoft Graph API access. For client credentials flow, use https://graph.microsoft.com/.default to request all permissions configured in the app registration. [Learn more](https://learn.microsoft.com/en-us/graph/auth-v2-service)",
       default: "https://graph.microsoft.com/.default",
     },
     clientId: {
@@ -37,7 +37,7 @@ export const msIntuneClientCredentials = oauth2Connection({
       required: true,
       shown: true,
       comments:
-        "Application (client) ID from your App Registration in the Azure Portal. Navigate to Azure Active Directory > App registrations > [Your App] to find this value. [Learn more](https://learn.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app)",
+        "Application (client) ID from the App Registration in the Azure Portal. Navigate to Azure Active Directory > App registrations and open the app registration to find this value. [Learn more](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app)",
       example: "12345678-1234-1234-1234-123456789abc",
     },
     clientSecret: {
@@ -47,7 +47,7 @@ export const msIntuneClientCredentials = oauth2Connection({
       required: true,
       shown: true,
       comments:
-        "Client secret value from your App Registration in the Azure Portal. Navigate to Azure Active Directory > App registrations > [Your App] > Certificates & secrets to generate a new secret. [Learn more](https://learn.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app#add-a-client-secret)",
+        "Client secret value from the App Registration in the Azure Portal. Navigate to Azure Active Directory > App registrations, open the app registration, and go to Certificates & secrets to generate a new secret. [Learn more](https://learn.microsoft.com/en-us/entra/identity-platform/how-to-add-credentials?tabs=client-secret)",
     },
   },
 });

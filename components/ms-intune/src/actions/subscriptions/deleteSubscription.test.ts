@@ -1,7 +1,6 @@
 import { createConnection, invoke } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { msIntuneOAuth2 } from "../../connections";
-import { deleteSubscriptionExamplePayload } from "../../examplePayloads";
 import { deleteSubscription } from "./deleteSubscription";
 
 const HOST = "https://graph.microsoft.com";
@@ -24,7 +23,7 @@ const connection = createConnection(
 describe("deleteSubscription", () => {
   afterEach(() => nock.cleanAll());
 
-  test("deletes the subscription and returns the fixed success payload", async () => {
+  test("deletes the subscription and returns the delete record", async () => {
     const scope = nock(HOST).delete(PATH).reply(204);
 
     const { result } = await invoke(deleteSubscription, {
@@ -33,7 +32,11 @@ describe("deleteSubscription", () => {
     });
 
     expect(scope.isDone()).toBe(true);
-    expect(result.data).toEqual(deleteSubscriptionExamplePayload.data);
+    expect(result.data).toEqual({
+      success: true,
+      id: SUBSCRIPTION_ID,
+      message: "Subscription deleted successfully.",
+    });
   });
 
   test("surfaces the failure when the subscription does not exist", async () => {

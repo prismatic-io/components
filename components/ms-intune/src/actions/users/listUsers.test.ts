@@ -44,13 +44,13 @@ describe("listUsers", () => {
   test("returns a single page of users when Fetch All is false", async () => {
     const scope = nock(HOST)
       .get(PATH)
-      .query({ $count: "false", $top: "1", $skip: "0" })
+      .query({ $count: "false", $top: 1, $skip: 0 })
       .reply(200, listReply);
 
     const { result } = await invoke(listUsers, {
       connection,
       fetchAll: false,
-      pagination: { ...emptyPagination, $top: "1", $skip: "0" },
+      pagination: { ...emptyPagination, $top: 1, $skip: 0 },
       filters: emptyFilters,
     });
 
@@ -74,7 +74,7 @@ describe("listUsers", () => {
     const { result } = await invoke(listUsers, {
       connection,
       fetchAll: true,
-      pagination: { ...emptyPagination, $top: "1", $skip: "0" },
+      pagination: { ...emptyPagination, $top: 1, $skip: 0 },
       filters: emptyFilters,
     });
 

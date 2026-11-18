@@ -1,11 +1,12 @@
 import type { HttpClient } from "@prismatic-io/spectral/http";
+import type { GraphResponseData } from "../types";
 
 export const paginateResults = async (
   client: HttpClient,
   url: string,
   fetchAll: boolean,
   params: Record<string, unknown> | undefined = undefined,
-) => {
+): Promise<GraphResponseData> => {
   if (fetchAll) {
     const results = [];
     let nextLink = url;

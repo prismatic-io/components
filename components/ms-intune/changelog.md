@@ -1,5 +1,22 @@
 ## Changelog
 
+### 2026-11-18
+
+Updated actions, data sources, and the **Resource Change** trigger:
+
+- Fixed the **Resource Change** trigger failing on redeploy when a subscription for a selected change type already existed; a redeploy now replaces the previous subscription so a changed **Resource**, **Change Type**, or connection takes effect
+- Fixed **Delete Subscriptions from Endpoint** deleting no subscriptions; it now deletes every subscription on the given **Notification URL** and returns their IDs
+- Fixed **Assign Mobile App** creating group-targeted assignments without the selected group; **Group ID** is now sent only for group and exclusion group targets
+- Fixed the **Select Mobile App Assignment** data source failing to load
+- Fixed **List Software Update Status Summary** failing when **Fetch All** is on; **Fetch All** has no effect on this action
+- Updated **Create Subscription** to detect an existing subscription on the notification URL whose change types are a comma-separated list
+- Updated **Delete Managed Device**, **Delete Managed App**, **Delete User**, **Delete Group**, **Delete Group Member**, **Delete Mobile App Assignment**, and **Delete Subscription by ID** to return a record with a success flag, the deleted ID, and a message
+- Updated **Retire Managed Device**, **Wipe Device**, **Assign Mobile App**, and **Update User** to return a confirmation message instead of an empty result
+- Updated the **Top** and **Skip** inputs on list actions to number inputs
+- Updated **List Mobile App Assignments** to group its paging inputs into **Pagination** and its query inputs into **Filters**; **Fetch All** stays a top-level toggle
+- Added output schemas to 54 actions for improved field mapping during configuration
+- Added inline action calling support to 54 actions for improved example output during configuration
+
 ### 2026-11-11
 
 Updated the component description to better summarize what the component does

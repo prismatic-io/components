@@ -1,8 +1,9 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { ENDPOINTS } from "../../constants";
 import { getDetectedAppExamplePayload } from "../../examplePayloads";
 import { getDetectedAppInputs } from "../../inputs";
+import { getDetectedAppOutputSchema } from "../../outputSchemas";
 
 export const getDetectedApp = action({
   display: {
@@ -10,6 +11,11 @@ export const getDetectedApp = action({
     description:
       "Read properties and relationships of the Detected Apps object.",
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getDetectedAppOutputSchema,
+  }),
+  performSafety: "safe",
   perform: async (context, { connection, detectedAppId }) => {
     const client = createClient(connection, context.debug.enabled, true);
 

@@ -1,15 +1,21 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { DELETE_MEMBERS_RESPONSE_MESSAGE, ENDPOINTS } from "../../constants";
+import { ENDPOINTS } from "../../constants";
 import { deleteMemberFromGroupExamplePayload } from "../../examplePayloads";
-import { deleteMemberInputs } from "../../inputs";
+import { deleteMemberFromGroupInputs } from "../../inputs";
+import { deleteMemberFromGroupOutputSchema } from "../../outputSchemas";
 
 export const deleteMemberFromGroup = action({
   display: {
     label: "Delete Group Member",
     description: "Delete a member from a security or Microsoft 365 group.",
   },
-  inputs: deleteMemberInputs,
+  inputs: deleteMemberFromGroupInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: deleteMemberFromGroupOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (context, { groupId, memberId, connection }) => {
     const client = createClient(connection, context.debug.enabled);
     await client.delete(
@@ -17,8 +23,13 @@ export const deleteMemberFromGroup = action({
     );
 
     return {
-      data: DELETE_MEMBERS_RESPONSE_MESSAGE,
+      data: {
+        success: true,
+        id: memberId,
+        message: "Member removed from group successfully.",
+      },
     };
   },
+  examplePerform: async () => deleteMemberFromGroupExamplePayload,
   examplePayload: deleteMemberFromGroupExamplePayload,
 });

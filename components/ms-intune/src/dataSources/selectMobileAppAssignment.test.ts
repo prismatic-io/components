@@ -5,7 +5,6 @@ import {
 } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { msIntuneOAuth2 } from "../connections";
-import { MANAGED_APPS_FILTER } from "../constants";
 import { listMobileAppAssignmentsExamplePayload } from "../examplePayloads";
 import { selectMobileAppAssignment } from "./selectMobileAppAssignment";
 
@@ -37,11 +36,8 @@ const invokeBare = async (): Promise<Element[]> =>
 describe("selectMobileAppAssignment", () => {
   afterEach(() => nock.cleanAll());
 
-  test("forwards the managed app filter and maps assignments to a bare array of label/key elements", async () => {
-    const scope = nock(HOST)
-      .get(PATH)
-      .query({ $filter: MANAGED_APPS_FILTER })
-      .reply(200, listReply);
+  test("requests the assignments without a filter and maps them to a bare array of label/key elements", async () => {
+    const scope = nock(HOST).get(PATH).query({}).reply(200, listReply);
 
     const result = await invokeBare();
 
@@ -57,10 +53,7 @@ describe("selectMobileAppAssignment", () => {
   });
 
   test("returns an empty array when the app has no assignments", async () => {
-    nock(HOST)
-      .get(PATH)
-      .query({ $filter: MANAGED_APPS_FILTER })
-      .reply(200, { value: [] });
+    nock(HOST).get(PATH).query({}).reply(200, { value: [] });
 
     expect(await invokeBare()).toEqual([]);
   });

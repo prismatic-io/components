@@ -46,20 +46,8 @@ describe("listSoftwareUpdateStatusSummary", () => {
     expect(result.data).toEqual(summary);
   });
 
-  test("follows @odata.nextLink and concatenates every page when Fetch All is true", async () => {
-    const firstPage = { ...summary, id: "page-1" };
-    const secondPage = { ...summary, id: "page-2" };
-
-    nock(HOST)
-      .get(PATH)
-      .reply(200, {
-        value: [firstPage],
-        "@odata.nextLink": `${HOST}${PATH}?$skiptoken=page-2`,
-      });
-    nock(HOST)
-      .get(PATH)
-      .query({ $skiptoken: "page-2" })
-      .reply(200, { value: [secondPage] });
+  test("returns the singleton summary when Fetch All is true", async () => {
+    const scope = nock(HOST).get(PATH).reply(200, summary);
 
     const { result } = await invoke(listSoftwareUpdateStatusSummary, {
       connection,
@@ -68,7 +56,8 @@ describe("listSoftwareUpdateStatusSummary", () => {
       filters: emptyFilters,
     });
 
-    expect(result.data).toEqual({ value: [firstPage, secondPage] });
+    expect(scope.isDone()).toBe(true);
+    expect(result.data).toEqual(summary);
   });
 
   test("surfaces the failure when the API rejects the request", async () => {

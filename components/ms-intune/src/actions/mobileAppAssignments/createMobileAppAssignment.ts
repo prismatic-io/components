@@ -1,8 +1,9 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { ENDPOINTS } from "../../constants";
-import { getMobileAppAssignmentExamplePayload as createMobileAppAssignmentExamplePayload } from "../../examplePayloads";
+import { createMobileAppAssignmentExamplePayload } from "../../examplePayloads";
 import { createMobileAppAssignmentInputs } from "../../inputs";
+import { createMobileAppAssignmentOutputSchema } from "../../outputSchemas";
 import { getMobileAppObject } from "../../util";
 
 export const createMobileAppAssignment = action({
@@ -10,6 +11,11 @@ export const createMobileAppAssignment = action({
     label: "Create Mobile App Assignment",
     description: "Create a mobile app assignment.",
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createMobileAppAssignmentOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, mobileAppId, intent, settings, target },
@@ -25,6 +31,7 @@ export const createMobileAppAssignment = action({
       data,
     };
   },
+  examplePerform: async () => createMobileAppAssignmentExamplePayload,
   inputs: createMobileAppAssignmentInputs,
   examplePayload: createMobileAppAssignmentExamplePayload,
 });

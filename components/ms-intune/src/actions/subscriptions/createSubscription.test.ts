@@ -20,7 +20,7 @@ const connection = createConnection(
   { access_token: ACCESS_TOKEN },
 );
 
-const [createdSubscription] = getSubscriptionExamplePayload.data;
+const createdSubscription = getSubscriptionExamplePayload.data;
 
 const NOTIFICATION_URL = "https://example.com/webhook";
 const LIFECYCLE_URL = "https://example.com/lifecycle";
@@ -55,6 +55,55 @@ describe("createSubscription", () => {
     const { result } = await invoke(createSubscription, baseParams);
 
     expect(listScope.isDone()).toBe(true);
+    expect(createScope.isDone()).toBe(true);
+    expect(result.data).toEqual([createdSubscription]);
+  });
+
+  test("rejects a change type an existing comma-separated subscription on the URL already covers", async () => {
+    nock(HOST)
+      .get(PATH)
+      .reply(200, {
+        value: [
+          {
+            id: "existing-sub",
+            notificationUrl: NOTIFICATION_URL,
+            resource: "users",
+            changeType: "created, updated",
+          },
+        ],
+      });
+    const createScope = nock(HOST).post(PATH).reply(201, createdSubscription);
+
+    await expect(
+      invoke(createSubscription, { ...baseParams, changeType: ["updated"] }),
+    ).rejects.toThrow(
+      "Subscription of type updated already exists for this endpoint.",
+    );
+    expect(createScope.isDone()).toBe(false);
+  });
+
+  test("creates the subscription when the existing one on the URL covers other change types", async () => {
+    nock(HOST)
+      .get(PATH)
+      .reply(200, {
+        value: [
+          {
+            id: "existing-sub",
+            notificationUrl: NOTIFICATION_URL,
+            resource: "users",
+            changeType: "created,updated",
+          },
+        ],
+      });
+    const createScope = nock(HOST)
+      .post(PATH, (body) => body.changeType === "deleted")
+      .reply(201, createdSubscription);
+
+    const { result } = await invoke(createSubscription, {
+      ...baseParams,
+      changeType: ["deleted"],
+    });
+
     expect(createScope.isDone()).toBe(true);
     expect(result.data).toEqual([createdSubscription]);
   });

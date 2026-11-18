@@ -43,12 +43,12 @@ describe("listDomains", () => {
   test("forwards the OData pagination and filter params and returns the domain list", async () => {
     const scope = nock(HOST)
       .get(PATH)
-      .query({ $top: "1", $filter: "isDefault eq true", $count: "false" })
+      .query({ $top: 1, $filter: "isDefault eq true", $count: "false" })
       .reply(200, listReply);
 
     const { result } = await invoke(listDomains, {
       connection,
-      pagination: { ...emptyPagination, $top: "1" },
+      pagination: { ...emptyPagination, $top: 1 },
       filters: { ...emptyFilters, $filter: "isDefault eq true" },
     });
 

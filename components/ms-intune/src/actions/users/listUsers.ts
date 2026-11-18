@@ -1,8 +1,9 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { ENDPOINTS } from "../../constants";
 import { listUsersExamplePayload } from "../../examplePayloads";
 import { listUsersInputs } from "../../inputs";
+import { listUsersOutputSchema } from "../../outputSchemas";
 import { paginateResults } from "../../util";
 
 export const listUsers = action({
@@ -10,6 +11,11 @@ export const listUsers = action({
     label: "List Users",
     description: "Retrieve a list of user objects.",
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listUsersOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (context, { connection, fetchAll, pagination, filters }) => {
     const client = createClient(connection, context.debug.enabled);
     const params = {
@@ -34,6 +40,7 @@ export const listUsers = action({
       data,
     };
   },
+  examplePerform: async () => listUsersExamplePayload,
   inputs: listUsersInputs,
   examplePayload: listUsersExamplePayload,
 });

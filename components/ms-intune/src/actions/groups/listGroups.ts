@@ -1,8 +1,9 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { ENDPOINTS } from "../../constants";
 import { listGroupsExamplePayload } from "../../examplePayloads";
 import { listGroupsInputs } from "../../inputs";
+import { listGroupsOutputSchema } from "../../outputSchemas";
 import { paginateResults } from "../../util";
 
 export const listGroups = action({
@@ -10,6 +11,11 @@ export const listGroups = action({
     label: "List Groups",
     description: "List all groups.",
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listGroupsOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (context, { connection, $top, fetchAll, filters }) => {
     const client = createClient(connection, context.debug.enabled);
     client.defaults.headers.common.ConsistencyLevel = "eventual";
@@ -35,6 +41,7 @@ export const listGroups = action({
       data,
     };
   },
+  examplePerform: async () => listGroupsExamplePayload,
   inputs: listGroupsInputs,
   examplePayload: listGroupsExamplePayload,
 });

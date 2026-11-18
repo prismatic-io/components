@@ -1,14 +1,20 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { ENDPOINTS } from "../../constants";
+import { ENDPOINTS, NO_RESPONSE_SUCCESSFUL_PAYLOAD } from "../../constants";
 import { updateUserExamplePayload } from "../../examplePayloads";
 import { updateUserInputs } from "../../inputs";
+import { updateUserOutputSchema } from "../../outputSchemas";
 
 export const updateUser = action({
   display: {
     label: "Update User",
     description: "Update the properties of a User object.",
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: updateUserOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -52,14 +58,12 @@ export const updateUser = action({
       jobTitle,
       ...(additionalProperties || {}),
     };
-    const { data } = await client.patch(
-      `${ENDPOINTS.USERS}/${userId}`,
-      payload,
-    );
+    await client.patch(`${ENDPOINTS.USERS}/${userId}`, payload);
     return {
-      data,
+      data: NO_RESPONSE_SUCCESSFUL_PAYLOAD,
     };
   },
+  examplePerform: async () => updateUserExamplePayload,
   inputs: updateUserInputs,
   examplePayload: updateUserExamplePayload,
 });

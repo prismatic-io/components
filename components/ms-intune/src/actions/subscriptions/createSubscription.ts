@@ -1,7 +1,8 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { getSubscriptionExamplePayload as createSubscriptionExamplePayload } from "../../examplePayloads";
+import { createSubscriptionExamplePayload } from "../../examplePayloads";
 import { createSubscriptionInputs } from "../../inputs";
+import { createSubscriptionOutputSchema } from "../../outputSchemas";
 import { getExpirationDate, subscribeToResource } from "../../util";
 
 export const createSubscription = action({
@@ -9,6 +10,11 @@ export const createSubscription = action({
     label: "Create Subscription",
     description: "Create a subscription.",
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createSubscriptionOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -40,6 +46,7 @@ export const createSubscription = action({
       data,
     };
   },
+  examplePerform: async () => createSubscriptionExamplePayload,
   inputs: createSubscriptionInputs,
   examplePayload: createSubscriptionExamplePayload,
 });

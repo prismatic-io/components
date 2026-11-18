@@ -23,7 +23,7 @@ const connection = createConnection(
 describe("deleteManagedApp", () => {
   afterEach(() => nock.cleanAll());
 
-  test("deletes the managed app and returns the empty 204 body", async () => {
+  test("deletes the managed app and returns the delete record", async () => {
     const scope = nock(HOST).delete(PATH).reply(204);
 
     const { result } = await invoke(deleteManagedApp, {
@@ -32,7 +32,11 @@ describe("deleteManagedApp", () => {
     });
 
     expect(scope.isDone()).toBe(true);
-    expect(result.data).toEqual("");
+    expect(result.data).toEqual({
+      success: true,
+      id: MOBILE_APP_ID,
+      message: "Managed app deleted successfully.",
+    });
   });
 
   test("surfaces the failure when the managed app does not exist", async () => {

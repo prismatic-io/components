@@ -28,17 +28,20 @@ const secondAssignment = {
   id: "591620b7-20b7-5916-b720-1659b7201660",
 };
 
-const emptyOdataParams = {
+const emptyPagination = {
+  $top: undefined,
+  $skip: undefined,
+  $skipToken: undefined,
+};
+
+const emptyFilters = {
   $filter: undefined,
   $select: undefined,
   $expand: undefined,
   $orderBy: undefined,
-  $top: undefined,
-  $skip: undefined,
   $count: false,
   $search: undefined,
   $format: undefined,
-  $skipToken: undefined,
 };
 
 describe("listMobileAppAssignments", () => {
@@ -47,15 +50,15 @@ describe("listMobileAppAssignments", () => {
   test("returns a single page of assignments when Fetch All is false", async () => {
     const scope = nock(HOST)
       .get(PATH)
-      .query({ $count: "false", $top: "1" })
+      .query({ $count: "false", $top: 1 })
       .reply(200, listReply);
 
     const { result } = await invoke(listMobileAppAssignments, {
       connection,
       mobileAppId: MOBILE_APP_ID,
       fetchAll: false,
-      ...emptyOdataParams,
-      $top: "1",
+      pagination: { ...emptyPagination, $top: 1 },
+      filters: emptyFilters,
     });
 
     expect(scope.isDone()).toBe(true);
@@ -79,8 +82,8 @@ describe("listMobileAppAssignments", () => {
       connection,
       mobileAppId: MOBILE_APP_ID,
       fetchAll: true,
-      ...emptyOdataParams,
-      $top: "1",
+      pagination: { ...emptyPagination, $top: 1 },
+      filters: emptyFilters,
     });
 
     expect(result.data).toEqual({
@@ -99,7 +102,8 @@ describe("listMobileAppAssignments", () => {
         connection,
         mobileAppId: MOBILE_APP_ID,
         fetchAll: false,
-        ...emptyOdataParams,
+        pagination: emptyPagination,
+        filters: emptyFilters,
       }),
     ).rejects.toThrow();
   });

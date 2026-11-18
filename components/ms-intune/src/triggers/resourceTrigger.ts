@@ -1,13 +1,13 @@
 import { trigger } from "@prismatic-io/spectral";
-import { createClient } from "../client";
-import { TriggerBranches } from "../constants";
-import { resourceTriggerInputs } from "../inputs";
 import {
-  getExpirationDate,
-  removeSubscriptions,
-  subscribeToResource,
-  triggerPerformFunction,
-} from "../util";
+  deleteSubscriptionTrigger,
+  replaceSubscriptionOnDeploy,
+} from "ms-utils";
+import { createClient } from "../client";
+import { MISSING_CHANGE_TYPE_MESSAGE, TriggerBranches } from "../constants";
+import { resourceTriggerExamplePayload } from "../examplePayloads";
+import { resourceTriggerInputs } from "../inputs";
+import { getExpirationDate, triggerPerformFunction } from "../util";
 
 export const resourceTrigger = trigger({
   display: {
@@ -24,28 +24,32 @@ export const resourceTrigger = trigger({
     TriggerBranches.URLValidation,
   ],
   perform: triggerPerformFunction,
+  examplePayload: resourceTriggerExamplePayload,
   webhookLifecycleHandlers: {
     create: async (
       context,
       { connection, changeType, expirationDateTime, resource },
     ) => {
-      const endpoint = context.webhookUrls[context.flow.name];
-      const client = createClient(connection, true);
-      const currentExpirationDateTime = getExpirationDate(expirationDateTime);
+      if (!changeType?.length) {
+        throw new Error(MISSING_CHANGE_TYPE_MESSAGE);
+      }
+      const client = createClient(connection, context.debug.enabled);
 
-      await subscribeToResource(
+      const { crossFlowState } = await replaceSubscriptionOnDeploy(
         client,
-        endpoint,
-        resource,
-        changeType,
-        currentExpirationDateTime,
+        {
+          resource,
+          changeType: changeType.join(","),
+          expirationDateTime: getExpirationDate(expirationDateTime),
+        },
+        context,
       );
+      return { crossFlowState };
     },
     delete: async (context, { connection }) => {
-      const client = createClient(connection, true);
-      const endpoint = context.webhookUrls[context.flow.name];
+      const client = createClient(connection, context.debug.enabled);
 
-      await removeSubscriptions(client, new Set([endpoint]));
+      await deleteSubscriptionTrigger(client, context);
     },
   },
 });

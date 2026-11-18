@@ -21,7 +21,7 @@ const connection = createConnection(
   { access_token: ACCESS_TOKEN },
 );
 
-const [subscription] = getSubscriptionExamplePayload.data;
+const subscription = getSubscriptionExamplePayload.data;
 
 describe("getSubscription", () => {
   afterEach(() => nock.cleanAll());

@@ -4,6 +4,7 @@ import { ENDPOINTS } from "../constants";
 import { selectUserExamplePayload } from "../examplePayloads";
 import { selectUserInputs } from "../inputs";
 import type { SelectableResource } from "../types";
+import { compareElementsByLabel } from "../util";
 
 export const selectUser = dataSource({
   display: {
@@ -22,7 +23,7 @@ export const selectUser = dataSource({
         label: user.displayName,
         key: user.id.toString(),
       }))
-      .sort((a, b) => ((a.label ?? "") < (b.label ?? "") ? -1 : 1));
+      .sort(compareElementsByLabel);
 
     return { result };
   },

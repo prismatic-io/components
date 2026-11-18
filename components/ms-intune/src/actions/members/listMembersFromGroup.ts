@@ -1,8 +1,9 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { ENDPOINTS } from "../../constants";
-import { listMembersExamplePayload } from "../../examplePayloads";
-import { listMembersInputs } from "../../inputs";
+import { listMembersFromGroupExamplePayload } from "../../examplePayloads";
+import { listMembersFromGroupInputs } from "../../inputs";
+import { listMembersFromGroupOutputSchema } from "../../outputSchemas";
 import { paginateResults } from "../../util";
 
 export const listMembersFromGroup = action({
@@ -10,7 +11,12 @@ export const listMembersFromGroup = action({
     label: "List Group Members",
     description: "List all members of a security or Microsoft 365 group.",
   },
-  inputs: listMembersInputs,
+  inputs: listMembersFromGroupInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listMembersFromGroupOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, fetchAll, groupId, $top, filters },
@@ -36,5 +42,6 @@ export const listMembersFromGroup = action({
       data,
     };
   },
-  examplePayload: listMembersExamplePayload,
+  examplePerform: async () => listMembersFromGroupExamplePayload,
+  examplePayload: listMembersFromGroupExamplePayload,
 });

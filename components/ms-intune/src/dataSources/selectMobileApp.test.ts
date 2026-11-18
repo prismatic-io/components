@@ -47,7 +47,7 @@ describe("selectMobileApp", () => {
     expect(Array.isArray(result)).toBe(true);
     expect(result).toEqual([
       {
-        label: "Display Name value",
+        label: "Microsoft 365 Apps for enterprise",
         key: "0177548a-548a-0177-8a54-77018a547701",
       },
     ]);

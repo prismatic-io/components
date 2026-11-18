@@ -1,9 +1,10 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { ENDPOINTS } from "../constants";
-import { selectDeviceCompliancePolicySettingStateSummaryExamplePayload as selectCompliancePolicySettingStateSummaryPayload } from "../examplePayloads";
+import { selectDeviceCompliancePolicySettingStateSummaryExamplePayload } from "../examplePayloads";
 import { selectDeviceCompliancePolicySettingStateSummaryInputs } from "../inputs";
 import type { SelectableSettingStateSummary } from "../types";
+import { compareElementsByLabel } from "../util";
 
 export const selectDeviceCompliancePolicySettingStateSummary = dataSource({
   display: {
@@ -25,10 +26,10 @@ export const selectDeviceCompliancePolicySettingStateSummary = dataSource({
         label: summary.settingName,
         key: summary.id.toString(),
       }))
-      .sort((a, b) => ((a.label ?? "") < (b.label ?? "") ? -1 : 1));
+      .sort(compareElementsByLabel);
 
     return { result };
   },
   dataSourceType: "picklist",
-  examplePayload: selectCompliancePolicySettingStateSummaryPayload,
+  examplePayload: selectDeviceCompliancePolicySettingStateSummaryExamplePayload,
 });

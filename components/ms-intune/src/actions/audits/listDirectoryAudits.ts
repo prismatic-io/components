@@ -1,8 +1,9 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { ENDPOINTS } from "../../constants";
-import { listDirectoryAuditExamplePayload } from "../../examplePayloads";
+import { listDirectoryAuditsExamplePayload } from "../../examplePayloads";
 import { listDirectoryAuditsInputs } from "../../inputs";
+import { listDirectoryAuditsOutputSchema } from "../../outputSchemas";
 import { paginateResults } from "../../util";
 
 export const listDirectoryAudits = action({
@@ -10,6 +11,11 @@ export const listDirectoryAudits = action({
     label: "List Directory Audits",
     description: "Retrieve a list of directory audits.",
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listDirectoryAuditsOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (context, { connection, fetchAll, pagination, filters }) => {
     const client = createClient(connection, context.debug.enabled);
 
@@ -31,6 +37,7 @@ export const listDirectoryAudits = action({
       data,
     };
   },
+  examplePerform: async () => listDirectoryAuditsExamplePayload,
   inputs: listDirectoryAuditsInputs,
-  examplePayload: listDirectoryAuditExamplePayload,
+  examplePayload: listDirectoryAuditsExamplePayload,
 });

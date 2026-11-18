@@ -1,6 +1,8 @@
 import { callableEntryHooks } from "@prismatic-io/spectral/tsdown";
-import { defineConfig } from "tsdown";
 import { cjsEntry } from "build-config";
+import { defineConfig } from "tsdown";
+
+const sharedPackages = ["ms-utils"];
 
 export default defineConfig([
   {
@@ -27,7 +29,19 @@ export default defineConfig([
     platform: "node",
     target: "node22",
     clean: true,
-    dts: { resolver: "tsc" },
+    dts: {
+      resolver: "tsc",
+      resolve: sharedPackages,
+      compilerOptions: {
+        paths: {
+          "@prismatic-io/spectral": ["./node_modules/@prismatic-io/spectral"],
+          "@prismatic-io/spectral/*": [
+            "./node_modules/@prismatic-io/spectral/*",
+          ],
+        },
+      },
+    },
+    deps: { alwaysBundle: sharedPackages },
     fixedExtension: true,
     loader: { ".md": "text" },
     copy: [{ from: "assets/**/*", to: "npm-dist", flatten: false }],

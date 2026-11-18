@@ -1,8 +1,6 @@
 import { createConnection, invoke } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { msIntuneOAuth2 } from "../../connections";
-import { NO_RESPONSE_SUCCESSFULL_PAYLOAD } from "../../constants";
-import { deleteGroupExamplePayload } from "../../examplePayloads";
 import { deleteGroup } from "./deleteGroup";
 
 const HOST = "https://graph.microsoft.com";
@@ -25,7 +23,7 @@ const connection = createConnection(
 describe("deleteGroup", () => {
   afterEach(() => nock.cleanAll());
 
-  test("deletes the group and returns the fixed success payload", async () => {
+  test("deletes the group and returns the delete record", async () => {
     const scope = nock(HOST).delete(PATH).reply(204);
 
     const { result } = await invoke(deleteGroup, {
@@ -34,8 +32,11 @@ describe("deleteGroup", () => {
     });
 
     expect(scope.isDone()).toBe(true);
-    expect(result.data).toEqual(NO_RESPONSE_SUCCESSFULL_PAYLOAD);
-    expect(result.data).toEqual(deleteGroupExamplePayload.data);
+    expect(result.data).toEqual({
+      success: true,
+      id: GROUP_ID,
+      message: "Group deleted successfully.",
+    });
   });
 
   test("surfaces the failure when the group cannot be deleted", async () => {

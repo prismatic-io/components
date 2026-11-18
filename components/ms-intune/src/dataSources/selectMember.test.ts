@@ -5,8 +5,8 @@ import {
 } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { msIntuneOAuth2 } from "../connections";
-import { listMembersExamplePayload } from "../examplePayloads";
-import { selectMember } from "./selectMembers";
+import { listMembersFromGroupExamplePayload } from "../examplePayloads";
+import { selectMember } from "./selectMember";
 
 const HOST = "https://graph.microsoft.com";
 const ACCESS_TOKEN = "test-access-token";
@@ -25,7 +25,7 @@ const connection = createConnection(
   { access_token: ACCESS_TOKEN },
 );
 
-const listReply = listMembersExamplePayload.data;
+const listReply = listMembersFromGroupExamplePayload.data;
 
 const invokeBare = async (): Promise<Element[]> =>
   (await invokeDataSource(selectMember, {

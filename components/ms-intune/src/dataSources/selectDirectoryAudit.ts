@@ -4,7 +4,7 @@ import { ENDPOINTS } from "../constants";
 import { selectDirectoryAuditExamplePayload } from "../examplePayloads";
 import { selectDirectoryAuditInputs } from "../inputs";
 import type { SelectableDirectoryAudit } from "../types";
-import { paginateResults } from "../util";
+import { compareElementsByLabel, paginateResults } from "../util";
 
 export const selectDirectoryAudit = dataSource({
   display: {
@@ -26,7 +26,7 @@ export const selectDirectoryAudit = dataSource({
         label: audit.activityDisplayName,
         key: audit.id.toString(),
       }))
-      .sort((a, b) => ((a.label ?? "") < (b.label ?? "") ? -1 : 1));
+      .sort(compareElementsByLabel);
 
     return { result };
   },

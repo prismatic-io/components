@@ -1,14 +1,20 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { ENDPOINTS } from "../../constants";
+import { ENDPOINTS, ODATA_TYPES } from "../../constants";
 import { updateManagedAppExamplePayload } from "../../examplePayloads";
 import { updateManagedAppInputs } from "../../inputs";
+import { updateManagedAppOutputSchema } from "../../outputSchemas";
 
 export const updateManagedApp = action({
   display: {
     label: "Update Managed App",
     description: "Update an App object.",
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: updateManagedAppOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -25,7 +31,7 @@ export const updateManagedApp = action({
     const largeIcon =
       additionalFields.largeIconType && additionalFields.largeIconValue
         ? {
-            "@odata.type": "microsoft.graph.mimeContent",
+            "@odata.type": ODATA_TYPES.MIME_CONTENT,
             type: additionalFields.largeIconType,
             value: additionalFields.largeIconValue,
           }
@@ -54,6 +60,7 @@ export const updateManagedApp = action({
       data,
     };
   },
+  examplePerform: async () => updateManagedAppExamplePayload,
   inputs: updateManagedAppInputs,
   examplePayload: updateManagedAppExamplePayload,
 });

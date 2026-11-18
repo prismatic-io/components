@@ -1,8 +1,6 @@
 import { createConnection, invoke } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { msIntuneOAuth2 } from "../../connections";
-import { DELETE_MEMBERS_RESPONSE_MESSAGE } from "../../constants";
-import { deleteMemberFromGroupExamplePayload } from "../../examplePayloads";
 import { deleteMemberFromGroup } from "./deleteMemberFromGroup";
 
 const HOST = "https://graph.microsoft.com";
@@ -26,7 +24,7 @@ const connection = createConnection(
 describe("deleteMemberFromGroup", () => {
   afterEach(() => nock.cleanAll());
 
-  test("deletes the membership reference and returns the fixed success message", async () => {
+  test("deletes the membership reference and returns the delete record", async () => {
     const scope = nock(HOST).delete(PATH).reply(204);
 
     const { result } = await invoke(deleteMemberFromGroup, {
@@ -36,8 +34,11 @@ describe("deleteMemberFromGroup", () => {
     });
 
     expect(scope.isDone()).toBe(true);
-    expect(result.data).toEqual(DELETE_MEMBERS_RESPONSE_MESSAGE);
-    expect(result.data).toEqual(deleteMemberFromGroupExamplePayload.data);
+    expect(result.data).toEqual({
+      success: true,
+      id: MEMBER_ID,
+      message: "Member removed from group successfully.",
+    });
   });
 
   test("surfaces the failure when the member is not in the group", async () => {

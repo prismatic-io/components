@@ -42,7 +42,7 @@ describe("selectDetectedApp", () => {
     expect(Array.isArray(result)).toBe(true);
     expect(result).toEqual([
       {
-        label: "Display Name value",
+        label: "Google Chrome",
         key: "caf60db6-0db6-caf6-b60d-f6cab60df6ca",
       },
     ]);

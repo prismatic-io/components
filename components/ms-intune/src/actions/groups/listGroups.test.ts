@@ -43,13 +43,13 @@ describe("listGroups", () => {
     const scope = nock(HOST)
       .matchHeader("ConsistencyLevel", "eventual")
       .get(PATH)
-      .query({ $count: "false", $top: "1" })
+      .query({ $count: "false", $top: 1 })
       .reply(200, listReply);
 
     const { result } = await invoke(listGroups, {
       connection,
       fetchAll: false,
-      $top: "1",
+      $top: 1,
       filters: emptyFilters,
     });
 
@@ -73,7 +73,7 @@ describe("listGroups", () => {
     const { result } = await invoke(listGroups, {
       connection,
       fetchAll: true,
-      $top: "1",
+      $top: 1,
       filters: emptyFilters,
     });
 

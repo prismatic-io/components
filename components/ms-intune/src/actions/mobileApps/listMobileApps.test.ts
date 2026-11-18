@@ -45,13 +45,13 @@ describe("listMobileApps", () => {
   test("returns a single page of mobile apps when Fetch All is false", async () => {
     const scope = nock(HOST)
       .get(PATH)
-      .query({ $count: "false", $top: "1", $skip: "0" })
+      .query({ $count: "false", $top: 1, $skip: 0 })
       .reply(200, listReply);
 
     const { result } = await invoke(listMobileApps, {
       connection,
       fetchAll: false,
-      pagination: { ...emptyPagination, $top: "1", $skip: "0" },
+      pagination: { ...emptyPagination, $top: 1, $skip: 0 },
       filters: emptyFilters,
     });
 
@@ -75,7 +75,7 @@ describe("listMobileApps", () => {
     const { result } = await invoke(listMobileApps, {
       connection,
       fetchAll: true,
-      pagination: { ...emptyPagination, $top: "1", $skip: "0" },
+      pagination: { ...emptyPagination, $top: 1, $skip: 0 },
       filters: emptyFilters,
     });
 

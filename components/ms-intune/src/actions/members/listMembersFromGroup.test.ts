@@ -1,7 +1,7 @@
 import { createConnection, invoke } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { msIntuneOAuth2 } from "../../connections";
-import { listMembersExamplePayload } from "../../examplePayloads";
+import { listMembersFromGroupExamplePayload } from "../../examplePayloads";
 import { listMembersFromGroup } from "./listMembersFromGroup";
 
 const HOST = "https://graph.microsoft.com";
@@ -21,7 +21,7 @@ const connection = createConnection(
   { access_token: ACCESS_TOKEN },
 );
 
-const listReply = listMembersExamplePayload.data;
+const listReply = listMembersFromGroupExamplePayload.data;
 const [firstMember] = listReply.value;
 const secondMember = {
   id: "66666666-7777-8888-9999-000000000000",
@@ -74,7 +74,7 @@ describe("listMembersFromGroup", () => {
       connection,
       fetchAll: true,
       groupId: GROUP_ID,
-      $top: "1",
+      $top: 1,
       filters: emptyFilters,
     });
 

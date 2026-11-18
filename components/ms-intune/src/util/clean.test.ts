@@ -3,8 +3,8 @@ import {
   cleanBodyInput,
   cleanBooleanStringInput,
   cleanCodeInput,
-  cleanNumberInput,
   cleanOptionalArrayInput,
+  cleanOptionalNumberInput,
   cleanStringInput,
 } from "./clean";
 
@@ -25,31 +25,6 @@ describe("cleanStringInput", () => {
   test("does not validate: coerces any truthy value without throwing", () => {
     expect(cleanStringInput({ id: "abc" })).toBe("[object Object]");
     expect(cleanStringInput("  padded  ")).toBe("  padded  ");
-  });
-});
-
-describe("cleanNumberInput", () => {
-  test("normalizes a numeric value to a number", () => {
-    expect(cleanNumberInput("42")).toBe(42);
-    expect(cleanNumberInput(42)).toBe(42);
-    expect(cleanNumberInput("3.5")).toBe(3.5);
-  });
-
-  test("throws on a value that cannot be coerced to a number", () => {
-    expect(() => cleanNumberInput("not-a-number")).toThrow(
-      "Value 'not-a-number' cannot be coerced to a number.",
-    );
-  });
-
-  test("returns undefined for falsy values", () => {
-    expect(cleanNumberInput("")).toBeUndefined();
-    expect(cleanNumberInput(null)).toBeUndefined();
-    expect(cleanNumberInput(undefined)).toBeUndefined();
-  });
-
-  test('collapses the number 0 to undefined but preserves the string "0"', () => {
-    expect(cleanNumberInput(0)).toBeUndefined();
-    expect(cleanNumberInput("0")).toBe(0);
   });
 });
 
@@ -122,14 +97,10 @@ describe("cleanArrayInput", () => {
     expect(cleanArrayInput([])).toEqual([]);
   });
 
-  test("throws on a falsy input", () => {
-    expect(() => cleanArrayInput(undefined)).toThrow(
-      "Change Type must be an array.",
-    );
-    expect(() => cleanArrayInput("")).toThrow("Change Type must be an array.");
-    expect(() => cleanArrayInput(null)).toThrow(
-      "Change Type must be an array.",
-    );
+  test("returns undefined for a falsy input", () => {
+    expect(cleanArrayInput(undefined)).toBeUndefined();
+    expect(cleanArrayInput("")).toBeUndefined();
+    expect(cleanArrayInput(null)).toBeUndefined();
   });
 
   test("throws on a truthy non-array input", () => {
@@ -186,5 +157,27 @@ describe("cleanBooleanStringInput", () => {
   test("returns undefined for boolean false and true for unrecognized strings", () => {
     expect(cleanBooleanStringInput(false)).toBeUndefined();
     expect(cleanBooleanStringInput("maybe")).toBe(true);
+  });
+});
+
+describe("cleanOptionalNumberInput", () => {
+  test("accepts a saved string value and a number", () => {
+    expect(cleanOptionalNumberInput("10")).toBe(10);
+    expect(cleanOptionalNumberInput(10)).toBe(10);
+  });
+
+  test("keeps 0 so Skip 0 reaches the request", () => {
+    expect(cleanOptionalNumberInput(0)).toBe(0);
+    expect(cleanOptionalNumberInput("0")).toBe(0);
+  });
+
+  test("returns undefined for a blank value", () => {
+    expect(cleanOptionalNumberInput("")).toBeUndefined();
+    expect(cleanOptionalNumberInput(undefined)).toBeUndefined();
+    expect(cleanOptionalNumberInput(null)).toBeUndefined();
+  });
+
+  test("throws on a value that is not a number", () => {
+    expect(() => cleanOptionalNumberInput("ten")).toThrow();
   });
 });

@@ -1,9 +1,8 @@
-import { connection } from "./common";
-import { changeType, expirationDateTime, resource } from "./subscriptions";
+import { changeType, connection, expirationDateTime, resource } from "./common";
 
 export const resourceTriggerInputs = {
   connection,
-  expirationDateTime,
   changeType,
   resource,
+  expirationDateTime,
 };

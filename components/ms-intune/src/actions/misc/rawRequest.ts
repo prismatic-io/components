@@ -1,8 +1,9 @@
 import { action } from "@prismatic-io/spectral";
 import { sendRawRequest } from "@prismatic-io/spectral/http";
+import { getAuthHeaders } from "../../client";
 import { API_VERSIONS } from "../../constants";
 import { rawRequestInputs } from "../../inputs";
-import { getBaseUrl, validateConnection } from "../../util";
+import { getBaseUrl } from "../../util";
 
 export const rawRequest = action({
   display: {
@@ -10,18 +11,16 @@ export const rawRequest = action({
     description: "Send raw HTTP request to Microsoft Intune API.",
   },
   inputs: rawRequestInputs,
+  performSafety: "notAllowed",
   perform: async (
     { debug: { enabled: debug } },
     { connection, apiVersion, ...httpClientInputs },
   ) => {
-    validateConnection(connection);
     const useBeta = apiVersion === API_VERSIONS.beta;
     const { data } = await sendRawRequest(
       getBaseUrl(useBeta),
       { ...httpClientInputs, debugRequest: debug },
-      {
-        Authorization: `Bearer ${connection.token?.access_token}`,
-      },
+      getAuthHeaders(connection),
     );
     return { data };
   },

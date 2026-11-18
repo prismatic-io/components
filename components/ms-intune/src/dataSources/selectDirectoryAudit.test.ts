@@ -4,7 +4,7 @@ import {
 } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { msIntuneOAuth2 } from "../connections";
-import { listDirectoryAuditExamplePayload } from "../examplePayloads";
+import { listDirectoryAuditsExamplePayload } from "../examplePayloads";
 import { selectDirectoryAudit } from "./selectDirectoryAudit";
 
 const HOST = "https://graph.microsoft.com";
@@ -23,7 +23,7 @@ const connection = createConnection(
   { access_token: ACCESS_TOKEN },
 );
 
-const listReply = listDirectoryAuditExamplePayload.data;
+const listReply = listDirectoryAuditsExamplePayload.data;
 
 describe("selectDirectoryAudit", () => {
   afterEach(() => nock.cleanAll());
@@ -36,7 +36,12 @@ describe("selectDirectoryAudit", () => {
     });
 
     expect(Array.isArray(result)).toBe(true);
-    expect(result).toEqual([{ label: "Add member to group", key: "id" }]);
+    expect(result).toEqual([
+      {
+        label: "Add member to group",
+        key: "2f8c1a6e-4b3d-4e9a-8c7f-1d2e3f4a5b6c",
+      },
+    ]);
     for (const element of result) {
       expect(element).toHaveProperty("label");
       expect(element).toHaveProperty("key");

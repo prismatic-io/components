@@ -1,25 +1,32 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { deletedSubscriptionsExamplePayload } from "../../examplePayloads";
-import { deleteAllSubscriptionsInputs } from "../../inputs";
+import { deleteAllSubscriptionExamplePayload } from "../../examplePayloads";
+import { deleteAllSubscriptionInputs } from "../../inputs";
+import { deleteAllSubscriptionOutputSchema } from "../../outputSchemas";
 import { removeSubscriptions } from "../../util";
 
 export const deleteAllSubscription = action({
   display: {
-    label: "Delete Subscriptions from an Endpoint",
+    label: "Delete Subscriptions from Endpoint",
     description: "Delete all subscriptions from an endpoint.",
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: deleteAllSubscriptionOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (context, { connection, notificationUrl }) => {
     const client = createClient(connection, context.debug.enabled);
     const { subscriptionsRemoved } = await removeSubscriptions(
       client,
-      new Set(notificationUrl),
+      new Set([notificationUrl]),
     );
 
     return {
       data: subscriptionsRemoved,
     };
   },
-  inputs: deleteAllSubscriptionsInputs,
-  examplePayload: deletedSubscriptionsExamplePayload,
+  examplePerform: async () => deleteAllSubscriptionExamplePayload,
+  inputs: deleteAllSubscriptionInputs,
+  examplePayload: deleteAllSubscriptionExamplePayload,
 });
