@@ -156,3 +156,62 @@ describe("pollChangesTrigger initial sync ignores visibility toggles", () => {
     expect(result.polledNoChanges).toBe(true);
   });
 });
+
+describe("pollChangesTrigger Tier 1 declaration", () => {
+  test("declares valid batching support with a batch size and a resolver", () => {
+    expect(pollChangesTrigger.triggerResolverSupport).toBe("valid");
+    expect(pollChangesTrigger.batchConfig).toEqual({ batchSize: 50 });
+    expect(typeof pollChangesTrigger.triggerResolver?.resolveItems).toBe(
+      "function",
+    );
+  });
+});
+
+describe("pollChangesTrigger resolver", () => {
+  test("flattens a created record into a tagged item", async () => {
+    const item = makeItem(
+      "item_1",
+      "2026-05-15T00:00:00Z",
+      "2026-05-15T00:00:00Z",
+    );
+    const resolveItems = pollChangesTrigger.triggerResolver?.resolveItems;
+    const resolved = await resolveItems?.(
+      {} as Parameters<NonNullable<typeof resolveItems>>[0],
+      {
+        payload: { body: { data: { created: [item] } } },
+      } as unknown as Parameters<NonNullable<typeof resolveItems>>[1],
+    );
+    expect(resolved).toEqual([{ changeType: "created", record: item }]);
+  });
+});
+
+describe("pollChangesTrigger polling cursor", () => {
+  afterEach(() => {
+    vi.useRealTimers();
+    mockFetchAllItemsSince.mockReset();
+  });
+
+  test("writes lastPolledAt after a poll and uses it as the next window start", async () => {
+    const store = createPollingStore();
+
+    freezeClockAt(NOW);
+    mockFetchAllItemsSince.mockResolvedValueOnce([]);
+    await poll(store);
+    expect(store.currentState()).toEqual({ lastPolledAt: NOW });
+
+    const secondNow = "2026-06-02T12:00:00.000Z";
+    freezeClockAt(secondNow);
+    mockFetchAllItemsSince.mockResolvedValueOnce([
+      makeItem("between", "2026-06-01T18:00:00Z", "2026-06-01T18:00:00Z"),
+      makeItem("before", "2026-05-30T00:00:00Z", "2026-05-30T00:00:00Z"),
+    ]);
+    const result = await poll(store);
+
+    expect(result.payload.body.data.created.map((i) => i.id)).toEqual([
+      "between",
+    ]);
+    expect(result.payload.body.data.updated).toEqual([]);
+    expect(result.polledNoChanges).toBe(false);
+    expect(store.currentState()).toEqual({ lastPolledAt: secondNow });
+  });
+});

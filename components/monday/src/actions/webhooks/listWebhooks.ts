@@ -1,4 +1,4 @@
-import { action, outputSchema } from "@prismatic-io/spectral";
+import { action, outputSchema, util } from "@prismatic-io/spectral";
 import { getMondayClient } from "../../client";
 import { listWebhooksExamplePayload } from "../../examplePayloads";
 import { listWebhooksInputs } from "../../inputs";
@@ -37,5 +37,13 @@ export const listWebhooks = action({
       throw error;
     }
   },
+  examplePerform: async (_context, { boardId }) => ({
+    data: {
+      webhooks: listWebhooksExamplePayload.data.webhooks.map((webhook) => ({
+        ...webhook,
+        board_id: util.types.toString(boardId),
+      })),
+    },
+  }),
   examplePayload: listWebhooksExamplePayload,
 });

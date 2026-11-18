@@ -33,7 +33,7 @@ export interface CreateWebhookResponse {
 interface WebhookNode {
   id: string;
   board_id: string;
-  config: string;
+  config: string | null;
   event: string;
 }
 

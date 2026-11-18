@@ -2,7 +2,7 @@ export interface Board {
   id: string;
   name: string;
   state: string;
-  board_folder_id: string;
+  board_folder_id: string | null;
   creator: {
     id: string;
   };

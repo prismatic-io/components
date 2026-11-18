@@ -150,10 +150,10 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         clean: (value: unknown, defaultValue?: string) => string;
       };
       getAllItems: {
+        comments: string;
         label: string;
         type: "boolean";
         required: false;
-        comments: string;
         default: string;
         clean: (value: unknown, defaultValue?: boolean) => boolean;
       };

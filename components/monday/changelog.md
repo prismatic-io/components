@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-11-18
+
+Fixed the **Webhook** trigger rejecting every signed delivery when a **Signing Secret** was set; it now verifies the Authorization header as a JWT signed with the Signing Secret
+
 ### 2026-11-11
 
 Updated the component description to better summarize what the component does

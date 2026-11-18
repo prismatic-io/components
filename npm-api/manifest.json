@@ -541,8 +541,8 @@
   },
   "monday": {
     "name": "@prismatic-io/components-monday",
-    "version": "0.1.1",
-    "build": "4043be4c7a3ea2d3ce655d46ae7b005f5fae5416b033103dd1d418ee935906e5",
+    "version": "0.2.0",
+    "build": "d8271497fd60a45c7e173ea35a643b4e221ae6c4fca94a42583f827e00592912",
     "spectral": "^10.39.2"
   },
   "mongo": {

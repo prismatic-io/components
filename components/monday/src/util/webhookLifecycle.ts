@@ -23,7 +23,7 @@ export const onWebhookCreate = async (
     webhookEvent: string;
     webhookConfig?: object;
   },
-) => {
+): Promise<void> => {
   const client = getMondayClient(
     connection,
     context.debug.enabled,
@@ -85,7 +85,7 @@ export const onWebhookDelete = async (
     connection: Connection;
     boardId: number;
   },
-) => {
+): Promise<void> => {
   const client = getMondayClient(
     connection,
     context.debug.enabled,

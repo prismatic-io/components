@@ -20,6 +20,7 @@ Configure the following inputs:
 - **Board ID**: The ID of the Monday.com board to monitor for events. Use the **Select Board** data source to choose from available boards.
 - **Event**: The type of board event to subscribe to. Select from the available event types listed below.
 - **Config**: An optional JSON object for event-specific configuration (e.g., `{"columnId": "status"}` for `change_specific_column_value` events).
+- **Signing Secret**: An optional Signing Secret from the Monday.com app whose OAuth token creates the webhook. When provided, the trigger verifies the JWT that Monday.com sends in each delivery's `Authorization` header and rejects deliveries that are unsigned or fail verification. Monday.com signs board webhooks only when they are created with an integration app's OAuth token, so leave this empty for webhooks created with an API key.
 
 #### Event Types
 

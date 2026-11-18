@@ -8,7 +8,7 @@ const signingSecret = input({
   type: "password",
   required: false,
   comments:
-    "The Signing Secret from the Monday.com app. When provided, webhook payloads are verified against this secret. See [Monday.com Authorization docs](https://developer.monday.com/apps/docs/integration-authorization#authorization-header) for details.",
+    "The Signing Secret from the Monday.com app whose OAuth token creates the webhook. When provided, the JWT in each delivery's Authorization header is verified against this secret, and unsigned or invalid deliveries are rejected. Monday.com signs board webhooks only when they are created with an integration app's OAuth token, so leave this empty otherwise. See [Monday.com JWT verification docs](https://developer.monday.com/apps/docs/integration-authorization#verify-the-jwt) for details.",
   placeholder: "Enter signing secret",
   clean: toOptionalString,
 });

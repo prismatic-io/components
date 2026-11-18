@@ -34,6 +34,10 @@ describe("toOptionalNumber", () => {
     expect(toOptionalNumber(null)).toBeUndefined();
     expect(toOptionalNumber(undefined)).toBeUndefined();
   });
+
+  it("throws when the value cannot be coerced to a number", () => {
+    expect(() => toOptionalNumber("abc")).toThrow("cannot be coerced");
+  });
 });
 
 describe("toOptionalObject", () => {
@@ -44,6 +48,10 @@ describe("toOptionalObject", () => {
   it("returns undefined for falsy values", () => {
     expect(toOptionalObject("")).toBeUndefined();
     expect(toOptionalObject(null)).toBeUndefined();
+  });
+
+  it("passes a malformed JSON string through unchanged (does not throw)", () => {
+    expect(toOptionalObject("{bad")).toBe("{bad");
   });
 });
 
@@ -57,6 +65,10 @@ describe("toObjectOrEmpty", () => {
     expect(toObjectOrEmpty(null)).toEqual({});
     expect(toObjectOrEmpty(undefined)).toEqual({});
   });
+
+  it("passes a malformed JSON string through unchanged (does not throw)", () => {
+    expect(toObjectOrEmpty("{bad")).toBe("{bad");
+  });
 });
 
 describe("keyValPairListToObject", () => {
@@ -69,6 +81,19 @@ describe("keyValPairListToObject", () => {
       name: "Monday",
       version: "2",
     });
+  });
+
+  it("returns an empty object for an empty list", () => {
+    expect(keyValPairListToObject([])).toEqual({});
+  });
+
+  it("returns an empty object for undefined", () => {
+    expect(keyValPairListToObject(undefined)).toEqual({});
+  });
+
+  it("throws a TypeError for non-array input", () => {
+    expect(() => keyValPairListToObject("abc")).toThrow(TypeError);
+    expect(() => keyValPairListToObject({ a: 1 })).toThrow(TypeError);
   });
 });
 

@@ -199,18 +199,19 @@ export const selectWebhookExamplePayload = {
   ],
 };
 
-export const webhookExamplePayload = {
+export const webhookExamplePayload: {
+  payload: TriggerPayload;
+  branch: string;
+} = {
   payload: {
     headers: {
       "Content-Type": "application/json",
-      Authorization: "example-signing-secret",
+      Authorization:
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.EXAMPLE_PAYLOAD.EXAMPLE_SIGNATURE",
       "User-Agent": "monday-webhooks",
     },
     queryParameters: {},
-    rawBody: {
-      data: "",
-      contentType: "application/json",
-    },
+    rawBody: { data: null },
     body: {
       data: {
         event: {
@@ -231,44 +232,45 @@ export const webhookExamplePayload = {
           triggerUuid: "b5ed2e17c530446a98b25b8e6f0d6a1f",
         },
       },
-      contentType: "application/json",
     },
     pathFragment: "",
-    webhookUrls: {
-      "Webhook Flow": "https://hooks.example.com/trigger/EXAMPLE",
-    },
-    webhookApiKeys: {
-      "Webhook Flow": ["example-api-key"],
-    },
-    invokeUrl: "https://hooks.example.com/trigger/EXAMPLE",
-    executionId: "SW5zdGFuY2VFeGVjdXRpb246MTIzNDU=",
+    webhookUrls: {},
+    webhookApiKeys: {},
+    invokeUrl: "",
+    executionId: "RXhhbXBsZUV4ZWN1dGlvblJlc3VsdElk",
     customer: {
-      id: "Q3VzdG9tZXI6MTIzNDU=",
-      externalId: "example-customer-external-id",
-      name: "Example Customer",
+      id: "testCustomerId",
+      name: "Test Customer",
+      externalId: "testExternalId",
     },
-    instance: {
-      id: "SW5zdGFuY2U6MTIzNDU=",
-      name: "Example Instance",
-    },
+    instance: { id: "testInstanceId", name: "Test Instance" },
     user: {
-      id: "VXNlcjoxMjM0NQ==",
-      externalId: "example-user-external-id",
-      name: "Example User",
+      id: "testUserId",
       email: "user@example.com",
+      name: "Test User",
+      externalId: "testUserExternalId",
     },
-  } as unknown as TriggerPayload,
+    integration: {
+      id: "testIntegrationId",
+      name: "Test Integration",
+      versionSequenceId: "1",
+      externalVersion: "",
+    },
+    flow: { id: "testFlowId", name: "Test Flow", stableId: "testFlowStableId" },
+    startedAt: "2024-01-15T00:00:00.000Z",
+    globalDebug: false,
+  },
   branch: "Notification",
 };
 
-export const pollChangesTriggerExamplePayload = {
+export const pollChangesTriggerExamplePayload: {
+  payload: TriggerPayload;
+  polledNoChanges: boolean;
+} = {
   payload: {
     headers: {},
     queryParameters: {},
-    rawBody: {
-      data: "",
-      contentType: "application/json",
-    },
+    rawBody: { data: null },
     body: {
       data: {
         created: [
@@ -290,32 +292,33 @@ export const pollChangesTriggerExamplePayload = {
           },
         ],
       },
-      contentType: "application/json",
     },
     pathFragment: "",
-    webhookUrls: {
-      "Polling Flow": "https://hooks.example.com/trigger/EXAMPLE",
-    },
-    webhookApiKeys: {
-      "Polling Flow": ["example-api-key"],
-    },
-    invokeUrl: "https://hooks.example.com/trigger/EXAMPLE",
-    executionId: "SW5zdGFuY2VFeGVjdXRpb246MTIzNDU=",
+    webhookUrls: {},
+    webhookApiKeys: {},
+    invokeUrl: "",
+    executionId: "RXhhbXBsZUV4ZWN1dGlvblJlc3VsdElk",
     customer: {
-      id: "Q3VzdG9tZXI6MTIzNDU=",
-      externalId: "example-customer-external-id",
-      name: "Example Customer",
+      id: "testCustomerId",
+      name: "Test Customer",
+      externalId: "testExternalId",
     },
-    instance: {
-      id: "SW5zdGFuY2U6MTIzNDU=",
-      name: "Example Instance",
-    },
+    instance: { id: "testInstanceId", name: "Test Instance" },
     user: {
-      id: "VXNlcjoxMjM0NQ==",
-      externalId: "example-user-external-id",
-      name: "Example User",
+      id: "testUserId",
       email: "user@example.com",
+      name: "Test User",
+      externalId: "testUserExternalId",
     },
-  } as unknown as TriggerPayload,
+    integration: {
+      id: "testIntegrationId",
+      name: "Test Integration",
+      versionSequenceId: "1",
+      externalVersion: "",
+    },
+    flow: { id: "testFlowId", name: "Test Flow", stableId: "testFlowStableId" },
+    startedAt: "2024-01-15T00:00:00.000Z",
+    globalDebug: false,
+  },
   polledNoChanges: false,
 };
