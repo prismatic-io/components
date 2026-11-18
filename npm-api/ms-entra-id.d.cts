@@ -3,12 +3,6 @@ type UppercaseMethod = 'GET' | 'DELETE' | 'HEAD' | 'OPTIONS' | 'POST' | 'PUT' | 
 type Method = (UppercaseMethod | Lowercase<UppercaseMethod>) & {};
 type ResponseType = 'arraybuffer' | 'blob' | 'document' | 'json' | 'text' | 'stream' | 'formdata';
 //#endregion
-//#region src/constants.d.ts
-declare enum TriggerBranches {
-  Notification = "Notification",
-  URLValidation = "URL Validation"
-}
-//#endregion
 //#region npm-dist/.entry.d.ts
 declare const _default: import("@prismatic-io/spectral").CallableComponent<{
   key: "ms-entra-id";
@@ -253,6 +247,8 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
       data: {
         success: boolean;
+        id: string;
+        message: string;
       };
     }>;
     getSubscription: import("@prismatic-io/spectral").ActionDefinition<{
@@ -312,21 +308,21 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
       };
       notificationUrl: {
         required: false;
+        clean: (value: unknown) => string | undefined;
         label: string;
         type: "string";
         comments: string;
         example: string;
         placeholder: string;
-        clean: (value: unknown, defaultValue?: string) => string;
       };
       expirationDateTime: {
         required: false;
+        clean: (value: unknown) => string | undefined;
         label: string;
         type: "string";
         comments: string;
         example: string;
         placeholder: string;
-        clean: (value: unknown, defaultValue?: string) => string;
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
       data: any;
@@ -464,6 +460,8 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
       data: {
         success: boolean;
+        id: string;
+        message: string;
       };
     }>;
     listApplications: import("@prismatic-io/spectral").ActionDefinition<{
@@ -547,7 +545,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
             required: false;
             placeholder: string;
             example: string;
-            clean: (value: unknown) => string | undefined;
+            clean: (value: unknown) => number | undefined;
           };
         };
       } & {
@@ -573,11 +571,11 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
       };
       uniqueName: {
         comments: string;
-        placeholder: string;
         example: string;
         label: string;
         type: "string";
         required: true;
+        placeholder: string;
         clean: (value: unknown, defaultValue?: string) => string;
       };
       useAsUpsert: {
@@ -715,6 +713,8 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
       data: {
         success: boolean;
+        id: string;
+        message: string;
       };
     }>;
     getGroup: import("@prismatic-io/spectral").ActionDefinition<{
@@ -827,7 +827,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
             required: false;
             placeholder: string;
             example: string;
-            clean: (value: unknown) => string | undefined;
+            clean: (value: unknown) => number | undefined;
           };
         };
       } & {
@@ -935,7 +935,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
             required: false;
             placeholder: string;
             example: string;
-            clean: (value: unknown) => string | undefined;
+            clean: (value: unknown) => number | undefined;
           };
         };
       } & {
@@ -1013,6 +1013,8 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
       data: {
         success: boolean;
+        id: string;
+        message: string;
       };
     }>;
     upsertGroup: import("@prismatic-io/spectral").ActionDefinition<{
@@ -1024,11 +1026,11 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
       };
       uniqueName: {
         comments: string;
-        placeholder: string;
         example: string;
         label: string;
         type: "string";
         required: true;
+        placeholder: string;
         clean: (value: unknown, defaultValue?: string) => string;
       };
       useAsUpsert: {
@@ -1046,12 +1048,12 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         inputs: {
           displayName: {
             required: false;
+            clean: (value: unknown) => string | undefined;
             label: string;
             type: "string";
             comments: string;
             placeholder: string;
             example: string;
-            clean: (value: unknown, defaultValue?: string) => string;
           };
           mailEnabled: {
             label: string;
@@ -1066,12 +1068,12 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
           };
           mailNickname: {
             required: false;
+            clean: (value: unknown) => string | undefined;
             label: string;
             type: "string";
             comments: string;
             placeholder: string;
             example: string;
-            clean: (value: unknown, defaultValue?: string) => string;
           };
           securityEnabled: {
             label: string;
@@ -1204,6 +1206,8 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
       data: {
         success: boolean;
+        id: string;
+        message: string;
       };
     }>;
     getUser: import("@prismatic-io/spectral").ActionDefinition<{
@@ -1316,7 +1320,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
             required: false;
             placeholder: string;
             example: string;
-            clean: (value: unknown) => string | undefined;
+            clean: (value: unknown) => number | undefined;
           };
         };
       } & {
@@ -1368,30 +1372,30 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
           };
           displayName: {
             required: false;
+            clean: (value: unknown) => string | undefined;
             label: string;
             type: "string";
             comments: string;
             placeholder: string;
             example: string;
-            clean: (value: unknown, defaultValue?: string) => string;
           };
           userPrincipalName: {
             comments: string;
             required: false;
+            clean: (value: unknown) => string | undefined;
             label: string;
             type: "string";
             example: string;
             placeholder: string;
-            clean: (value: unknown, defaultValue?: string) => string;
           };
           domain: {
             comments: string;
             required: false;
+            clean: (value: unknown) => string | undefined;
             label: string;
             type: "string";
             example: string;
             placeholder: string;
-            clean: (value: unknown, defaultValue?: string) => string;
           };
           givenName: {
             label: string;
@@ -1440,10 +1444,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
     }>;
   };
   triggers: {
-    webhook: import("@prismatic-io/spectral").TriggerDefinition<{}, import("@prismatic-io/spectral").ConfigVarResultCollection, true, {
-      payload: import("@prismatic-io/spectral").TriggerPayload<Record<string, unknown>>;
-      branch: TriggerBranches;
-    }, import("@prismatic-io/spectral").Inputs>;
+    webhook: import("@prismatic-io/spectral").TriggerDefinition<{}, import("@prismatic-io/spectral").ConfigVarResultCollection, true, import("@prismatic-io/spectral").TriggerBranchingResult<import("@prismatic-io/spectral").TriggerPayload<Record<string, unknown>>> | undefined, import("@prismatic-io/spectral").Inputs>;
     userTrigger: import("@prismatic-io/spectral").TriggerDefinition<{
       connection: {
         label: string;
@@ -1466,17 +1467,14 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
       };
       expirationTriggerDateTime: {
         required: false;
+        clean: (value: unknown) => string | undefined;
         comments: string;
         label: string;
         type: "string";
         example: string;
         placeholder: string;
-        clean: (value: unknown, defaultValue?: string) => string;
       };
-    }, import("@prismatic-io/spectral").ConfigVarResultCollection, true, {
-      payload: import("@prismatic-io/spectral").TriggerPayload<Record<string, unknown>>;
-      branch: TriggerBranches;
-    }, import("@prismatic-io/spectral").Inputs>;
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, true, import("@prismatic-io/spectral").TriggerBranchingResult<import("@prismatic-io/spectral").TriggerPayload<Record<string, unknown>>> | undefined, import("@prismatic-io/spectral").Inputs>;
     groupTrigger: import("@prismatic-io/spectral").TriggerDefinition<{
       connection: {
         label: string;
@@ -1499,17 +1497,14 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
       };
       expirationTriggerDateTime: {
         required: false;
+        clean: (value: unknown) => string | undefined;
         comments: string;
         label: string;
         type: "string";
         example: string;
         placeholder: string;
-        clean: (value: unknown, defaultValue?: string) => string;
       };
-    }, import("@prismatic-io/spectral").ConfigVarResultCollection, true, {
-      payload: import("@prismatic-io/spectral").TriggerPayload<Record<string, unknown>>;
-      branch: TriggerBranches;
-    }, import("@prismatic-io/spectral").Inputs>;
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, true, import("@prismatic-io/spectral").TriggerBranchingResult<import("@prismatic-io/spectral").TriggerPayload<Record<string, unknown>>> | undefined, import("@prismatic-io/spectral").Inputs>;
   };
   dataSources: {
     selectApplication: import("@prismatic-io/spectral").DataSourceDefinition<{

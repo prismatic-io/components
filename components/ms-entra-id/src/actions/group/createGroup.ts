@@ -1,7 +1,8 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { createGroupExamplePayload as examplePayload } from "../../examplePayloads";
 import { createGroupInputs as inputs } from "../../inputs/group";
+import { createGroupOutputSchema } from "../../outputSchemas";
 
 export const createGroup = action({
   display: {
@@ -9,6 +10,7 @@ export const createGroup = action({
     description:
       "Create a new group. It can be a Microsoft 365 group, dynamic group, or security group.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -35,6 +37,22 @@ export const createGroup = action({
       data,
     };
   },
+  examplePerform: async (
+    _context,
+    { displayName, mailEnabled, mailNickname, securityEnabled },
+  ) => ({
+    data: {
+      ...examplePayload.data,
+      displayName,
+      mailEnabled,
+      mailNickname,
+      securityEnabled,
+    },
+  }),
   inputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createGroupOutputSchema,
+  }),
   examplePayload,
 });

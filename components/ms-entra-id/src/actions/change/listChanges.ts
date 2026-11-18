@@ -1,7 +1,8 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { listChangesExamplePayload as examplePayload } from "../../examplePayloads";
 import { listChangesInputs as inputs } from "../../inputs/change";
+import { listChangesOutputSchema } from "../../outputSchemas";
 import { getMinimalHeader } from "../../util";
 
 export const listChanges = action({
@@ -10,6 +11,7 @@ export const listChanges = action({
     description:
       "Retrieves a list of changes in an object and its children over time.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, deltaURL, odataQueryParams, returnMinimal },
@@ -29,6 +31,11 @@ export const listChanges = action({
       data,
     };
   },
+  examplePerform: async () => examplePayload,
   inputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listChangesOutputSchema,
+  }),
   examplePayload,
 });

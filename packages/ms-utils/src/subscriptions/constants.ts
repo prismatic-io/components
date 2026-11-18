@@ -10,3 +10,7 @@ export const GRAPH_SUBSCRIPTION_MAX_MINUTES = {
   TEAMS: 4320,
   PRESENCE: 60,
 } as const;
+
+export const HTTP_STATUS_NOT_FOUND = 404;
+export const UNDELETED_SUBSCRIPTIONS_KEY_SUFFIX = ":undeleted";
+export const SUBSCRIPTION_ID_SEPARATOR = ",";

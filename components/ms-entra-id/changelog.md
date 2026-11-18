@@ -1,5 +1,17 @@
 ## Changelog
 
+### 2026-11-18
+
+Improved the triggers, action results, and configuration experience:
+- Fixed the **User Changes** and **Group Changes** triggers keeping the previous subscription on redeploy, so a changed **Change Type** never took effect; each deploy now replaces the subscription with one built from the current configuration
+- Fixed the **User Changes** and **Group Changes** triggers logging Microsoft Graph request details on every deploy and instance deletion when debug logging was off
+- Fixed **Upsert Application** returning an empty result when it updates an existing application; it now returns a success flag
+- Updated **Update User**, **Upsert Group**, and **Update Subscription** to omit blank optional inputs from the request instead of sending them as empty values
+- Updated the **Delete User**, **Delete Group**, **Delete Application**, **Delete Subscription**, and **Remove Member From Group** actions to return the removed item's ID and a confirmation message alongside the success flag
+- Added inline action calling support to 25 actions for improved example output during configuration
+- Added output schemas to 25 actions for improved field mapping during configuration
+- Updated the component description to better summarize what the component does
+
 ### 2026-11-11
 
 Refactored internal code

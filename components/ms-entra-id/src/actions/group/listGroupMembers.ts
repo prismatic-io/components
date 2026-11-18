@@ -1,7 +1,8 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { listGroupMembersExamplePayload as examplePayload } from "../../examplePayloads";
 import { listGroupMembersInputs as inputs } from "../../inputs/group";
+import { listGroupMembersOutputSchema } from "../../outputSchemas";
 import { getConsistencyLevelHeader, getValues } from "../../util";
 
 export const listGroupMembers = action({
@@ -9,6 +10,7 @@ export const listGroupMembers = action({
     label: "List Group Members",
     description: "Retrieves the direct members of a group.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -41,6 +43,11 @@ export const listGroupMembers = action({
       data,
     };
   },
+  examplePerform: async () => examplePayload,
   inputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listGroupMembersOutputSchema,
+  }),
   examplePayload,
 });

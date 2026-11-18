@@ -1,14 +1,16 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { SUCCESS_RESPONSE } from "../../constants";
-import { emptyExamplePayload as examplePayload } from "../../examplePayloads";
+import { updateUserExamplePayload as examplePayload } from "../../examplePayloads";
 import { updateUserInputs as inputs } from "../../inputs/user";
+import { updateUserOutputSchema } from "../../outputSchemas";
 
 export const updateUser = action({
   display: {
     label: "Update User",
     description: "Update the properties of a User object.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, userId, userFields, additionalProperties },
@@ -57,6 +59,11 @@ export const updateUser = action({
       data: SUCCESS_RESPONSE,
     };
   },
+  examplePerform: async () => examplePayload,
   inputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: updateUserOutputSchema,
+  }),
   examplePayload,
 });

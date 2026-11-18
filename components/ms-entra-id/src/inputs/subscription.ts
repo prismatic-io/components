@@ -1,6 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { inputs as httpInputs } from "@prismatic-io/spectral/http";
-import { cleanHeaders } from "../util";
+import { cleanHeaders, toOptionalString } from "../util";
 import {
   additionalProperties,
   connection,
@@ -48,7 +48,7 @@ export const createSubscriptionInputs = {
   expirationDateTime,
   additionalProperties: input({
     ...additionalProperties,
-    comments: `${additionalProperties.comments} See [Create Subscription API](https://learn.microsoft.com/en-us/graph/api/subscription-post-subscriptions).`,
+    comments: `${additionalProperties.comments} See [Create Subscription API](https://learn.microsoft.com/en-us/graph/api/subscription-post-subscriptions?view=graph-rest-1.0).`,
   }),
   headers: input({
     ...httpInputs.headers,
@@ -94,10 +94,12 @@ export const updateSubscriptionInputs = {
   notificationUrl: input({
     ...notificationUrl,
     required: false,
+    clean: toOptionalString,
   }),
   expirationDateTime: input({
     ...expirationDateTime,
     required: false,
+    clean: toOptionalString,
   }),
 };
 

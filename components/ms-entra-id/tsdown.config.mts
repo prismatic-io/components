@@ -1,6 +1,6 @@
 import { callableEntryHooks } from "@prismatic-io/spectral/tsdown";
-import { defineConfig } from "tsdown";
 import { cjsEntry } from "build-config";
+import { defineConfig } from "tsdown";
 
 const sharedPackages = ["ms-utils"];
 

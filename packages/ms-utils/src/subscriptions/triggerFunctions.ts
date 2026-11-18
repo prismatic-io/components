@@ -18,9 +18,15 @@ import { getBase64FromUrl } from "../utils/helpers";
 import {
   calculateExpirationDateTime,
   createSubscriptionFN,
-  deleteAllSubscriptionsFN,
+  deleteSubscriptionByIdFN,
+  listAllSubscriptionsFN,
   scheduledRenewalFN,
 } from "../utils/webhooks";
+import {
+  HTTP_STATUS_NOT_FOUND,
+  SUBSCRIPTION_ID_SEPARATOR,
+  UNDELETED_SUBSCRIPTIONS_KEY_SUFFIX,
+} from "./constants";
 
 export const createSubscriptionTrigger = async (
   client: HttpClient,
@@ -60,6 +66,125 @@ export const createSubscriptionTrigger = async (
   return subscription;
 };
 
+export const replaceSubscriptionOnDeploy = async (
+  client: HttpClient,
+  {
+    resource,
+    changeType,
+    clientState,
+    expirationDateTime,
+  }: Omit<
+    CreateSubscriptionTriggerData,
+    "allowDuplicates" | "notificationUrl" | "customHeaders"
+  >,
+  context: ActionContext,
+): Promise<{
+  subscription: GraphSubscription;
+  crossFlowState: Record<string, unknown>;
+}> => {
+  const flowName = context.flow.name;
+  const webhookUrl = context.webhookUrls[flowName];
+  const flowKey = getBase64FromUrl(webhookUrl);
+  const undeletedKey = `${flowKey}${UNDELETED_SUBSCRIPTIONS_KEY_SUFFIX}`;
+  const previousIds = [
+    util.types.toString(context.crossFlowState[flowKey]),
+    ...readSubscriptionIds(context.crossFlowState[undeletedKey]),
+  ];
+
+  const subscription = await createSubscriptionFN(
+    client,
+    {
+      resource,
+      changeType,
+      notificationUrl: webhookUrl,
+      expirationDateTime: expirationDateTime || calculateExpirationDateTime(),
+      clientState,
+      allowDuplicates: true,
+    },
+    context,
+  );
+
+  const listed = await listAllSubscriptionsFN(client);
+  const staleIds = new Set(
+    listed
+      .filter(
+        ({ id, notificationUrl }) =>
+          id && notificationUrl === webhookUrl && id !== subscription.id,
+      )
+      .map(({ id }) => util.types.toString(id)),
+  );
+  for (const previousId of previousIds) {
+    if (previousId && previousId !== subscription.id) {
+      staleIds.add(previousId);
+    }
+  }
+
+  const { failed } = await deleteSubscriptionsByIdFN(
+    client,
+    [...staleIds],
+    context,
+  );
+
+  context.logger.info(
+    `Created Graph subscription ${subscription.id} for flow ${flowName} (${context.flow.id}); replaced ${staleIds.size} previous subscription(s)`,
+  );
+
+  return {
+    subscription,
+    crossFlowState: {
+      [flowKey]: subscription.id,
+      [undeletedKey]: failed.join(SUBSCRIPTION_ID_SEPARATOR),
+    },
+  };
+};
+
+const readSubscriptionIds = (value: unknown): string[] =>
+  util.types
+    .toString(value)
+    .split(SUBSCRIPTION_ID_SEPARATOR)
+    .filter((id) => id);
+
+const isNotFoundError = (reason: unknown): boolean => {
+  if (
+    !(reason instanceof Error) ||
+    !("response" in reason) ||
+    !reason.response
+  ) {
+    return false;
+  }
+  const response = util.types.toObject(reason.response);
+  return (
+    "status" in response &&
+    util.types.toNumber(response.status) === HTTP_STATUS_NOT_FOUND
+  );
+};
+
+const deleteSubscriptionsByIdFN = async (
+  client: HttpClient,
+  ids: string[],
+  context: ActionContext,
+): Promise<{ deleted: string[]; failed: string[] }> => {
+  const results = await Promise.allSettled(
+    ids.map((id) => deleteSubscriptionByIdFN(client, id)),
+  );
+  const deleted: string[] = [];
+  const failed: string[] = [];
+  ids.forEach((id, index) => {
+    const result = results[index];
+    if (result.status === "fulfilled") {
+      deleted.push(id);
+    } else if (isNotFoundError(result.reason)) {
+      context.logger.info(`Graph subscription ${id} no longer exists`);
+    } else {
+      context.logger.warn(
+        `Could not delete Graph subscription ${id}: ${result.reason}`,
+      );
+      failed.push(id);
+    }
+  });
+  return { deleted, failed };
+};
+
 export const deleteSubscriptionTrigger = async (
   client: HttpClient,
   context: ActionContext,
@@ -67,15 +192,35 @@ export const deleteSubscriptionTrigger = async (
   const flowId = context.flow.id;
   const flowName = context.flow.name;
   const webhookUrl = context.webhookUrls[flowName];
+  const flowKey = getBase64FromUrl(webhookUrl);
+  const storedIds = [
+    util.types.toString(context.crossFlowState[flowKey]),
+    ...readSubscriptionIds(
+      context.crossFlowState[`${flowKey}${UNDELETED_SUBSCRIPTIONS_KEY_SUFFIX}`],
+    ),
+  ];
 
-  const deletedSubscriptions = await deleteAllSubscriptionsFN(
+  const listedIds = (await listAllSubscriptionsFN(client))
+    .filter(({ id, notificationUrl }) => id && notificationUrl === webhookUrl)
+    .map(({ id }) => util.types.toString(id));
+  const ids = new Set([...listedIds, ...storedIds.filter((id) => id)]);
+
+  const { deleted, failed } = await deleteSubscriptionsByIdFN(
     client,
-    webhookUrl,
+    [...ids],
+    context,
   );
 
   context.logger.info(
-    `Deleted ${deletedSubscriptions.length} Graph subscription(s) for flow ${flowName} (${flowId})`,
+    `Deleted ${deleted.length} Graph subscription(s) for flow ${flowName} (${flowId})`,
   );
+
+  const failedListed = failed.filter((id) => listedIds.includes(id));
+  if (failedListed.length) {
+    throw new Error(
+      `Could not delete Graph subscription(s) ${failedListed.join(", ")} for flow ${flowName} (${flowId})`,
+    );
+  }
 };
 
 export const triggerPerformFN = async <TPayload extends BoundaryTriggerPayload>(

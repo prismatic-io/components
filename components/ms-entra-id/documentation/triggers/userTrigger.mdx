@@ -4,7 +4,7 @@ This trigger receives [change notifications](https://learn.microsoft.com/en-us/g
 
 When this trigger is used in a flow:
 
-- **On Instance Deploy**: The trigger automatically creates a [subscription](https://learn.microsoft.com/en-us/graph/api/subscription-post-subscriptions?view=graph-rest-1.0) in Microsoft Graph for user change notifications, pointing to the instance's unique webhook URL. If a subscription with the same URL already exists, it updates the existing subscription's expiration instead of creating a duplicate.
+- **On Instance Deploy**: The trigger automatically creates a [subscription](https://learn.microsoft.com/en-us/graph/api/subscription-post-subscriptions?view=graph-rest-1.0) in Microsoft Graph for user change notifications, pointing to the instance's unique webhook URL. On a redeploy, it creates a new subscription from the current inputs and connection, then removes the previous one, so a changed **Change Type** or connection takes effect. If Microsoft Graph refuses to delete the previous subscription, for example because it belongs to another account than the new connection, both subscriptions deliver notifications until the old one is deleted: the trigger retries the delete on every later deploy and when the instance is deleted, and Microsoft Graph removes the old subscription when it expires.
 - **On Instance Deletion**: The trigger automatically removes all subscriptions associated with the instance's webhook URL.
 
 The trigger uses two branches to handle incoming requests:
@@ -64,4 +64,4 @@ Refer to the [Microsoft Graph change notifications documentation](https://learn.
 #### Notes
 
 - User subscriptions have a maximum lifetime of 29 days (41,760 minutes). The trigger sets this as the default expiration when no custom value is provided.
-- The subscription is automatically renewed on each instance deploy, extending the expiration window.
+- Each instance deploy replaces the subscription with a new one. When **Expiration Date Time** is empty, this restarts the 29-day expiration window.

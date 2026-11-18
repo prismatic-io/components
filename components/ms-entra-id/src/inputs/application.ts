@@ -13,7 +13,8 @@ const displayName = input({
   label: "Display Name",
   type: "string",
   required: true,
-  comments: "The display name of the application.",
+  comments:
+    "The name shown for the application in the Microsoft Entra admin center and on consent prompts.",
   example: "My Application",
   placeholder: "Enter display name",
   clean: util.types.toString,
@@ -24,7 +25,7 @@ export const createApplicationInputs = {
   displayName,
   additionalProperties: input({
     ...additionalProperties,
-    comments: `${additionalProperties.comments} See [Create Application API](https://learn.microsoft.com/en-us/graph/api/application-post-applications).`,
+    comments: `${additionalProperties.comments} See [Create Application API](https://learn.microsoft.com/en-us/graph/api/application-post-applications?view=graph-rest-1.0).`,
   }),
 };
 
@@ -64,7 +65,6 @@ export const upsertApplicationInputs = {
   uniqueName: input({
     ...uniqueName,
     comments: "The unique name of the application to update or create.",
-    placeholder: "MyApplication",
     example: "MyApplication",
   }),
   useAsUpsert: input({
@@ -75,6 +75,6 @@ export const upsertApplicationInputs = {
   displayName,
   additionalProperties: input({
     ...additionalProperties,
-    comments: `${additionalProperties.comments} See [Upsert Application API](https://learn.microsoft.com/en-us/graph/api/application-upsert).`,
+    comments: `${additionalProperties.comments} See [Upsert Application API](https://learn.microsoft.com/en-us/graph/api/application-upsert?view=graph-rest-1.0).`,
   }),
 };

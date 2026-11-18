@@ -1,5 +1,10 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
-import { cleanCodeInput, cleanGroupTypes, toOptionalString } from "../util";
+import {
+  cleanCodeInput,
+  cleanGroupTypes,
+  toOptionalNumber,
+  toOptionalString,
+} from "../util";
 
 export const connection = input({
   label: "Connection",
@@ -68,7 +73,7 @@ export const odataParams = {
     required: false,
     placeholder: "Enter page size",
     example: "10",
-    clean: toOptionalString,
+    clean: toOptionalNumber,
   }),
   $skip: input({
     label: "Skip",

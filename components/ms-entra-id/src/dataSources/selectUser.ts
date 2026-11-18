@@ -1,6 +1,7 @@
 import { dataSource } from "@prismatic-io/spectral";
 import { createClient } from "../client";
-import { connection } from "../inputs/common";
+import { selectUserExamplePayload } from "../examplePayloads";
+import { selectUserInputs as inputs } from "../inputs/dataSources";
 import { getValues } from "../util";
 
 export const selectUser = dataSource({
@@ -8,9 +9,7 @@ export const selectUser = dataSource({
     label: "Select User",
     description: "Select a user from a picklist.",
   },
-  inputs: {
-    connection,
-  },
+  inputs,
   perform: async (_context, { connection }) => {
     const client = createClient(connection, false);
     const { data } = await getValues(true, client, `/users`, {
@@ -28,7 +27,5 @@ export const selectUser = dataSource({
     };
   },
   dataSourceType: "picklist",
-  examplePayload: {
-    result: [{ label: "Example User", key: "example-user-id-123" }],
-  },
+  examplePayload: selectUserExamplePayload,
 });

@@ -1,5 +1,6 @@
 import { dataSource } from "@prismatic-io/spectral";
 import { createClient } from "../client";
+import { selectGroupExamplePayload } from "../examplePayloads";
 import { selectGroupInputs as inputs } from "../inputs/dataSources";
 import { getValues } from "../util";
 
@@ -24,4 +25,5 @@ export const selectGroup = dataSource({
     };
   },
   dataSourceType: "picklist",
+  examplePayload: selectGroupExamplePayload,
 });

@@ -1,17 +1,17 @@
 import { trigger } from "@prismatic-io/spectral";
+import {
+  deleteSubscriptionTrigger,
+  replaceSubscriptionOnDeploy,
+} from "ms-utils";
 import { createClient } from "../client";
 import {
   MAX_MINUTES_EXPIRATION_USERS_GROUPS_SUBSCRIPTION,
   SubscriptionResources,
   TriggerBranches,
 } from "../constants";
+import { userTriggerExamplePayload } from "../examplePayloads";
 import { userTriggerInputs as inputs } from "../inputs/triggers";
-import {
-  addMinutesToDate,
-  removeSubscriptions,
-  subscribeToResource,
-  triggerPerformFunction,
-} from "../util";
+import { addMinutesToDate, triggerPerformFunction } from "../util";
 
 export const userTrigger = trigger({
   display: {
@@ -28,13 +28,13 @@ export const userTrigger = trigger({
     TriggerBranches.URLValidation,
   ],
   perform: triggerPerformFunction,
+  examplePayload: userTriggerExamplePayload,
   webhookLifecycleHandlers: {
     create: async (
       context,
       { connection, changeType, expirationTriggerDateTime },
     ) => {
-      const endpoint = context.webhookUrls[context.flow.name];
-      const client = createClient(connection, true);
+      const client = createClient(connection, context.debug.enabled);
 
       const expirationDateTime = expirationTriggerDateTime
         ? expirationTriggerDateTime
@@ -43,19 +43,21 @@ export const userTrigger = trigger({
             MAX_MINUTES_EXPIRATION_USERS_GROUPS_SUBSCRIPTION,
           );
 
-      await subscribeToResource(
+      const { crossFlowState } = await replaceSubscriptionOnDeploy(
         client,
-        endpoint,
-        SubscriptionResources.Users,
-        changeType,
-        expirationDateTime,
+        {
+          resource: SubscriptionResources.Users,
+          changeType,
+          expirationDateTime,
+        },
+        context,
       );
+      return { crossFlowState };
     },
     delete: async (context, { connection }) => {
-      const client = createClient(connection, true);
-      const endpoint = context.webhookUrls[context.flow.name];
+      const client = createClient(connection, context.debug.enabled);
 
-      await removeSubscriptions(client, new Set([endpoint]));
+      await deleteSubscriptionTrigger(client, context);
     },
   },
 });

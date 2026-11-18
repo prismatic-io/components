@@ -1,4 +1,4 @@
-import type { Connection } from "@prismatic-io/spectral";
+import { type Connection, util } from "@prismatic-io/spectral";
 import {
   createClient as createAxiosClient,
   type HttpClient,
@@ -8,14 +8,16 @@ import { validateConnection } from "./util";
 
 export const createClient = (
   connection: Connection,
-  debug: boolean,
+  debug = false,
 ): HttpClient => {
   validateConnection(connection);
 
   return createAxiosClient({
     baseUrl: API_URL,
+    responseType: "json",
     headers: {
-      Authorization: `Bearer ${connection.token?.access_token}`,
+      Authorization: `Bearer ${util.types.toString(connection.token?.access_token)}`,
+      Accept: "application/json",
     },
     debug,
   });

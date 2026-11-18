@@ -1,5 +1,6 @@
 import { dataSource } from "@prismatic-io/spectral";
 import { createClient } from "../client";
+import { selectApplicationExamplePayload } from "../examplePayloads";
 import { selectApplicationInputs as inputs } from "../inputs/dataSources";
 import { getValues } from "../util";
 
@@ -26,4 +27,5 @@ export const selectApplication = dataSource({
     };
   },
   dataSourceType: "picklist",
+  examplePayload: selectApplicationExamplePayload,
 });

@@ -583,9 +583,9 @@
   },
   "ms-entra-id": {
     "name": "@prismatic-io/components-ms-entra-id",
-    "version": "0.1.0",
-    "build": "c40cdbfbc962fc7c04d1ec0f115e9cae9f8bd9361335303e8cbec083489c5a90",
-    "spectral": "^10.39.1"
+    "version": "0.2.0",
+    "build": "9d4a6f129b1f0eff146b9d93e2feb8a8fcdc7844eeab37ea4005a424700d78ea",
+    "spectral": "^10.39.2"
   },
   "ms-excel": {
     "name": "@prismatic-io/components-ms-excel",
@@ -607,14 +607,14 @@
   },
   "ms-onedrive": {
     "name": "@prismatic-io/components-ms-onedrive",
-    "version": "0.2.0",
-    "build": "044b93a20ce85bc41a76520b4a8dbab6cbb7a72d32ed59f72e410a7d51a88c8b",
+    "version": "0.2.1",
+    "build": "35e0a44b4fea2be4811d2eec171c78928f94c621d9a98441e19e3c91a9c3dbf8",
     "spectral": "^10.39.1"
   },
   "ms-outlook": {
     "name": "@prismatic-io/components-ms-outlook",
-    "version": "0.5.0",
-    "build": "a75b8f6de1c179752efb8107c3d34da2deb8850218efb6227ccf2c6914ec4c0f",
+    "version": "0.5.1",
+    "build": "25d9c1975ad0269438e95c7cd167ae12429e9f246932e482ffa350b9f12eb051",
     "spectral": "^10.39.1"
   },
   "ms-planner": {
@@ -637,8 +637,8 @@
   },
   "ms-sharepoint": {
     "name": "@prismatic-io/components-ms-sharepoint",
-    "version": "0.4.0",
-    "build": "b72a0ebc328f64f10c8280367712dc965140c57cf611885265f95260429c7c4a",
+    "version": "0.4.1",
+    "build": "9ebfb70140908e166079109cbd65c75498987119bf46fd9297efb49968a6c593",
     "spectral": "^10.39.1"
   },
   "ms-sql-server": {

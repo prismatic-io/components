@@ -1,7 +1,8 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { listGroupExamplePayload as examplePayload } from "../../examplePayloads";
 import { listGroupInputs as inputs } from "../../inputs/group";
+import { listGroupOutputSchema } from "../../outputSchemas";
 import { getConsistencyLevelHeader, getValues } from "../../util";
 
 export const listGroup = action({
@@ -9,6 +10,7 @@ export const listGroup = action({
     label: "List Groups",
     description: "List group objects and their properties.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -41,6 +43,11 @@ export const listGroup = action({
       data,
     };
   },
+  examplePerform: async () => examplePayload,
   inputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listGroupOutputSchema,
+  }),
   examplePayload,
 });

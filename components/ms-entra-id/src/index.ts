@@ -12,7 +12,7 @@ export default component({
   display: {
     label: "Microsoft Entra ID",
     description:
-      "Manage users, groups, and applications in Microsoft Entra ID (formerly Azure Active Directory).",
+      "Manage users, groups, and applications in Microsoft Entra ID (formerly Azure Active Directory), and react to user and group changes with webhook triggers.",
     iconPath: "icon.png",
     category: "Application Connectors",
   },

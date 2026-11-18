@@ -1,7 +1,8 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { listApplicationsExamplePayload as examplePayload } from "../../examplePayloads";
 import { listApplicationsInputs as inputs } from "../../inputs/application";
+import { listApplicationsOutputSchema } from "../../outputSchemas";
 import { getConsistencyLevelHeader, getValues } from "../../util";
 
 export const listApplications = action({
@@ -9,6 +10,7 @@ export const listApplications = action({
     label: "List Applications",
     description: "Retrieve the list of applications in the organization.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -41,6 +43,11 @@ export const listApplications = action({
       data,
     };
   },
+  examplePerform: async () => examplePayload,
   inputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listApplicationsOutputSchema,
+  }),
   examplePayload,
 });

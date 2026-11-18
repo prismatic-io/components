@@ -1,8 +1,9 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { SUCCESS_RESPONSE } from "../../constants";
-import { emptyExamplePayload as examplePayload } from "../../examplePayloads";
+import { upsertGroupExamplePayload as examplePayload } from "../../examplePayloads";
 import { upsertGroupInputs as inputs } from "../../inputs/group";
+import { upsertGroupOutputSchema } from "../../outputSchemas";
 import { getUpsertHeader } from "../../util";
 
 export const upsertGroup = action({
@@ -11,6 +12,7 @@ export const upsertGroup = action({
     description:
       "Create a new group if it doesn't exist, or update the properties of an existing group.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, uniqueName, useAsUpsert, groupFields, additionalProperties },
@@ -33,6 +35,11 @@ export const upsertGroup = action({
       data: data ? data : SUCCESS_RESPONSE,
     };
   },
+  examplePerform: async () => examplePayload,
   inputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: upsertGroupOutputSchema,
+  }),
   examplePayload,
 });

@@ -1,5 +1,5 @@
 import { input } from "@prismatic-io/spectral";
-import { cleanChangeType } from "../util";
+import { cleanChangeType, toOptionalString } from "../util";
 import { connection, expirationDateTime } from "./common";
 
 const changeType = input({
@@ -20,6 +20,7 @@ const changeType = input({
 const expirationTriggerDateTime = input({
   ...expirationDateTime,
   required: false,
+  clean: toOptionalString,
   comments:
     "The date and time when the trigger subscription expires. If not specified, the subscription defaults to 29 days from the current date and time. This trigger must be reactivated after expiration.",
 });
@@ -35,3 +36,5 @@ export const groupTriggerInputs = {
   changeType,
   expirationTriggerDateTime,
 };
+
+export const webhookInputs = {};

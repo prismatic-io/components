@@ -1,5 +1,9 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
-import { cleanBooleanInput, getOptionalBooleanModel } from "../util";
+import {
+  cleanBooleanInput,
+  getOptionalBooleanModel,
+  toOptionalString,
+} from "../util";
 import {
   additionalProperties,
   connection,
@@ -63,7 +67,7 @@ export const createGroupInputs = {
   groupTypes,
   additionalProperties: input({
     ...additionalProperties,
-    comments: `${additionalProperties.comments} See [Create Group API](https://learn.microsoft.com/en-us/graph/api/group-post-groups).`,
+    comments: `${additionalProperties.comments} See [Create Group API](https://learn.microsoft.com/en-us/graph/api/group-post-groups?view=graph-rest-1.0).`,
   }),
 };
 
@@ -129,11 +133,20 @@ const securityEnabledOptional = input({
 const groupFields = structuredObjectInput({
   label: "Group Fields",
   required: false,
-  comments: "Group configuration fields.",
+  comments:
+    "Display name, mail nickname, mail and security settings, and type.",
   inputs: {
-    displayName: input({ ...displayName, required: false }),
+    displayName: input({
+      ...displayName,
+      required: false,
+      clean: toOptionalString,
+    }),
     mailEnabled: mailEnabledOptional,
-    mailNickname: input({ ...mailNickname, required: false }),
+    mailNickname: input({
+      ...mailNickname,
+      required: false,
+      clean: toOptionalString,
+    }),
     securityEnabled: securityEnabledOptional,
     groupTypes,
   },
@@ -144,7 +157,6 @@ export const upsertGroupInputs = {
   uniqueName: input({
     ...uniqueName,
     comments: "The unique name of the group to update or create.",
-    placeholder: "MarketingTeam",
     example: "MarketingTeam",
   }),
   useAsUpsert: input({
@@ -155,7 +167,7 @@ export const upsertGroupInputs = {
   groupFields,
   additionalProperties: input({
     ...additionalProperties,
-    comments: `${additionalProperties.comments} See [Upsert Group API](https://learn.microsoft.com/en-us/graph/api/group-upsert).`,
+    comments: `${additionalProperties.comments} See [Upsert Group API](https://learn.microsoft.com/en-us/graph/api/group-upsert?view=graph-rest-1.0).`,
   }),
 };
 

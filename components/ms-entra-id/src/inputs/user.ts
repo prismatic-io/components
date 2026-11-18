@@ -35,7 +35,8 @@ const displayName = input({
   label: "Display Name",
   type: "string",
   required: true,
-  comments: "The display name of the user.",
+  comments:
+    "The name shown for the user in the address book, usually the user's first name, middle initial, and last name.",
   placeholder: "Enter display name",
   example: "Adele Vance",
   clean: util.types.toString,
@@ -94,7 +95,7 @@ export const createUserInputs = {
   domain,
   additionalProperties: input({
     ...additionalProperties,
-    comments: `${additionalProperties.comments} See [Create User API](https://learn.microsoft.com/en-us/graph/api/user-post-users).`,
+    comments: `${additionalProperties.comments} See [Create User API](https://learn.microsoft.com/en-us/graph/api/user-post-users?view=graph-rest-1.0).`,
   }),
 };
 
@@ -121,7 +122,7 @@ const givenName = input({
   label: "First Name",
   type: "string",
   required: false,
-  comments: "The updated first name of the user.",
+  comments: "The user's given name. Leave blank to keep the current value.",
   placeholder: "Enter first name",
   example: "John",
   clean: toOptionalString,
@@ -131,7 +132,8 @@ const surname = input({
   label: "Last Name",
   type: "string",
   required: false,
-  comments: "The updated last name of the user.",
+  comments:
+    "The user's surname (family name). Leave blank to keep the current value.",
   placeholder: "Enter last name",
   example: "Doe",
   clean: toOptionalString,
@@ -141,7 +143,8 @@ const jobTitle = input({
   label: "Job Title",
   type: "string",
   required: false,
-  comments: "The updated job title of the user.",
+  comments:
+    "The user's job title as shown in the directory. Leave blank to keep the current value.",
   placeholder: "Enter job title",
   example: "Software Engineer",
   clean: toOptionalString,
@@ -159,21 +162,28 @@ const accountEnabledOptional = input({
 const userFields = structuredObjectInput({
   label: "User Fields",
   required: false,
-  comments: "User profile fields to update.",
+  comments:
+    "Account status, display and principal names, domain, first and last name, and job title.",
   inputs: {
     accountEnabled: accountEnabledOptional,
-    displayName: input({ ...displayName, required: false }),
+    displayName: input({
+      ...displayName,
+      required: false,
+      clean: toOptionalString,
+    }),
     userPrincipalName: input({
       ...userPrincipalName,
       comments:
         "The updated user principal name of the user. Required if 'Domain' input is provided.",
       required: false,
+      clean: toOptionalString,
     }),
     domain: input({
       ...domain,
       comments:
         "The updated domain for the user, this must be an existing domain in the tenant. Required if 'User Principal Name' input is provided.",
       required: false,
+      clean: toOptionalString,
     }),
     givenName,
     surname,
@@ -191,6 +201,6 @@ export const updateUserInputs = {
   userFields,
   additionalProperties: input({
     ...additionalProperties,
-    comments: `${additionalProperties.comments} See [Update User API](https://learn.microsoft.com/en-us/graph/api/user-update).`,
+    comments: `${additionalProperties.comments} See [Update User API](https://learn.microsoft.com/en-us/graph/api/user-update?view=graph-rest-1.0).`,
   }),
 };

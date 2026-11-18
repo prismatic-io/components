@@ -9,6 +9,7 @@ export const rawRequest = action({
     label: "Raw Request",
     description: "Send raw HTTP request to Microsoft Entra ID.",
   },
+  performSafety: "notAllowed",
   perform: async (_context, { connection, ...httpClientInputs }) => {
     validateConnection(connection);
     const token = connection?.token?.access_token;

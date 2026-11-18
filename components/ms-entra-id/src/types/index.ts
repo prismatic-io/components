@@ -1,4 +1,2 @@
-export interface Subscription {
-  id: string;
-  notificationUrl: string;
-}
+export * from "./graph";
+export * from "./subscription";
