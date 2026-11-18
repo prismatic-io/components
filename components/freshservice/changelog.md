@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-11-18
+
+Fixed the **Create or Update Device (ITAM)** action silently returning list data instead of writing the device, caused by a missing trailing slash on the create endpoint
+
 ### 2026-11-13
 
 Fixed a failure in the **List Assets (ITAM)**, **List Devices (ITAM)**, **Select Asset (ITAM)** and **Select Device (ITAM)** actions and data sources when the ITAM collection was empty

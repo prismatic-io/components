@@ -39,8 +39,8 @@ describe("itamPath", () => {
     expect(itamPath("devices", { op: "read", id: 5 })).toBe("/itam/devices/5");
   });
 
-  test("a create POST omits the slash for devices", () => {
-    expect(itamPath("devices", { op: "create" })).toBe("/itam/devices");
+  test("a create POST carries the slash for devices", () => {
+    expect(itamPath("devices", { op: "create" })).toBe("/itam/devices/");
   });
 
   test("a create POST carries the slash for assets", () => {

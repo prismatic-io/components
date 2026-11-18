@@ -36,11 +36,11 @@ afterEach(() => {
 });
 
 describe("createOrUpdateItamDevice", () => {
-  test("posts to the collection WITHOUT a trailing slash and names the flat tuple", async () => {
+  test("posts to the collection WITH a trailing slash and names the flat tuple", async () => {
     let sent: unknown;
 
     const scope = nock(HOST)
-      .post("/api/v2/itam/devices", (body) => {
+      .post("/api/v2/itam/devices/", (body) => {
         sent = body;
         return true;
       })
@@ -55,7 +55,7 @@ describe("createOrUpdateItamDevice", () => {
 
   test("surfaces a rejected write", async () => {
     nock(HOST)
-      .post("/api/v2/itam/devices")
+      .post("/api/v2/itam/devices/")
       .reply(400, { description: "Validation failed", errors: [] });
 
     await expect(
@@ -65,7 +65,7 @@ describe("createOrUpdateItamDevice", () => {
 
   test("refuses a call carrying neither a name nor any identifier", async () => {
     const scope = nock(HOST)
-      .post("/api/v2/itam/devices")
+      .post("/api/v2/itam/devices/")
       .reply(200, rawWriteBody);
 
     await expect(

@@ -4,7 +4,7 @@ import type { ItamMeta, ItamOperation, ItamWriteResult } from "../types";
 
 const CREATE_TRAILING_SLASH: Record<string, boolean> = {
   assets: true,
-  devices: false,
+  devices: true,
   cloud_infrastructures: true,
   resources: true,
   "physical-subtypes": false,
