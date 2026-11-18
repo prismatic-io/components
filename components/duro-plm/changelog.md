@@ -1,5 +1,13 @@
 ## Changelog
 
+### 2026-11-18
+
+- Fixed the Duro API key appearing in execution logs when debug logging was enabled on an action or trigger
+- Fixed the **Raw Request** action sending a malformed **Variables Object** (invalid JSON or a JSON array) to Duro as one variable per character or per array index; the action now fails with a clear error instead
+- Added inline action calling support to the **Create Change Order**, **Get Component by ID**, **Get Current User**, **List Change Orders**, **List Company Users**, and **List Components** actions for improved example output during configuration
+- Added output schemas to the **Create Change Order**, **Get Component by ID**, **Get Current User**, **List Change Orders**, **List Company Users**, and **List Components** actions for improved field mapping during configuration
+- Updated the component description to better summarize what the component does
+
 ### 2026-11-11
 
 Refactored internal code

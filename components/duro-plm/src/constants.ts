@@ -19,6 +19,8 @@ export const GRAPHQL_EXAMPLE = `{
   }
 }`;
 
+export const DEFAULT_LIBRARY_TYPE = "GENERAL";
+
 export const N_FIRST_RESULTS_FALLBACK = 100;
 
 export const POLL_PAGE_SIZE = 100;
@@ -56,7 +58,7 @@ export const POLL_RESOURCE_CONFIG: Record<string, PollResourceConfig> = {
     buildVariables: (first, after) => ({
       first,
       after,
-      libraryType: "GENERAL",
+      libraryType: DEFAULT_LIBRARY_TYPE,
       orderBy: [{ lastModified: "desc" }],
     }),
     earlyStop: true,

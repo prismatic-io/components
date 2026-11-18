@@ -1,9 +1,10 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createDuroClient } from "../../client";
 import { gql } from "graphql-request";
 import { listChangeOrdersInputs } from "../../inputs/orders";
 import { N_FIRST_RESULTS_FALLBACK } from "../../constants";
 import { listChangeOrdersExamplePayload } from "../../examplePayloads";
+import { listChangeOrdersOutputSchema } from "../../outputSchemas";
 
 export const listChangeOrders = action({
   display: {
@@ -11,8 +12,13 @@ export const listChangeOrders = action({
     description: "Retrieves a list of change orders.",
   },
   inputs: listChangeOrdersInputs,
+  performSafety: "notAllowed",
   perform: async (context, { connection, orderBy, first }) => {
-    const client = createDuroClient(connection, context.debug.enabled);
+    const client = createDuroClient(
+      connection,
+      context.debug.enabled,
+      context.logger,
+    );
     const query = gql`
       query ChangeOrders($first: Int, $orderBy: [ChangeOrdersOrderByInput]) {
         changeOrders(orderBy: $orderBy) {
@@ -73,5 +79,10 @@ export const listChangeOrders = action({
 
     return { data };
   },
+  examplePerform: async () => listChangeOrdersExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listChangeOrdersOutputSchema,
+  }),
   examplePayload: listChangeOrdersExamplePayload,
 });

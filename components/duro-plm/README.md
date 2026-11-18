@@ -3,7 +3,7 @@
   <h1>@prismatic-io/components-duro-plm</h1>
 </div>
 
-Manage products, components, and change orders in Duro PLM. This package is Prismatic's Duro PLM connector as an npm package, for use in [code-native integrations](https://prismatic.io/docs/integrations/code-native/).
+Manage components and change orders in Duro PLM. This package is Prismatic's Duro PLM connector as an npm package, for use in [code-native integrations](https://prismatic.io/docs/integrations/code-native/).
 
 ## Using Duro PLM
 

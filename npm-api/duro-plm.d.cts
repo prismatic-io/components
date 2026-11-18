@@ -46,7 +46,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         placeholder: string;
         type: "string";
         required: false;
-        clean: (value: unknown) => any[];
+        clean: (value: unknown) => unknown[] | undefined;
         model: {
           label: string;
           value: string;
@@ -78,7 +78,21 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         example: string;
         placeholder: string;
         required: true;
-        clean: (value: unknown) => string | undefined;
+        clean: (value: unknown, defaultValue?: string) => string;
+      };
+      type: {
+        label: string;
+        type: "string";
+        required: true;
+        comments: string;
+        clean: (value: unknown, defaultValue?: string) => string;
+        default: string;
+        placeholder: string;
+        model: {
+          label: string;
+          value: string;
+        }[];
+        example: string;
       };
       description: {
         label: string;
@@ -88,20 +102,6 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         example: string;
         placeholder: string;
         clean: (value: unknown) => string | undefined;
-      };
-      type: {
-        label: string;
-        type: "string";
-        required: true;
-        comments: string;
-        clean: (value: unknown) => string | undefined;
-        default: string;
-        placeholder: string;
-        model: {
-          label: string;
-          value: string;
-        }[];
-        example: string;
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
       data: unknown;
@@ -122,7 +122,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         placeholder: string;
         default: string;
         example: string;
-        clean: (value: unknown) => string | undefined;
+        clean: (value: unknown, defaultValue?: string) => string;
       };
       variables: {
         label: string;
@@ -132,7 +132,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         comments: string;
         example: string;
         placeholder: string;
-        clean: (value: unknown) => Record<string, unknown>;
+        clean: (value: unknown) => Record<string, unknown> | undefined;
       };
       variablesObject: {
         label: string;
@@ -142,7 +142,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         example: string;
         language: "json";
         required: false;
-        clean: (value: unknown) => object;
+        clean: (value: unknown) => object | undefined;
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
       data: unknown;
@@ -161,7 +161,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         required: true;
         example: string;
         placeholder: string;
-        clean: (value: unknown) => string | undefined;
+        clean: (value: unknown, defaultValue?: string) => string;
         dataSource: string;
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
@@ -271,28 +271,31 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
       username: {
         label: string;
         placeholder: string;
-        example: string;
-        comments: string;
         type: "password";
         required: true;
+        shown: true;
+        comments: string;
+        example: string;
       };
       duroEnvironment: {
         label: string;
         placeholder: string;
-        comments: string;
         type: "string";
         required: true;
+        shown: true;
+        comments: string;
+        example: string;
         model: {
           label: string;
           value: string;
         }[];
-        example: string;
       };
       customDuroEnvironment: {
         label: string;
+        placeholder: string;
         type: "string";
         required: false;
-        placeholder: string;
+        shown: true;
         comments: string;
         example: string;
       };

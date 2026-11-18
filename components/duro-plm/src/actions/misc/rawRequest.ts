@@ -9,11 +9,24 @@ export const rawRequest = action({
     description: "Make a generic request to the Duro API",
   },
   inputs: rawRequestInputs,
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, query, variables, variablesObject },
   ) => {
-    const client = createDuroClient(connection, context.debug.enabled);
+    if (
+      variablesObject !== undefined &&
+      (typeof variablesObject !== "object" ||
+        variablesObject === null ||
+        Array.isArray(variablesObject))
+    ) {
+      throw new Error("Variables Object must be a valid JSON object");
+    }
+    const client = createDuroClient(
+      connection,
+      context.debug.enabled,
+      context.logger,
+    );
     const data = await client.request(query ?? "", {
       ...variables,
       ...variablesObject,

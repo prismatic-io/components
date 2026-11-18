@@ -1,8 +1,9 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { getComponentByIdInputs } from "../../inputs/components";
 import { createDuroClient } from "../../client";
 import { gql } from "graphql-request";
 import { getComponentByIdExamplePayload } from "../../examplePayloads";
+import { getComponentByIdOutputSchema } from "../../outputSchemas";
 
 export const getComponentById = action({
   display: {
@@ -10,8 +11,13 @@ export const getComponentById = action({
     description: "Get a specific component by a unique identifier",
   },
   inputs: getComponentByIdInputs,
+  performSafety: "safe",
   perform: async (context, { connection, componentId }) => {
-    const client = createDuroClient(connection, context.debug.enabled);
+    const client = createDuroClient(
+      connection,
+      context.debug.enabled,
+      context.logger,
+    );
     const query = gql`
       query ComponentsByIds($ids: [ID]) {
         componentsByIds(ids: $ids) {
@@ -112,5 +118,9 @@ export const getComponentById = action({
 
     return { data };
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getComponentByIdOutputSchema,
+  }),
   examplePayload: getComponentByIdExamplePayload,
 });

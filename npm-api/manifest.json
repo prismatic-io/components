@@ -289,8 +289,8 @@
   },
   "duro-plm": {
     "name": "@prismatic-io/components-duro-plm",
-    "version": "0.3.0",
-    "build": "d4357f0d888ae608396e103fb27a9fb4e7411abe7cdb9c81f9e3f7d78031d64a",
+    "version": "0.4.0",
+    "build": "662a2655e056feef10432925f1a6a8ab3a75f9a5cec0b0ce4e7864bfa64965fd",
     "spectral": "^10.39.1"
   },
   "expensify": {

@@ -1,10 +1,6 @@
-import { input } from "@prismatic-io/spectral";
+import { input, util } from "@prismatic-io/spectral";
 import { connection } from "./common";
-import {
-  cleanCodeInput,
-  cleanKeyValueListInput,
-  cleanStringInput,
-} from "../util";
+import { cleanCodeInput, cleanKeyValueListInput } from "../util";
 import { GRAPHQL_EXAMPLE } from "../constants";
 
 const query = input({
@@ -17,7 +13,7 @@ const query = input({
   placeholder: "Enter GraphQL query or mutation",
   default: GRAPHQL_EXAMPLE,
   example: GRAPHQL_EXAMPLE,
-  clean: cleanStringInput,
+  clean: util.types.toString,
 });
 
 const variables = input({

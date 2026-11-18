@@ -1,9 +1,10 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 
 import { createDuroClient } from "../../client";
 import { gql } from "graphql-request";
 import { getCurrentUserInputs } from "../../inputs/users";
 import { getCurrentUserExamplePayload } from "../../examplePayloads";
+import { getCurrentUserOutputSchema } from "../../outputSchemas";
 
 export const getCurrentUser = action({
   display: {
@@ -11,8 +12,13 @@ export const getCurrentUser = action({
     description: "Get information about the currently authenticated user",
   },
   inputs: getCurrentUserInputs,
+  performSafety: "safe",
   perform: async (context, { connection }) => {
-    const client = createDuroClient(connection, context.debug.enabled);
+    const client = createDuroClient(
+      connection,
+      context.debug.enabled,
+      context.logger,
+    );
     const query = gql`
       query UserById {
         userById {
@@ -30,5 +36,9 @@ export const getCurrentUser = action({
     const data = await client.request(query);
     return { data };
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getCurrentUserOutputSchema,
+  }),
   examplePayload: getCurrentUserExamplePayload,
 });

@@ -1,9 +1,13 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createDuroClient } from "../../client";
 import { gql } from "graphql-request";
 import { listComponentsInputs } from "../../inputs/components";
 import { listComponentsExamplePayload } from "../../examplePayloads";
-import { N_FIRST_RESULTS_FALLBACK } from "../../constants";
+import { listComponentsOutputSchema } from "../../outputSchemas";
+import {
+  DEFAULT_LIBRARY_TYPE,
+  N_FIRST_RESULTS_FALLBACK,
+} from "../../constants";
 import { getComponentsList } from "../../util";
 
 export const listComponents = action({
@@ -12,8 +16,13 @@ export const listComponents = action({
     description: "Retrieves a list of components.",
   },
   inputs: listComponentsInputs,
+  performSafety: "notAllowed",
   perform: async (context, { connection, libraryType, first }) => {
-    const client = createDuroClient(connection, context.debug.enabled);
+    const client = createDuroClient(
+      connection,
+      context.debug.enabled,
+      context.logger,
+    );
     const query = gql`
       query Components($first: Int, $libraryType: LibraryType) {
         components(libraryType: $libraryType) {
@@ -37,9 +46,14 @@ export const listComponents = action({
         client,
         query,
         first ?? N_FIRST_RESULTS_FALLBACK,
-        libraryType ?? "GENERAL",
+        libraryType ?? DEFAULT_LIBRARY_TYPE,
       ),
     };
   },
+  examplePerform: async () => listComponentsExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listComponentsOutputSchema,
+  }),
   examplePayload: listComponentsExamplePayload,
 });

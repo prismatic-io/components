@@ -1,4 +1,4 @@
-import { input } from "@prismatic-io/spectral";
+import { input, util } from "@prismatic-io/spectral";
 import { connection, first } from "./common";
 import { cleanStringInput } from "../util";
 
@@ -30,7 +30,7 @@ const componentId = input({
   required: true,
   example: "666c5a9528e821000815990e",
   placeholder: "Enter Component ID",
-  clean: cleanStringInput,
+  clean: util.types.toString,
   dataSource: "selectComponent",
 });
 

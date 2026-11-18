@@ -1,4 +1,4 @@
-import { input } from "@prismatic-io/spectral";
+import { input, util } from "@prismatic-io/spectral";
 import { connection, first } from "./common";
 import { cleanStringInput, parseJsonArray } from "../util";
 
@@ -9,7 +9,7 @@ const name = input({
   example: "ECO-2024-001: Update Component Materials",
   placeholder: "Enter change order name",
   required: true,
-  clean: cleanStringInput,
+  clean: util.types.toString,
 });
 
 const description = input({
@@ -30,7 +30,7 @@ const type = input({
   required: true,
   comments:
     "The type of change order to create. ECO (Engineering Change Order), MCO (Manufacturing Change Order), or DCO (Document Change Order).",
-  clean: cleanStringInput,
+  clean: util.types.toString,
   default: "ECO",
   placeholder: "Select change order type",
   model: [
@@ -90,8 +90,8 @@ const orderBy = input({
 export const createChangeOrderInputs = {
   connection,
   name,
-  description,
   type,
+  description,
 };
 
 export const listChangeOrdersInputs = {

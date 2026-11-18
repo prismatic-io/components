@@ -1,17 +1,22 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
 import { gql } from "graphql-request";
 import { createDuroClient } from "../../client";
-import { N_FIRST_RESULTS_FALLBACK } from "../../constants";
+import {
+  DEFAULT_LIBRARY_TYPE,
+  N_FIRST_RESULTS_FALLBACK,
+} from "../../constants";
+import { selectComponentExamplePayload } from "../../examplePayloads";
 import { getComponentsList } from "../../util";
 import { selectComponentInputs } from "../../inputs/dataSources";
 
 export const selectComponent = dataSource({
   display: {
     label: "Select Component",
-    description: "A picklist of components in your library.",
+    description: "A picklist of components in the selected Duro library.",
   },
   inputs: selectComponentInputs,
   dataSourceType: "picklist",
+  examplePayload: selectComponentExamplePayload,
   perform: async (_context, { connection, libraryType, first }) => {
     const client = createDuroClient(connection, false);
     const query = gql`
@@ -33,7 +38,7 @@ export const selectComponent = dataSource({
       client,
       query,
       first ?? N_FIRST_RESULTS_FALLBACK,
-      libraryType ?? "GENERAL",
+      libraryType ?? DEFAULT_LIBRARY_TYPE,
     );
 
     const objects = componentsList.map<Element>((component) => ({

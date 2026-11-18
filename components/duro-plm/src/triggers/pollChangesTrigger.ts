@@ -50,7 +50,11 @@ export const pollChangesTrigger = pollingTrigger({
       throw new Error(`Unsupported resource type: ${params.pollResourceType}`);
     }
 
-    const client = createDuroClient(params.connection, context.debug.enabled);
+    const client = createDuroClient(
+      params.connection,
+      context.debug.enabled,
+      context.logger,
+    );
     const { records, truncated, endCursor } = await fetchAllSince(
       client,
       params.pollResourceType,

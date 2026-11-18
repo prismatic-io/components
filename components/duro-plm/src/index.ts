@@ -11,7 +11,7 @@ export default component({
   documentationUrl: "https://prismatic.io/docs/components/duro-plm/",
   display: {
     label: "Duro PLM",
-    description: "Manage products, components, and change orders in Duro PLM.",
+    description: "Manage components and change orders in Duro PLM.",
     iconPath: "icon.png",
     category: "Application Connectors",
   },
