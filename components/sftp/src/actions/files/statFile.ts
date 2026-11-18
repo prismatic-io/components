@@ -2,6 +2,7 @@ import { action, util, input } from "@prismatic-io/spectral";
 import { connection } from "../../inputs";
 import { getSftpClient } from "../../client";
 import { statFileExamplePayload } from "../../examplePayloads";
+import type { FileStats } from "../../types";
 
 const inputPath = input({
   label: "Path",
@@ -22,7 +23,7 @@ const statFile = action({
     const sftp = await getSftpClient(connection, context.debug.enabled);
 
     try {
-      const statData = await sftp.stat(inputPath);
+      const statData: FileStats = await sftp.stat(inputPath);
       return {
         data: statData,
       };

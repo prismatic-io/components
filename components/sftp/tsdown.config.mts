@@ -1,6 +1,21 @@
-import { defineConfig } from "tsdown";
+import { defineConfig, type Rolldown } from "tsdown";
 import { cjsEntry } from "build-config";
 import { callableEntryHooks } from "@prismatic-io/spectral/tsdown";
+
+const NATIVE_STUB = "\0sftp-native-stub";
+
+const ssh2NativeStub = (): Rolldown.Plugin => ({
+  name: "sftp-ssh2-native-stub",
+  resolveId(source) {
+    if (source === "cpu-features" || source.endsWith("sshcrypto.node"))
+      return NATIVE_STUB;
+    return null;
+  },
+  load(id) {
+    if (id !== NATIVE_STUB) return null;
+    return 'module.exports = (() => { throw new Error("Not available in this bundle"); })();';
+  },
+});
 
 export default defineConfig([
   {
@@ -30,6 +45,8 @@ export default defineConfig([
     clean: true,
     dts: { resolver: "tsc" },
     fixedExtension: true,
+    deps: { alwaysBundle: ["ssh2-sftp-client"] },
+    plugins: [ssh2NativeStub()],
     loader: { ".md": "text" },
     copy: [{ from: "assets/**/*", to: "npm-dist", flatten: false }],
     hooks: callableEntryHooks(),

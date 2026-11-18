@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-11-17
+
+Fixed an error where building a code-native integration that imports the npm package failed on a native binary from the cpu-features dependency
+
 ### 2026-11-16
 
 Fixed an error where importing the npm package in a code-native integration failed with "no published version matching signature"

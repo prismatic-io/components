@@ -24,3 +24,19 @@ export interface FileChange {
   changeType: "new" | "modified";
   record: FileEntry;
 }
+
+export interface FileStats {
+  mode: number;
+  uid: number;
+  gid: number;
+  size: number;
+  accessTime: number;
+  modifyTime: number;
+  isDirectory: boolean;
+  isFile: boolean;
+  isBlockDevice: boolean;
+  isCharacterDevice: boolean;
+  isSymbolicLink: boolean;
+  isFIFO: boolean;
+  isSocket: boolean;
+}

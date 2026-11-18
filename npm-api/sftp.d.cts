@@ -4,6 +4,21 @@ interface FileEntry {
   size: number;
   modifiedAt: number;
 }
+interface FileStats {
+  mode: number;
+  uid: number;
+  gid: number;
+  size: number;
+  accessTime: number;
+  modifyTime: number;
+  isDirectory: boolean;
+  isFile: boolean;
+  isBlockDevice: boolean;
+  isCharacterDevice: boolean;
+  isSymbolicLink: boolean;
+  isFIFO: boolean;
+  isSocket: boolean;
+}
 //#endregion
 //#region npm-dist/.entry.d.ts
 declare const _default: import("@prismatic-io/spectral").CallableComponent<{
@@ -162,7 +177,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         clean: (value: unknown, defaultValue?: string) => string;
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
-      data: import("ssh2-sftp-client").FileStats;
+      data: FileStats;
     }>;
     writeFile: import("@prismatic-io/spectral").ActionDefinition<{
       connection: {
