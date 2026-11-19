@@ -1,6 +1,6 @@
 {
   "name": "@prismatic-io/components-zendesk",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "./npm-dist/index.cjs",
   "types": "./npm-dist/index.d.cts",
   "exports": {
@@ -45,10 +45,9 @@
   "devDependencies": {
     "@biomejs/biome": "2.5.1",
     "@types/node": "^26.0.0",
-    "tsdown": "0.22.3",
+    "tsdown": "0.23.7",
     "typescript": "6.0.3",
     "vitest": "4.1.9",
-    "@prismatic-io/spectral": "^10.39.2",
-    "build-config": "file:../../packages/build-config"
+    "@prismatic-io/spectral": "^10.39.2"
   }
 }

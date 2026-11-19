@@ -1,5 +1,4 @@
 import { defineConfig } from "tsdown";
-import { cjsEntry } from "build-config";
 import { callableEntryHooks } from "@prismatic-io/spectral/tsdown";
 
 const sharedPackages = ["ms-utils"];
@@ -20,7 +19,6 @@ export default defineConfig([
     outExtensions: () => ({ js: ".js" }),
     outputOptions: { exports: "named", codeSplitting: false },
     copy: [{ from: "assets/**/*", to: "dist", flatten: false }],
-    plugins: [cjsEntry()],
   },
   {
     entry: { index: "npm-dist/.entry.ts" },

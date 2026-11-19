@@ -1,6 +1,6 @@
 {
   "name": "@prismatic-io/components-ms-outlook",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "main": "./npm-dist/index.cjs",
   "types": "./npm-dist/index.d.cts",
   "exports": {
@@ -50,9 +50,8 @@
     "@types/node": "^26.6.6",
     "ms-utils": "file:../../packages/ms-utils",
     "nock": "^14.0.17",
-    "tsdown": "0.22.3",
+    "tsdown": "0.23.7",
     "typescript": "6.0.3",
-    "vitest": "4.1.9",
-    "build-config": "file:../../packages/build-config"
+    "vitest": "4.1.9"
   }
 }

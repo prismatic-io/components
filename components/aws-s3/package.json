@@ -1,6 +1,6 @@
 {
   "name": "@prismatic-io/components-aws-s3",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "main": "./npm-dist/index.cjs",
   "types": "./npm-dist/index.d.cts",
   "exports": {
@@ -51,11 +51,10 @@
     "@biomejs/biome": "2.5.1",
     "@types/node": "^26",
     "@types/uuid": "^9.0.8",
-    "tsdown": "0.22.3",
+    "tsdown": "0.23.7",
     "typescript": "6.0.3",
     "vitest": "4.1.9",
     "@prismatic-io/spectral": "^10.39.1",
-    "aws-utils": "file:../../packages/aws-utils",
-    "build-config": "file:../../packages/build-config"
+    "aws-utils": "file:../../packages/aws-utils"
   }
 }

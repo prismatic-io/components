@@ -1,6 +1,6 @@
 {
   "name": "@prismatic-io/components-sftp",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "main": "./npm-dist/index.cjs",
   "types": "./npm-dist/index.d.cts",
   "exports": {
@@ -49,11 +49,10 @@
     "@types/mime-types": "2.1.4",
     "@types/node": "^26.6.4",
     "@types/ssh2-sftp-client": "9.0.4",
-    "tsdown": "0.22.3",
+    "tsdown": "0.23.7",
     "typescript": "6.0.3",
     "vitest": "4.1.9",
     "@prismatic-io/spectral": "^10.39.1",
-    "build-config": "file:../../packages/build-config",
     "ssh2-sftp-client": "9.1.0"
   }
 }

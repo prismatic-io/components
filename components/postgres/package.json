@@ -1,6 +1,6 @@
 {
   "name": "@prismatic-io/components-postgres",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "./npm-dist/index.cjs",
   "types": "./npm-dist/index.d.cts",
   "exports": {
@@ -47,11 +47,10 @@
     "@biomejs/biome": "2.6.5",
     "@types/lodash.merge": "4.6.9",
     "@types/node": "^26.6.4",
-    "tsdown": "0.22.3",
+    "tsdown": "0.23.7",
     "tsx": "^4.23.12",
     "typescript": "6.0.3",
     "vitest": "4.1.9",
-    "@prismatic-io/spectral": "^10.39.1",
-    "build-config": "file:../../packages/build-config"
+    "@prismatic-io/spectral": "^10.39.1"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@prismatic-io/components-ms-intune",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "main": "./npm-dist/index.cjs",
   "types": "./npm-dist/index.d.cts",
   "exports": {
@@ -43,11 +43,10 @@
     "@biomejs/biome": "2.5.1",
     "@types/node": "^26.6.4",
     "nock": "13.5.6",
-    "tsdown": "0.22.3",
+    "tsdown": "0.23.7",
     "typescript": "6.0.3",
     "vitest": "4.1.9",
     "@prismatic-io/spectral": "^10.39.2",
-    "ms-utils": "file:../../packages/ms-utils",
-    "build-config": "file:../../packages/build-config"
+    "ms-utils": "file:../../packages/ms-utils"
   }
 }

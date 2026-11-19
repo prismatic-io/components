@@ -1,6 +1,5 @@
 import { callableEntryHooks } from "@prismatic-io/spectral/tsdown";
 import { defineConfig } from "tsdown";
-import { cjsEntry } from "build-config";
 
 export default defineConfig([
   {
@@ -22,7 +21,6 @@ export default defineConfig([
       { from: "node_modules/saml/lib/saml11.template", to: "dist" },
       { from: "node_modules/saml/lib/saml20.template", to: "dist" },
     ],
-    plugins: [cjsEntry()],
   },
   {
     entry: { index: "npm-dist/.entry.ts" },

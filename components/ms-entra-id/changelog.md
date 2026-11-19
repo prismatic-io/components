@@ -1,5 +1,10 @@
 ## Changelog
 
+### 2026-11-19
+
+Updated dependencies and refactored internal code:
+- tsdown 0.23.7
+
 ### 2026-11-18
 
 Improved the triggers, action results, and configuration experience:

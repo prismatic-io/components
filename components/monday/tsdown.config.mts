@@ -1,7 +1,6 @@
 import { callableEntryHooks } from "@prismatic-io/spectral/tsdown";
 import graphql from "@rollup/plugin-graphql";
 import { defineConfig } from "tsdown";
-import { cjsEntry } from "build-config";
 
 export default defineConfig([
   {
@@ -19,7 +18,7 @@ export default defineConfig([
     outExtensions: () => ({ js: ".js" }),
     outputOptions: { exports: "named", codeSplitting: false },
     copy: [{ from: "assets/**/*", to: "dist", flatten: false }],
-    plugins: [cjsEntry(), graphql()],
+    plugins: [graphql()],
   },
   {
     entry: { index: "npm-dist/.entry.ts" },

@@ -1,5 +1,10 @@
 ## Changelog
 
+### 2026-11-19
+
+Updated dependencies and refactored internal code:
+- tsdown 0.23.7
+
 ### 2026-11-17
 
 Fixed an error where building a code-native integration that imports the npm package failed on a native binary from the cpu-features dependency

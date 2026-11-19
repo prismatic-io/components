@@ -1,5 +1,10 @@
 ## Changelog
 
+### 2026-11-19
+
+Updated dependencies and refactored internal code:
+- tsdown 0.23.7
+
 ### 2026-11-18
 
 Fixed the **Webhook** trigger rejecting every signed delivery when a **Signing Secret** was set; it now verifies the Authorization header as a JWT signed with the Signing Secret

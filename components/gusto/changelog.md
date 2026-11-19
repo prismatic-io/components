@@ -6,6 +6,7 @@ Updated to Gusto API version 2026-06-15. Version 2026-02-01 reaches end of life 
 
 - Fixed the **Find Employee by Email** action and the **Select Employee** and **Select Pay Schedule** data sources to read every page of results when there are more than 9 pages
 - Added output schemas to 16 actions for improved field mapping during configuration
+- Updated dependencies and refactored internal code: tsdown 0.23.7
 
 ### 2026-11-11
 

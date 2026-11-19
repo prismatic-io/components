@@ -1,26 +1,18 @@
-//#region src/types/pagination.d.ts
+/// <reference types="node" />
 interface WorkdayListResponse<T = unknown> {
   total: number;
   data: T[];
 }
-//#endregion
-//#region src/types/wql.d.ts
 type WqlResponse = WorkdayListResponse;
-//#endregion
-//#region src/inputs/common.d.ts
 declare const connection: {
   label: string;
   type: "connection";
   required: true;
   comments: string;
 };
-//#endregion
-//#region node_modules/axios/index.d.ts
 type UppercaseMethod = 'GET' | 'DELETE' | 'HEAD' | 'OPTIONS' | 'POST' | 'PUT' | 'PATCH' | 'PURGE' | 'LINK' | 'UNLINK' | 'QUERY';
 type Method = (UppercaseMethod | Lowercase<UppercaseMethod>) & {};
 type ResponseType = 'arraybuffer' | 'blob' | 'document' | 'json' | 'text' | 'stream' | 'formdata';
-//#endregion
-//#region npm-dist/.entry.d.ts
 declare const _default: import("@prismatic-io/spectral").CallableComponent<{
   key: "workday";
   public: true;

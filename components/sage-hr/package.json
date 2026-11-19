@@ -1,6 +1,6 @@
 {
   "name": "@prismatic-io/components-sage-hr",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "main": "./npm-dist/index.cjs",
   "types": "./npm-dist/index.d.cts",
   "exports": {
@@ -47,9 +47,8 @@
     "@biomejs/biome": "2.5.1",
     "@prismatic-io/spectral": "^10.39.1",
     "@types/node": "^26.6.4",
-    "tsdown": "0.22.3",
+    "tsdown": "0.23.7",
     "typescript": "6.0.3",
-    "vitest": "4.1.9",
-    "build-config": "file:../../packages/build-config"
+    "vitest": "4.1.9"
   }
 }

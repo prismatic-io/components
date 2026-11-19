@@ -1,5 +1,10 @@
 ## Changelog
 
+### 2026-11-19
+
+Updated dependencies and refactored internal code:
+- tsdown 0.23.7
+
 ### 2026-11-16
 
 Fixed subscription renewal and moved file downloads off Microsoft's retiring pre-authenticated URL, added multi-select site, drive, and folder data sources, and improved the list actions and polling triggers:
