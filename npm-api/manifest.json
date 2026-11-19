@@ -457,8 +457,8 @@
   },
   "gusto": {
     "name": "@prismatic-io/components-gusto",
-    "version": "0.1.1",
-    "build": "09c8d43c95a290cc1e1845fd8155daf72ddaeb96a42b0466ffc246f3cf948ee6",
+    "version": "0.2.0",
+    "build": "5596ef043dac3918aed4615c67e296e798fcfafd9e0f6f5026127d67142a3276",
     "spectral": "^10.39.1"
   },
   "hibob": {

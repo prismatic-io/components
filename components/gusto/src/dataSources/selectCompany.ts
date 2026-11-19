@@ -1,6 +1,6 @@
 import { type Element, dataSource } from "@prismatic-io/spectral";
 import { createClient } from "../client";
-import { connectionInput } from "../inputs";
+import { selectCompanyInputs } from "../inputs";
 
 interface Company {
   uuid: string;
@@ -10,10 +10,10 @@ interface Company {
 export const selectCompany = dataSource({
   display: {
     label: "Select Company",
-    description: "A picklist of companies in your Gusto account.",
+    description: "A picklist of companies in the Gusto account.",
   },
   dataSourceType: "picklist",
-  inputs: { connection: connectionInput },
+  inputs: selectCompanyInputs,
   perform: async (_context, { connection }) => {
     const client = createClient(connection);
     const { data } = await client.get<Company[]>("/companies");

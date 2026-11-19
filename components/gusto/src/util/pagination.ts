@@ -1,34 +1,5 @@
-import { util, type Connection } from "@prismatic-io/spectral";
-import {
-  createClient as createHttpClient,
-  type HttpClient,
-} from "@prismatic-io/spectral/http";
-
-export const fetchToken = async (connection: Connection, debug: boolean) => {
-  const { clientId, clientSecret, tokenUrl } = connection.fields;
-
-  const client = createHttpClient({
-    baseUrl: util.types.toString(tokenUrl),
-    headers: {
-      "Content-Type": "application/json",
-    },
-    debug,
-  });
-
-  const { data } = await client.post("", {
-    grant_type: "system_access",
-    client_id: util.types.toString(clientId),
-    client_secret: util.types.toString(clientSecret),
-  });
-
-  return data.access_token;
-};
-
-export const toObject = (value: unknown) =>
-  value ? util.types.toObject(value) : {};
-
-export const toOptionalString = (value: unknown) =>
-  value ? util.types.toString(value) : undefined;
+import { util } from "@prismatic-io/spectral";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 
 export const fetchAllPages = async <T = unknown>(
   client: HttpClient,

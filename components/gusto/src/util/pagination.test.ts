@@ -1,5 +1,5 @@
 import type { HttpClient } from "@prismatic-io/spectral/http";
-import { fetchAllPages, fetchAllCursorEvents } from "./util";
+import { fetchAllPages, fetchAllCursorEvents } from "./pagination";
 import type { Mock } from "vitest";
 
 const createMockClient = (getMock: Mock): Pick<HttpClient, "get"> => ({

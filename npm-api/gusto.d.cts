@@ -1,3 +1,9 @@
+//#region src/util/pagination.d.ts
+interface CursorEventItem {
+  uuid: string;
+  [key: string]: unknown;
+}
+//#endregion
 //#region node_modules/axios/index.d.ts
 type AxiosHeaderValue = AxiosHeaders | string | string[] | number | boolean | null;
 type AxiosHeaderParameters = Record<string, string>;
@@ -67,11 +73,107 @@ type UppercaseMethod = 'GET' | 'DELETE' | 'HEAD' | 'OPTIONS' | 'POST' | 'PUT' | 
 type Method = (UppercaseMethod | Lowercase<UppercaseMethod>) & {};
 type ResponseType = 'arraybuffer' | 'blob' | 'document' | 'json' | 'text' | 'stream' | 'formdata';
 //#endregion
-//#region src/util.d.ts
-interface CursorEventItem {
-  uuid: string;
-  [key: string]: unknown;
-}
+//#region src/examplePayloads/employees.d.ts
+declare const findEmployeeByEmailExamplePayload: {
+  data: {
+    data: {
+      uuid: string;
+      first_name: string;
+      middle_initial: null;
+      last_name: string;
+      email: string;
+      company_uuid: string;
+      manager_uuid: null;
+      version: string;
+      current_employment_status: string;
+      onboarding_status: string;
+      preferred_first_name: null;
+      department_uuid: null;
+      employee_code: string;
+      payment_method: string;
+      department: null;
+      terminated: boolean;
+      two_percent_shareholder: boolean;
+      onboarded: boolean;
+      historical: boolean;
+      has_ssn: boolean;
+      onboarding_documents_config: {
+        uuid: null;
+        i9_document: boolean;
+      };
+      jobs: {
+        uuid: string;
+        version: string;
+        employee_uuid: string;
+        current_compensation_uuid: string;
+        payment_unit: string;
+        primary: boolean;
+        two_percent_shareholder: boolean;
+        state_wc_covered: null;
+        state_wc_class_code: null;
+        title: string;
+        compensations: {
+          uuid: string;
+          employee_uuid: string;
+          version: string;
+          payment_unit: string;
+          flsa_status: string;
+          adjust_for_minimum_wage: boolean;
+          minimum_wages: never[];
+          job_uuid: string;
+          effective_date: string;
+          rate: string;
+        }[];
+        rate: string;
+        hire_date: string;
+      }[];
+      eligible_paid_time_off: never[];
+      terminations: never[];
+      garnishments: never[];
+      date_of_birth: string;
+      ssn: string;
+      phone: null;
+      work_email: null;
+      current_home_address: {
+        street_1: string;
+        street_2: string;
+        city: string;
+        state: string;
+        zip: string;
+        country: string;
+        active: boolean;
+        uiud: string;
+      };
+      all_home_addresses: ({
+        street_1: string;
+        street_2: string;
+        city: string;
+        state: string;
+        zip: string;
+        country: string;
+        active: boolean;
+        uiud: string;
+      } | {
+        street_1: string;
+        street_2: null;
+        city: string;
+        state: string;
+        zip: string;
+        country: string;
+        active: boolean;
+        uiud: string;
+      })[];
+      member_portal_invitation_status: {
+        status: string;
+        token_expired: boolean;
+        welcome_email_sent_at: string;
+        last_password_resent_at: null;
+      };
+      partner_portal_invitation_sent: boolean;
+    };
+    headers: Record<string, string>;
+  };
+};
 //#endregion
 //#region npm-dist/.entry.d.ts
 declare const _default: import("@prismatic-io/spectral").CallableComponent<{
@@ -85,6 +187,375 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
     iconPath: string;
   };
   actions: {
+    createWebhookSubscription: import("@prismatic-io/spectral").ActionDefinition<{
+      connection: {
+        label: string;
+        required: true;
+        type: "connection";
+      };
+      webhookUrl: {
+        label: string;
+        required: true;
+        type: "string";
+        placeholder: string;
+        comments: string;
+        example: string;
+        clean: (value: unknown, defaultValue?: string) => string;
+      };
+      subscriptionTypes: {
+        label: string;
+        required: true;
+        type: "text";
+        placeholder: string;
+        comments: string;
+        example: string;
+        clean: (value: unknown, defaultValue?: string) => string;
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
+      data: {
+        data: {
+          uuid: string;
+          url: string;
+          status: string;
+          subscription_types: string[];
+        };
+        headers: {};
+      };
+    }>;
+    deleteWebhookSubscription: import("@prismatic-io/spectral").ActionDefinition<{
+      connection: {
+        label: string;
+        required: true;
+        type: "connection";
+      };
+      webhookSubscriptionUuid: {
+        label: string;
+        required: true;
+        type: "string";
+        placeholder: string;
+        comments: string;
+        example: string;
+        clean: (value: unknown, defaultValue?: string) => string;
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
+      data: {
+        message: string;
+      };
+    }>;
+    getWebhookEvents: import("@prismatic-io/spectral").ActionDefinition<{
+      connection: {
+        label: string;
+        required: true;
+        type: "connection";
+      };
+      resourceUuid: {
+        label: string;
+        required: false;
+        type: "string";
+        placeholder: string;
+        comments: string;
+        example: string;
+        clean: (value: unknown) => string | undefined;
+      };
+      eventType: {
+        label: string;
+        required: false;
+        type: "string";
+        placeholder: string;
+        comments: string;
+        example: string;
+        clean: (value: unknown) => string | undefined;
+      };
+      sortOrder: {
+        label: string;
+        required: false;
+        type: "string";
+        model: {
+          label: string;
+          value: string;
+        }[];
+        comments: string;
+        clean: (value: unknown) => string | undefined;
+      };
+      fetchAll: {
+        label: string;
+        type: "boolean";
+        clean: (value: unknown, defaultValue?: boolean) => boolean;
+        comments: string;
+        required: false;
+        default: string;
+      };
+      pagination: {
+        label: string;
+        comments: string;
+        inputs: {
+          startingAfterUuid: {
+            label: string;
+            required: false;
+            type: "string";
+            placeholder: string;
+            comments: string;
+            clean: (value: unknown) => string | undefined;
+          };
+          limit: {
+            label: string;
+            required: false;
+            type: "string";
+            placeholder: string;
+            comments: string;
+            clean: (value: unknown) => string | undefined;
+          };
+        };
+      } & {
+        type: "structuredObject";
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
+      data: {
+        data: CursorEventItem[];
+        headers: {};
+      };
+    } | {
+      data: {
+        data: any;
+        headers: AxiosResponseHeaders | Partial<RawAxiosHeaders & {
+          "Content-Length": AxiosHeaderValue;
+          "Content-Encoding": AxiosHeaderValue;
+          "Content-Type": AxiosHeaderValue;
+          Server: AxiosHeaderValue;
+          "Cache-Control": AxiosHeaderValue;
+          "content-length": AxiosHeaderValue;
+          "content-encoding": AxiosHeaderValue;
+          "content-type": AxiosHeaderValue;
+          server: AxiosHeaderValue;
+          "cache-control": AxiosHeaderValue;
+        } & {
+          'set-cookie': string[];
+        }>;
+      };
+    }>;
+    getWebhookSubscription: import("@prismatic-io/spectral").ActionDefinition<{
+      connection: {
+        label: string;
+        required: true;
+        type: "connection";
+      };
+      webhookSubscriptionUuid: {
+        label: string;
+        required: true;
+        type: "string";
+        placeholder: string;
+        comments: string;
+        example: string;
+        clean: (value: unknown, defaultValue?: string) => string;
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
+      data: {
+        data: {
+          uuid: string;
+          url: string;
+          status: string;
+          subscription_types: string[];
+        };
+        headers: {};
+      };
+    }>;
+    listWebhookSubscriptions: import("@prismatic-io/spectral").ActionDefinition<{
+      connection: {
+        label: string;
+        required: true;
+        type: "connection";
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
+      data: {
+        data: {
+          uuid: string;
+          url: string;
+          status: string;
+          subscription_types: string[];
+        }[];
+        headers: {};
+      };
+    }>;
+    updateWebhookSubscription: import("@prismatic-io/spectral").ActionDefinition<{
+      connection: {
+        label: string;
+        required: true;
+        type: "connection";
+      };
+      webhookSubscriptionUuid: {
+        label: string;
+        required: true;
+        type: "string";
+        placeholder: string;
+        comments: string;
+        example: string;
+        clean: (value: unknown, defaultValue?: string) => string;
+      };
+      subscriptionTypes: {
+        label: string;
+        required: true;
+        type: "text";
+        placeholder: string;
+        comments: string;
+        example: string;
+        clean: (value: unknown, defaultValue?: string) => string;
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
+      data: {
+        data: {
+          uuid: string;
+          url: string;
+          status: string;
+          subscription_types: string[];
+        };
+        headers: {};
+      };
+    }>;
+    terminateEmployee: import("@prismatic-io/spectral").ActionDefinition<{
+      connection: {
+        label: string;
+        required: true;
+        type: "connection";
+      };
+      employeeId: {
+        label: string;
+        required: true;
+        type: "string";
+        placeholder: string;
+        comments: string;
+        example: string;
+        dataSource: string;
+        clean: (value: unknown, defaultValue?: string) => string;
+      };
+      terminationDate: {
+        label: string;
+        required: true;
+        type: "string";
+        placeholder: string;
+        comments: string;
+        clean: (value: unknown, defaultValue?: string) => string;
+        example: string;
+      };
+      runTerminationPayroll: {
+        label: string;
+        required: true;
+        type: "boolean";
+        comments: string;
+        clean: (value: unknown, defaultValue?: boolean) => boolean;
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
+      data: {
+        data: {
+          uuid: string;
+          employee_uuid: string;
+          active: boolean;
+          effective_date: string;
+          run_termination_payroll: boolean;
+        };
+        headers: {};
+      };
+    }>;
+    getPaySchedule: import("@prismatic-io/spectral").ActionDefinition<{
+      connection: {
+        label: string;
+        required: true;
+        type: "connection";
+      };
+      companyId: {
+        label: string;
+        required: true;
+        type: "string";
+        placeholder: string;
+        comments: string;
+        example: string;
+        dataSource: string;
+        clean: (value: unknown, defaultValue?: string) => string;
+      };
+      payScheduleId: {
+        label: string;
+        required: true;
+        type: "string";
+        placeholder: string;
+        comments: string;
+        example: string;
+        dataSource: string;
+        clean: (value: unknown, defaultValue?: string) => string;
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
+      data: {
+        data: {
+          uuid: string;
+          version: string;
+          frequency: string;
+          anchor_pay_date: string;
+          anchor_end_of_pay_period: string;
+          day_1: number;
+          day_2: null;
+          name: null;
+          custom_name: string;
+          auto_pilot: boolean;
+          active: boolean;
+          auto_payroll_enablement_blockers: null;
+        }[];
+        headers: {};
+      };
+    }>;
+    listPaySchedules: import("@prismatic-io/spectral").ActionDefinition<{
+      connection: {
+        label: string;
+        required: true;
+        type: "connection";
+      };
+      companyId: {
+        label: string;
+        required: true;
+        type: "string";
+        placeholder: string;
+        comments: string;
+        example: string;
+        dataSource: string;
+        clean: (value: unknown, defaultValue?: string) => string;
+      };
+      fetchAll: {
+        label: string;
+        type: "boolean";
+        clean: (value: unknown, defaultValue?: boolean) => boolean;
+        comments: string;
+        required: false;
+        default: string;
+      };
+      page: {
+        label: string;
+        required: false;
+        type: "string";
+        placeholder: string;
+        comments: string;
+        clean: (value: unknown) => number | undefined;
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
+      data: {
+        data: unknown[];
+        headers: {};
+      };
+    } | {
+      data: {
+        data: any;
+        headers: AxiosResponseHeaders | Partial<RawAxiosHeaders & {
+          "Content-Length": AxiosHeaderValue;
+          "Content-Encoding": AxiosHeaderValue;
+          "Content-Type": AxiosHeaderValue;
+          Server: AxiosHeaderValue;
+          "Cache-Control": AxiosHeaderValue;
+          "content-length": AxiosHeaderValue;
+          "content-encoding": AxiosHeaderValue;
+          "content-type": AxiosHeaderValue;
+          server: AxiosHeaderValue;
+          "cache-control": AxiosHeaderValue;
+        } & {
+          'set-cookie': string[];
+        }>;
+      };
+    }>;
     rawRequest: import("@prismatic-io/spectral").ActionDefinition<{
       url: {
         comments: string;
@@ -222,357 +693,13 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         label: string;
         required: true;
         type: "string";
+        placeholder: string;
         comments: string;
         example: string;
         default: string;
         clean: (value: unknown, defaultValue?: string) => string;
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
-      data: {
-        data: any;
-        headers: AxiosResponseHeaders | Partial<RawAxiosHeaders & {
-          "Content-Length": AxiosHeaderValue;
-          "Content-Encoding": AxiosHeaderValue;
-          "Content-Type": AxiosHeaderValue;
-          Server: AxiosHeaderValue;
-          "Cache-Control": AxiosHeaderValue;
-          "content-length": AxiosHeaderValue;
-          "content-encoding": AxiosHeaderValue;
-          "content-type": AxiosHeaderValue;
-          server: AxiosHeaderValue;
-          "cache-control": AxiosHeaderValue;
-        } & {
-          'set-cookie': string[];
-        }>;
-      };
-    }>;
-    listWebhookSubscriptions: import("@prismatic-io/spectral").ActionDefinition<{
-      connection: {
-        label: string;
-        required: true;
-        type: "connection";
-      };
-    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
-      data: {
-        data: {
-          uuid: string;
-          url: string;
-          status: string;
-          subscription_types: string[];
-        }[];
-        headers: {};
-      };
-    }>;
-    getWebhookSubscription: import("@prismatic-io/spectral").ActionDefinition<{
-      connection: {
-        label: string;
-        required: true;
-        type: "connection";
-      };
-      webhookSubscriptionUuid: {
-        label: string;
-        required: true;
-        type: "string";
-        comments: string;
-        example: string;
-        clean: (value: unknown, defaultValue?: string) => string;
-      };
-    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
-      data: {
-        data: {
-          uuid: string;
-          url: string;
-          status: string;
-          subscription_types: string[];
-        };
-        headers: {};
-      };
-    }>;
-    createWebhookSubscription: import("@prismatic-io/spectral").ActionDefinition<{
-      connection: {
-        label: string;
-        required: true;
-        type: "connection";
-      };
-      webhookUrl: {
-        label: string;
-        required: true;
-        type: "string";
-        comments: string;
-        example: string;
-        clean: (value: unknown, defaultValue?: string) => string;
-      };
-      subscriptionTypes: {
-        label: string;
-        required: true;
-        type: "text";
-        comments: string;
-        example: string;
-        clean: (value: unknown, defaultValue?: string) => string;
-      };
-    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
-      data: {
-        data: {
-          uuid: string;
-          url: string;
-          status: string;
-          subscription_types: string[];
-        };
-        headers: {};
-      };
-    }>;
-    updateWebhookSubscription: import("@prismatic-io/spectral").ActionDefinition<{
-      connection: {
-        label: string;
-        required: true;
-        type: "connection";
-      };
-      webhookSubscriptionUuid: {
-        label: string;
-        required: true;
-        type: "string";
-        comments: string;
-        example: string;
-        clean: (value: unknown, defaultValue?: string) => string;
-      };
-      subscriptionTypes: {
-        label: string;
-        required: true;
-        type: "text";
-        comments: string;
-        example: string;
-        clean: (value: unknown, defaultValue?: string) => string;
-      };
-    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
-      data: {
-        data: {
-          uuid: string;
-          url: string;
-          status: string;
-          subscription_types: string[];
-        };
-        headers: {};
-      };
-    }>;
-    deleteWebhookSubscription: import("@prismatic-io/spectral").ActionDefinition<{
-      connection: {
-        label: string;
-        required: true;
-        type: "connection";
-      };
-      webhookSubscriptionUuid: {
-        label: string;
-        required: true;
-        type: "string";
-        comments: string;
-        example: string;
-        clean: (value: unknown, defaultValue?: string) => string;
-      };
-    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
-      data: {
-        message: string;
-      };
-    }>;
-    getWebhookEvents: import("@prismatic-io/spectral").ActionDefinition<{
-      connection: {
-        label: string;
-        required: true;
-        type: "connection";
-      };
-      resourceUuid: {
-        label: string;
-        required: false;
-        type: "string";
-        comments: string;
-        example: string;
-        clean: (value: unknown) => string | undefined;
-      };
-      eventType: {
-        label: string;
-        required: false;
-        type: "string";
-        comments: string;
-        example: string;
-        clean: (value: unknown) => string | undefined;
-      };
-      sortOrder: {
-        label: string;
-        required: false;
-        type: "string";
-        model: {
-          label: string;
-          value: string;
-        }[];
-        comments: string;
-        clean: (value: unknown) => string | undefined;
-      };
-      fetchAll: {
-        label: string;
-        type: "boolean";
-        clean: (value: unknown, defaultValue?: boolean) => boolean;
-        comments: string;
-        required: false;
-        default: string;
-      };
-      startingAfterUuid: {
-        label: string;
-        required: false;
-        type: "string";
-        comments: string;
-        clean: (value: unknown) => string | undefined;
-      };
-      limit: {
-        label: string;
-        required: false;
-        type: "string";
-        comments: string;
-        clean: (value: unknown) => string | undefined;
-      };
-    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
-      data: {
-        data: CursorEventItem[];
-        headers: {};
-      };
-    } | {
-      data: {
-        data: any;
-        headers: AxiosResponseHeaders | Partial<RawAxiosHeaders & {
-          "Content-Length": AxiosHeaderValue;
-          "Content-Encoding": AxiosHeaderValue;
-          "Content-Type": AxiosHeaderValue;
-          Server: AxiosHeaderValue;
-          "Cache-Control": AxiosHeaderValue;
-          "content-length": AxiosHeaderValue;
-          "content-encoding": AxiosHeaderValue;
-          "content-type": AxiosHeaderValue;
-          server: AxiosHeaderValue;
-          "cache-control": AxiosHeaderValue;
-        } & {
-          'set-cookie': string[];
-        }>;
-      };
-    }>;
-    terminateEmployee: import("@prismatic-io/spectral").ActionDefinition<{
-      connection: {
-        label: string;
-        required: true;
-        type: "connection";
-      };
-      employeeId: {
-        label: string;
-        required: true;
-        type: "string";
-        comments: string;
-        example: string;
-        dataSource: string;
-        clean: (value: unknown, defaultValue?: string) => string;
-      };
-      terminationDate: {
-        label: string;
-        required: true;
-        type: "string";
-        comments: string;
-        clean: (value: unknown, defaultValue?: string) => string;
-        example: string;
-      };
-      runTerminationPayroll: {
-        label: string;
-        required: true;
-        type: "boolean";
-        comments: string;
-        clean: (value: unknown, defaultValue?: boolean) => boolean;
-      };
-    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
-      data: {
-        data: {
-          uuid: string;
-          employee_uuid: string;
-          active: boolean;
-          effective_date: string;
-          run_termination_payroll: boolean;
-        };
-        headers: {};
-      };
-    }>;
-    getPaySchedule: import("@prismatic-io/spectral").ActionDefinition<{
-      connection: {
-        label: string;
-        required: true;
-        type: "connection";
-      };
-      companyId: {
-        label: string;
-        required: true;
-        type: "string";
-        comments: string;
-        example: string;
-        dataSource: string;
-        clean: (value: unknown, defaultValue?: string) => string;
-      };
-      payScheduleId: {
-        label: string;
-        required: true;
-        type: "string";
-        comments: string;
-        example: string;
-        dataSource: string;
-        clean: (value: unknown, defaultValue?: string) => string;
-      };
-    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
-      data: {
-        data: {
-          uuid: string;
-          version: string;
-          frequency: string;
-          anchor_pay_date: string;
-          anchor_end_of_pay_period: string;
-          day_1: number;
-          day_2: null;
-          name: null;
-          custom_name: string;
-          auto_pilot: boolean;
-          active: boolean;
-          auto_payroll_enablement_blockers: null;
-        }[];
-        headers: {};
-      };
-    }>;
-    listPaySchedules: import("@prismatic-io/spectral").ActionDefinition<{
-      connection: {
-        label: string;
-        required: true;
-        type: "connection";
-      };
-      companyId: {
-        label: string;
-        required: true;
-        type: "string";
-        comments: string;
-        example: string;
-        dataSource: string;
-        clean: (value: unknown, defaultValue?: string) => string;
-      };
-      fetchAll: {
-        label: string;
-        type: "boolean";
-        clean: (value: unknown, defaultValue?: boolean) => boolean;
-        comments: string;
-        required: false;
-        default: string;
-      };
-      page: {
-        label: string;
-        required: false;
-        type: "string";
-        comments: string;
-        clean: (value: unknown) => number | undefined;
-      };
-    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
-      data: {
-        data: unknown[];
-        headers: {};
-      };
-    } | {
       data: {
         data: any;
         headers: AxiosResponseHeaders | Partial<RawAxiosHeaders & {
@@ -601,6 +728,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         label: string;
         required: true;
         type: "string";
+        placeholder: string;
         comments: string;
         example: string;
         dataSource: string;
@@ -610,6 +738,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         label: string;
         required: true;
         type: "string";
+        placeholder: string;
         comments: string;
         clean: (value: unknown, defaultValue?: string) => string;
       };
@@ -617,6 +746,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         label: string;
         required: false;
         type: "string";
+        placeholder: string;
         comments: string;
         clean: (value: unknown) => string | undefined;
       };
@@ -624,6 +754,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         label: string;
         required: true;
         type: "string";
+        placeholder: string;
         comments: string;
         clean: (value: unknown, defaultValue?: string) => string;
       };
@@ -631,8 +762,9 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         label: string;
         required: false;
         type: "string";
+        placeholder: string;
         comments: string;
-        clean: (value: unknown, defaultValue?: string) => string;
+        clean: (value: unknown) => string | undefined;
         example: string;
       };
       email: {
@@ -640,15 +772,17 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         label: string;
         required: false;
         type: "string";
-        clean: (value: unknown, defaultValue?: string) => string;
+        placeholder: string;
+        clean: (value: unknown) => string | undefined;
         example: string;
       };
       ssn: {
         label: string;
         required: false;
         type: "string";
+        placeholder: string;
         comments: string;
-        clean: (value: unknown, defaultValue?: string) => string;
+        clean: (value: unknown) => string | undefined;
         example: string;
       };
       selfOnboarding: {
@@ -779,6 +913,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         label: string;
         required: true;
         type: "string";
+        placeholder: string;
         comments: string;
         example: string;
         dataSource: string;
@@ -786,13 +921,19 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
       };
       email: {
         required: true;
+        clean: (value: unknown, defaultValue?: string) => string;
         label: string;
         type: "string";
+        placeholder: string;
         comments: string;
-        clean: (value: unknown, defaultValue?: string) => string;
         example: string;
       };
-    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, any>;
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
+      data: {
+        data: typeof findEmployeeByEmailExamplePayload["data"]["data"];
+        headers: Record<string, string>;
+      };
+    }>;
     getEmployee: import("@prismatic-io/spectral").ActionDefinition<{
       connection: {
         label: string;
@@ -803,6 +944,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         label: string;
         required: true;
         type: "string";
+        placeholder: string;
         comments: string;
         example: string;
         dataSource: string;
@@ -918,6 +1060,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         label: string;
         required: true;
         type: "string";
+        placeholder: string;
         comments: string;
         example: string;
         dataSource: string;
@@ -935,6 +1078,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         label: string;
         required: false;
         type: "string";
+        placeholder: string;
         comments: string;
         clean: (value: unknown) => number | undefined;
       };
@@ -972,6 +1116,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         label: string;
         required: true;
         type: "string";
+        placeholder: string;
         comments: string;
         example: string;
         dataSource: string;
@@ -1070,6 +1215,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         label: string;
         required: false;
         type: "string";
+        placeholder: string;
         comments: string;
         clean: (value: unknown) => number | undefined;
       };
@@ -1107,6 +1253,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         label: string;
         required: true;
         type: "string";
+        placeholder: string;
         comments: string;
         example: string;
         dataSource: string;
@@ -1124,6 +1271,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         label: string;
         required: false;
         type: "string";
+        placeholder: string;
         comments: string;
         clean: (value: unknown) => number | undefined;
       };
@@ -1202,7 +1350,6 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         required: true;
         shown: true;
         comments: string;
-        example: string;
       };
       clientSecret: {
         label: string;
@@ -1211,7 +1358,6 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         required: true;
         shown: true;
         comments: string;
-        example: string;
       };
     };
   }, "gustoOauth">[];
@@ -1234,6 +1380,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         label: string;
         required: true;
         type: "string";
+        placeholder: string;
         comments: string;
         example: string;
         clean: (value: unknown, defaultValue?: string) => string;
@@ -1250,6 +1397,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         label: string;
         required: true;
         type: "string";
+        placeholder: string;
         comments: string;
         example: string;
         clean: (value: unknown, defaultValue?: string) => string;

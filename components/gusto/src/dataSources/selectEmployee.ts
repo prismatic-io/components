@@ -1,6 +1,7 @@
 import { type Element, dataSource } from "@prismatic-io/spectral";
 import { createClient } from "../client";
-import { companyIdInput, connectionInput } from "../inputs";
+import { selectEmployeeInputs } from "../inputs";
+import { fetchAllPages } from "../util";
 
 interface Employee {
   uuid: string;
@@ -15,26 +16,14 @@ export const selectEmployee = dataSource({
     description: "A picklist of employees for the selected company.",
   },
   dataSourceType: "picklist",
-  inputs: {
-    connection: connectionInput,
-    companyId: { ...companyIdInput, dataSource: undefined },
-  },
+  inputs: selectEmployeeInputs,
   perform: async (_context, { connection, companyId }) => {
     const client = createClient(connection);
 
-    let page = 1;
-    let hasMorePages = true;
-    const employees: Employee[] = [];
-
-    do {
-      const { data, headers } = await client.get<Employee[]>(
-        `/companies/${companyId}/employees`,
-        { params: { page } },
-      );
-      employees.push(...data);
-      hasMorePages = headers["x-total-pages"] > headers["x-page"];
-      page += 1;
-    } while (hasMorePages);
+    const employees = await fetchAllPages<Employee>(
+      client,
+      `/companies/${companyId}/employees`,
+    );
 
     const result = employees
       .map<Element>((employee) => ({

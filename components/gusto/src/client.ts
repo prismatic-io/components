@@ -1,23 +1,30 @@
-import type { Connection } from "@prismatic-io/spectral";
+import { util, type Connection } from "@prismatic-io/spectral";
 import { createClient as createHttpClient } from "@prismatic-io/spectral/http";
-import { API_VERSION } from "./constants";
+import {
+  API_VERSION,
+  PRODUCTION_AUTHORIZE_URL,
+  PRODUCTION_BASE_URL,
+  SANDBOX_BASE_URL,
+} from "./constants";
 import { fetchToken } from "./util";
 
 export const getBaseUrl = (connection: Connection) => {
-  return connection.fields.authorizeUrl ===
-    "https://api.gusto.com/oauth/authorize"
-    ? "https://api.gusto.com/v1"
-    : "https://api.gusto-demo.com/v1";
+  return util.types.toString(connection.fields.authorizeUrl) ===
+    PRODUCTION_AUTHORIZE_URL
+    ? PRODUCTION_BASE_URL
+    : SANDBOX_BASE_URL;
 };
 
 export const createClient = (
   connection: Connection,
   debug: boolean = false,
 ) => {
+  const accessToken = util.types.toString(connection.token?.access_token);
+
   return createHttpClient({
     baseUrl: getBaseUrl(connection),
     headers: {
-      Authorization: `Bearer ${connection.token?.access_token}`,
+      Authorization: `Bearer ${accessToken}`,
       "X-Gusto-API-Version": API_VERSION,
     },
     debug,
@@ -26,14 +33,14 @@ export const createClient = (
 
 export const createWebhookClient = async (
   connection: Connection,
-  debug: boolean,
+  debug: boolean = false,
 ) => {
   const token = await fetchToken(connection, debug);
 
   return createHttpClient({
     baseUrl: getBaseUrl(connection),
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${util.types.toString(token)}`,
       "X-Gusto-API-Version": API_VERSION,
     },
     debug,

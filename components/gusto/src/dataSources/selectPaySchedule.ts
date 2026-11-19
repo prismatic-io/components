@@ -1,6 +1,7 @@
 import { type Element, dataSource } from "@prismatic-io/spectral";
 import { createClient } from "../client";
-import { companyIdInput, connectionInput } from "../inputs";
+import { selectPayScheduleInputs } from "../inputs";
+import { fetchAllPages } from "../util";
 
 interface PaySchedule {
   uuid: string;
@@ -14,26 +15,14 @@ export const selectPaySchedule = dataSource({
     description: "A picklist of pay schedules for the selected company.",
   },
   dataSourceType: "picklist",
-  inputs: {
-    connection: connectionInput,
-    companyId: { ...companyIdInput, dataSource: undefined },
-  },
+  inputs: selectPayScheduleInputs,
   perform: async (_context, { connection, companyId }) => {
     const client = createClient(connection);
 
-    let page = 1;
-    let hasMorePages = true;
-    const paySchedules: PaySchedule[] = [];
-
-    do {
-      const { data, headers } = await client.get<PaySchedule[]>(
-        `/companies/${companyId}/pay_schedules`,
-        { params: { page } },
-      );
-      paySchedules.push(...data);
-      hasMorePages = headers["x-total-pages"] > headers["x-page"];
-      page += 1;
-    } while (hasMorePages);
+    const paySchedules = await fetchAllPages<PaySchedule>(
+      client,
+      `/companies/${companyId}/pay_schedules`,
+    );
 
     const result = paySchedules
       .map<Element>((schedule) => ({

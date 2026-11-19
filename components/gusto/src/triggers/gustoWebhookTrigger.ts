@@ -1,7 +1,8 @@
 import { trigger, util } from "@prismatic-io/spectral";
-import { connectionInput } from "./inputs";
+import { gustoWebhookTriggerInputs } from "../inputs";
 import type { HttpClient } from "@prismatic-io/spectral/http";
-import { createWebhookClient } from "./client";
+import { createWebhookClient } from "../client";
+import { gustoWebhookTriggerExamplePayload } from "../examplePayloads";
 
 async function listWebhookSubscriptions(client: HttpClient) {
   const endpoint = "/webhook_subscriptions";
@@ -16,18 +17,13 @@ async function verifyWebhookSubscription(
 ) {
   const endpoint = `/webhook_subscriptions/${webhookUuid}/verify`;
 
-  try {
-    const response = await client.put(endpoint, {
-      verification_token: verificationToken,
-    });
-    return response.data;
-  } catch (error) {
-    console.error("Error verifying webhook:", error);
-    throw error;
-  }
+  const response = await client.put(endpoint, {
+    verification_token: verificationToken,
+  });
+  return response.data;
 }
 
-const gustoWebhookTrigger = trigger({
+export const gustoWebhookTrigger = trigger({
   display: {
     label: "Webhook",
     description:
@@ -36,10 +32,9 @@ const gustoWebhookTrigger = trigger({
   scheduleSupport: "invalid",
   synchronousResponseSupport: "valid",
   allowsBranching: true,
-  inputs: {
-    connection: connectionInput,
-  },
+  inputs: gustoWebhookTriggerInputs,
   staticBranchNames: ["Notification", "URL Validation"],
+  examplePayload: gustoWebhookTriggerExamplePayload,
   perform: async (context, payload, params) => {
     const headers = util.types.lowerCaseHeaders(payload.headers);
     const client = await createWebhookClient(
@@ -88,5 +83,3 @@ const gustoWebhookTrigger = trigger({
     });
   },
 });
-
-export default { gustoWebhookTrigger };

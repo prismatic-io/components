@@ -1,5 +1,12 @@
 ## Changelog
 
+### 2026-11-19
+
+Updated to Gusto API version 2026-06-15. Version 2026-02-01 reaches end of life on June 15, 2027.
+
+- Fixed the **Find Employee by Email** action and the **Select Employee** and **Select Pay Schedule** data sources to read every page of results when there are more than 9 pages
+- Added output schemas to 16 actions for improved field mapping during configuration
+
 ### 2026-11-11
 
 Updated the component description to better summarize what the component does
