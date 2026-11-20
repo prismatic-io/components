@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-11-20
+
+Updated dependencies and refactored internal code
+
 ### 2026-11-19
 
 Updated dependencies and refactored internal code:

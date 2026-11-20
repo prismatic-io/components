@@ -709,8 +709,8 @@
   },
   "pagerduty": {
     "name": "@prismatic-io/components-pagerduty",
-    "version": "0.3.2",
-    "build": "712ebcf9f4e09fb5cf0c4c91f1bcd242e7754add4c0f0b619bac718208209be1",
+    "version": "0.3.3",
+    "build": "78e5ddd98aa7fc4302d5b418fb0f4f1545fcaa0c3ef8254739f2f2ac4c447903",
     "spectral": "^10.39.1"
   },
   "paylocity": {
@@ -745,8 +745,8 @@
   },
   "qlik": {
     "name": "@prismatic-io/components-qlik",
-    "version": "0.3.2",
-    "build": "b576b97ab9b5ae85486b3cdcae3a249a8c346dab682a71f3f2a51658d0a2e2fd",
+    "version": "0.3.3",
+    "build": "8ff2a94d06af414f8280936dfa08f739150d688bec7d4a854946d1afa8f94042",
     "spectral": "^10.39.1"
   },
   "qualys": {

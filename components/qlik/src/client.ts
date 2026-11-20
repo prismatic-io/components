@@ -93,7 +93,6 @@ const _validateJsonWebTokenConnection = (connection: Connection) => {
   const jwtToken = jwt.sign(payload, privateKey, {
     header: signingOptions,
   });
-  console.log("jwtToken", jwtToken);
   return {
     headers: {
       Authorization: `Bearer ${jwtToken}`,

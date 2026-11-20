@@ -11,7 +11,6 @@ export const sendEvent = action({
   },
   perform: async (context, { event }) => {
     const client = createEventsClient(context.debug.enabled);
-    console.log({ event });
     const { data } = await client.post(`/enqueue`, event);
     return { data };
   },

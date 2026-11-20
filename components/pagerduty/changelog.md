@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-11-20
+
+Fixed the **Send Event** action unconditionally logging the event payload to execution logs
+
 ### 2026-11-19
 
 Updated dependencies and refactored internal code:
