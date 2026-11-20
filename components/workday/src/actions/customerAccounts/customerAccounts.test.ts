@@ -14,7 +14,7 @@ import { getPaymentById } from "./getPaymentById";
 import { listInvoices } from "./listInvoices";
 import { postPayment } from "./postPayment";
 
-const SERVICE = "/ccx/customerAccounts/v1";
+const SERVICE = "/ccx/api/customerAccounts/v1/acme";
 
 beforeAll(() => nock.disableNetConnect());
 afterAll(() => nock.enableNetConnect());
@@ -140,8 +140,9 @@ describe("postPayment", () => {
     connection: oauthTestConnection(),
     remitFromCustomerId: "cu-1",
     amount: "250.00",
+    currency: "USD",
     typeId: "pt-1",
-    date: new Date("2026-10-01T00:00:00.000Z"),
+    date: "2026-10-01",
     companyId: "co-1",
     paymentId: "pay-1",
     additionalFields: {
@@ -161,9 +162,9 @@ describe("postPayment", () => {
         readyToAutoApply: true,
         reference: "ref-1",
         transactionNumber: "txn-1",
-        amount: "250.00",
+        amount: { value: "250.00", currency: "USD" },
         type: { id: "pt-1" },
-        date: "2026-10-01T00:00:00.000Z",
+        date: "2026-10-01",
         company: { id: "co-1" },
         descriptor: "Payment 1",
         id: "pay-1",
@@ -190,5 +191,23 @@ describe("postPayment", () => {
       .reply(400, { error: "invalid" });
 
     await expect(invoke(postPayment, params)).rejects.toThrow();
+  });
+
+  it("asks for a Currency when an Amount is set without one, before calling Workday", async () => {
+    await expect(
+      invoke(postPayment, { ...params, currency: undefined }),
+    ).rejects.toThrow(/Currency/);
+  });
+
+  it("omits the amount when Amount is not set", async () => {
+    nock(TEST_HOST)
+      .post(`${SERVICE}/payments`, (body) => !("amount" in body))
+      .reply(200, postPaymentExamplePayload.data);
+
+    await invoke(postPayment, {
+      ...params,
+      amount: undefined,
+      currency: undefined,
+    });
   });
 });

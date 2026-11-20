@@ -41,7 +41,7 @@ Create a connection of type **OAuth 2.0** and provide the following inputs:
 
 - **API URL** (required): The host of the **Workday REST API Endpoint** shown in **View API Clients**, followed by `/ccx`, such as `https://wd2-impl-services1.workday.com/ccx`.
 - **Authorize URL** (required): The **Authorization Endpoint** shown in **View API Clients**, in the form `https://{host}/{tenant}/authorize`.
-- **Token URL** (required): The **Token Endpoint** shown in **View API Clients**, in the form `https://{host}/ccx/oauth2/{tenant}/token`.
+- **Token URL** (required): The **Token Endpoint** shown in **View API Clients**, in the form `https://{host}/ccx/oauth2/{tenant}/token`. API requests use the tenant from this URL.
 - **Client ID** (required): The client ID shown after registering the API client.
 - **Client Secret** (required): The client secret paired with the client ID, shown once at registration.
 - **Scopes** (optional): Space-separated OAuth 2.0 scopes. Leave blank to use the functional areas selected when the API client was registered.

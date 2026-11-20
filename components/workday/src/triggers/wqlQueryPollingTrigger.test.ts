@@ -3,6 +3,7 @@ import {
   createPollingContext,
   mockTokenExchange,
   oauthTestConnection,
+  oauthTestConnectionWithoutTenant,
   refreshTokenTestConnection,
   TEST_HOST,
 } from "../testHelpers";
@@ -65,15 +66,15 @@ describe("wqlQueryPollingTrigger batching declaration", () => {
     );
   });
 
-  it("offers the Date Field, Overlap Minutes and Look-back Date directly below the required inputs", () => {
+  it("offers the Look-back Date first among the optional inputs, below the required ones", () => {
     expect(Object.keys(wqlQueryPollingTrigger.inputs ?? {})).toEqual([
       "connection",
       "query",
       "recordKeyField",
       "dateField",
-      "overlapMinutes",
-      "lookBackDate",
       "tenant",
+      "lookBackDate",
+      "overlapMinutes",
     ]);
   });
 
@@ -88,7 +89,7 @@ describe("wqlQueryPollingTrigger batching declaration", () => {
 
 describe("wqlQueryPollingTrigger perform", () => {
   it("records a baseline from the data on a first run without a Look-back Date", async () => {
-    mockWql("'2026-10-15 11:55:00Z'", [rowA, rowC]);
+    mockWql("'2026-10-15T11:55:00Z'", [rowA, rowC]);
     const result = await wqlQueryPollingTrigger.perform(
       context(),
       noPayload,
@@ -102,7 +103,7 @@ describe("wqlQueryPollingTrigger perform", () => {
   });
 
   it("delivers every row from the Look-back Date on an initial sync", async () => {
-    mockWql("'2026-01-01 00:00:00Z'", [rowA, rowB]);
+    mockWql("'2026-01-01T00:00:00Z'", [rowA, rowB]);
     const result = await wqlQueryPollingTrigger.perform(context(), noPayload, {
       ...params,
       lookBackDate: "2026-01-01T00:00:00.000Z",
@@ -112,11 +113,11 @@ describe("wqlQueryPollingTrigger perform", () => {
   });
 
   it("queries from the newest date seen and skips the rows already delivered at that date", async () => {
-    mockWql("'2026-10-15 11:55:00Z'", [rowA]);
+    mockWql("'2026-10-15T11:55:00Z'", [rowA]);
     await wqlQueryPollingTrigger.perform(context(), noPayload, params);
 
     vi.setSystemTime(new Date("2026-10-15T12:10:00.000Z"));
-    mockWql("'2026-10-15 11:58:30Z'", [rowA, rowB]);
+    mockWql("'2026-10-15T11:58:30Z'", [rowA, rowB]);
     const result = await wqlQueryPollingTrigger.perform(
       context(),
       noPayload,
@@ -129,7 +130,7 @@ describe("wqlQueryPollingTrigger perform", () => {
 
   it("keeps the previous watermark and seen when a window returns no rows", async () => {
     store.state = { watermark: rowA.approvalDate, seen: ["abc"] };
-    mockWql("'2026-10-15 11:58:30Z'", []);
+    mockWql("'2026-10-15T11:58:30Z'", []);
     const result = await wqlQueryPollingTrigger.perform(
       context(),
       noPayload,
@@ -144,14 +145,14 @@ describe("wqlQueryPollingTrigger perform", () => {
 
   it("never moves the watermark backwards", async () => {
     store.state = { watermark: rowB.approvalDate, seen: [] };
-    mockWql("'2026-10-15 11:59:00Z'", [rowC]);
+    mockWql("'2026-10-15T11:59:00Z'", [rowC]);
     await wqlQueryPollingTrigger.perform(context(), noPayload, params);
     expect(store.state?.watermark).toBe(rowB.approvalDate);
   });
 
   it("ignores rows whose date is missing or unparsable when advancing", async () => {
     store.state = { watermark: rowC.approvalDate, seen: [] };
-    mockWql("'2026-10-15 11:57:00Z'", [
+    mockWql("'2026-10-15T11:57:00Z'", [
       rowA,
       { workdayID: "d4", approvalDate: "not a date" },
       { workdayID: "e5" },
@@ -162,7 +163,7 @@ describe("wqlQueryPollingTrigger perform", () => {
 
   it("fails and keeps the state when no returned row has the Date Field", async () => {
     store.state = { watermark: rowC.approvalDate, seen: [] };
-    mockWql("'2026-10-15 11:57:00Z'", [{ workdayID: "a1" }]);
+    mockWql("'2026-10-15T11:57:00Z'", [{ workdayID: "a1" }]);
     await expect(
       wqlQueryPollingTrigger.perform(context(), noPayload, params),
     ).rejects.toThrow(/Date Field "approvalDate"/);
@@ -171,7 +172,7 @@ describe("wqlQueryPollingTrigger perform", () => {
 
   it("resumes from state written before the data-derived cursor", async () => {
     store.state = { lastPolledAt: NOW, seen: [] };
-    mockWql("'2026-10-15 11:55:00Z'", [rowA]);
+    mockWql("'2026-10-15T11:55:00Z'", [rowA]);
     const result = await wqlQueryPollingTrigger.perform(
       context(),
       noPayload,
@@ -183,7 +184,7 @@ describe("wqlQueryPollingTrigger perform", () => {
   });
 
   it("stores the window start when the first window has no rows", async () => {
-    mockWql("'2026-10-15 11:55:00Z'", []);
+    mockWql("'2026-10-15T11:55:00Z'", []);
     await wqlQueryPollingTrigger.perform(context(), noPayload, params);
     expect(store.state?.watermark).toBe("2026-10-15T11:55:00.000Z");
   });
@@ -193,7 +194,7 @@ describe("wqlQueryPollingTrigger perform", () => {
 
     it("starts the query before the watermark and delivers a backdated row once", async () => {
       store.state = { watermark: rowB.approvalDate, seen: [] };
-      mockWql("'2026-10-15 11:49:00Z'", [rowC]);
+      mockWql("'2026-10-15T11:49:00Z'", [rowC]);
       const result = await wqlQueryPollingTrigger.perform(
         context(),
         noPayload,
@@ -206,7 +207,7 @@ describe("wqlQueryPollingTrigger perform", () => {
 
     it("does not deliver again the rows inside the margin across two recurrences", async () => {
       store.state = { watermark: rowC.approvalDate, seen: [] };
-      mockWql("'2026-10-15 11:47:00Z'", [rowC, rowA]);
+      mockWql("'2026-10-15T11:47:00Z'", [rowC, rowA]);
       const first = await wqlQueryPollingTrigger.perform(
         context(),
         noPayload,
@@ -217,7 +218,7 @@ describe("wqlQueryPollingTrigger perform", () => {
       });
       expect(store.state?.seen).toHaveLength(2);
 
-      mockWql("'2026-10-15 11:48:30Z'", [rowC, rowA, rowB]);
+      mockWql("'2026-10-15T11:48:30Z'", [rowC, rowA, rowB]);
       const second = await wqlQueryPollingTrigger.perform(
         context(),
         noPayload,
@@ -229,11 +230,11 @@ describe("wqlQueryPollingTrigger perform", () => {
 
     it("delivers again a row inside the margin whose content changed", async () => {
       store.state = { watermark: rowC.approvalDate, seen: [] };
-      mockWql("'2026-10-15 11:47:00Z'", [rowC, rowA]);
+      mockWql("'2026-10-15T11:47:00Z'", [rowC, rowA]);
       await wqlQueryPollingTrigger.perform(context(), noPayload, overlap);
 
       const changedC = { ...rowC, amount: "250.00" };
-      mockWql("'2026-10-15 11:48:30Z'", [changedC, rowA]);
+      mockWql("'2026-10-15T11:48:30Z'", [changedC, rowA]);
       const result = await wqlQueryPollingTrigger.perform(
         context(),
         noPayload,
@@ -244,17 +245,17 @@ describe("wqlQueryPollingTrigger perform", () => {
 
     it("does not apply the overlap to the first window after a legacy resume", async () => {
       store.state = { lastPolledAt: NOW, seen: [] };
-      mockWql("'2026-10-15 11:55:00Z'", [rowA]);
+      mockWql("'2026-10-15T11:55:00Z'", [rowA]);
       await wqlQueryPollingTrigger.perform(context(), noPayload, overlap);
       expect(store.state?.watermark).toBe(rowA.approvalDate);
-      mockWql("'2026-10-15 11:48:30Z'", []);
+      mockWql("'2026-10-15T11:48:30Z'", []);
       await wqlQueryPollingTrigger.perform(context(), noPayload, overlap);
     });
   });
 
   it("falls back to the connection's tenant", async () => {
     mockTokenExchange();
-    mockWql("'2026-10-15 11:55:00Z'", []);
+    mockWql("'2026-10-15T11:55:00Z'", []);
     await wqlQueryPollingTrigger.perform(context(), noPayload, {
       ...params,
       connection: refreshTokenTestConnection(),
@@ -276,13 +277,14 @@ describe("wqlQueryPollingTrigger perform", () => {
     await expect(
       wqlQueryPollingTrigger.perform(context(), noPayload, {
         ...params,
+        connection: oauthTestConnectionWithoutTenant(),
         tenant: undefined,
       }),
     ).rejects.toThrow(/Tenant is required/);
   });
 
   it("names the Record Key Field when the query does not select it", async () => {
-    mockWql("'2026-01-01 00:00:00Z'", [{ approvalDate: rowA.approvalDate }]);
+    mockWql("'2026-01-01T00:00:00Z'", [{ approvalDate: rowA.approvalDate }]);
     await expect(
       wqlQueryPollingTrigger.perform(context(), noPayload, {
         ...params,

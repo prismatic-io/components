@@ -20,12 +20,16 @@ export const postPayment = action({
       remitFromCustomerId,
       additionalFields = {},
       amount,
+      currency,
       typeId,
       date,
       companyId,
       paymentId,
     },
   ) => {
+    if (amount && !currency) {
+      throw new Error("Enter a Currency, such as USD, for the Amount.");
+    }
     const client = getClient(connection, context.debug.enabled);
     const body = {
       memo: additionalFields.memo,
@@ -33,7 +37,7 @@ export const postPayment = action({
       readyToAutoApply: additionalFields.readyToAutoApply,
       reference: additionalFields.reference,
       transactionNumber: additionalFields.transactionNumber,
-      amount,
+      amount: amount ? { value: amount, currency } : undefined,
       type: getIdObject(typeId),
       date,
       company: getIdObject(companyId),

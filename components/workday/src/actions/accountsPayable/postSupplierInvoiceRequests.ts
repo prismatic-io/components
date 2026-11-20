@@ -3,7 +3,7 @@ import { getClient } from "../../client";
 import { SERVICES } from "../../constants";
 import { postSupplierInvoiceRequestsExamplePayload } from "../../examplePayloads";
 import { postSupplierInvoiceRequestsInputs } from "../../inputs";
-import { getIdObject } from "../../util";
+import { compactRows, getAmountObject, getIdObject } from "../../util";
 import { postSupplierInvoiceRequestsOutputSchema } from "../../outputSchemas";
 
 export const postSupplierInvoiceRequests = action({
@@ -20,9 +20,8 @@ export const postSupplierInvoiceRequests = action({
       supplierId,
       invoiceDate,
       amount = {},
-      requesterId,
-      paymentTermsId,
-      referenceTypeId,
+      lines = [],
+      assignmentIds = {},
       memo,
       supplierInvoiceId,
       supplierInvoiceDescriptor,
@@ -36,11 +35,25 @@ export const postSupplierInvoiceRequests = action({
       invoiceDate,
       currency: getIdObject(amount.currencyId),
       company: getIdObject(companyId),
-      taxAmount: amount.taxAmount,
-      requester: getIdObject(requesterId),
-      controlTotalAmount: amount.controlTotalAmount,
-      paymentTerms: getIdObject(paymentTermsId),
-      referenceType: getIdObject(referenceTypeId),
+      taxAmount: getAmountObject(amount.taxAmount),
+      requester: getIdObject(assignmentIds.requesterId),
+      controlTotalAmount: getAmountObject(amount.controlTotalAmount),
+      lines: compactRows(
+        lines.map((line) => ({
+          itemDescription: line.itemDescription,
+          quantity: line.quantity,
+          unitCost: getAmountObject(line.unitCost),
+          extendedAmount: getAmountObject(line.extendedAmount),
+          memo: line.memo,
+          internalMemo: line.internalMemo,
+          billable: line.billable,
+          spendCategory: getIdObject(line.spendCategoryId),
+          item: getIdObject(line.itemId),
+          unitOfMeasure: getIdObject(line.unitOfMeasureId),
+        })),
+      ),
+      paymentTerms: getIdObject(assignmentIds.paymentTermsId),
+      referenceType: getIdObject(assignmentIds.referenceTypeId),
       memo,
       id: supplierInvoiceId,
       descriptor: supplierInvoiceDescriptor,

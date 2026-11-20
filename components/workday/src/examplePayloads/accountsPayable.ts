@@ -2,14 +2,14 @@ export const listSupplierInvoiceRequestsExamplePayload = {
   data: {
     data: [
       {
-        invoiceDate: "2024-06-08T07:00:00.000Z",
+        invoiceDate: "2024-06-08",
         statutoryInvoiceType: {
           id: "3aa5550b7fe348b98d7b5741afc65534",
           descriptor: "Standard Invoice",
           href: "https://wd2-impl-services1.workday.com/ccx/api/v1/gms/statutoryInvoiceTypes/3aa5550b7fe348b98d7b5741afc65534",
         },
         referenceNumber: "REF-0001",
-        taxAmount: { value: 112.5, currency: "USD" },
+        taxAmount: { value: "112.50", currency: "USD" },
         handlingCode: {
           id: "0e44c92412d34b01ace61e80a47aaf6d",
           descriptor: "Standard Handling",
@@ -20,7 +20,7 @@ export const listSupplierInvoiceRequestsExamplePayload = {
           descriptor: "Approved",
           href: "https://wd2-impl-services1.workday.com/ccx/api/v1/gms/statuses/cc67c47133894e099a5f1c0aa88efc47",
         },
-        dueDate: "2024-06-08T07:00:00.000Z",
+        dueDate: "2024-06-08",
         remitToConnection: {
           id: "51c4a636bcbc4331b921a1e37b18f6f0",
           descriptor: "Acme Supplies Remit To",
@@ -31,14 +31,14 @@ export const listSupplierInvoiceRequestsExamplePayload = {
           descriptor: "Net 30",
           href: "https://wd2-impl-services1.workday.com/ccx/api/v1/gms/paymentTerms/9541750bc8964e529feb5c6d7bb3d0e4",
         },
-        controlTotalAmount: { value: 1250, currency: "USD" },
+        controlTotalAmount: { value: "1250.00", currency: "USD" },
         memo: "Monthly office supplies",
         currency: {
           currencyID: "USD",
           descriptor: "USD",
         },
         suppliersInvoiceNumber: "INV-0001234",
-        freightAmount: { value: 45, currency: "USD" },
+        freightAmount: { value: "45.00", currency: "USD" },
         shipToAddress: {
           id: "1f2e3d4c5b6a7988990a1b2c3d4e5f60",
           descriptor: "1150 Bayhill Drive, San Bruno, CA 94066",
@@ -50,7 +50,7 @@ export const listSupplierInvoiceRequestsExamplePayload = {
           href: "https://wd2-impl-services1.workday.com/ccx/api/v1/gms/referenceTypes/a1b2c3d4e5f60718293a4b5c6d7e8f90",
         },
         requestNumber: "REF-0001",
-        invoiceReceivedDate: "2024-06-08T07:00:00.000Z",
+        invoiceReceivedDate: "2024-06-08",
         requester: {
           id: "7c6b5a4938271605f4e3d2c1b0a99887",
           descriptor: "Logan McNeil",
@@ -86,13 +86,13 @@ export const postSupplierInvoiceRequestsExamplePayload = {
       descriptor: "Global Modern Services, Inc. (USA)",
       href: "https://wd2-impl-services1.workday.com/ccx/api/v1/gms/companies/f6071829a3b4c5d6e7f809122334455f",
     },
-    taxAmount: { value: 112.5, currency: "USD" },
+    taxAmount: { value: "112.50", currency: "USD" },
     requester: {
       id: "071829a3b4c5d6e7f809122334455f60",
       descriptor: "Betty Liu",
       href: "https://wd2-impl-services1.workday.com/ccx/api/v1/gms/workers/071829a3b4c5d6e7f809122334455f60",
     },
-    controlTotalAmount: { value: 1250, currency: "USD" },
+    controlTotalAmount: { value: "1250.00", currency: "USD" },
     paymentTerms: {
       id: "1829a3b4c5d6e7f809122334455f6071",
       descriptor: "Net 30",
@@ -105,7 +105,7 @@ export const postSupplierInvoiceRequestsExamplePayload = {
     },
     lines: [
       {
-        unitCost: { value: 125, currency: "USD" },
+        unitCost: { value: "125.00", currency: "USD" },
         internalMemo: "Monthly office supplies",
         worktags: [
           {
@@ -120,7 +120,7 @@ export const postSupplierInvoiceRequestsExamplePayload = {
             billable: true,
             memo: "Monthly office supplies",
             quantity: 8,
-            amount: { value: 1000, currency: "USD" },
+            amount: { value: "1000.00", currency: "USD" },
             worktags: [
               {
                 id: "b4c5d6e7f809122334455f6071829304",
@@ -139,7 +139,7 @@ export const postSupplierInvoiceRequestsExamplePayload = {
           href: "https://wd2-impl-services1.workday.com/ccx/api/v1/gms/splitBys/d6e7f809122334455f60718293041526",
         },
         quantity: 8,
-        extendedAmount: { value: 1000, currency: "USD" },
+        extendedAmount: { value: "1000.00", currency: "USD" },
         spendCategory: {
           id: "e7f809122334455f6071829304152637",
           descriptor: "Office Supplies",
@@ -168,8 +168,8 @@ export const postSupplierInvoiceRequestsExamplePayload = {
     },
     suppliersInvoiceNumber: "INV-0001234",
     referenceNumber: "REF-0001",
-    invoiceReceivedDate: "2024-06-08T07:00:00.000Z",
-    freightAmount: { value: 45, currency: "USD" },
+    invoiceReceivedDate: "2024-06-08",
+    freightAmount: { value: "45.00", currency: "USD" },
     supplier: {
       id: "34455f6071829304152637485960718293",
       descriptor: "Acme Supplies, Inc.",
@@ -185,7 +185,7 @@ export const postSupplierInvoiceRequestsExamplePayload = {
       descriptor: "1150 Bayhill Drive, San Bruno, CA 94066",
       href: "https://wd2-impl-services1.workday.com/ccx/api/v1/gms/addresses/55f607182930415263748596071829ab",
     },
-    invoiceDate: "2024-06-08T07:00:00.000Z",
+    invoiceDate: "2024-06-08",
     memo: "Monthly office supplies",
     remitToConnection: {
       id: "5f607182930415263748596071829abc",
@@ -199,14 +199,14 @@ export const postSupplierInvoiceRequestsExamplePayload = {
 
 export const getSupplierInvoiceRequestsByIdExamplePayload = {
   data: {
-    invoiceDate: "2024-06-08T07:00:00.000Z",
+    invoiceDate: "2024-06-08",
     statutoryInvoiceType: {
       id: "607182930415263748596071829abcde",
       descriptor: "Standard Invoice",
       href: "https://wd2-impl-services1.workday.com/ccx/api/v1/gms/statutoryInvoiceTypes/607182930415263748596071829abcde",
     },
     referenceNumber: "REF-0001",
-    taxAmount: { value: 112.5, currency: "USD" },
+    taxAmount: { value: "112.50", currency: "USD" },
     handlingCode: {
       id: "07182930415263748596071829abcdef",
       descriptor: "Standard Handling",
@@ -217,7 +217,7 @@ export const getSupplierInvoiceRequestsByIdExamplePayload = {
       descriptor: "In Progress",
       href: "https://wd2-impl-services1.workday.com/ccx/api/v1/gms/statuses/7182930415263748596071829abcdef0",
     },
-    dueDate: "2024-06-08T07:00:00.000Z",
+    dueDate: "2024-06-08",
     remitToConnection: {
       id: "182930415263748596071829abcdef01",
       descriptor: "Acme Supplies Remit To",
@@ -228,14 +228,14 @@ export const getSupplierInvoiceRequestsByIdExamplePayload = {
       descriptor: "Net 30",
       href: "https://wd2-impl-services1.workday.com/ccx/api/v1/gms/paymentTerms/82930415263748596071829abcdef012",
     },
-    controlTotalAmount: { value: 1250, currency: "USD" },
+    controlTotalAmount: { value: "1250.00", currency: "USD" },
     memo: "Monthly office supplies",
     currency: {
       currencyID: "USD",
       descriptor: "USD",
     },
     suppliersInvoiceNumber: "INV-0001234",
-    freightAmount: { value: 45, currency: "USD" },
+    freightAmount: { value: "45.00", currency: "USD" },
     shipToAddress: {
       id: "2930415263748596071829abcdef0123",
       descriptor: "1150 Bayhill Drive, San Bruno, CA 94066",
@@ -247,7 +247,7 @@ export const getSupplierInvoiceRequestsByIdExamplePayload = {
       href: "https://wd2-impl-services1.workday.com/ccx/api/v1/gms/referenceTypes/930415263748596071829abcdef01234",
     },
     requestNumber: "REF-0001",
-    invoiceReceivedDate: "2024-06-08T07:00:00.000Z",
+    invoiceReceivedDate: "2024-06-08",
     requester: {
       id: "30415263748596071829abcdef012345",
       descriptor: "Steve Morgan",

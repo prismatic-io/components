@@ -10,7 +10,7 @@ import { getEventAttachments } from "./getEventAttachments";
 import { getEventById } from "./getEventById";
 import { listEvents } from "./listEvents";
 
-const SERVICE = "/ccx/businessProcess/v1";
+const SERVICE = "/ccx/api/businessProcess/v1/acme";
 
 beforeAll(() => nock.disableNetConnect());
 afterAll(() => nock.enableNetConnect());
@@ -22,6 +22,7 @@ afterEach(() => {
 describe("getEventAttachments", () => {
   const params = {
     connection: oauthTestConnection(),
+    workerId: "w-1",
     eventId: "ev-1",
     fetchAll: false,
     pagination: { limit: 10, offset: 0 },
@@ -48,7 +49,11 @@ describe("getEventAttachments", () => {
 });
 
 describe("getEventById", () => {
-  const params = { connection: oauthTestConnection(), eventId: "ev-1" };
+  const params = {
+    connection: oauthTestConnection(),
+    workerId: "w-1",
+    eventId: "ev-1",
+  };
 
   it("returns the event", async () => {
     nock(TEST_HOST)
@@ -71,15 +76,21 @@ describe("getEventById", () => {
 describe("listEvents", () => {
   const params = {
     connection: oauthTestConnection(),
+    workerId: "w-1",
     fetchAll: false,
     pagination: { limit: 10, offset: 20 },
-    extraParameters: { initiator: "w-1" },
+    extraParameters: { status: "Successfully Completed" },
   };
 
   it("returns one page with the query parameters", async () => {
     nock(TEST_HOST)
       .get(`${SERVICE}/events`)
-      .query({ initiator: "w-1", limit: 10, offset: 20 })
+      .query({
+        status: "Successfully Completed",
+        worker: "w-1",
+        limit: 10,
+        offset: 20,
+      })
       .reply(200, listEventsExamplePayload.data);
 
     const { result } = await invoke(listEvents, params);

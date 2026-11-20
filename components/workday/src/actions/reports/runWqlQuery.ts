@@ -5,7 +5,7 @@ import { runWqlQueryInputs } from "../../inputs";
 import {
   assertWqlReadComplete,
   buildWqlPath,
-  getConnectionTenant,
+  resolveWqlTenant,
   queryWqlAll,
   queryWqlPage,
 } from "../../util";
@@ -22,12 +22,7 @@ export const runWqlQuery = action({
     context,
     { connection, query, tenant, fetchAll, pagination = {} },
   ) => {
-    const resolvedTenant = tenant || getConnectionTenant(connection);
-    if (!resolvedTenant) {
-      throw new Error(
-        "Tenant is required when the connection doesn't include one. Enter the Workday tenant name.",
-      );
-    }
+    const resolvedTenant = resolveWqlTenant(connection, tenant);
     const client = getClient(connection, context.debug.enabled);
     const path = buildWqlPath(resolvedTenant);
 

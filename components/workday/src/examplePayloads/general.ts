@@ -10,3 +10,11 @@ export const rawRequestExamplePayload = {
     ],
   },
 };
+
+export const verifyConnectionExamplePayload = {
+  data: {
+    tokenExchanged: true,
+    reportRead: true,
+    reportEntryCount: 12,
+  },
+};

@@ -46,7 +46,7 @@ const wqlQuery = input({
 export const wqlTenant = input({
   label: "Tenant",
   comments:
-    "The Workday tenant to query. Leave blank with the Refresh Token connection to use the tenant from its REST API Endpoint. Required with the OAuth 2.0 connection.",
+    "The Workday tenant to query. Leave blank to use the tenant from the connection: the REST API Endpoint of a Refresh Token connection, or the Token URL of an OAuth 2.0 connection.",
   type: "string",
   example: "acme",
   placeholder: "Enter tenant",

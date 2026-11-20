@@ -7,6 +7,15 @@ export const getIdObject = (
       }
     : undefined;
 
+export const getAmountObject = (
+  value: unknown,
+): { value: string } | undefined =>
+  value === undefined || value === null || value === ""
+    ? undefined
+    : {
+        value: String(value),
+      };
+
 export const compactObject = <T extends Record<string, unknown>>(
   value: T | undefined,
 ): Partial<T> | undefined => {

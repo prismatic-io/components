@@ -22,9 +22,12 @@ import { postWorkerTimeBlock } from "./postWorkerTimeBlock";
 import { updateTimeClockEventsById } from "./updateTimeClockEventsById";
 import { updateWorkerTimeBlock } from "./updateWorkerTimeBlock";
 
-const SERVICE = "/ccx/timeTracking/v7";
+const SERVICE = "/ccx/api/timeTracking/v7/acme";
 
 const timeBlockBody = {
+  calendarDate: "2026-11-17",
+  reportedQuantity: 8,
+  timeEntryCode: { id: "tec-1" },
   doNotBill: true,
   comment: "Client visit",
   id: "tb-1",
@@ -211,6 +214,9 @@ describe("postWorkerTimeBlock", () => {
   const params = {
     connection: oauthTestConnection(),
     workerId: "w-1",
+    calendarDate: "2026-11-17",
+    reportedQuantity: 8,
+    timeEntryCodeId: "tec-1",
     doNotBill: true,
     comment: "Client visit",
     instanceId: "tb-1",
@@ -220,7 +226,10 @@ describe("postWorkerTimeBlock", () => {
 
   it("sends the mapped body merged with Extra Body", async () => {
     nock(TEST_HOST)
-      .post(`${SERVICE}/workers/w-1/workerTimeBlock`, timeBlockBody)
+      .post(`${SERVICE}/workers/w-1/workerTimeBlock`, {
+        worker: { id: "w-1" },
+        ...timeBlockBody,
+      })
       .reply(200, postWorkerTimeBlockExamplePayload.data);
 
     const { result } = await invoke(postWorkerTimeBlock, params);
@@ -240,9 +249,11 @@ describe("updateTimeClockEventsById", () => {
   const params = {
     connection: oauthTestConnection(),
     timeClockEventId: "tce-1",
-    instanceDescriptor: "Clock In",
-    instanceHref: "https://wd.example.com/tce-1",
-    instanceId: "tce-1",
+    instanceReference: {
+      instanceId: "tce-1",
+      instanceHref: "https://wd.example.com/tce-1",
+      instanceDescriptor: "Clock In",
+    },
     clockEventOverrideRate: 45,
     referenceId: "ref-1",
     assignmentIds: {
@@ -301,6 +312,9 @@ describe("updateWorkerTimeBlock", () => {
     connection: oauthTestConnection(),
     workerId: "w-1",
     workerTimeBlockId: "tb-1",
+    calendarDate: "2026-11-17",
+    reportedQuantity: 8,
+    timeEntryCodeId: "tec-1",
     doNotBill: true,
     comment: "Client visit",
     instanceId: "tb-1",

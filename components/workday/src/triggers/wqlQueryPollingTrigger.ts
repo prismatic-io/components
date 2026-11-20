@@ -9,7 +9,7 @@ import {
   applyWqlWatermark,
   assertWqlWindowComplete,
   buildWqlPath,
-  getConnectionTenant,
+  resolveWqlTenant,
   getWqlWindow,
   queryWqlAll,
   resolveRecordChanges,
@@ -31,12 +31,7 @@ export const wqlQueryPollingTrigger = pollingTrigger({
       resolveRecordChanges(payload.body.data as RecordChangesObject),
   },
   perform: async (context, payload, params) => {
-    const tenant = params.tenant || getConnectionTenant(params.connection);
-    if (!tenant) {
-      throw new Error(
-        "Tenant is required when the connection doesn't include one. Enter the Workday tenant name.",
-      );
-    }
+    const tenant = resolveWqlTenant(params.connection, params.tenant);
     const now = new Date().toISOString();
     const state = (context.polling.getState() ?? {}) as PollingState;
     const overlapMs = (params.overlapMinutes ?? 0) * MS_PER_MINUTE;

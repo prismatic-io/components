@@ -22,9 +22,7 @@ export const updateTimeClockEventsById = action({
       referenceId,
       assignmentIds = {},
       clockEventComment,
-      instanceId,
-      instanceHref,
-      instanceDescriptor,
+      instanceReference = {},
       extraBody,
     },
   ) => {
@@ -36,9 +34,9 @@ export const updateTimeClockEventsById = action({
       projectPlanTask: getIdObject(assignmentIds.clockEventProjectPlanTaskId),
       project: getIdObject(assignmentIds.clockEventProjectId),
       comment: clockEventComment,
-      id: instanceId,
-      href: instanceHref,
-      descriptor: instanceDescriptor,
+      id: instanceReference.instanceId,
+      href: instanceReference.instanceHref,
+      descriptor: instanceReference.instanceDescriptor,
       ...(extraBody || {}),
     };
     const { data } = await client.put(

@@ -1,4 +1,8 @@
-import { idDescriptorReferenceSchema, instanceReferenceSchema } from "./shared";
+import {
+  currencyAmountSchema,
+  idDescriptorReferenceSchema,
+  instanceReferenceSchema,
+} from "./shared";
 
 export const currencySchema = {
   type: "object" as const,
@@ -23,9 +27,7 @@ export const invoiceRequestSummarySchema = {
     referenceNumber: {
       type: "string",
     },
-    taxAmount: {
-      type: "object" as const,
-    },
+    taxAmount: currencyAmountSchema,
     handlingCode: instanceReferenceSchema,
     status: instanceReferenceSchema,
     dueDate: {
@@ -34,9 +36,7 @@ export const invoiceRequestSummarySchema = {
     },
     remitToConnection: instanceReferenceSchema,
     paymentTerms: instanceReferenceSchema,
-    controlTotalAmount: {
-      type: "object" as const,
-    },
+    controlTotalAmount: currencyAmountSchema,
     memo: {
       type: "string",
     },
@@ -44,9 +44,7 @@ export const invoiceRequestSummarySchema = {
       type: "string",
     },
     currency: currencySchema,
-    freightAmount: {
-      type: "object" as const,
-    },
+    freightAmount: currencyAmountSchema,
     shipToAddress: instanceReferenceSchema,
     referenceType: instanceReferenceSchema,
     invoiceReceivedDate: {
@@ -63,6 +61,12 @@ export const invoiceRequestSummarySchema = {
       type: "string",
     },
     id: {
+      type: "string",
+    },
+    Supplier_Invoice_Request_ID: {
+      type: "string",
+    },
+    Supplier_Invoice_Request_Document_Number: {
       type: "string",
     },
   },
@@ -131,13 +135,9 @@ export const postSupplierInvoiceRequestsOutputSchema = {
   properties: {
     company: instanceReferenceSchema,
     currency: instanceReferenceSchema,
-    taxAmount: {
-      type: "object" as const,
-    },
+    taxAmount: currencyAmountSchema,
     requester: instanceReferenceSchema,
-    controlTotalAmount: {
-      type: "object" as const,
-    },
+    controlTotalAmount: currencyAmountSchema,
     paymentTerms: instanceReferenceSchema,
     referenceType: instanceReferenceSchema,
     lines: {
@@ -145,9 +145,7 @@ export const postSupplierInvoiceRequestsOutputSchema = {
       items: {
         type: "object" as const,
         properties: {
-          unitCost: {
-            type: "object" as const,
-          },
+          unitCost: currencyAmountSchema,
           internalMemo: {
             type: "string",
           },
@@ -170,9 +168,7 @@ export const postSupplierInvoiceRequestsOutputSchema = {
                   type: "array",
                   items: idDescriptorReferenceSchema,
                 },
-                amount: {
-                  type: "object" as const,
-                },
+                amount: currencyAmountSchema,
                 percent: {
                   type: "number",
                 },
@@ -201,9 +197,7 @@ export const postSupplierInvoiceRequestsOutputSchema = {
           quantity: {
             type: "number",
           },
-          extendedAmount: {
-            type: "object" as const,
-          },
+          extendedAmount: currencyAmountSchema,
           spendCategory: instanceReferenceSchema,
           unitOfMeasure: instanceReferenceSchema,
           memo: {
@@ -233,9 +227,7 @@ export const postSupplierInvoiceRequestsOutputSchema = {
       type: "string",
       format: "date",
     },
-    freightAmount: {
-      type: "object" as const,
-    },
+    freightAmount: currencyAmountSchema,
     supplier: instanceReferenceSchema,
     handlingCode: instanceReferenceSchema,
     shipToAddress: instanceReferenceSchema,

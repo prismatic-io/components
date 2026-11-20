@@ -3,11 +3,11 @@
   <h1>@prismatic-io/components-workday</h1>
 </div>
 
-Workday HCM is a single, cloud-based solution for workforce planning, talent management, and payroll processes. This package is Prismatic's Workday (Beta) connector as an npm package, for use in [code-native integrations](https://prismatic.io/docs/integrations/code-native/).
+Workday HCM is a single, cloud-based solution for workforce planning, talent management, and payroll processes. This package is Prismatic's Workday connector as an npm package, for use in [code-native integrations](https://prismatic.io/docs/integrations/code-native/).
 
-## Using Workday (Beta)
+## Using Workday
 
-To install the Workday (Beta) connector, run:
+To install the Workday connector, run:
 
 ```bash
 npm install @prismatic-io/components-workday
@@ -20,12 +20,12 @@ import workday from "@prismatic-io/components-workday";
 
 // Inside a flow's onExecution
 const result = await workday.actions.<actionKey>({
-  connection: context.configVars["Workday (Beta) Connection"],
+  connection: context.configVars["Workday Connection"],
   // ...the action's other inputs
 });
 ```
 
-Please see the [Workday (Beta) connector documentation](https://prismatic.io/docs/components/workday/) for its actions, triggers, data sources and connections.
+Please see the [Workday connector documentation](https://prismatic.io/docs/components/workday/) for its actions, triggers, data sources and connections.
 
 ## What is Prismatic?
 

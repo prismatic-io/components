@@ -10,7 +10,7 @@ import { newEventStepsPollingTrigger } from "./newEventStepsPollingTrigger";
 type PerformArgs = Parameters<typeof newEventStepsPollingTrigger.perform>;
 type PollResult = { polledNoChanges?: boolean };
 
-const STEPS_PATH = "/ccx/businessProcess/v1/eventSteps";
+const STEPS_PATH = "/ccx/api/businessProcess/v1/acme/eventSteps";
 const NOW = "2026-10-15T12:00:00.000Z";
 const step = (id: string, creationDate: string): WorkdayEventStep => ({
   id,

@@ -109,7 +109,7 @@ const tags = structuredObjectInput({
   required: false,
   inputs: {
     id: input({
-      label: "ID",
+      label: "Tag ID",
       comments: "Identifies the tag.",
       type: "string",
       required: false,
@@ -119,7 +119,7 @@ const tags = structuredObjectInput({
     }),
     name: input({
       label: "Name",
-      comments: "Name of the tag.",
+      comments: "The display name of the tag, such as Headcount.",
       type: "string",
       required: false,
       example: "Headcount",
@@ -292,8 +292,8 @@ export const updateTableByIdInputs = {
   connection,
   tenant,
   tableId,
-  displayName: { ...displayName, required: false },
-  name: { ...name, required: false },
+  displayName: { ...displayName, required: false, clean: cleanStringInput },
+  name: { ...name, required: false, clean: cleanStringInput },
   fields: {
     ...fields,
     required: false,

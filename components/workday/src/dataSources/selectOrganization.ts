@@ -4,7 +4,7 @@ import { SERVICES } from "../constants";
 import { selectOrganizationExamplePayload } from "../examplePayloads";
 import { selectOrganizationInputs } from "../inputs";
 import type { WorkdayInstanceSummary } from "../types";
-import { toSortedPicklist } from "../util";
+import { paginateResults, toSortedPicklist } from "../util";
 
 export const selectOrganization = dataSource({
   display: {
@@ -14,12 +14,15 @@ export const selectOrganization = dataSource({
   inputs: selectOrganizationInputs,
   perform: async (_context, { connection, organizationTypeId }) => {
     const client = getClient(connection, false);
-    const { data } = await client.get(`${SERVICES.common}/organizations`, {
+    const { data } = await paginateResults({
+      client,
+      endpoint: `${SERVICES.common}/organizations`,
       params: { organizationType: organizationTypeId },
+      fetchAll: true,
     });
 
     return {
-      result: toSortedPicklist(data.data, (item: WorkdayInstanceSummary) => ({
+      result: toSortedPicklist(data as WorkdayInstanceSummary[], (item) => ({
         key: item.id,
         label: item.descriptor,
       })),

@@ -6,7 +6,9 @@ import {
   workdayOAuth2Connection,
   workdayRefreshTokenConnection,
 } from "../connections";
+import { SERVICES } from "../constants";
 import { clearTokenCache, getAccessToken, getBaseUrl } from "./auth";
+import { parseTenantFromTokenUrl } from "./workdayUrls";
 
 const HOST = "https://wd.example.com";
 const TOKEN_PATH = "/ccx/oauth2/acme/token";
@@ -247,19 +249,63 @@ describe("rawRequest", () => {
 });
 
 describe("existing OAuth 2.0 connection", () => {
-  it("still sends the stored access token and never calls the token endpoint", async () => {
-    const connection = createConnection(
+  const oauthConnection = (tokenUrl: string) =>
+    createConnection(
       workdayOAuth2Connection,
-      { apiUrl: `${HOST}/ccx` },
+      { apiUrl: `${HOST}/ccx`, tokenUrl },
       { access_token: "oauth-token" },
     );
+
+  it("still sends the stored access token and never calls the token endpoint", async () => {
     nock(HOST, { reqheaders: { authorization: "Bearer oauth-token" } })
-      .get("/ccx/person/v4/people")
+      .get("/ccx/api/person/v4/acme/people")
       .reply(200, { data: [] });
 
-    const { data } = await getClient(connection, false).get(
-      "/person/v4/people",
-    );
+    const { data } = await getClient(
+      oauthConnection(`${HOST}/ccx/oauth2/acme/token`),
+      false,
+    ).get(`${SERVICES.person}/people`);
     expect(data).toEqual({ data: [] });
+  });
+
+  it("takes the tenant from the Token URL and encodes it in the path", async () => {
+    nock(HOST)
+      .get("/ccx/api/staffing/v7/acme%20corp/workers")
+      .reply(200, { data: [] });
+
+    await getClient(
+      oauthConnection(`${HOST}/ccx/oauth2/acme%20corp/token`),
+      false,
+    ).get(`${SERVICES.staffing}/workers`);
+  });
+
+  it("names the Token URL when it carries no tenant", async () => {
+    await expect(
+      getClient(oauthConnection(`${HOST}/oauth/token`), false).get(
+        `${SERVICES.person}/people`,
+      ),
+    ).rejects.toThrow(/Token URL/);
+  });
+
+  it("leaves a path without the tenant placeholder unchanged", async () => {
+    nock(HOST).get("/ccx/api/prismAnalytics/v3/other/tables").reply(200, {});
+
+    await getClient(oauthConnection(""), false).get(
+      `${SERVICES.prismAnalytics}/other/tables`,
+    );
+  });
+});
+
+describe("parseTenantFromTokenUrl", () => {
+  it.each([
+    ["https://wd2-impl-services1.workday.com/ccx/oauth2/acme/token", "acme"],
+    ["https://host.myworkday.com/ccx/oauth2/acme_extdev/token/", "acme_extdev"],
+  ])("reads the tenant from %s", (url, tenant) => {
+    expect(parseTenantFromTokenUrl(url)).toBe(tenant);
+  });
+
+  it("returns undefined for a URL without /oauth2/<tenant>/token", () => {
+    expect(parseTenantFromTokenUrl("https://host/ccx/token")).toBeUndefined();
+    expect(parseTenantFromTokenUrl("")).toBeUndefined();
   });
 });

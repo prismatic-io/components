@@ -28,11 +28,3 @@ export const runWqlQueryExamplePayload = {
     ],
   },
 };
-
-export const verifyConnectionExamplePayload = {
-  data: {
-    tokenExchanged: true,
-    reportRead: true,
-    reportEntryCount: 12,
-  },
-};

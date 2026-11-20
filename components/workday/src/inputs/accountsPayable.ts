@@ -1,6 +1,6 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
-import { SERVICES, WORKDAY_API_DOCS_URL } from "../constants";
-import { cleanNumberInput, cleanStringInput } from "../util";
+import { SERVICE_VERSIONS, WORKDAY_API_DOCS_URL } from "../constants";
+import { cleanBooleanInput, cleanNumberInput, cleanStringInput } from "../util";
 import {
   extraBody,
   companyId,
@@ -21,7 +21,7 @@ const supplierInvoiceRequestId = input({
   dataSource: "selectSupplierInvoiceRequest",
 });
 
-const postSupplierInvoiceRequestsExtraBodyComments = `${extraBody.comments} See [Workday API documentation](${WORKDAY_API_DOCS_URL}#${SERVICES.accountsPayable.slice(1)}/post-/supplierInvoiceRequests) for more information.`;
+const postSupplierInvoiceRequestsExtraBodyComments = `${extraBody.comments} See [Workday API documentation](${WORKDAY_API_DOCS_URL}#${SERVICE_VERSIONS.accountsPayable}/post-/supplierInvoiceRequests) for more information.`;
 
 const postSupplierInvoiceRequestsExtraBodyExample = JSON.stringify(
   {
@@ -114,7 +114,7 @@ const invoiceDate = input({
   required: true,
   example: "2024-06-08",
   placeholder: "Enter invoice date (YYYY-MM-DD)",
-  clean: (value: unknown) => util.types.toDate(value),
+  clean: util.types.toDate,
 });
 
 const currencyId = input({
@@ -125,6 +125,7 @@ const currencyId = input({
   example: "Currency_ID=USD",
   placeholder: "Enter currency ID",
   clean: cleanStringInput,
+  dataSource: "selectCurrency",
 });
 
 const taxAmount = input({
@@ -197,8 +198,117 @@ const supplierInvoiceDescriptor = input({
   clean: cleanStringInput,
 });
 
+const lines = structuredObjectInput({
+  label: "Lines",
+  comments: `The line items; each row is one line. At least one line is required, here or in Extra Body. Lines set in Extra Body replace these rows; use Extra Body for line worktags and splits. See [Workday API documentation](${WORKDAY_API_DOCS_URL}#${SERVICE_VERSIONS.accountsPayable}/post-/supplierInvoiceRequests) for the line fields.`,
+  collection: "valuelist",
+  required: false,
+  inputs: {
+    itemDescription: input({
+      label: "Item Description",
+      comments: "Text description of the item on the line.",
+      type: "string",
+      required: false,
+      example: "Office chairs",
+      placeholder: "Enter item description",
+      clean: cleanStringInput,
+    }),
+    quantity: input({
+      label: "Quantity",
+      comments: "Quantity on the line, as a number.",
+      type: "string",
+      required: false,
+      example: "4",
+      placeholder: "Enter quantity",
+      clean: cleanNumberInput,
+    }),
+    unitCost: input({
+      label: "Unit Cost",
+      comments:
+        "Unit cost for the line as a decimal; Workday applies the invoice currency.",
+      type: "string",
+      required: false,
+      example: "250.00",
+      placeholder: "Enter unit cost",
+      clean: cleanStringInput,
+    }),
+    extendedAmount: input({
+      label: "Extended Amount",
+      comments:
+        "Extended amount for the line as a decimal; Workday applies the invoice currency.",
+      type: "string",
+      required: false,
+      example: "1000.00",
+      placeholder: "Enter extended amount",
+      clean: cleanStringInput,
+    }),
+    memo: input({
+      label: "Memo",
+      comments:
+        "A free-text memo for the invoice line, such as a note on what was purchased.",
+      type: "string",
+      required: false,
+      example: "Ergonomic office chairs",
+      placeholder: "Enter line memo",
+      clean: cleanStringInput,
+    }),
+    internalMemo: input({
+      label: "Internal Memo",
+      comments:
+        "A free-text memo for the invoice line kept for internal reference, such as an approval note.",
+      type: "string",
+      required: false,
+      example: "Approved by facilities manager",
+      placeholder: "Enter internal memo",
+      clean: cleanStringInput,
+    }),
+    billable: input({
+      label: "Billable",
+      comments: "When true, marks the line as billable.",
+      type: "boolean",
+      required: false,
+      clean: cleanBooleanInput,
+    }),
+    spendCategoryId: input({
+      label: "Spend Category ID",
+      comments: "Identifies the spend category for the line.",
+      type: "string",
+      required: false,
+      example: "4c7e9a1b3d5f47a9b1c3e5f7a9b1d3e5",
+      placeholder: "Enter spend category ID",
+      clean: cleanStringInput,
+    }),
+    itemId: input({
+      label: "Item ID",
+      comments: "Identifies the purchase item on the line.",
+      type: "string",
+      required: false,
+      example: "8f2c4e6a0b1d43f5a7c9e1b3d5f7a9c1",
+      placeholder: "Enter item ID",
+      clean: cleanStringInput,
+    }),
+    unitOfMeasureId: input({
+      label: "Unit of Measure ID",
+      comments: "Identifies the unit of measure for the quantity.",
+      type: "string",
+      required: false,
+      example: "2b4d6f8a0c1e43a5b7d9f1a3c5e7b9d1",
+      placeholder: "Enter unit of measure ID",
+      clean: cleanStringInput,
+    }),
+  },
+});
+
+const assignmentIds = structuredObjectInput({
+  label: "Assignment IDs",
+  required: false,
+  comments:
+    "Requester, payment terms, and reference type for the supplier invoice request.",
+  inputs: { requesterId, paymentTermsId, referenceTypeId },
+});
+
 const amount = structuredObjectInput({
-  label: "Amounts",
+  label: "Amount",
   required: false,
   comments: "Currency, tax amount, and control total amount.",
   inputs: { currencyId, taxAmount, controlTotalAmount },
@@ -238,7 +348,7 @@ const contentTypeId = input({
 
 const fileName = input({
   label: "File Name",
-  comments: `Display name of the attached file. Defaults to "attachment" with the file's suggested extension.`,
+  comments: `Display name of the attached file, including its extension; Workday rejects a name without one. Defaults to "attachment" with an extension from the file's content type.`,
   type: "string",
   placeholder: "Enter file name",
   example: "invoice-SI-000123.pdf",
@@ -270,10 +380,10 @@ const supplierInvoiceInstanceId = input({
   label: "Supplier Invoice Instance ID",
   comments: "Identifies the supplier invoice instance to submit for approval.",
   type: "string",
-  required: true,
+  required: false,
   example: "53f807ae49df49389687cabd4ba24d14",
   placeholder: "Enter supplier invoice instance ID",
-  clean: util.types.toString,
+  clean: cleanStringInput,
 });
 
 const supplierInvoiceInstanceDescriptor = input({
@@ -281,10 +391,10 @@ const supplierInvoiceInstanceDescriptor = input({
   comments:
     "Human-readable descriptor for the supplier invoice instance being submitted.",
   type: "string",
-  required: true,
+  required: false,
   example: "Supplier Invoice Request: SIR-000123",
   placeholder: "Enter supplier invoice instance descriptor",
-  clean: util.types.toString,
+  clean: cleanStringInput,
 });
 
 export const getSupplierInvoiceRequestAttachmentsInputs = {
@@ -303,7 +413,7 @@ export const listSupplierInvoiceRequestsInputs = {
   ...paginationQueryStringInputs,
   extraParameters: {
     ...extraParameters,
-    comments: `${extraParameters.comments} See optional (QUERY-STRING PARAMETERS) in the [Workday API documentation](${WORKDAY_API_DOCS_URL}#${SERVICES.accountsPayable.slice(1)}/get-/supplierInvoiceRequests).`,
+    comments: `${extraParameters.comments} See optional (QUERY-STRING PARAMETERS) in the [Workday API documentation](${WORKDAY_API_DOCS_URL}#${SERVICE_VERSIONS.accountsPayable}/get-/supplierInvoiceRequests).`,
   },
 };
 
@@ -319,9 +429,8 @@ export const postSupplierInvoiceRequestsInputs = {
   supplierId,
   invoiceDate,
   amount,
-  requesterId,
-  paymentTermsId,
-  referenceTypeId,
+  lines,
+  assignmentIds,
   memo,
   supplierInvoiceId,
   supplierInvoiceDescriptor,

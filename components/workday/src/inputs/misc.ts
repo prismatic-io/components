@@ -1,6 +1,6 @@
 import { input } from "@prismatic-io/spectral";
 import { inputs as httpClientInputs } from "@prismatic-io/spectral/http";
-import { SERVICES } from "../constants";
+import { SERVICE_VERSIONS } from "../constants";
 import { cleanStringInput } from "../util";
 import { connection, reportUrl } from "./common";
 
@@ -13,8 +13,8 @@ export const rawRequestInputs: {
   ...destructuredInputs,
   url: {
     ...destructuredInputs.url,
-    comments: `Input the path only (${SERVICES.accountsPayable}/supplierInvoiceRequests), The base URL is already included (https://{host}/ccx). For example, to connect to https://{host}/ccx${SERVICES.accountsPayable}/supplierInvoiceRequests, only ${SERVICES.accountsPayable}/supplierInvoiceRequests is entered in this field.`,
-    example: `${SERVICES.accountsPayable}/supplierInvoiceRequests`,
+    comments: `Input the path only, starting with /api and including the tenant name: /api/{service}/{version}/{tenant}/{resource}. The base URL is already included (https://{host}/ccx). For example, to connect to https://{host}/ccx/api/${SERVICE_VERSIONS.accountsPayable}/acme/supplierInvoiceRequests for the tenant acme, only /api/${SERVICE_VERSIONS.accountsPayable}/acme/supplierInvoiceRequests is entered in this field.`,
+    example: `/api/${SERVICE_VERSIONS.accountsPayable}/acme/supplierInvoiceRequests`,
   },
 };
 

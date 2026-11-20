@@ -14,21 +14,14 @@ export const postWorkerBusinessTitleChange = action({
   performSafety: "notAllowed",
   perform: async (
     context,
-    {
-      connection,
-      workerId,
-      proposedBusinessTitle,
-      instanceId,
-      instanceHref,
-      instanceDescriptor,
-    },
+    { connection, workerId, proposedBusinessTitle, instanceReference = {} },
   ) => {
     const client = getClient(connection, context.debug.enabled);
     const body = {
       proposedBusinessTitle,
-      id: instanceId,
-      href: instanceHref,
-      descriptor: instanceDescriptor,
+      id: instanceReference.instanceId,
+      href: instanceReference.instanceHref,
+      descriptor: instanceReference.instanceDescriptor,
     };
     const { data } = await client.post(
       `${SERVICES.common}/workers/${workerId}/businessTitleChanges`,

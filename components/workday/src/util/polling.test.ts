@@ -83,7 +83,7 @@ describe("watermark formats", () => {
         "WHERE a >= {{lastPolledAt}} OR b >= {{lastPolledAt}}",
         NOW,
       ),
-    ).toBe("WHERE a >= '2026-10-15 12:00:00Z' OR b >= '2026-10-15 12:00:00Z'");
+    ).toBe("WHERE a >= '2026-10-15T12:00:00Z' OR b >= '2026-10-15T12:00:00Z'");
   });
 });
 

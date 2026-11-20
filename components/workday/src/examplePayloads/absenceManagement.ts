@@ -23,7 +23,7 @@ export const getTimeOffDetailsExamplePayload = {
           descriptor: "Approved",
           href: "https://wd2-impl-services1.workday.com/ccx/api/v1/gms/statuses/51c4a636bcbc4331b921a1e37b18f6f0",
         },
-        date: "2024-06-08T07:00:00.000Z",
+        date: "2024-06-08",
         unit: {
           id: "9541750bc8964e529feb5c6d7bb3d0e4",
           descriptor: "Hours",
@@ -105,7 +105,7 @@ export const postTimeOffRequestExamplePayload = {
     },
     days: [
       {
-        date: "2024-06-08T07:00:00.000Z",
+        date: "2024-06-08",
         start: "2024-06-08T07:00:00.000Z",
         position: {
           id: "5a4b3c2d1e0f9887766554433221100a",
@@ -141,7 +141,7 @@ export const getTimeOffBalanceByIdExamplePayload = {
       id: "a0b1c2d3e4f5687990a1b2c3d4e5f607",
       descriptor: "Senior Sales Representative",
     },
-    quantity: 40,
+    quantity: "40",
     absencePlan: {
       timeoffs: "Vacation",
       descriptor: "Vacation Plan",
@@ -153,8 +153,8 @@ export const getTimeOffBalanceByIdExamplePayload = {
       ],
       id: "909182736455647382910a0b1c2d3e4f",
     },
-    dateOfFirstAbsence: "2024-06-08T07:00:00.000Z",
-    effectiveDate: "2024-06-08T07:00:00.000Z",
+    dateOfFirstAbsence: "2024-06-08",
+    effectiveDate: "2024-06-08",
     category: {
       id: "5f6e7d8c9b0a1122334455667788990a",
       descriptor: "Time Off",
@@ -165,5 +165,55 @@ export const getTimeOffBalanceByIdExamplePayload = {
       descriptor: "Logan McNeil",
       href: "https://wd2-impl-services1.workday.com/ccx/api/v1/gms/workers/0a1b2c3d4e5f60718293a4b5c6d7e8f0",
     },
+  },
+};
+
+export const listTimeOffBalancesExamplePayload = {
+  data: {
+    total: 2,
+    data: [
+      {
+        absencePlan: {
+          timeoffs: "Vacation",
+          descriptor: "Paid Time Off",
+          id: "909182736455647382910a0b1c2d3e4f",
+        },
+        category: {
+          descriptor: "Time Off Plan",
+          id: "5f6e7d8c9b0a1122334455667788990a",
+        },
+        effectiveDate: "2026-11-17",
+        unit: {
+          descriptor: "Hours",
+          id: "7788990011223344556677889900aabb",
+        },
+        quantity: "150",
+        worker: {
+          descriptor: "Logan McNeil",
+          id: "0a1b2c3d4e5f60718293a4b5c6d7e8f0",
+        },
+      },
+      {
+        absencePlan: {
+          timeoffs: "Floating Holiday",
+          descriptor: "Floating Holiday",
+          id: "1a2b3c4d5e6f70819293a4b5c6d7e8f9",
+        },
+        category: {
+          descriptor: "Time Off Plan",
+          id: "5f6e7d8c9b0a1122334455667788990a",
+        },
+        effectiveDate: "2026-11-17",
+        unit: {
+          descriptor: "Hours",
+          id: "7788990011223344556677889900aabb",
+        },
+        quantity: "16",
+        worker: {
+          descriptor: "Logan McNeil",
+          id: "0a1b2c3d4e5f60718293a4b5c6d7e8f0",
+        },
+      },
+    ],
   },
 };

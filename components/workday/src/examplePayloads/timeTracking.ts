@@ -2,77 +2,39 @@ export const getWorkersExamplePayload = {
   data: {
     data: [
       {
-        primaryJob: {
-          businessTitle: "Senior Sales Representative",
-          supervisoryOrganization: {
-            descriptor: "Field Sales - Southern Europe (Jared Ellis)",
-            id: "9efe43d6107ae0179c947f8c55f4607c",
-          },
-          jobType: {
-            descriptor: "Regular",
-          },
-          jobProfile: {
-            id: "969082e1fa48dc38393dcf7fccf391e5",
-            descriptor: "Sales Representative",
-          },
-          location: {
-            country: {
-              descriptor: "United States of America",
-            },
-            id: "d256265200ae0d110c2fa8b1577d5ec3",
-            descriptor: "San Francisco",
-          },
-          workSpace: {
-            locationChain: "USA > California > San Bruno",
-            descriptor: "San Francisco - Desk 12",
-            id: "60ca8986f6fab1f02204fa41f4f79adf",
-          },
-          descriptor: "Senior Sales Representative",
-          id: "2fe2ecbe4a590c39db99acdac608cfec",
-        },
-        person: {
-          phone: "+1 (415) 555-0100",
-          email: "logan.mcneil@example.com",
-          id: "c8f7bfe543d09c0e09d0cca90c3a0b97",
-        },
-        workerId: "21001",
+        id: "581647aedccf9f81f4c9d23b07339186",
+        descriptor: "Logan McNeil",
         workerType: {
           id: "22fd94a50adb524ae43d931912673891",
           descriptor: "Employee",
-          href: "https://wd2-impl-services1.workday.com/ccx/api/v1/gms/workerTypes/22fd94a50adb524ae43d931912673891",
         },
-        additionalJobs: [
-          {
-            businessTitle: "Senior Sales Representative",
-            supervisoryOrganization: {
-              descriptor: "Field Sales - Southern Europe (Jared Ellis)",
-              id: "15fdbf16c3d92167371c1f6cd70b5864",
+        prehireId: "A21142",
+        primaryJob: {
+          id: "2fe2ecbe4a590c39db99acdac608cfec",
+          descriptor: "Senior Sales Representative",
+          location: {
+            id: "d256265200ae0d110c2fa8b1577d5ec3",
+            descriptor: "San Francisco",
+            Location_ID: "LOC-SF-01",
+            country: {
+              descriptor: "United States of America",
+              "ISO_3166-1_Alpha-3_Code": "USA",
             },
-            jobType: {
-              descriptor: "Regular",
-            },
-            jobProfile: {
-              id: "0b7793ad7567cd7a278cd5ecd9787a66",
-              descriptor: "Sales Representative",
-            },
-            location: {
-              country: {
-                descriptor: "United States of America",
-              },
-              id: "04359b1a304a34e6ac011944b5fbdd93",
-              descriptor: "San Francisco",
-            },
-            workSpace: {
-              locationChain: "USA > California > San Bruno",
-              descriptor: "San Francisco - Desk 12",
-              id: "c459eb9e237037b3e9a3c0fd99d95fd1",
-            },
-            descriptor: "Senior Sales Representative",
-            id: "b815cc515f14eda83c98d7ecaf9e39ad",
           },
-        ],
-        id: "581647aedccf9f81f4c9d23b07339186",
-        descriptor: "Logan McNeil",
+          supervisoryOrganization: {
+            id: "9efe43d6107ae0179c947f8c55f4607c",
+            descriptor: "Field Sales - Southern Europe (Jared Ellis)",
+            Organization_Reference_ID: "SUPERVISORY_ORGANIZATION-3-1234",
+          },
+          jobType: {
+            descriptor: "Regular",
+            Job_Type_Name_ID: "Regular",
+          },
+        },
+        person: {
+          id: "c8f7bfe543d09c0e09d0cca90c3a0b97",
+          email: "logan.mcneil@example.com",
+        },
       },
     ],
     total: 1,
@@ -81,77 +43,39 @@ export const getWorkersExamplePayload = {
 
 export const getWorkerByIdExamplePayload = {
   data: {
+    id: "581647aedccf9f81f4c9d23b07339186",
+    descriptor: "Logan McNeil",
+    workerType: {
+      id: "22fd94a50adb524ae43d931912673891",
+      descriptor: "Employee",
+    },
+    prehireId: "A21142",
     primaryJob: {
-      businessTitle: "Senior Sales Representative",
+      id: "2fe2ecbe4a590c39db99acdac608cfec",
+      descriptor: "Senior Sales Representative",
+      location: {
+        id: "d256265200ae0d110c2fa8b1577d5ec3",
+        descriptor: "San Francisco",
+        Location_ID: "LOC-SF-01",
+        country: {
+          descriptor: "United States of America",
+          "ISO_3166-1_Alpha-3_Code": "USA",
+        },
+      },
       supervisoryOrganization: {
+        id: "9efe43d6107ae0179c947f8c55f4607c",
         descriptor: "Field Sales - Southern Europe (Jared Ellis)",
-        id: "e8d883621587f158d55e476b61c5f891",
+        Organization_Reference_ID: "SUPERVISORY_ORGANIZATION-3-1234",
       },
       jobType: {
         descriptor: "Regular",
+        Job_Type_Name_ID: "Regular",
       },
-      jobProfile: {
-        id: "23ccb7c781d90c6abafeba70e6829b67",
-        descriptor: "Sales Representative",
-      },
-      location: {
-        country: {
-          descriptor: "United States of America",
-        },
-        id: "430fca457bdfc1e9bfbdc595d2d9ffa9",
-        descriptor: "San Francisco",
-      },
-      workSpace: {
-        locationChain: "USA > California > San Bruno",
-        descriptor: "San Francisco - Desk 12",
-        id: "99d76152a792cd5b019a9a7812bed6f0",
-      },
-      descriptor: "Senior Sales Representative",
-      id: "8f4c68a69a861da8906b9708bb67c4a9",
     },
     person: {
-      phone: "+1 (415) 555-0100",
+      id: "c8f7bfe543d09c0e09d0cca90c3a0b97",
       email: "logan.mcneil@example.com",
-      id: "4779ea729dfcb385540f7cfb79869a90",
     },
-    workerId: "21001",
-    workerType: {
-      id: "38d5f1f8d59ffa7602cb672fa4a7d8eb",
-      descriptor: "Employee",
-      href: "https://wd2-impl-services1.workday.com/ccx/api/v1/gms/workerTypes/38d5f1f8d59ffa7602cb672fa4a7d8eb",
-    },
-    additionalJobs: [
-      {
-        businessTitle: "Senior Sales Representative",
-        supervisoryOrganization: {
-          descriptor: "Field Sales - Southern Europe (Jared Ellis)",
-          id: "28c3643101af770f58e9022226c3ce92",
-        },
-        jobType: {
-          descriptor: "Regular",
-        },
-        jobProfile: {
-          id: "62c153e9909fca5054922ee0c0b508f3",
-          descriptor: "Sales Representative",
-        },
-        location: {
-          country: {
-            descriptor: "United States of America",
-          },
-          id: "444cc974429ae4312374156c1ba95ca8",
-          descriptor: "San Francisco",
-        },
-        workSpace: {
-          locationChain: "USA > California > San Bruno",
-          descriptor: "San Francisco - Desk 12",
-          id: "5e98c53a1d583458fba6e642fc2cd144",
-        },
-        descriptor: "Senior Sales Representative",
-        id: "d7211b5967f37ed4ecb9c6aff0b250d2",
-      },
-    ],
-    id: "8f970bb04162867d83718096a40bd62b",
-    descriptor: "Logan McNeil",
   },
 };
 
@@ -235,21 +159,21 @@ export const postWorkerTimeBlockExamplePayload = {
     calculatedTimeDetails: [
       {
         overrideRate: 3.3,
-        shiftDate: "2019-11-11T08:00:00.000Z",
+        shiftDate: "2019-11-11",
         calculatedQuantity: 20,
         currency: {
           id: "5b68a7ab7d476717b63d49caa1c58ab3",
           descriptor: "USD",
           href: "https://wd2-impl-services1.workday.com/ccx/api/v1/gms/currencies/5b68a7ab7d476717b63d49caa1c58ab3",
         },
-        calculatedDate: "2019-11-05T08:00:00.000Z",
+        calculatedDate: "2019-11-05",
         calculationTags: [
           {
             descriptor: "Overtime",
             id: "fc7cc0d49e9520c33692eed4fb2fc34f",
           },
         ],
-        calendarDate: "2019-11-12T17:00:00.000Z",
+        calendarDate: "2019-11-12",
         id: "c4820d049e29ef83506f64753ba22aeb",
       },
     ],
@@ -380,7 +304,7 @@ export const postWorkerTimeBlockExamplePayload = {
       descriptor: "Logan McNeil",
       href: "https://wd2-impl-services1.workday.com/ccx/api/v1/gms/workers/2d052b9e8e1b240a33e21450637ec35a",
     },
-    calendarDate: "2024-06-01T07:00:00.000Z",
+    calendarDate: "2024-06-01",
     timeEntryCode: {
       id: "e7322cbf53ca9ca01c364a6133db027a",
       descriptor: "Worked Time",

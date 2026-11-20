@@ -2,13 +2,12 @@ import { createHash } from "node:crypto";
 import type { ActionLogger } from "@prismatic-io/spectral";
 import type { HttpClient } from "@prismatic-io/spectral/http";
 import {
+  ROW_FINGERPRINT_LENGTH,
   DAY_MS,
   EVENT_STEPS_MAX_PAGES,
   EVENT_STEPS_OVERLAP_DAYS,
   ISO_DATE_LENGTH,
-  ISO_MINUTES_LENGTH,
   ISO_SECONDS_LENGTH,
-  ISO_TIME_START,
   MS_PER_SECOND,
   POLLING_OVERLAP_MS,
   POLLING_SEEN_MAX,
@@ -53,7 +52,7 @@ const stableStringify = (value: unknown): string => {
 };
 
 const toWqlDateTimeLiteral = (iso: string): string =>
-  `'${iso.slice(0, ISO_DATE_LENGTH)} ${iso.slice(ISO_TIME_START, ISO_SECONDS_LENGTH)}Z'`;
+  `'${iso.slice(0, ISO_SECONDS_LENGTH)}Z'`;
 
 const fingerprintRecord = (
   record: WorkdayRecord,
@@ -68,7 +67,7 @@ const fingerprintRecord = (
   return createHash("sha256")
     .update(`${stableStringify(key)}\u0000${stableStringify(record)}`)
     .digest("hex")
-    .slice(0, ISO_MINUTES_LENGTH);
+    .slice(0, ROW_FINGERPRINT_LENGTH);
 };
 
 const capSeenEntries = (

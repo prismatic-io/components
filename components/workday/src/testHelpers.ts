@@ -19,7 +19,17 @@ export const refreshTokenTestConnection = () =>
 export const oauthTestConnection = () =>
   createConnection(
     workdayOAuth2Connection,
-    { apiUrl: `${TEST_HOST}/ccx` },
+    {
+      apiUrl: `${TEST_HOST}/ccx`,
+      tokenUrl: `${TEST_HOST}/ccx/oauth2/acme/token`,
+    },
+    { access_token: "oauth-token" },
+  );
+
+export const oauthTestConnectionWithoutTenant = () =>
+  createConnection(
+    workdayOAuth2Connection,
+    { apiUrl: `${TEST_HOST}/ccx`, tokenUrl: "" },
     { access_token: "oauth-token" },
   );
 

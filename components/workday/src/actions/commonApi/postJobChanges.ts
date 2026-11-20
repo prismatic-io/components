@@ -22,9 +22,7 @@ export const postJobChanges = action({
       moveManagersTeam,
       effective,
       proposedOrganizations,
-      instanceId,
-      instanceHref,
-      instanceDescriptor,
+      instanceReference = {},
     },
   ) => {
     const client = getClient(connection, context.debug.enabled);
@@ -34,9 +32,9 @@ export const postJobChanges = action({
       moveManagersTeam,
       effective,
       proposedOrganizations: compactRows(proposedOrganizations),
-      id: instanceId,
-      href: instanceHref,
-      descriptor: instanceDescriptor,
+      id: instanceReference.instanceId,
+      href: instanceReference.instanceHref,
+      descriptor: instanceReference.instanceDescriptor,
     };
     const { data } = await client.post(
       `${SERVICES.common}/workers/${workerId}/jobChanges`,

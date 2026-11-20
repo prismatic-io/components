@@ -4,7 +4,7 @@ import { SERVICES } from "../constants";
 import { selectDataChangeExamplePayload } from "../examplePayloads";
 import { selectDataChangeInputs } from "../inputs";
 import type { PrismAnalyticsSummary } from "../types";
-import { toSortedPicklist } from "../util";
+import { paginateResults, toSortedPicklist } from "../util";
 
 export const selectDataChange = dataSource({
   display: {
@@ -15,13 +15,15 @@ export const selectDataChange = dataSource({
   inputs: selectDataChangeInputs,
   perform: async (_context, { connection, tenant }) => {
     const client = getClient(connection, false);
-    const { data } = await client.get(
-      `${SERVICES.prismAnalytics}/${tenant}/dataChanges`,
-      { params: { type: "summary" } },
-    );
+    const { data } = await paginateResults({
+      client,
+      endpoint: `${SERVICES.prismAnalytics}/${tenant}/dataChanges`,
+      params: { type: "summary" },
+      fetchAll: true,
+    });
 
     return {
-      result: toSortedPicklist(data.data, (item: PrismAnalyticsSummary) => ({
+      result: toSortedPicklist(data as PrismAnalyticsSummary[], (item) => ({
         key: item.id,
         label: item.displayName,
       })),

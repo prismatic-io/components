@@ -7,3 +7,4 @@ export * from "./records";
 export * from "./workdayUrls";
 export * from "./wql";
 export * from "./polling";
+export * from "./errors";

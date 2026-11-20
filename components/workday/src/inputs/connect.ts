@@ -1,6 +1,6 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
-import { SERVICES, WORKDAY_API_DOCS_URL } from "../constants";
-import { cleanArrayCodeInput, cleanStringInput } from "../util";
+import { SERVICE_VERSIONS, WORKDAY_API_DOCS_URL } from "../constants";
+import { cleanStringInput, cleanValueListInput } from "../util";
 import {
   extraBody,
   connection,
@@ -33,7 +33,8 @@ const messageTemplateId = input({
 
 const emailDetailName = input({
   label: "Name",
-  comments: "Name of the email content.",
+  comments:
+    "The name of the email content, such as Benefits Enrollment Reminder.",
   type: "string",
   required: false,
   example: "Benefits Enrollment Reminder",
@@ -105,7 +106,7 @@ const pushDetailRedirectURL = input({
 });
 
 const pushDetailId = input({
-  label: "ID",
+  label: "Push Detail ID",
   comments: "Identifies the push notification detail.",
   type: "string",
   required: false,
@@ -118,7 +119,7 @@ const pushDetail = structuredObjectInput({
   label: "Push Detail",
   required: false,
   comments:
-    "Mobile push notification content for the message: Message, Redirect URL, and ID.",
+    "Mobile push notification content for the message: Message, Redirect URL, and Push Detail ID.",
   inputs: {
     message: pushDetailMessage,
     redirectURL: pushDetailRedirectURL,
@@ -148,23 +149,15 @@ const commId = input({
 
 const contacts = input({
   label: "Contacts",
-  type: "code",
-  language: "json",
+  type: "string",
+  collection: "valuelist",
   comments:
-    "Contacts to send the message to. This should be an array of contacts.",
+    "Workday IDs of the contacts to send the message to, such as workers. Each entry is one contact.",
   required: false,
-  placeholder: "Enter contacts as a JSON array",
-  example: JSON.stringify(
-    [
-      {
-        descriptor: "Logan McNeil",
-        id: "3aa5550b7fe348b98d7b5741afc65534",
-      },
-    ],
-    null,
-    2,
-  ),
-  clean: (value: unknown) => cleanArrayCodeInput(value, "Contacts"),
+  placeholder: "Enter contact ID",
+  example: "3aa5550b7fe348b98d7b5741afc65534",
+  clean: cleanValueListInput,
+  dataSource: "selectWorker",
 });
 
 const notificationTypeId = input({
@@ -175,6 +168,7 @@ const notificationTypeId = input({
   example: "1f3a5c7e9b0d42f4a6c8e0b2d4f6a8c0",
   required: false,
   clean: cleanStringInput,
+  dataSource: "selectNotificationType",
 });
 
 const postMessageTemplatesExtraBodyExample = JSON.stringify(
@@ -189,7 +183,7 @@ const postMessageTemplatesExtraBodyExample = JSON.stringify(
   null,
   2,
 );
-const postMessageTemplatesExtraBodyComments = `${extraBody.comments} See [Workday API documentation](${WORKDAY_API_DOCS_URL}#${SERVICES.connect.slice(1)}/post-/messageTemplates) for more information.`;
+const postMessageTemplatesExtraBodyComments = `${extraBody.comments} See [Workday API documentation](${WORKDAY_API_DOCS_URL}#${SERVICE_VERSIONS.connect}/post-/messageTemplates) for more information.`;
 
 const messageTemplateName = input({
   label: "Message Template Name",
@@ -302,6 +296,7 @@ export const sendMessageInputs = {
   messageTemplateId: {
     ...messageTemplateId,
     required: false,
+    clean: cleanStringInput,
   },
   notificationTypeId,
 };

@@ -1,12 +1,12 @@
+export type WorkdayRecord = Record<string, unknown>;
+
+export type WatermarkFormat = "dateTime" | "date";
+
 export interface PollingState extends Record<string, unknown> {
   lastPolledAt?: string;
   seen?: string[];
   watermark?: string;
 }
-
-export type WorkdayRecord = Record<string, unknown>;
-
-export type WatermarkFormat = "dateTime" | "date";
 
 export interface RecordChangesObject {
   changed?: WorkdayRecord[];

@@ -4,6 +4,7 @@ import { SERVICES } from "../../constants";
 import { updateWorkerTimeBlockExamplePayload } from "../../examplePayloads";
 import { updateWorkerTimeBlockInputs } from "../../inputs";
 import { updateWorkerTimeBlockOutputSchema } from "../../outputSchemas";
+import { getIdObject } from "../../util";
 
 export const updateWorkerTimeBlock = action({
   display: {
@@ -18,6 +19,9 @@ export const updateWorkerTimeBlock = action({
       connection,
       workerId,
       workerTimeBlockId,
+      calendarDate,
+      reportedQuantity,
+      timeEntryCodeId,
       doNotBill,
       comment,
       extraBody,
@@ -27,6 +31,9 @@ export const updateWorkerTimeBlock = action({
   ) => {
     const client = getClient(connection, context.debug.enabled);
     const body = {
+      calendarDate,
+      reportedQuantity,
+      timeEntryCode: getIdObject(timeEntryCodeId),
       doNotBill,
       comment,
       id: instanceId,

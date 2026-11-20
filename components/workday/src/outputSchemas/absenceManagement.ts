@@ -34,7 +34,7 @@ export const timeOffDetailsViewSchema = {
   },
 };
 
-export const getTimeOffBalanceByIdOutputSchema = {
+export const timeOffBalanceViewSchema = {
   type: "object" as const,
   properties: {
     category: instanceReferenceSchema,
@@ -64,13 +64,32 @@ export const getTimeOffBalanceByIdOutputSchema = {
       },
     },
     quantity: {
-      type: "number",
+      type: ["string", "number"],
     },
     dateOfFirstAbsence: {
       type: "string",
       format: "date",
     },
   },
+};
+
+export const getTimeOffBalanceByIdOutputSchema = timeOffBalanceViewSchema;
+
+export const listTimeOffBalancesOutputSchema = {
+  type: ["object", "array"],
+  properties: {
+    total: {
+      type: "integer",
+      format: "int64",
+    },
+    data: {
+      type: "array",
+      items: timeOffBalanceViewSchema,
+    },
+  },
+  items: timeOffBalanceViewSchema,
+  required: [],
+  additionalProperties: true,
 };
 
 export const getTimeOffDetailsOutputSchema = {
@@ -100,7 +119,7 @@ export const postTimeOffRequestOutputSchema = {
         properties: {
           end: {
             type: "string",
-            format: "date",
+            format: "date-time",
           },
           reason: instanceReferenceSchema,
           dailyQuantity: {
@@ -112,7 +131,7 @@ export const postTimeOffRequestOutputSchema = {
           },
           start: {
             type: "string",
-            format: "date",
+            format: "date-time",
           },
           date: {
             type: "string",
@@ -161,7 +180,7 @@ export const postTimeOffRequestOutputSchema = {
               },
               commentDate: {
                 type: "string",
-                format: "date",
+                format: "date-time",
               },
             },
           },

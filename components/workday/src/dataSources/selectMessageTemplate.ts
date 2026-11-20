@@ -4,7 +4,7 @@ import { SERVICES } from "../constants";
 import { selectMessageTemplateExamplePayload } from "../examplePayloads";
 import { selectMessageTemplateInputs } from "../inputs";
 import type { MessageTemplateSummary } from "../types";
-import { toSortedPicklist } from "../util";
+import { paginateResults, toSortedPicklist } from "../util";
 
 export const selectMessageTemplate = dataSource({
   display: {
@@ -14,10 +14,14 @@ export const selectMessageTemplate = dataSource({
   inputs: selectMessageTemplateInputs,
   perform: async (_context, { connection }) => {
     const client = getClient(connection, false);
-    const { data } = await client.get(`${SERVICES.connect}/messageTemplates`);
+    const { data } = await paginateResults({
+      client,
+      endpoint: `${SERVICES.connect}/messageTemplates`,
+      fetchAll: true,
+    });
 
     return {
-      result: toSortedPicklist(data.data, (item: MessageTemplateSummary) => ({
+      result: toSortedPicklist(data as MessageTemplateSummary[], (item) => ({
         key: item.id,
         label: item.name,
       })),

@@ -1,5 +1,9 @@
 import { type KeyValuePair, util } from "@prismatic-io/spectral";
-import { LOOK_BACK_DATE_PATTERN } from "../constants";
+import {
+  ISO_DATE_LENGTH,
+  ISO_DATE_PREFIX_PATTERN,
+  LOOK_BACK_DATE_PATTERN,
+} from "../constants";
 
 const throwInvalidInputError = (kind: string, inputLabel: string): never => {
   throw new Error(`Invalid ${kind} for ${inputLabel} input.`);
@@ -36,19 +40,24 @@ export const cleanKeyValueListInput = (
     ? util.types.keyValPairListToObject(value as KeyValuePair[])
     : undefined;
 
-export const cleanDate = (
-  value: unknown,
-  inputLabel: string,
-): Date | undefined => {
-  if (!value) {
-    return undefined;
-  }
-  try {
-    return util.types.toDate(value);
-  } catch (_error) {
-    return throwInvalidInputError("date", inputLabel);
-  }
-};
+export const cleanDateOnlyInput =
+  (inputLabel: string): ((value: unknown) => string | undefined) =>
+  (value: unknown): string | undefined => {
+    if (!value) {
+      return undefined;
+    }
+    let date: Date;
+    try {
+      date = util.types.toDate(value);
+    } catch (_error) {
+      return throwInvalidInputError("date", inputLabel);
+    }
+    const written =
+      typeof value === "string"
+        ? ISO_DATE_PREFIX_PATTERN.exec(value.trim())
+        : null;
+    return written ? written[0] : date.toISOString().slice(0, ISO_DATE_LENGTH);
+  };
 
 export const cleanCodeInput = (
   value: unknown,

@@ -35,7 +35,7 @@ export const workdayOAuth2Connection = oauth2Connection({
       required: true,
       shown: true,
       comments:
-        "The Token Endpoint shown for the API client in View API Clients, in the form https://{host}/ccx/oauth2/{tenant}/token.",
+        "The Token Endpoint shown for the API client in View API Clients, in the form https://{host}/ccx/oauth2/{tenant}/token. API requests use the tenant from this URL.",
       example: "https://wd2-impl-services1.workday.com/ccx/oauth2/acme/token",
     },
     clientId: {
@@ -66,7 +66,6 @@ export const workdayOAuth2Connection = oauth2Connection({
       shown: true,
       comments:
         "Space-separated OAuth 2.0 scopes to request. Leave blank to use the functional areas selected when the API client was registered.",
-      example: "",
     },
   },
 });

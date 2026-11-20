@@ -2,7 +2,7 @@ import {
   cleanArrayCodeInput,
   cleanBooleanInput,
   cleanCodeInput,
-  cleanDate,
+  cleanDateOnlyInput,
   cleanKeyValueListInput,
   cleanNumberInput,
   cleanStringInput,
@@ -107,33 +107,35 @@ describe("cleanBooleanInput", () => {
   });
 });
 
-describe("cleanDate", () => {
-  it("parses an ISO 8601 date", () => {
-    expect(cleanDate("2026-10-01T00:00:00.000Z", "Effective Date")).toEqual(
-      new Date("2026-10-01T00:00:00.000Z"),
-    );
+describe("cleanDateOnlyInput", () => {
+  const clean = cleanDateOnlyInput("Calendar Date");
+
+  it("keeps a date as written", () => {
+    expect(clean("2026-11-17")).toBe("2026-11-17");
   });
 
-  it("parses a UNIX epoch timestamp in seconds", () => {
-    expect(cleanDate(1790000000, "Effective Date")).toEqual(
-      new Date(1790000000 * 1000),
-    );
-    expect(cleanDate("1790000000", "Effective Date")).toEqual(
-      new Date(1790000000 * 1000),
-    );
+  it("keeps the written date of a date-time with a UTC offset", () => {
+    expect(clean("2026-11-17T20:00:00-06:00")).toBe("2026-11-17");
+    expect(clean("2026-11-17T01:00:00+09:00")).toBe("2026-11-17");
+  });
+
+  it("uses the UTC date of a UNIX epoch timestamp in seconds", () => {
+    const utcDate = new Date(1790000000 * 1000).toISOString().slice(0, 10);
+    expect(clean(1790000000)).toBe(utcDate);
+    expect(clean("1790000000")).toBe(utcDate);
   });
 
   it("returns undefined for an empty value", () => {
-    expect(cleanDate("", "Effective Date")).toBeUndefined();
-    expect(cleanDate(undefined, "Effective Date")).toBeUndefined();
+    expect(clean("")).toBeUndefined();
+    expect(clean(undefined)).toBeUndefined();
   });
 
   it("throws for a value that is not a date", () => {
-    expect(() => cleanDate("not a date", "Effective Date")).toThrow(
-      "Invalid date for Effective Date input.",
+    expect(() => clean("not a date")).toThrow(
+      "Invalid date for Calendar Date input.",
     );
-    expect(() => cleanDate("2026-02-31", "Effective Date")).toThrow(
-      "Invalid date for Effective Date input.",
+    expect(() => clean("2026-02-31")).toThrow(
+      "Invalid date for Calendar Date input.",
     );
   });
 });

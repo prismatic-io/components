@@ -1,6 +1,6 @@
 {
   "name": "@prismatic-io/components-workday",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "main": "./npm-dist/index.cjs",
   "types": "./npm-dist/index.d.cts",
   "exports": {
@@ -36,16 +36,18 @@
     "publish:platform": "npm run build && prism components:publish"
   },
   "peerDependencies": {
-    "@prismatic-io/spectral": "^10.39.1"
+    "@prismatic-io/spectral": "^10.39.3"
   },
-  "dependencies": {},
+  "dependencies": {
+    "form-data": "4.0.6"
+  },
   "devDependencies": {
     "@biomejs/biome": "2.5.1",
+    "@prismatic-io/spectral": "^10.39.3",
     "@types/node": "^26",
     "nock": "14.0.17",
     "tsdown": "0.23.7",
     "typescript": "6.0.3",
-    "vitest": "4.1.9",
-    "@prismatic-io/spectral": "^10.39.1"
+    "vitest": "4.1.9"
   }
 }

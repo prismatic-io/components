@@ -1,9 +1,13 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { getClient } from "../../client";
-import { DEFAULT_ATTACHMENT_FILE_NAME, SERVICES } from "../../constants";
+import { SERVICES } from "../../constants";
 import { postSupplierInvoiceRequestsAttachmentsExamplePayload } from "../../examplePayloads";
 import { postSupplierInvoiceRequestsAttachmentsInputs } from "../../inputs";
-import { createMultipartBody, getIdObject } from "../../util";
+import {
+  createMultipartBody,
+  getAttachmentFileName,
+  getIdObject,
+} from "../../util";
 import { postSupplierInvoiceRequestsAttachmentsOutputSchema } from "../../outputSchemas";
 
 export const postSupplierInvoiceRequestsAttachments = action({
@@ -24,11 +28,7 @@ export const postSupplierInvoiceRequestsAttachments = action({
     },
   ) => {
     const client = getClient(connection, context.debug.enabled);
-    const fileName =
-      attachmentDetails.fileName ??
-      (file.suggestedExtension
-        ? `${DEFAULT_ATTACHMENT_FILE_NAME}.${file.suggestedExtension}`
-        : DEFAULT_ATTACHMENT_FILE_NAME);
+    const fileName = getAttachmentFileName(file, attachmentDetails.fileName);
     const { body, headers } = createMultipartBody(
       {
         fileName,

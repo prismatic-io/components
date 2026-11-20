@@ -24,7 +24,7 @@ export const businessTitleChangeDetailSchema = {
     initiator: instanceReferenceSchema,
     initiated: {
       type: "string",
-      format: "date",
+      format: "date-time",
     },
     descriptor: {
       type: "string",
@@ -48,6 +48,12 @@ export const getCustomerByIdOutputSchema = {
       type: "string",
     },
     id: {
+      type: "string",
+    },
+    Customer_Reference_ID: {
+      type: "string",
+    },
+    Customer_ID: {
       type: "string",
     },
   },

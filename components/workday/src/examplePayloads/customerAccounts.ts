@@ -2,9 +2,9 @@ export const listInvoicesExamplePayload = {
   data: {
     data: [
       {
-        invoiceDate: "2024-06-08T07:00:00.000Z",
+        invoiceDate: "2024-06-08",
         transactionType: "Invoice",
-        withholdingAmount: { value: 0, currency: "USD" },
+        withholdingAmount: { value: "0.00", currency: "USD" },
         company: {
           id: "3aa5550b7fe348b98d7b5741afc65534",
           descriptor: "Global Modern Services, Inc. (USA)",
@@ -14,9 +14,9 @@ export const listInvoicesExamplePayload = {
           descriptor: "Acme Corporation",
         },
         inCollection: true,
-        netAmount: { value: 1250, currency: "USD" },
-        disputeAmount: { value: 0, currency: "USD" },
-        dueAmount: { value: 1250, currency: "USD" },
+        netAmount: { value: "1250.00", currency: "USD" },
+        disputeAmount: { value: "0.00", currency: "USD" },
+        dueAmount: { value: "1250.00", currency: "USD" },
         invoiceType: {
           descriptor: "Invoice",
         },
@@ -28,11 +28,11 @@ export const listInvoicesExamplePayload = {
             descriptor: "Invoice Adjustment",
           },
         ],
-        taxAmount: { value: 112.5, currency: "USD" },
+        taxAmount: { value: "112.50", currency: "USD" },
         adjustmentReason: {
           descriptor: "Personal",
         },
-        disputeDate: "2024-06-08T07:00:00.000Z",
+        disputeDate: "2024-06-08",
         paymentStatus: {
           id: "51c4a636bcbc4331b921a1e37b18f6f0",
           descriptor: "Approved",
@@ -45,7 +45,7 @@ export const listInvoicesExamplePayload = {
         currency: {
           descriptor: "USD",
         },
-        dueDate: "2024-06-08T07:00:00.000Z",
+        dueDate: "2024-06-08",
         memo: "Monthly office supplies",
         inDispute: true,
         billToCustomerAddress: {
@@ -77,8 +77,8 @@ export const listInvoicesExamplePayload = {
           descriptor: "Approved",
           id: "a1b2c3d4e5f60718293a4b5c6d7e8f90",
         },
-        retentionAmount: { value: 0, currency: "USD" },
-        totalAmount: { value: 1362.5, currency: "USD" },
+        retentionAmount: { value: "0.00", currency: "USD" },
+        totalAmount: { value: "1362.50", currency: "USD" },
         invoiceNumber: "INV-0001234",
         descriptor: "Customer Invoice INV-0001234",
         id: "7c6b5a4938271605f4e3d2c1b0a99887",
@@ -91,9 +91,9 @@ export const listInvoicesExamplePayload = {
 
 export const getInvoiceByIdExamplePayload = {
   data: {
-    invoiceDate: "2024-06-08T07:00:00.000Z",
+    invoiceDate: "2024-06-08",
     transactionType: "Invoice",
-    withholdingAmount: { value: 0, currency: "USD" },
+    withholdingAmount: { value: "0.00", currency: "USD" },
     company: {
       id: "3aa5550b7fe348b98d7b5741afc65599",
       descriptor: "Global Modern Services, Inc. (USA)",
@@ -103,9 +103,9 @@ export const getInvoiceByIdExamplePayload = {
       descriptor: "Acme Corporation",
     },
     inCollection: true,
-    netAmount: { value: 1250, currency: "USD" },
-    disputeAmount: { value: 0, currency: "USD" },
-    dueAmount: { value: 1250, currency: "USD" },
+    netAmount: { value: "1250.00", currency: "USD" },
+    disputeAmount: { value: "0.00", currency: "USD" },
+    dueAmount: { value: "1250.00", currency: "USD" },
     invoiceType: {
       descriptor: "Invoice",
     },
@@ -117,11 +117,11 @@ export const getInvoiceByIdExamplePayload = {
         descriptor: "Invoice Adjustment",
       },
     ],
-    taxAmount: { value: 112.5, currency: "USD" },
+    taxAmount: { value: "112.50", currency: "USD" },
     adjustmentReason: {
       descriptor: "Personal",
     },
-    disputeDate: "2024-06-08T07:00:00.000Z",
+    disputeDate: "2024-06-08",
     paymentStatus: {
       id: "51c4a636bcbc4331b921a1e37b18f6f1",
       descriptor: "Approved",
@@ -134,7 +134,7 @@ export const getInvoiceByIdExamplePayload = {
     currency: {
       descriptor: "USD",
     },
-    dueDate: "2024-06-08T07:00:00.000Z",
+    dueDate: "2024-06-08",
     memo: "Monthly office supplies",
     inDispute: true,
     billToCustomerAddress: {
@@ -166,8 +166,8 @@ export const getInvoiceByIdExamplePayload = {
       descriptor: "Approved",
       id: "a1b2c3d4e5f60718293a4b5c6d7e8f91",
     },
-    retentionAmount: { value: 0, currency: "USD" },
-    totalAmount: { value: 1362.5, currency: "USD" },
+    retentionAmount: { value: "0.00", currency: "USD" },
+    totalAmount: { value: "1362.50", currency: "USD" },
     invoiceNumber: "INV-0001234",
     descriptor: "Customer Invoice INV-0001234",
     id: "7c6b5a4938271605f4e3d2c1b0a99888",
@@ -191,13 +191,13 @@ export const postPaymentExamplePayload = {
     readyToAutoApply: true,
     transactionNumber: "REF-0001",
     reference: "REF-0001",
-    amount: { value: 1250, currency: "USD" },
+    amount: { value: "1250.00", currency: "USD" },
     type: {
       id: "c3d4e5f6a708192a3b4c5d6e7f809112",
       descriptor: "Payment",
       href: "https://wd2-impl-services1.workday.com/ccx/api/v1/gms/types/c3d4e5f6a708192a3b4c5d6e7f809112",
     },
-    date: "2024-06-08T07:00:00.000Z",
+    date: "2024-06-08",
     company: {
       id: "d4e5f6a708192a3b4c5d6e7f80911223",
       descriptor: "Global Modern Services, Inc. (USA)",

@@ -47,8 +47,8 @@ export const instanceDescriptor = input({
   type: "string",
   example: "Logan McNeil",
   placeholder: "Enter instance descriptor",
-  required: true,
-  clean: util.types.toString,
+  required: false,
+  clean: cleanStringInput,
 });
 
 export const instanceId = input({
@@ -57,18 +57,24 @@ export const instanceId = input({
   type: "string",
   example: "3aa5550b7fe348b98d7b5741afc65534",
   placeholder: "Enter instance ID",
-  required: true,
-  clean: util.types.toString,
+  required: false,
+  clean: cleanStringInput,
 });
 
 export const instanceHref = input({
   label: "Instance Href",
   comments: "Direct API link pointing to the referenced instance.",
   type: "string",
-  example: "",
   placeholder: "Enter instance href",
-  required: true,
-  clean: util.types.toString,
+  required: false,
+  clean: cleanStringInput,
+});
+
+export const instanceReference = structuredObjectInput({
+  label: "Instance Reference",
+  required: false,
+  comments: "ID, href, and descriptor of the referenced instance.",
+  inputs: { instanceId, instanceHref, instanceDescriptor },
 });
 
 export const referenceId = input({

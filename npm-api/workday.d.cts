@@ -1,4 +1,3 @@
-/// <reference types="node" />
 interface WorkdayListResponse<T = unknown> {
   total: number;
   data: T[];
@@ -238,6 +237,33 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         dataSource: string;
         clean: (value: unknown, defaultValue?: string) => string;
       };
+      calendarDate: {
+        label: string;
+        comments: string;
+        type: "string";
+        required: false;
+        example: string;
+        placeholder: string;
+        clean: (value: unknown) => string | undefined;
+      };
+      reportedQuantity: {
+        label: string;
+        comments: string;
+        type: "string";
+        required: false;
+        example: string;
+        placeholder: string;
+        clean: (value: unknown) => number | undefined;
+      };
+      timeEntryCodeId: {
+        label: string;
+        comments: string;
+        type: "string";
+        required: false;
+        example: string;
+        placeholder: string;
+        clean: (value: unknown) => string | undefined;
+      };
       doNotBill: {
         label: string;
         comments: string;
@@ -255,22 +281,22 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         clean: (value: unknown) => string | undefined;
       };
       instanceId: {
-        required: boolean;
         label: string;
         comments: string;
         type: "string";
         example: string;
         placeholder: string;
-        clean: (value: unknown, defaultValue?: string) => string;
+        required: false;
+        clean: (value: unknown) => string | undefined;
       };
       instanceDescriptor: {
-        required: boolean;
         label: string;
         comments: string;
         type: "string";
         example: string;
         placeholder: string;
-        clean: (value: unknown, defaultValue?: string) => string;
+        required: false;
+        clean: (value: unknown) => string | undefined;
       };
       extraBody: {
         comments: string;
@@ -301,32 +327,40 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         required: true;
         clean: (value: unknown, defaultValue?: string) => string;
       };
-      instanceDescriptor: {
+      instanceReference: {
         label: string;
+        required: boolean;
         comments: string;
-        type: "string";
-        example: string;
-        placeholder: string;
-        required: true;
-        clean: (value: unknown, defaultValue?: string) => string;
-      };
-      instanceHref: {
-        label: string;
-        comments: string;
-        type: "string";
-        example: string;
-        placeholder: string;
-        required: true;
-        clean: (value: unknown, defaultValue?: string) => string;
-      };
-      instanceId: {
-        label: string;
-        comments: string;
-        type: "string";
-        example: string;
-        placeholder: string;
-        required: true;
-        clean: (value: unknown, defaultValue?: string) => string;
+        inputs: {
+          instanceId: {
+            label: string;
+            comments: string;
+            type: "string";
+            example: string;
+            placeholder: string;
+            required: false;
+            clean: (value: unknown) => string | undefined;
+          };
+          instanceHref: {
+            label: string;
+            comments: string;
+            type: "string";
+            placeholder: string;
+            required: false;
+            clean: (value: unknown) => string | undefined;
+          };
+          instanceDescriptor: {
+            label: string;
+            comments: string;
+            type: "string";
+            example: string;
+            placeholder: string;
+            required: false;
+            clean: (value: unknown) => string | undefined;
+          };
+        };
+      } & {
+        type: "structuredObject";
       };
       clockEventOverrideRate: {
         label: string;
@@ -427,6 +461,33 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         placeholder: string;
         clean: (value: unknown) => unknown;
       };
+      calendarDate: {
+        label: string;
+        comments: string;
+        type: "string";
+        required: false;
+        example: string;
+        placeholder: string;
+        clean: (value: unknown) => string | undefined;
+      };
+      reportedQuantity: {
+        label: string;
+        comments: string;
+        type: "string";
+        required: false;
+        example: string;
+        placeholder: string;
+        clean: (value: unknown) => number | undefined;
+      };
+      timeEntryCodeId: {
+        label: string;
+        comments: string;
+        type: "string";
+        required: false;
+        example: string;
+        placeholder: string;
+        clean: (value: unknown) => string | undefined;
+      };
       comment: {
         label: string;
         comments: string;
@@ -436,22 +497,22 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         clean: (value: unknown) => string | undefined;
       };
       instanceId: {
-        required: boolean;
         label: string;
         comments: string;
         type: "string";
         example: string;
         placeholder: string;
-        clean: (value: unknown, defaultValue?: string) => string;
+        required: false;
+        clean: (value: unknown) => string | undefined;
       };
       instanceDescriptor: {
-        required: boolean;
         label: string;
         comments: string;
         type: "string";
         example: string;
         placeholder: string;
-        clean: (value: unknown, defaultValue?: string) => string;
+        required: false;
+        clean: (value: unknown) => string | undefined;
       };
       connection: {
         label: string;
@@ -728,6 +789,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         placeholder: string;
         required: false;
         clean: (value: unknown) => string | undefined;
+        dataSource: string;
       };
       locationId: {
         label: string;
@@ -1315,21 +1377,21 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
       };
       displayName: {
         required: boolean;
+        clean: (value: unknown) => string | undefined;
         label: string;
         comments: string;
         type: "string";
         example: string;
         placeholder: string;
-        clean: (value: unknown, defaultValue?: string) => string;
       };
       name: {
         required: boolean;
+        clean: (value: unknown) => string | undefined;
         label: string;
         comments: string;
         type: "string";
         example: string;
         placeholder: string;
-        clean: (value: unknown, defaultValue?: string) => string;
       };
       fields: {
         required: boolean;
@@ -1821,8 +1883,18 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         example: string;
         placeholder: string;
         clean: (value: unknown) => string | undefined;
+        dataSource: string;
       };
       amount: {
+        label: string;
+        comments: string;
+        type: "string";
+        required: false;
+        example: string;
+        placeholder: string;
+        clean: (value: unknown) => string | undefined;
+      };
+      currency: {
         label: string;
         comments: string;
         type: "string";
@@ -1847,7 +1919,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         required: false;
         example: string;
         placeholder: string;
-        clean: (value: unknown) => Date | undefined;
+        clean: (value: unknown) => string | undefined;
       };
       companyId: {
         label: string;
@@ -2022,6 +2094,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         type: "string";
         placeholder: string;
         example: string;
+        dataSource: string;
       };
       createdById: {
         label: string;
@@ -2256,13 +2329,14 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
           };
           contacts: {
             label: string;
-            type: "code";
-            language: "json";
+            type: "string";
+            collection: "valuelist";
             comments: string;
             required: false;
             placeholder: string;
             example: string;
-            clean: (value: unknown) => unknown[] | undefined;
+            clean: (value: unknown) => string[] | undefined;
+            dataSource: string;
           };
         };
       } & {
@@ -2270,12 +2344,12 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
       };
       messageTemplateId: {
         required: boolean;
+        clean: (value: unknown) => string | undefined;
         label: string;
         comments: string;
         type: "string";
         example: string;
         placeholder: string;
-        clean: (value: unknown, defaultValue?: string) => string;
         dataSource: string;
       };
       notificationTypeId: {
@@ -2286,6 +2360,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         example: string;
         required: false;
         clean: (value: unknown) => string | undefined;
+        dataSource: string;
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
       data: any;
@@ -2320,6 +2395,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         type: "string";
         placeholder: string;
         example: string;
+        dataSource: string;
       };
       createdById: {
         label: string;
@@ -2482,6 +2558,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         example: string;
         placeholder: string;
         clean: (value: unknown, defaultValue?: string) => string;
+        dataSource: string;
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
       data: any;
@@ -2659,6 +2736,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         placeholder: string;
         required: true;
         clean: (value: unknown, defaultValue?: string) => string;
+        dataSource: string;
       };
       jobChangeReasonId: {
         label: string;
@@ -2714,32 +2792,40 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
       } & {
         type: "structuredObject";
       };
-      instanceId: {
+      instanceReference: {
         label: string;
+        required: boolean;
         comments: string;
-        type: "string";
-        example: string;
-        placeholder: string;
-        required: true;
-        clean: (value: unknown, defaultValue?: string) => string;
-      };
-      instanceHref: {
-        label: string;
-        comments: string;
-        type: "string";
-        example: string;
-        placeholder: string;
-        required: true;
-        clean: (value: unknown, defaultValue?: string) => string;
-      };
-      instanceDescriptor: {
-        label: string;
-        comments: string;
-        type: "string";
-        example: string;
-        placeholder: string;
-        required: true;
-        clean: (value: unknown, defaultValue?: string) => string;
+        inputs: {
+          instanceId: {
+            label: string;
+            comments: string;
+            type: "string";
+            example: string;
+            placeholder: string;
+            required: false;
+            clean: (value: unknown) => string | undefined;
+          };
+          instanceHref: {
+            label: string;
+            comments: string;
+            type: "string";
+            placeholder: string;
+            required: false;
+            clean: (value: unknown) => string | undefined;
+          };
+          instanceDescriptor: {
+            label: string;
+            comments: string;
+            type: "string";
+            example: string;
+            placeholder: string;
+            required: false;
+            clean: (value: unknown) => string | undefined;
+          };
+        };
+      } & {
+        type: "structuredObject";
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
       data: any;
@@ -2770,32 +2856,40 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         required: true;
         clean: (value: unknown, defaultValue?: string) => string;
       };
-      instanceId: {
+      instanceReference: {
         label: string;
+        required: boolean;
         comments: string;
-        type: "string";
-        example: string;
-        placeholder: string;
-        required: true;
-        clean: (value: unknown, defaultValue?: string) => string;
-      };
-      instanceHref: {
-        label: string;
-        comments: string;
-        type: "string";
-        example: string;
-        placeholder: string;
-        required: true;
-        clean: (value: unknown, defaultValue?: string) => string;
-      };
-      instanceDescriptor: {
-        label: string;
-        comments: string;
-        type: "string";
-        example: string;
-        placeholder: string;
-        required: true;
-        clean: (value: unknown, defaultValue?: string) => string;
+        inputs: {
+          instanceId: {
+            label: string;
+            comments: string;
+            type: "string";
+            example: string;
+            placeholder: string;
+            required: false;
+            clean: (value: unknown) => string | undefined;
+          };
+          instanceHref: {
+            label: string;
+            comments: string;
+            type: "string";
+            placeholder: string;
+            required: false;
+            clean: (value: unknown) => string | undefined;
+          };
+          instanceDescriptor: {
+            label: string;
+            comments: string;
+            type: "string";
+            example: string;
+            placeholder: string;
+            required: false;
+            clean: (value: unknown) => string | undefined;
+          };
+        };
+      } & {
+        type: "structuredObject";
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
       data: any;
@@ -2842,6 +2936,16 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         required: true;
         comments: string;
       };
+      workerId: {
+        comments: string;
+        required: false;
+        clean: (value: unknown) => string | undefined;
+        label: string;
+        type: "string";
+        example: string;
+        placeholder: string;
+        dataSource: string;
+      };
       eventId: {
         label: string;
         comments: string;
@@ -2861,6 +2965,16 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         type: "connection";
         required: true;
         comments: string;
+      };
+      workerId: {
+        comments: string;
+        required: false;
+        clean: (value: unknown) => string | undefined;
+        label: string;
+        type: "string";
+        example: string;
+        placeholder: string;
+        dataSource: string;
       };
       eventId: {
         label: string;
@@ -2926,6 +3040,16 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         type: "connection";
         required: true;
         comments: string;
+      };
+      workerId: {
+        comments: string;
+        label: string;
+        type: "string";
+        example: string;
+        placeholder: string;
+        required: true;
+        dataSource: string;
+        clean: (value: unknown, defaultValue?: string) => string;
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
       data: unknown;
@@ -3107,6 +3231,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
             example: string;
             placeholder: string;
             clean: (value: unknown) => string | undefined;
+            dataSource: string;
           };
           taxAmount: {
             label: string;
@@ -3130,32 +3255,139 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
       } & {
         type: "structuredObject";
       };
-      requesterId: {
+      lines: {
         label: string;
         comments: string;
-        type: "string";
-        required: false;
-        example: string;
-        placeholder: string;
-        clean: (value: unknown) => string | undefined;
+        collection: "valuelist";
+        required: boolean;
+        inputs: {
+          itemDescription: {
+            label: string;
+            comments: string;
+            type: "string";
+            required: false;
+            example: string;
+            placeholder: string;
+            clean: (value: unknown) => string | undefined;
+          };
+          quantity: {
+            label: string;
+            comments: string;
+            type: "string";
+            required: false;
+            example: string;
+            placeholder: string;
+            clean: (value: unknown) => number | undefined;
+          };
+          unitCost: {
+            label: string;
+            comments: string;
+            type: "string";
+            required: false;
+            example: string;
+            placeholder: string;
+            clean: (value: unknown) => string | undefined;
+          };
+          extendedAmount: {
+            label: string;
+            comments: string;
+            type: "string";
+            required: false;
+            example: string;
+            placeholder: string;
+            clean: (value: unknown) => string | undefined;
+          };
+          memo: {
+            label: string;
+            comments: string;
+            type: "string";
+            required: false;
+            example: string;
+            placeholder: string;
+            clean: (value: unknown) => string | undefined;
+          };
+          internalMemo: {
+            label: string;
+            comments: string;
+            type: "string";
+            required: false;
+            example: string;
+            placeholder: string;
+            clean: (value: unknown) => string | undefined;
+          };
+          billable: {
+            label: string;
+            comments: string;
+            type: "boolean";
+            required: false;
+            clean: (value: unknown) => boolean | undefined;
+          };
+          spendCategoryId: {
+            label: string;
+            comments: string;
+            type: "string";
+            required: false;
+            example: string;
+            placeholder: string;
+            clean: (value: unknown) => string | undefined;
+          };
+          itemId: {
+            label: string;
+            comments: string;
+            type: "string";
+            required: false;
+            example: string;
+            placeholder: string;
+            clean: (value: unknown) => string | undefined;
+          };
+          unitOfMeasureId: {
+            label: string;
+            comments: string;
+            type: "string";
+            required: false;
+            example: string;
+            placeholder: string;
+            clean: (value: unknown) => string | undefined;
+          };
+        };
+      } & {
+        type: "structuredObject";
       };
-      paymentTermsId: {
+      assignmentIds: {
         label: string;
+        required: boolean;
         comments: string;
-        type: "string";
-        required: false;
-        example: string;
-        placeholder: string;
-        clean: (value: unknown) => string | undefined;
-      };
-      referenceTypeId: {
-        label: string;
-        comments: string;
-        type: "string";
-        required: false;
-        example: string;
-        placeholder: string;
-        clean: (value: unknown) => string | undefined;
+        inputs: {
+          requesterId: {
+            label: string;
+            comments: string;
+            type: "string";
+            required: false;
+            example: string;
+            placeholder: string;
+            clean: (value: unknown) => string | undefined;
+          };
+          paymentTermsId: {
+            label: string;
+            comments: string;
+            type: "string";
+            required: false;
+            example: string;
+            placeholder: string;
+            clean: (value: unknown) => string | undefined;
+          };
+          referenceTypeId: {
+            label: string;
+            comments: string;
+            type: "string";
+            required: false;
+            example: string;
+            placeholder: string;
+            clean: (value: unknown) => string | undefined;
+          };
+        };
+      } & {
+        type: "structuredObject";
       };
       memo: {
         label: string;
@@ -3301,19 +3533,19 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         label: string;
         comments: string;
         type: "string";
-        required: true;
+        required: false;
         example: string;
         placeholder: string;
-        clean: (value: unknown, defaultValue?: string) => string;
+        clean: (value: unknown) => string | undefined;
       };
       supplierInvoiceInstanceDescriptor: {
         label: string;
         comments: string;
         type: "string";
-        required: true;
+        required: false;
         example: string;
         placeholder: string;
-        clean: (value: unknown, defaultValue?: string) => string;
+        clean: (value: unknown) => string | undefined;
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
       data: any;
@@ -3402,6 +3634,79 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
       data: unknown;
     }>;
+    listTimeOffBalances: import("@prismatic-io/spectral").ActionDefinition<{
+      balanceCategoryId: {
+        label: string;
+        comments: string;
+        type: "string";
+        placeholder: string;
+        example: string;
+        required: false;
+        clean: (value: unknown) => string | undefined;
+      };
+      balanceEffectiveDate: {
+        label: string;
+        comments: string;
+        type: "string";
+        placeholder: string;
+        example: string;
+        required: false;
+        clean: (value: unknown) => string | undefined;
+      };
+      fetchAll: {
+        label: string;
+        type: "boolean";
+        clean: (value: unknown, defaultValue?: boolean) => boolean;
+        comments: string;
+        required: false;
+        default: string;
+      };
+      pagination: {
+        label: string;
+        comments: string;
+        required: boolean;
+        inputs: {
+          limit: {
+            label: string;
+            comments: string;
+            type: "string";
+            example: string;
+            placeholder: string;
+            required: false;
+            clean: (value: unknown) => number | undefined;
+          };
+          offset: {
+            label: string;
+            comments: string;
+            type: "string";
+            example: string;
+            placeholder: string;
+            required: false;
+            clean: (value: unknown) => number | undefined;
+          };
+        };
+      } & {
+        type: "structuredObject";
+      };
+      connection: {
+        label: string;
+        type: "connection";
+        required: true;
+        comments: string;
+      };
+      workerId: {
+        comments: string;
+        label: string;
+        type: "string";
+        example: string;
+        placeholder: string;
+        required: true;
+        dataSource: string;
+        clean: (value: unknown, defaultValue?: string) => string;
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
+      data: unknown;
+    }>;
     postTimeOffRequest: import("@prismatic-io/spectral").ActionDefinition<{
       connection: {
         label: string;
@@ -3422,12 +3727,84 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
       days: {
         label: string;
         comments: string;
-        type: "code";
-        language: "json";
-        example: string;
-        placeholder: string;
-        required: true;
-        clean: (value: unknown) => unknown[] | undefined;
+        collection: "valuelist";
+        required: boolean;
+        inputs: {
+          date: {
+            label: string;
+            comments: string;
+            type: "string";
+            required: false;
+            example: string;
+            placeholder: string;
+            clean: (value: unknown) => string | undefined;
+          };
+          start: {
+            label: string;
+            comments: string;
+            type: "string";
+            required: false;
+            example: string;
+            placeholder: string;
+            clean: (value: unknown) => string | undefined;
+          };
+          end: {
+            label: string;
+            comments: string;
+            type: "string";
+            required: false;
+            example: string;
+            placeholder: string;
+            clean: (value: unknown) => string | undefined;
+          };
+          dailyQuantity: {
+            label: string;
+            comments: string;
+            type: "string";
+            required: false;
+            example: string;
+            placeholder: string;
+            clean: (value: unknown) => number | undefined;
+          };
+          comment: {
+            label: string;
+            comments: string;
+            type: "string";
+            required: false;
+            example: string;
+            placeholder: string;
+            clean: (value: unknown) => string | undefined;
+          };
+          timeOffTypeId: {
+            label: string;
+            comments: string;
+            type: "string";
+            required: false;
+            example: string;
+            placeholder: string;
+            clean: (value: unknown) => string | undefined;
+          };
+          reasonId: {
+            label: string;
+            comments: string;
+            type: "string";
+            required: false;
+            example: string;
+            placeholder: string;
+            clean: (value: unknown) => string | undefined;
+          };
+          positionId: {
+            label: string;
+            comments: string;
+            type: "string";
+            required: false;
+            example: string;
+            placeholder: string;
+            clean: (value: unknown) => string | undefined;
+          };
+        };
+      } & {
+        type: "structuredObject";
       };
       businessProcessParameters: {
         label: string;
@@ -3600,14 +3977,14 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         required: true;
         clean: (value: unknown, defaultValue?: string) => string;
       };
-      overlapMinutes: {
+      tenant: {
         label: string;
         comments: string;
         type: "string";
         example: string;
         placeholder: string;
         required: false;
-        clean: (value: unknown) => number | undefined;
+        clean: (value: unknown) => string | undefined;
       };
       lookBackDate: {
         label: string;
@@ -3618,14 +3995,14 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         example: string;
         clean: (value: unknown) => string;
       };
-      tenant: {
+      overlapMinutes: {
         label: string;
         comments: string;
         type: "string";
         example: string;
         placeholder: string;
         required: false;
-        clean: (value: unknown) => string | undefined;
+        clean: (value: unknown) => number | undefined;
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, import("@prismatic-io/spectral").TriggerPayload<Record<string, unknown>>, boolean, {
       payload: import("@prismatic-io/spectral").TriggerPayload;
@@ -3655,6 +4032,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         placeholder: string;
         required: false;
         clean: (value: unknown) => string[] | undefined;
+        dataSource: string;
       };
       stepType: {
         label: string;
@@ -3730,7 +4108,6 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         required: false;
         shown: true;
         comments: string;
-        example: string;
       };
     };
   }, "workdayOAuth2Connection"> | import("@prismatic-io/spectral").KeyedConnection<{
@@ -3788,6 +4165,30 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
     };
   }, "workdayRefreshTokenConnection">)[];
   dataSources: {
+    selectBusinessProcessType: import("@prismatic-io/spectral").DataSourceDefinition<{
+      connection: {
+        label: string;
+        type: "connection";
+        required: true;
+        comments: string;
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, "picklist">;
+    selectCurrency: import("@prismatic-io/spectral").DataSourceDefinition<{
+      connection: {
+        label: string;
+        type: "connection";
+        required: true;
+        comments: string;
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, "picklist">;
+    selectCustomer: import("@prismatic-io/spectral").DataSourceDefinition<{
+      connection: {
+        label: string;
+        type: "connection";
+        required: true;
+        comments: string;
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, "picklist">;
     selectDataChange: import("@prismatic-io/spectral").DataSourceDefinition<{
       connection: {
         label: string;
@@ -3812,6 +4213,16 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         required: true;
         comments: string;
       };
+      workerId: {
+        comments: string;
+        dataSource: undefined;
+        required: false;
+        clean: (value: unknown) => string | undefined;
+        label: string;
+        type: "string";
+        example: string;
+        placeholder: string;
+      };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, "picklist">;
     selectInvoice: import("@prismatic-io/spectral").DataSourceDefinition<{
       connection: {
@@ -3822,6 +4233,14 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, "picklist">;
     selectMessageTemplate: import("@prismatic-io/spectral").DataSourceDefinition<{
+      connection: {
+        label: string;
+        type: "connection";
+        required: true;
+        comments: string;
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, "picklist">;
+    selectNotificationType: import("@prismatic-io/spectral").DataSourceDefinition<{
       connection: {
         label: string;
         type: "connection";
@@ -3847,6 +4266,14 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, "picklist">;
     selectPerson: import("@prismatic-io/spectral").DataSourceDefinition<{
+      connection: {
+        label: string;
+        type: "connection";
+        required: true;
+        comments: string;
+      };
+    }, import("@prismatic-io/spectral").ConfigVarResultCollection, "picklist">;
+    selectSupervisoryOrganization: import("@prismatic-io/spectral").DataSourceDefinition<{
       connection: {
         label: string;
         type: "connection";

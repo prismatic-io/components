@@ -4,7 +4,7 @@ import { SERVICES } from "../constants";
 import { selectInvoiceExamplePayload } from "../examplePayloads";
 import { selectInvoiceInputs } from "../inputs";
 import type { CustomerInvoiceSummary } from "../types";
-import { toSortedPicklist } from "../util";
+import { paginateResults, toSortedPicklist } from "../util";
 
 export const selectInvoice = dataSource({
   display: {
@@ -14,10 +14,14 @@ export const selectInvoice = dataSource({
   inputs: selectInvoiceInputs,
   perform: async (_context, { connection }) => {
     const client = getClient(connection, false);
-    const { data } = await client.get(`${SERVICES.customerAccounts}/invoices`);
+    const { data } = await paginateResults({
+      client,
+      endpoint: `${SERVICES.customerAccounts}/invoices`,
+      fetchAll: true,
+    });
 
     return {
-      result: toSortedPicklist(data.data, (item: CustomerInvoiceSummary) => ({
+      result: toSortedPicklist(data as CustomerInvoiceSummary[], (item) => ({
         key: item.id,
         label: item.invoiceNumber,
       })),

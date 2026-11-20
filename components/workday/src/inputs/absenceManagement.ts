@@ -1,6 +1,11 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
-import { SERVICES, WORKDAY_API_DOCS_URL } from "../constants";
-import { cleanArrayCodeInput, cleanStringInput } from "../util";
+import { SERVICE_VERSIONS, WORKDAY_API_DOCS_URL } from "../constants";
+import {
+  cleanArrayCodeInput,
+  cleanDateOnlyInput,
+  cleanNumberInput,
+  cleanStringInput,
+} from "../util";
 import {
   connection,
   paginationQueryStringInputs,
@@ -38,32 +43,87 @@ const balanceId = input({
   clean: util.types.toString,
 });
 
-const days = input({
+const days = structuredObjectInput({
   label: "Days",
-  comments: `The days for which the time off request is being made. An array of objects. See [Workday API documentation](${WORKDAY_API_DOCS_URL}#${SERVICES.absenceManagement.slice(1)}/post-/workers/-ID-/requestTimeOff) for more information.`,
-  type: "code",
-  language: "json",
-  example: JSON.stringify(
-    [
-      {
-        date: "2024-06-08T07:00:00.000Z",
-        start: "2024-06-08T07:00:00.000Z",
-        position: {
-          id: "9f3f3b7329154567b202c469209c4773",
-          descriptor: "Senior Software Engineer",
-        },
-        end: "2024-06-08T07:00:00.000Z",
-        reason: {
-          id: "7715acc1ec5c4cab881cf161eedecea7",
-        },
-      },
-    ],
-    null,
-    2,
-  ),
-  placeholder: "Enter time off days as a JSON array",
+  comments: `The days to request off; each row is one day. Each row needs a Date and a Time Off Type ID. See [Workday API documentation](${WORKDAY_API_DOCS_URL}#${SERVICE_VERSIONS.absenceManagement}/post-/workers/-ID-/requestTimeOff) for more information.`,
+  collection: "valuelist",
   required: true,
-  clean: (value: unknown) => cleanArrayCodeInput(value, "Days"),
+  inputs: {
+    date: input({
+      label: "Date",
+      comments: "The date of the time off entry, in ISO 8601 format.",
+      type: "string",
+      required: false,
+      example: "2024-06-08",
+      placeholder: "Enter date (YYYY-MM-DD)",
+      clean: cleanStringInput,
+    }),
+    start: input({
+      label: "Start",
+      comments:
+        "The start time of the time off entry, as an ISO 8601 date-time.",
+      type: "string",
+      required: false,
+      example: "2024-06-08T09:00:00.000Z",
+      placeholder: "Enter start date-time",
+      clean: cleanStringInput,
+    }),
+    end: input({
+      label: "End",
+      comments: "The end time of the time off entry, as an ISO 8601 date-time.",
+      type: "string",
+      required: false,
+      example: "2024-06-08T17:00:00.000Z",
+      placeholder: "Enter end date-time",
+      clean: cleanStringInput,
+    }),
+    dailyQuantity: input({
+      label: "Daily Quantity",
+      comments:
+        "The number of days or hours for this time off entry, as a number.",
+      type: "string",
+      required: false,
+      example: "8",
+      placeholder: "Enter daily quantity",
+      clean: cleanNumberInput,
+    }),
+    comment: input({
+      label: "Comment",
+      comments: "The comment on the time off entry.",
+      type: "string",
+      required: false,
+      example: "Family vacation",
+      placeholder: "Enter comment",
+      clean: cleanStringInput,
+    }),
+    timeOffTypeId: input({
+      label: "Time Off Type ID",
+      comments: "Identifies the time off type, such as vacation or sick time.",
+      type: "string",
+      required: false,
+      example: "b35340ce4321102030f8b5a848bc0000",
+      placeholder: "Enter time off type ID",
+      clean: cleanStringInput,
+    }),
+    reasonId: input({
+      label: "Reason ID",
+      comments: "Identifies the reason for the time off entry.",
+      type: "string",
+      required: false,
+      example: "7715acc1ec5c4cab881cf161eedecea7",
+      placeholder: "Enter reason ID",
+      clean: cleanStringInput,
+    }),
+    positionId: input({
+      label: "Position ID",
+      comments: "Identifies the worker position the time off entry applies to.",
+      type: "string",
+      required: false,
+      example: "9f3f3b7329154567b202c469209c4773",
+      placeholder: "Enter position ID",
+      clean: cleanStringInput,
+    }),
+  },
 });
 
 const timeOffComment = input({
@@ -95,7 +155,7 @@ const timeOffAttachments = input({
   example: JSON.stringify(
     [
       {
-        comments: "Doctor's note for medical leave.",
+        description: "Doctor's note for medical leave.",
         contentType: {
           id: "32168fad8bd144a78fc6289eddfca75e",
         },
@@ -144,6 +204,39 @@ const businessProcessParameters = structuredObjectInput({
   },
 });
 
+const balanceCategoryId = input({
+  label: "Category ID",
+  comments:
+    "Workday ID of a time off type, leave of absence type, or absence table that limits the balances returned. Returns every category when empty.",
+  type: "string",
+  placeholder: "Enter category ID",
+  example: "7bd6531c90c100016d4b06f2b8a07ce",
+  required: false,
+  clean: cleanStringInput,
+});
+
+const balanceEffectiveDate = input({
+  label: "Effective Date",
+  comments:
+    "Returns balances as of this date. Accepts an ISO 8601 date (YYYY-MM-DD) or date-time; only the date is sent. Defaults to today in Workday.",
+  type: "string",
+  placeholder: "Enter effective date (YYYY-MM-DD)",
+  example: "2026-11-17",
+  required: false,
+  clean: cleanDateOnlyInput("Effective Date"),
+});
+
+export const listTimeOffBalancesInputs = {
+  connection,
+  workerId: {
+    ...workerId,
+    comments: "Identifies the worker whose time off balances to list.",
+  },
+  ...paginationQueryStringInputs,
+  balanceCategoryId,
+  balanceEffectiveDate,
+};
+
 export const getTimeOffBalanceByIdInputs = { connection, balanceId };
 
 export const getTimeOffDetailsInputs = {
@@ -152,7 +245,7 @@ export const getTimeOffDetailsInputs = {
   ...paginationQueryStringInputs,
   extraParameters: {
     ...extraParameters,
-    comments: `${extraParameters.comments} See optional (QUERY-STRING PARAMETERS) in the [Workday API documentation](${WORKDAY_API_DOCS_URL}#${SERVICES.absenceManagement.slice(1)}/get-/workers/-ID-/timeOffDetails).`,
+    comments: `${extraParameters.comments} See optional (QUERY-STRING PARAMETERS) in the [Workday API documentation](${WORKDAY_API_DOCS_URL}#${SERVICE_VERSIONS.absenceManagement}/get-/workers/-ID-/timeOffDetails).`,
   },
 };
 

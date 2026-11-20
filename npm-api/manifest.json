@@ -1003,9 +1003,9 @@
   },
   "workday": {
     "name": "@prismatic-io/components-workday",
-    "version": "0.4.0",
-    "build": "8e9b7ce356b4d0087929be54b1884f930bde301903aa1d4a229876195fc71153",
-    "spectral": "^10.39.1"
+    "version": "0.5.0",
+    "build": "a1f5168510a3c18025cb6850bd5045abbd2f553382ea45971c15a16b37b0f15c",
+    "spectral": "^10.39.3"
   },
   "xai-grok": {
     "name": "@prismatic-io/components-xai-grok",

@@ -4,7 +4,7 @@ import { SERVICES } from "../constants";
 import { selectWorkerExamplePayload } from "../examplePayloads";
 import { selectWorkerInputs } from "../inputs";
 import type { WorkdayWorkerSummary } from "../types";
-import { toSortedPicklist } from "../util";
+import { paginateResults, toSortedPicklist } from "../util";
 
 export const selectWorker = dataSource({
   display: {
@@ -14,12 +14,16 @@ export const selectWorker = dataSource({
   inputs: selectWorkerInputs,
   perform: async (_context, { connection }) => {
     const client = getClient(connection, false);
-    const { data } = await client.get(`${SERVICES.timeTracking}/workers`);
+    const { data } = await paginateResults({
+      client,
+      endpoint: `${SERVICES.timeTracking}/workers`,
+      fetchAll: true,
+    });
 
     return {
-      result: toSortedPicklist(data.data, (item: WorkdayWorkerSummary) => ({
-        key: item.workerId,
-        label: item.descriptor || item.workerId,
+      result: toSortedPicklist(data as WorkdayWorkerSummary[], (item) => ({
+        key: item.id,
+        label: item.descriptor || item.id,
       })),
     };
   },

@@ -14,7 +14,11 @@ import type {
   WorkdayEndpoint,
   WorkdayHttpError,
 } from "../types";
-import { buildTokenUrl, parseRestApiEndpoint } from "./workdayUrls";
+import {
+  buildTokenUrl,
+  parseRestApiEndpoint,
+  parseTenantFromTokenUrl,
+} from "./workdayUrls";
 
 const tokenCache = new Map<string, CachedToken>();
 const rotatedRefreshTokens = new Map<string, string>();
@@ -42,7 +46,7 @@ export const getConnectionTenant = (
 ): string | undefined =>
   usesRefreshToken(connection)
     ? parseConnectionEndpoint(connection).tenant
-    : undefined;
+    : parseTenantFromTokenUrl(util.types.toString(connection.fields.tokenUrl));
 
 const describeTokenError = (error: unknown): string => {
   const response = (error as WorkdayHttpError).response;

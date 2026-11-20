@@ -3,7 +3,7 @@ import { getClient } from "../../client";
 import { SERVICES } from "../../constants";
 import { postTimeOffRequestExamplePayload } from "../../examplePayloads";
 import { postTimeOffRequestInputs } from "../../inputs";
-import { createMultipartBody, getIdObject } from "../../util";
+import { compactRows, createMultipartBody, getIdObject } from "../../util";
 import { postTimeOffRequestOutputSchema } from "../../outputSchemas";
 
 export const postTimeOffRequest = action({
@@ -15,7 +15,7 @@ export const postTimeOffRequest = action({
   performSafety: "notAllowed",
   perform: async (
     context,
-    { connection, workerId, days, businessProcessParameters = {} },
+    { connection, workerId, days = [], businessProcessParameters = {} },
   ) => {
     const client = getClient(connection, context.debug.enabled);
     const body = {
@@ -31,7 +31,18 @@ export const postTimeOffRequest = action({
         attachments: businessProcessParameters.timeOffAttachments,
         for: getIdObject(businessProcessParameters.timeOffForId),
       },
-      days,
+      days: compactRows(
+        days.map((day) => ({
+          date: day.date,
+          start: day.start,
+          end: day.end,
+          dailyQuantity: day.dailyQuantity,
+          comment: day.comment,
+          timeOffType: getIdObject(day.timeOffTypeId),
+          reason: getIdObject(day.reasonId),
+          position: getIdObject(day.positionId),
+        })),
+      ),
     };
     const multipart = createMultipartBody(body);
     const { data } = await client.post(

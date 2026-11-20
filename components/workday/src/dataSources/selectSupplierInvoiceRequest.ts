@@ -4,7 +4,7 @@ import { SERVICES } from "../constants";
 import { selectSupplierInvoiceRequestExamplePayload } from "../examplePayloads";
 import { selectSupplierInvoiceRequestInputs } from "../inputs";
 import type { WorkdayInstanceSummary } from "../types";
-import { toSortedPicklist } from "../util";
+import { paginateResults, toSortedPicklist } from "../util";
 
 export const selectSupplierInvoiceRequest = dataSource({
   display: {
@@ -15,12 +15,14 @@ export const selectSupplierInvoiceRequest = dataSource({
   inputs: selectSupplierInvoiceRequestInputs,
   perform: async (_context, { connection }) => {
     const client = getClient(connection, false);
-    const { data } = await client.get(
-      `${SERVICES.accountsPayable}/supplierInvoiceRequests`,
-    );
+    const { data } = await paginateResults({
+      client,
+      endpoint: `${SERVICES.accountsPayable}/supplierInvoiceRequests`,
+      fetchAll: true,
+    });
 
     return {
-      result: toSortedPicklist(data.data, (item: WorkdayInstanceSummary) => ({
+      result: toSortedPicklist(data as WorkdayInstanceSummary[], (item) => ({
         key: item.id,
         label: item.descriptor,
       })),

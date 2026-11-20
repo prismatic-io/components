@@ -4,8 +4,8 @@ export const getWorkerBusinessTitleChangesExamplePayload = {
       {
         currentBusinessTitle: "Senior Sales Representative",
         proposedBusinessTitle: "Senior Sales Representative",
-        effective: "2024-06-01T07:00:00.000Z",
-        due: "2024-06-01T07:00:00.000Z",
+        effective: "2024-06-01",
+        due: "2024-06-01",
         initiated: "2024-06-01T07:00:00.000Z",
         initiator: {
           id: "3aa5550b7fe348b98d7b5741afc65534",
@@ -48,7 +48,7 @@ export const postJobChangesExamplePayload = {
       href: "https://wd2-impl-services1.workday.com/ccx/api/v1/gms/jobChangeReasons/1f2e3d4c5b6a7988990a1b2c3d4e5f60",
     },
     moveManagersTeam: true,
-    effective: "2024-06-01T07:00:00.000Z",
+    effective: "2024-06-01",
     proposedOrganizations: [
       {
         id: "a1b2c3d4e5f60718293a4b5c6d7e8f90",

@@ -301,12 +301,6 @@ export const getDataChangesByIdOutputSchema = {
     source: {
       type: "object" as const,
       properties: {
-        id: {
-          type: "string",
-        },
-        name: {
-          type: "string",
-        },
         parms: {
           type: "array",
           items: {

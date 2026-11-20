@@ -281,8 +281,6 @@ export const getDataChangesByIdExamplePayload = {
     displayName: "Monthly Compensation Upload",
     source: {
       sourceType: "UPLOAD",
-      id: "cc67c47133894e099a5f1c0aa88efc48",
-      name: "Monthly Upload",
       parms: [
         {
           fileNamePattern: "*.csv",

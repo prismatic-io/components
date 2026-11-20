@@ -10,18 +10,18 @@ export const listEvents = action({
   display: {
     label: "List Events",
     description:
-      "Retrieves a collection of business process events based on the specified parameters. Exactly one worker parameter must be specified; otherwise, a blank response is returned.",
+      "Retrieves a collection of business process events for the specified worker.",
   },
   performSafety: "notAllowed",
   perform: async (
     context,
-    { connection, extraParameters, fetchAll, pagination = {} },
+    { connection, workerId, extraParameters, fetchAll, pagination = {} },
   ) => {
     const client = getClient(connection, context.debug.enabled);
     return await paginateResults({
       client,
       endpoint: `${SERVICES.businessProcess}/events`,
-      params: extraParameters,
+      params: { ...extraParameters, worker: workerId },
       fetchAll,
       limit: pagination.limit,
       offset: pagination.offset,

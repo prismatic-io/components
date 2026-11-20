@@ -21,13 +21,8 @@ export const postFilesByContainerId = action({
 
     const { data } = await client.post(
       `${SERVICES.prismAnalytics}/${tenant}/fileContainers/${fileContainerId}/files`,
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          ...formData.getHeaders(),
-        },
-      },
+      formData.getBuffer(),
+      { headers: formData.getHeaders() },
     );
 
     return { data };

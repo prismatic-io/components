@@ -13,7 +13,7 @@ export const eventDetailsSchema = {
     },
     completedDate: {
       type: "string",
-      format: "date",
+      format: "date-time",
     },
     status: instanceReferenceSchema,
     effectiveDate: {

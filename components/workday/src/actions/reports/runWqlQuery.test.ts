@@ -4,6 +4,7 @@ import { runWqlQueryExamplePayload } from "../../examplePayloads";
 import {
   mockTokenExchange,
   oauthTestConnection,
+  oauthTestConnectionWithoutTenant,
   refreshTokenTestConnection,
   TEST_HOST,
 } from "../../testHelpers";
@@ -135,7 +136,7 @@ describe("runWqlQuery", () => {
   it("requires a tenant when the connection doesn't include one", async () => {
     await expect(
       invoke(runWqlQuery, {
-        connection: oauthTestConnection(),
+        connection: oauthTestConnectionWithoutTenant(),
         query: QUERY,
         tenant: undefined,
         fetchAll: false,

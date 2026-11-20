@@ -1,5 +1,5 @@
 import {
-  idDescriptorReferenceSchema,
+  currencyAmountSchema,
   instanceReferenceSchema,
   instanceSummaryReferenceSchema,
 } from "./shared";
@@ -14,6 +14,9 @@ export const billToCustomerAddressSchema = {
       type: "object" as const,
       properties: {
         descriptor: {
+          type: "string",
+        },
+        Country_Region_ID: {
           type: "string",
         },
       },
@@ -40,6 +43,9 @@ export const billToCustomerAddressSchema = {
       type: "object" as const,
       properties: {
         descriptor: {
+          type: "string",
+        },
+        "ISO_3166-1_Alpha-3_Code": {
           type: "string",
         },
       },
@@ -72,26 +78,34 @@ export const customerInvoiceSchema = {
     transactionType: {
       type: "string",
     },
-    withholdingAmount: {
+    withholdingAmount: currencyAmountSchema,
+    company: {
       type: "object" as const,
+      properties: {
+        descriptor: {
+          type: "string",
+        },
+        id: {
+          type: "string",
+        },
+        Company_Reference_ID: {
+          type: "string",
+        },
+      },
     },
-    company: idDescriptorReferenceSchema,
     inCollection: {
       type: "boolean",
     },
-    netAmount: {
-      type: "object" as const,
-    },
-    disputeAmount: {
-      type: "object" as const,
-    },
-    dueAmount: {
-      type: "object" as const,
-    },
+    netAmount: currencyAmountSchema,
+    disputeAmount: currencyAmountSchema,
+    dueAmount: currencyAmountSchema,
     invoiceType: {
       type: "object" as const,
       properties: {
         descriptor: {
+          type: "string",
+        },
+        Customer_Invoice_Type_ID: {
           type: "string",
         },
       },
@@ -103,13 +117,14 @@ export const customerInvoiceSchema = {
       type: "array",
       items: instanceSummaryReferenceSchema,
     },
-    taxAmount: {
-      type: "object" as const,
-    },
+    taxAmount: currencyAmountSchema,
     adjustmentReason: {
       type: "object" as const,
       properties: {
         descriptor: {
+          type: "string",
+        },
+        Adjustment_Reason_ID: {
           type: "string",
         },
       },
@@ -118,12 +133,28 @@ export const customerInvoiceSchema = {
       type: "string",
       format: "date",
     },
-    paymentStatus: idDescriptorReferenceSchema,
+    paymentStatus: {
+      type: "object" as const,
+      properties: {
+        descriptor: {
+          type: "string",
+        },
+        id: {
+          type: "string",
+        },
+        Document_Payment_Status_ID: {
+          type: "string",
+        },
+      },
+    },
     relatedInvoice: instanceReferenceSchema,
     currency: {
       type: "object" as const,
       properties: {
         descriptor: {
+          type: "string",
+        },
+        Currency_ID: {
           type: "string",
         },
       },
@@ -139,10 +170,29 @@ export const customerInvoiceSchema = {
           descriptor: {
             type: "string",
           },
+          Dispute_Reason_ID: {
+            type: "string",
+          },
         },
       },
     },
-    billToCustomer: idDescriptorReferenceSchema,
+    billToCustomer: {
+      type: "object" as const,
+      properties: {
+        descriptor: {
+          type: "string",
+        },
+        id: {
+          type: "string",
+        },
+        Customer_Reference_ID: {
+          type: "string",
+        },
+        Customer_ID: {
+          type: "string",
+        },
+      },
+    },
     dueDate: {
       type: "string",
       format: "date",
@@ -151,13 +201,22 @@ export const customerInvoiceSchema = {
       type: "boolean",
     },
     billToCustomerAddress: billToCustomerAddressSchema,
-    invoiceStatus: idDescriptorReferenceSchema,
-    retentionAmount: {
+    invoiceStatus: {
       type: "object" as const,
+      properties: {
+        descriptor: {
+          type: "string",
+        },
+        id: {
+          type: "string",
+        },
+        Document_Status_ID: {
+          type: "string",
+        },
+      },
     },
-    totalAmount: {
-      type: "object" as const,
-    },
+    retentionAmount: currencyAmountSchema,
+    totalAmount: currencyAmountSchema,
     invoiceNumber: {
       type: "string",
     },
@@ -175,7 +234,20 @@ export const customerInvoiceSchema = {
 
 export const getInvoiceByIdOutputSchema = customerInvoiceSchema;
 
-export const getPaymentByIdOutputSchema = idDescriptorReferenceSchema;
+export const getPaymentByIdOutputSchema = {
+  type: "object" as const,
+  properties: {
+    descriptor: {
+      type: "string",
+    },
+    id: {
+      type: "string",
+    },
+    Customer_Payment_for_Invoices_Reference_ID: {
+      type: "string",
+    },
+  },
+};
 
 export const listInvoicesOutputSchema = {
   type: ["object", "array"],
@@ -216,9 +288,7 @@ export const postPaymentOutputSchema = {
       type: "boolean",
     },
     type: instanceReferenceSchema,
-    amount: {
-      type: "object" as const,
-    },
+    amount: currencyAmountSchema,
     descriptor: {
       type: "string",
     },

@@ -16,7 +16,7 @@ import { listOrganizations } from "./listOrganizations";
 import { postJobChanges } from "./postJobChanges";
 import { postWorkerBusinessTitleChange } from "./postWorkerBusinessTitleChange";
 
-const SERVICE = "/ccx/api/common/v1";
+const SERVICE = "/ccx/api/common/v1/acme";
 
 beforeAll(() => nock.disableNetConnect());
 afterAll(() => nock.enableNetConnect());
@@ -176,9 +176,11 @@ describe("postJobChanges", () => {
       ...proposedOrganizations,
       { id: undefined, descriptor: undefined },
     ],
-    instanceId: "inst-1",
-    instanceHref: "https://wd.example.com/inst-1",
-    instanceDescriptor: "Job Change",
+    instanceReference: {
+      instanceId: "inst-1",
+      instanceHref: "https://wd.example.com/inst-1",
+      instanceDescriptor: "Job Change",
+    },
   };
 
   it("sends the mapped body and returns the job change", async () => {
@@ -213,9 +215,11 @@ describe("postWorkerBusinessTitleChange", () => {
     connection: oauthTestConnection(),
     workerId: "w-1",
     proposedBusinessTitle: "Staff Engineer",
-    instanceId: "inst-1",
-    instanceHref: "https://wd.example.com/inst-1",
-    instanceDescriptor: "Title Change",
+    instanceReference: {
+      instanceId: "inst-1",
+      instanceHref: "https://wd.example.com/inst-1",
+      instanceDescriptor: "Title Change",
+    },
   };
 
   it("sends the proposed title and returns the change", async () => {

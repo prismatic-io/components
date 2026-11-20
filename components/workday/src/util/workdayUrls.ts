@@ -1,7 +1,5 @@
+import { REST_API_ENDPOINT, TOKEN_ENDPOINT } from "../constants";
 import type { WorkdayEndpoint } from "../types";
-
-const REST_API_ENDPOINT =
-  /^(https:\/\/[^/?#]+)(\/[^?#]*?)?\/api\/v\d+\/([^/?#]+)\/?$/i;
 
 export const parseRestApiEndpoint = (value: string): WorkdayEndpoint => {
   const match = REST_API_ENDPOINT.exec(value.trim());
@@ -12,6 +10,11 @@ export const parseRestApiEndpoint = (value: string): WorkdayEndpoint => {
   }
   const [, origin, prefix = "", tenant] = match;
   return { baseUrl: `${origin}${prefix}`, tenant: decodeURIComponent(tenant) };
+};
+
+export const parseTenantFromTokenUrl = (value: string): string | undefined => {
+  const match = TOKEN_ENDPOINT.exec(value.trim());
+  return match ? decodeURIComponent(match[1]) : undefined;
 };
 
 export const buildTokenUrl = ({ baseUrl, tenant }: WorkdayEndpoint): string =>

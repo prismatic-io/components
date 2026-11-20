@@ -73,8 +73,53 @@ export const selectTableExamplePayload = {
 export const selectWorkerExamplePayload = {
   result: [
     {
-      key: "21001",
+      key: "581647aedccf9f81f4c9d23b07339186",
       label: "Logan McNeil",
+    },
+  ],
+};
+
+export const selectBusinessProcessTypeExamplePayload = {
+  result: [
+    {
+      key: "3cb0fdb7e3354a05b0a5e1c8a9d0f4b2",
+      label: "Hire",
+    },
+  ],
+};
+
+export const selectCurrencyExamplePayload = {
+  result: [
+    {
+      key: "9e996ffdd3e14da0ba7275d5fa27f3a7",
+      label: "USD",
+    },
+  ],
+};
+
+export const selectCustomerExamplePayload = {
+  result: [
+    {
+      key: "0e44c92412d34b01ace61e80a47aaf6d",
+      label: "Global Modern Services, Inc. (USA)",
+    },
+  ],
+};
+
+export const selectNotificationTypeExamplePayload = {
+  result: [
+    {
+      key: "1f3a5c7e9b0d42f4a6c8e0b2d4f6a8c0",
+      label: "Onboarding",
+    },
+  ],
+};
+
+export const selectSupervisoryOrganizationExamplePayload = {
+  result: [
+    {
+      key: "f5074d9b65654ba68d2c4fafb5a1e4fd",
+      label: "Field Sales - Southern Europe (Jared Ellis)",
     },
   ],
 };

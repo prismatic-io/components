@@ -2,9 +2,7 @@ import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { cleanStringInput } from "../util";
 import {
   connection,
-  instanceDescriptor,
-  instanceHref,
-  instanceId,
+  instanceReference,
   paginationQueryStringInputs,
   extraParameters,
   organizationTypeId,
@@ -30,6 +28,7 @@ const customerId = input({
   example: "8f2e4d6c1b3a49e7a5c0d9f8e7b6a5c4",
   placeholder: "Enter customer ID",
   clean: util.types.toString,
+  dataSource: "selectCustomer",
 });
 
 const supervisoryOrganizationId = input({
@@ -41,6 +40,7 @@ const supervisoryOrganizationId = input({
   placeholder: "Enter supervisory organization ID",
   required: true,
   clean: util.types.toString,
+  dataSource: "selectSupervisoryOrganization",
 });
 
 const jobChangeReasonId = input({
@@ -69,7 +69,7 @@ const effective = input({
   example: "2022-01-01",
   placeholder: "Enter effective date (YYYY-MM-DD)",
   required: true,
-  clean: (value: unknown) => util.types.toDate(value),
+  clean: util.types.toDate,
 });
 
 const proposedOrganizations = structuredObjectInput({
@@ -80,7 +80,7 @@ const proposedOrganizations = structuredObjectInput({
   required: true,
   inputs: {
     id: input({
-      label: "ID",
+      label: "Organization ID",
       comments: "Identifies the Workday organization.",
       type: "string",
       required: false,
@@ -152,16 +152,12 @@ export const postJobChangesInputs = {
   moveManagersTeam,
   effective,
   proposedOrganizations,
-  instanceId,
-  instanceHref,
-  instanceDescriptor,
+  instanceReference,
 };
 
 export const postWorkerBusinessTitleChangeInputs = {
   connection,
   workerId,
   proposedBusinessTitle,
-  instanceId,
-  instanceHref,
-  instanceDescriptor,
+  instanceReference,
 };

@@ -1,5 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
-import { SERVICES, WORKDAY_API_DOCS_URL } from "../constants";
+import { SERVICE_VERSIONS, WORKDAY_API_DOCS_URL } from "../constants";
 import { cleanStringInput } from "../util";
 import {
   extraBody,
@@ -15,9 +15,9 @@ const effectiveDateJobChange = input({
     "The effective date of the job change. Format: ISO 8601 date-time (YYYY-MM-DDTHH:mm:ss.sssZ).",
   type: "string",
   example: "2024-06-01T07:00:00.000Z",
-  placeholder: "Enter effective date",
+  placeholder: "Enter effective date (ISO 8601 date-time)",
   required: true,
-  clean: (value: unknown) => util.types.toDate(value),
+  clean: util.types.toDate,
 });
 
 const effectiveDateOrgAssignment = input({
@@ -26,9 +26,9 @@ const effectiveDateOrgAssignment = input({
     "The effective date of the organization assignment change. Format: ISO 8601 date-time (YYYY-MM-DDTHH:mm:ss.sssZ).",
   type: "string",
   example: "2024-06-01T07:00:00.000Z",
-  placeholder: "Enter effective date",
+  placeholder: "Enter effective date (ISO 8601 date-time)",
   required: true,
-  clean: (value: unknown) => util.types.toDate(value),
+  clean: util.types.toDate,
 });
 
 const jobChangeJobId = input({
@@ -51,6 +51,7 @@ const supervisoryOrganizationId = input({
   placeholder: "Enter supervisory organization ID",
   required: false,
   clean: cleanStringInput,
+  dataSource: "selectSupervisoryOrganization",
 });
 
 const locationId = input({
@@ -97,11 +98,11 @@ const reasonId = input({
   clean: util.types.toString,
 });
 
-const getStaffingWorkersParamsComments = `${extraParameters.comments} See optional (QUERY-STRING PARAMETERS) in the [Workday API documentation](${WORKDAY_API_DOCS_URL}#${SERVICES.staffing.slice(1)}/get-/workers).`;
+const getStaffingWorkersParamsComments = `${extraParameters.comments} See optional (QUERY-STRING PARAMETERS) in the [Workday API documentation](${WORKDAY_API_DOCS_URL}#${SERVICE_VERSIONS.staffing}/get-/workers).`;
 
-const getWorkerExplicitSkillsParamsComments = `${extraParameters.comments} See optional (QUERY-STRING PARAMETERS) in the [Workday API documentation](${WORKDAY_API_DOCS_URL}#${SERVICES.staffing.slice(1)}/get-/workers/-ID-/explicitSkills).`;
+const getWorkerExplicitSkillsParamsComments = `${extraParameters.comments} See optional (QUERY-STRING PARAMETERS) in the [Workday API documentation](${WORKDAY_API_DOCS_URL}#${SERVICE_VERSIONS.staffing}/get-/workers/-ID-/explicitSkills).`;
 
-const initiateJobChangeExtraBodyComments = `${extraBody.comments} See [Workday API documentation](${WORKDAY_API_DOCS_URL}#${SERVICES.staffing.slice(1)}/post-/workers/-ID-/jobChanges) for more information.`;
+const initiateJobChangeExtraBodyComments = `${extraBody.comments} See [Workday API documentation](${WORKDAY_API_DOCS_URL}#${SERVICE_VERSIONS.staffing}/post-/workers/-ID-/jobChanges) for more information.`;
 
 const initiateJobChangeExtraBodyExample = JSON.stringify(
   {
@@ -113,7 +114,7 @@ const initiateJobChangeExtraBodyExample = JSON.stringify(
   2,
 );
 
-const initiateOrganizationAssignmentChangeExtraBodyComments = `${extraBody.comments} Company, cost center, region, and other organizations are set after initiation with the PATCH /organizationAssignmentChanges/{ID} subresource endpoints. See [Workday API documentation](${WORKDAY_API_DOCS_URL}#${SERVICES.staffing.slice(1)}/post-/workers/-ID-/organizationAssignmentChanges) for more information.`;
+const initiateOrganizationAssignmentChangeExtraBodyComments = `${extraBody.comments} Company, cost center, region, and other organizations are set after initiation with the PATCH /organizationAssignmentChanges/{ID} subresource endpoints. See [Workday API documentation](${WORKDAY_API_DOCS_URL}#${SERVICE_VERSIONS.staffing}/post-/workers/-ID-/organizationAssignmentChanges) for more information.`;
 
 const initiateOrganizationAssignmentChangeExtraBodyExample = JSON.stringify(
   {

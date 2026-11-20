@@ -14,7 +14,7 @@ import { postMessageTemplates } from "./postMessageTemplates";
 import { sendMessage } from "./sendMessage";
 import { updateMessageTemplateById } from "./updateMessageTemplateById";
 
-const SERVICE = "/ccx/connect/v2";
+const SERVICE = "/ccx/api/connect/v2/acme";
 
 const emailDetail = {
   name: "Welcome Email",
@@ -193,7 +193,7 @@ describe("postMessageTemplates", () => {
 });
 
 describe("sendMessage", () => {
-  const contacts = [{ id: "w-2" }];
+  const contacts = ["w-2", "w-3"];
   const params = {
     connection: oauthTestConnection(),
     senderOverrideId: "so-1",
@@ -218,7 +218,7 @@ describe("sendMessage", () => {
         senderOverride: { id: "so-1" },
         commID: { id: "comm-1" },
         emailDetail,
-        recipients: contacts,
+        recipients: { contacts: [{ id: "w-2" }, { id: "w-3" }] },
         messageTemplate: { id: "tmpl-1" },
         notificationType: { id: "nt-1" },
         pushDetail,

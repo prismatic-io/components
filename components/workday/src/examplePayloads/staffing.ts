@@ -159,8 +159,8 @@ export const getWorkerServiceDatesExamplePayload = {
   data: {
     data: [
       {
-        hireDate: "2020-01-20T16:00:00.000Z",
-        continuousServiceDate: "2020-01-20T16:00:00.000Z",
+        hireDate: "2020-01-20",
+        continuousServiceDate: "2020-01-20",
       },
     ],
     total: 1,
@@ -173,7 +173,7 @@ export const getWorkerExplicitSkillsExamplePayload = {
       {
         skillSources: [
           {
-            dateCreated: "2026-04-11T07:00:00.000Z",
+            dateCreated: "2026-04-11",
             sourceTypeID: "REF-0001",
             sourceType: "Self-Reported",
             descriptor: "Self-Reported",
@@ -201,7 +201,7 @@ export const initiateJobChangeExamplePayload = {
       descriptor: "Senior Sales Representative",
       href: "https://wd2-impl-services1.workday.com/ccx/api/v1/gms/jobs/6e8a0c2b4d6f1357cf3e5a7c9b1d0f28",
     },
-    date: "2020-01-18T01:00:00.000Z",
+    date: "2020-01-18",
     supervisoryOrganization: {
       id: "8a0c2e4b6d8f0135de5c7a9e1b3d0f24",
       descriptor: "Field Sales - Southern Europe (Jared Ellis)",
@@ -229,7 +229,7 @@ export const initiateJobChangeExamplePayload = {
 
 export const initiateOrganizationAssignmentChangeExamplePayload = {
   data: {
-    date: "2026-04-11T07:00:00.000Z",
+    date: "2026-04-11",
     position: {
       id: "3c5e7a9b1d0f2468da5c7e9b1d3f0a28",
       descriptor: "Senior Sales Representative",

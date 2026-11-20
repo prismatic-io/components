@@ -23,6 +23,9 @@ export const personRepresentationSchema = {
         id: {
           type: "string",
         },
+        Universal_Identifier_ID: {
+          type: "string",
+        },
       },
     },
     workInstantMessengers: {

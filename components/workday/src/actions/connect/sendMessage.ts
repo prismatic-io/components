@@ -33,7 +33,9 @@ export const sendMessage = action({
         body: messageDetails.emailDetailBody,
         replyTo: messageDetails.emailDetailReplyTo,
       }),
-      recipients: messageDetails.contacts,
+      recipients: messageDetails.contacts
+        ? { contacts: messageDetails.contacts.map((id) => ({ id })) }
+        : undefined,
       messageTemplate: getIdObject(messageTemplateId),
       notificationType: getIdObject(notificationTypeId),
       pushDetail: compactObject({

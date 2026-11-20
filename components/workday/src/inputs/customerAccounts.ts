@@ -1,5 +1,5 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
-import { cleanDate, cleanStringInput } from "../util";
+import { cleanDateOnlyInput, cleanStringInput } from "../util";
 import {
   companyId,
   connection,
@@ -47,6 +47,7 @@ const remitFromCustomerId = input({
   example: "8f2e4d6c1b3a49e7a5c0d9f8e7b6a5c4",
   placeholder: "Enter remit from customer ID",
   clean: cleanStringInput,
+  dataSource: "selectCustomer",
 });
 
 const readyToAutoApply = input({
@@ -88,6 +89,17 @@ const amount = input({
   clean: cleanStringInput,
 });
 
+const currency = input({
+  label: "Currency",
+  comments:
+    "ISO 4217 code of the currency the Amount is in, such as USD. Required when Amount is set.",
+  type: "string",
+  required: false,
+  example: "USD",
+  placeholder: "Enter currency code",
+  clean: cleanStringInput,
+});
+
 const typeId = input({
   label: "Type ID",
   comments: "Identifies the payment type.",
@@ -105,7 +117,7 @@ const date = input({
   required: false,
   example: "2024-06-01",
   placeholder: "Enter payment date (YYYY-MM-DD)",
-  clean: (value) => cleanDate(value, "Payment Date"),
+  clean: cleanDateOnlyInput("Payment Date"),
 });
 
 const paymentDescriptor = input({
@@ -164,6 +176,7 @@ export const postPaymentInputs = {
   connection,
   remitFromCustomerId,
   amount,
+  currency,
   typeId,
   date,
   companyId,

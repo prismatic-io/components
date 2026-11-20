@@ -42,7 +42,7 @@ export const messageTemplateDetailSchema = {
     emailDetail: emailDetailSchema,
     lastUpdated: {
       type: "string",
-      format: "date",
+      format: "date-time",
     },
     pushDetail: pushDetailSchema,
     usageCount: {

@@ -16,7 +16,7 @@ import { getWorkerServiceDates } from "./getWorkerServiceDates";
 import { initiateJobChange } from "./initiateJobChange";
 import { initiateOrganizationAssignmentChange } from "./initiateOrganizationAssignmentChange";
 
-const SERVICE = "/ccx/staffing/v7";
+const SERVICE = "/ccx/api/staffing/v7/acme";
 
 beforeAll(() => nock.disableNetConnect());
 afterAll(() => nock.enableNetConnect());

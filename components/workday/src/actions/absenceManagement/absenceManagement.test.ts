@@ -3,6 +3,7 @@ import nock from "nock";
 import {
   getTimeOffBalanceByIdExamplePayload,
   getTimeOffDetailsExamplePayload,
+  listTimeOffBalancesExamplePayload,
   postTimeOffRequestExamplePayload,
 } from "../../examplePayloads";
 import {
@@ -12,9 +13,10 @@ import {
 } from "../../testHelpers";
 import { getTimeOffBalanceById } from "./getTimeOffBalanceById";
 import { getTimeOffDetails } from "./getTimeOffDetails";
+import { listTimeOffBalances } from "./listTimeOffBalances";
 import { postTimeOffRequest } from "./postTimeOffRequest";
 
-const SERVICE = "/ccx/absenceManagement/v5";
+const SERVICE = "/ccx/api/absenceManagement/v5/acme";
 
 beforeAll(() => nock.disableNetConnect());
 afterAll(() => nock.enableNetConnect());
@@ -73,8 +75,81 @@ describe("getTimeOffDetails", () => {
   });
 });
 
+describe("listTimeOffBalances", () => {
+  const params = {
+    connection: oauthTestConnection(),
+    workerId: "w-1",
+    balanceCategoryId: "cat-1",
+    balanceEffectiveDate: "2026-11-17",
+    fetchAll: false,
+    pagination: { limit: 10, offset: 0 },
+  };
+
+  it("sends the worker, category, and effective date and returns one page", async () => {
+    nock(TEST_HOST)
+      .get(`${SERVICE}/balances`)
+      .query({
+        worker: "w-1",
+        category: "cat-1",
+        effective: "2026-11-17",
+        limit: 10,
+        offset: 0,
+      })
+      .reply(200, listTimeOffBalancesExamplePayload.data);
+
+    const { result } = await invoke(listTimeOffBalances, params);
+    expect(result).toEqual(listTimeOffBalancesExamplePayload);
+  });
+
+  it("omits the optional filters when they are not set", async () => {
+    nock(TEST_HOST)
+      .get(`${SERVICE}/balances`)
+      .query({ worker: "w-1", limit: 10, offset: 0 })
+      .reply(200, listTimeOffBalancesExamplePayload.data);
+
+    const { result } = await invoke(listTimeOffBalances, {
+      ...params,
+      balanceCategoryId: undefined,
+      balanceEffectiveDate: undefined,
+    } as unknown as typeof params);
+    expect(result).toEqual(listTimeOffBalancesExamplePayload);
+  });
+
+  it("surfaces a Workday error", async () => {
+    nock(TEST_HOST)
+      .get(`${SERVICE}/balances`)
+      .query(true)
+      .reply(400, { error: "invalid worker" });
+
+    await expect(invoke(listTimeOffBalances, params)).rejects.toThrow();
+  });
+});
+
 describe("postTimeOffRequest", () => {
-  const days = [{ date: "2026-10-20", reason: { id: "r-1" } }];
+  const emptyDay = {
+    date: undefined,
+    start: undefined,
+    end: undefined,
+    dailyQuantity: undefined,
+    comment: undefined,
+    timeOffTypeId: undefined,
+    reasonId: undefined,
+    positionId: undefined,
+  };
+  const days = [
+    {
+      date: "2026-10-20",
+      start: "2026-10-20T09:00:00.000Z",
+      end: "2026-10-20T17:00:00.000Z",
+      dailyQuantity: 8,
+      comment: "Vacation day",
+      timeOffTypeId: "tot-1",
+      reasonId: "r-1",
+      positionId: "pos-1",
+    },
+    { ...emptyDay, date: "2026-10-21", timeOffTypeId: "tot-1", comment: "" },
+    emptyDay,
+  ];
   const params = {
     connection: oauthTestConnection(),
     workerId: "w-1",
@@ -106,7 +181,19 @@ describe("postTimeOffRequest", () => {
               attachments: [{ fileName: "note.pdf" }],
               for: { id: "for-1" },
             },
-            days,
+            days: [
+              {
+                date: "2026-10-20",
+                start: "2026-10-20T09:00:00.000Z",
+                end: "2026-10-20T17:00:00.000Z",
+                dailyQuantity: 8,
+                comment: "Vacation day",
+                timeOffType: { id: "tot-1" },
+                reason: { id: "r-1" },
+                position: { id: "pos-1" },
+              },
+              { date: "2026-10-21", timeOffType: { id: "tot-1" } },
+            ],
           }),
       )
       .reply(200, postTimeOffRequestExamplePayload.data);

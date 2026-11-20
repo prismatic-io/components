@@ -1,13 +1,17 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
-import { SERVICES, WORKDAY_API_DOCS_URL } from "../constants";
-import { cleanNumberInput, cleanStringInput } from "../util";
+import { SERVICE_VERSIONS, WORKDAY_API_DOCS_URL } from "../constants";
+import {
+  cleanDateOnlyInput,
+  cleanNumberInput,
+  cleanStringInput,
+} from "../util";
 import {
   connection,
   extraBody,
   extraParameters,
   instanceDescriptor,
-  instanceHref,
   instanceId,
+  instanceReference,
   modelBooleanUpdateInput,
   paginationQueryStringInputs,
   referenceId,
@@ -88,7 +92,7 @@ const assignmentIds = structuredObjectInput({
   label: "Assignment IDs",
   required: false,
   comments:
-    "Write-action IDs that associate a record with related entities (offices, departments, tags, sources, etc.).",
+    "Time entry code, project, and project plan task for the clock event.",
   inputs: {
     clockEventTimeEntryCodeId,
     clockEventProjectId,
@@ -246,7 +250,7 @@ const workerTimeBlockExtraBodyExample = JSON.stringify(
   null,
   2,
 );
-const postWorkerTimeBlockExtraBodyComments = `${extraBody.comments} See [Workday API documentation](${WORKDAY_API_DOCS_URL}#${SERVICES.timeTracking.slice(1)}/post-/workers/-ID-/workerTimeBlock) for more information.`;
+const postWorkerTimeBlockExtraBodyComments = `${extraBody.comments} See [Workday API documentation](${WORKDAY_API_DOCS_URL}#${SERVICE_VERSIONS.timeTracking}/post-/workers/-ID-/workerTimeBlock) for more information.`;
 
 const doNotBill = input({
   label: "Do Not Bill",
@@ -266,9 +270,42 @@ const comment = input({
   clean: cleanStringInput,
 });
 
-const getTimeClockEventsParamsComments = `${extraParameters.comments} See optional (QUERY-STRING PARAMETERS) in the [Workday API documentation](${WORKDAY_API_DOCS_URL}#${SERVICES.timeTracking.slice(1)}/get-/timeClockEvents).`;
+const calendarDate = input({
+  label: "Calendar Date",
+  comments:
+    "The date of the reported time block. Accepts an ISO 8601 date (YYYY-MM-DD) or date-time; only the date is sent. Workday requires it when creating a time block.",
+  type: "string",
+  required: false,
+  example: "2026-11-17",
+  placeholder: "Enter calendar date (YYYY-MM-DD)",
+  clean: cleanDateOnlyInput("Calendar Date"),
+});
 
-const getWorkersParamsComments = `${extraParameters.comments} See optional (QUERY-STRING PARAMETERS) in the [Workday API documentation](${WORKDAY_API_DOCS_URL}#${SERVICES.timeTracking.slice(1)}/get-/workers).`;
+const reportedQuantity = input({
+  label: "Reported Quantity",
+  comments:
+    "The hours or units reported for the time block. Workday requires it when creating a time block.",
+  type: "string",
+  required: false,
+  example: "8",
+  placeholder: "Enter hours or units",
+  clean: cleanNumberInput,
+});
+
+const timeEntryCodeId = input({
+  label: "Time Entry Code ID",
+  comments:
+    "Identifies the time entry code (time type) for the time block. Workday requires it when creating a time block.",
+  type: "string",
+  required: false,
+  example: "d3b5d44fd5c84a1ab1e2a3f1b2c4d5e6",
+  placeholder: "Enter time entry code ID",
+  clean: cleanStringInput,
+});
+
+const getTimeClockEventsParamsComments = `${extraParameters.comments} See optional (QUERY-STRING PARAMETERS) in the [Workday API documentation](${WORKDAY_API_DOCS_URL}#${SERVICE_VERSIONS.timeTracking}/get-/timeClockEvents).`;
+
+const getWorkersParamsComments = `${extraParameters.comments} See optional (QUERY-STRING PARAMETERS) in the [Workday API documentation](${WORKDAY_API_DOCS_URL}#${SERVICE_VERSIONS.timeTracking}/get-/workers).`;
 
 const updateTimeClockEventsByIdExtraBodyExample = JSON.stringify(
   {
@@ -288,9 +325,9 @@ const updateTimeClockEventsByIdExtraBodyExample = JSON.stringify(
   null,
   2,
 );
-const updateTimeClockEventsByIdExtraBodyComments = `${extraBody.comments} See [Workday API documentation](${WORKDAY_API_DOCS_URL}#${SERVICES.timeTracking.slice(1)}/put-/timeClockEvents/-ID-) for more information.`;
+const updateTimeClockEventsByIdExtraBodyComments = `${extraBody.comments} See [Workday API documentation](${WORKDAY_API_DOCS_URL}#${SERVICE_VERSIONS.timeTracking}/put-/timeClockEvents/-ID-) for more information.`;
 
-const updateWorkerTimeBlockExtraBodyComments = `${extraBody.comments} See [Workday API documentation](${WORKDAY_API_DOCS_URL}#${SERVICES.timeTracking.slice(1)}/patch-/workers/-ID-/workerTimeBlock/-subresourceID-) for more information.`;
+const updateWorkerTimeBlockExtraBodyComments = `${extraBody.comments} See [Workday API documentation](${WORKDAY_API_DOCS_URL}#${SERVICE_VERSIONS.timeTracking}/patch-/workers/-ID-/workerTimeBlock/-subresourceID-) for more information.`;
 
 export const deleteTimeClockEventsByIdInputs = {
   connection,
@@ -325,10 +362,13 @@ export const getWorkersInputs = {
 export const postWorkerTimeBlockInputs = {
   connection,
   workerId,
+  calendarDate,
+  reportedQuantity,
+  timeEntryCodeId,
   doNotBill,
   comment,
-  instanceId: { ...instanceId, required: false },
-  instanceDescriptor: { ...instanceDescriptor, required: false },
+  instanceId,
+  instanceDescriptor,
   extraBody: {
     ...extraBody,
     comments: postWorkerTimeBlockExtraBodyComments,
@@ -339,9 +379,7 @@ export const postWorkerTimeBlockInputs = {
 export const updateTimeClockEventsByIdInputs = {
   connection,
   timeClockEventId,
-  instanceDescriptor,
-  instanceHref,
-  instanceId,
+  instanceReference,
   clockEventOverrideRate,
   referenceId,
   assignmentIds,

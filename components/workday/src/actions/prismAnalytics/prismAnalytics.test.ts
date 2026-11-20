@@ -11,7 +11,13 @@ import {
   postTableExamplePayload,
   updateTableByIdExamplePayload,
 } from "../../examplePayloads";
-import { oauthTestConnection, TEST_HOST } from "../../testHelpers";
+import { clearTokenCache } from "../../util";
+import {
+  mockTokenExchange,
+  oauthTestConnection,
+  refreshTokenTestConnection,
+  TEST_HOST,
+} from "../../testHelpers";
 import { getDataChangesById } from "./getDataChangesById";
 import { getFilesByContainerId } from "./getFilesByContainerId";
 import { getTableById } from "./getTableById";
@@ -263,6 +269,27 @@ describe("postFilesByContainerId", () => {
       .reply(400, { error: "invalid" });
 
     await expect(invoke(postFilesByContainerId, params)).rejects.toThrow();
+  });
+
+  it("resends the whole file after a 401 makes the client fetch a new token", async () => {
+    clearTokenCache();
+    mockTokenExchange("at-1");
+    mockTokenExchange("at-2");
+    const hasFile = (body: string) =>
+      body.includes('name="file"') && body.includes("employee_id\n21001");
+    nock(TEST_HOST)
+      .post(`${SERVICE}/fileContainers/fc-1/files`, hasFile)
+      .matchHeader("authorization", "Bearer at-1")
+      .reply(401)
+      .post(`${SERVICE}/fileContainers/fc-1/files`, hasFile)
+      .matchHeader("authorization", "Bearer at-2")
+      .reply(201, postFilesByContainerIdExamplePayload.data);
+
+    const { result } = await invoke(postFilesByContainerId, {
+      ...params,
+      connection: refreshTokenTestConnection(),
+    });
+    expect(result).toEqual(postFilesByContainerIdExamplePayload);
   });
 });
 

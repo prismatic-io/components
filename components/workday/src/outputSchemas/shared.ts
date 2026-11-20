@@ -14,12 +14,24 @@ export const instanceReferenceSchema = {
   required: ["id"],
 };
 
+export const currencyAmountSchema = {
+  type: "object" as const,
+  properties: {
+    value: {
+      type: "string",
+    },
+    currency: {
+      type: "string",
+    },
+  },
+};
+
 export const eventAttachmentsViewSchema = {
   type: "object" as const,
   properties: {
     uploadDate: {
       type: "string",
-      format: "date",
+      format: "date-time",
     },
     fileLength: {
       type: "integer",
@@ -38,6 +50,9 @@ export const eventAttachmentsViewSchema = {
     },
     contentType: instanceReferenceSchema,
     id: {
+      type: "string",
+    },
+    File_ID: {
       type: "string",
     },
   },
@@ -64,12 +79,18 @@ export const locationSchema = {
         descriptor: {
           type: "string",
         },
+        "ISO_3166-1_Alpha-3_Code": {
+          type: "string",
+        },
       },
     },
     descriptor: {
       type: "string",
     },
     id: {
+      type: "string",
+    },
+    Location_ID: {
       type: "string",
     },
   },
@@ -87,6 +108,9 @@ export const workSpaceSchema = {
     id: {
       type: "string",
     },
+    Location_ID: {
+      type: "string",
+    },
   },
 };
 
@@ -94,7 +118,20 @@ export const additionalJobsSchema = {
   type: "object" as const,
   properties: {
     location: locationSchema,
-    jobProfile: idDescriptorReferenceSchema,
+    jobProfile: {
+      type: "object" as const,
+      properties: {
+        descriptor: {
+          type: "string",
+        },
+        id: {
+          type: "string",
+        },
+        Job_Profile_ID: {
+          type: "string",
+        },
+      },
+    },
     workSpace: workSpaceSchema,
     businessTitle: {
       type: "string",
@@ -105,13 +142,32 @@ export const additionalJobsSchema = {
         descriptor: {
           type: "string",
         },
+        Job_Type_Name_ID: {
+          type: "string",
+        },
       },
     },
-    supervisoryOrganization: idDescriptorReferenceSchema,
+    supervisoryOrganization: {
+      type: "object" as const,
+      properties: {
+        descriptor: {
+          type: "string",
+        },
+        id: {
+          type: "string",
+        },
+        Organization_Reference_ID: {
+          type: "string",
+        },
+      },
+    },
     descriptor: {
       type: "string",
     },
     id: {
+      type: "string",
+    },
+    Position_ID: {
       type: "string",
     },
   },

@@ -8,7 +8,7 @@ import { oauthTestConnection, TEST_HOST } from "../../testHelpers";
 import { getPersonById } from "./getPersonById";
 import { listPeople } from "./listPeople";
 
-const SERVICE = "/ccx/person/v4";
+const SERVICE = "/ccx/api/person/v4/acme";
 
 beforeAll(() => nock.disableNetConnect());
 afterAll(() => nock.enableNetConnect());

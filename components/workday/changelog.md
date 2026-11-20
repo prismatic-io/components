@@ -1,5 +1,22 @@
 ## Changelog
 
+### 2026-11-20
+
+Initial production release of the Workday component, removing it from the Beta program:
+
+- Fixed actions, data sources, and the **New Event Steps** trigger failing with 404 or 503 errors on every Workday REST service except Prism Analytics and WQL (requests now carry the tenant from the **Token URL** of an **OAuth 2.0** connection or the **REST API Endpoint** of a **Refresh Token** connection), and the **Changed WQL Query Rows** trigger being rejected by Workday with an Invalid WHERE clause error
+- Fixed data sources listing at most 20 options; each now lists up to 10,000, and **Select Worker** now returns each worker's Workday ID as the selected value
+- Fixed **Upload Files by Container ID** uploading an empty file when a **Refresh Token** connection fetched a new access token and resent the request
+- Added the **List Time Off Balances** action for reading a worker's time off balances, optionally limited to one category and as of an effective date, taken as the calendar date entered
+- Added the **Select Business Process Type**, **Select Currency**, **Select Customer**, **Select Notification Type**, and **Select Supervisory Organization** data sources as dropdowns on the inputs that take those IDs
+- Added a required **Worker ID** input to **List Events**, since Workday returns no events without one, and an optional **Worker ID** to **Get Event by ID** and **Get Event Attachments** that filters the **Event ID** dropdown
+- Added **Lines** to **Create Supplier Invoice Request** with one row per invoice line, a **Currency** input to **Create Payment**, which Workday requires with **Amount**, and **Calendar Date** (sent as the date entered), **Reported Quantity**, and **Time Entry Code ID** to **Create Worker Time Block** and **Update Worker Time Block**
+- Updated **Create Supplier Invoice Request** to send **Tax Amount** and **Control Total Amount** as Workday currency amounts, **Create Payment** to send **Payment Date** as the calendar date entered so neither the tenant's time zone nor a UTC offset moves it to another day, **Create Worker Time Block** to name the worker in the request, **Send Message** to send **Contacts** in the form Workday expects, **Update Table by ID** to leave a blank **Display Name** or **Name** out of the request instead of sending an empty value, and **Run WQL Query** and **Changed WQL Query Rows** to use the tenant from the **Token URL** of an **OAuth 2.0** connection when **Tenant** is left blank
+- Updated **Days** on **Create Time Off Request** to take one row per day, and **Contacts** on **Send Message** to take a list of contact IDs with a worker dropdown, in place of JSON arrays
+- Updated **Create Job Change**, **Create Worker Business Title Change**, and **Update Time Clock Event by ID** to group **Instance ID**, **Instance Href**, and **Instance Descriptor**, now optional, into an **Instance Reference** structured object, **Create Supplier Invoice Request** to group **Requester ID**, **Payment Terms ID**, and **Reference Type ID** into an **Assignment IDs** structured object, and **Supplier Invoice Instance ID** and **Supplier Invoice Instance Descriptor** to optional on **Submit Supplier Invoice Request**
+- Updated **Create Supplier Invoice Request Attachment** to add an extension from the file's suggested extension or, failing that, its content type to the default file name, since Workday rejects a name without one, and to ask for **File Name** when neither gives one
+- Updated error messages to include Workday's error text and leave out the response headers, and to decode the error body of **Get Invoice PDF**
+
 ### 2026-11-19
 
 Updated dependencies and refactored internal code:

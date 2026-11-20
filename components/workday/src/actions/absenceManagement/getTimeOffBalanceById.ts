@@ -9,7 +9,7 @@ export const getTimeOffBalanceById = action({
   display: {
     label: "Get Time Off Balance by ID",
     description:
-      "Retrieves the specified balance of all absence plan and leave of absence types for the specified balance ID.",
+      "Retrieves the time off balance with the specified balance ID. List Time Off Balances returns no balance IDs; use it to read a worker's balances.",
   },
   performSafety: "safe",
   perform: async (context, { connection, balanceId }) => {

@@ -15,7 +15,7 @@ export const workdayRefreshTokenConnection = connection({
       required: true,
       shown: true,
       comments:
-        "The Workday REST API Endpoint shown for the API client in View API Clients, in the form https://<host>/ccx/api/v1/<tenant>. The API base URL, tenant and token URL are derived from it.",
+        "The Workday REST API Endpoint shown for the API client in View API Clients, in the form https://{host}/ccx/api/v1/{tenant}. The API base URL, tenant and token URL are derived from it.",
       example: "https://wd2-impl-services1.workday.com/ccx/api/v1/acme",
     },
     clientId: {
@@ -55,7 +55,7 @@ export const workdayRefreshTokenConnection = connection({
       required: false,
       shown: true,
       comments:
-        "Overrides the token URL derived from the REST API Endpoint. Leave blank unless the Token Endpoint in View API Clients differs from https://<host>/ccx/oauth2/<tenant>/token.",
+        "Overrides the token URL derived from the REST API Endpoint. Leave blank unless the Token Endpoint in View API Clients differs from https://{host}/ccx/oauth2/{tenant}/token.",
       example: "https://wd2-impl-services1.workday.com/ccx/oauth2/acme/token",
     },
   },

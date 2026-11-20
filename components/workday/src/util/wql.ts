@@ -1,3 +1,4 @@
+import type { Connection } from "@prismatic-io/spectral";
 import type { HttpClient } from "@prismatic-io/spectral/http";
 import {
   WQL_DEFAULT_FETCH_ALL_LIMIT,
@@ -5,6 +6,20 @@ import {
   WQL_MAX_GET_QUERY_LENGTH,
 } from "../constants";
 import type { WqlPageParams, WqlResponse } from "../types";
+import { getConnectionTenant } from "./auth";
+
+export const resolveWqlTenant = (
+  connection: Connection,
+  tenant: string | undefined,
+): string => {
+  const resolved = tenant || getConnectionTenant(connection);
+  if (!resolved) {
+    throw new Error(
+      "Tenant is required when the connection doesn't include one. Enter the Workday tenant name.",
+    );
+  }
+  return resolved;
+};
 
 const longQueryCannotPageError = (detail: string): Error =>
   new Error(

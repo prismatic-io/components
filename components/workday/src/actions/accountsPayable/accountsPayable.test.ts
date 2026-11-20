@@ -20,7 +20,7 @@ import { postSupplierInvoiceRequests } from "./postSupplierInvoiceRequests";
 import { postSupplierInvoiceRequestsAttachments } from "./postSupplierInvoiceRequestsAttachments";
 import { submitSupplierInvoiceRequest } from "./submitSupplierInvoiceRequest";
 
-const SERVICE = "/ccx/accountsPayable/v1";
+const SERVICE = "/ccx/api/accountsPayable/v1/acme";
 
 beforeAll(() => nock.disableNetConnect());
 afterAll(() => nock.enableNetConnect());
@@ -117,6 +117,18 @@ describe("listSupplierInvoiceRequests", () => {
 });
 
 describe("postSupplierInvoiceRequests", () => {
+  const emptyLine = {
+    itemDescription: undefined,
+    quantity: undefined,
+    unitCost: undefined,
+    extendedAmount: undefined,
+    memo: undefined,
+    internalMemo: undefined,
+    billable: undefined,
+    spendCategoryId: undefined,
+    itemId: undefined,
+    unitOfMeasureId: undefined,
+  };
   const params = {
     connection: oauthTestConnection(),
     companyId: "co-1",
@@ -127,9 +139,27 @@ describe("postSupplierInvoiceRequests", () => {
       taxAmount: "10.00",
       controlTotalAmount: "110.00",
     },
-    requesterId: "req-1",
-    paymentTermsId: "pt-1",
-    referenceTypeId: "rt-1",
+    lines: [
+      {
+        itemDescription: "Office chairs",
+        quantity: 2,
+        unitCost: "55",
+        extendedAmount: "110.00",
+        memo: "Line 1",
+        internalMemo: "Approved",
+        billable: false,
+        spendCategoryId: "sc-1",
+        itemId: "item-1",
+        unitOfMeasureId: "uom-1",
+      },
+      { ...emptyLine, memo: "Line 2", extendedAmount: "0.00", unitCost: "" },
+      emptyLine,
+    ],
+    assignmentIds: {
+      requesterId: "req-1",
+      paymentTermsId: "pt-1",
+      referenceTypeId: "rt-1",
+    },
     memo: "Office supplies",
     supplierInvoiceId: "si-1",
     supplierInvoiceDescriptor: "Invoice 1",
@@ -143,9 +173,24 @@ describe("postSupplierInvoiceRequests", () => {
         invoiceDate: "2026-10-01T00:00:00.000Z",
         currency: { id: "USD" },
         company: { id: "co-1" },
-        taxAmount: "10.00",
+        taxAmount: { value: "10.00" },
         requester: { id: "req-1" },
-        controlTotalAmount: "110.00",
+        controlTotalAmount: { value: "110.00" },
+        lines: [
+          {
+            itemDescription: "Office chairs",
+            quantity: 2,
+            unitCost: { value: "55" },
+            extendedAmount: { value: "110.00" },
+            memo: "Line 1",
+            internalMemo: "Approved",
+            billable: false,
+            spendCategory: { id: "sc-1" },
+            item: { id: "item-1" },
+            unitOfMeasure: { id: "uom-1" },
+          },
+          { extendedAmount: { value: "0.00" }, memo: "Line 2" },
+        ],
         paymentTerms: { id: "pt-1" },
         referenceType: { id: "rt-1" },
         memo: "Office supplies",
@@ -169,6 +214,38 @@ describe("postSupplierInvoiceRequests", () => {
       postSupplierInvoiceRequests,
       withoutKey as typeof params,
     );
+    expect(result).toEqual(postSupplierInvoiceRequestsExamplePayload);
+  });
+
+  it("lets Extra Body lines replace the Lines rows", async () => {
+    const extraLines = [{ memo: "Split line", splits: [{ percent: "100" }] }];
+    nock(TEST_HOST)
+      .post(
+        `${SERVICE}/supplierInvoiceRequests`,
+        (body: { lines?: unknown }) =>
+          JSON.stringify(body.lines) === JSON.stringify(extraLines),
+      )
+      .reply(200, postSupplierInvoiceRequestsExamplePayload.data);
+
+    const { result } = await invoke(postSupplierInvoiceRequests, {
+      ...params,
+      extraBody: { lines: extraLines },
+    });
+    expect(result).toEqual(postSupplierInvoiceRequestsExamplePayload);
+  });
+
+  it("omits lines when no row has a field set", async () => {
+    nock(TEST_HOST)
+      .post(
+        `${SERVICE}/supplierInvoiceRequests`,
+        (body: Record<string, unknown>) => !("lines" in body),
+      )
+      .reply(200, postSupplierInvoiceRequestsExamplePayload.data);
+
+    const { result } = await invoke(postSupplierInvoiceRequests, {
+      ...params,
+      lines: [emptyLine],
+    });
     expect(result).toEqual(postSupplierInvoiceRequestsExamplePayload);
   });
 

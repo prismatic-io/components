@@ -8,8 +8,13 @@ export interface WorkdayHttpError {
   };
 }
 
-export interface ForceRefreshOptions {
-  forceRefresh?: boolean;
+export interface HttpErrorLike {
+  isAxiosError?: boolean;
+  message?: string;
+  response?: {
+    status?: number;
+    data?: unknown;
+  };
 }
 
 export interface MultipartBody {

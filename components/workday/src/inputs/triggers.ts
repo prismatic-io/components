@@ -57,7 +57,7 @@ const raasRecordKeyField = input({
 const wqlPollingQuery = input({
   label: "Query",
   comments:
-    "The WQL query to run. Must contain {{lastPolledAt}}, which is replaced with the window start as a quoted UTC date-time literal. Compare it against a date-time field that moves when a row is entered or changed, following the pattern WHERE <dateTimeField> >= {{lastPolledAt}}. Which fields exist, and their types, depend on the data source.",
+    "The WQL query to run. Must contain {{lastPolledAt}}, which is replaced with the window start as a quoted UTC date-time literal. Compare it against a date-time field that moves when a row is entered or changed, following the pattern WHERE dateTimeField >= {{lastPolledAt}}, where dateTimeField is that field. Which fields exist, and their types, depend on the data source.",
   type: "text",
   example:
     "SELECT workdayID, <dateTimeField> FROM <dataSource> WHERE <dateTimeField> >= {{lastPolledAt}}",
@@ -109,6 +109,7 @@ const businessProcess = input({
   placeholder: "Enter business process ID",
   required: false,
   clean: cleanValueListInput,
+  dataSource: "selectBusinessProcessType",
 });
 
 const stepType = input({
@@ -146,9 +147,9 @@ export const wqlQueryPollingInputs = {
   query: wqlPollingQuery,
   recordKeyField: wqlRecordKeyField,
   dateField: wqlDateField,
-  overlapMinutes: wqlOverlapMinutes,
-  lookBackDate,
   tenant: wqlTenant,
+  lookBackDate,
+  overlapMinutes: wqlOverlapMinutes,
 };
 
 export const newEventStepsPollingInputs = {
