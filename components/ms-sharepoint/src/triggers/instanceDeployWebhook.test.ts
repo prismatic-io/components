@@ -369,19 +369,33 @@ describe("webhook lifecycle handlers", () => {
       "/subscriptions",
       expectedCreateBody("2026-11-16T12:00:00.000Z"),
     );
-    expect(result).toEqual({ crossFlowState: { [FLOW_KEY]: "created-id" } });
+    expect(deleteMock).not.toHaveBeenCalled();
+    expect(result).toEqual({
+      crossFlowState: { [FLOW_KEY]: "created-id", [`${FLOW_KEY}:undeleted`]: "" },
+    });
   });
 
-  test("create reuses a subscription already on the flow URL and stores its id", async () => {
-    getMock.mockResolvedValue({ data: { value: [subscription("existing-id")] } });
+  test("create on redeploy replaces the subscription already on the flow URL", async () => {
+    getMock.mockResolvedValue({
+      data: { value: [subscription("existing-id", { changeType: "deleted" })] },
+    });
+    postMock.mockResolvedValue({ data: subscription("created-id") });
+    deleteMock.mockResolvedValue({ data: {} });
 
     const result = await instanceDeployWebhook.webhookLifecycleHandlers?.create(
-      makeCtx() as never,
+      makeCtx({ [FLOW_KEY]: "existing-id" }) as never,
       params as never,
     );
 
-    expect(postMock).not.toHaveBeenCalled();
-    expect(result).toEqual({ crossFlowState: { [FLOW_KEY]: "existing-id" } });
+    expect(postMock).toHaveBeenCalledWith(
+      "/subscriptions",
+      expectedCreateBody("2026-11-16T12:00:00.000Z"),
+    );
+    expect(deleteMock).toHaveBeenCalledTimes(1);
+    expect(deleteMock).toHaveBeenCalledWith("/subscriptions/existing-id");
+    expect(result).toEqual({
+      crossFlowState: { [FLOW_KEY]: "created-id", [`${FLOW_KEY}:undeleted`]: "" },
+    });
   });
 
   test("delete removes the flow's subscriptions and clears the stored id", async () => {

@@ -6,6 +6,7 @@ import type {
   BoundaryHttpResponse as HttpResponse,
 } from "../interfaces/boundary";
 import type {
+  CreateSubscriptionData,
   CreateSubscriptionTriggerData,
   GraphSubscription,
 } from "../interfaces/Subscriptions";
@@ -73,10 +74,12 @@ export const replaceSubscriptionOnDeploy = async (
     changeType,
     clientState,
     expirationDateTime,
+    customBody,
   }: Omit<
     CreateSubscriptionTriggerData,
     "allowDuplicates" | "notificationUrl" | "customHeaders"
-  >,
+  > &
+    Pick<CreateSubscriptionData, "customBody">,
   context: ActionContext,
 ): Promise<{
   subscription: GraphSubscription;
@@ -100,6 +103,7 @@ export const replaceSubscriptionOnDeploy = async (
       expirationDateTime: expirationDateTime || calculateExpirationDateTime(),
       clientState,
       allowDuplicates: true,
+      customBody,
     },
     context,
   );
@@ -126,7 +130,7 @@ export const replaceSubscriptionOnDeploy = async (
   );
 
   context.logger.info(
-    `Created Graph subscription ${subscription.id} for flow ${flowName} (${context.flow.id}); replaced ${staleIds.size} previous subscription(s)`,
+    `Created Graph subscription ${subscription.id} for flow ${flowName} (${context.flow.id}); replaced ${staleIds.size - failed.length} previous subscription(s)${failed.length ? `; could not delete ${failed.join(", ")}, kept for retry` : ""}`,
   );
 
   return {

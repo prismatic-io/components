@@ -12,6 +12,7 @@ import {
   deleteSubscriptionTrigger,
   getBase64FromUrl,
   renewSubscriptionFN,
+  replaceSubscriptionOnDeploy,
   scheduledRenewalFN,
 } from "ms-utils";
 
@@ -176,18 +177,19 @@ export const instanceDeployWebhook = trigger({
 
       context.logger.info(`Creating SharePoint subscription for resource: ${params.resource}`);
 
-      const subscription = await createDriveSubscription(
+      const { crossFlowState } = await replaceSubscriptionOnDeploy(
         client,
+        {
+          resource: params.resource,
+          changeType: params.changeType,
+          clientState: params.clientState,
+          expirationDateTime: params.expirationDateTime,
+          customBody: { lifecycleNotificationUrl: context.webhookUrls[context.flow.name] },
+        },
         context,
-        params,
-        params.expirationDateTime,
       );
 
-      return {
-        crossFlowState: {
-          [getBase64FromUrl(context.webhookUrls[context.flow.name])]: subscription.id,
-        },
-      };
+      return { crossFlowState };
     },
     delete: async (context, params) => {
       const client = await createClient(params.connection, context.debug.enabled);

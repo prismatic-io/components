@@ -30,7 +30,7 @@ const subscriptionId = input({
   required: true,
   placeholder: "Enter subscription ID",
   comments: "The unique identifier of the subscription to manage.",
-  example: "48bf81d7-2d37-40a9-b47b-c1d1960d00f87",
+  example: "48bf81d7-2d37-40a9-b47b-c1d1960d0f87",
   dataSource: "listSubscriptions",
   clean: util.types.toString,
 });

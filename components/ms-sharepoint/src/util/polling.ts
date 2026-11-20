@@ -1,3 +1,4 @@
+import type { ActionLogger } from "@prismatic-io/spectral";
 import type { HttpClient } from "@prismatic-io/spectral/http";
 import { DELTA_NEXT_LINK_SUFFIX, DELTA_PREFER_HEADER } from "../constants";
 import type {
@@ -61,6 +62,18 @@ export const separateDriveChanges = (
     addCreated({ isDeleted, separatedChanges, change });
   }
   return separatedChanges;
+};
+
+export const mergeDriveChanges = (
+  existing: PollSiteChangesSeparatedChanges | undefined,
+  incoming: PollSiteChangesSeparatedChanges,
+): PollSiteChangesSeparatedChanges => {
+  if (!existing) return incoming;
+  const merged: PollSiteChangesSeparatedChanges = { ...existing };
+  for (const key of ["deleted", "added", "updated", "moved"] as const) {
+    if (incoming[key]) merged[key] = [...(existing[key] ?? []), ...incoming[key]];
+  }
+  return merged;
 };
 
 const deltaNextLinkKey = (key: string): string => `${key}${DELTA_NEXT_LINK_SUFFIX}`;
@@ -129,6 +142,34 @@ export const fetchDeltaRound = async (
     };
   }
   return { page, next: null, cursorState: { [key]: page["@odata.deltaLink"] as string } };
+};
+
+export const resetForeignSiteDriveCursors = (
+  state: Record<string, unknown>,
+  drives: Drive[],
+  rootDeltaFor: (driveId: string) => string,
+  logger: ActionLogger,
+): PollingState => {
+  const sanitized = { ...state } as PollingState;
+  const resetDriveIds: string[] = [];
+  const isForeign = (link: string | undefined, driveId: string): boolean =>
+    Boolean(link?.includes("/drives/")) && !link?.includes(`/drives/${driveId}/`);
+
+  for (const { id } of drives) {
+    const nextLinkKey = deltaNextLinkKey(id);
+    const foreignLink = isForeign(sanitized[id], id);
+    const foreignNextLink = isForeign(sanitized[nextLinkKey], id);
+    if (!foreignLink && !foreignNextLink) continue;
+    delete sanitized[nextLinkKey];
+    sanitized[id] = `${rootDeltaFor(id)}?token=latest`;
+    resetDriveIds.push(id);
+  }
+  if (resetDriveIds.length > 0) {
+    logger.warn(
+      `Reset the stored cursor of ${resetDriveIds.length} drive(s) that pointed at another drive; they resume from now: ${resetDriveIds.join(", ")}`,
+    );
+  }
+  return sanitized;
 };
 
 export const folderPathFrom = (

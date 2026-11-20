@@ -352,6 +352,70 @@ describe("pollSiteChanges", () => {
     });
   });
 
+  test("drives sharing a display name keep their own delta links and every change", async () => {
+    routes({
+      [DRIVES_URL]: {
+        data: {
+          value: [
+            { id: "drive-1", name: "Documents" },
+            { id: "drive-2", name: "Archive" },
+            { id: "drive-3", name: "Documents" },
+          ],
+        },
+      },
+      "/sites/site-1/drives/drive-1/root/delta": delta([item("a")], "https://graph/d1?t=1"),
+      "/sites/site-1/drives/drive-2/root/delta": delta([item("b")], "https://graph/d2?t=1"),
+      "/sites/site-1/drives/drive-3/root/delta": delta([item("c")], "https://graph/d3?t=1"),
+    });
+    const { result, setState } = await runSite();
+
+    expect(setState).toHaveBeenCalledWith({
+      "drive-1": "https://graph/d1?t=1",
+      "drive-2": "https://graph/d2?t=1",
+      "drive-3": "https://graph/d3?t=1",
+    });
+    const data = result.payload.body.data as Record<string, Record<string, DriveItem[]>>;
+    expect(Object.keys(data)).toEqual(["Documents", "Archive"]);
+    expect(ids(data.Documents.added)).toEqual(["a", "c"]);
+    expect(ids(data.Archive.added)).toEqual(["b"]);
+  });
+
+  test("a stored link that points at another drive resumes that drive from now", async () => {
+    const d1 = "https://graph.microsoft.com/v1.0/sites/site-1/drives/drive-1/root/delta?token=1";
+    const d3 = "https://graph.microsoft.com/v1.0/sites/site-1/drives/drive-3/root/delta?token=1";
+    routes({
+      [DRIVES_URL]: {
+        data: {
+          value: [
+            { id: "drive-1", name: "Documents" },
+            { id: "drive-3", name: "Documents" },
+          ],
+        },
+      },
+      "/sites/site-1/drives/drive-1/root/delta?token=latest": delta([], "https://graph/d1?t=2"),
+      [d3]: delta([item("c")], "https://graph/d3?t=2"),
+    });
+    const { ctx, setState } = makeCtx({ "drive-1": d3, "drive-3": d3 });
+    const warn = vi.fn();
+    (ctx as { logger: Record<string, unknown> }).logger.warn = warn;
+
+    const result = (await pollSiteChanges.perform(ctx, payload, {
+      connection,
+      siteId: "site-1",
+    } as never)) as unknown as Result;
+
+    const urls = getMock.mock.calls.map((c) => c[0]);
+    expect(urls.filter((url) => url === d3)).toHaveLength(1);
+    expect(urls).not.toContain(d1);
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining("drive-1"));
+    expect(setState).toHaveBeenCalledWith({
+      "drive-1": "https://graph/d1?t=2",
+      "drive-3": "https://graph/d3?t=2",
+    });
+    const data = result.payload.body.data as Record<string, Record<string, DriveItem[]>>;
+    expect(ids(data.Documents.added)).toEqual(["c"]);
+  });
+
   test("a drive with an empty result is removed from the output while others stay", async () => {
     routes({
       [DRIVES_URL]: drives,

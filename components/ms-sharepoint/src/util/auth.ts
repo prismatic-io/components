@@ -21,10 +21,14 @@ export const getAccessToken = async (connection: Connection): Promise<string> =>
         .split(",")
         .map((s) => s.trim()),
     });
-    if (!result) {
+    if (!result?.accessToken) {
       throw new ConnectionError(connection, "Could not acquire access token with certificate.");
     }
-    return result?.accessToken;
+    return result.accessToken;
   }
-  return util.types.toString(connection.token?.access_token);
+  const accessToken = util.types.toString(connection.token?.access_token);
+  if (!accessToken) {
+    throw new ConnectionError(connection, "Received a Connection without a valid access token.");
+  }
+  return accessToken;
 };

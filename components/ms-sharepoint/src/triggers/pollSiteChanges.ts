@@ -4,7 +4,9 @@ import { pollSiteChangesExamplePayload } from "../examplePayloads";
 import { createClient } from "../client";
 import {
   fetchSiteDeltaRound,
+  mergeDriveChanges,
   paginateResults,
+  resetForeignSiteDriveCursors,
   resolveDeltaUrl,
   resolveSitePollingRecordChanges,
   separateDriveChanges,
@@ -37,12 +39,13 @@ export const pollSiteChanges = pollingTrigger({
   perform: async (context, payload, { connection, siteId }) => {
     const { logger, polling, debug } = context;
     const client = await createClient(connection, debug.enabled);
-    const state = polling.getState() as PollingState;
     const rootDeltaFor = (driveId: string) => `/sites/${siteId}/drives/${driveId}/root/delta`;
 
     const drivesEndpoint = `/sites/${siteId}/drives?$select=id,name`;
 
     const allDrives = (await paginateResults(client, drivesEndpoint)) as Drive[];
+
+    const state = resetForeignSiteDriveCursors(polling.getState(), allDrives, rootDeltaFor, logger);
 
     if (context.batch?.enabled === true) {
       const incoming = payload.paginationState as SiteDeltaCursor | undefined;
@@ -63,35 +66,34 @@ export const pollSiteChanges = pollingTrigger({
 
     let polledNoChanges = true;
 
-    const allChanges: Record<string, unknown> = {};
-
-    for (const drive of allDrives) {
-      const endpoint = resolveDeltaUrl(state, drive.id, rootDeltaFor(drive.id));
-      allChanges[drive.name] = paginateResults(client, endpoint, {
-        returnFullData: true,
-        useTop: false,
-        excludeParents: true,
-      });
-    }
+    const allChanges: PollSiteChangesResult = {};
 
     const allChangesResults = (await Promise.all(
-      Object.values(allChanges),
+      allDrives.map((drive) =>
+        paginateResults(client, resolveDeltaUrl(state, drive.id, rootDeltaFor(drive.id)), {
+          returnFullData: true,
+          useTop: false,
+          excludeParents: true,
+        }),
+      ),
     )) as DriveDeltaResponse[];
 
     const newPollingState: PollingState = {};
 
     allChangesResults.forEach((result, index) => {
+      const drive = allDrives[index];
       if (result.value.length > 0) {
-        allChanges[allDrives[index].name] = separateDriveChanges(result.value);
+        allChanges[drive.name] = mergeDriveChanges(
+          allChanges[drive.name],
+          separateDriveChanges(result.value),
+        );
 
         if (polledNoChanges === true) {
           polledNoChanges = false;
         }
-      } else {
-        delete allChanges[allDrives[index].name];
       }
 
-      newPollingState[allDrives[index].id] = result["@odata.deltaLink"];
+      newPollingState[drive.id] = result["@odata.deltaLink"];
     });
 
     polling.setState(newPollingState);

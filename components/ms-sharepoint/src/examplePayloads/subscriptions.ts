@@ -60,7 +60,11 @@ export const createSubscriptionExamplePayload = {
 };
 
 export const deleteSubscriptionExamplePayload = {
-  data: "",
+  data: {
+    success: true,
+    id: "38031b7d-16b1-448a-8e68-68b8aec62315",
+    message: "Subscription deleted successfully",
+  },
 };
 
 export const deleteAllInstanceSubscriptionsExamplePayload = {

@@ -1,5 +1,15 @@
 ## Changelog
 
+### 2026-11-20
+
+Fixed the **Drive Subscription** and **Site Item Changes** triggers, and updated the **Delete Subscription** result and connection validation:
+- Fixed the **Drive Subscription** trigger reusing its existing Microsoft Graph subscription on a redeploy, so a changed **Resource**, **Change Type**, **Client State**, or connection never took effect; a redeploy now creates a new subscription and removes the previous one, retrying a delete Microsoft Graph refuses on later deploys and when the instance is deleted
+- Fixed the **Site Item Changes** trigger dropping the changes of one of two drives that share a display name and tracking later recurrences against the wrong drive; changes from drives with the same name are now combined under that name
+- Updated the **Delete Subscription** action to return a record with `success`, `id`, and `message` instead of an empty response
+- Updated the connections to fail with a connection error when no access token is available, instead of sending the request to Microsoft Graph without one
+- Updated the component description to better summarize what the component does
+- Added an output schema to the **Delete Subscription** action for improved field mapping during configuration
+
 ### 2026-11-19
 
 Updated dependencies and refactored internal code:

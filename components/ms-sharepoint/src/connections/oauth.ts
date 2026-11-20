@@ -4,9 +4,11 @@ import { BASE_URL, DEFAULT_SCOPES } from "../constants";
 
 export const source: ConnectionInput = {
   label: "Source",
+  placeholder: "SharePoint",
   type: "string",
   required: true,
   shown: false,
+  example: "SharePoint",
   default: "SharePoint",
 };
 
@@ -21,13 +23,13 @@ export const oauth = oauth2Connection({
     baseUrl: {
       label: "Base URL",
       placeholder: BASE_URL,
-      example: BASE_URL,
-      default: BASE_URL,
       type: "string",
       required: true,
       shown: true,
       comments:
         "The base URL for the Microsoft Graph API. National cloud deployments use a different root endpoint; see [Microsoft Graph national cloud deployments](https://learn.microsoft.com/en-us/graph/deployments#microsoft-graph-and-graph-explorer-service-root-endpoints).",
+      example: BASE_URL,
+      default: BASE_URL,
     },
     authorizeUrl: {
       label: "Authorize URL",
@@ -35,7 +37,8 @@ export const oauth = oauth2Connection({
       type: "string",
       required: true,
       shown: true,
-      comments: "Provide a tenant specific OAuth 2.0 authorize endpoint.",
+      comments:
+        "The OAuth 2.0 authorization endpoint of the Microsoft identity platform. Replace common with the directory (tenant) ID to restrict sign-in to one tenant. Find it on the app registration's Endpoints page in the Microsoft Entra admin center; see [Endpoints](https://learn.microsoft.com/en-us/entra/identity-platform/v2-protocols#endpoints).",
       default: "https://login.microsoftonline.com/common/oauth2/v2.0/authorize",
     },
     tokenUrl: {
@@ -44,7 +47,8 @@ export const oauth = oauth2Connection({
       type: "string",
       required: true,
       shown: true,
-      comments: "Provide a tenant specific OAuth 2.0 token endpoint.",
+      comments:
+        "The OAuth 2.0 token endpoint of the Microsoft identity platform. Replace common with the directory (tenant) ID to restrict sign-in to one tenant. Find it on the app registration's Endpoints page in the Microsoft Entra admin center; see [Endpoints](https://learn.microsoft.com/en-us/entra/identity-platform/v2-protocols#endpoints).",
       default: "https://login.microsoftonline.com/common/oauth2/v2.0/token",
     },
     scopes: {
@@ -53,7 +57,8 @@ export const oauth = oauth2Connection({
       type: "string",
       required: true,
       shown: true,
-      comments: "Space separated OAuth 2.0 permission scopes.",
+      comments:
+        "Space-separated Microsoft Graph permission scopes to request. Add each scope under API permissions on the app registration in the Microsoft Entra admin center; see the [Microsoft Graph permissions reference](https://learn.microsoft.com/en-us/graph/permissions-reference).",
       default: DEFAULT_SCOPES,
     },
     clientId: {
@@ -62,7 +67,8 @@ export const oauth = oauth2Connection({
       type: "string",
       required: true,
       shown: true,
-      comments: "Client ID of the Azure application.",
+      comments:
+        "The Application (client) ID shown on the app registration's Overview page in the Microsoft Entra admin center; see [Register an application](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app).",
     },
     clientSecret: {
       label: "Client Secret",
@@ -70,7 +76,8 @@ export const oauth = oauth2Connection({
       type: "password",
       required: true,
       shown: true,
-      comments: "Client Secret generated under 'Certificates & Secrets' in the Azure application.",
+      comments:
+        "The client secret value generated under Certificates & secrets on the app registration in the Microsoft Entra admin center; see [Add a client secret](https://learn.microsoft.com/en-us/entra/identity-platform/how-to-add-credentials).",
     },
     source,
   },

@@ -1,7 +1,8 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { deleteSubscriptionExamplePayload } from "../../examplePayloads";
 import { deleteSubscriptionInputs } from "../../inputs";
+import { deleteSubscriptionOutputSchema } from "../../outputSchemas";
 
 export const deleteSubscription = action({
   display: {
@@ -12,9 +13,17 @@ export const deleteSubscription = action({
   performSafety: "notAllowed",
   perform: async ({ debug: { enabled: debug } }, { connection, subscriptionId }) => {
     const client = await createClient(connection, debug);
-    const { data } = await client.delete(`/subscriptions/${subscriptionId}`);
-    return { data };
+    await client.delete(`/subscriptions/${subscriptionId}`);
+    return {
+      data: { success: true, id: subscriptionId, message: "Subscription deleted successfully" },
+    };
   },
-  examplePerform: async () => deleteSubscriptionExamplePayload,
+  examplePerform: async (_context, { subscriptionId }) => ({
+    data: { ...deleteSubscriptionExamplePayload.data, id: subscriptionId },
+  }),
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: deleteSubscriptionOutputSchema,
+  }),
   examplePayload: deleteSubscriptionExamplePayload,
 });

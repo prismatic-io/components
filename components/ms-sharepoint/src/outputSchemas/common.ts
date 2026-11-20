@@ -1,3 +1,35 @@
+export const deleteResultSchema = {
+  type: "object" as const,
+  properties: {
+    success: { type: "boolean", enum: [true] },
+    id: { type: "string" },
+    message: { type: "string" },
+  },
+  required: ["success", "id", "message"],
+};
+
+export const thumbnailSchema = {
+  type: "object" as const,
+  properties: {
+    content: { type: "string" },
+    height: { type: "integer" },
+    sourceItemId: { type: "string" },
+    url: { type: "string" },
+    width: { type: "integer" },
+  },
+};
+
+export const thumbnailSetSchema = {
+  type: "object" as const,
+  properties: {
+    id: { type: "string" },
+    large: thumbnailSchema,
+    medium: thumbnailSchema,
+    small: thumbnailSchema,
+    source: thumbnailSchema,
+  },
+};
+
 export const identitySchema = {
   type: "object" as const,
   properties: {
@@ -5,7 +37,7 @@ export const identitySchema = {
     displayName: { type: "string" },
     tenantId: { type: "string" },
     email: { type: "string" },
-    thumbnails: { type: "object" },
+    thumbnails: thumbnailSetSchema,
   },
 };
 
@@ -25,6 +57,15 @@ export const identitySetSchema = {
     siteGroup: identitySchema,
     siteUser: identitySchema,
     user: identitySchema,
+  },
+};
+
+export const publicationFacetSchema = {
+  type: "object" as const,
+  properties: {
+    level: { type: "string", enum: ["published", "checkout"] },
+    versionId: { type: "string" },
+    checkedOutBy: identitySetSchema,
   },
 };
 
@@ -71,11 +112,136 @@ export const fileFacetSchema = {
   },
 };
 
+export const folderViewSchema = {
+  type: "object" as const,
+  properties: {
+    sortBy: { type: "string" },
+    sortOrder: { type: "string" },
+    viewType: { type: "string" },
+  },
+};
+
+export const imageFacetSchema = {
+  type: "object" as const,
+  properties: {
+    height: { type: "integer" },
+    width: { type: "integer" },
+  },
+};
+
+export const videoFacetSchema = {
+  type: "object" as const,
+  properties: {
+    audioBitsPerSample: { type: "integer" },
+    audioChannels: { type: "integer" },
+    audioFormat: { type: "string" },
+    audioSamplesPerSecond: { type: "integer" },
+    bitrate: { type: "integer" },
+    duration: { type: "integer" },
+    fourCC: { type: "string" },
+    frameRate: { type: "number" },
+    height: { type: "integer" },
+    width: { type: "integer" },
+  },
+};
+
+export const audioFacetSchema = {
+  type: "object" as const,
+  properties: {
+    album: { type: "string" },
+    albumArtist: { type: "string" },
+    artist: { type: "string" },
+    bitrate: { type: "integer" },
+    composers: { type: "string" },
+    copyright: { type: "string" },
+    disc: { type: "integer" },
+    discCount: { type: "integer" },
+    duration: { type: "integer" },
+    genre: { type: "string" },
+    hasDrm: { type: "boolean" },
+    isVariableBitrate: { type: "boolean" },
+    title: { type: "string" },
+    track: { type: "integer" },
+    trackCount: { type: "integer" },
+    year: { type: "integer" },
+  },
+};
+
+export const photoFacetSchema = {
+  type: "object" as const,
+  properties: {
+    cameraMake: { type: "string" },
+    cameraModel: { type: "string" },
+    exposureDenominator: { type: "number" },
+    exposureNumerator: { type: "number" },
+    fNumber: { type: "number" },
+    focalLength: { type: "number" },
+    iso: { type: "integer" },
+    orientation: { type: "integer" },
+    takenDateTime: { type: "string", format: "date-time" },
+  },
+};
+
+export const geoCoordinatesSchema = {
+  type: "object" as const,
+  properties: {
+    altitude: { type: "number" },
+    latitude: { type: "number" },
+    longitude: { type: "number" },
+  },
+};
+
+export const malwareFacetSchema = {
+  type: "object" as const,
+  properties: {
+    description: { type: "string" },
+  },
+};
+
+export const packageFacetSchema = {
+  type: "object" as const,
+  properties: {
+    type: { type: "string" },
+  },
+};
+
+export const pendingOperationsSchema = {
+  type: "object" as const,
+  properties: {
+    pendingContentUpdate: {
+      type: "object",
+      properties: {
+        queuedDateTime: { type: "string", format: "date-time" },
+      },
+    },
+  },
+};
+
+export const specialFolderFacetSchema = {
+  type: "object" as const,
+  properties: {
+    name: { type: "string" },
+  },
+};
+
+export const bundleFacetSchema = {
+  type: "object" as const,
+  properties: {
+    album: {
+      type: "object",
+      properties: {
+        coverImageItemId: { type: "string" },
+      },
+    },
+    childCount: { type: "integer" },
+  },
+};
+
 export const folderFacetSchema = {
   type: "object" as const,
   properties: {
     childCount: { type: "integer" },
-    view: { type: "object" },
+    view: folderViewSchema,
   },
 };
 
@@ -116,10 +282,10 @@ export const remoteItemSchema = {
     fileSystemInfo: fileSystemInfoSchema,
     shared: sharedFacetSchema,
     sharepointIds: sharepointIdsSchema,
-    image: { type: "object" },
-    package: { type: "object" },
-    specialFolder: { type: "object" },
-    video: { type: "object" },
+    image: imageFacetSchema,
+    package: packageFacetSchema,
+    specialFolder: specialFolderFacetSchema,
+    video: videoFacetSchema,
   },
 };
 
@@ -151,17 +317,17 @@ export const driveItemSchema = {
     deleted: { type: "object", properties: { state: { type: "string" } } },
     searchResult: { type: "object", properties: { onClickTelemetryUrl: { type: "string" } } },
     root: { type: "object" },
-    audio: { type: "object" },
-    bundle: { type: "object" },
-    image: { type: "object" },
-    location: { type: "object" },
-    malware: { type: "object" },
-    package: { type: "object" },
-    pendingOperations: { type: "object" },
-    photo: { type: "object" },
-    publication: { type: "object" },
-    specialFolder: { type: "object" },
-    video: { type: "object" },
+    audio: audioFacetSchema,
+    bundle: bundleFacetSchema,
+    image: imageFacetSchema,
+    location: geoCoordinatesSchema,
+    malware: malwareFacetSchema,
+    package: packageFacetSchema,
+    pendingOperations: pendingOperationsSchema,
+    photo: photoFacetSchema,
+    publication: publicationFacetSchema,
+    specialFolder: specialFolderFacetSchema,
+    video: videoFacetSchema,
   },
   required: ["id"],
 };

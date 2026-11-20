@@ -100,7 +100,7 @@ describe("createSubscription", () => {
 });
 
 describe("deleteSubscription", () => {
-  test("deletes the subscription", async () => {
+  test("deletes the subscription and returns the standard delete record", async () => {
     const scope = nock(GRAPH).delete(`/v1.0/subscriptions/${driveRootSubscription.id}`).reply(204);
 
     const { result } = await invoke(deleteSubscription, {
@@ -109,7 +109,9 @@ describe("deleteSubscription", () => {
     });
 
     expect(scope.isDone()).toBe(true);
-    expect(result).toEqual(deleteSubscriptionExamplePayload);
+    expect(result).toEqual({
+      data: { ...deleteSubscriptionExamplePayload.data, id: driveRootSubscription.id },
+    });
   });
 
   test("rejects when the subscription does not exist", async () => {

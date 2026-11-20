@@ -106,6 +106,30 @@ describe("replaceSubscriptionOnDeploy", () => {
     expect(deletedIds(client)).toEqual(["/subscriptions/old-sub"]);
   });
 
+  it("sends the caller's custom body fields with the new subscription", async () => {
+    const client = createMockClient([]);
+    const context = createContext();
+
+    await replaceSubscriptionOnDeploy(
+      client as never,
+      {
+        resource: "drives/drive-id/root",
+        changeType: "updated",
+        expirationDateTime: "2026-12-01T00:00:00.000Z",
+        customBody: { lifecycleNotificationUrl: WEBHOOK_URL },
+      },
+      context as never,
+    );
+
+    expect(client.post).toHaveBeenCalledWith(
+      "/subscriptions",
+      expect.objectContaining({
+        resource: "drives/drive-id/root",
+        lifecycleNotificationUrl: WEBHOOK_URL,
+      }),
+    );
+  });
+
   it("deletes the stored subscription by ID when the current token cannot list it", async () => {
     const client = createMockClient([]);
     const context = createContext({ [FLOW_KEY]: "app-only-sub" });

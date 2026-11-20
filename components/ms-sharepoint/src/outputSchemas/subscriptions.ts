@@ -1,3 +1,5 @@
+import { deleteResultSchema } from "./common";
+
 export const subscriptionSchema = {
   type: "object" as const,
   properties: {
@@ -45,6 +47,8 @@ export const listSubscriptionsOutputSchema = {
   },
   required: ["value"],
 };
+
+export const deleteSubscriptionOutputSchema = deleteResultSchema;
 
 export const deleteAllInstanceSubscriptionsOutputSchema = {
   type: "object" as const,

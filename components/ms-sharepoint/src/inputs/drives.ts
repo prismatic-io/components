@@ -21,7 +21,7 @@ const $select = input({
   placeholder: "Enter comma-separated field names",
   comments:
     "Filters properties (columns). See [select parameter](https://learn.microsoft.com/en-us/graph/query-parameters?tabs=http#select).",
-  example: "givenName,surname",
+  example: "id,name,lastModifiedDateTime",
   clean: toOptionalString,
 });
 
@@ -32,7 +32,7 @@ const $expand = input({
   placeholder: "Enter relationship to expand",
   comments:
     "Retrieves related resources. See [expand parameter](https://learn.microsoft.com/en-us/graph/query-parameters?tabs=http#expand).",
-  example: "members",
+  example: "thumbnails",
   clean: toOptionalString,
 });
 

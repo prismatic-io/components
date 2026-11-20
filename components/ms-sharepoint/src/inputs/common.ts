@@ -17,7 +17,7 @@ export const siteId = input({
   comments: "The unique identifier of a SharePoint site.",
   dataSource: "listSites",
   example:
-    "example.sharepoint.com,c45de8832-a4969-479d-aeb2-7nAh8321,48bf81d7-2d37-40a9-b47b-c1d1960d00f87",
+    "contoso.sharepoint.com,2c712604-1370-44e7-a1f5-426573fda80a,2d2244c3-251a-49ea-93a8-39e1c3a060fe",
   clean: util.types.toString,
 });
 
@@ -49,7 +49,7 @@ export const listId = input({
   required: true,
   placeholder: "Enter list ID",
   comments: "The unique identifier of a SharePoint site list.",
-  example: "48bf81d7-2d37-40a9-b47b-c1d1960d00f87",
+  example: "48bf81d7-2d37-40a9-b47b-c1d1960d0f87",
   dataSource: "selectSiteList",
   clean: util.types.toString,
 });

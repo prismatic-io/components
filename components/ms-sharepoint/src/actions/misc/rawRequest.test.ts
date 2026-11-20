@@ -1,3 +1,4 @@
+import { ConnectionError } from "@prismatic-io/spectral";
 import { createConnection, invoke } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { oauth } from "../../connections/oauth";
@@ -83,5 +84,30 @@ describe("rawRequest", () => {
 
     expect(scope.isDone()).toBe(true);
     expect(result).toEqual({ data: rawRequestExamplePayload.data });
+  });
+
+  test("throws a ConnectionError instead of sending an empty bearer token", async () => {
+    const scope = nock(GRAPH).get("/v1.0/sites").reply(200, rawRequestExamplePayload.data);
+
+    await expect(
+      invoke(rawRequest, {
+        connection: createConnection(oauth, {}, { access_token: "" }),
+        url: "/sites",
+        method: "GET",
+        data: "",
+        formData: [],
+        fileData: [],
+        fileDataFileNames: {},
+        queryParams: [],
+        headers: [],
+        responseType: "json",
+        timeout: 0,
+        retryDelayMS: 0,
+        retryAllErrors: false,
+        maxRetries: 0,
+        useExponentialBackoff: false,
+      }),
+    ).rejects.toThrow(ConnectionError);
+    expect(scope.isDone()).toBe(false);
   });
 });

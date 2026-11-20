@@ -583,8 +583,8 @@
   },
   "ms-entra-id": {
     "name": "@prismatic-io/components-ms-entra-id",
-    "version": "0.2.1",
-    "build": "bee069235fb4bfd7e94b9865d6c161db6da5fb5cae60cf13efdbdefc5e275bd5",
+    "version": "0.2.2",
+    "build": "93b5dd810637b2c1255694e3c36c14413be8cd04b89857a9b46326b283bd1cbf",
     "spectral": "^10.39.2"
   },
   "ms-excel": {
@@ -601,8 +601,8 @@
   },
   "ms-intune": {
     "name": "@prismatic-io/components-ms-intune",
-    "version": "0.4.1",
-    "build": "da0e190bd73b8a1f8260dbeafb421c212d44e66730258304b83f0eee1a32f250",
+    "version": "0.4.2",
+    "build": "d14694cba2997a527a8d2e32c55c628064b15799faf20c136a73c9c912bfbbea",
     "spectral": "^10.39.2"
   },
   "ms-onedrive": {
@@ -637,9 +637,9 @@
   },
   "ms-sharepoint": {
     "name": "@prismatic-io/components-ms-sharepoint",
-    "version": "0.4.2",
-    "build": "9415035f6c4110b7b972b04e50b5850e64fc86791d36f64c0300bac2710025e9",
-    "spectral": "^10.39.1"
+    "version": "0.5.0",
+    "build": "19508382eca5f6e7a9570003170864d5d03eba59355455a038ff61efec0c7002",
+    "spectral": "^10.39.3"
   },
   "ms-sql-server": {
     "name": "@prismatic-io/components-ms-sql-server",

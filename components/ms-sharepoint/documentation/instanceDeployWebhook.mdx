@@ -29,6 +29,8 @@ The trigger manages webhook subscriptions through a complete lifecycle:
 5. Microsoft validates the webhook endpoint by sending a validation token
 6. The trigger responds with the token to complete subscription creation
 
+On a redeploy, the trigger creates a new subscription from the current inputs and connection, then removes the previous one, so a changed **Resource**, **Change Type**, **Client State**, or connection takes effect. If Microsoft Graph refuses to delete the previous subscription, for example because it belongs to another account than the new connection, both subscriptions deliver notifications until the old one is deleted: the trigger retries the delete on every later deploy and when the instance is deleted, and Microsoft Graph removes the old subscription when it expires.
+
 **On Webhook Notification:**
 - Microsoft posts notification payloads when monitored resources change
 - The trigger validates the clientState (if configured) and logs a warning on a mismatch

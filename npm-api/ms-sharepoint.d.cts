@@ -1,4 +1,3 @@
-//#region ../../packages/ms-utils/dist/interfaces/Subscriptions.d.ts
 interface GraphSubscription {
   id?: string;
   resource: string;
@@ -9,19 +8,13 @@ interface GraphSubscription {
   latestSupportedTlsVersion?: string;
   creatorId?: string;
 }
-//#endregion
-//#region node_modules/axios/index.d.ts
 type UppercaseMethod = 'GET' | 'DELETE' | 'HEAD' | 'OPTIONS' | 'POST' | 'PUT' | 'PATCH' | 'PURGE' | 'LINK' | 'UNLINK' | 'QUERY';
 type Method = (UppercaseMethod | Lowercase<UppercaseMethod>) & {};
 type ResponseType = 'arraybuffer' | 'blob' | 'document' | 'json' | 'text' | 'stream' | 'formdata';
-//#endregion
-//#region src/types/inputs.d.ts
 interface ParentRef {
   id: string;
   label?: string;
 }
-//#endregion
-//#region npm-dist/.entry.d.ts
 declare const _default: import("@prismatic-io/spectral").CallableComponent<{
   key: "ms-sharepoint";
   public: true;
@@ -223,7 +216,11 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         clean: (value: unknown, defaultValue?: string) => string;
       };
     }, import("@prismatic-io/spectral").ConfigVarResultCollection, boolean, {
-      data: any;
+      data: {
+        id: string;
+        success: boolean;
+        message: string;
+      };
     }>;
     deleteAllInstanceSubscriptions: import("@prismatic-io/spectral").ActionDefinition<{
       connection: {
